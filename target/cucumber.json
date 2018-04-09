@@ -1,0 +1,88 @@
+[
+  {
+    "line": 1,
+    "elements": [
+      {
+        "comments": [
+          {
+            "line": 2,
+            "value": "#@Smoke"
+          }
+        ],
+        "line": 3,
+        "name": "Successful Login with Valid Credentials",
+        "description": "",
+        "id": "login-action;successful-login-with-valid-credentials",
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 12393855757,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "User Navigates to Sever",
+            "match": {
+              "location": "Login_StepDefinitions.user_Navigate_to_Sever()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 1504473109,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "And User enters Crdenetials to Login",
+            "match": {
+              "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 1492269985,
+              "status": "passed"
+            },
+            "line": 7,
+            "name": "User clicks on Send Key to Device",
+            "match": {
+              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 3572506694,
+              "status": "passed"
+            },
+            "line": 8,
+            "name": "User navigates to MobileBrifcase App",
+            "match": {
+              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 2631157645,
+              "status": "passed"
+            },
+            "line": 9,
+            "name": "After user navigates to Appellate DC Development - CMKA - dev",
+            "match": {
+              "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev()"
+            },
+            "keyword": "And "
+          }
+        ]
+      }
+    ],
+    "name": "Login Action",
+    "description": "",
+    "id": "login-action",
+    "keyword": "Feature",
+    "uri": "LoginPage/SmokeTest.feature"
+  }
+]

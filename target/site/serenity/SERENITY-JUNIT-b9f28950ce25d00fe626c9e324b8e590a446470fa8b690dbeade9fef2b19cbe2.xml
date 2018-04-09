@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><testsuite errors="1" failures="0" name="Login Action" skipped="0" tests="1" time="8.27" timestamp="2018-03-82 11:39:07"><testcase name="Successful Login with Valid Credentials"><error type="java.lang.reflect.InvocationTargetException"/><system-err>null
+cucumber.runner.Runner.runPickle(Runner.java:80)
+org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:86)
+org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)
+org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:678)
+org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
+org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
+</system-err></testcase></testsuite>

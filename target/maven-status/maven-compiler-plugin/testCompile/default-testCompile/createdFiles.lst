@@ -1,0 +1,5 @@
+gov/uscourts/ao/mobileBriefcase/runners/BriefcaseRunner.class
+gov/uscourts/ao/moibleBriefcase/common/Hook.class
+gov/uscourts/ao/moibleBriefcase/common/DesiredCapabilitySet.class
+gov/uscourts/ao/moibleBriefcase/common/jh.class
+gov/uscourts/ao/moibleBriefcase/common/Config.class

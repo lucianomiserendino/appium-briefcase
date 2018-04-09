@@ -1,0 +1,17 @@
+package gov.uscourts.ao.mobileBriefcase.runners;
+
+import org.junit.runner.RunWith;
+
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(plugin = { "pretty", "html:target/cucumber",
+		"json:target/cucumber.json" }, features = "./src/test/resources/Featues", glue = {
+				"gov/uscourts/ao/mobileBriefcase/stepDefinitions" },
+		// tags={"@"},
+		dryRun = false)
+
+public class BriefcaseRunner {
+
+}
