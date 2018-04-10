@@ -1,4 +1,4 @@
-package gov.uscourts.ao.mobileBriefcase.Pages.DBUtils;
+package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
 public class Queries {
 
