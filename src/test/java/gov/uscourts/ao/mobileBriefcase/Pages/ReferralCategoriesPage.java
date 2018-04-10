@@ -1,6 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.moibleBriefcase.common.Utilties.findElement;
+import static gov.uscourts.ao.moibleBriefcase.common.Utilities.findElement;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;

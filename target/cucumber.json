@@ -18,7 +18,7 @@
         "steps": [
           {
             "result": {
-              "duration": 12393855757,
+              "duration": 12276633170,
               "status": "passed"
             },
             "line": 5,
@@ -30,11 +30,11 @@
           },
           {
             "result": {
-              "duration": 1504473109,
+              "duration": 1516371312,
               "status": "passed"
             },
             "line": 6,
-            "name": "And User enters Crdenetials to Login",
+            "name": "User enters Crdenetials to Login",
             "match": {
               "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login()"
             },
@@ -42,7 +42,7 @@
           },
           {
             "result": {
-              "duration": 1492269985,
+              "duration": 1021044493,
               "status": "passed"
             },
             "line": 7,
@@ -54,7 +54,7 @@
           },
           {
             "result": {
-              "duration": 3572506694,
+              "duration": 3505429855,
               "status": "passed"
             },
             "line": 8,
@@ -66,7 +66,7 @@
           },
           {
             "result": {
-              "duration": 2631157645,
+              "duration": 2352186387,
               "status": "passed"
             },
             "line": 9,

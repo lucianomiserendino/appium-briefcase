@@ -18,7 +18,7 @@ public class Login_StepDefinitions {
 
 	}
 
-	@When("^And User enters Crdenetials to Login$")
+	@When("^User enters Crdenetials to Login$")
 	public void and_User_enters_Crdenetials_to_Login() {
 		logPage.sendCredentials();
 

@@ -23,6 +23,23 @@ public class Configuration {
 		}
 	}
 
+	public static String getFile(String path) {
+
+		try {
+			String location = "./src/test/resources/" + path;
+			FileInputStream input = new FileInputStream(location);
+			configFile = new Properties();
+			configFile.load(input);
+
+			input.close();
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		return path;
+
+	}
+
 	public static String getProperty(String keyName) {
 		return configFile.getProperty(keyName);
 	}

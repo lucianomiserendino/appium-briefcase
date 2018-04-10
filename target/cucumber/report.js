@@ -27,7 +27,7 @@ formatter.step({
 });
 formatter.step({
   "line": 6,
-  "name": "And User enters Crdenetials to Login",
+  "name": "User enters Crdenetials to Login",
   "keyword": "When "
 });
 formatter.step({
@@ -49,35 +49,35 @@ formatter.match({
   "location": "Login_StepDefinitions.user_Navigate_to_Sever()"
 });
 formatter.result({
-  "duration": 12393855757,
+  "duration": 12276633170,
   "status": "passed"
 });
 formatter.match({
   "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login()"
 });
 formatter.result({
-  "duration": 1504473109,
+  "duration": 1516371312,
   "status": "passed"
 });
 formatter.match({
   "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
 });
 formatter.result({
-  "duration": 1492269985,
+  "duration": 1021044493,
   "status": "passed"
 });
 formatter.match({
   "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
 });
 formatter.result({
-  "duration": 3572506694,
+  "duration": 3505429855,
   "status": "passed"
 });
 formatter.match({
   "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev()"
 });
 formatter.result({
-  "duration": 2631157645,
+  "duration": 2352186387,
   "status": "passed"
 });
 });

@@ -6,12 +6,18 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>com.ibm.informix</groupId>
+			<artifactId>jdbc</artifactId>
+			<version>4.10.6.20151104</version>
+		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>info.cukes</groupId>
@@ -30,16 +36,6 @@
 			<artifactId>java-client</artifactId>
 			<version>5.0.4</version>
 		</dependency>
-
-
-
-		<dependency>
-			<groupId>com.ibm.informix</groupId>
-			<artifactId>ifxjdbc</artifactId>
-			<version>3.50</version>
-		</dependency>
-
-
 
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>

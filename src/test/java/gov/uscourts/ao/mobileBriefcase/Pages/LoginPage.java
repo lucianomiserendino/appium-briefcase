@@ -1,7 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.moibleBriefcase.common.Utilties.findElement;
-import static gov.uscourts.ao.moibleBriefcase.common.Utilties.waitForPageToLoad;
+import static gov.uscourts.ao.moibleBriefcase.common.Utilities.findElement;
+import static gov.uscourts.ao.moibleBriefcase.common.Utilities.waitForPageToLoad;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;

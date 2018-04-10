@@ -1,6 +1,6 @@
 package gov.uscourts.ao.moibleBriefcase.common;
 
-import static gov.uscourts.ao.moibleBriefcase.common.Utilties.waitForPageToLoad;
+import static gov.uscourts.ao.moibleBriefcase.common.Utilities.waitForPageToLoad;
 
 import java.net.URL;
 import java.util.Set;
