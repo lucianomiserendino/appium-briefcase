@@ -17,7 +17,7 @@ public class Non_OrallyArguedCase_StepDefinitions {
 	Non_OrallyArguedCasePage page;
 
 	@Given("^User clicks on Motions/Pettitions$")
-	public void user_clicks_on_Motions_Pettitions() throws Throwable {
+	public void user_clicks_on_Motions_Pettitions() {
 		page = new Non_OrallyArguedCasePage();
 		performPageLoad();
 		page.clickOnMotionsPettitions();

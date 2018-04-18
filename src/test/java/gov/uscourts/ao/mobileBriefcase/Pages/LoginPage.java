@@ -19,8 +19,6 @@ import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class LoginPage extends Base {
 
-	private String openBtn = "Open";
-
 	public LoginPage() {
 
 		PageFactory.initElements(new AppiumFieldDecorator(Base.getInstance(PlatformVersions.IOS)), this);
@@ -62,18 +60,21 @@ public class LoginPage extends Base {
 	}
 
 	public void open() {
+		String openBtn = "Open";
 		clickOn(getElement(By.name(openBtn)));
 	}
 
-	public void getCMKA() {
+	public void getCMKA(){
 		clickOn(CMKA);
-		int pendingTaskX = 252;
-		int pendingTaskY = 343;
-		int dashboardX = 33;
-		int dashboardY = 116;
-		tapByCoordinates(pendingTaskX, pendingTaskY);
-		tapByCoordinates(dashboardX, dashboardY);
 		performPageLoad();
+		tapByCoordinates(getCoordinates("pendingTaskX"), getCoordinates("pendingTaskY"));
+		tapByCoordinates(getCoordinates("dashboardX"), getCoordinates("dashboardY"));
+		performPageLoad();
+
+	}
+
+	public static int getCoordinates(String coordinates) {
+		return Integer.parseInt(Configuration.getProperty(coordinates));
 
 	}
 

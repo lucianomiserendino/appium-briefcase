@@ -39,7 +39,7 @@ public class Login_StepDefinitions {
 	}
 
 	@Then("^After user navigates to Appellate DC Development - CMKA - dev$")
-	public void after_user_navigates_to_Appellate_DC_Development_CMKA_dev() {
+	public void after_user_navigates_to_Appellate_DC_Development_CMKA_dev(){
 		logPage.getCMKA();
 
 		

@@ -14,7 +14,7 @@ public class ReferralCategories_StepDefinitions {
 	ReferralCategoriesPage p;
 
 	@Given("^User Observes the referral categories that display on the dashboard and DB$")
-	public void user_Observes_the_referral_categories_that_display_on_the_dashboard_and_DB() throws Throwable {
+	public void user_Observes_the_referral_categories_that_display_on_the_dashboard_and_DB() {
 
 		p = new ReferralCategoriesPage();
 		List<String> DBrefCatlist = executeQuery(Queries.DB_LIST_OF_CATEGORIES);
