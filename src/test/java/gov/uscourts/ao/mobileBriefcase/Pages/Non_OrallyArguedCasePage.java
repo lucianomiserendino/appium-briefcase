@@ -12,9 +12,6 @@ import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class Non_OrallyArguedCasePage extends Base {
 
-	private static int strat = 7;
-	private static int end = 11;
-
 	public Non_OrallyArguedCasePage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
@@ -25,14 +22,13 @@ public class Non_OrallyArguedCasePage extends Base {
 	@iOSFindBy(xpath = "//*[contains(@name, 'Total')]")
 	public static MobileElement numberOfNonOrallyARGCases;
 
-	
 	public void clickOnMotionsPettitions() {
 		clickOn(motionsPetitions);
 
 	}
 
 	public String getNumOfdisplayedCases() {
-		return getListOfDisplayedCases(numberOfNonOrallyARGCases, strat, end);
+		return getListOfDisplayedCases(numberOfNonOrallyARGCases, "start", "end");
 	}
 
 }

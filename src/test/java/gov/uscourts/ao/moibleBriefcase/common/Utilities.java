@@ -1,7 +1,6 @@
 package gov.uscourts.ao.moibleBriefcase.common;
 
 import java.util.ArrayList;
-import static gov.uscourts.ao.moibleBriefcase.common.Page.*;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,14 +32,18 @@ public class Utilities extends Base {
 		element.click();
 	}
 
-	public static void tapByCoordinates(int xCoordinates, int yCoordinates) {
-		performPageLoad();
-		new TouchAction(driver).tap(xCoordinates, yCoordinates).perform();
+	public static void tapByCoordinates(String xCoordinates, String yCoordinates) {
+		new TouchAction(driver).tap(getCoordinates(xCoordinates), getCoordinates(yCoordinates)).perform();
 
 	}
 
-	public static String getListOfDisplayedCases(MobileElement element, int start, int end) {
-		return element.getText().substring(start, end).trim();
+	public static int getCoordinates(String coordinates) {
+		return Integer.parseInt(Configuration.getProperty(coordinates));
+
+	}
+
+	public static String getListOfDisplayedCases(MobileElement element, String start, String end) {
+		return element.getText().substring(getCoordinates(start), getCoordinates(end)).trim();
 
 	}
 

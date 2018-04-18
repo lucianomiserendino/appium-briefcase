@@ -64,17 +64,12 @@ public class LoginPage extends Base {
 		clickOn(getElement(By.name(openBtn)));
 	}
 
-	public void getCMKA(){
+	public void getCMKA() {
 		clickOn(CMKA);
 		performPageLoad();
-		tapByCoordinates(getCoordinates("pendingTaskX"), getCoordinates("pendingTaskY"));
-		tapByCoordinates(getCoordinates("dashboardX"), getCoordinates("dashboardY"));
+		tapByCoordinates("pendingTaskX", "pendingTaskY");
+		tapByCoordinates("dashboardX", "dashboardY");
 		performPageLoad();
-
-	}
-
-	public static int getCoordinates(String coordinates) {
-		return Integer.parseInt(Configuration.getProperty(coordinates));
 
 	}
 
