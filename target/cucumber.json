@@ -3,22 +3,15 @@
     "line": 1,
     "elements": [
       {
-        "comments": [
-          {
-            "line": 2,
-            "value": "#@Smoke"
-          }
-        ],
-        "line": 3,
-        "name": "Successful Login with Valid Credentials",
+        "line": 4,
+        "name": "",
         "description": "",
-        "id": "login-action;successful-login-with-valid-credentials",
-        "type": "scenario",
-        "keyword": "Scenario",
+        "type": "background",
+        "keyword": "Background",
         "steps": [
           {
             "result": {
-              "duration": 12276633170,
+              "duration": 16020886286,
               "status": "passed"
             },
             "line": 5,
@@ -30,7 +23,7 @@
           },
           {
             "result": {
-              "duration": 1516371312,
+              "duration": 1304465807,
               "status": "passed"
             },
             "line": 6,
@@ -42,7 +35,7 @@
           },
           {
             "result": {
-              "duration": 1021044493,
+              "duration": 1042682238,
               "status": "passed"
             },
             "line": 7,
@@ -54,7 +47,7 @@
           },
           {
             "result": {
-              "duration": 3505429855,
+              "duration": 3388623334,
               "status": "passed"
             },
             "line": 8,
@@ -66,7 +59,7 @@
           },
           {
             "result": {
-              "duration": 2352186387,
+              "duration": 2447904277,
               "status": "passed"
             },
             "line": 9,
@@ -77,12 +70,52 @@
             "keyword": "And "
           }
         ]
+      },
+      {
+        "line": 12,
+        "name": "",
+        "description": "Tapping on a referral category that is not orally argued (chm_reftype_val.cdv_is_oral_arg\u003d\u0027n\u0027),\n  a list of cases should dipslay for the judge for that category.\n  Need to verify the correct number of referrals are being displayed.",
+        "id": "number-of-cases-displayed-for-non-orally-argued-cases;",
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 35116,
+              "status": "passed"
+            },
+            "line": 17,
+            "name": "User obtains the judge\u0027s pe_id on the Dashboard Page",
+            "match": {
+              "location": "NonOrallyArguedCases_StepDefinitions.user_obtains_the_judge_s_pe_id_on_the_Dashboard_Page()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 11589,
+              "status": "passed"
+            },
+            "line": 18,
+            "name": "finds the valid non-orally argued categories for the judge",
+            "match": {
+              "location": "NonOrallyArguedCases_StepDefinitions.finds_the_valid_non_orally_argued_categories_for_the_judge()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 11,
+            "name": "@Smoke"
+          }
+        ]
       }
     ],
-    "name": "Login Action",
+    "name": "Number of cases displayed for non-orally argued cases",
     "description": "",
-    "id": "login-action",
+    "id": "number-of-cases-displayed-for-non-orally-argued-cases",
     "keyword": "Feature",
-    "uri": "LoginPage/SmokeTest.feature"
+    "uri": "NonOrallyArguedCases/AMB_973.feature"
   }
 ]

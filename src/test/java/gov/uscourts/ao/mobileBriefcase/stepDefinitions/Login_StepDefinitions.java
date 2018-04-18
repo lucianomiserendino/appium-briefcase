@@ -1,6 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static gov.uscourts.ao.moibleBriefcase.common.DesiredCapabilitySet.changeWindow;
+import static gov.uscourts.ao.moibleBriefcase.common.Base.changeWindow;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -9,10 +9,11 @@ import gov.uscourts.ao.mobileBriefcase.Pages.LoginPage;
 
 public class Login_StepDefinitions {
 
-	LoginPage logPage = new LoginPage();
+	LoginPage logPage;
 
 	@Given("^User Navigates to Sever$")
 	public void user_Navigate_to_Sever() {
+		logPage = new LoginPage();
 		logPage.selectEnvironment();
 		changeWindow("WEBVIEW");
 
@@ -40,5 +41,10 @@ public class Login_StepDefinitions {
 	@Then("^After user navigates to Appellate DC Development - CMKA - dev$")
 	public void after_user_navigates_to_Appellate_DC_Development_CMKA_dev() {
 		logPage.getCMKA();
+
+		
 	}
+
+	
+	
 }

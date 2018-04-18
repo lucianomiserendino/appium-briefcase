@@ -1,8 +1,5 @@
 package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -76,11 +73,13 @@ public class DBUtilits {
 
 	}
 
-	public static void executeQuery(String query) {
+	public static List<String> executeQuery(String query) {
 		establishConnection(DBType.CMKA);
 		List<String[]> queryResult = runSQLQuery(query);
-		assertNotNull(queryResult);
-		assertFalse(queryResult.size() == 0);
+		List<String> result = new ArrayList<>();
+		queryResult.forEach(record -> result.add(record[0].trim()));
+		return result;
+
 	}
 
 	public static void closeConnections() {

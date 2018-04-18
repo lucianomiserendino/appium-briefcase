@@ -8,6 +8,25 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>com.vimalselvam</groupId>
+			<artifactId>cucumber-extentsreport</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-excelant</artifactId>
+			<version>3.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.aventstack</groupId>
+			<artifactId>extentreports</artifactId>
+			<version>3.1.2</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.ibm.informix</groupId>
 			<artifactId>jdbc</artifactId>
 			<version>4.10.6.20151104</version>

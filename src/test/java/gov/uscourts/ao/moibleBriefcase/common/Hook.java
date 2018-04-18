@@ -3,7 +3,6 @@ package gov.uscourts.ao.moibleBriefcase.common;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.OutputType;
-
 import org.openqa.selenium.TakesScreenshot;
 
 import cucumber.api.Scenario;
@@ -15,17 +14,16 @@ public class Hook {
 	@Before
 	public void setUp() {
 
-		DesiredCapabilitySet.getInstance().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		Base.getInstance(PlatformVersions.IOS).manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 
 	@After
 	public void tearDown(Scenario scenario) {
 		if (scenario.isFailed()) {
-			final byte[] screenshot = ((TakesScreenshot) DesiredCapabilitySet.getInstance())
+			final byte[] screenshot = ((TakesScreenshot) Base.getInstance(PlatformVersions.IOS))
 					.getScreenshotAs(OutputType.BYTES);
 			scenario.embed(screenshot, "image/png");
 		}
-		DesiredCapabilitySet.closeDriver();
 	}
 
 }

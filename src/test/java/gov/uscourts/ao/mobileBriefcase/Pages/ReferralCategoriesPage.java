@@ -1,33 +1,36 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.moibleBriefcase.common.Utilities.findElement;
+import static gov.uscourts.ao.moibleBriefcase.common.Utilities.getListOfCategories;
 
-import org.openqa.selenium.By;
+import java.util.List;
+
 import org.openqa.selenium.support.PageFactory;
 
-import gov.uscourts.ao.moibleBriefcase.common.DesiredCapabilitySet;
+import gov.uscourts.ao.moibleBriefcase.common.Base;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
-public class ReferralCategoriesPage extends DesiredCapabilitySet{
+
+public class ReferralCategoriesPage extends Base {
 
 	public ReferralCategoriesPage() {
-		PageFactory.initElements(new AppiumFieldDecorator(DesiredCapabilitySet.getInstance()), this);
+		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
-	@iOSFindBy(accessibility = "Dashboard")
-	public MobileElement dashboard;
+	@iOSFindBy(accessibility = "Screening Panels")
+	public static MobileElement screeningPanels;
 
-	//DesiredCapabilitySet.findElements("//XCUIElementTypeStaticText[@name='Dashboard']");
-	//DesiredCapabilitySet.findElements("//XCUIElementTypeTable[@name='Categories']/XCUIElementTypeCell[1]");
+	@iOSFindBy(accessibility = "Petitions for Rehearing")
+	public static MobileElement petitionsForRehearing;
 
-	public void retrieveRefCategories() {
-	findElement(By.id("Dashboard"));
+	@iOSFindBy(accessibility = "Cases on Calendar")
+	public static MobileElement casesOnCalendar;
+
+	@iOSFindBy(accessibility = "Motions/Petitions")
+	public static MobileElement motionsPetitions;
+
+	public List<String> UIreferralCategoriesList() {
+		return getListOfCategories(motionsPetitions, casesOnCalendar, petitionsForRehearing, screeningPanels);
 
 	}
-
-	
-
-
-
 }
