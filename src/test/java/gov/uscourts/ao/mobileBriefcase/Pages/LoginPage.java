@@ -1,29 +1,29 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.moibleBriefcase.common.Page.getElement;
-import static gov.uscourts.ao.moibleBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.moibleBriefcase.common.Utilities.clickOn;
-import static gov.uscourts.ao.moibleBriefcase.common.Utilities.tapByCoordinates;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.getElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.tapByCoordinates;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import gov.uscourts.ao.moibleBriefcase.common.Base;
-import gov.uscourts.ao.moibleBriefcase.common.Configuration;
-import gov.uscourts.ao.moibleBriefcase.common.PlatformVersions;
+import gov.uscourts.ao.mobileBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.common.Configuration;
+import gov.uscourts.ao.mobileBriefcase.common.PlatformVersions;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class LoginPage extends Base {
+public class LoginPage{
 
 	public LoginPage() {
 
-		PageFactory.initElements(new AppiumFieldDecorator(Base.getInstance(PlatformVersions.IOS)), this);
+	 PageFactory.initElements(new
+	 AppiumFieldDecorator(Base.getInstance(PlatformVersions.IOS)), this);
 	}
-
 	@iOSFindBy(accessibility = "Integration")
 	public MobileElement server;
 
@@ -59,7 +59,7 @@ public class LoginPage extends Base {
 		clickOn(sendKeyButton);
 	}
 
-	public void open() {
+	public void opens() {
 		String openBtn = "Open";
 		clickOn(getElement(By.name(openBtn)));
 	}
@@ -67,7 +67,7 @@ public class LoginPage extends Base {
 	public void getCMKA() {
 		clickOn(CMKA);
 		performPageLoad();
-		tapByCoordinates("pendingTaskX", "pendingTaskY");
+		tapByCoordinates("motionsPetitionsX", "motionsPetitionsY");
 		tapByCoordinates("dashboardX", "dashboardY");
 		performPageLoad();
 

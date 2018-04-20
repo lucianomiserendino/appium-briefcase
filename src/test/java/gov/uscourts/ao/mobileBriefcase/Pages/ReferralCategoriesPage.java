@@ -1,12 +1,12 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.moibleBriefcase.common.Utilities.getListOfCategories;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getListOfCategories;
 
 import java.util.List;
 
 import org.openqa.selenium.support.PageFactory;
 
-import gov.uscourts.ao.moibleBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.common.Base;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;

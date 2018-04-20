@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import gov.uscourts.ao.moibleBriefcase.common.Configuration;
+import gov.uscourts.ao.mobileBriefcase.common.Configuration;
 
 public class DBUtilits {
 

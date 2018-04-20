@@ -1,6 +1,6 @@
-package gov.uscourts.ao.moibleBriefcase.common;
+package gov.uscourts.ao.mobileBriefcase.common;
 
-import static gov.uscourts.ao.moibleBriefcase.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 
 import java.net.URL;
 import java.util.Set;
@@ -12,8 +12,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.remote.MobileCapabilityType;
 
-public abstract class Base {
+public abstract class Base  {
 
 	public static IOSDriver<MobileElement> driver;
 	private static DesiredCapabilities capabilities;
@@ -35,6 +36,7 @@ public abstract class Base {
 				SetCapabilitiy("xcodeOrgId");
 				SetCapabilitiy("xcodeSigningId");
 				SetCapabilitiy("autoAcceptAlerts");
+				SetCapabilitiy(MobileCapabilityType.TAKES_SCREENSHOT);
 
 				driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
 				break;

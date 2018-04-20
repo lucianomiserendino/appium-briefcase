@@ -1,4 +1,4 @@
-package gov.uscourts.ao.moibleBriefcase.common;
+package gov.uscourts.ao.mobileBriefcase.common;
 
 public enum PlatformVersions {
    IOS,WINDOWS

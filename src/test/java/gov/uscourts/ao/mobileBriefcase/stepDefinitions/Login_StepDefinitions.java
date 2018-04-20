@@ -1,6 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static gov.uscourts.ao.moibleBriefcase.common.Base.changeWindow;
+import static gov.uscourts.ao.mobileBriefcase.common.Base.changeWindow;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -34,17 +34,14 @@ public class Login_StepDefinitions {
 	@Then("^User navigates to MobileBrifcase App$")
 	public void user_navigates_to_MobileBrifcase_App() {
 		changeWindow("NATIVE");
-		logPage.open();
+		logPage.opens();
 
 	}
 
 	@Then("^After user navigates to Appellate DC Development - CMKA - dev$")
-	public void after_user_navigates_to_Appellate_DC_Development_CMKA_dev(){
+	public void after_user_navigates_to_Appellate_DC_Development_CMKA_dev() {
 		logPage.getCMKA();
 
-		
 	}
 
-	
-	
 }

@@ -4,8 +4,14 @@
 	<groupId>com.ao.uscourts</groupId>
 	<artifactId>com.MobileBriefcaseTests</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<properties>
+		<serenity.version>1.5.11</serenity.version>
+		<serenity.maven.version>1.5.11</serenity.maven.version>
+		<serenity.cucumber.version>1.5.7</serenity.cucumber.version>
 
+	</properties>
 	<dependencies>
+
 
 		<dependency>
 			<groupId>com.vimalselvam</groupId>

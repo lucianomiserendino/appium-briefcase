@@ -1,4 +1,4 @@
-package gov.uscourts.ao.moibleBriefcase.common;
+package gov.uscourts.ao.mobileBriefcase.common;
 
 import java.util.List;
 
@@ -57,7 +57,5 @@ public class Page extends Base {
 		System.out.println(driver.getPageSource());
 
 	}
-
-
 
 }
