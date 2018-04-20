@@ -1,9 +1,10 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilits.executeQuery;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 
-import java.io.IOException;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
+import static org.junit.Assert.*;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.Non_OrallyArguedCasePage;
-import static org.junit.Assert.*;
+
 public class Non_OrallyArguedCase_StepDefinitions {
 
 	Non_OrallyArguedCasePage page;
@@ -28,7 +29,7 @@ public class Non_OrallyArguedCase_StepDefinitions {
 	public void finds_the_valid_non_orally_argued_categories_for_the_judge() {
 		List<String> DBnonOrallyarguedCases = executeQuery(Queries.SI_VALUE_Y);
 		List<String> UInonOrallyarguedCases = Arrays.asList(page.getNumOfdisplayedCases());
-		assertTrue(DBnonOrallyarguedCases.containsAll(UInonOrallyarguedCases));
+		assertTrue("-----RECORD COUNT MISMATCHED-----", DBnonOrallyarguedCases.containsAll(UInonOrallyarguedCases));
 
 	}
 
@@ -39,8 +40,7 @@ public class Non_OrallyArguedCase_StepDefinitions {
 	}
 
 	@Then("^User taps on pdf doc in cmecf and verifies that it is downloaded from the server and opens in Briefcase$")
-	public void user_taps_on_pdf_doc_in_cmecf_and_verifies_that_it_is_downloaded_from_the_server_and_opens_in_Briefcase() throws InterruptedException, IOException
-			 {
+	public void user_taps_on_pdf_doc_in_cmecf_and_verifies_that_it_is_downloaded_from_the_server_and_opens_in_Briefcase() {
 		page.downloadPDFDoc();
 	}
 

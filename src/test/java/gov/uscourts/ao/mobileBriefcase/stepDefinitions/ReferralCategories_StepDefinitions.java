@@ -11,16 +11,16 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralCategoriesPage;
 
 public class ReferralCategories_StepDefinitions {
-	ReferralCategoriesPage p;
+	ReferralCategoriesPage page;
 
 	@Given("^User Observes the referral categories that display on the dashboard and DB$")
 	public void user_Observes_the_referral_categories_that_display_on_the_dashboard_and_DB() {
 
-		p = new ReferralCategoriesPage();
+		page = new ReferralCategoriesPage();
 		List<String> DBrefCatlist = executeQuery(Queries.DB_LIST_OF_CATEGORIES);
-		List<String> UIrefCatlist = p.UIreferralCategoriesList();
+		List<String> UIrefCatlist = page.UIreferralCategoriesList();
 		Collections.sort(DBrefCatlist);
-		assertEquals(UIrefCatlist, DBrefCatlist);
+		assertEquals("-----RECORD COUNT MISMATCHED-----", UIrefCatlist, DBrefCatlist);
 
 	}
 

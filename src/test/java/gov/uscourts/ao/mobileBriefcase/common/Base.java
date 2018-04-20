@@ -12,9 +12,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSDriver;
-import io.appium.java_client.remote.MobileCapabilityType;
 
-public abstract class Base  {
+public abstract class Base implements iOSCapabilities {
 
 	public static IOSDriver<MobileElement> driver;
 	private static DesiredCapabilities capabilities;
@@ -28,23 +27,23 @@ public abstract class Base  {
 		try {
 			switch (drivers) {
 			case IOS:
-				SetCapabilitiy("platformName");
-				SetCapabilitiy("platformVersion");
-				SetCapabilitiy("udid");
-				SetCapabilitiy("deviceName");
-				SetCapabilitiy("bundleId");
-				SetCapabilitiy("xcodeOrgId");
-				SetCapabilitiy("xcodeSigningId");
-				SetCapabilitiy("autoAcceptAlerts");
-				SetCapabilitiy(MobileCapabilityType.TAKES_SCREENSHOT);
+				SetCapabilitiy(PLATFORM_NAME);
+				SetCapabilitiy(PLATFORM_VERSION);
+				SetCapabilitiy(UDID);
+				SetCapabilitiy(DEVICE_NAME);
+				SetCapabilitiy(BUNDLE_ID);
+				SetCapabilitiy(XCODE_ORG_ID);
+				SetCapabilitiy(XCODE_SIGNING_ID);
+				SetCapabilitiy(AUTO_ACCEPT_ALERTS);
+				SetCapabilitiy(TAKES_SCREENSHOT);
 
 				driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
 				break;
 
 			case WINDOWS:
-				SetCapabilitiy("platformname");
-				SetCapabilitiy("deviceame");
-				SetCapabilitiy("app");
+				SetCapabilitiy(PLATFORM_NAME);
+				SetCapabilitiy(DEVICE_NAME);
+				SetCapabilitiy(APP);
 
 				remoteWebDriver = new RemoteWebDriver(new URL(Configuration.getProperty("Host")), capabilities);
 
@@ -56,8 +55,8 @@ public abstract class Base  {
 		return driver;
 	}
 
-	public static void SetCapabilitiy(String capability) {
-		capabilities.setCapability(capability, Configuration.getProperty(capability));
+	public static void SetCapabilitiy(String type) {
+		capabilities.setCapability(type, Configuration.getProperty(type));
 
 	}
 

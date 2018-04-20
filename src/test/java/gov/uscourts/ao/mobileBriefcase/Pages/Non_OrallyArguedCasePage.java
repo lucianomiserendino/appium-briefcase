@@ -29,8 +29,6 @@ public class Non_OrallyArguedCasePage extends Base {
 	@iOSFindBy(xpath = "//*[contains(@name, 'Total')]")
 	public static MobileElement numberOfNonOrallyARGCases;
 
-	@iOSFindBy(accessibility = "▽ Additional Documents")
-	public static MobileElement aditionalDocuments;
 
 	@iOSFindBy(accessibility = "pdf doc in cmecf")
 	public static MobileElement pdfDocInCmecf;
@@ -59,8 +57,8 @@ public class Non_OrallyArguedCasePage extends Base {
 		waitToBeClickable(pdfDocInCmecf);
 		tapByCoordinates("dismissX", "dismissY");
 		captureScreenShots();
-		performPageLoad();
-		driver.navigate().back();
+		tapByCoordinates("dismissX", "dismissY");
+	
 
 	}
 
