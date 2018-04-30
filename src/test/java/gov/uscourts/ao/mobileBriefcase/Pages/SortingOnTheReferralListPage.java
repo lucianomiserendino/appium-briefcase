@@ -1,8 +1,8 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoads;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveAllRefererrals;
@@ -63,14 +63,14 @@ public class SortingOnTheReferralListPage {
 
 	public List<String> referralsInDescendingOrder() {
 		clickOn(dateArrowDownBtn);
-		performPageLoads();
+		pageLoad();
 		return retrieveAllRefererrals(dates, "Date: ", 1);
 
 	}
 
 	public List<String> verifyReferralsInAscendingOrder() {
 		clickOn(dateArrowUpBtn);
-		performPageLoads();
+		pageLoad();
 		List<String> ascending = retrieveAllRefererrals(dates, "Date: ", 1);
 
 		Collections.sort(ascending);

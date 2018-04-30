@@ -42,7 +42,7 @@ public class Page extends Base {
 	}
 	
 	
-	public static void performPageLoads() {
+	public static void pageLoad() {
 		synchronized (driver) {
 			try {
 				driver.wait(15000);
