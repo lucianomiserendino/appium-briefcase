@@ -11,19 +11,19 @@ import io.appium.java_client.MobileElement;
 
 public class Page extends Base {
 
-	public static MobileElement getElement(By element) {
+	public static MobileElement findElement(By element) {
 		return driver.findElement(waitForPresenceOfElement(element));
 
 	}
 
-	public static List<MobileElement> getElements(By elements) {
+	public static List<MobileElement> findElements(By elements) {
 		return driver.findElements(elements);
 	}
 
 	public boolean isDisplayed(By by) {
 		boolean isDisplayed = false;
 		try {
-			if (getElement(by).isDisplayed())
+			if (findElement(by).isDisplayed())
 				isDisplayed = true;
 		} catch (Exception e) {
 			isDisplayed = false;
@@ -34,7 +34,18 @@ public class Page extends Base {
 	public static void performPageLoad() {
 		synchronized (driver) {
 			try {
-				driver.wait(8000);
+				driver.wait(5000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	public static void performPageLoads() {
+		synchronized (driver) {
+			try {
+				driver.wait(15000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -47,6 +58,13 @@ public class Page extends Base {
 
 	}
 
+	public static List<WebElement> waitForPresenceOfElements(List<WebElement> elements) {
+		return new WebDriverWait(driver, 70).until(ExpectedConditions.visibilityOfAllElements(elements));
+
+	}
+	
+	
+	
 	public static WebElement waitToBeClickable(WebElement element) {
 		new WebDriverWait(driver, 40).until(ExpectedConditions.elementToBeClickable(element)).click();
 		return element;

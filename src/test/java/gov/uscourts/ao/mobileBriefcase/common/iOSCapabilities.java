@@ -1,6 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
-public interface iOSCapabilities  {
+public interface iOSCapabilities {
 
 	/**
 	 * Which mobile OS platform to use.

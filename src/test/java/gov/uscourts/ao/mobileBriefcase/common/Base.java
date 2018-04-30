@@ -5,9 +5,12 @@ import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import java.net.URL;
 import java.util.Set;
 
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariDriver;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
@@ -38,6 +41,8 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(TAKES_SCREENSHOT);
 
 				driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
+				// driver.manage().deleteAllCookies();
+
 				break;
 
 			case WINDOWS:
@@ -72,6 +77,25 @@ public abstract class Base implements iOSCapabilities {
 				driver.context(window);
 			((AppiumDriver<MobileElement>) driver).getContextHandles();
 		}
+	}
+
+	public static void deteleCookies(){
+		   int clear = 0;
+	        int secure = 0;
+	        Set<Cookie> cookies = driver.manage().getCookies();
+	        for (Cookie cookie : cookies) {
+	            if(cookie.isSecure()) {
+	                secure++;
+	            } else {
+	                clear++;
+	            }
+	        }
+	        System.out.println("Found " + secure + " secure cookies");
+	        System.out.println("Found " + clear + " clear cookies");
+	        driver.manage().deleteAllCookies();
+	        driver.navigate().refresh();
+	        Set<Cookie> cookies1 = driver.manage().getCookies();
+	        System.out.println(cookies1.size() + " still found.");
 	}
 
 	public static void closeDriver() {

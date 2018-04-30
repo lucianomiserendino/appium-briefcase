@@ -6,11 +6,16 @@ import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "./src/test/resources/Featues", 
+@CucumberOptions(plugin = {"pretty",
+		"html:target/cucumber-html-report",
+		"json:target/cucumber.json" },
+                 features = "./src/test/resources/Featues", 
                  glue = {"gov/uscourts/ao/mobileBriefcase/stepDefinitions" }, 
-                 tags = { "@AMB_973" }, 
-                 dryRun = false)
+                  tags = {"@AMB_1010 "},
+                  dryRun = false)
 
 public class BriefcaseRunner {
 
 }
+//@AMB_956
+//@AMB_1006

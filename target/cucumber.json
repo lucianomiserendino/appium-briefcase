@@ -3,18 +3,47 @@
     "line": 1,
     "elements": [
       {
-        "line": 4,
+        "comments": [
+          {
+            "line": 3,
+            "value": "#Background:"
+          }
+        ],
+        "before": [
+          {
+            "result": {
+              "duration": 87852,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 6,
         "name": "",
         "description": "",
-        "type": "background",
-        "keyword": "Background",
+        "id": "db-\u0026-ui-validation-smoke-tests;",
+        "after": [
+          {
+            "result": {
+              "duration": 74326,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown(Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "duration": 16020886286,
+              "duration": 18153841501,
               "status": "passed"
             },
-            "line": 5,
+            "line": 7,
             "name": "User Navigates to Sever",
             "match": {
               "location": "Login_StepDefinitions.user_Navigate_to_Sever()"
@@ -23,11 +52,11 @@
           },
           {
             "result": {
-              "duration": 1304465807,
+              "duration": 1423569110,
               "status": "passed"
             },
-            "line": 6,
-            "name": "User enters Crdenetials to Login",
+            "line": 8,
+            "name": "User enters Credentials to Login",
             "match": {
               "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login()"
             },
@@ -35,10 +64,10 @@
           },
           {
             "result": {
-              "duration": 1042682238,
+              "duration": 1001921568,
               "status": "passed"
             },
-            "line": 7,
+            "line": 9,
             "name": "User clicks on Send Key to Device",
             "match": {
               "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
@@ -47,10 +76,10 @@
           },
           {
             "result": {
-              "duration": 3388623334,
+              "duration": 6803902303,
               "status": "passed"
             },
-            "line": 8,
+            "line": 10,
             "name": "User navigates to MobileBrifcase App",
             "match": {
               "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
@@ -59,63 +88,29 @@
           },
           {
             "result": {
-              "duration": 2447904277,
+              "duration": 15442698610,
               "status": "passed"
             },
-            "line": 9,
+            "line": 11,
             "name": "After user navigates to Appellate DC Development - CMKA - dev",
             "match": {
               "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev()"
             },
             "keyword": "And "
           }
-        ]
-      },
-      {
-        "line": 12,
-        "name": "",
-        "description": "Tapping on a referral category that is not orally argued (chm_reftype_val.cdv_is_oral_arg\u003d\u0027n\u0027),\n  a list of cases should dipslay for the judge for that category.\n  Need to verify the correct number of referrals are being displayed.",
-        "id": "number-of-cases-displayed-for-non-orally-argued-cases;",
-        "type": "scenario",
-        "keyword": "Scenario",
-        "steps": [
-          {
-            "result": {
-              "duration": 35116,
-              "status": "passed"
-            },
-            "line": 17,
-            "name": "User obtains the judge\u0027s pe_id on the Dashboard Page",
-            "match": {
-              "location": "NonOrallyArguedCases_StepDefinitions.user_obtains_the_judge_s_pe_id_on_the_Dashboard_Page()"
-            },
-            "keyword": "When "
-          },
-          {
-            "result": {
-              "duration": 11589,
-              "status": "passed"
-            },
-            "line": 18,
-            "name": "finds the valid non-orally argued categories for the judge",
-            "match": {
-              "location": "NonOrallyArguedCases_StepDefinitions.finds_the_valid_non_orally_argued_categories_for_the_judge()"
-            },
-            "keyword": "Then "
-          }
         ],
         "tags": [
           {
-            "line": 11,
-            "name": "@Smoke"
+            "line": 5,
+            "name": "@A"
           }
         ]
       }
     ],
-    "name": "Number of cases displayed for non-orally argued cases",
+    "name": "DB \u0026 UI validation Smoke Tests",
     "description": "",
-    "id": "number-of-cases-displayed-for-non-orally-argued-cases",
+    "id": "db-\u0026-ui-validation-smoke-tests",
     "keyword": "Feature",
-    "uri": "NonOrallyArguedCases/AMB_973.feature"
+    "uri": "SmokeTests/SmokeTests.feature"
   }
 ]

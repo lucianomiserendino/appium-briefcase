@@ -1,7 +1,0 @@
--------------------------------------------------------------------------------
-Test set: gov.uscourts.ao.mobileBriefcase.runners.BriefcaseRunner
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.357 s <<< FAILURE! - in gov.uscourts.ao.mobileBriefcase.runners.BriefcaseRunner
-initializationError(gov.uscourts.ao.mobileBriefcase.runners.BriefcaseRunner)  Time elapsed: 0.005 s  <<< ERROR!
-java.lang.NoSuchMethodError: cucumber.runtime.RuntimeOptions.cucumberFeatures(Lcucumber/runtime/io/ResourceLoader;)Ljava/util/List;
-

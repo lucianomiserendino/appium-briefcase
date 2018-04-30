@@ -1,6 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Page.getElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.tapByCoordinates;
@@ -17,13 +17,13 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class LoginPage{
+public class LoginPage {
 
 	public LoginPage() {
 
-	 PageFactory.initElements(new
-	 AppiumFieldDecorator(Base.getInstance(PlatformVersions.IOS)), this);
+		PageFactory.initElements(new AppiumFieldDecorator(Base.getInstance(PlatformVersions.IOS)), this);
 	}
+
 	@iOSFindBy(accessibility = "Integration")
 	public MobileElement server;
 
@@ -41,6 +41,15 @@ public class LoginPage{
 
 	@iOSFindBy(accessibility = "Appellate DC Development - CMKA")
 	public MobileElement CMKA;
+
+	@iOSFindBy(accessibility = "User: * User Not Selected *")
+	public MobileElement selectUser;
+
+	@iOSFindBy(xpath = "//*[contains(@name, 'NavigationRenderer')]/XCUIElementTypeButton[2]")
+	public MobileElement settingsIcon;
+
+	@iOSFindBy(accessibility = "Logout of Briefcase")
+	public MobileElement logout;
 
 	public void selectEnvironment() {
 		performPageLoad();
@@ -61,7 +70,8 @@ public class LoginPage{
 
 	public void opens() {
 		String openBtn = "Open";
-		clickOn(getElement(By.name(openBtn)));
+		clickOn(findElement(By.name(openBtn)));
+		
 	}
 
 	public void getCMKA() {
@@ -72,5 +82,15 @@ public class LoginPage{
 		performPageLoad();
 
 	}
+
+	public void logOut() {
+		clickOn(settingsIcon);
+		clickOn(logout);
+		String okBtn = "OK";
+		clickOn(findElement(By.name(okBtn)));
+		clickOn(findElement(By.name(okBtn)));
+		
+	}
+
 
 }

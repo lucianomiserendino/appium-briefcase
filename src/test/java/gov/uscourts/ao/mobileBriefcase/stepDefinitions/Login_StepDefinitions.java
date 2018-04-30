@@ -15,11 +15,12 @@ public class Login_StepDefinitions {
 	public void user_Navigate_to_Sever() {
 		logPage = new LoginPage();
 		logPage.selectEnvironment();
+
 		changeWindow("WEBVIEW");
 
 	}
 
-	@When("^User enters Crdenetials to Login$")
+	@When("^User enters Credentials to Login$")
 	public void and_User_enters_Crdenetials_to_Login() {
 		logPage.sendCredentials();
 
@@ -33,6 +34,7 @@ public class Login_StepDefinitions {
 
 	@Then("^User navigates to MobileBrifcase App$")
 	public void user_navigates_to_MobileBrifcase_App() {
+
 		changeWindow("NATIVE");
 		logPage.opens();
 
@@ -41,6 +43,17 @@ public class Login_StepDefinitions {
 	@Then("^After user navigates to Appellate DC Development - CMKA - dev$")
 	public void after_user_navigates_to_Appellate_DC_Development_CMKA_dev() {
 		logPage.getCMKA();
+
+	}
+
+	@When("^User LogOut from the Application$")
+	public void user_LogOut_from_the_Application() {
+		logPage.logOut();
+
+	}
+
+	@Then("^It should take the user back to server page$")
+	public void it_should_take_the_user_back_to_server_page() {
 
 	}
 
