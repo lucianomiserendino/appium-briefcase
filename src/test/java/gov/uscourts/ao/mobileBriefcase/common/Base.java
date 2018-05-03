@@ -2,15 +2,13 @@ package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Set;
 
-import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.safari.SafariDriver;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
@@ -23,13 +21,17 @@ public abstract class Base implements iOSCapabilities {
 	private static RemoteWebDriver remoteWebDriver;
 
 	/**
-	 * Reads the property file and passes the values to DesiredCapability
+	 * Reads the property file and passes the values to DesiredCapability 
 	 */
+
+
 	public static WebDriver getInstance(PlatformVersions drivers) {
-		capabilities = new DesiredCapabilities();
+
 		try {
+			capabilities = new DesiredCapabilities();
 			switch (drivers) {
 			case IOS:
+
 				SetCapabilitiy(PLATFORM_NAME);
 				SetCapabilitiy(PLATFORM_VERSION);
 				SetCapabilitiy(UDID);
@@ -41,7 +43,6 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(TAKES_SCREENSHOT);
 
 				driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
-				// driver.manage().deleteAllCookies();
 
 				break;
 
@@ -58,6 +59,30 @@ public abstract class Base implements iOSCapabilities {
 		} finally {
 		}
 		return driver;
+	}
+	
+	
+	
+	public static void safariInstance(){
+		capabilities = new DesiredCapabilities();
+
+		try {
+			SetCapabilitiy(PLATFORM_NAME);
+			SetCapabilitiy(PLATFORM_VERSION);
+			SetCapabilitiy(DEVICE_NAME);
+			SetCapabilitiy(BROWSER_NAME);
+			SetCapabilitiy(AUTO_ACCEPT_ALERTS);
+			SetCapabilitiy(ENSURING_CLEAN_SESSION);
+
+			driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
+		} catch (MalformedURLException e) {
+
+			e.printStackTrace();
+		}
+		driver.close();
+
+	
+
 	}
 
 	public static void SetCapabilitiy(String type) {
@@ -77,25 +102,6 @@ public abstract class Base implements iOSCapabilities {
 				driver.context(window);
 			((AppiumDriver<MobileElement>) driver).getContextHandles();
 		}
-	}
-
-	public static void deteleCookies(){
-		   int clear = 0;
-	        int secure = 0;
-	        Set<Cookie> cookies = driver.manage().getCookies();
-	        for (Cookie cookie : cookies) {
-	            if(cookie.isSecure()) {
-	                secure++;
-	            } else {
-	                clear++;
-	            }
-	        }
-	        System.out.println("Found " + secure + " secure cookies");
-	        System.out.println("Found " + clear + " clear cookies");
-	        driver.manage().deleteAllCookies();
-	        driver.navigate().refresh();
-	        Set<Cookie> cookies1 = driver.manage().getCookies();
-	        System.out.println(cookies1.size() + " still found.");
 	}
 
 	public static void closeDriver() {

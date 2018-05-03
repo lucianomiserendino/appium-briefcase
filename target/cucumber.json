@@ -3,47 +3,18 @@
     "line": 1,
     "elements": [
       {
-        "comments": [
-          {
-            "line": 3,
-            "value": "#Background:"
-          }
-        ],
-        "before": [
-          {
-            "result": {
-              "duration": 87852,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 6,
+        "line": 3,
         "name": "",
         "description": "",
-        "id": "db-\u0026-ui-validation-smoke-tests;",
-        "after": [
-          {
-            "result": {
-              "duration": 74326,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.tearDown(Scenario)"
-            }
-          }
-        ],
-        "type": "scenario",
-        "keyword": "Scenario",
+        "type": "background",
+        "keyword": "Background",
         "steps": [
           {
             "result": {
-              "duration": 18153841501,
+              "duration": 24532281606,
               "status": "passed"
             },
-            "line": 7,
+            "line": 5,
             "name": "User Navigates to Sever",
             "match": {
               "location": "Login_StepDefinitions.user_Navigate_to_Sever()"
@@ -52,10 +23,10 @@
           },
           {
             "result": {
-              "duration": 1423569110,
+              "duration": 1553498386,
               "status": "passed"
             },
-            "line": 8,
+            "line": 6,
             "name": "User enters Credentials to Login",
             "match": {
               "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login()"
@@ -64,10 +35,16 @@
           },
           {
             "result": {
-              "duration": 1001921568,
+              "duration": 2046689034,
               "status": "passed"
             },
-            "line": 9,
+            "comments": [
+              {
+                "line": 7,
+                "value": "#Login as Chambers Courtney // Test2020!"
+              }
+            ],
+            "line": 8,
             "name": "User clicks on Send Key to Device",
             "match": {
               "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
@@ -76,10 +53,10 @@
           },
           {
             "result": {
-              "duration": 6803902303,
+              "duration": 9840543118,
               "status": "passed"
             },
-            "line": 10,
+            "line": 9,
             "name": "User navigates to MobileBrifcase App",
             "match": {
               "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
@@ -88,29 +65,355 @@
           },
           {
             "result": {
-              "duration": 15442698610,
+              "duration": 21680661944,
               "status": "passed"
             },
-            "line": 11,
+            "line": 10,
             "name": "After user navigates to Appellate DC Development - CMKA - dev",
             "match": {
               "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev()"
             },
             "keyword": "And "
           }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 6341773208,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 13,
+        "name": "",
+        "description": "A category entitled \"Pending Tasks\" will display on the dashboard if the judge has \nany pending assignments and the site table variable briefcaseShowPendingTasks \u003d\u0027y\u0027.",
+        "id": "pending-tasks-category-displays-on-the-dashboard;",
+        "after": [
+          {
+            "result": {
+              "duration": 11410082619,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 17809084444,
+              "status": "passed"
+            },
+            "line": 17,
+            "name": "If The judge has any pending assignments it will validate the total num of pending task on UI with DB",
+            "match": {
+              "location": "ReferralCategories_StepDefinitions.if_The_judge_has_any_pending_assignments_it_will_validate_the_total_num_of_pending_task_on_UI_with_DB()"
+            },
+            "keyword": "Given "
+          }
         ],
         "tags": [
           {
-            "line": 5,
-            "name": "@A"
+            "line": 11,
+            "name": "@Smoke"
+          },
+          {
+            "line": 12,
+            "name": "@AMB_1008"
           }
         ]
       }
     ],
-    "name": "DB \u0026 UI validation Smoke Tests",
+    "name": "Pending Tasks Category Displays on the Dashboard",
     "description": "",
-    "id": "db-\u0026-ui-validation-smoke-tests",
+    "id": "pending-tasks-category-displays-on-the-dashboard",
     "keyword": "Feature",
-    "uri": "SmokeTests/SmokeTests.feature"
+    "uri": "SmokeTests/AMB-1008.feature"
+  },
+  {
+    "line": 1,
+    "elements": [
+      {
+        "line": 3,
+        "name": "",
+        "description": "",
+        "type": "background",
+        "keyword": "Background",
+        "steps": [
+          {
+            "result": {
+              "duration": 24938357942,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "User Navigates to Sever",
+            "match": {
+              "location": "Login_StepDefinitions.user_Navigate_to_Sever()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 1748827074,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "User enters Credentials to Login",
+            "match": {
+              "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 2064498219,
+              "status": "passed"
+            },
+            "comments": [
+              {
+                "line": 7,
+                "value": "#Login as Chambers Courtney // Test2020!"
+              }
+            ],
+            "line": 8,
+            "name": "User clicks on Send Key to Device",
+            "match": {
+              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 10083782172,
+              "status": "passed"
+            },
+            "line": 9,
+            "name": "User navigates to MobileBrifcase App",
+            "match": {
+              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 21976978384,
+              "status": "passed"
+            },
+            "line": 10,
+            "name": "After user navigates to Appellate DC Development - CMKA - dev",
+            "match": {
+              "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev()"
+            },
+            "keyword": "And "
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 5476793594,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 15,
+        "name": "",
+        "description": "Referral categories display on the dashboard for the judge",
+        "id": "referral-categories-display-on-the-dashboard-for-the-judge;",
+        "after": [
+          {
+            "result": {
+              "duration": 12235396650,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 4058060118,
+              "status": "passed"
+            },
+            "line": 17,
+            "name": "User Observes the referral categories that display on the dashboard and DB",
+            "match": {
+              "location": "ReferralCategories_StepDefinitions.user_Observes_the_referral_categories_that_display_on_the_dashboard_and_DB()"
+            },
+            "keyword": "Given "
+          }
+        ],
+        "tags": [
+          {
+            "line": 13,
+            "name": "@Smoke"
+          },
+          {
+            "line": 14,
+            "name": "@AMB_956"
+          }
+        ]
+      }
+    ],
+    "name": "Referral Categories display on the dashboard for the judge",
+    "description": "",
+    "id": "referral-categories-display-on-the-dashboard-for-the-judge",
+    "keyword": "Feature",
+    "uri": "SmokeTests/AMB-956.feature"
+  },
+  {
+    "line": 1,
+    "elements": [
+      {
+        "line": 3,
+        "name": "",
+        "description": "",
+        "type": "background",
+        "keyword": "Background",
+        "steps": [
+          {
+            "result": {
+              "duration": 25600891845,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "User Navigates to Sever",
+            "match": {
+              "location": "Login_StepDefinitions.user_Navigate_to_Sever()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 1734047246,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "User enters Credentials to Login",
+            "match": {
+              "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 2647889904,
+              "status": "passed"
+            },
+            "comments": [
+              {
+                "line": 7,
+                "value": "#Login as Chambers Courtney // Test2020!"
+              }
+            ],
+            "line": 8,
+            "name": "User clicks on Send Key to Device",
+            "match": {
+              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 9851252618,
+              "status": "passed"
+            },
+            "line": 9,
+            "name": "User navigates to MobileBrifcase App",
+            "match": {
+              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 21893742838,
+              "status": "passed"
+            },
+            "line": 10,
+            "name": "After user navigates to Appellate DC Development - CMKA - dev",
+            "match": {
+              "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev()"
+            },
+            "keyword": "And "
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 6415205968,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 14,
+        "name": "",
+        "description": "Tapping on a referral category that is not orally argued (chm_reftype_val.cdv_is_oral_arg\u003d\u0027n\u0027),\n  a list of cases should dipslay for the judge for that category.\n  Need to verify the correct number of referrals are being displayed.",
+        "id": "number-of-cases-displayed-for-non-orally-argued-cases;",
+        "after": [
+          {
+            "result": {
+              "duration": 18764328692,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 18209072986,
+              "status": "passed"
+            },
+            "line": 19,
+            "name": "User finds the valid non-orally argued categories for the judge",
+            "match": {
+              "location": "ReferralCategories_StepDefinitions.user_finds_the_valid_non_orally_argued_categories_for_the_judge()"
+            },
+            "keyword": "Given "
+          }
+        ],
+        "tags": [
+          {
+            "line": 12,
+            "name": "@Smoke"
+          },
+          {
+            "line": 13,
+            "name": "@AMB_973"
+          }
+        ]
+      }
+    ],
+    "name": "Number of cases displayed for non-orally argued cases",
+    "description": "",
+    "id": "number-of-cases-displayed-for-non-orally-argued-cases",
+    "keyword": "Feature",
+    "uri": "SmokeTests/AMB-973.feature"
   }
 ]

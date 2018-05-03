@@ -1,41 +1,32 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriverException;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.logout;
 
-import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
-import io.appium.java_client.MobileElement;
-import io.appium.java_client.ios.IOSDriver;
+import gov.uscourts.ao.mobileBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.common.iOSCapabilities;
 
-public class Hook {
+public class Hook extends Base implements iOSCapabilities {
 
-	public static IOSDriver<MobileElement> driver;
+	private static String settingsPage = "//*[contains(@name, 'NavigationRenderer')]/XCUIElementTypeButton[2]";
+	private static String logout = "Logout of Briefcase";
+	private static String OKBtn = "OK";
 
 	@Before
 	public void setUp() {
-		// Base.getInstance(PlatformVersions.IOS).manage().timeouts().implicitlyWait(10,
-		// TimeUnit.SECONDS);
+
+		safariInstance();
 
 	}
 
 	@After
 
-	public void tearDown(Scenario scenario) throws Exception {
+	public void tearDown() {
 
-		if (scenario.isFailed()) {
-			try {
-				byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-				scenario.embed(screenshot, "image/png");
-				scenario.write("URL at failure: " + driver.getCurrentUrl());
-			} catch (WebDriverException wde) {
-				scenario.write("Embed Failed " + wde.getMessage());
-			} catch (ClassCastException cce) {
-				cce.printStackTrace();
-			}
-		}
+		logout(settingsPage, logout, OKBtn, OKBtn);
+	
+
 	}
 
 }

@@ -1,9 +1,11 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Page.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.tapByCoordinates;
+
+import java.net.MalformedURLException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -19,7 +21,7 @@ import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class LoginPage {
 
-	public LoginPage() {
+	public LoginPage() throws MalformedURLException {
 
 		PageFactory.initElements(new AppiumFieldDecorator(Base.getInstance(PlatformVersions.IOS)), this);
 	}
@@ -71,7 +73,7 @@ public class LoginPage {
 	public void opens() {
 		String openBtn = "Open";
 		clickOn(findElement(By.name(openBtn)));
-		
+
 	}
 
 	public void getCMKA() {
@@ -81,15 +83,6 @@ public class LoginPage {
 		tapByCoordinates("dashboardX", "dashboardY");
 		performPageLoad();
 
-	}
-
-	public void logOut() {
-		clickOn(settingsIcon);
-		clickOn(logout);
-		String okBtn = "OK";
-		clickOn(findElement(By.name(okBtn)));
-		clickOn(findElement(By.name(okBtn)));
-		
 	}
 
 

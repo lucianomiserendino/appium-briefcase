@@ -2,17 +2,20 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Base.changeWindow;
 
+import java.net.MalformedURLException;
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.LoginPage;
+import gov.uscourts.ao.mobileBriefcase.common.iOSCapabilities;
 
-public class Login_StepDefinitions {
+public class Login_StepDefinitions implements iOSCapabilities {
 
 	LoginPage logPage;
 
 	@Given("^User Navigates to Sever$")
-	public void user_Navigate_to_Sever() {
+	public void user_Navigate_to_Sever() throws MalformedURLException {
 		logPage = new LoginPage();
 		logPage.selectEnvironment();
 
@@ -43,18 +46,9 @@ public class Login_StepDefinitions {
 	@Then("^After user navigates to Appellate DC Development - CMKA - dev$")
 	public void after_user_navigates_to_Appellate_DC_Development_CMKA_dev() {
 		logPage.getCMKA();
+		
 
 	}
 
-	@When("^User LogOut from the Application$")
-	public void user_LogOut_from_the_Application() {
-		logPage.logOut();
-
-	}
-
-	@Then("^It should take the user back to server page$")
-	public void it_should_take_the_user_back_to_server_page() {
-
-	}
 
 }

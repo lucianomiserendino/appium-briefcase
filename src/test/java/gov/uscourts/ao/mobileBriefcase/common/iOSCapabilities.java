@@ -26,7 +26,11 @@ public interface iOSCapabilities {
 	 * Bundle ID of the app under test.
 	 */
 	String BUNDLE_ID = "bundleId";
+	
+	
+	String BROWSER_NAME = "browserName";
 
+	String SAFARI_OPEN_LINKS_IN_BACKGROUND = "safariOpenLinksInBackground";
 	/**
 	 * provisioning profile that is installed on the device
 	 */
@@ -55,4 +59,5 @@ public interface iOSCapabilities {
 	 */
 	String APP = "app";
 
+	String ENSURING_CLEAN_SESSION = "ensureCleanSession";
 }

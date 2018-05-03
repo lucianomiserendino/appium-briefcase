@@ -1,5 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
+import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElement;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -11,29 +13,16 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 
 public class Utilities extends Base {
-
-	public static String getText(MobileElement elements) {
-		return elements.getText();
-
-	}
-	
-
-	public static void clearCookies(WebDriver webDriver) {
-		((JavascriptExecutor) webDriver).executeScript("var cookies = document.cookie.split(\";\");"
-				+ "for (var i = 0; i < cookies.length; i++) {" + "var cookie = cookies[i];"
-				+ "	var eqPos = cookie.indexOf(\"=\");" + "	var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;"
-				+ "	document.cookie = name + \"=;expires=Thu, 01 Jan 1970 00:00:00 GMT\";" + "	};");
-	}
 
 	public static List<String> retrieveAllRefererrals(List<MobileElement> elements, String split, int index) {
 		String[] dest;
@@ -65,8 +54,42 @@ public class Utilities extends Base {
 
 	}
 
+	public static String getText(MobileElement elements) {
+		return elements.getText();
+
+	}
+
+	public static MobileElement findElement(By element) {
+		return driver.findElement(waitForPresenceOfElement(element));
+
+	}
+
+	public static List<MobileElement> findElements(By elements) {
+		return driver.findElements(elements);
+	}
+
+	public static boolean isDisplayed(By by) {
+		boolean isDisplayed = false;
+		try {
+			if (findElement(by).isDisplayed())
+				isDisplayed = true;
+		} catch (Exception e) {
+			isDisplayed = false;
+		}
+		return isDisplayed;
+
+	}
+
 	public static void clickOn(WebElement element) {
-		element.click();
+
+		try {
+			if (element.isDisplayed()) {
+				element.click();
+			}
+		} catch (Exception e) {
+
+		}
+
 	}
 
 	public static void captureScreenShots() {
@@ -110,6 +133,13 @@ public class Utilities extends Base {
 		Collections.sort(categories);
 		return categories;
 
+	}
+
+	public static void logout(String xpath, String id, String name, String Name) {
+		clickOn(findElement(By.xpath(xpath)));
+		clickOn(findElement(By.id(id)));
+		clickOn(findElement(By.name(name)));
+		clickOn(findElement(By.name(Name)));
 	}
 
 }

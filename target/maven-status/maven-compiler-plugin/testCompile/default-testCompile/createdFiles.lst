@@ -1,5 +1,4 @@
 gov/uscourts/ao/mobileBriefcase/DBUtils/DBUtilits$1.class
-gov/uscourts/ao/mobileBriefcase/stepDefinitions/Non_OrallyArguedCase_StepDefinitions.class
 gov/uscourts/ao/mobileBriefcase/DBUtils/DBType.class
 gov/uscourts/ao/mobileBriefcase/Pages/ReferralCategoriesPage.class
 gov/uscourts/ao/mobileBriefcase/DBUtils/Queries.class
@@ -13,6 +12,5 @@ gov/uscourts/ao/mobileBriefcase/common/Page.class
 gov/uscourts/ao/mobileBriefcase/runners/BriefcaseRunner.class
 gov/uscourts/ao/mobileBriefcase/Pages/LoginPage.class
 gov/uscourts/ao/mobileBriefcase/common/Utilities.class
-gov/uscourts/ao/mobileBriefcase/Pages/Non_OrallyArguedCasePage.class
 gov/uscourts/ao/mobileBriefcase/common/iOSCapabilities.class
 gov/uscourts/ao/mobileBriefcase/common/Base$1.class

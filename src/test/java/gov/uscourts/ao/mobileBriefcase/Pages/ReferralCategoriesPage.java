@@ -1,8 +1,9 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
+
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.*;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getListOfCategories;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getNumOfDisplayedCases;
 
@@ -15,7 +16,9 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class ReferralCategoriesPage {
+
 	public ReferralCategoriesPage() {
+
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
@@ -63,8 +66,5 @@ public class ReferralCategoriesPage {
 		performPageLoad();
 		return getNumOfDisplayedCases(numberOfNonOrallyARGCases, "start", "end");
 	}
-
-
-
 
 }
