@@ -1,17 +1,20 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.changeDateFormat;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveAllRefererrals;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveAllReferrals;
 
-import java.util.Collections;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.openqa.selenium.support.PageFactory;
 
+import gov.uscourts.ao.mobileBriefcase.common.Sort;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
@@ -52,45 +55,84 @@ public class SortingOnTheReferralListPage {
 
 	}
 
-	public List<String> referralsInDefaultOrder() {
-		return retrieveAllRefererrals(dates, "Date: ", 1);
-
-	}
-
 	public void selectSortBtn() {
 		waitToBeClickable(sortArrowBtn);
 	}
 
-	public List<String> referralsInDescendingOrder() {
-		clickOn(dateArrowDownBtn);
-		pageLoad();
-		return retrieveAllRefererrals(dates, "Date: ", 1);
+	public List<String> referralsSortedByDatesInDescendingOrder() {
+		return referralsSortedByDatesInDefaultOrder(Sort.DATES_IN_DESCENDING_ORDER, dates, "Date: ", 1);
 
 	}
 
-	public List<String> verifyReferralsInAscendingOrder() {
-		clickOn(dateArrowUpBtn);
-		pageLoad();
-		List<String> ascending = retrieveAllRefererrals(dates, "Date: ", 1);
-
-		Collections.sort(ascending);
-		Collections.reverse(ascending);
-		return ascending;
+	public List<String> referralsSortedByDateInAscendingOrder() {
+		return referralsSortedByDatesInDefaultOrder(Sort.DATES_IN_ASCENDING_ORDER, dates, "Date: ", 1);
 
 	}
 
-	public List<String> referralsSortedByCaseNumInDescOrder() {
-		clickOn(caseDownArrowBtn);
-		return retrieveAllRefererrals(cases, " ", 0);
+	public List<String> referralsSortedByCasesInDescendingOrder() {
+		return retrieveCases(Sort.CASES_IN_DESCENDING_ORDER, cases, " ", 0);
 
 	}
 
-	public List<String> referralsSortedByCaseNumInAscOrder() {
-		clickOn(caseUpArrowBtn);
-		List<String> ascOrder = retrieveAllRefererrals(cases, " ", 0);
-		Collections.sort(ascOrder);
-		Collections.reverse(ascOrder);
-		return ascOrder;
+	public List<String> referralsSortedByCasesInAscendingOrder() {
+		return retrieveCases(Sort.CASES_IN_ASCENDING_ORDER, cases, " ", 0);
 
 	}
+
+	public List<String> retrieveCases(Sort sort, List<MobileElement> element, String substr, int index) {
+		getSortPage(sort);
+		return retrieveAllReferrals(element, substr, index);
+	}
+
+	public List<String> referralsSortedByDatesInDefaultOrder(Sort sort, List<MobileElement> element, String substr,
+			int index) {
+		getSortPage(sort);
+
+		return retrieveDates(element, substr, index);
+
+	}
+
+	public static List<String> retrieveDates(List<MobileElement> elements, String split, int index) {
+		String[] dest;
+		List<String> referrals = new ArrayList<>();
+
+		List<MobileElement> el = elements;
+
+		Iterator<MobileElement> itr = el.iterator();
+		while (itr.hasNext()) {
+			try {
+				dest = itr.next().getText().split(split);
+				referrals.add(changeDateFormat(dest[index].trim()));
+
+			} catch (ParseException e) {
+
+				e.printStackTrace();
+			}
+
+		}
+		return referrals;
+
+	}
+
+	public void getSortPage(Sort sort) {
+		switch (sort) {
+		case DATES_IN_DESCENDING_ORDER:
+			clickOn(dateArrowDownBtn);
+
+			break;
+		case DATES_IN_ASCENDING_ORDER:
+			clickOn(dateArrowUpBtn);
+			break;
+		case CASES_IN_DESCENDING_ORDER:
+			clickOn(caseDownArrowBtn);
+			break;
+		case CASES_IN_ASCENDING_ORDER:
+			clickOn(caseUpArrowBtn);
+
+		default:
+			break;
+		}
+
+	}
+
 }
