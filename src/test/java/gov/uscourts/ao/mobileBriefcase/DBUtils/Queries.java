@@ -56,7 +56,7 @@ public class Queries {
 	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE = "SELECT DISTINCT  PR_LAST_NAME  FROM chm_mobile_referral, chambers_case_to_referral,"
 			+ " chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val WHERE "
 			+ "cmr_cs_caseid = 82226 and cmr_ccr_id = ccr_id and chc_cs_caseid = cmr_cs_caseid and chc_cpr_id = 1 and "
-			+ "chc_cha_id = cha_id and cha_ju_pe_id = 32and chc_date_end is null and cha_chm_pe_id = pe_id and "
+			+ "chc_cha_id = cha_id and cha_ju_pe_id = "+PE_ID+" and chc_date_end is null and cha_chm_pe_id = pe_id and "
 			+ "pe_pr_prid = pr_prid and cha_cav_code = cav_code";
 
 }
