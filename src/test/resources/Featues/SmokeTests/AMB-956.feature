@@ -10,7 +10,7 @@ Background:
 	And After user navigates to Appellate DC Development - CMKA - dev 
 	
 	
-@Smoke 
+@Smoke
 @AMB_956 
 Scenario: 
 	Referral categories display on the dashboard for the judge

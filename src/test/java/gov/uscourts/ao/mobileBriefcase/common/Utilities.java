@@ -4,6 +4,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfEleme
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +25,7 @@ import io.appium.java_client.TouchAction;
 
 public class Utilities extends Base {
 
-	public static List<String> retrieveAllRefererrals(List<MobileElement> elements, String split, int index) {
+	public static List<String> retrieveAllReferrals(List<MobileElement> elements, String split, int index) {
 		String[] dest;
 		List<String> referrals = new ArrayList<>();
 		List<MobileElement> el = elements;
@@ -51,6 +52,32 @@ public class Utilities extends Base {
 			iCount--;
 
 		}
+
+	}
+
+	public static void selectCase(String xpath) {
+
+		String Case = xpath;
+
+		boolean caseDisplayed = isDisplayed(waitForPresenceOfElement(By.xpath(Case)));
+
+		if (caseDisplayed == true) {
+			findElement(By.xpath(Case)).click();
+		} else {
+			scroll(2);
+			findElement(By.xpath(Case)).click();
+		}
+
+	}
+
+	public static String changeDateFormat(String element) throws ParseException {
+		SimpleDateFormat format1 = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat format2 = new SimpleDateFormat("yyyy/MM/dd");
+		java.util.Date date = null;
+
+		date = format1.parse(element);
+	
+		return format2.format(date);
 
 	}
 

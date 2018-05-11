@@ -11,7 +11,7 @@
         "steps": [
           {
             "result": {
-              "duration": 24532281606,
+              "duration": 23982585701,
               "status": "passed"
             },
             "line": 5,
@@ -23,7 +23,7 @@
           },
           {
             "result": {
-              "duration": 1553498386,
+              "duration": 1486682043,
               "status": "passed"
             },
             "line": 6,
@@ -35,7 +35,7 @@
           },
           {
             "result": {
-              "duration": 2046689034,
+              "duration": 1537136581,
               "status": "passed"
             },
             "comments": [
@@ -53,7 +53,7 @@
           },
           {
             "result": {
-              "duration": 9840543118,
+              "duration": 9674764477,
               "status": "passed"
             },
             "line": 9,
@@ -65,7 +65,7 @@
           },
           {
             "result": {
-              "duration": 21680661944,
+              "duration": 37599964463,
               "status": "passed"
             },
             "line": 10,
@@ -81,7 +81,194 @@
         "before": [
           {
             "result": {
-              "duration": 6341773208,
+              "duration": 5207851100,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 14,
+        "name": "",
+        "description": "There is a sorting feature on the referral list page that enables users to sort referrals by date referred or case number.  \nThe default is by date referred in descending order (newest first).",
+        "id": "sorting-on-the-referral-list-page;",
+        "after": [
+          {
+            "result": {
+              "duration": 18301288962,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 16112998169,
+              "status": "passed"
+            },
+            "line": 18,
+            "name": "User selects a judge and then the motions/petitions category",
+            "match": {
+              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_a_judge_and_then_the_motions_petitions_category()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 98225061931,
+              "status": "passed"
+            },
+            "line": 19,
+            "name": "User selects the sort button, clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in descending order (newest first).",
+            "match": {
+              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_the_sort_button_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 90933559308,
+              "status": "passed"
+            },
+            "line": 20,
+            "name": "User clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order (oldest first).",
+            "match": {
+              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_ascending_order_oldest_first()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 91599218505,
+              "status": "passed"
+            },
+            "line": 21,
+            "name": "User clicks the Case Down Arrow button and  verifies the referrals are sorted by case number in descending order",
+            "match": {
+              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_descending_order()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 89349289093,
+              "status": "passed"
+            },
+            "line": 22,
+            "name": "User clicks the Case Up Arrow button, verifies the referrals are sorted by case number in ascending order.",
+            "match": {
+              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Up_Arrow_button_verifies_the_referrals_are_sorted_by_case_number_in_ascending_order()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 12,
+            "name": "@Smoke"
+          },
+          {
+            "line": 13,
+            "name": "@AMB_1010"
+          }
+        ]
+      }
+    ],
+    "name": "Sorting on the Referral List Page",
+    "description": "",
+    "id": "sorting-on-the-referral-list-page",
+    "keyword": "Feature",
+    "uri": "SmokeTests/ABM-1010.feature"
+  },
+  {
+    "line": 1,
+    "elements": [
+      {
+        "line": 3,
+        "name": "",
+        "description": "",
+        "type": "background",
+        "keyword": "Background",
+        "steps": [
+          {
+            "result": {
+              "duration": 24953891549,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "User Navigates to Sever",
+            "match": {
+              "location": "Login_StepDefinitions.user_Navigate_to_Sever()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 1638590892,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "User enters Credentials to Login",
+            "match": {
+              "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 1501844293,
+              "status": "passed"
+            },
+            "comments": [
+              {
+                "line": 7,
+                "value": "#Login as Chambers Courtney // Test2020!"
+              }
+            ],
+            "line": 8,
+            "name": "User clicks on Send Key to Device",
+            "match": {
+              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 9753456501,
+              "status": "passed"
+            },
+            "line": 9,
+            "name": "User navigates to MobileBrifcase App",
+            "match": {
+              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 37756857014,
+              "status": "passed"
+            },
+            "line": 10,
+            "name": "After user navigates to Appellate DC Development - CMKA - dev",
+            "match": {
+              "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev()"
+            },
+            "keyword": "And "
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 5701348705,
               "status": "passed"
             },
             "match": {
@@ -96,7 +283,7 @@
         "after": [
           {
             "result": {
-              "duration": 11410082619,
+              "duration": 10321492458,
               "status": "passed"
             },
             "match": {
@@ -109,7 +296,7 @@
         "steps": [
           {
             "result": {
-              "duration": 17809084444,
+              "duration": 17415000788,
               "status": "passed"
             },
             "line": 17,
@@ -142,6 +329,221 @@
     "line": 1,
     "elements": [
       {
+        "line": 4,
+        "name": "",
+        "description": "",
+        "type": "background",
+        "keyword": "Background",
+        "steps": [
+          {
+            "result": {
+              "duration": 24015273613,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "User Navigates to Sever",
+            "match": {
+              "location": "Login_StepDefinitions.user_Navigate_to_Sever()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 4243156164,
+              "status": "passed"
+            },
+            "line": 7,
+            "name": "User enters Credentials to Login",
+            "match": {
+              "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 2292964284,
+              "status": "passed"
+            },
+            "comments": [
+              {
+                "line": 8,
+                "value": "#Login as Chambers Courtney // Test2020!"
+              }
+            ],
+            "line": 9,
+            "name": "User clicks on Send Key to Device",
+            "match": {
+              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 9750509238,
+              "status": "passed"
+            },
+            "line": 10,
+            "name": "User navigates to MobileBrifcase App",
+            "match": {
+              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 38104527017,
+              "status": "passed"
+            },
+            "line": 11,
+            "name": "After user navigates to Appellate DC Development - CMKA - dev",
+            "match": {
+              "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev()"
+            },
+            "keyword": "And "
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 4341138836,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 17,
+        "name": "",
+        "description": "Staff members can be assigned to referrals and/or just cases. \n  Verify that staff assignments are displaying on the referral list page.\n  Staff assignments linked to the referral are displayed",
+        "id": "display-of-staff-assignments;",
+        "after": [
+          {
+            "result": {
+              "duration": 20138866327,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 36525498404,
+              "status": "passed"
+            },
+            "comments": [
+              {
+                "line": 21,
+                "value": "#These are staff assignments associated with the referral"
+              }
+            ],
+            "line": 23,
+            "name": "User selects Judge Colloton \u003e\u003e Motions/Petitions \u003e\u003e case \"15-3314\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "15-3314",
+                  "offset": 58
+                }
+              ],
+              "location": "StaffAssignments_StepDefinitions.user_selects_Judge_Colloton_Motions_Petitions_case(String)"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 21663981160,
+              "status": "passed"
+            },
+            "line": 24,
+            "name": "User  observes a collapsible panel entitled \"Assignments\" displays.",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Assignments",
+                  "offset": 45
+                }
+              ],
+              "location": "StaffAssignments_StepDefinitions.user_observes_a_collapsible_panel_entitled_displays(String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 12468934805,
+              "status": "passed"
+            },
+            "line": 25,
+            "name": "User observes there is an assignment for \"Kyle Essley\" and \"Daniel Hay\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Kyle Essley",
+                  "offset": 42
+                },
+                {
+                  "val": "Daniel Hay",
+                  "offset": 60
+                }
+              ],
+              "location": "StaffAssignments_StepDefinitions.user_observes_there_is_an_assignment_for_and(String,String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 16039574527,
+              "status": "passed"
+            },
+            "comments": [
+              {
+                "line": 26,
+                "value": "#This staff assignment is associated with the case."
+              }
+            ],
+            "line": 27,
+            "name": "User observes there is an assignment for \"Chambers Courtney\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Chambers Courtney",
+                  "offset": 42
+                }
+              ],
+              "location": "StaffAssignments_StepDefinitions.user_observes_there_is_an_assignment_for(String)"
+            },
+            "keyword": "And "
+          }
+        ],
+        "tags": [
+          {
+            "line": 15,
+            "name": "@Smoke"
+          },
+          {
+            "line": 16,
+            "name": "@AMB_1021"
+          }
+        ]
+      }
+    ],
+    "name": "Display of Staff Assignments",
+    "description": "",
+    "id": "display-of-staff-assignments",
+    "keyword": "Feature",
+    "uri": "SmokeTests/AMB-1021.feature"
+  },
+  {
+    "line": 1,
+    "elements": [
+      {
         "line": 3,
         "name": "",
         "description": "",
@@ -150,7 +552,7 @@
         "steps": [
           {
             "result": {
-              "duration": 24938357942,
+              "duration": 26152084378,
               "status": "passed"
             },
             "line": 5,
@@ -162,7 +564,7 @@
           },
           {
             "result": {
-              "duration": 1748827074,
+              "duration": 1686505042,
               "status": "passed"
             },
             "line": 6,
@@ -174,7 +576,7 @@
           },
           {
             "result": {
-              "duration": 2064498219,
+              "duration": 1413862941,
               "status": "passed"
             },
             "comments": [
@@ -192,7 +594,7 @@
           },
           {
             "result": {
-              "duration": 10083782172,
+              "duration": 9897872973,
               "status": "passed"
             },
             "line": 9,
@@ -204,7 +606,7 @@
           },
           {
             "result": {
-              "duration": 21976978384,
+              "duration": 37993990425,
               "status": "passed"
             },
             "line": 10,
@@ -220,7 +622,7 @@
         "before": [
           {
             "result": {
-              "duration": 5476793594,
+              "duration": 5758564019,
               "status": "passed"
             },
             "match": {
@@ -235,7 +637,7 @@
         "after": [
           {
             "result": {
-              "duration": 12235396650,
+              "duration": 13462010999,
               "status": "passed"
             },
             "match": {
@@ -248,7 +650,7 @@
         "steps": [
           {
             "result": {
-              "duration": 4058060118,
+              "duration": 4039002445,
               "status": "passed"
             },
             "line": 17,
@@ -289,7 +691,7 @@
         "steps": [
           {
             "result": {
-              "duration": 25600891845,
+              "duration": 24903911359,
               "status": "passed"
             },
             "line": 5,
@@ -301,7 +703,7 @@
           },
           {
             "result": {
-              "duration": 1734047246,
+              "duration": 1547027888,
               "status": "passed"
             },
             "line": 6,
@@ -313,7 +715,7 @@
           },
           {
             "result": {
-              "duration": 2647889904,
+              "duration": 1413760986,
               "status": "passed"
             },
             "comments": [
@@ -331,7 +733,7 @@
           },
           {
             "result": {
-              "duration": 9851252618,
+              "duration": 10642957100,
               "status": "passed"
             },
             "line": 9,
@@ -343,7 +745,7 @@
           },
           {
             "result": {
-              "duration": 21893742838,
+              "duration": 37743649588,
               "status": "passed"
             },
             "line": 10,
@@ -359,7 +761,7 @@
         "before": [
           {
             "result": {
-              "duration": 6415205968,
+              "duration": 4533511961,
               "status": "passed"
             },
             "match": {
@@ -374,7 +776,7 @@
         "after": [
           {
             "result": {
-              "duration": 18764328692,
+              "duration": 17251193191,
               "status": "passed"
             },
             "match": {
@@ -387,7 +789,7 @@
         "steps": [
           {
             "result": {
-              "duration": 18209072986,
+              "duration": 18570533238,
               "status": "passed"
             },
             "line": 19,

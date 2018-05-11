@@ -1,11 +1,11 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.tapByCoordinates;
-
-import java.net.MalformedURLException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -19,9 +19,9 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class LoginPage {
+public class LoginPage extends Base {
 
-	public LoginPage() throws MalformedURLException {
+	public LoginPage() {
 
 		PageFactory.initElements(new AppiumFieldDecorator(Base.getInstance(PlatformVersions.IOS)), this);
 	}
@@ -56,6 +56,7 @@ public class LoginPage {
 	public void selectEnvironment() {
 		performPageLoad();
 		clickOn(server);
+	
 	}
 
 	public void sendCredentials() {
@@ -77,13 +78,12 @@ public class LoginPage {
 	}
 
 	public void getCMKA() {
-		clickOn(CMKA);
-		performPageLoad();
+		waitToBeClickable(CMKA);
+		pageLoad();
 		tapByCoordinates("motionsPetitionsX", "motionsPetitionsY");
 		tapByCoordinates("dashboardX", "dashboardY");
 		performPageLoad();
 
 	}
-
 
 }

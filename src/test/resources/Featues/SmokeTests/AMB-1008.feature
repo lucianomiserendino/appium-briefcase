@@ -8,7 +8,7 @@ Background:
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And After user navigates to Appellate DC Development - CMKA - dev 
-@Smoke	
+@Smoke
 @AMB_1008 
 Scenario: 
 	A category entitled "Pending Tasks" will display on the dashboard if the judge has 

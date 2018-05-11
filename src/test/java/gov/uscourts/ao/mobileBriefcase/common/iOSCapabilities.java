@@ -2,62 +2,30 @@ package gov.uscourts.ao.mobileBriefcase.common;
 
 public interface iOSCapabilities {
 
-	/**
-	 * Which mobile OS platform to use.
-	 */
-	String PLATFORM_NAME = "platformName";
+	public static final String PLATFORM_NAME = "platformName";
 
-	/**
-	 * Mobile OS version.
-	 */
-	String PLATFORM_VERSION = "platformVersion";
+	public static final String PLATFORM_VERSION = "platformVersion";
 
-	/**
-	 * Unique device identifier of the connected physical device.
-	 */
-	String UDID = "udid";
+	public static final String UDID = "udid";
 
-	/**
-	 * The kind of mobile device or emulator/simulator to use.
-	 */
-	String DEVICE_NAME = "deviceName";
+	public static final String DEVICE_NAME = "deviceName";
 
-	/**
-	 * Bundle ID of the app under test.
-	 */
-	String BUNDLE_ID = "bundleId";
-	
-	
-	String BROWSER_NAME = "browserName";
+	public static final String BUNDLE_ID = "bundleId";
 
-	String SAFARI_OPEN_LINKS_IN_BACKGROUND = "safariOpenLinksInBackground";
-	/**
-	 * provisioning profile that is installed on the device
-	 */
-	String XCODE_ORG_ID = "xcodeOrgId";
+	public static final String BROWSER_NAME = "browserName";
 
-	/**
-	 * iPhone Developer
-	 */
-	String XCODE_SIGNING_ID = "xcodeSigningId";
+	public static final String XCODE_ORG_ID = "xcodeOrgId";
 
-	/**
-	 * Handling Allerts
-	 */
-	String AUTO_ACCEPT_ALERTS = "autoAcceptAlerts";
+	public static final String XCODE_SIGNING_ID = "xcodeSigningId";
 
-	/**
-	 * allowing screenshots
-	 */
-	String TAKES_SCREENSHOT = "takes_screehshot";
+	public static final String AUTO_ACCEPT_ALERTS = "autoAcceptAlerts";
 
-	/** host number of the device */
-	String HOST = "host";
+	public static final String TAKES_SCREENSHOT = "takes_screehshot";
 
-	/**
-	 * The absolute local path or remote http URL
-	 */
-	String APP = "app";
+	public static final String HOST = "host";
 
-	String ENSURING_CLEAN_SESSION = "ensureCleanSession";
+	public static final String APP = "app";
+
+	public static final String ENSURING_CLEAN_SESSION = "ensureCleanSession";
+
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 import gov.uscourts.ao.mobileBriefcase.common.Configuration;
 
-public class DBUtilits {
+public class DBUtilities {
 
 	final static String dbUrl = Configuration.getProperty("dbUrl");
 	final static String dbUsername = Configuration.getProperty("dbUsername");

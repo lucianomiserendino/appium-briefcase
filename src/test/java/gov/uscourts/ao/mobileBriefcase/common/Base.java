@@ -41,6 +41,7 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(XCODE_SIGNING_ID);
 				SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 				SetCapabilitiy(TAKES_SCREENSHOT);
+		
 
 				driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
 
