@@ -39,7 +39,7 @@ public class Login_StepDefinitions implements iOSCapabilities {
 	public void user_navigates_to_MobileBrifcase_App() {
 
 		changeWindow("NATIVE");
-		logPage.opens();
+		logPage.open();
 
 	}
 

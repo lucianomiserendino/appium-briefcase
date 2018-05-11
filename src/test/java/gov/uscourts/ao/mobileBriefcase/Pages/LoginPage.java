@@ -71,7 +71,7 @@ public class LoginPage extends Base {
 		clickOn(sendKeyButton);
 	}
 
-	public void opens() {
+	public void open() {
 		String openBtn = "Open";
 		clickOn(findElement(By.name(openBtn)));
 
