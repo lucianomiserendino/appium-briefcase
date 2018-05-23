@@ -7,6 +7,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCase;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.split;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,9 +22,9 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class StaffAssignmentsPage {
+public class AssignmentsPanelPage {
 
-	public StaffAssignmentsPage() {
+	public AssignmentsPanelPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
@@ -108,9 +109,6 @@ public class StaffAssignmentsPage {
 
 	}
 
-	public static String split(String caseNum, String substr, int index) {
-		return (caseNum + " ").split(substr)[index].split(" ")[0].trim();
 
-	}
 
 }

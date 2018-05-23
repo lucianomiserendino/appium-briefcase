@@ -6,15 +6,15 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import gov.uscourts.ao.mobileBriefcase.Pages.StaffAssignmentsPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.AssignmentsPanelPage;
 
-public class StaffAssignments_StepDefinitions {
+public class AssignmentsPanel_StepDefinitions {
 
-	StaffAssignmentsPage page;
+	AssignmentsPanelPage page;
 
 	@Given("^User selects Judge Colloton >> Motions/Petitions >> case \"([^\"]*)\"$")
 	public void user_selects_Judge_Colloton_Motions_Petitions_case(String caseNum) {
-		page = new StaffAssignmentsPage();
+		page = new AssignmentsPanelPage();
 		page.getCase(caseNum);
 
 	}

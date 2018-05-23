@@ -14,7 +14,7 @@ Background:
 	
 	
 	
-
+@Smoke
 @AMB_1021 
 Scenario: 
 	Staff members can be assigned to referrals and/or just cases. 
@@ -24,7 +24,7 @@ Scenario:
 	Then User observes there is an assignment for "Kyle Essley" and "Daniel Hay" 
 	
 	
-
+@Smoke
 @AMB_1021	
 	Scenario: 
 	Staff members can be assigned to referrals and/or just cases. 
@@ -32,7 +32,7 @@ Scenario:
      #This staff assignment is associated with the case.
 	And User observes there is an assignment for "Chambers Courtney" 
 	
-
+@Smoke
 @AMB_1030	
 Scenario: 
 		Display assignment info when selecting an assignment

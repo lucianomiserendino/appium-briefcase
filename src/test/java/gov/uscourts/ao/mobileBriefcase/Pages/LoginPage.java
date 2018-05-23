@@ -79,11 +79,11 @@ public class LoginPage extends Base {
 	}
 
 	public void getCMKA() {
-		waitToBeClickable(selectUser);
-		tapByCoordinates("colloton", "steven");
+		//waitToBeClickable(selectUser);
+		//tapByCoordinates("colloton", "steven");
 		// performPageLoad();
 		//
-		// waitToBeClickable(CMKA);
+		 waitToBeClickable(CMKA);
 		pageLoad();
 		tapByCoordinates("motionsPetitionsX", "motionsPetitionsY");
 		tapByCoordinates("dashboardX", "dashboardY");

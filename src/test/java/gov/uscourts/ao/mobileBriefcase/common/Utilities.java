@@ -167,7 +167,7 @@ public class Utilities extends Base {
 
 	}
 
-	public  static void assertThatDBEqualsToUI(String message, String query, List<String> uiValue) {
+	public static void assertThatDBEqualsToUI(String message, String query, List<String> uiValue) {
 		List<String> db = executeQuery(query);
 		Collections.sort(db);
 		List<String> ui = uiValue;
@@ -192,6 +192,11 @@ public class Utilities extends Base {
 		clickOn(findElement(By.id(id)));
 		clickOn(findElement(By.name(name)));
 		clickOn(findElement(By.name(Name)));
+	}
+
+	public static String split(String caseNum, String substr, int index) {
+		return (caseNum + " ").split(substr)[index].split(" ")[0].trim();
+
 	}
 
 }

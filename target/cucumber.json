@@ -3,7 +3,7 @@
     "line": 1,
     "elements": [
       {
-        "line": 3,
+        "line": 4,
         "name": "",
         "description": "",
         "type": "background",
@@ -11,10 +11,10 @@
         "steps": [
           {
             "result": {
-              "duration": 23991855108,
+              "duration": 23831215670,
               "status": "passed"
             },
-            "line": 5,
+            "line": 6,
             "name": "User Navigates to Sever",
             "match": {
               "location": "Login_StepDefinitions.user_Navigate_to_Sever()"
@@ -23,10 +23,10 @@
           },
           {
             "result": {
-              "duration": 1168512288,
+              "duration": 1193896544,
               "status": "passed"
             },
-            "line": 6,
+            "line": 7,
             "name": "User enters Credentials to Login",
             "match": {
               "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login()"
@@ -35,16 +35,16 @@
           },
           {
             "result": {
-              "duration": 1218163470,
+              "duration": 1513533073,
               "status": "passed"
             },
             "comments": [
               {
-                "line": 7,
+                "line": 8,
                 "value": "#Login as a sysadmin"
               }
             ],
-            "line": 8,
+            "line": 9,
             "name": "User clicks on Send Key to Device",
             "match": {
               "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
@@ -53,10 +53,10 @@
           },
           {
             "result": {
-              "duration": 9864612461,
+              "duration": 9681716980,
               "status": "passed"
             },
-            "line": 9,
+            "line": 10,
             "name": "User navigates to MobileBrifcase App",
             "match": {
               "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
@@ -65,13 +65,31 @@
           },
           {
             "result": {
-              "duration": 39828056173,
+              "duration": 37954521050,
               "status": "passed"
             },
-            "line": 10,
+            "line": 11,
             "name": "After user navigates to Appellate DC Development - CMKA - dev",
             "match": {
               "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 14315462091,
+              "status": "passed"
+            },
+            "line": 12,
+            "name": "User selects Judge Colloton  \u003e\u003e Petitions for Rehearing \u003e\u003e \"15-3314\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "15-3314",
+                  "offset": 60
+                }
+              ],
+              "location": "VoteInformationPanel_StepDefinitions.user_selects_Judge_Colloton_Petitions_for_Rehearing(String)"
             },
             "keyword": "And "
           }
@@ -81,7 +99,7 @@
         "before": [
           {
             "result": {
-              "duration": 5781483165,
+              "duration": 4866819546,
               "status": "passed"
             },
             "match": {
@@ -89,14 +107,14 @@
             }
           }
         ],
-        "line": 15,
+        "line": 16,
         "name": "",
         "description": "If a referral requires voting, a collapsible Vote Information panel displays.  When expanded, it displays the following information:\n1.  The name and party type of the person who filed the motion/petition\n2.  The judges initials who are on the panel\n3.  The relief on which the judge is ruling\n4.  Each judge\u0027s vote and the date they voted",
         "id": "display-vote-information-panel,-filer-info-and-judge\u0027s-initials;",
         "after": [
           {
             "result": {
-              "duration": 17723,
+              "duration": 26775,
               "status": "passed"
             },
             "match": {
@@ -109,28 +127,10 @@
         "steps": [
           {
             "result": {
-              "duration": 14231267745,
+              "duration": 23313039014,
               "status": "passed"
             },
-            "line": 22,
-            "name": "User selects Judge Colloton  \u003e\u003e Petitions for Rehearing \u003e\u003e \"15-3314\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "15-3314",
-                  "offset": 60
-                }
-              ],
-              "location": "VoteInformationPanel_StepDefinitions.user_selects_Judge_Colloton_Petitions_for_Rehearing(String)"
-            },
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "duration": 20013651584,
-              "status": "passed"
-            },
-            "line": 23,
+            "line": 24,
             "name": "User observes the \"Vote Information\" panel displays.   This should only display if the referral requires voting",
             "match": {
               "arguments": [
@@ -141,14 +141,15 @@
               ],
               "location": "VoteInformationPanel_StepDefinitions.user_observes_the_panel_displays_This_should_only_display_if_the_referral_requires_voting(String)"
             },
-            "keyword": "When "
+            "keyword": "Given "
           },
           {
             "result": {
-              "duration": 16592435494,
-              "status": "passed"
+              "duration": 11710386783,
+              "error_message": "java.lang.AssertionError: ----FILER\u0027S INFORMATION MISMATCH----\n\tat org.junit.Assert.fail(Assert.java:88)\n\tat org.junit.Assert.assertTrue(Assert.java:41)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.VoteInformationPanelPage.getFilersInformation(VoteInformationPanelPage.java:68)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.VoteInformationPanel_StepDefinitions.for_each_referral_observes_the_filer_s_name_first_initial_of_pr_middle_name_gn_display_party_type_and_date_filed_displays_in_a_light_blue_heading(VoteInformationPanel_StepDefinitions.java:29)\n\tat ✽.Then for each referral, observes the filer\u0027s name  first initial of pr_middle_name gn_display, party type and date filed displays in a light blue heading.(SmokeTests/AMB-1036.feature:25)\n",
+              "status": "failed"
             },
-            "line": 24,
+            "line": 25,
             "name": "for each referral, observes the filer\u0027s name  first initial of pr_middle_name gn_display, party type and date filed displays in a light blue heading.",
             "match": {
               "location": "VoteInformationPanel_StepDefinitions.for_each_referral_observes_the_filer_s_name_first_initial_of_pr_middle_name_gn_display_party_type_and_date_filed_displays_in_a_light_blue_heading()"
@@ -157,10 +158,9 @@
           },
           {
             "result": {
-              "duration": 15458616780,
-              "status": "passed"
+              "status": "skipped"
             },
-            "line": 25,
+            "line": 26,
             "name": "observes the judge\u0027s initials display in the same heading",
             "match": {
               "location": "VoteInformationPanel_StepDefinitions.observes_the_judge_s_initials_display_in_the_same_heading()"
@@ -169,10 +169,9 @@
           },
           {
             "result": {
-              "duration": 6571722308,
-              "status": "passed"
+              "status": "skipped"
             },
-            "line": 26,
+            "line": 27,
             "name": "User checks each relief  that has been  displayed below the filer name.",
             "match": {
               "location": "VoteInformationPanel_StepDefinitions.user_checks_each_relief_that_has_been_displayed_below_the_filer_name()"
@@ -181,10 +180,9 @@
           },
           {
             "result": {
-              "duration": 17750645925,
-              "status": "passed"
+              "status": "skipped"
             },
-            "line": 27,
+            "line": 28,
             "name": "User checks each judge\u0027s vote  and the date  displays under their initials",
             "match": {
               "location": "VoteInformationPanel_StepDefinitions.user_checks_each_judge_s_vote_and_the_date_displays_under_their_initials()"
@@ -194,14 +192,14 @@
         ],
         "tags": [
           {
-            "line": 14,
+            "line": 15,
             "name": "@AMB_1036"
           }
         ]
       }
     ],
     "name": "Display Vote Information Panel, filer info and judge\u0027s initials",
-    "description": "",
+    "description": "       Display Actions Panel and actions",
     "id": "display-vote-information-panel,-filer-info-and-judge\u0027s-initials",
     "keyword": "Feature",
     "uri": "SmokeTests/AMB-1036.feature"

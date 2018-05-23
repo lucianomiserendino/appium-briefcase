@@ -108,7 +108,18 @@ public class Queries {
 			+ "on chv_crj_id = crj_id and chv_date_end is null left join chm_vote_val on chv_cvv_code = cvv_code where a.ccr_id = 34870 and b.ccr_date_end is null and "
 			+ "NVL(cpr_vote_complete,'') <> 'y' and NVL(cpr_vote_req,'') <> 'n' order by  rl_list_text desc";
 
-	public static final String JUDGEs_VOTE_AND_VOTE_DATE = " select distinct ju_initials,  cvv_display, chv_date_created "
+	public static final String JUDGEs_VOTE = "select distinct  cvv_display from chambers_case_to_referral b join chambers_case_to_referral a on "
+			+ "b.ccr_cpr_id = a.ccr_cpr_id join dktpart on dp_dktpartid = b.ccr_dp_dktpartid join relief_list on rl_id = dp_rlid "
+			+ "join chambers_caseref_to_judge on b.ccr_id = crj_ccr_id join judge on crj_ju_pe_id = ju_pe_id join chambers_referral on b.ccr_cpr_id = cpr_id "
+			+ "join chambers_case on b.ccr_ccs_id = ccs_id join chm_reftype_val on cpr_cyv_code = cyv_code join case_dktentry on cd_id = dp_cd_id "
+			+ "join dktentry on cd_dktentryid = de_dktentryid left join doctype_val on dp_doc_type = dty_code join event_list on el_id = de_elid "
+			+ "left join chambers_vote left join (chm_vote_to_note inner join document on cvn_dm_dls_id = dm_dls_id "
+			+ "and dm_internal_type = 'notevote'  ) on chv_id = cvn_chv_id on chv_crj_id = crj_id and chv_date_end is null "
+			+ "left join chm_vote_val on chv_cvv_code = cvv_code where a.ccr_id = 34870 and b.ccr_date_end is null and NVL(cpr_vote_complete,'') <> 'y' "
+			+ "and NVL(cpr_vote_req,'') <> 'n' and cvv_display='Deny' and ju_initials='SMC'order by  cvv_display desc";
+
+	
+	public static final String VOTE_DATE = " select distinct  chv_date_created "
 			+ "from chambers_case_to_referral b join chambers_case_to_referral a on b.ccr_cpr_id = a.ccr_cpr_id "
 			+ "join dktpart on dp_dktpartid = b.ccr_dp_dktpartid join relief_list on rl_id = dp_rlid join chambers_caseref_to_judge on b.ccr_id = crj_ccr_id "
 			+ "join judge on crj_ju_pe_id = ju_pe_id join chambers_referral on b.ccr_cpr_id = cpr_id join chambers_case on b.ccr_ccs_id = ccs_id "
@@ -116,6 +127,17 @@ public class Queries {
 			+ "left join doctype_val on dp_doc_type = dty_code join event_list on el_id = de_elid left join chambers_vote left join (chm_vote_to_note inner join "
 			+ "document on cvn_dm_dls_id = dm_dls_id and dm_internal_type = 'notevote'  ) on chv_id = cvn_chv_id on chv_crj_id = crj_id and chv_date_end is null "
 			+ "left join chm_vote_val on chv_cvv_code = cvv_code where a.ccr_id = 34870 and b.ccr_date_end is null and NVL(cpr_vote_complete,'') <> 'y' and "
-			+ "NVL(cpr_vote_req,'') <> 'n' and cvv_display='Deny' and ju_initials='SMC'order by ju_initials,  cvv_display,  chv_date_created  desc";
+			+ "NVL(cpr_vote_req,'') <> 'n' and cvv_display='Deny' and ju_initials='SMC'order by chv_date_created  desc";
+
+	
+	public static final String APPLICABLE_ACTIONS = "select el_list_text from mbr_event join event_list on el_id = me_el_id where "
+			+ "(me_cyv_code = (select cmr_cyv_code from chm_mobile_referral where cmr_id = 2302201) or me_cyv_code = \"-\" "
+			+ "or me_cyv_code is null) and (me_ic_code = (select cmr_ic_code from chm_mobile_referral where cmr_id = 2302201) "
+			+ "or me_ic_code is null or me_ic_code = \"-\") and (me_cav_code = (select distinct(cav_code) FROM chm_mobile_referral JOIN chambers_case_to_referral "
+			+ "on ccr_id = cmr_ccr_id JOIN chm_assign_to_case on chc_cpr_id = ccr_cpr_id and chc_cs_caseid = cmr_cs_caseid "
+			+ "JOIN chambers_assignment on cha_id = chc_cha_id and cha_chm_pe_id = cmr_ju_pe_id "
+			+ "JOIN chm_assign_type_val on cav_code = cha_cav_code JOIN chambers_assign_date on chd_cha_id = cha_id "
+			+ "join chm_assign_datetype_val on cdv_code = chd_cdv_code "
+			+ "WHERE chc_date_end is null and cmr_id = 2302201) or me_cav_code = \"-\" or me_cav_code is null) and el_functions is not null ";
 
 }
