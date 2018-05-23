@@ -56,7 +56,7 @@ public class LoginPage extends Base {
 	public void selectEnvironment() {
 		performPageLoad();
 		clickOn(server);
-	
+
 	}
 
 	public void sendCredentials() {
@@ -69,6 +69,7 @@ public class LoginPage extends Base {
 
 	public void sedKeyButton() {
 		clickOn(sendKeyButton);
+		
 	}
 
 	public void open() {
@@ -78,7 +79,11 @@ public class LoginPage extends Base {
 	}
 
 	public void getCMKA() {
-		waitToBeClickable(CMKA);
+		waitToBeClickable(selectUser);
+		tapByCoordinates("colloton", "steven");
+		// performPageLoad();
+		//
+		// waitToBeClickable(CMKA);
 		pageLoad();
 		tapByCoordinates("motionsPetitionsX", "motionsPetitionsY");
 		tapByCoordinates("dashboardX", "dashboardY");

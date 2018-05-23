@@ -41,7 +41,7 @@ public class DBUtilities {
 		List<String[]> queryResult = new ArrayList<>();
 
 		try {
-			statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			resultSet = statement.executeQuery(sql);
 			ResultSetMetaData rsMetada = resultSet.getMetaData();
 
@@ -82,6 +82,29 @@ public class DBUtilities {
 
 	}
 
+	public static String getAllColumns(String query) {
+		establishConnection(DBType.CMKA);
+		ResultSetMetaData metaData;
+		String allColumns = "";
+		try {
+
+			statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			resultSet = statement.executeQuery(query);
+			metaData = resultSet.getMetaData();
+			int numberOfColumns = metaData.getColumnCount();
+			while (resultSet.next()) {
+				for (int i = 1; i <= numberOfColumns; i++) {
+					allColumns += resultSet.getString(i).trim();
+				}
+			}
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		return allColumns;
+
+	}
+
+	
 	public static void closeConnections() {
 		try {
 			if (resultSet != null) {
@@ -97,6 +120,7 @@ public class DBUtilities {
 
 			e.printStackTrace();
 		}
+
 	}
 
 }

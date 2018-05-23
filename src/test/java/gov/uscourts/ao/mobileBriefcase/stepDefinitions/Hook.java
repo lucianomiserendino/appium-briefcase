@@ -24,7 +24,7 @@ public class Hook extends Base implements iOSCapabilities {
 
 	public void tearDown() {
 
-		logout(settingsPage, logout, OKBtn, OKBtn);
+		//logout(settingsPage, logout, OKBtn, OKBtn);
 	
 
 	}

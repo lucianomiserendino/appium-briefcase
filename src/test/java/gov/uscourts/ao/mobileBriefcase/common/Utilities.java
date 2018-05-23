@@ -1,6 +1,8 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElement;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +26,9 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 
 public class Utilities extends Base {
+
+	static SimpleDateFormat format1;
+	static SimpleDateFormat format2;
 
 	public static List<String> retrieveAllReferrals(List<MobileElement> elements, String split, int index) {
 		String[] dest;
@@ -55,6 +60,12 @@ public class Utilities extends Base {
 
 	}
 
+	public static void click(String xpath) {
+
+		clickOn(findElement(By.xpath(xpath)));
+
+	}
+
 	public static void selectCase(String xpath) {
 
 		String Case = xpath;
@@ -70,13 +81,19 @@ public class Utilities extends Base {
 
 	}
 
-	public static String changeDateFormat(String element) throws ParseException {
-		SimpleDateFormat format1 = new SimpleDateFormat("MM/dd/yyyy");
-		SimpleDateFormat format2 = new SimpleDateFormat("yyyy/MM/dd");
+	public static String changeDateFormat(String element, String format) {
+		format1 = new SimpleDateFormat("MM/dd/yyyy");
+		format2 = new SimpleDateFormat(format);
 		java.util.Date date = null;
 
-		date = format1.parse(element);
-	
+		try {
+
+			date = format1.parse(element);
+		} catch (ParseException e) {
+
+			e.printStackTrace();
+		}
+
 		return format2.format(date);
 
 	}
@@ -114,7 +131,7 @@ public class Utilities extends Base {
 				element.click();
 			}
 		} catch (Exception e) {
-
+			e.getMessage();
 		}
 
 	}
@@ -147,6 +164,14 @@ public class Utilities extends Base {
 
 	public static String getNumOfDisplayedCases(MobileElement element, String start, String end) {
 		return element.getText().substring(getCoordinates(start), getCoordinates(end)).trim();
+
+	}
+
+	public  static void assertThatDBEqualsToUI(String message, String query, List<String> uiValue) {
+		List<String> db = executeQuery(query);
+		Collections.sort(db);
+		List<String> ui = uiValue;
+		assertTrue(message, db.containsAll(ui));
 
 	}
 

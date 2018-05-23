@@ -11,7 +11,7 @@
         "steps": [
           {
             "result": {
-              "duration": 23982585701,
+              "duration": 23991855108,
               "status": "passed"
             },
             "line": 5,
@@ -23,7 +23,7 @@
           },
           {
             "result": {
-              "duration": 1486682043,
+              "duration": 1168512288,
               "status": "passed"
             },
             "line": 6,
@@ -35,13 +35,13 @@
           },
           {
             "result": {
-              "duration": 1537136581,
+              "duration": 1218163470,
               "status": "passed"
             },
             "comments": [
               {
                 "line": 7,
-                "value": "#Login as Chambers Courtney // Test2020!"
+                "value": "#Login as a sysadmin"
               }
             ],
             "line": 8,
@@ -53,7 +53,7 @@
           },
           {
             "result": {
-              "duration": 9674764477,
+              "duration": 9864612461,
               "status": "passed"
             },
             "line": 9,
@@ -65,7 +65,7 @@
           },
           {
             "result": {
-              "duration": 37599964463,
+              "duration": 39828056173,
               "status": "passed"
             },
             "line": 10,
@@ -81,548 +81,7 @@
         "before": [
           {
             "result": {
-              "duration": 5207851100,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 14,
-        "name": "",
-        "description": "There is a sorting feature on the referral list page that enables users to sort referrals by date referred or case number.  \nThe default is by date referred in descending order (newest first).",
-        "id": "sorting-on-the-referral-list-page;",
-        "after": [
-          {
-            "result": {
-              "duration": 18301288962,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.tearDown()"
-            }
-          }
-        ],
-        "type": "scenario",
-        "keyword": "Scenario",
-        "steps": [
-          {
-            "result": {
-              "duration": 16112998169,
-              "status": "passed"
-            },
-            "line": 18,
-            "name": "User selects a judge and then the motions/petitions category",
-            "match": {
-              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_a_judge_and_then_the_motions_petitions_category()"
-            },
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "duration": 98225061931,
-              "status": "passed"
-            },
-            "line": 19,
-            "name": "User selects the sort button, clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in descending order (newest first).",
-            "match": {
-              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_the_sort_button_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first()"
-            },
-            "keyword": "When "
-          },
-          {
-            "result": {
-              "duration": 90933559308,
-              "status": "passed"
-            },
-            "line": 20,
-            "name": "User clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order (oldest first).",
-            "match": {
-              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_ascending_order_oldest_first()"
-            },
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "duration": 91599218505,
-              "status": "passed"
-            },
-            "line": 21,
-            "name": "User clicks the Case Down Arrow button and  verifies the referrals are sorted by case number in descending order",
-            "match": {
-              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_descending_order()"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 89349289093,
-              "status": "passed"
-            },
-            "line": 22,
-            "name": "User clicks the Case Up Arrow button, verifies the referrals are sorted by case number in ascending order.",
-            "match": {
-              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Up_Arrow_button_verifies_the_referrals_are_sorted_by_case_number_in_ascending_order()"
-            },
-            "keyword": "Then "
-          }
-        ],
-        "tags": [
-          {
-            "line": 12,
-            "name": "@Smoke"
-          },
-          {
-            "line": 13,
-            "name": "@AMB_1010"
-          }
-        ]
-      }
-    ],
-    "name": "Sorting on the Referral List Page",
-    "description": "",
-    "id": "sorting-on-the-referral-list-page",
-    "keyword": "Feature",
-    "uri": "SmokeTests/ABM-1010.feature"
-  },
-  {
-    "line": 1,
-    "elements": [
-      {
-        "line": 3,
-        "name": "",
-        "description": "",
-        "type": "background",
-        "keyword": "Background",
-        "steps": [
-          {
-            "result": {
-              "duration": 24953891549,
-              "status": "passed"
-            },
-            "line": 5,
-            "name": "User Navigates to Sever",
-            "match": {
-              "location": "Login_StepDefinitions.user_Navigate_to_Sever()"
-            },
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "duration": 1638590892,
-              "status": "passed"
-            },
-            "line": 6,
-            "name": "User enters Credentials to Login",
-            "match": {
-              "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login()"
-            },
-            "keyword": "When "
-          },
-          {
-            "result": {
-              "duration": 1501844293,
-              "status": "passed"
-            },
-            "comments": [
-              {
-                "line": 7,
-                "value": "#Login as Chambers Courtney // Test2020!"
-              }
-            ],
-            "line": 8,
-            "name": "User clicks on Send Key to Device",
-            "match": {
-              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
-            },
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "duration": 9753456501,
-              "status": "passed"
-            },
-            "line": 9,
-            "name": "User navigates to MobileBrifcase App",
-            "match": {
-              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 37756857014,
-              "status": "passed"
-            },
-            "line": 10,
-            "name": "After user navigates to Appellate DC Development - CMKA - dev",
-            "match": {
-              "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev()"
-            },
-            "keyword": "And "
-          }
-        ]
-      },
-      {
-        "before": [
-          {
-            "result": {
-              "duration": 5701348705,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 13,
-        "name": "",
-        "description": "A category entitled \"Pending Tasks\" will display on the dashboard if the judge has \nany pending assignments and the site table variable briefcaseShowPendingTasks \u003d\u0027y\u0027.",
-        "id": "pending-tasks-category-displays-on-the-dashboard;",
-        "after": [
-          {
-            "result": {
-              "duration": 10321492458,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.tearDown()"
-            }
-          }
-        ],
-        "type": "scenario",
-        "keyword": "Scenario",
-        "steps": [
-          {
-            "result": {
-              "duration": 17415000788,
-              "status": "passed"
-            },
-            "line": 17,
-            "name": "If The judge has any pending assignments it will validate the total num of pending task on UI with DB",
-            "match": {
-              "location": "ReferralCategories_StepDefinitions.if_The_judge_has_any_pending_assignments_it_will_validate_the_total_num_of_pending_task_on_UI_with_DB()"
-            },
-            "keyword": "Given "
-          }
-        ],
-        "tags": [
-          {
-            "line": 11,
-            "name": "@Smoke"
-          },
-          {
-            "line": 12,
-            "name": "@AMB_1008"
-          }
-        ]
-      }
-    ],
-    "name": "Pending Tasks Category Displays on the Dashboard",
-    "description": "",
-    "id": "pending-tasks-category-displays-on-the-dashboard",
-    "keyword": "Feature",
-    "uri": "SmokeTests/AMB-1008.feature"
-  },
-  {
-    "line": 1,
-    "elements": [
-      {
-        "line": 4,
-        "name": "",
-        "description": "",
-        "type": "background",
-        "keyword": "Background",
-        "steps": [
-          {
-            "result": {
-              "duration": 24015273613,
-              "status": "passed"
-            },
-            "line": 6,
-            "name": "User Navigates to Sever",
-            "match": {
-              "location": "Login_StepDefinitions.user_Navigate_to_Sever()"
-            },
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "duration": 4243156164,
-              "status": "passed"
-            },
-            "line": 7,
-            "name": "User enters Credentials to Login",
-            "match": {
-              "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login()"
-            },
-            "keyword": "When "
-          },
-          {
-            "result": {
-              "duration": 2292964284,
-              "status": "passed"
-            },
-            "comments": [
-              {
-                "line": 8,
-                "value": "#Login as Chambers Courtney // Test2020!"
-              }
-            ],
-            "line": 9,
-            "name": "User clicks on Send Key to Device",
-            "match": {
-              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
-            },
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "duration": 9750509238,
-              "status": "passed"
-            },
-            "line": 10,
-            "name": "User navigates to MobileBrifcase App",
-            "match": {
-              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 38104527017,
-              "status": "passed"
-            },
-            "line": 11,
-            "name": "After user navigates to Appellate DC Development - CMKA - dev",
-            "match": {
-              "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev()"
-            },
-            "keyword": "And "
-          }
-        ]
-      },
-      {
-        "before": [
-          {
-            "result": {
-              "duration": 4341138836,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 17,
-        "name": "",
-        "description": "Staff members can be assigned to referrals and/or just cases. \n  Verify that staff assignments are displaying on the referral list page.\n  Staff assignments linked to the referral are displayed",
-        "id": "display-of-staff-assignments;",
-        "after": [
-          {
-            "result": {
-              "duration": 20138866327,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.tearDown()"
-            }
-          }
-        ],
-        "type": "scenario",
-        "keyword": "Scenario",
-        "steps": [
-          {
-            "result": {
-              "duration": 36525498404,
-              "status": "passed"
-            },
-            "comments": [
-              {
-                "line": 21,
-                "value": "#These are staff assignments associated with the referral"
-              }
-            ],
-            "line": 23,
-            "name": "User selects Judge Colloton \u003e\u003e Motions/Petitions \u003e\u003e case \"15-3314\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "15-3314",
-                  "offset": 58
-                }
-              ],
-              "location": "StaffAssignments_StepDefinitions.user_selects_Judge_Colloton_Motions_Petitions_case(String)"
-            },
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "duration": 21663981160,
-              "status": "passed"
-            },
-            "line": 24,
-            "name": "User  observes a collapsible panel entitled \"Assignments\" displays.",
-            "match": {
-              "arguments": [
-                {
-                  "val": "Assignments",
-                  "offset": 45
-                }
-              ],
-              "location": "StaffAssignments_StepDefinitions.user_observes_a_collapsible_panel_entitled_displays(String)"
-            },
-            "keyword": "When "
-          },
-          {
-            "result": {
-              "duration": 12468934805,
-              "status": "passed"
-            },
-            "line": 25,
-            "name": "User observes there is an assignment for \"Kyle Essley\" and \"Daniel Hay\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "Kyle Essley",
-                  "offset": 42
-                },
-                {
-                  "val": "Daniel Hay",
-                  "offset": 60
-                }
-              ],
-              "location": "StaffAssignments_StepDefinitions.user_observes_there_is_an_assignment_for_and(String,String)"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 16039574527,
-              "status": "passed"
-            },
-            "comments": [
-              {
-                "line": 26,
-                "value": "#This staff assignment is associated with the case."
-              }
-            ],
-            "line": 27,
-            "name": "User observes there is an assignment for \"Chambers Courtney\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "Chambers Courtney",
-                  "offset": 42
-                }
-              ],
-              "location": "StaffAssignments_StepDefinitions.user_observes_there_is_an_assignment_for(String)"
-            },
-            "keyword": "And "
-          }
-        ],
-        "tags": [
-          {
-            "line": 15,
-            "name": "@Smoke"
-          },
-          {
-            "line": 16,
-            "name": "@AMB_1021"
-          }
-        ]
-      }
-    ],
-    "name": "Display of Staff Assignments",
-    "description": "",
-    "id": "display-of-staff-assignments",
-    "keyword": "Feature",
-    "uri": "SmokeTests/AMB-1021.feature"
-  },
-  {
-    "line": 1,
-    "elements": [
-      {
-        "line": 3,
-        "name": "",
-        "description": "",
-        "type": "background",
-        "keyword": "Background",
-        "steps": [
-          {
-            "result": {
-              "duration": 26152084378,
-              "status": "passed"
-            },
-            "line": 5,
-            "name": "User Navigates to Sever",
-            "match": {
-              "location": "Login_StepDefinitions.user_Navigate_to_Sever()"
-            },
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "duration": 1686505042,
-              "status": "passed"
-            },
-            "line": 6,
-            "name": "User enters Credentials to Login",
-            "match": {
-              "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login()"
-            },
-            "keyword": "When "
-          },
-          {
-            "result": {
-              "duration": 1413862941,
-              "status": "passed"
-            },
-            "comments": [
-              {
-                "line": 7,
-                "value": "#Login as Chambers Courtney // Test2020!"
-              }
-            ],
-            "line": 8,
-            "name": "User clicks on Send Key to Device",
-            "match": {
-              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
-            },
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "duration": 9897872973,
-              "status": "passed"
-            },
-            "line": 9,
-            "name": "User navigates to MobileBrifcase App",
-            "match": {
-              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 37993990425,
-              "status": "passed"
-            },
-            "line": 10,
-            "name": "After user navigates to Appellate DC Development - CMKA - dev",
-            "match": {
-              "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev()"
-            },
-            "keyword": "And "
-          }
-        ]
-      },
-      {
-        "before": [
-          {
-            "result": {
-              "duration": 5758564019,
+              "duration": 5781483165,
               "status": "passed"
             },
             "match": {
@@ -632,12 +91,12 @@
         ],
         "line": 15,
         "name": "",
-        "description": "Referral categories display on the dashboard for the judge",
-        "id": "referral-categories-display-on-the-dashboard-for-the-judge;",
+        "description": "If a referral requires voting, a collapsible Vote Information panel displays.  When expanded, it displays the following information:\n1.  The name and party type of the person who filed the motion/petition\n2.  The judges initials who are on the panel\n3.  The relief on which the judge is ruling\n4.  Each judge\u0027s vote and the date they voted",
+        "id": "display-vote-information-panel,-filer-info-and-judge\u0027s-initials;",
         "after": [
           {
             "result": {
-              "duration": 13462010999,
+              "duration": 17723,
               "status": "passed"
             },
             "match": {
@@ -650,172 +109,101 @@
         "steps": [
           {
             "result": {
-              "duration": 4039002445,
+              "duration": 14231267745,
               "status": "passed"
             },
-            "line": 17,
-            "name": "User Observes the referral categories that display on the dashboard and DB",
+            "line": 22,
+            "name": "User selects Judge Colloton  \u003e\u003e Petitions for Rehearing \u003e\u003e \"15-3314\"",
             "match": {
-              "location": "ReferralCategories_StepDefinitions.user_Observes_the_referral_categories_that_display_on_the_dashboard_and_DB()"
-            },
-            "keyword": "Given "
-          }
-        ],
-        "tags": [
-          {
-            "line": 13,
-            "name": "@Smoke"
-          },
-          {
-            "line": 14,
-            "name": "@AMB_956"
-          }
-        ]
-      }
-    ],
-    "name": "Referral Categories display on the dashboard for the judge",
-    "description": "",
-    "id": "referral-categories-display-on-the-dashboard-for-the-judge",
-    "keyword": "Feature",
-    "uri": "SmokeTests/AMB-956.feature"
-  },
-  {
-    "line": 1,
-    "elements": [
-      {
-        "line": 3,
-        "name": "",
-        "description": "",
-        "type": "background",
-        "keyword": "Background",
-        "steps": [
-          {
-            "result": {
-              "duration": 24903911359,
-              "status": "passed"
-            },
-            "line": 5,
-            "name": "User Navigates to Sever",
-            "match": {
-              "location": "Login_StepDefinitions.user_Navigate_to_Sever()"
+              "arguments": [
+                {
+                  "val": "15-3314",
+                  "offset": 60
+                }
+              ],
+              "location": "VoteInformationPanel_StepDefinitions.user_selects_Judge_Colloton_Petitions_for_Rehearing(String)"
             },
             "keyword": "Given "
           },
           {
             "result": {
-              "duration": 1547027888,
+              "duration": 20013651584,
               "status": "passed"
             },
-            "line": 6,
-            "name": "User enters Credentials to Login",
+            "line": 23,
+            "name": "User observes the \"Vote Information\" panel displays.   This should only display if the referral requires voting",
             "match": {
-              "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login()"
+              "arguments": [
+                {
+                  "val": "Vote Information",
+                  "offset": 19
+                }
+              ],
+              "location": "VoteInformationPanel_StepDefinitions.user_observes_the_panel_displays_This_should_only_display_if_the_referral_requires_voting(String)"
             },
             "keyword": "When "
           },
           {
             "result": {
-              "duration": 1413760986,
+              "duration": 16592435494,
               "status": "passed"
             },
-            "comments": [
-              {
-                "line": 7,
-                "value": "#Login as Chambers Courtney // Test2020!"
-              }
-            ],
-            "line": 8,
-            "name": "User clicks on Send Key to Device",
+            "line": 24,
+            "name": "for each referral, observes the filer\u0027s name  first initial of pr_middle_name gn_display, party type and date filed displays in a light blue heading.",
             "match": {
-              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
-            },
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "duration": 10642957100,
-              "status": "passed"
-            },
-            "line": 9,
-            "name": "User navigates to MobileBrifcase App",
-            "match": {
-              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
+              "location": "VoteInformationPanel_StepDefinitions.for_each_referral_observes_the_filer_s_name_first_initial_of_pr_middle_name_gn_display_party_type_and_date_filed_displays_in_a_light_blue_heading()"
             },
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 37743649588,
+              "duration": 15458616780,
               "status": "passed"
             },
-            "line": 10,
-            "name": "After user navigates to Appellate DC Development - CMKA - dev",
+            "line": 25,
+            "name": "observes the judge\u0027s initials display in the same heading",
             "match": {
-              "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev()"
+              "location": "VoteInformationPanel_StepDefinitions.observes_the_judge_s_initials_display_in_the_same_heading()"
             },
             "keyword": "And "
-          }
-        ]
-      },
-      {
-        "before": [
+          },
           {
             "result": {
-              "duration": 4533511961,
+              "duration": 6571722308,
               "status": "passed"
             },
+            "line": 26,
+            "name": "User checks each relief  that has been  displayed below the filer name.",
             "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 14,
-        "name": "",
-        "description": "Tapping on a referral category that is not orally argued (chm_reftype_val.cdv_is_oral_arg\u003d\u0027n\u0027),\n  a list of cases should dipslay for the judge for that category.\n  Need to verify the correct number of referrals are being displayed.",
-        "id": "number-of-cases-displayed-for-non-orally-argued-cases;",
-        "after": [
+              "location": "VoteInformationPanel_StepDefinitions.user_checks_each_relief_that_has_been_displayed_below_the_filer_name()"
+            },
+            "keyword": "Then "
+          },
           {
             "result": {
-              "duration": 17251193191,
+              "duration": 17750645925,
               "status": "passed"
             },
+            "line": 27,
+            "name": "User checks each judge\u0027s vote  and the date  displays under their initials",
             "match": {
-              "location": "Hook.tearDown()"
-            }
-          }
-        ],
-        "type": "scenario",
-        "keyword": "Scenario",
-        "steps": [
-          {
-            "result": {
-              "duration": 18570533238,
-              "status": "passed"
+              "location": "VoteInformationPanel_StepDefinitions.user_checks_each_judge_s_vote_and_the_date_displays_under_their_initials()"
             },
-            "line": 19,
-            "name": "User finds the valid non-orally argued categories for the judge",
-            "match": {
-              "location": "ReferralCategories_StepDefinitions.user_finds_the_valid_non_orally_argued_categories_for_the_judge()"
-            },
-            "keyword": "Given "
+            "keyword": "Then "
           }
         ],
         "tags": [
           {
-            "line": 12,
-            "name": "@Smoke"
-          },
-          {
-            "line": 13,
-            "name": "@AMB_973"
+            "line": 14,
+            "name": "@AMB_1036"
           }
         ]
       }
     ],
-    "name": "Number of cases displayed for non-orally argued cases",
+    "name": "Display Vote Information Panel, filer info and judge\u0027s initials",
     "description": "",
-    "id": "number-of-cases-displayed-for-non-orally-argued-cases",
+    "id": "display-vote-information-panel,-filer-info-and-judge\u0027s-initials",
     "keyword": "Feature",
-    "uri": "SmokeTests/AMB-973.feature"
+    "uri": "SmokeTests/AMB-1036.feature"
   }
 ]
