@@ -118,7 +118,6 @@ public class Queries {
 			+ "left join chm_vote_val on chv_cvv_code = cvv_code where a.ccr_id = 34870 and b.ccr_date_end is null and NVL(cpr_vote_complete,'') <> 'y' "
 			+ "and NVL(cpr_vote_req,'') <> 'n' and cvv_display='Deny' and ju_initials='SMC'order by  cvv_display desc";
 
-	
 	public static final String VOTE_DATE = " select distinct  chv_date_created "
 			+ "from chambers_case_to_referral b join chambers_case_to_referral a on b.ccr_cpr_id = a.ccr_cpr_id "
 			+ "join dktpart on dp_dktpartid = b.ccr_dp_dktpartid join relief_list on rl_id = dp_rlid join chambers_caseref_to_judge on b.ccr_id = crj_ccr_id "
@@ -129,7 +128,6 @@ public class Queries {
 			+ "left join chm_vote_val on chv_cvv_code = cvv_code where a.ccr_id = 34870 and b.ccr_date_end is null and NVL(cpr_vote_complete,'') <> 'y' and "
 			+ "NVL(cpr_vote_req,'') <> 'n' and cvv_display='Deny' and ju_initials='SMC'order by chv_date_created  desc";
 
-	
 	public static final String APPLICABLE_ACTIONS = "select el_list_text from mbr_event join event_list on el_id = me_el_id where "
 			+ "(me_cyv_code = (select cmr_cyv_code from chm_mobile_referral where cmr_id = 2302201) or me_cyv_code = \"-\" "
 			+ "or me_cyv_code is null) and (me_ic_code = (select cmr_ic_code from chm_mobile_referral where cmr_id = 2302201) "
@@ -139,5 +137,13 @@ public class Queries {
 			+ "JOIN chm_assign_type_val on cav_code = cha_cav_code JOIN chambers_assign_date on chd_cha_id = cha_id "
 			+ "join chm_assign_datetype_val on cdv_code = chd_cdv_code "
 			+ "WHERE chc_date_end is null and cmr_id = 2302201) or me_cav_code = \"-\" or me_cav_code is null) and el_functions is not null ";
+
+	public static final String ASSIGNMENT_CATEGORIES = "select distinct(sfa_display) from stfaty_mobile_referral, stfaty_ref_assign, "
+			+ "stfaty_assign_val where smr_ra_id = ra_id and ra_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, "
+			+ "stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' ) and smr_sfa_code = sfa_code and smr_date_end is null";
+
+	public static final String REFERRAL_CATEGORIES = "SELECT distinct(mrc_name),mrc_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
+			+ " WHERE smr_mrc_id = mrc_id and smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
+			+ " WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa'  order by mrc_name";
 
 }

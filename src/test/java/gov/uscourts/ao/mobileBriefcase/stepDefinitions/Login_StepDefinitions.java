@@ -4,6 +4,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Base.changeWindow;
 
 import java.net.MalformedURLException;
 
+import cucumber.api.DataTable;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -24,8 +25,8 @@ public class Login_StepDefinitions implements iOSCapabilities {
 	}
 
 	@When("^User enters Credentials to Login$")
-	public void and_User_enters_Crdenetials_to_Login() {
-		logPage.sendCredentials();
+	public void and_User_enters_Crdenetials_to_Login(DataTable userCredentials) {
+		logPage.sendCredentials( userCredentials);
 
 	}
 
@@ -44,8 +45,8 @@ public class Login_StepDefinitions implements iOSCapabilities {
 	}
 
 	@Then("^After user navigates to Appellate DC Development - CMKA - dev$")
-	public void after_user_navigates_to_Appellate_DC_Development_CMKA_dev() {
-		logPage.getCMKA();
+	public void after_user_navigates_to_Appellate_DC_Development_CMKA_dev(DataTable userCredentials) {
+		logPage.getCMKA(userCredentials);
 		
 
 	}

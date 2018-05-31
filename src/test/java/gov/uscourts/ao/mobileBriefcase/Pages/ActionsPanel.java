@@ -55,7 +55,7 @@ public class ActionsPanel {
 
 	public static List<String> getUiApplicableAction() {
 
-		List<String> dbApplicableActions = new ArrayList<>();
+		List<String> uiApplicableActions = new ArrayList<>();
 
 		for (int i = 2; i <= 12; ++i) {
 
@@ -63,10 +63,10 @@ public class ActionsPanel {
 					.findElement(By.xpath("//XCUIElementTypeTable[@name='DocumentList']/XCUIElementTypeCell[" + i
 							+ "]/XCUIElementTypeStaticText[1]"))
 					.getText().trim();
-			dbApplicableActions.add(actions);
-			sort(dbApplicableActions);
+			uiApplicableActions.add(actions);
+			sort(uiApplicableActions);
 		}
-		return dbApplicableActions;
+		return uiApplicableActions;
 	}
 
 }

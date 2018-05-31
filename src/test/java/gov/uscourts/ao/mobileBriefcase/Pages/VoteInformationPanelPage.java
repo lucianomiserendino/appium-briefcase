@@ -2,6 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
@@ -13,7 +14,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Panels.selectReferralCatego
 import static gov.uscourts.ao.mobileBriefcase.common.Panels.voteInformationPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.assertThatDBEqualsToUI;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.changeDateFormat;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.*;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static org.junit.Assert.assertTrue;
@@ -32,7 +33,7 @@ public class VoteInformationPanelPage {
 	public VoteInformationPanelPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
-
+	String back = "Back";
 	static int filer = 2;
 	static int voteInfo = 3;
 
@@ -80,12 +81,19 @@ public class VoteInformationPanelPage {
 
 	}
 
-
 	public void verifyReliefIsDisplayed() {
 		assertTrue(findElement(By.xpath(locateElement(getAllColumns(Queries.RELIEF)))).isDisplayed());
 	}
-	
-	
+
+	public void getJudgesVoteInfo() {
+
+		assertTrue(getAllColumns(Queries.JUDGEs_VOTE).equals(voteInformationPanel(Actions.SMC, voteInfo)));
+
+		assertTrue(getAllColumns(Queries.VOTE_DATE).split(" ")[0]
+				.equals(changeDateFormat(voteInformationPanel(Actions.RLW, voteInfo), "yyyy-MM-dd")));
+
+		   navigateBack(back);
+	}
 
 	public static String getFiledDate(Actions action) {
 		return changeDateFormat(voteInformationPanel(action, filer).split(":")[1].trim(), "yyyy-MM-dd");
@@ -98,5 +106,7 @@ public class VoteInformationPanelPage {
 
 	}
 
+	
+	
 	
 }

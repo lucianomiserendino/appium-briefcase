@@ -2,19 +2,22 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
+import static gov.uscourts.ao.mobileBriefcase.common.Users.selectUser;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.tapByCoordinates;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getIndex;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getUserCredentials;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import cucumber.api.DataTable;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.common.Configuration;
 import gov.uscourts.ao.mobileBriefcase.common.PlatformVersions;
+import gov.uscourts.ao.mobileBriefcase.common.Users.BriefcaseUsers;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
@@ -25,6 +28,8 @@ public class LoginPage extends Base {
 
 		PageFactory.initElements(new AppiumFieldDecorator(Base.getInstance(PlatformVersions.IOS)), this);
 	}
+
+	private String openBtn = "Open";
 
 	@iOSFindBy(accessibility = "Integration")
 	public MobileElement server;
@@ -44,7 +49,7 @@ public class LoginPage extends Base {
 	@iOSFindBy(accessibility = "Appellate DC Development - CMKA")
 	public MobileElement CMKA;
 
-	@iOSFindBy(accessibility = "User: * User Not Selected *")
+	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
 	public MobileElement selectUser;
 
 	@iOSFindBy(xpath = "//*[contains(@name, 'NavigationRenderer')]/XCUIElementTypeButton[2]")
@@ -59,36 +64,40 @@ public class LoginPage extends Base {
 
 	}
 
-	public void sendCredentials() {
+	public void sendCredentials(DataTable userCredentials) {
 
-		userName.sendKeys(Configuration.getProperty("userName"));
-		password.sendKeys(Configuration.getProperty("password"));
+		userName.sendKeys(getIndex(userCredentials, "userName"));
+		password.sendKeys(getIndex(userCredentials, "password"));
 		clickOn(submButton);
 
 	}
 
 	public void sedKeyButton() {
+		performPageLoad();
 		clickOn(sendKeyButton);
-		
 	}
 
 	public void open() {
-		String openBtn = "Open";
+		
 		clickOn(findElement(By.name(openBtn)));
-
 	}
 
-	public void getCMKA() {
-		//waitToBeClickable(selectUser);
-		//tapByCoordinates("colloton", "steven");
-		// performPageLoad();
-		//
-		 waitToBeClickable(CMKA);
-		pageLoad();
-		tapByCoordinates("motionsPetitionsX", "motionsPetitionsY");
-		tapByCoordinates("dashboardX", "dashboardY");
+	public void getCMKA(DataTable userCredentials) {
+		clickOn(CMKA);
 		performPageLoad();
+		if (getIndex(userCredentials, "userName").equals(Configuration.getProperty("userName"))
+				&& getIndex(userCredentials, "password").equals(Configuration.getProperty("password"))) {
+			performPageLoad();
+			clickOn(selectUser);
+			performPageLoad();
+			getUserCredentials(userCredentials);
 
+		} else {
+
+			selectUser(BriefcaseUsers.MOTIONS_PETITIONS);
+			selectUser(BriefcaseUsers.DASHBOARD);
+			pageLoad();
+		}
 	}
 
 }

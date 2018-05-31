@@ -13,6 +13,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.remote.MobileCapabilityType;
 
 public abstract class Base implements iOSCapabilities {
 
@@ -41,6 +42,7 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(XCODE_SIGNING_ID);
 				SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 				SetCapabilitiy(TAKES_SCREENSHOT);
+			
 		
 
 				driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);

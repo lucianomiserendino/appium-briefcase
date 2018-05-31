@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
-
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.changeDateFormat;
@@ -25,7 +24,7 @@ public class SortingOnTheReferralListPage {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
-	@iOSFindBy(xpath = "(//XCUIElementTypeOther[@name='Background'])[4]")
+	@iOSFindBy(xpath = "//*[@label='Motions/Petitions']")
 	public static MobileElement motionsPetitions;
 
 	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/child::*//*[contains(@name, 'Date')]")
@@ -50,7 +49,7 @@ public class SortingOnTheReferralListPage {
 	public static MobileElement caseUpArrowBtn;
 
 	public void clickOnMotionsPetitions() {
-		waitToBeClickable(motionsPetitions);
+		motionsPetitions.click();
 		performPageLoad();
 
 	}

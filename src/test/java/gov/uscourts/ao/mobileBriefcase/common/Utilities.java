@@ -1,7 +1,9 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Users.selectUser;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -14,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -22,6 +25,8 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 
+import cucumber.api.DataTable;
+import gov.uscourts.ao.mobileBriefcase.common.Users.BriefcaseUsers;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 
@@ -61,7 +66,6 @@ public class Utilities extends Base {
 	}
 
 	public static void click(String xpath) {
-
 		clickOn(findElement(By.xpath(xpath)));
 
 	}
@@ -136,6 +140,18 @@ public class Utilities extends Base {
 
 	}
 
+	public static void clickOn(MobileElement element) {
+
+		try {
+			if (element.isDisplayed()) {
+				element.click();
+			}
+		} catch (Exception e) {
+			e.getMessage();
+		}
+
+	}
+
 	public static void captureScreenShots() {
 
 		String path = "./src/test/resources/pdfScreenShots";
@@ -152,7 +168,7 @@ public class Utilities extends Base {
 
 	}
 
-	public static void tapByCoordinates(String xCoordinates, String yCoordinates) {
+	public static void tapByCoordinate(String xCoordinates, String yCoordinates) {
 		new TouchAction(driver).tap(getCoordinates(xCoordinates), getCoordinates(yCoordinates)).perform();
 
 	}
@@ -197,6 +213,43 @@ public class Utilities extends Base {
 	public static String split(String caseNum, String substr, int index) {
 		return (caseNum + " ").split(substr)[index].split(" ")[0].trim();
 
+	}
+
+	public static void navigateBack(String back) {
+		findElement(By.name(back)).click();
+	}
+
+	public static void navigateBack(MobileElement element, BriefcaseUsers user) {
+		element.click();
+		Page.performPageLoad();
+		selectUser(user);
+		driver.navigate().back();
+	}
+
+	public static void selectAUser(BriefcaseUsers user) {
+		selectUser(user);
+		pageLoad();
+		selectUser(BriefcaseUsers.MOTIONS_PETITIONS);
+		selectUser(BriefcaseUsers.DASHBOARD);
+
+	}
+
+	public static String getIndex(DataTable userCredentials, String object) {
+		List<Map<String, String>> credentials = userCredentials.asMaps(String.class, String.class);
+		return credentials.get(0).get(object);
+	}
+
+	public static void getUserCredentials(DataTable userCredentials) {
+
+		if (getIndex(userCredentials, "briefcaseUser").equals(Configuration.getProperty("STAFF_ATTORNEYS"))) {
+			selectUser(BriefcaseUsers.STAFF_ATTORNEYS);
+
+		} else if (getIndex(userCredentials, "briefcaseUser").equals(Configuration.getProperty("APPELLATE_JUDGES"))) {
+			selectUser(BriefcaseUsers.APPELLATE_JUDGES);
+
+		} else if (getIndex(userCredentials, "briefcaseUser").equals(Configuration.getProperty("BANKRUPTCY_JUDGES"))) {
+			selectUser(BriefcaseUsers.BANKRUPTCY_JUDGES);
+		}
 	}
 
 }

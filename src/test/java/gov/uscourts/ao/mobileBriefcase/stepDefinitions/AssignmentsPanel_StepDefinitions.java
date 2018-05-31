@@ -29,13 +29,14 @@ public class AssignmentsPanel_StepDefinitions {
 	public void user_observes_there_is_an_assignment_for_and(String assignmentForKyle, String assignmentForEssley)
 			throws ParseException {
 		page.getAssignmentLinkedtoTheReferral(assignmentForKyle, assignmentForEssley);
+		
 
 	}
 
 	@And("^User observes there is an assignment for \"([^\"]*)\"$")
 	public void user_observes_there_is_an_assignment_for(String assignmentForCourtney) {
 		page.getAssignmentLinkedtoCase(assignmentForCourtney);
-		page.navigateBack();
+
 
 	}
 

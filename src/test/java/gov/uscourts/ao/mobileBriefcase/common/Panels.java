@@ -1,5 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
+import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
@@ -101,5 +102,20 @@ public class Panels {
 		return findElement(By.xpath(getVoteInformation(initial, index))).getText();
 	}
 
+	public static List<String> getCategories(String name, int startRow, int endRow, int cellIndex) {
+
+		List<String> uiCategories = new ArrayList<>();
+
+		for (int i = startRow; i <= endRow; ++i) {
+
+			String actions = driver.findElement(By.xpath("//XCUIElementTypeTable[@name='" + name
+					+ "']/XCUIElementTypeCell[" + i + "]/XCUIElementTypeStaticText[" + cellIndex + "]")).getText()
+					.trim();
+			uiCategories.add(actions);
+			sort(uiCategories);
+		}
+		return uiCategories;
+
+	}
 
 }
