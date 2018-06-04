@@ -113,5 +113,10 @@ public abstract class Base implements iOSCapabilities {
 		}
 
 	}
+	
+	
+	public enum PlatformVersions {
+		   IOS,WINDOWS
+		}
 
 }

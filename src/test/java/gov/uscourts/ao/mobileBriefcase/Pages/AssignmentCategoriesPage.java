@@ -2,10 +2,11 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
-import static gov.uscourts.ao.mobileBriefcase.common.ConstantVariables.getConstants;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.getCategories;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.getReferralCategories;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Panels.getCategories;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.*;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getCollapsablePanel;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectAUser;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -14,14 +15,16 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
-import gov.uscourts.ao.mobileBriefcase.common.ConstantVariables;
-import gov.uscourts.ao.mobileBriefcase.common.Users.BriefcaseUsers;
+import gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users;
+import gov.uscourts.ao.mobileBriefcase.common.Constants;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class AssignmentCategoriesPage implements ConstantVariables {
+
+public class AssignmentCategoriesPage implements Constants {
+
 
 	public AssignmentCategoriesPage() {
 
@@ -33,15 +36,22 @@ public class AssignmentCategoriesPage implements ConstantVariables {
 	private int cellIndex = 2;
 	private String name = "Categories";
 
-	@WithTimeout(time = 5, unit = TimeUnit.SECONDS)
+
+
+	
+	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
 	public static MobileElement selectUser;
 
+	
+	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'Senior Staff Attorney')]")
 	public static MobileElement staffAttorney;
 
 	public void selectAnAttorney() {
-		selectAUser(BriefcaseUsers.BROWN_BENJAMIN);
+
+		selectAUser(Users.BROWN_BENJAMIN);
+
 
 	}
 
@@ -59,7 +69,8 @@ public class AssignmentCategoriesPage implements ConstantVariables {
 	}
 
 	public void osberveReferralCategories() {
-		List<String> uiRefCategories = getConstants();
+
+		List<String> uiRefCategories = getReferralCategories();
 		List<String> dbuiRefCategories = executeQuery(Queries.REFERRAL_CATEGORIES);
 
 		assertDbContainsAllFromUi(dbuiRefCategories, uiRefCategories);
@@ -76,8 +87,11 @@ public class AssignmentCategoriesPage implements ConstantVariables {
 		}
 
 		finally {
-			selectAUser(BriefcaseUsers.DASHBOARD);
-			navigateBack(selectUser, BriefcaseUsers.STAFF_ATTORNEYS);
+
+			getCollapsablePanel(selectUser, Users.STAFF_ATTORNEYS);
+
+			
+
 		}
 
 	}

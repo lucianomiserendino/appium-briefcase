@@ -122,5 +122,10 @@ public class DBUtilities {
 		}
 
 	}
+	
+	public enum DBType {
+		CMKA,MYSQL
+	}
+
 
 }

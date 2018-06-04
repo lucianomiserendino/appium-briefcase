@@ -6,10 +6,12 @@ import gov.uscourts.ao.mobileBriefcase.Pages.ActionsPanel;
 
 public class ActionsPanel_StepDefinitions {
 	ActionsPanel page;
+
 	
 	@Given("^User verifies \"([^\"]*)\" is diplayed and  expands the Actions panel$")
 	public void user_verifies_is_diplayed_and_expands_the_Actions_panel(String actionsPanel) {
 		page=new ActionsPanel();
+		page.selectAnAttorney();
 		page.verifyActionsPanelIsDisplayed(actionsPanel);
 
 	}
@@ -19,4 +21,5 @@ public class ActionsPanel_StepDefinitions {
 		page.compareApplicableActions();
 
 	}
+
 }

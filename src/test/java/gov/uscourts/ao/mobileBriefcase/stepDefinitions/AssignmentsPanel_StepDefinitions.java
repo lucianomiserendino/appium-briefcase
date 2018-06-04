@@ -15,12 +15,14 @@ public class AssignmentsPanel_StepDefinitions {
 	@Given("^User selects Judge Colloton >> Motions/Petitions >> case \"([^\"]*)\"$")
 	public void user_selects_Judge_Colloton_Motions_Petitions_case(String caseNum) {
 		page = new AssignmentsPanelPage();
+		page.selectAnAttorney();
 		page.getCase(caseNum);
 
 	}
 
-	@When("^User  observes a collapsible panel entitled \"([^\"]*)\" displays\\.$")
-	public void user_observes_a_collapsible_panel_entitled_displays(String assignmentPanel) {
+
+@When("^User  observes a collapsible panel entitled \"([^\"]*)\" displays and expands the Assignments panel$")
+public void user_observes_a_collapsible_panel_entitled_displays_and_expands_the_Assignments_panel(String assignmentPanel)  {
 		page.verifyAssignmentIsDisplayed(assignmentPanel);
 
 	}

@@ -1,10 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public interface ConstantVariables {
-
+public interface Constants {
 
 	public static final String ANDERS_CASES = "Anders Cases";
 
@@ -18,19 +14,16 @@ public interface ConstantVariables {
 
 	public static final String UNASSIGNED_REFERRALS = "Unassigned Referrals";
 
-	public static  List<String> getConstants() {
-		 List<String> variables = new ArrayList<>();
-		 variables.add(ANDERS_CASES);
-		 variables.add(IFP_MOTION_IN_THIS_COURT);
-		 variables.add(NO_ARGUMENT_REFERRALS);
-		 variables.add(PRO_SE_REFS);
-		 variables.add(SUMMARY_DISPOSITION);
-		 variables.add(UNASSIGNED_REFERRALS);
-		 return variables;
-		 
-		 
-	
+	public static final int ANDERS = 1;
 
-	}
+	public static final int IFP = 2;
+
+	public static final int NO_ARGUMENT = 3;
+
+	public static final int PRO = 3;
+
+	public static final int SUMMARY = 1;
+
+	public static final int UNASSIGNED = 4;
 
 }

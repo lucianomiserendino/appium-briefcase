@@ -1,6 +1,9 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
+
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.*;
+
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
@@ -11,7 +14,7 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 
-public class Panels {
+public class Helper {
 
 	public static String selectReferralCategory(Actions action) {
 
@@ -118,4 +121,31 @@ public class Panels {
 
 	}
 
+	public static List<String> getReferralCategories() {
+		List<String> variables = new ArrayList<>();
+		variables.add(ANDERS_CASES);
+		variables.add(IFP_MOTION_IN_THIS_COURT);
+		variables.add(NO_ARGUMENT_REFERRALS);
+		variables.add(PRO_SE_REFS);
+		variables.add(SUMMARY_DISPOSITION);
+		variables.add(UNASSIGNED_REFERRALS);
+		return variables;
+
+	}
+
+	public enum Actions {
+
+		SORT_DATES_IN_ASCENDING_ORDER, SORT_DATES_IN_DESCENDING_ORDER, SORT_CASES_IN_ASCENDING_ORDER, SORT_CASES_IN_DESCENDING_ORDER,
+
+		/** Referral categories */
+		PENDING_TASKS, PETITIONS_FOR_REHEARING, CASES_ON_CALENDAR, MOTIONS_PETITIONS, SCREENING_PANELS,
+
+		/** Panels */
+		ASSIGNMENTS, VOTE_INFORMATION, ACTIONS, JUDGMENT_FILED, PETITION_FILED,
+
+		/** Judge's initials */
+		SMC, RLW, RWG,
+
+		FILERs_INFORMATION
+	}
 }

@@ -34,15 +34,16 @@ public class ReferralCategories_StepDefinitions {
 
 		if (DBPendingTasks.size() > 0) {
 			List<String> UIPendingTasks = Arrays.asList(page.verifyIfPendingTasksAreDisplayed());
-
 			assertEquals("-----RECORD COUNT MISMATCHED-----", DBPendingTasks, UIPendingTasks);
 
 		}
 
 	}
 
-	@Given("^User finds the valid non-orally argued categories for the judge$")
-	public void user_finds_the_valid_non_orally_argued_categories_for_the_judge() {
+	@Given("^User  Observes the categories on the dashboard page\\. The Petitions for Rehearing, Motions/Petitions and Screening Panels categories are all non-orally argued categories\\.$")
+	public void user_Observes_the_categories_on_the_dashboard_page_The_Petitions_for_Rehearing_Motions_Petitions_and_Screening_Panels_categories_are_all_non_orally_argued_categories()
+			throws Throwable {
+
 		page = new ReferralCategoriesPage();
 
 		List<String> DBnonOrallyarguedCases_SI_VALUE_N = executeQuery(Queries.SI_VALUE_N);

@@ -7,11 +7,13 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getListOfCategori
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getNumOfDisplayedCases;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.PageFactory;
 
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class ReferralCategoriesPage {
@@ -21,11 +23,12 @@ public class ReferralCategoriesPage {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
-	@iOSFindBy(xpath = "(//XCUIElementTypeOther[@name='Background'])[1]")
+	
+	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	@iOSFindBy(accessibility = "Pending Tasks")
 	public static MobileElement pendingTasks;
 
-	@iOSFindBy(xpath = "(//XCUIElementTypeOther[@name='Background'])[4]")
-	public static MobileElement MotionsPetitions;
+
 
 	@iOSFindBy(xpath = "//*[contains(@name, 'Total')]")
 	public static MobileElement numberOfNonOrallyARGCases;
@@ -61,7 +64,7 @@ public class ReferralCategoriesPage {
 	}
 
 	public String getNumOfdisplayedCases() {
-		clickOn(MotionsPetitions);
+		clickOn(motionsPetitions);
 		performPageLoad();
 		return getNumOfDisplayedCases(numberOfNonOrallyARGCases, "start", "end");
 	}

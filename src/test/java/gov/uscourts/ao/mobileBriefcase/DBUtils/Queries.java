@@ -142,8 +142,58 @@ public class Queries {
 			+ "stfaty_assign_val where smr_ra_id = ra_id and ra_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, "
 			+ "stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' ) and smr_sfa_code = sfa_code and smr_date_end is null";
 
+
+	//Observe there are six referral categories listed
+
 	public static final String REFERRAL_CATEGORIES = "SELECT distinct(mrc_name),mrc_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
 			+ " WHERE smr_mrc_id = mrc_id and smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
 			+ " WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa'  order by mrc_name";
+
+
+	//Query to Verify the number of referrals in each anders_cases category
+	public static final String ANDERS_CASES = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = (SELECT distinct mrc_id FROM"
+			+ " stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and mrc_name=\"Anders Cases\" and smr_assign_pe_id = "
+			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and"
+			+ " smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa' ) and smr_assign_pe_id = "
+			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' )";
+	
+	//Query to Verify the number of referrals in each ifp_motion_in_this_court category
+	public static final String IFP_MOTION_IN_THIS_COURT = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = (SELECT distinct mrc_id FROM"
+			+ " stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and mrc_name=\"IFP motion in this court\" and smr_assign_pe_id = "
+			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and"
+			+ " smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa' ) and smr_assign_pe_id = "
+			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' )";
+
+	//Query to Verify the number of referrals in each no_argument_referrals category
+	public static final String NO_ARGUMENT_REFERRALS = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = (SELECT distinct mrc_id FROM"
+			+ " stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and mrc_name=\"No Argument Referrals\" and smr_assign_pe_id = "
+			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and"
+			+ " smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa' ) and smr_assign_pe_id = "
+			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' )";
+
+	//Query to Verify the number of referrals in each pro_se_refs category
+	public static final String PRO_SE_REFS = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = (SELECT distinct mrc_id FROM"
+			+ " stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and mrc_name=\"Pro Se Refs\" and smr_assign_pe_id = "
+			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and"
+			+ " smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa' ) and smr_assign_pe_id = "
+			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' )";
+
+	//Query to Verify the number of referrals in each summary_disposition category
+	public static final String SUMMARY_DISPOSITION = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = (SELECT distinct mrc_id FROM"
+			+ " stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and mrc_name=\"Summary Disposition\" and smr_assign_pe_id = "
+			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and"
+			+ " smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa' ) and smr_assign_pe_id = "
+			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' )";
+
+	//Query to Verify the number of referrals in each unassigned_referrals category
+	public static final String UNASSIGNED_REFERRALS = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = (SELECT distinct mrc_id FROM"
+			+ " stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and mrc_name=\"Unassigned Referrals\" and smr_assign_pe_id = "
+			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and"
+			+ " smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa' ) and smr_assign_pe_id = "
+			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' )";
+
+	
+	public static final String MBR_EVENT="select * from mbr_event";
+	
 
 }

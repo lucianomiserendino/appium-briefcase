@@ -1,8 +1,9 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.selectUser;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Users.selectUser;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getIndex;
@@ -15,9 +16,8 @@ import org.openqa.selenium.support.PageFactory;
 
 import cucumber.api.DataTable;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users;
 import gov.uscourts.ao.mobileBriefcase.common.Configuration;
-import gov.uscourts.ao.mobileBriefcase.common.PlatformVersions;
-import gov.uscourts.ao.mobileBriefcase.common.Users.BriefcaseUsers;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
@@ -94,9 +94,12 @@ public class LoginPage extends Base {
 
 		} else {
 
-			selectUser(BriefcaseUsers.MOTIONS_PETITIONS);
-			selectUser(BriefcaseUsers.DASHBOARD);
+            pageLoad();
+			selectUser(Users.MOTIONS_PETITIONS);
+			selectUser(Users.DASHBOARD);
+		
 			pageLoad();
+
 		}
 	}
 

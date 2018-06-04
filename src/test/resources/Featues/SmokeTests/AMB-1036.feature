@@ -3,12 +3,20 @@ Feature: Display Vote Information Panel, filer info and judge's initials
 
 Background: 
 
+
+
 	Given  User Navigates to Sever 
 	When  User enters Credentials to Login 
-	#Login as a sysadmin
+        |userName			|password	|
+		|SysadminKasabolotova|Asalta6268!z|
+	
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
-	And After user navigates to Appellate DC Development - CMKA - dev 
+	And After user navigates to Appellate DC Development - CMKA - dev
+	
+		|userName			|password	|briefcaseUser|
+		|SysadminKasabolotova|Asalta6268!z|appellateJudges|
+		
 	And   User selects Judge Colloton  >> Petitions for Rehearing >> "15-3314"
 
 
@@ -28,6 +36,7 @@ If a referral requires voting, a collapsible Vote Information panel displays.  W
        Then  User checks each judge's vote  and the date  displays under their initials
     
 
+
 @AMB_1038
 Scenario: 
 
@@ -37,4 +46,3 @@ Scenario:
       Given User verifies "Actions" is diplayed and  expands the Actions panel 
       Then  User verifies the correct actions display for the selected referral 
 
-   

@@ -1,9 +1,13 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.selectUser;
+
 import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Users.selectUser;
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.*;
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.*;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -26,7 +30,9 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 
 import cucumber.api.DataTable;
-import gov.uscourts.ao.mobileBriefcase.common.Users.BriefcaseUsers;
+
+import gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users;
+
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 
@@ -219,19 +225,25 @@ public class Utilities extends Base {
 		findElement(By.name(back)).click();
 	}
 
-	public static void navigateBack(MobileElement element, BriefcaseUsers user) {
+	public static void navigateBack(MobileElement element, Users user) {
+
 		element.click();
 		Page.performPageLoad();
 		selectUser(user);
 		driver.navigate().back();
 	}
 
-	public static void selectAUser(BriefcaseUsers user) {
+	public static void selectAUser(Users user) {
 		selectUser(user);
 		pageLoad();
-		selectUser(BriefcaseUsers.MOTIONS_PETITIONS);
-		selectUser(BriefcaseUsers.DASHBOARD);
+		selectUser(Users.MOTIONS_PETITIONS);
+		selectUser(Users.DASHBOARD);
 
+	}
+
+	public static void getCollapsablePanel(MobileElement element, Users user) {
+		selectAUser(Users.DASHBOARD);
+		navigateBack(element, user);
 	}
 
 	public static String getIndex(DataTable userCredentials, String object) {
@@ -242,13 +254,15 @@ public class Utilities extends Base {
 	public static void getUserCredentials(DataTable userCredentials) {
 
 		if (getIndex(userCredentials, "briefcaseUser").equals(Configuration.getProperty("STAFF_ATTORNEYS"))) {
-			selectUser(BriefcaseUsers.STAFF_ATTORNEYS);
+
+			selectUser(Users.STAFF_ATTORNEYS);
 
 		} else if (getIndex(userCredentials, "briefcaseUser").equals(Configuration.getProperty("APPELLATE_JUDGES"))) {
-			selectUser(BriefcaseUsers.APPELLATE_JUDGES);
+			selectUser(APPELLATE_JUDGES);
 
 		} else if (getIndex(userCredentials, "briefcaseUser").equals(Configuration.getProperty("BANKRUPTCY_JUDGES"))) {
-			selectUser(BriefcaseUsers.BANKRUPTCY_JUDGES);
+			selectUser(Users.BANKRUPTCY_JUDGES);
+
 		}
 	}
 
