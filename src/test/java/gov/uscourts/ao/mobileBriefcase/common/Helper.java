@@ -5,6 +5,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.*;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
 import static java.util.Collections.sort;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+
+import io.appium.java_client.MobileElement;
 
 public class Helper {
 
@@ -48,15 +51,30 @@ public class Helper {
 		return "//*[contains(@name, '" + element + "')]";
 	}
 
-	public static boolean panelIsDisplayed(String element) {
+	public static boolean elementIsDisplayed(String element) {
 		return isDisplayed(By.xpath(locateElement(element)));
-
 	}
 
 	public static void clickOnPanel(String element) {
-		if (panelIsDisplayed(element) == true)
+		if (elementIsDisplayed(element) == true)
 			;
 		click(locateElement(element));
+	}
+
+	/** Panel name, actions, */
+	public static void getPanel(String panel, List<MobileElement> actions, String element) {
+
+		clickOn(findElement(By.xpath(locateElement(panel))));
+		try {
+			for (MobileElement e : actions) {
+				if (e.getText().contains(element) == true) {
+					e.click();
+				}
+			}
+		} catch (NullPointerException e) {
+			e.getMessage();
+		}
+
 	}
 
 	public static String getVoteInformation(Actions action, int index) {

@@ -57,8 +57,9 @@ public class VoteInformationPanelPage {
 
 	public void selectCase(String caseNumber) {
 
+		performPageLoad();
 		selectCaseNumber(Actions.PETITIONS_FOR_REHEARING, caseNumber);
-		
+
 	}
 
 	/** Observe the Vote Information Panel displays */

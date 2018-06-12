@@ -21,7 +21,6 @@ Background:
 	
 
 
-@Smoke
 @AMB_1021 
 Scenario: 
 	Staff members can be assigned to referrals and/or just cases. 
@@ -31,12 +30,7 @@ Scenario:
 	Then User observes there is an assignment for "Kyle Essley" and "Daniel Hay" 
 	
 
-@Smoke
-@AMB_1021 	
-
 	
-
-@AMB_1021	
 
 	Scenario: 
 	Staff members can be assigned to referrals and/or just cases. 

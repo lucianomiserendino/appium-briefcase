@@ -13,7 +13,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSDriver;
-import io.appium.java_client.remote.MobileCapabilityType;
 
 public abstract class Base implements iOSCapabilities {
 
@@ -45,7 +44,7 @@ public abstract class Base implements iOSCapabilities {
 			
 		
 
-				driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
+				driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
 
 				break;
 
@@ -76,8 +75,10 @@ public abstract class Base implements iOSCapabilities {
 			SetCapabilitiy(BROWSER_NAME);
 			SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 			SetCapabilitiy(ENSURING_CLEAN_SESSION);
+			
+			System.out.println(System.getProperty("remotewebdriver.url"));
 
-			driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
+			driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
 		} catch (MalformedURLException e) {
 
 			e.printStackTrace();

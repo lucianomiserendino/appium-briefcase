@@ -2,12 +2,16 @@ package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 
-import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.selectUser;
 
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.APPELLATE_JUDGES;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.*;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElement;
-import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.*;
-import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -25,14 +29,14 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 
 import cucumber.api.DataTable;
-
 import gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users;
-
+import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 
@@ -53,6 +57,31 @@ public class Utilities extends Base {
 
 		}
 		return referrals;
+
+	}
+
+	public static  void getPanel(String query, String message, String element) {
+
+		try {
+			if (executeQuery(query).size() > 0) {
+				assertTrue(message, elementIsDisplayed(element) == true);
+				clickOnPanel(element);
+
+			} else {
+				assertTrue(!(executeQuery(query).size() > 0));
+
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+
+		}
+
+	}
+
+	public static void selectCaseNumber(Actions action, String caseNum) {
+		clickOn(findElement(By.xpath(selectReferralCategory(action))));
+		performPageLoad();
+		selectCase(locateElement(caseNum));
 
 	}
 
@@ -109,7 +138,7 @@ public class Utilities extends Base {
 	}
 
 	public static String getText(MobileElement elements) {
-		return elements.getText();
+		return elements.getText().trim();
 
 	}
 
@@ -184,9 +213,9 @@ public class Utilities extends Base {
 
 	}
 
-	public static String getNumOfDisplayedCases(MobileElement element, String start, String end) {
-		return element.getText().substring(getCoordinates(start), getCoordinates(end)).trim();
-
+	public static String  getNumOfDisplayedCases(MobileElement element){
+		return getText(element).split(",")[1].split("T")[0].trim();
+		
 	}
 
 	public static void assertThatDBEqualsToUI(String message, String query, List<String> uiValue) {
@@ -229,15 +258,15 @@ public class Utilities extends Base {
 
 		element.click();
 		Page.performPageLoad();
-		selectUser(user);
+		select(user);
 		driver.navigate().back();
 	}
 
 	public static void selectAUser(Users user) {
-		selectUser(user);
+		select(user);
 		pageLoad();
-		selectUser(Users.MOTIONS_PETITIONS);
-		selectUser(Users.DASHBOARD);
+		select(Users.MOTIONS_PETITIONS);
+		select(Users.DASHBOARD);
 
 	}
 
@@ -255,15 +284,39 @@ public class Utilities extends Base {
 
 		if (getIndex(userCredentials, "briefcaseUser").equals(Configuration.getProperty("STAFF_ATTORNEYS"))) {
 
-			selectUser(Users.STAFF_ATTORNEYS);
+			select(Users.STAFF_ATTORNEYS);
 
 		} else if (getIndex(userCredentials, "briefcaseUser").equals(Configuration.getProperty("APPELLATE_JUDGES"))) {
-			selectUser(APPELLATE_JUDGES);
+			select(APPELLATE_JUDGES);
 
 		} else if (getIndex(userCredentials, "briefcaseUser").equals(Configuration.getProperty("BANKRUPTCY_JUDGES"))) {
-			selectUser(Users.BANKRUPTCY_JUDGES);
+			select(Users.BANKRUPTCY_JUDGES);
 
 		}
+	}
+	
+	public static void verifyTextIsDisplayed(MobileElement element, String text) {
+		try {
+			assertTrue(elementIsPresent(element) == true);
+
+			assertEquals(text, getText(element));
+
+		} catch (AssertionError e) {
+
+			e.printStackTrace();
+		}
+
+	}
+
+	public static boolean elementIsPresent(MobileElement element) {
+		try {
+			element.isDisplayed();
+		} catch (NoSuchElementException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		return true;
 	}
 
 }

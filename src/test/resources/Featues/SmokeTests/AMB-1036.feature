@@ -19,7 +19,7 @@ Background:
 		
 	And   User selects Judge Colloton  >> Petitions for Rehearing >> "15-3314"
 
-
+@S
 @AMB_1036 
 Scenario: 
 If a referral requires voting, a collapsible Vote Information panel displays.  When expanded, it displays the following information:
@@ -36,7 +36,7 @@ If a referral requires voting, a collapsible Vote Information panel displays.  W
        Then  User checks each judge's vote  and the date  displays under their initials
     
 
-
+@S
 @AMB_1038
 Scenario: 
 
@@ -45,4 +45,8 @@ Scenario:
 
       Given User verifies "Actions" is diplayed and  expands the Actions panel 
       Then  User verifies the correct actions display for the selected referral 
+
+
+
+
 

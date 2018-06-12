@@ -1,24 +1,21 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.selectReferralCategory;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getCollapsablePanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectAUser;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCase;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.split;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 
@@ -53,9 +50,7 @@ public class AssignmentsPanelPage {
 	}
 
 	public void getCase(String caseNum) {
-		click(selectReferralCategory(Actions.MOTIONS_PETITIONS));
-		selectCase("//*[contains(@name, '" + caseNum + "')]");
-
+		selectCaseNumber(Actions.MOTIONS_PETITIONS, caseNum);
 	}
 
 	public void verifyAssignmentIsDisplayed(String assignmentOnReferral) {
@@ -106,7 +101,8 @@ public class AssignmentsPanelPage {
 
 		List<String> dbCaseAssignments = executeQuery(Queries.STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE);
 		try {
-			if (assignments.isDisplayed());
+			if (assignments.isDisplayed())
+				;
 			assertTrue("STAFF ASSIGNMENTS LINKED TO THE CASE ARE NOT DISPLAYED",
 					dbCaseAssignments.containsAll(uiCaseAssignment));
 

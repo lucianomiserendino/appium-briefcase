@@ -1,10 +1,17 @@
 package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
 public class Queries {
-	static String a = "";
+
+	public static final String CASEID = "82636";
+	public static final String EL_ID = "3060";
+	
 	// Query to find appellate judge
 	public static final String PE_ID = "(SELECT  PE_ID FROM PERSON, PERSONROLE WHERE "
 			+ "PE_PR_PRID=PR_PRID AND PE_RT_CODE='jud' and PR_LAST_NAME='Colloton')";
+
+	public static final String CMR_ID = "SELECT cmr_id FROM chm_mobile_referral, chambers_case_to_referral, chambers_referral"
+			+ " WHERE cpr_vote_req = 'y' and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = " + CASEID
+			+ " and" + " cmr_cyv_code = 'motpet' and cmr_ju_pe_id = " + PE_ID;
 
 	// Query to find the valid non-orally argued categories for the judge:
 	public static final String CYV_CATEGORY = "SELECT DISTINCT CYV_CATEGORY FROM CHM_MOBILE_REFERRAL,"
@@ -13,7 +20,7 @@ public class Queries {
 
 	// Query the site table where si_code = 'briefcaseTargetOnly' if
 	// the si_value= 'y', run the following query
-	public static final String SI_VALUE_Y = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
+	public static final String MOTIONS_PETITIONS_SI_VALUE_Y = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
 			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = " + PE_ID
 			+ " AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'Motions/Petitions' "
 			+ "AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
@@ -21,12 +28,42 @@ public class Queries {
 
 	// Query the site table where si_code = 'briefcaseTargetOnly' if the
 	// si_value = 'n' or does not exist, run the following query
-	public static final String SI_VALUE_N = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
+	public static final String MOTIONS_PETITIONS_SI_VALUE_N = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
 			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = " + PE_ID
 			+ "AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'Motions/Petitions' "
 			+ "AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
 			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID ";
 
+	public static final String PETITIONS_FOR_REHEARING_SI_VALUE_Y = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
+			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = " + PE_ID
+			+ " AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'Petitions for Rehearing' "
+			+ "AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
+			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID  AND CD_CASE_EXT  = 1";
+
+	// Query the site table where si_code = 'briefcaseTargetOnly' if the
+	// si_value = 'n' or does not exist, run the following query
+	public static final String PETITIONS_FOR_REHEARING_SI_VALUE_N = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
+			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = " + PE_ID
+			+ "AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'Petitions for Rehearing' "
+			+ "AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
+			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID ";
+
+
+	public static final String SCREENING_PANELS_SI_VALUE_Y = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
+			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = " + PE_ID
+			+ " AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'Screening Panels' "
+			+ "AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
+			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID  AND CD_CASE_EXT  = 1";
+
+	// Query the site table where si_code = 'briefcaseTargetOnly' if the
+	// si_value = 'n' or does not exist, run the following query
+	public static final String SCREENING_PANELS_SI_VALUE_N = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
+			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = " + PE_ID
+			+ "AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'Screening Panels' "
+			+ "AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
+			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID ";
+
+	
 	// Query to get valid categories for the logged in user
 	public static final String DB_LIST_OF_CATEGORIES = "SELECT DISTINCT (CYV_CATEGORY) FROM "
 			+ "CHM_MOBILE_REFERRAL, CHM_REFTYPE_VAL WHERE  CMR_JU_PE_ID = " + PE_ID
@@ -40,7 +77,7 @@ public class Queries {
 			+ " AND  CHC_CHA_ID = CHA_ID AND CMR_JU_PE_ID = CHA_CHM_PE_ID";
 
 	// Query to find staff assignments associated with the referral.
-	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL = "SELECT DISTINCT PR_FIRST_NAME FROM CHM_MOBILE_REFERRAL,"
+	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL = "SELECT DISTINCT pr_first_name, pr_last_name,cav_description FROM CHM_MOBILE_REFERRAL,"
 			+ " CHAMBERS_CASE_TO_REFERRAL, CHM_ASSIGN_TO_CASE, CHAMBERS_ASSIGNMENT, PERSON, PERSONROLE, CHM_ASSIGN_TYPE_VAL "
 			+ "WHERE  CMR_CS_CASEID = 82226  AND CMR_CCR_ID = CCR_ID AND CCR_CPR_ID = CHC_CPR_ID AND CHC_CS_CASEID = "
 			+ "CMR_CS_CASEID AND CHC_CHA_ID = CHA_ID AND CHA_JU_PE_ID =" + PE_ID
@@ -53,7 +90,7 @@ public class Queries {
 			+ " maxresults WHERE ad.chd_cha_id in (2236, 2235)  and chd_cdv_code = cdv_code and ad.chd_cha_id= "
 			+ " maxresults.chd_cha_id and ad.chd_date = maxresults.maxnum ";
 
-	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE = "SELECT DISTINCT  PR_LAST_NAME  FROM chm_mobile_referral, chambers_case_to_referral,"
+	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE = "SELECT DISTINCT  pr_first_name, pr_last_name,cav_description  FROM chm_mobile_referral, chambers_case_to_referral,"
 			+ " chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val WHERE "
 			+ "cmr_cs_caseid = 82226 and cmr_ccr_id = ccr_id and chc_cs_caseid = cmr_cs_caseid and chc_cpr_id = 1 and "
 			+ "chc_cha_id = cha_id and cha_ju_pe_id = " + PE_ID
@@ -129,71 +166,77 @@ public class Queries {
 			+ "NVL(cpr_vote_req,'') <> 'n' and cvv_display='Deny' and ju_initials='SMC'order by chv_date_created  desc";
 
 	public static final String APPLICABLE_ACTIONS = "select el_list_text from mbr_event join event_list on el_id = me_el_id where "
-			+ "(me_cyv_code = (select cmr_cyv_code from chm_mobile_referral where cmr_id = 2302201) or me_cyv_code = \"-\" "
-			+ "or me_cyv_code is null) and (me_ic_code = (select cmr_ic_code from chm_mobile_referral where cmr_id = 2302201) "
+			+ "(me_cyv_code = (select cmr_cyv_code from chm_mobile_referral where cmr_id = (" + CMR_ID
+			+ ")) or me_cyv_code = \"-\" "
+			+ "or me_cyv_code is null) and (me_ic_code = (select cmr_ic_code from chm_mobile_referral where cmr_id = ("
+			+ CMR_ID + ")) "
 			+ "or me_ic_code is null or me_ic_code = \"-\") and (me_cav_code = (select distinct(cav_code) FROM chm_mobile_referral JOIN chambers_case_to_referral "
 			+ "on ccr_id = cmr_ccr_id JOIN chm_assign_to_case on chc_cpr_id = ccr_cpr_id and chc_cs_caseid = cmr_cs_caseid "
 			+ "JOIN chambers_assignment on cha_id = chc_cha_id and cha_chm_pe_id = cmr_ju_pe_id "
 			+ "JOIN chm_assign_type_val on cav_code = cha_cav_code JOIN chambers_assign_date on chd_cha_id = cha_id "
-			+ "join chm_assign_datetype_val on cdv_code = chd_cdv_code "
-			+ "WHERE chc_date_end is null and cmr_id = 2302201) or me_cav_code = \"-\" or me_cav_code is null) and el_functions is not null ";
+			+ "join chm_assign_datetype_val on cdv_code = chd_cdv_code " + "WHERE chc_date_end is null and cmr_id = ("
+			+ CMR_ID + ")) or me_cav_code = \"-\" or me_cav_code is null) and el_functions is not null ";
 
 	public static final String ASSIGNMENT_CATEGORIES = "select distinct(sfa_display) from stfaty_mobile_referral, stfaty_ref_assign, "
 			+ "stfaty_assign_val where smr_ra_id = ra_id and ra_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, "
 			+ "stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' ) and smr_sfa_code = sfa_code and smr_date_end is null";
 
-
-	//Observe there are six referral categories listed
+	// Observe there are six referral categories listed
 
 	public static final String REFERRAL_CATEGORIES = "SELECT distinct(mrc_name),mrc_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
 			+ " WHERE smr_mrc_id = mrc_id and smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
 			+ " WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa'  order by mrc_name";
 
-
-	//Query to Verify the number of referrals in each anders_cases category
+	// Query to Verify the number of referrals in each anders_cases category
 	public static final String ANDERS_CASES = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = (SELECT distinct mrc_id FROM"
 			+ " stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and mrc_name=\"Anders Cases\" and smr_assign_pe_id = "
 			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and"
 			+ " smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa' ) and smr_assign_pe_id = "
 			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' )";
-	
-	//Query to Verify the number of referrals in each ifp_motion_in_this_court category
+
+	// Query to Verify the number of referrals in each ifp_motion_in_this_court
+	// category
 	public static final String IFP_MOTION_IN_THIS_COURT = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = (SELECT distinct mrc_id FROM"
 			+ " stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and mrc_name=\"IFP motion in this court\" and smr_assign_pe_id = "
 			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and"
 			+ " smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa' ) and smr_assign_pe_id = "
 			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' )";
 
-	//Query to Verify the number of referrals in each no_argument_referrals category
+	// Query to Verify the number of referrals in each no_argument_referrals
+	// category
 	public static final String NO_ARGUMENT_REFERRALS = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = (SELECT distinct mrc_id FROM"
 			+ " stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and mrc_name=\"No Argument Referrals\" and smr_assign_pe_id = "
 			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and"
 			+ " smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa' ) and smr_assign_pe_id = "
 			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' )";
 
-	//Query to Verify the number of referrals in each pro_se_refs category
+	// Query to Verify the number of referrals in each pro_se_refs category
 	public static final String PRO_SE_REFS = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = (SELECT distinct mrc_id FROM"
 			+ " stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and mrc_name=\"Pro Se Refs\" and smr_assign_pe_id = "
 			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and"
 			+ " smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa' ) and smr_assign_pe_id = "
 			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' )";
 
-	//Query to Verify the number of referrals in each summary_disposition category
+	// Query to Verify the number of referrals in each summary_disposition
+	// category
 	public static final String SUMMARY_DISPOSITION = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = (SELECT distinct mrc_id FROM"
 			+ " stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and mrc_name=\"Summary Disposition\" and smr_assign_pe_id = "
 			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and"
 			+ " smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa' ) and smr_assign_pe_id = "
 			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' )";
 
-	//Query to Verify the number of referrals in each unassigned_referrals category
+	// Query to Verify the number of referrals in each unassigned_referrals
+	// category
 	public static final String UNASSIGNED_REFERRALS = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = (SELECT distinct mrc_id FROM"
 			+ " stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and mrc_name=\"Unassigned Referrals\" and smr_assign_pe_id = "
 			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and"
 			+ " smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa' ) and smr_assign_pe_id = "
 			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' )";
 
-	
-	public static final String MBR_EVENT="select * from mbr_event";
-	
+	public static final String MBR_EVENT = "select * from mbr_event";
+
+	public static final String ACTION_NAME = "select el_list_text FROM event_list where el_id=" + EL_ID;
+
+	public static final String NOTE_DPF_DEFAULT_DESCRIPTION = "select el_functions FROM event_list  where el_list_text= \"Send Directions to Clerk's Office\"";
 
 }

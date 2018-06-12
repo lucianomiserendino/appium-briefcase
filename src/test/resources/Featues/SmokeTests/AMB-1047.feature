@@ -13,16 +13,16 @@ Background:
 	
 		|userName			|password	|briefcaseUser|
 		|SysadminKasabolotova|Asalta6268!z|staffAttorney|
-@SK
-@Smoke
+
+@S
 @AMB_1047
 Scenario: 
 	Assignment Categories display on the dashboard for SAs
 	Given User selects staff attorney Benjamin Brown in the user's list
 	Then User observes the assignment categories that display on the dashboard. 
 	
-@SK
-@Smoke
+
+@S
 @AMB_1049
 	Scenario: 
 	 Once an assignment category is selected, referrals are grouped based on referral categories. 

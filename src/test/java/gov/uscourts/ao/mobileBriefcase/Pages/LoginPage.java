@@ -1,13 +1,16 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 
-import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.selectUser;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
+
+import static gov.uscourts.ao.mobileBriefcase.common.Page.*;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getIndex;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getUserCredentials;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.*;
+
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -20,6 +23,7 @@ import gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users;
 import gov.uscourts.ao.mobileBriefcase.common.Configuration;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class LoginPage extends Base {
@@ -46,9 +50,11 @@ public class LoginPage extends Base {
 	@FindBy(partialLinkText = "Send Key to Device")
 	public WebElement sendKeyButton;
 
+	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "Appellate DC Development - CMKA")
 	public MobileElement CMKA;
 
+	@WithTimeout(time = 15, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
 	public MobileElement selectUser;
 
@@ -83,21 +89,20 @@ public class LoginPage extends Base {
 	}
 
 	public void getCMKA(DataTable userCredentials) {
-		clickOn(CMKA);
+		waitToBeClickable(CMKA);
 		performPageLoad();
 		if (getIndex(userCredentials, "userName").equals(Configuration.getProperty("userName"))
 				&& getIndex(userCredentials, "password").equals(Configuration.getProperty("password"))) {
 			performPageLoad();
-			clickOn(selectUser);
+			waitToBeClickable(selectUser);
 			performPageLoad();
 			getUserCredentials(userCredentials);
 
 		} else {
 
             pageLoad();
-			selectUser(Users.MOTIONS_PETITIONS);
-			selectUser(Users.DASHBOARD);
-		
+            select(Users.MOTIONS_PETITIONS);
+            select(Users.DASHBOARD);
 			pageLoad();
 
 		}

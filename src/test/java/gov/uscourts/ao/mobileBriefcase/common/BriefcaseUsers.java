@@ -31,7 +31,7 @@ public class BriefcaseUsers extends Base {
 	private static final int CASES_X = 371;
 	private static final int CASES_Y = 345;
 
-	public static void selectUser(Users coordinates) {
+	public static void select(Users coordinates) {
 
 		switch (coordinates) {
 

@@ -11,7 +11,7 @@
         "steps": [
           {
             "result": {
-              "duration": 35079397047,
+              "duration": 40407002065,
               "status": "passed"
             },
             "line": 5,
@@ -23,28 +23,38 @@
           },
           {
             "result": {
-              "duration": 10125413834,
+              "duration": 9279348705,
               "status": "passed"
             },
             "line": 6,
             "name": "User enters Credentials to Login",
             "match": {
-              "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login()"
+              "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login(DataTable)"
             },
+            "rows": [
+              {
+                "cells": [
+                  "userName",
+                  "password"
+                ],
+                "line": 7
+              },
+              {
+                "cells": [
+                  "chambers courtney",
+                  "Test2020!"
+                ],
+                "line": 8
+              }
+            ],
             "keyword": "When "
           },
           {
             "result": {
-              "duration": 7304378668,
+              "duration": 12880941147,
               "status": "passed"
             },
-            "comments": [
-              {
-                "line": 7,
-                "value": "#Login as Chambers Courtney // Test2020!"
-              }
-            ],
-            "line": 8,
+            "line": 10,
             "name": "User clicks on Send Key to Device",
             "match": {
               "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
@@ -53,10 +63,10 @@
           },
           {
             "result": {
-              "duration": 13800219137,
+              "duration": 16945215704,
               "status": "passed"
             },
-            "line": 9,
+            "line": 11,
             "name": "User navigates to MobileBrifcase App",
             "match": {
               "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
@@ -65,14 +75,30 @@
           },
           {
             "result": {
-              "duration": 44693071850,
+              "duration": 74821981451,
               "status": "passed"
             },
-            "line": 10,
+            "line": 12,
             "name": "After user navigates to Appellate DC Development - CMKA - dev",
             "match": {
-              "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev()"
+              "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev(DataTable)"
             },
+            "rows": [
+              {
+                "cells": [
+                  "userName",
+                  "password"
+                ],
+                "line": 13
+              },
+              {
+                "cells": [
+                  "chambers courtney",
+                  "Test2020!"
+                ],
+                "line": 14
+              }
+            ],
             "keyword": "And "
           }
         ]
@@ -81,7 +107,7 @@
         "before": [
           {
             "result": {
-              "duration": 4285664510,
+              "duration": 16235997120,
               "status": "passed"
             },
             "match": {
@@ -89,14 +115,14 @@
             }
           }
         ],
-        "line": 13,
+        "line": 20,
         "name": "",
-        "description": "A category entitled \"Pending Tasks\" will display on the dashboard if the judge has \nany pending assignments and the site table variable briefcaseShowPendingTasks \u003d\u0027y\u0027.",
-        "id": "pending-tasks-category-displays-on-the-dashboard;",
+        "description": "Tapping on a referral category that is not orally argued (chm_reftype_val.cdv_is_oral_arg\u003d\u0027n\u0027),\n  a list of cases should dipslay for the judge for that category.\n  Need to verify the correct number of referrals are being displayed.",
+        "id": "number-of-cases-displayed-for-non-orally-argued-cases;",
         "after": [
           {
             "result": {
-              "duration": 26469872469,
+              "duration": 115933085519,
               "status": "passed"
             },
             "match": {
@@ -109,34 +135,33 @@
         "steps": [
           {
             "result": {
-              "duration": 10139438753,
-              "error_message": "org.openqa.selenium.WebDriverException: org.openqa.selenium.WebDriverException: Returned value cannot be converted to WebElement: {stacktrace\u003dNoSuchElementError: An element could not be located on the page using the given search parameters.\n    at XCUITestDriver.callee$0$0$ (/Applications/Appium-4.app/Contents/Resources/app/node_modules/appium-xcuitest-driver/lib/commands/find.js:130:13)\n    at tryCatch (/Applications/Appium-4.app/Contents/Resources/app/node_modules/appium-xcuitest-driver/node_modules/babel-runtime/regenerator/runtime.js:67:40)\n    at GeneratorFunctionPrototype.invoke [as _invoke] (/Applications/Appium-4.app/Contents/Resources/app/node_modules/appium-xcuitest-driver/node_modules/babel-runtime/regenerator/runtime.js:315:22)\n    at GeneratorFunctionPrototype.prototype.(anonymous function) [as throw] (/Applications/Appium-4.app/Contents/Resources/app/node_modules/appium-xcuitest-driver/node_modules/babel-runtime/regenerator/runtime.js:100:21)\n    at GeneratorFunctionPrototype.invoke (/Applications/Appium-4.app/Contents/Resources/app/node_modules/appium-xcuitest-driver/node_modules/babel-runtime/regenerator/runtime.js:136:37)\n    at \u003canonymous\u003e, error\u003dno such element, message\u003dAn element could not be located on the page using the given search parameters.}\nBuild info: version: \u00273.6.0\u0027, revision: \u00276fbf3ec767\u0027, time: \u00272017-09-27T15:28:36.4Z\u0027\nSystem info: host: \u0027Saltanat-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:c09:fa8b:40d0:123b%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.12.6\u0027, java.version: \u00271.8.0_162\u0027\nDriver info: driver.version: IOSDriver\n\tat io.appium.java_client.pagefactory.AppiumElementLocator$WaitingFunction.apply(AppiumElementLocator.java:170)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator$WaitingFunction.apply(AppiumElementLocator.java:1)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:208)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator.waitFor(AppiumElementLocator.java:76)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator.findElement(AppiumElementLocator.java:95)\n\tat io.appium.java_client.pagefactory.interceptors.InterceptorOfASingleElement.intercept(InterceptorOfASingleElement.java:61)\n\tat io.appium.java_client.ios.IOSElement$$EnhancerByCGLIB$$d311658.isDisplayed(\u003cgenerated\u003e)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.ReferralCategoriesPage.verifyIfPendingTasksAreDisplayed(ReferralCategoriesPage.java:50)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.ReferralCategories_StepDefinitions.if_The_judge_has_any_pending_assignments_it_will_validate_the_total_num_of_pending_task_on_UI_with_DB(ReferralCategories_StepDefinitions.java:36)\n\tat ✽.Given If The judge has any pending assignments it will validate the total num of pending task on UI with DB(SmokeTests/AMB-1008.feature:17)\nCaused by: org.openqa.selenium.WebDriverException: Returned value cannot be converted to WebElement: {stacktrace\u003dNoSuchElementError: An element could not be located on the page using the given search parameters.\n    at XCUITestDriver.callee$0$0$ (/Applications/Appium-4.app/Contents/Resources/app/node_modules/appium-xcuitest-driver/lib/commands/find.js:130:13)\n    at tryCatch (/Applications/Appium-4.app/Contents/Resources/app/node_modules/appium-xcuitest-driver/node_modules/babel-runtime/regenerator/runtime.js:67:40)\n    at GeneratorFunctionPrototype.invoke [as _invoke] (/Applications/Appium-4.app/Contents/Resources/app/node_modules/appium-xcuitest-driver/node_modules/babel-runtime/regenerator/runtime.js:315:22)\n    at GeneratorFunctionPrototype.prototype.(anonymous function) [as throw] (/Applications/Appium-4.app/Contents/Resources/app/node_modules/appium-xcuitest-driver/node_modules/babel-runtime/regenerator/runtime.js:100:21)\n    at GeneratorFunctionPrototype.invoke (/Applications/Appium-4.app/Contents/Resources/app/node_modules/appium-xcuitest-driver/node_modules/babel-runtime/regenerator/runtime.js:136:37)\n    at \u003canonymous\u003e, error\u003dno such element, message\u003dAn element could not be located on the page using the given search parameters.}\nBuild info: version: \u00273.6.0\u0027, revision: \u00276fbf3ec767\u0027, time: \u00272017-09-27T15:28:36.4Z\u0027\nSystem info: host: \u0027Saltanat-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:c09:fa8b:40d0:123b%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.12.6\u0027, java.version: \u00271.8.0_162\u0027\nDriver info: driver.version: IOSDriver\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:378)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElement(DefaultGenericMobileDriver.java:62)\n\tat io.appium.java_client.AppiumDriver.findElement(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElement(IOSDriver.java:1)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElementByXPath(RemoteWebDriver.java:473)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElementByXPath(DefaultGenericMobileDriver.java:140)\n\tat io.appium.java_client.AppiumDriver.findElementByXPath(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElementByXPath(IOSDriver.java:1)\n\tat org.openqa.selenium.By$ByXPath.findElement(By.java:361)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:363)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElement(DefaultGenericMobileDriver.java:58)\n\tat io.appium.java_client.AppiumDriver.findElement(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElement(IOSDriver.java:1)\n\tat io.appium.java_client.pagefactory.bys.builder.ByChained.lambda$0(ByChained.java:38)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:208)\n\tat io.appium.java_client.pagefactory.bys.builder.ByChained.findElement(ByChained.java:70)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:363)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElement(DefaultGenericMobileDriver.java:58)\n\tat io.appium.java_client.AppiumDriver.findElement(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElement(IOSDriver.java:1)\n\tat io.appium.java_client.pagefactory.bys.ContentMappedBy.findElement(ContentMappedBy.java:36)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:363)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElement(DefaultGenericMobileDriver.java:58)\n\tat io.appium.java_client.AppiumDriver.findElement(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElement(IOSDriver.java:1)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator.lambda$0(AppiumElementLocator.java:96)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator$WaitingFunction.apply(AppiumElementLocator.java:150)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator$WaitingFunction.apply(AppiumElementLocator.java:1)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:208)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator.waitFor(AppiumElementLocator.java:76)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator.findElement(AppiumElementLocator.java:95)\n\tat io.appium.java_client.pagefactory.interceptors.InterceptorOfASingleElement.intercept(InterceptorOfASingleElement.java:61)\n\tat io.appium.java_client.ios.IOSElement$$EnhancerByCGLIB$$d311658.isDisplayed(\u003cgenerated\u003e)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.ReferralCategoriesPage.verifyIfPendingTasksAreDisplayed(ReferralCategoriesPage.java:50)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.ReferralCategories_StepDefinitions.if_The_judge_has_any_pending_assignments_it_will_validate_the_total_num_of_pending_task_on_UI_with_DB(ReferralCategories_StepDefinitions.java:36)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat cucumber.runtime.Utils$1.call(Utils.java:40)\n\tat cucumber.runtime.Timeout.timeout(Timeout.java:16)\n\tat cucumber.runtime.Utils.invoke(Utils.java:34)\n\tat cucumber.runtime.java.JavaStepDefinition.execute(JavaStepDefinition.java:38)\n\tat cucumber.runtime.StepDefinitionMatch.runStep(StepDefinitionMatch.java:37)\n\tat cucumber.runtime.Runtime.runStep(Runtime.java:300)\n\tat cucumber.runtime.model.StepContainer.runStep(StepContainer.java:44)\n\tat cucumber.runtime.model.StepContainer.runSteps(StepContainer.java:39)\n\tat cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:44)\n\tat cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.api.junit.Cucumber.run(Cucumber.java:100)\n\tat org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:86)\n\tat org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:678)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)\nCaused by: java.lang.ClassCastException: com.google.common.collect.Maps$TransformedEntriesMap cannot be cast to org.openqa.selenium.WebElement\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:376)\n\t... 72 more\n",
-              "status": "failed"
+              "duration": 263398115687,
+              "status": "passed"
             },
-            "line": 17,
-            "name": "If The judge has any pending assignments it will validate the total num of pending task on UI with DB",
+            "line": 25,
+            "name": "User  Observes the categories on the dashboard page. The Petitions for Rehearing, Motions/Petitions and Screening Panels categories are all non-orally argued categories.",
             "match": {
-              "location": "ReferralCategories_StepDefinitions.if_The_judge_has_any_pending_assignments_it_will_validate_the_total_num_of_pending_task_on_UI_with_DB()"
+              "location": "ReferralCategories_StepDefinitions.user_Observes_the_categories_on_the_dashboard_page_The_Petitions_for_Rehearing_Motions_Petitions_and_Screening_Panels_categories_are_all_non_orally_argued_categories()"
             },
             "keyword": "Given "
           }
         ],
         "tags": [
           {
-            "line": 11,
+            "line": 18,
             "name": "@Smoke"
           },
           {
-            "line": 12,
-            "name": "@AMB_1008"
+            "line": 19,
+            "name": "@AMB_973"
           }
         ]
       }
     ],
-    "name": "Pending Tasks Category Displays on the Dashboard",
+    "name": "Number of cases displayed for non-orally argued cases",
     "description": "",
-    "id": "pending-tasks-category-displays-on-the-dashboard",
+    "id": "number-of-cases-displayed-for-non-orally-argued-cases",
     "keyword": "Feature",
-    "uri": "SmokeTests/AMB-1008.feature"
+    "uri": "SmokeTests/AMB-973.feature"
   }
 ]
