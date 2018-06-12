@@ -1,22 +1,26 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
+
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.FILED_DATE;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.FILERs_INFORMATION;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGEs_INITIALS;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGEs_VOTE;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_EVENT;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.RELIEF;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.VOTE_DATE;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getColumnCount;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.panelIsDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.selectReferralCategory;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.voteInformationPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.assertThatDBEqualsToUI;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.changeDateFormat;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getCollapsablePanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.navigateBack;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectAUser;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -25,9 +29,8 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 
-import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
-import gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users;
-import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.*;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
@@ -48,48 +51,33 @@ public class VoteInformationPanelPage {
 	public static MobileElement selectUser;
 
 	public void selectAJudje() {
-		selectAUser(Users.COLLOTON_STEVEN);
+		selectAUser(COLLOTON_STEVEN);
 
 	}
 
-	public void selectCaseNumber(String caseNumber) {
+	public void selectCase(String caseNumber) {
 
-		clickOn(findElement(By.xpath(selectReferralCategory(Actions.PETITIONS_FOR_REHEARING))));
-		click(locateElement(caseNumber));
-
+		selectCaseNumber(Actions.PETITIONS_FOR_REHEARING, caseNumber);
+		
 	}
 
 	/** Observe the Vote Information Panel displays */
 	public void getVoteInformationPanel(String element) {
 
-		try {
-
-			if (panelIsDisplayed(element) == false) {
-				assertTrue("-------VOTE INFORMATION PANEL IS NOT DISPLAYED---------",
-						executeQuery(Queries.MBR_EVENT) == null);
-			} else {
-				assertTrue(panelIsDisplayed(element) == true);
-				click(element);
-			}
-		} catch (NullPointerException e) {
-			e.getStackTrace();
-
-		} finally {
-			getCollapsablePanel(selectUser, Users.STAFF_ATTORNEYS);
-		}
+		getPanel(MBR_EVENT, "VOTE INFORMATION PANEL IS NOT DISPLAYED", element);
 
 	}
 
 	/** Observers filer's information */
 	public void getFilersInformation() {
 
-		String dbFilersInformation = getAllColumns(Queries.FILERs_INFORMATION).replaceAll(" ", "");
+		String dbFilersInformation = getAllColumns(FILERs_INFORMATION).replaceAll(" ", "");
 		performPageLoad();
 		String uiFilersInformation = replace();
 
 		assertTrue("----FILER'S INFORMATION MISMATCH----", dbFilersInformation.equals(uiFilersInformation));
 
-		assertThatDBEqualsToUI("----FILED DATE MISMATCH----", Queries.FILED_DATE,
+		assertThatDBEqualsToUI("----FILED DATE MISMATCH----", FILED_DATE,
 				Arrays.asList(getFiledDate(Actions.FILERs_INFORMATION)));
 
 	}
@@ -97,23 +85,23 @@ public class VoteInformationPanelPage {
 	/** Verifies judge's initials */
 
 	public void checkJudgesIntitials() {
-		assertThatDBEqualsToUI("----JUDGE'S INITIALS MISMATCH----", Queries.JUDGEs_INITIALS,
+		assertThatDBEqualsToUI("----JUDGE'S INITIALS MISMATCH----", JUDGEs_INITIALS,
 				getColumnCount(Actions.SMC, filer, Actions.RLW, filer, Actions.RWG, filer));
 
 	}
 
 	public void verifyReliefIsDisplayed() {
-		assertTrue(findElement(By.xpath(locateElement(getAllColumns(Queries.RELIEF)))).isDisplayed());
+		assertTrue(findElement(By.xpath(locateElement(getAllColumns(RELIEF)))).isDisplayed());
 	}
 
 	public void getJudgesVoteInfo() {
 
-		assertTrue(getAllColumns(Queries.JUDGEs_VOTE).equals(voteInformationPanel(Actions.SMC, voteInfo)));
+		assertTrue(getAllColumns(JUDGEs_VOTE).equals(voteInformationPanel(Actions.SMC, voteInfo)));
 
-		assertTrue(getAllColumns(Queries.VOTE_DATE).split(" ")[0]
+		assertTrue(getAllColumns(VOTE_DATE).split(" ")[0]
 				.equals(changeDateFormat(voteInformationPanel(Actions.RLW, voteInfo), "yyyy-MM-dd")));
 
-		navigateBack(back);
+		getCollapsablePanel(selectUser, APPELLATE_JUDGES);
 
 	}
 
