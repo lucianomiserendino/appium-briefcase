@@ -2,7 +2,6 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,15 +44,6 @@ public class ReferralCategories_StepDefinitions {
 			throws Throwable {
 
 		page = new ReferralCategoriesPage();
-
-		List<String> DBnonOrallyarguedCases_SI_VALUE_N = executeQuery(Queries.SI_VALUE_N);
-		List<String> DBnonOrallyarguedCases_SI_VALUE_Y = executeQuery(Queries.SI_VALUE_Y);
-		List<String> UInonOrallyarguedCases = Arrays.asList(page.getNumOfdisplayedCases());
-
-		assertTrue("-----RECORD COUNT MISMATCHED-----",
-				DBnonOrallyarguedCases_SI_VALUE_N.containsAll(UInonOrallyarguedCases)
-						|| DBnonOrallyarguedCases_SI_VALUE_Y.containsAll(UInonOrallyarguedCases));
-
+		page.verifyNonOrallyArgCases();
 	}
-
 }
