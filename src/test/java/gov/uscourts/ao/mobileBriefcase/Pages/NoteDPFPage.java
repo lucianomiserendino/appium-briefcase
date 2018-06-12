@@ -2,10 +2,9 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.NOTE_DPF_DEFAULT_DESCRIPTION;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.*;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.verifyTextIsDisplayed;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -79,9 +78,6 @@ public class NoteDPFPage extends Base {
 		verifyTextIsDisplayed(description, descriptionText);
 		verifyTextIsDisplayed(comments, commentText);
 		verifyTextIsDisplayed(submit, submitText);
-
-		System.out.println(getText(noteText)+"  ui====================");
-		System.out.println(getDefaultDescription(NOTE_DPF_DEFAULT_DESCRIPTION)+"  db===============");
 
 	}
 
