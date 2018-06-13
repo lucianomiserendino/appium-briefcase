@@ -30,7 +30,8 @@ public class SortingOnTheReferralListPage {
 	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/child::*//*[contains(@name, 'Date')]")
 	public static List<MobileElement> dates;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name='Sort ↓']")
+	@iOSFindBy(xpath = "//*[contains(@name, 'Sort')]")
+	//XCUIElementTypeStaticText[@name='Sort ↓']
 	public static MobileElement sortArrowBtn;
 
 	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name=' ↓ Date']")
