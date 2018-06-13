@@ -10,12 +10,14 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveAllReferr
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class SortingOnTheReferralListPage {
@@ -30,8 +32,8 @@ public class SortingOnTheReferralListPage {
 	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/child::*//*[contains(@name, 'Date')]")
 	public static List<MobileElement> dates;
 
+	@WithTimeout(time = 60, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'Sort')]")
-	//XCUIElementTypeStaticText[@name='Sort ↓']
 	public static MobileElement sortArrowBtn;
 
 	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name=' ↓ Date']")
@@ -86,7 +88,7 @@ public class SortingOnTheReferralListPage {
 	}
 
 	public List<String> referralsSortedByDatesInDefaultOrder(Actions sort, List<MobileElement> element, String substr,
-			int index) {	
+			int index) {
 		getSortPage(sort);
 		return retrieveDates(element, substr, index);
 
