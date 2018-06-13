@@ -55,6 +55,7 @@ public class SortingOnTheReferralListPage {
 	}
 
 	public void selectSortBtn() {
+		performPageLoad();
 		waitToBeClickable(sortArrowBtn);
 	}
 
@@ -79,17 +80,13 @@ public class SortingOnTheReferralListPage {
 	}
 
 	public List<String> retrieveCases(Actions sort, List<MobileElement> element, String substr, int index) {
-		performPageLoad();
 		getSortPage(sort);
-		performPageLoad();
 		return retrieveAllReferrals(element, substr, index);
 	}
 
 	public List<String> referralsSortedByDatesInDefaultOrder(Actions sort, List<MobileElement> element, String substr,
-			int index) {
-		performPageLoad();
+			int index) {	
 		getSortPage(sort);
-		performPageLoad();
 		return retrieveDates(element, substr, index);
 
 	}
