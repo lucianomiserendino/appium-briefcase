@@ -5,8 +5,11 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.APPLICABLE_ACTIONS
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_EVENT;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.APPELLATE_JUDGES;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.getCategories;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getCollapsablePanel;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertTrue;
@@ -14,6 +17,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 
 import io.appium.java_client.MobileElement;
@@ -27,10 +31,6 @@ public class ActionsPanelPage {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
-	private int startRow = 2;
-	private int cellIndex = 1;
-	private String name = "DocumentList";
-
 	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'Actions')]")
 	public static MobileElement actions;
@@ -39,15 +39,13 @@ public class ActionsPanelPage {
 	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
 	public static MobileElement selectUser;
 
-
-
 	public void verifyActionsPanelIsDisplayed(String actionsPanel) {
 
 		performPageLoad();
 		try {
 			if (executeQuery(MBR_EVENT).size() > 0) {
 				assertTrue(actions.isDisplayed());
-				actions.click();
+
 			} else {
 				assertTrue(!(executeQuery(MBR_EVENT).size() > 0));
 
@@ -60,28 +58,57 @@ public class ActionsPanelPage {
 
 	public void compareApplicableActions() {
 
-		List<String> dbApplicableActions = executeQuery(APPLICABLE_ACTIONS);
-		sort(dbApplicableActions);
-
 		try {
 
 			if (executeQuery(MBR_EVENT).size() > 0 && actions.isDisplayed()) {
-				
-		
-				assertTrue("------APPLICABLE ACTIONS MISMACTH------",
-						dbApplicableActions.containsAll(getCategories(name, startRow, executeQuery(APPLICABLE_ACTIONS).size(), cellIndex)));
-
-				actions.click();
+				getPanel(ACTIONS);
+				clickOnPanel();
+				getPanel(ACTIONS);
 			} else {
-
 				assertTrue(!(executeQuery(MBR_EVENT).size() > 0));
 			}
+		} catch (AssertionError e) {
+			e.printStackTrace();
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		} finally {
 			getCollapsablePanel(selectUser, APPELLATE_JUDGES);
 
 		}
+
+	}
+
+	public static void clickOnPanel() {
+		try {
+			if (isDisplayed() == false) {
+				getPanel(ACTIONS);
+				assertTrue(isDisplayed() == true);
+			} else {
+				assertTrue(isDisplayed() == true);
+			}
+		} catch (AssertionError e) {
+			e.printStackTrace();
+
+		}
+
+	}
+
+	public static boolean isDisplayed() {
+		boolean isDisplayed = false;
+		List<String> dbApplicableActions = executeQuery(APPLICABLE_ACTIONS);
+		sort(dbApplicableActions);
+		try {
+			for (int i = 1; i < dbApplicableActions.size(); ++i) {
+
+				MobileElement actions = findElement(By.xpath(locateElement(dbApplicableActions.get(i))));
+
+				if (actions.isDisplayed())
+					isDisplayed = true;
+			}
+		} catch (Exception e) {
+			isDisplayed = false;
+		}
+		return isDisplayed;
 
 	}
 
