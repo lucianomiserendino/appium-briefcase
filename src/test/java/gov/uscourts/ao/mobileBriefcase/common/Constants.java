@@ -26,4 +26,16 @@ public interface Constants {
 
 	public static final int UNASSIGNED = 4;
 
+	public static final String ASSIGNMENT_NOTE_DATE = "3/2/2018";
+
+	public static final String ASSIGNMENT_ASSIGNED_NOTE_DATE = "5/14/2018";
+
+	public static final String ASSIGNMENT_NOTE = "Assignment Note";
+
+	public static final String ASSIGNMENT_ASSIGNED_NOTE = "Assignment Assigned Note";
+
+	public static final String ASSIGNMENT_NOTE_TEXT = "This one has a note.";
+
+	public static final String ASSIGNMENT_ASSIGNED_NOTE_TEXT = "Assignment date type note.";
+
 }

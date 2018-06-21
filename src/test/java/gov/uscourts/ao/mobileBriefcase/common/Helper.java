@@ -1,11 +1,16 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_EVENT;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
-
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.*;
-
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.ANDERS_CASES;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.IFP_MOTION_IN_THIS_COURT;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.NO_ARGUMENT_REFERRALS;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.PRO_SE_REFS;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.SUMMARY_DISPOSITION;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.UNASSIGNED_REFERRALS;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
 import static java.util.Collections.sort;
@@ -13,8 +18,11 @@ import static java.util.Collections.sort;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 
+import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
 
 public class Helper {
@@ -59,20 +67,60 @@ public class Helper {
 		if (elementIsDisplayed(element) == true)
 			;
 		click(locateElement(element));
+
+	}
+
+	public static void clickOnPanel(Actions panel, String penlRow) {
+		if (elementIsDisplayed(penlRow) == true) {
+			click(locateElement(penlRow));
+		} else {
+			try {
+				getPanel(panel);
+				click(locateElement(penlRow));
+			} catch (NoSuchElementException e) {
+				e.printStackTrace();
+			}
+
+		}
+
 	}
 
 	/** Panel name, actions, */
-	public static void getPanel(String panel, List<MobileElement> actions, String element) {
+	public static void getPanel(Actions panel, List<MobileElement> actions, String element) {
 
-		clickOn(findElement(By.xpath(locateElement(panel))));
+		getPanel(panel);
 		try {
 			for (MobileElement e : actions) {
 				if (e.getText().contains(element) == true) {
 					e.click();
+				} else {
+					getPanel(panel);
+
 				}
 			}
 		} catch (NullPointerException e) {
 			e.getMessage();
+		}
+
+	}
+
+	public static void getPanel(Actions action) {
+
+		switch (action) {
+		case ASSIGNMENTS:
+			click(locateElement("Assignments"));
+			break;
+
+		case ACTIONS:
+			click(locateElement("Actions"));
+			break;
+
+		case VOTE_INFORMATION:
+			click(locateElement("Vote informations"));
+			break;
+
+		default:
+			break;
 		}
 
 	}

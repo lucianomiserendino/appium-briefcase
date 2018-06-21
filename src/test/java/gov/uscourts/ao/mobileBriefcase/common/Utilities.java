@@ -2,7 +2,6 @@ package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 
-
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.APPELLATE_JUDGES;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
@@ -60,7 +59,7 @@ public class Utilities extends Base {
 
 	}
 
-	public static  void getPanel(String query, String message, String element) {
+	public static void getPanel(String query, String message, String element) {
 
 		try {
 			if (executeQuery(query).size() > 0) {
@@ -163,6 +162,18 @@ public class Utilities extends Base {
 
 	}
 
+	public static boolean isDisplayed(MobileElement element) {
+		boolean isDisplayed = false;
+		try {
+			if (element.isDisplayed())
+				isDisplayed = true;
+		} catch (Exception e) {
+			isDisplayed = false;
+		}
+		return isDisplayed;
+
+	}
+
 	public static void clickOn(WebElement element) {
 
 		try {
@@ -179,6 +190,7 @@ public class Utilities extends Base {
 
 		try {
 			if (element.isDisplayed()) {
+				performPageLoad();
 				element.click();
 			}
 		} catch (Exception e) {
@@ -213,9 +225,9 @@ public class Utilities extends Base {
 
 	}
 
-	public static String  getNumOfDisplayedCases(MobileElement element){
+	public static String getNumOfDisplayedCases(MobileElement element) {
 		return getText(element).split(",")[1].split("T")[0].trim();
-		
+
 	}
 
 	public static void assertThatDBEqualsToUI(String message, String query, List<String> uiValue) {
@@ -294,7 +306,7 @@ public class Utilities extends Base {
 
 		}
 	}
-	
+
 	public static void verifyTextIsDisplayed(MobileElement element, String text) {
 		try {
 			assertTrue(elementIsPresent(element) == true);

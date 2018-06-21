@@ -1,6 +1,5 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
-
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -8,8 +7,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class Page extends Base {
+import io.appium.java_client.MobileElement;
 
+public class Page extends Base {
 
 	public static void performPageLoad() {
 		synchronized (driver) {
@@ -50,6 +50,11 @@ public class Page extends Base {
 	public static void getPageSource() {
 		performPageLoad();
 		System.out.println(driver.getPageSource());
+
+	}
+
+	public static MobileElement waitForElement(MobileElement element) {
+		return (MobileElement) new WebDriverWait(driver, 70).until(ExpectedConditions.visibilityOf(element));
 
 	}
 

@@ -20,7 +20,7 @@ Background:
 	
 	
 
-
+@Smoke
 @AMB_1021 
 Scenario: 
 	Staff members can be assigned to referrals and/or just cases. 
@@ -30,8 +30,8 @@ Scenario:
 	Then User observes there is an assignment for "Kyle Essley" and "Daniel Hay" 
 	
 
-	
-
+@AMB_1021	
+@Smoke
 	Scenario: 
 	Staff members can be assigned to referrals and/or just cases. 
     Verify that staff assignments are displaying on the referral list page.
@@ -57,23 +57,7 @@ Scenario:
 	
 	
 	
-@AMB_1033	
-Scenario: 	
-	 Display of Assignment Notes.
-    If a judge or staff assignment is selected and there are assignment 
-    or assignment date notes attached to the assignment/date, the following information will display:
-     1.A light blue banner with the heading "Assignment Notes"
-     2.The date of the note
-     3.The note description
-     4.The text of the note
- 
-     
-    Given User selects "Daniel Hay" 
-   Then User verifies the "Assignment Notes" banner displays
-   Then User verifies the note description displays next to the date.
-   And  User verifies text displays under the description
 
-	
 	
 	
 	

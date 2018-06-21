@@ -16,8 +16,11 @@ public class BriefcaseUsers extends Base {
 	private static final int APPELATE_JUDGE_COLLOTON_X = 158;
 	private static final int APPELATE_JUDGE_COLLOTON_Y = 389;
 
-	private static final int STAFF_ATTORNEYS_BENJAMIN_X = 150;
-	private static final int STAFF_ATTORNEYS_BENJAMIN_Y = 290;
+	private static final int STAFF_ATTORNEY_BENJAMIN_X = 150;
+	private static final int STAFF_ATTORNEY_BENJAMIN_Y = 290;
+
+	private static final int BANKRUPTCY_JUDGE_SALADINO_THOMAS_X = 176;
+	private static final int BANKRUPTCY_JUDGE_SALADINO_THOMAS_Y = 338;
 
 	private static final int MOTIONS_PETITIONS_X = 206;
 	private static final int MOTIONS_PETITIONS_Y = 338;
@@ -31,9 +34,16 @@ public class BriefcaseUsers extends Base {
 	private static final int CASES_X = 371;
 	private static final int CASES_Y = 345;
 
+	private static final int BACK_X = 147;
+	private static final int BACK_Y = 48;
+
 	public static void select(Users coordinates) {
 
 		switch (coordinates) {
+
+		case BACK:
+			tapByCoordinates(BACK_X, BACK_Y);
+			break;
 
 		case CASES:
 			tapByCoordinates(CASES_X, CASES_Y);
@@ -67,7 +77,11 @@ public class BriefcaseUsers extends Base {
 			break;
 
 		case BROWN_BENJAMIN:
-			tapByCoordinates(STAFF_ATTORNEYS_BENJAMIN_X, STAFF_ATTORNEYS_BENJAMIN_Y);
+			tapByCoordinates(STAFF_ATTORNEY_BENJAMIN_X, STAFF_ATTORNEY_BENJAMIN_Y);
+			break;
+
+		case SALADINO_THOMAS:
+			tapByCoordinates(BANKRUPTCY_JUDGE_SALADINO_THOMAS_X, BANKRUPTCY_JUDGE_SALADINO_THOMAS_Y);
 			break;
 
 		default:
@@ -84,6 +98,7 @@ public class BriefcaseUsers extends Base {
 
 	public enum Users {
 
+		BACK,
 		/** Referral categories */
 
 		ANDERS_CASES, CASES,
@@ -102,7 +117,7 @@ public class BriefcaseUsers extends Base {
 
 		/** Bankruptcy judges */
 
-		FEDERMAN_ARTUR, KRESSEL_ROBERT, NAIL_CHARLES, SALADION_THOMAS, SCHERMER_BARRY, SHODEEN_ANITA,
+		FEDERMAN_ARTUR, KRESSEL_ROBERT, NAIL_CHARLES, SALADINO_THOMAS, SCHERMER_BARRY, SHODEEN_ANITA,
 
 		/** Staff attorneys */
 

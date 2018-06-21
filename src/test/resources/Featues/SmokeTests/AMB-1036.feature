@@ -19,7 +19,7 @@ Background:
 		
 	And   User selects Judge Colloton  >> Petitions for Rehearing >> "15-3314"
 
-@S
+@Smoke
 @AMB_1036 
 Scenario: 
 If a referral requires voting, a collapsible Vote Information panel displays.  When expanded, it displays the following information:
@@ -36,7 +36,7 @@ If a referral requires voting, a collapsible Vote Information panel displays.  W
        Then  User checks each judge's vote  and the date  displays under their initials
     
 
-@S
+@Smoke
 @AMB_1038
 Scenario: 
 

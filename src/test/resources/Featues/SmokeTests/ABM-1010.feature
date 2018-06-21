@@ -12,7 +12,7 @@ Background:
 	And After user navigates to Appellate DC Development - CMKA - dev
 	    |userName			|password	|
 		|chambers courtney|Test2020! |
-
+@Smoke
 @AMB_1010 
 Scenario: 
 	There is a sorting feature on the referral list page that enables users to sort referrals by date referred or case number.  

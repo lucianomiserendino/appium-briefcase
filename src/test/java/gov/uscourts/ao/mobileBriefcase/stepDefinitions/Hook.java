@@ -1,11 +1,14 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
+
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.*;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.common.iOSCapabilities;
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.*;
 
 public class Hook extends Base implements iOSCapabilities {
 
@@ -17,16 +20,17 @@ public class Hook extends Base implements iOSCapabilities {
 	@Before
 	public void setUp() {
 
-		safariInstance();
+		//safariInstance();
 
 	}
 
 	@After
 
 	public void tearDown() {
-       // navigateBack(back);
+		// navigateBack(back);
+		select(DASHBOARD);
 		logout(settingsPage, logout, OKBtn, OKBtn);
-	
+		driver.quit();
 
 	}
 

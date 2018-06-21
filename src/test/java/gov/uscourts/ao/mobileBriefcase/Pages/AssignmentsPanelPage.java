@@ -108,7 +108,7 @@ public class AssignmentsPanelPage {
 
 			waitToBeClickable(assignments);
 
-		} catch (Exception e) {
+		} catch (AssertionError e) {
 			e.getMessage();
 
 		}

@@ -65,6 +65,7 @@ public class LoginPage extends Base {
 	public MobileElement logout;
 
 	public void selectEnvironment() {
+		
 		performPageLoad();
 		clickOn(server);
 
@@ -84,7 +85,7 @@ public class LoginPage extends Base {
 	}
 
 	public void open() {
-		
+		performPageLoad();
 		clickOn(findElement(By.name(openBtn)));
 	}
 

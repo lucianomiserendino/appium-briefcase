@@ -14,7 +14,7 @@ Background:
 		|userName			|password	|briefcaseUser|
 		|SysadminKasabolotova|Asalta6268!z|staffAttorney|
 
-@S
+@Smoke
 @AMB_1047
 Scenario: 
 	Assignment Categories display on the dashboard for SAs
@@ -22,7 +22,7 @@ Scenario:
 	Then User observes the assignment categories that display on the dashboard. 
 	
 
-@S
+@Smoke
 @AMB_1049
 	Scenario: 
 	 Once an assignment category is selected, referrals are grouped based on referral categories. 
