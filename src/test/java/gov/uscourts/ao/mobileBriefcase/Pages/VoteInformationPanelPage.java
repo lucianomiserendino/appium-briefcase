@@ -82,12 +82,10 @@ public class VoteInformationPanelPage {
 		performPageLoad();
 		String uiFilersInformation = uiFilresInformation();
 
-		System.out.println(dbFilersInformation+"==============db");
-		System.out.println(uiFilersInformation+"==============db");
-		//assertTrue("----FILER'S INFORMATION MISMATCH----", dbFilersInformation.equals(uiFilersInformation));
+		assertTrue("----FILER'S INFORMATION MISMATCH----", dbFilersInformation.equals(uiFilersInformation));
 
-		//assertThatDBEqualsToUI("----FILED DATE MISMATCH----", FILED_DATE,
-				//Arrays.asList(getFiledDate(Actions.FILERs_INFORMATION)));
+		assertThatDBEqualsToUI("----FILED DATE MISMATCH----", FILED_DATE,
+				Arrays.asList(getFiledDate(Actions.FILERs_INFORMATION)));
 
 	}
 
