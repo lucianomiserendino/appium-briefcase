@@ -33,10 +33,6 @@ public class AssignmentCategories_StepDefinitions {
      page.osberveReferralCategories();
 	}
 
-	@Then("^User verifies the number of referrals in each categories, matches the number of referrals in the DB$")
-	public void user_verifies_the_number_of_referrals_in_each_categories_matches_the_number_of_referrals_in_the_DB()
-			 {
 
-	}
 
 }

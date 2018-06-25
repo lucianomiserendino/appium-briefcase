@@ -1,15 +1,16 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
-import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.APPELLATE_JUDGES;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.*;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.selectReferralCategory;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -58,6 +59,29 @@ public class Utilities extends Base {
 		return referrals;
 
 	}
+
+	public static List<String> retrieveDates(List<MobileElement> elements, String split, int index, String format) {
+		String[] dates;
+		List<String> referrals = new ArrayList<>();
+
+		List<MobileElement> element = elements;
+
+		Iterator<MobileElement> itr = element.iterator();
+		while (itr.hasNext()) {
+			try {
+				dates = itr.next().getText().split(split);
+				referrals.add(changeDateFormat(dates[index].trim(), format));
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+			}
+
+		}
+		return referrals;
+
+	}
+	
 
 	public static void getPanel(String query, String message, String element) {
 
@@ -165,7 +189,7 @@ public class Utilities extends Base {
 	public static boolean isDisplayed(MobileElement element) {
 		boolean isDisplayed = false;
 		try {
-			if (element.isDisplayed())
+			if (waitForElement(element).isDisplayed())
 				isDisplayed = true;
 		} catch (Exception e) {
 			isDisplayed = false;
@@ -174,22 +198,12 @@ public class Utilities extends Base {
 
 	}
 
-	public static void clickOn(WebElement element) {
 
-		try {
-			if (element.isDisplayed()) {
-				element.click();
-			}
-		} catch (Exception e) {
-			e.getMessage();
-		}
-
-	}
 
 	public static void clickOn(MobileElement element) {
 
 		try {
-			if (element.isDisplayed()) {
+			if (waitForElement(element).isDisplayed()) {
 				performPageLoad();
 				element.click();
 			}
@@ -226,7 +240,7 @@ public class Utilities extends Base {
 	}
 
 	public static String getNumOfDisplayedCases(MobileElement element) {
-		return getText(element).split(",")[1].split("T")[0].trim();
+		return getText(waitForElement(element)).split(",")[1].split("T")[0].trim();
 
 	}
 
@@ -292,19 +306,35 @@ public class Utilities extends Base {
 		return credentials.get(0).get(object);
 	}
 
-	public static void getUserCredentials(DataTable userCredentials) {
+	public static void getUserCategory(Users userCategory, MobileElement selectUser, Users user) {
 
-		if (getIndex(userCredentials, "briefcaseUser").equals(Configuration.getProperty("STAFF_ATTORNEYS"))) {
+		waitToBeClickable(selectUser);
 
+		switch (userCategory) {
+
+		case STAFF_ATTORNEYS:
 			select(Users.STAFF_ATTORNEYS);
+			break;
 
-		} else if (getIndex(userCredentials, "briefcaseUser").equals(Configuration.getProperty("APPELLATE_JUDGES"))) {
-			select(APPELLATE_JUDGES);
+		case APPELLATE_JUDGES:
+			select(Users.APPELLATE_JUDGES);
+			break;
 
-		} else if (getIndex(userCredentials, "briefcaseUser").equals(Configuration.getProperty("BANKRUPTCY_JUDGES"))) {
+		case BANKRUPTCY_JUDGES:
 			select(Users.BANKRUPTCY_JUDGES);
+			break;
 
+		default:
+			break;
 		}
+		selectAUser(user);
+
+	}
+
+	public static void refresh() {
+		pageLoad();
+		select(Users.MOTIONS_PETITIONS);
+		select(Users.DASHBOARD);
 	}
 
 	public static void verifyTextIsDisplayed(MobileElement element, String text) {
@@ -329,6 +359,19 @@ public class Utilities extends Base {
 		}
 
 		return true;
+	}
+	
+	
+	public static void clickOn(WebElement element) {
+
+		try {
+			if (element.isDisplayed()) {
+				element.click();
+			}
+		} catch (Exception e) {
+			e.getMessage();
+		}
+
 	}
 
 }

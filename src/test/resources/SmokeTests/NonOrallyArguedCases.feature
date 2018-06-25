@@ -10,9 +10,7 @@ Background:
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And After user navigates to Appellate DC Development - CMKA - dev
-	    |userName			|password	|
-		|chambers courtney|Test2020! |
-	
+
 		
 		
 @Smoke

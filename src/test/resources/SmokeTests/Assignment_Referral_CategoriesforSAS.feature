@@ -10,9 +10,7 @@ Background:
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And After user navigates to Appellate DC Development - CMKA - dev
-	
-		|userName			|password	|briefcaseUser|
-		|SysadminKasabolotova|Asalta6268!z|staffAttorney|
+
 
 @Smoke
 @AMB_1047
@@ -31,8 +29,6 @@ Scenario:
 
      Given User selects SA Benjamin Brown and assignment type "Senior Staff Attorney"
     When User observes there are six referral categories listed. 
-    Then User verifies the number of referrals in each categories, matches the number of referrals in the DB
-  
 
     
     

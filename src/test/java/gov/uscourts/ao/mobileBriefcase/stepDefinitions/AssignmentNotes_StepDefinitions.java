@@ -1,5 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.AssignmentNotesPage;
@@ -33,6 +34,31 @@ public class AssignmentNotes_StepDefinitions {
 	@Then("^User verifies text displays under the description$")
 	public void user_verifies_text_displays_under_the_description() {
 		page.verifyText();
+	}
+
+	@Given("^User selects Judge Colloton >> Motions/Petitions >> case \"([^\"]*)\"$")
+	public void user_selects_Judge_Colloton_Motions_Petitions_case(String caseNum) {
+		page = new AssignmentNotesPage();
+		page.selectAUser();
+		page.getCase(caseNum);
+	}
+
+	@Then("^User  observes a collapsible panel entitled \"([^\"]*)\" displays and expands the Assignments panel$")
+	public void user_observes_a_collapsible_panel_entitled_displays_and_expands_the_Assignments_panel(
+			String assignmentPanel) {
+		page.verifyAssignmentIsDisplayed(assignmentPanel);
+	}
+
+	@Then("^User observes there is an assignment for \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void user_observes_there_is_an_assignment_for_and(String assignmentForKyle, String assignmentForEssley) {
+		page.getAssignmentLinkedtoTheReferral(assignmentForKyle, assignmentForEssley);
+
+	}
+
+	@And("^User observes there is an assignment for \"([^\"]*)\"$")
+	public void user_observes_there_is_an_assignment_for(String assignmentForCourtney) {
+		page.getAssignmentLinkedtoCase(assignmentForCourtney);
+
 	}
 
 }

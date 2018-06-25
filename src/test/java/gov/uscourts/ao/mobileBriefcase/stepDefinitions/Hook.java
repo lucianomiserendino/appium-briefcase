@@ -20,7 +20,7 @@ public class Hook extends Base implements iOSCapabilities {
 	@Before
 	public void setUp() {
 
-		//safariInstance();
+		safariInstance();
 
 	}
 
@@ -33,5 +33,7 @@ public class Hook extends Base implements iOSCapabilities {
 		driver.quit();
 
 	}
+
+
 
 }

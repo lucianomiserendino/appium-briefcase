@@ -1,41 +1,38 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_EVENT;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.MOTIONS_PETITIONS;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.verifyTextIsDisplayed;
-import static org.junit.Assert.assertTrue;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
-
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.*;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class NoteDPFPage extends Base {
+public class DocketingDPFPage extends Base {
 
-	public NoteDPFPage() {
+	public DocketingDPFPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
-	String actions = "Actions";
+	static String actionName = "//XCUIElementTypeTable[@name='DocumentList']/child::*//*[contains(@name, '"
+			+ getAllColumns(ACTION_NAME) + "')]";
 
-	@WithTimeout(time = 60, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='DocumentList']/XCUIElementTypeCell/XCUIElementTypeStaticText[1]")
-	public static List<MobileElement> senDirections;
-	//XCUIElementTypeTable[@name="DocumentList"]/XCUIElementTypeCell/XCUIElementTypeStaticText
 	@WithTimeout(time = 5, unit = TimeUnit.SECONDS)
 	@iOSFindBy(id = "Add New Note")
 	public static MobileElement addNewNote;
@@ -53,28 +50,29 @@ public class NoteDPFPage extends Base {
 	@iOSFindBy(id = "//XCUIElementTypeCell[2]/XCUIElementTypeTextView[1]")
 	public static MobileElement noteText;
 
+	@WithTimeout(time = 30, unit = TimeUnit.SECONDS)
+	@iOSFindBy(id = "//XCUIElementTypeTable[@name='DocketingDPFList']/XCUIElementTypeCell[2]/XCUIElementTypeTextView[1]")
+	public static MobileElement defaultDescription;
+
 	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeOther[4]/XCUIElementTypeOther/XCUIElementTypeStaticText")
-	public static MobileElement sendDirectionsText;
+	public static MobileElement actionsName;
 
 	public void getCase(String caseNum) {
-
+		refresh();
 		selectCaseNumber(MOTIONS_PETITIONS, caseNum);
 	}
 
-	public void getActionsPanel(String element) {
-
-		getPanel(ACTIONS, senDirections, element);
+	public void getActionsPanel() {
+		clickOnPanel(ACTIONS, actionName);
 
 	}
 
 	public void verifyActionName() {
-
-		verifyTextIsDisplayed(sendDirectionsText, getAllColumns(ACTION_NAME));
+		verifyTextIsDisplayed(actionsName, getAllColumns(ACTION_NAME).trim());
 	}
 
 	public void verifyAddNewNoteDisplayed(String text) {
-
 		verifyTextIsDisplayed(addNewNote, text);
 	}
 
@@ -86,10 +84,23 @@ public class NoteDPFPage extends Base {
 
 	}
 
+	public static void clickOnPanel(Actions panel, String penlRow) {
+		if (isDisplayed(By.xpath(penlRow)) == true) {
+			click(penlRow);
+		} else {
+			try {
+				getPanel(panel);
+				click(penlRow);
+			} catch (NoSuchElementException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+
 	public String getDefaultDescription(String query) {
 		return getAllColumns(query).substring(31).split(",")[0].replaceAll("'", "");
 	}
-
-
 
 }

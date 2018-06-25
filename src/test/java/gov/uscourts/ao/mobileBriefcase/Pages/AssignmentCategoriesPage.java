@@ -9,7 +9,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Helper.getReferralCategorie
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getCollapsablePanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getText;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectAUser;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getUserCategory;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -33,7 +33,6 @@ public class AssignmentCategoriesPage implements Constants {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
-
 	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
 	public static MobileElement selectUser;
@@ -56,14 +55,13 @@ public class AssignmentCategoriesPage implements Constants {
 
 	public void selectAnAttorney() {
 
-		selectAUser(Users.BROWN_BENJAMIN);
+		getUserCategory(Users.STAFF_ATTORNEYS, selectUser, Users.BROWN_BENJAMIN);
 
 	}
 
 	public void getAssignmentCategories() {
 		List<String> uiAssignmentCategories = getListOfCategories();
 		List<String> dbAssignmentCategories = executeQuery(ASSIGNMENT_CATEGORIES);
-	
 		assertDbContainsAllFromUi(dbAssignmentCategories, uiAssignmentCategories);
 	}
 

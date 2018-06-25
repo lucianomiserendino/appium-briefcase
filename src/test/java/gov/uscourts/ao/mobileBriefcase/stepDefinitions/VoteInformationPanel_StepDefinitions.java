@@ -31,18 +31,18 @@ public class VoteInformationPanel_StepDefinitions {
 
 	@Then("^observes the judge's initials display in the same heading$")
 	public void observes_the_judge_s_initials_display_in_the_same_heading() {
-		 page.checkJudgesIntitials();
+		// page.checkJudgesIntitials();
 	}
 
 	@Then("^User checks each relief  that has been  displayed below the filer name\\.$")
 	public void user_checks_each_relief_that_has_been_displayed_below_the_filer_name() {
-		 page.verifyReliefIsDisplayed();
+		// page.verifyReliefIsDisplayed();
 	}
 
 	@Then("^User checks each judge's vote  and the date  displays under their initials$")
 	public void user_checks_each_judge_s_vote_and_the_date_displays_under_their_initials() {
 
-		page.getJudgesVoteInfo();
+		//page.getJudgesVoteInfo();
 
 	}
 

@@ -6,11 +6,10 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_EVENT;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.APPELLATE_JUDGES;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getCollapsablePanel;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getPanel;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertTrue;
 
@@ -41,19 +40,7 @@ public class ActionsPanelPage {
 
 	public void verifyActionsPanelIsDisplayed(String actionsPanel) {
 
-		performPageLoad();
-		try {
-			if (executeQuery(MBR_EVENT).size() > 0) {
-				assertTrue(actions.isDisplayed());
-
-			} else {
-				assertTrue(!(executeQuery(MBR_EVENT).size() > 0));
-
-			}
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-		}
-
+		getPanel(MBR_EVENT, " THERE'RE NO ACTIONS OR MBR_EVENT TABLE IS EMPTY ", actionsPanel);
 	}
 
 	public void compareApplicableActions() {
@@ -61,8 +48,7 @@ public class ActionsPanelPage {
 		try {
 
 			if (executeQuery(MBR_EVENT).size() > 0 && actions.isDisplayed()) {
-				getPanel(ACTIONS);
-				clickOnPanel();
+				getApplicableActions();
 				getPanel(ACTIONS);
 			} else {
 				assertTrue(!(executeQuery(MBR_EVENT).size() > 0));
@@ -78,7 +64,7 @@ public class ActionsPanelPage {
 
 	}
 
-	public static void clickOnPanel() {
+	public static void getApplicableActions() {
 		try {
 			if (isDisplayed() == false) {
 				getPanel(ACTIONS);
@@ -98,10 +84,11 @@ public class ActionsPanelPage {
 		List<String> dbApplicableActions = executeQuery(APPLICABLE_ACTIONS);
 		sort(dbApplicableActions);
 		try {
-			for (int i = 1; i < dbApplicableActions.size(); ++i) {
+			for (int i = 0; i < dbApplicableActions.size(); ++i) {
 
-				MobileElement actions = findElement(By.xpath(locateElement(dbApplicableActions.get(i))));
-
+				MobileElement actions = findElement(
+						By.xpath("//XCUIElementTypeTable[@name='DocumentList']/child::*//*[contains(@name, '"
+								+ dbApplicableActions.get(i) + "')]"));
 				if (actions.isDisplayed())
 					isDisplayed = true;
 			}

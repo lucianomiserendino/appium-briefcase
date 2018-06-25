@@ -1,14 +1,10 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-
-import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
-
-import static gov.uscourts.ao.mobileBriefcase.common.Page.*;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getIndex;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.*;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,8 +15,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import cucumber.api.DataTable;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
-import gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users;
-import gov.uscourts.ao.mobileBriefcase.common.Configuration;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
@@ -65,48 +59,30 @@ public class LoginPage extends Base {
 	public MobileElement logout;
 
 	public void selectEnvironment() {
-		
+
 		performPageLoad();
 		clickOn(server);
-
 	}
 
 	public void sendCredentials(DataTable userCredentials) {
 
 		userName.sendKeys(getIndex(userCredentials, "userName"));
 		password.sendKeys(getIndex(userCredentials, "password"));
-		clickOn(submButton);
+		waitToBeClickable(submButton);
 
 	}
 
 	public void sedKeyButton() {
-		performPageLoad();
-		clickOn(sendKeyButton);
+		waitToBeClickable(sendKeyButton);
 	}
 
 	public void open() {
-		performPageLoad();
 		clickOn(findElement(By.name(openBtn)));
 	}
 
-	public void getCMKA(DataTable userCredentials) {
+	public void getCMKA() {
 		waitToBeClickable(CMKA);
 		performPageLoad();
-		if (getIndex(userCredentials, "userName").equals(Configuration.getProperty("userName"))
-				&& getIndex(userCredentials, "password").equals(Configuration.getProperty("password"))) {
-			performPageLoad();
-			waitToBeClickable(selectUser);
-			performPageLoad();
-			getUserCredentials(userCredentials);
-
-		} else {
-
-            pageLoad();
-            select(Users.MOTIONS_PETITIONS);
-            select(Users.DASHBOARD);
-			pageLoad();
-
-		}
 	}
 
 }

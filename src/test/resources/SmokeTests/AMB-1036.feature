@@ -13,13 +13,10 @@ Background:
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And After user navigates to Appellate DC Development - CMKA - dev
-	
-		|userName			|password	|briefcaseUser|
-		|SysadminKasabolotova|Asalta6268!z|appellateJudges|
 		
 	And   User selects Judge Colloton  >> Petitions for Rehearing >> "15-3314"
 
-@Smoke
+
 @AMB_1036 
 Scenario: 
 If a referral requires voting, a collapsible Vote Information panel displays.  When expanded, it displays the following information:

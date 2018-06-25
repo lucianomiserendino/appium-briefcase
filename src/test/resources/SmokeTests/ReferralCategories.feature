@@ -1,4 +1,4 @@
-Feature: Referral and Staff Categories display on the dashboard for the judge and staff attorneys
+Feature: Referral Categories display on the dashboard for the judge
 
 Background: 
 
@@ -10,9 +10,7 @@ Background:
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And After user navigates to Appellate DC Development - CMKA - dev
-	
-		|userName			|password	|
-		|chambers courtney  | Test2020! |
+
 	
 @Smoke
 @AMB_956 

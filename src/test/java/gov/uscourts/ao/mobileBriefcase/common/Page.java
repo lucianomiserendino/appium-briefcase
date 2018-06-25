@@ -47,14 +47,14 @@ public class Page extends Base {
 		return element;
 	}
 
-	public static void getPageSource() {
-		performPageLoad();
-		System.out.println(driver.getPageSource());
+	public static MobileElement waitForElement(MobileElement element) {
+		return (MobileElement) new WebDriverWait(driver, 70).until(ExpectedConditions.visibilityOf(element));
 
 	}
 
-	public static MobileElement waitForElement(MobileElement element) {
-		return (MobileElement) new WebDriverWait(driver, 70).until(ExpectedConditions.visibilityOf(element));
+	public static void getPageSource() {
+		performPageLoad();
+		System.out.println(driver.getPageSource());
 
 	}
 

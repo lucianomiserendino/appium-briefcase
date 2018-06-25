@@ -2,16 +2,16 @@ package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
 public class Queries {
 
-	public static final String CASEID = "82636";
+	public static final String CASEID = "82226";
 	public static final String EL_ID = "3060";
-	
+
 	// Query to find appellate judge
 	public static final String PE_ID = "(SELECT  PE_ID FROM PERSON, PERSONROLE WHERE "
 			+ "PE_PR_PRID=PR_PRID AND PE_RT_CODE='jud' and PR_LAST_NAME='Colloton')";
 
 	public static final String CMR_ID = "SELECT cmr_id FROM chm_mobile_referral, chambers_case_to_referral, chambers_referral"
 			+ " WHERE cpr_vote_req = 'y' and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = " + CASEID
-			+ " and" + " cmr_cyv_code = 'motpet' and cmr_ju_pe_id = " + PE_ID;
+			+ " and" + " cmr_cyv_code = 'prhr' and cmr_ju_pe_id = " + PE_ID;
 
 	// Query to find the valid non-orally argued categories for the judge:
 	public static final String CYV_CATEGORY = "SELECT DISTINCT CYV_CATEGORY FROM CHM_MOBILE_REFERRAL,"
@@ -48,7 +48,6 @@ public class Queries {
 			+ "AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
 			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID ";
 
-
 	public static final String SCREENING_PANELS_SI_VALUE_Y = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
 			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = " + PE_ID
 			+ " AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'Screening Panels' "
@@ -63,7 +62,6 @@ public class Queries {
 			+ "AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
 			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID ";
 
-	
 	// Query to get valid categories for the logged in user
 	public static final String DB_LIST_OF_CATEGORIES = "SELECT DISTINCT (CYV_CATEGORY) FROM "
 			+ "CHM_MOBILE_REFERRAL, CHM_REFTYPE_VAL WHERE  CMR_JU_PE_ID = " + PE_ID
@@ -77,7 +75,23 @@ public class Queries {
 			+ " AND  CHC_CHA_ID = CHA_ID AND CMR_JU_PE_ID = CHA_CHM_PE_ID";
 
 	// Query to find staff assignments associated with the referral.
-	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL = "SELECT DISTINCT pr_first_name, pr_last_name,cav_description FROM CHM_MOBILE_REFERRAL,"
+	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_NAME = "SELECT DISTINCT pr_first_name FROM CHM_MOBILE_REFERRAL,"
+			+ " CHAMBERS_CASE_TO_REFERRAL, CHM_ASSIGN_TO_CASE, CHAMBERS_ASSIGNMENT, PERSON, PERSONROLE, CHM_ASSIGN_TYPE_VAL "
+			+ "WHERE  CMR_CS_CASEID = 82226  AND CMR_CCR_ID = CCR_ID AND CCR_CPR_ID = CHC_CPR_ID AND CHC_CS_CASEID = "
+			+ "CMR_CS_CASEID AND CHC_CHA_ID = CHA_ID AND CHA_JU_PE_ID =" + PE_ID
+			+ "  AND CHC_DATE_END IS NULL AND CHA_CHM_PE_ID"
+			+ " = PE_ID AND PE_PR_PRID = PR_PRID AND CMR_CYV_CODE IN (SELECT CYV_CODE FROM CHM_REFTYPE_VAL WHERE CYV_CATEGORY = "
+			+ "'Motions/Petitions' ) AND CHA_CAV_CODE = CAV_CODE";
+
+	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_LAST_NAME = "SELECT DISTINCT  pr_last_name FROM CHM_MOBILE_REFERRAL,"
+			+ " CHAMBERS_CASE_TO_REFERRAL, CHM_ASSIGN_TO_CASE, CHAMBERS_ASSIGNMENT, PERSON, PERSONROLE, CHM_ASSIGN_TYPE_VAL "
+			+ "WHERE  CMR_CS_CASEID = 82226  AND CMR_CCR_ID = CCR_ID AND CCR_CPR_ID = CHC_CPR_ID AND CHC_CS_CASEID = "
+			+ "CMR_CS_CASEID AND CHC_CHA_ID = CHA_ID AND CHA_JU_PE_ID =" + PE_ID
+			+ "  AND CHC_DATE_END IS NULL AND CHA_CHM_PE_ID"
+			+ " = PE_ID AND PE_PR_PRID = PR_PRID AND CMR_CYV_CODE IN (SELECT CYV_CODE FROM CHM_REFTYPE_VAL WHERE CYV_CATEGORY = "
+			+ "'Motions/Petitions' ) AND CHA_CAV_CODE = CAV_CODE";
+
+	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_DESCRIPTION = "SELECT DISTINCT cav_description FROM CHM_MOBILE_REFERRAL,"
 			+ " CHAMBERS_CASE_TO_REFERRAL, CHM_ASSIGN_TO_CASE, CHAMBERS_ASSIGNMENT, PERSON, PERSONROLE, CHM_ASSIGN_TYPE_VAL "
 			+ "WHERE  CMR_CS_CASEID = 82226  AND CMR_CCR_ID = CCR_ID AND CCR_CPR_ID = CHC_CPR_ID AND CHC_CS_CASEID = "
 			+ "CMR_CS_CASEID AND CHC_CHA_ID = CHA_ID AND CHA_JU_PE_ID =" + PE_ID
@@ -90,7 +104,14 @@ public class Queries {
 			+ " maxresults WHERE ad.chd_cha_id in (2236, 2235)  and chd_cdv_code = cdv_code and ad.chd_cha_id= "
 			+ " maxresults.chd_cha_id and ad.chd_date = maxresults.maxnum ";
 
-	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE = "SELECT DISTINCT  pr_first_name, pr_last_name,cav_description  FROM chm_mobile_referral, chambers_case_to_referral,"
+	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE_NAME = "SELECT DISTINCT  pr_first_name FROM chm_mobile_referral, chambers_case_to_referral,"
+			+ " chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val WHERE "
+			+ "cmr_cs_caseid = 82226 and cmr_ccr_id = ccr_id and chc_cs_caseid = cmr_cs_caseid and chc_cpr_id = 1 and "
+			+ "chc_cha_id = cha_id and cha_ju_pe_id = " + PE_ID
+			+ " and chc_date_end is null and cha_chm_pe_id = pe_id and "
+			+ "pe_pr_prid = pr_prid and cha_cav_code = cav_code";
+
+	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE_DESCRIPTION = "SELECT DISTINCT  cav_description  FROM chm_mobile_referral, chambers_case_to_referral,"
 			+ " chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val WHERE "
 			+ "cmr_cs_caseid = 82226 and cmr_ccr_id = ccr_id and chc_cs_caseid = cmr_cs_caseid and chc_cpr_id = 1 and "
 			+ "chc_cha_id = cha_id and cha_ju_pe_id = " + PE_ID
@@ -237,6 +258,7 @@ public class Queries {
 
 	public static final String ACTION_NAME = "select el_list_text FROM event_list where el_id=" + EL_ID;
 
-	public static final String NOTE_DPF_DEFAULT_DESCRIPTION = "select el_functions FROM event_list  where el_list_text= \"Send Directions to Clerk's Office\"";
+	public static final String NOTE_DPF_DEFAULT_DESCRIPTION = "select el_functions FROM event_list  where el_id="
+			+ EL_ID;
 
 }

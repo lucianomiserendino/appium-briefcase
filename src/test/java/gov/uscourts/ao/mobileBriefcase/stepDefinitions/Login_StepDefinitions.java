@@ -19,7 +19,6 @@ public class Login_StepDefinitions implements iOSCapabilities {
 	public void user_Navigate_to_Sever() throws MalformedURLException {
 		logPage = new LoginPage();
 		logPage.selectEnvironment();
-
 		changeWindow("WEBVIEW");
 
 	}
@@ -38,15 +37,14 @@ public class Login_StepDefinitions implements iOSCapabilities {
 
 	@Then("^User navigates to MobileBrifcase App$")
 	public void user_navigates_to_MobileBrifcase_App() {
-
 		changeWindow("NATIVE");
 		logPage.open();
 
 	}
 
 	@Then("^After user navigates to Appellate DC Development - CMKA - dev$")
-	public void after_user_navigates_to_Appellate_DC_Development_CMKA_dev(DataTable userCredentials) {
-		logPage.getCMKA(userCredentials);
+	public void after_user_navigates_to_Appellate_DC_Development_CMKA_dev() {
+		logPage.getCMKA();
 		
 
 	}

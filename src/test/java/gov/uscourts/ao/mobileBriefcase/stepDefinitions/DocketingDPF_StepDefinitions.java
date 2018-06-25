@@ -3,26 +3,26 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import gov.uscourts.ao.mobileBriefcase.Pages.NoteDPFPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.DocketingDPFPage;
 
-public class NoteDPF_StepDefinitions {
-	NoteDPFPage page;
+public class DocketingDPF_StepDefinitions {
+	DocketingDPFPage page;
 
 	@Given("^User selects Motions/Petitions \"([^\"]*)\"$")
 	public void user_selects_Motions_Petitions(String caseNumber) {
-		page = new NoteDPFPage();
+		page = new DocketingDPFPage();
 		page.getCase(caseNumber);
 	}
 
-	@When("^User expands the Actions panel, selects \"([^\"]*)\"$")
-	public void user_expands_the_Actions_panel_selects(String element) {
-		page.getActionsPanel(element);
+	@When("^User expands the Actions panel, selects an action$")
+	public void user_expands_the_Actions_panel_selects_an_action() {
+		page.getActionsPanel();
 	}
 
 	@Then("^User verifies the name of the action displays in the dark blue banner\\.$")
 	public void user_verifies_the_name_of_the_action_displays_in_the_dark_blue_banner() {
 
-		page.verifyActionName();
+		  page.verifyActionName();
 	}
 
 	@Then("^User verifies the text \"([^\"]*)\" displays in the light blue banner\\.$")

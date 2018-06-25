@@ -1,8 +1,5 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_EVENT;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.ANDERS_CASES;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.IFP_MOTION_IN_THIS_COURT;
@@ -11,6 +8,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Constants.PRO_SE_REFS;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.SUMMARY_DISPOSITION;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.UNASSIGNED_REFERRALS;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
 import static java.util.Collections.sort;
@@ -18,11 +16,9 @@ import static java.util.Collections.sort;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 
-import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
 
 public class Helper {
@@ -55,12 +51,21 @@ public class Helper {
 
 	}
 
+	public static  void clickOnCategory(Actions action) {
+		clickOn(findElement(By.xpath(selectReferralCategory(action))));
+	}
+
 	public static String locateElement(String element) {
 		return "//*[contains(@name, '" + element + "')]";
 	}
 
 	public static boolean elementIsDisplayed(String element) {
 		return isDisplayed(By.xpath(locateElement(element)));
+	}
+
+	public static String getText(String element) {
+		return findElement(By.xpath(locateElement(element))).getText();
+
 	}
 
 	public static void clickOnPanel(String element) {
@@ -123,6 +128,15 @@ public class Helper {
 			break;
 		}
 
+	}
+
+	public static String getPanelText(Actions action, String element) {
+		if (elementIsDisplayed(element)) {
+			return getText(element);
+		} else {
+			getPanel(action);
+			return getText(element);
+		}
 	}
 
 	public static String getVoteInformation(Actions action, int index) {
@@ -212,6 +226,9 @@ public class Helper {
 		/** Judge's initials */
 		SMC, RLW, RWG,
 
-		FILERs_INFORMATION
+		FILERs_INFORMATION,
+		
+		SPLIT_BY_COMMA, REPLACE,SPLIT_BY_SPACE
+		
 	}
 }

@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MOTIONS_PETITIONS_SI_VALUE_N;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MOTIONS_PETITIONS_SI_VALUE_Y;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PETITIONS_FOR_REHEARING_SI_VALUE_N;
@@ -9,10 +10,11 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SCREENING_PANELS_S
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SCREENING_PANELS_SI_VALUE_Y;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.*;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.*;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getListOfCategories;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getNumOfDisplayedCases;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -38,7 +40,7 @@ public class ReferralCategoriesPage {
 	@iOSFindBy(accessibility = "Pending Tasks")
 	public static MobileElement pendingTasks;
 
-	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	@WithTimeout(time = 30, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'Total')]")
 	public static MobileElement total;
 
@@ -55,7 +57,7 @@ public class ReferralCategoriesPage {
 	public static MobileElement motionsPetitions;
 
 	public String verifyIfPendingTasksAreDisplayed() {
-
+		refresh();
 		if (pendingTasks.isDisplayed()) {
 			clickOn(pendingTasks);
 		}
@@ -65,11 +67,13 @@ public class ReferralCategoriesPage {
 	}
 
 	public List<String> UIreferralCategoriesList() {
+		refresh();
 		return getListOfCategories(motionsPetitions, casesOnCalendar, petitionsForRehearing, screeningPanels);
 
 	}
 
 	public void verifyNonOrallyArgCases() {
+		refresh();
 		getNonOrallyARGCases(PETITIONS_FOR_REHEARING_SI_VALUE_N, PETITIONS_FOR_REHEARING_SI_VALUE_Y,
 				verifyNumOfNonOrallyARGCases(petitionsForRehearing));
 		select(Users.DASHBOARD);
@@ -83,16 +87,16 @@ public class ReferralCategoriesPage {
 
 	}
 
-	public void getNonOrallyARGCases(String SI_VALUE_N, String SI_VALUE_Y, String uiNonOrallyARGCases) {
+	public void getNonOrallyARGCases(String siValueN, String siValueY, String uiNonOrallyARGCases) {
 
-		List<String> DBnonOrallyarguedCases_SI_VALUE_N = executeQuery(SI_VALUE_N);
-		List<String> DBnonOrallyarguedCases_SI_VALUE_Y = executeQuery(SI_VALUE_Y);
+		List<String> DBnonOrallyarguedCasesiValueN = executeQuery(siValueN);
+		List<String> DBnonOrallyarguedCaseSiValueY = executeQuery(siValueY);
 
 		List<String> UInonOrallyarguedCases = Arrays.asList(uiNonOrallyARGCases);
 
 		assertTrue("-----RECORD COUNT MISMATCHED-----",
-				DBnonOrallyarguedCases_SI_VALUE_N.containsAll(UInonOrallyarguedCases)
-						|| DBnonOrallyarguedCases_SI_VALUE_Y.containsAll(UInonOrallyarguedCases));
+				DBnonOrallyarguedCasesiValueN.containsAll(UInonOrallyarguedCases)
+						|| DBnonOrallyarguedCaseSiValueY.containsAll(UInonOrallyarguedCases));
 
 	}
 
@@ -104,7 +108,7 @@ public class ReferralCategoriesPage {
 	public String uiNonOrallyARGCases(MobileElement element) {
 		clickOn(element);
 		performPageLoad();
-		return getNumOfDisplayedCases(total);
+		return getNumOfDisplayedCases(waitForElement(total));
 	}
 
 }
