@@ -20,7 +20,7 @@ public class Hook extends Base implements iOSCapabilities {
 	@Before
 	public void setUp() {
 
-	//	safariInstance();
+	safariInstance();
 
 	}
 
