@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
@@ -8,8 +9,9 @@ import java.util.Collections;
 import java.util.List;
 
 import cucumber.api.java.en.Given;
-import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralCategoriesPage;
+
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.*;
 
 public class ReferralCategories_StepDefinitions {
 	static ReferralCategoriesPage page;
@@ -19,7 +21,7 @@ public class ReferralCategories_StepDefinitions {
 
 		page = new ReferralCategoriesPage();
 
-		List<String> DBrefCatlist = executeQuery(Queries.DB_LIST_OF_CATEGORIES);
+		List<String> DBrefCatlist = executeQuery(DB_LIST_OF_CATEGORIES);
 		List<String> UIrefCatlist = page.UIreferralCategoriesList();
 		Collections.sort(DBrefCatlist);
 		assertEquals("-----RECORD COUNT MISMATCHED-----", UIrefCatlist, DBrefCatlist);
@@ -29,7 +31,7 @@ public class ReferralCategories_StepDefinitions {
 	@Given("^If The judge has any pending assignments it will validate the total num of pending task on UI with DB$")
 	public void if_The_judge_has_any_pending_assignments_it_will_validate_the_total_num_of_pending_task_on_UI_with_DB() {
 		page = new ReferralCategoriesPage();
-		List<String> DBPendingTasks = executeQuery(Queries.PENDING_TASK_ASSIGNMENTS);
+		List<String> DBPendingTasks = executeQuery(PENDING_TASK_ASSIGNMENTS);
 
 		if (DBPendingTasks.size() > 0) {
 			List<String> UIPendingTasks = Arrays.asList(page.verifyIfPendingTasksAreDisplayed());

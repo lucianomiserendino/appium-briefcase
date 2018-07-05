@@ -11,16 +11,16 @@ Background:
 	Then User navigates to MobileBrifcase App 
 	And After user navigates to Appellate DC Development - CMKA - dev
 
-
-@Smoke
+@B
+@Regression
 @AMB_1047
 Scenario: 
 	Assignment Categories display on the dashboard for SAs
 	Given User selects staff attorney Benjamin Brown in the user's list
 	Then User observes the assignment categories that display on the dashboard. 
 	
-
-@Smoke
+@B
+@Regression
 @AMB_1049
 	Scenario: 
 	 Once an assignment category is selected, referrals are grouped based on referral categories. 

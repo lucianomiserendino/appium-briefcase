@@ -2,6 +2,8 @@ Feature: note DPF UI
 
 Background: 
 
+
+1	 	
 	Given  User Navigates to Sever 
 	When  User enters Credentials to Login 
         |userName			|password	|
@@ -21,3 +23,6 @@ Scenario:
     Then User verifies the name of the action displays in the dark blue banner.
     Then User verifies the text "Add New Note" displays in the light blue banner.
     And user verifies an editable "Description", "Comment", "Submit" fields are  displayed.  The default description is defined in the Default description parameter of the note DPF
+
+    
+    

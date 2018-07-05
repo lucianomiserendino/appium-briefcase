@@ -13,7 +13,7 @@ Background:
 	Given User selects Judge Colloton >> Motions/Petitions >> case "15-3314" 
 	Then User  observes a collapsible panel entitled "Assignments" displays and expands the Assignments panel 
 	
-@Smoke
+@Regression
 @AMB_1033 
 Scenario: 
 	Display of Assignment Notes.
@@ -35,7 +35,7 @@ Scenario:
 	
 	
 	
-@Smoke
+@Regression
 @AMB_1021 
 Scenario: 
 	Staff members can be assigned to referrals and/or just cases. 
@@ -45,7 +45,7 @@ Scenario:
 	Then User observes there is an assignment for "Kyle Essley" and "Daniel Hay" 
 	
 	
-@Smoke
+@Regression
 @AMB_1021 
 Scenario: 
 	Staff members can be assigned to referrals and/or just cases. 

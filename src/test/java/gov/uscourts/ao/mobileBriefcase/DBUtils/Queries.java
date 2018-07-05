@@ -1,9 +1,19 @@
 package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.*;
+
+import gov.uscourts.ao.mobileBriefcase.common.Constants;
+
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.*;
+
 public class Queries {
 
 	public static final String CASEID = "82226";
-	public static final String EL_ID = "3060";
+
+	public static String getId(String id) {
+		return id;
+
+	}
 
 	// Query to find appellate judge
 	public static final String PE_ID = "(SELECT  PE_ID FROM PERSON, PERSONROLE WHERE "
@@ -256,9 +266,27 @@ public class Queries {
 
 	public static final String MBR_EVENT = "select * from mbr_event";
 
-	public static final String ACTION_NAME = "select el_list_text FROM event_list where el_id=" + EL_ID;
+	public static final String ACTION_NAME = "select el_list_text FROM event_list where el_id="
+			+ getId(MBR_NOTE_COURT_USERS);
 
 	public static final String NOTE_DPF_DEFAULT_DESCRIPTION = "select el_functions FROM event_list  where el_id="
-			+ EL_ID;
+			+ getId(MBR_NOTE_COURT_USERS);
+
+	public static final String MBR_NOTE = "select el_functions FROM event_list  where el_id=";
+
+	public static final String DM_ACC_CRT = "select first 1 dm_acc_crt from  document order by dm_date_created desc";
+
+	public static final String DM_ACC_CTLINK = "select first 1 dm_acc_ctlink from  document order by dm_date_created desc";
+
+	public static final String DM_ACC_SPEC = "select first 1 dm_acc_spec from  document order by dm_date_created desc";
+
+	public static final String DM_DESCRIPTION = "select first 1 dm_description from  document order by  dm_date_created desc";
+
+	public static final String DOC_USER = "select distinct pr_prid from person, chm_mobile_referral, panel_case, panel, panel_to_judge, judge, personrole where "
+			+ "cmr_id = " + getId(Constants.CMR_ID)
+			+ " and cmr_ph_id = ph_id and pj_pn_id = ph_pn_id and pj_ju_ao_code = ju_ao_code and ju_pe_id = pe_id and  pe_pr_prid = pr_prid";
+
+	public static final String DU_PRID = "select first " + executeQuery(DOC_USER).size()
+			+ " du_prid from  doc_user order by  du_date_created desc";
 
 }

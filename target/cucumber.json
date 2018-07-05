@@ -11,7 +11,7 @@
         "steps": [
           {
             "result": {
-              "duration": 32555805674,
+              "duration": 29337962841,
               "status": "passed"
             },
             "line": 5,
@@ -23,7 +23,7 @@
           },
           {
             "result": {
-              "duration": 1470427628,
+              "duration": 4302592695,
               "status": "passed"
             },
             "line": 6,
@@ -51,7 +51,7 @@
           },
           {
             "result": {
-              "duration": 8912538683,
+              "duration": 3938628352,
               "status": "passed"
             },
             "line": 10,
@@ -63,7 +63,7 @@
           },
           {
             "result": {
-              "duration": 25779666451,
+              "duration": 11164189762,
               "status": "passed"
             },
             "line": 11,
@@ -75,30 +75,14 @@
           },
           {
             "result": {
-              "duration": 62830438340,
+              "duration": 13651556162,
               "status": "passed"
             },
             "line": 12,
             "name": "After user navigates to Appellate DC Development - CMKA - dev",
             "match": {
-              "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev(DataTable)"
+              "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev()"
             },
-            "rows": [
-              {
-                "cells": [
-                  "userName",
-                  "password"
-                ],
-                "line": 13
-              },
-              {
-                "cells": [
-                  "chambers courtney",
-                  "Test2020!"
-                ],
-                "line": 14
-              }
-            ],
             "keyword": "And "
           }
         ]
@@ -107,7 +91,7 @@
         "before": [
           {
             "result": {
-              "duration": 5008945786,
+              "duration": 97152,
               "status": "passed"
             },
             "match": {
@@ -115,14 +99,14 @@
             }
           }
         ],
-        "line": 20,
+        "line": 16,
         "name": "",
-        "description": "Tapping on a referral category that is not orally argued (chm_reftype_val.cdv_is_oral_arg\u003d\u0027n\u0027),\n  a list of cases should dipslay for the judge for that category.\n  Need to verify the correct number of referrals are being displayed.",
-        "id": "number-of-cases-displayed-for-non-orally-argued-cases;",
+        "description": "A category entitled \"Pending Tasks\" will display on the dashboard if the judge has \nany pending assignments and the site table variable briefcaseShowPendingTasks \u003d\u0027y\u0027.",
+        "id": "pending-tasks-category-displays-on-the-dashboard;",
         "after": [
           {
             "result": {
-              "duration": 46339131418,
+              "duration": 16576517259,
               "status": "passed"
             },
             "match": {
@@ -135,33 +119,33 @@
         "steps": [
           {
             "result": {
-              "duration": 88264332684,
+              "duration": 44394248770,
               "status": "passed"
             },
-            "line": 25,
-            "name": "User  Observes the categories on the dashboard page. The Petitions for Rehearing, Motions/Petitions and Screening Panels categories are all non-orally argued categories.",
+            "line": 20,
+            "name": "If The judge has any pending assignments it will validate the total num of pending task on UI with DB",
             "match": {
-              "location": "ReferralCategories_StepDefinitions.user_Observes_the_categories_on_the_dashboard_page_The_Petitions_for_Rehearing_Motions_Petitions_and_Screening_Panels_categories_are_all_non_orally_argued_categories()"
+              "location": "ReferralCategories_StepDefinitions.if_The_judge_has_any_pending_assignments_it_will_validate_the_total_num_of_pending_task_on_UI_with_DB()"
             },
             "keyword": "Given "
           }
         ],
         "tags": [
           {
-            "line": 18,
+            "line": 14,
             "name": "@Smoke"
           },
           {
-            "line": 19,
-            "name": "@AMB_973"
+            "line": 15,
+            "name": "@AMB_1008"
           }
         ]
       }
     ],
-    "name": "Number of cases displayed for non-orally argued cases",
+    "name": "Pending Tasks Category Displays on the Dashboard",
     "description": "",
-    "id": "number-of-cases-displayed-for-non-orally-argued-cases",
+    "id": "pending-tasks-category-displays-on-the-dashboard",
     "keyword": "Feature",
-    "uri": "SmokeTests/AMB-973.feature"
+    "uri": "SmokeTests/PendingTasksCategory.feature"
   }
 ]

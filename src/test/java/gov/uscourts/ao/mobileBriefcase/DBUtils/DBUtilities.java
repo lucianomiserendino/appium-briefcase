@@ -78,6 +78,7 @@ public class DBUtilities {
 		List<String[]> queryResult = runSQLQuery(query);
 		List<String> result = new ArrayList<>();
 		queryResult.forEach(record -> result.add(record[0].trim()));
+		closeConnections();
 		return result;
 
 	}
@@ -99,12 +100,12 @@ public class DBUtilities {
 			}
 		} catch (Exception e) {
 			e.getMessage();
+			closeConnections();
 		}
 		return allColumns;
 
 	}
 
-	
 	public static void closeConnections() {
 		try {
 			if (resultSet != null) {
@@ -122,10 +123,9 @@ public class DBUtilities {
 		}
 
 	}
-	
-	public enum DBType {
-		CMKA,MYSQL
-	}
 
+	public enum DBType {
+		CMKA, MYSQL
+	}
 
 }

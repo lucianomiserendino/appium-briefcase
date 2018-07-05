@@ -4,6 +4,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.REFERRAL_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.BROWN_BENJAMIN;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.STAFF_ATTORNEYS;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getReferralCategories;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
@@ -19,7 +20,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.PageFactory;
 
-import gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users;
 import gov.uscourts.ao.mobileBriefcase.common.Constants;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -55,7 +55,7 @@ public class AssignmentCategoriesPage implements Constants {
 
 	public void selectAnAttorney() {
 
-		getUserCategory(Users.STAFF_ATTORNEYS, selectUser, Users.BROWN_BENJAMIN);
+		getUserCategory(STAFF_ATTORNEYS, selectUser, BROWN_BENJAMIN);
 
 	}
 
@@ -93,6 +93,7 @@ public class AssignmentCategoriesPage implements Constants {
 			getCollapsablePanel(selectUser, STAFF_ATTORNEYS);
 
 		}
+	
 
 	}
 

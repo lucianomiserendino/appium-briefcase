@@ -23,6 +23,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.PageFactory;
 
+import gov.uscourts.ao.mobileBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.common.Base.PlatformVersions;
 import gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -34,6 +36,7 @@ public class ReferralCategoriesPage {
 	public ReferralCategoriesPage() {
 
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+		
 	}
 
 	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)

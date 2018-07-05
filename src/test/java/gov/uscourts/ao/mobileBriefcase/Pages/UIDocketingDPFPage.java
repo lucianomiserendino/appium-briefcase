@@ -24,9 +24,9 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class DocketingDPFPage extends Base {
+public class UIDocketingDPFPage extends Base {
 
-	public DocketingDPFPage() {
+	public UIDocketingDPFPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 

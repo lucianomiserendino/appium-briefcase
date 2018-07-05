@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Base.changeWindow;
-
+import static gov.uscourts.ao.mobileBriefcase.common.Base.*;
 import java.net.MalformedURLException;
 
 import cucumber.api.DataTable;

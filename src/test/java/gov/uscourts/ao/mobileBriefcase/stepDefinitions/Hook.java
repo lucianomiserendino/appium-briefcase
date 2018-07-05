@@ -20,14 +20,13 @@ public class Hook extends Base implements iOSCapabilities {
 	@Before
 	public void setUp() {
 
-		safariInstance();
+	//	safariInstance();
 
 	}
 
 	@After
 
 	public void tearDown() {
-		// navigateBack(back);
 		select(DASHBOARD);
 		logout(settingsPage, logout, OKBtn, OKBtn);
 		driver.quit();

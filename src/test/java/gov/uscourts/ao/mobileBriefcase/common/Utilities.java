@@ -16,6 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,7 +82,6 @@ public class Utilities extends Base {
 		return referrals;
 
 	}
-	
 
 	public static void getPanel(String query, String message, String element) {
 
@@ -160,6 +160,11 @@ public class Utilities extends Base {
 
 	}
 
+	public static void sendKeys(MobileElement elements, String text) {
+		elements.sendKeys(text);
+
+	}
+
 	public static String getText(MobileElement elements) {
 		return elements.getText().trim();
 
@@ -198,15 +203,15 @@ public class Utilities extends Base {
 
 	}
 
-
-
 	public static void clickOn(MobileElement element) {
 
 		try {
 			if (waitForElement(element).isDisplayed()) {
-				performPageLoad();
 				element.click();
+			} else {
+				scroll(1);
 			}
+
 		} catch (Exception e) {
 			e.getMessage();
 		}
@@ -360,8 +365,7 @@ public class Utilities extends Base {
 
 		return true;
 	}
-	
-	
+
 	public static void clickOn(WebElement element) {
 
 		try {
@@ -371,6 +375,13 @@ public class Utilities extends Base {
 		} catch (Exception e) {
 			e.getMessage();
 		}
+
+	}
+
+	public static String getStreamOfRandomInts() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		return dateFormat.format(date);
 
 	}
 

@@ -65,11 +65,11 @@ public class ActionsPanelPage {
 	}
 
 	public static void getApplicableActions() {
+
 		try {
+			assertTrue(isDisplayed() == true);
 			if (isDisplayed() == false) {
 				getPanel(ACTIONS);
-				assertTrue(isDisplayed() == true);
-			} else {
 				assertTrue(isDisplayed() == true);
 			}
 		} catch (AssertionError e) {

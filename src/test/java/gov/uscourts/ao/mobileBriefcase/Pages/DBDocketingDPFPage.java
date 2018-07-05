@@ -1,10 +1,13 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_ACC_CRT;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_ACC_CTLINK;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_ACC_SPEC;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_DESCRIPTION;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOC_USER;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DU_PRID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_EVENT;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
@@ -20,18 +23,23 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getUserCategory;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.sendKeys;
+import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.PageFactory;
 
+import gov.uscourts.ao.mobileBriefcase.common.Constants;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class DBDocketingDPFPage {
+public class DBDocketingDPFPage implements Constants {
 
 	public DBDocketingDPFPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
@@ -90,17 +98,27 @@ public class DBDocketingDPFPage {
 	public void getDBRecords(mbrNotes note) {
 
 		switch (note) {
+
 		case COURT_USERS:
 
-			getDBNotes(3060, "ynnnn", DM_ACC_CRT, "y", DM_ACC_CTLINK, "n", DM_ACC_SPEC, "n", DM_ACC_CRT, "n");
+			getDBNotes(MBR_NOTE_COURT_USERS, "ynnnn", DM_ACC_CRT, Y, DM_ACC_CTLINK, N, DM_ACC_SPEC, N);
 
 			break;
+
 		case COURT_USERS_LINKED_TO_CASE:
-			getDBNotes(3070, "ynnnn", DM_ACC_CRT, "n", DM_ACC_CTLINK, "y", DM_ACC_SPEC, "n", DM_ACC_CRT, "n");
+
+			getDBNotes(COURT_USERS_LINKED_TO_CASE, "nynnn", DM_ACC_CRT, N, DM_ACC_CTLINK, Y, DM_ACC_SPEC, N);
+
 			break;
+
 		case PANEL_JUDGES_ONLY:
 
+			getDBNotes(PANEL_JUDGES_ONLY, "nnnny", DM_ACC_CRT, N, DM_ACC_CTLINK, N, DM_ACC_SPEC, Y);
+
+			assertEquals(getSortedList(DU_PRID), getSortedList(DOC_USER));
+
 			break;
+
 		case PANEL_JUDGES_AND_USERs_CHAMBERS:
 
 			break;
@@ -121,25 +139,69 @@ public class DBDocketingDPFPage {
 
 	}
 
-	public String getEL_Function(int el_id) {
-		final String mbrNote = MBR_NOTE + el_id;
+	public static List<String> getSortedList(String query) {
+		List<String> sortedList = new ArrayList<>();
+		sortedList.addAll(executeQuery(query));
+		sort(sortedList);
+		return sortedList;
+
+	}
+
+	public static String getEL_Function(String mbrNoteCourtUsersElId) {
+		final String mbrNote = MBR_NOTE + mbrNoteCourtUsersElId;
 		return getRestrictParam(getAllColumns(mbrNote));
 
 	}
 
-	public void getDBNotes(int el_id, String uiDestrictParam, String field1, String value1, String field2,
-			String value2, String field3, String value3, String field4, String value4) {
-		if (getEL_Function(el_id).equals(uiDestrictParam)) {
-			assertEquals(getAllColumns(field1), value1);
-			assertEquals(getAllColumns(field2), value2);
-			assertEquals(getAllColumns(field3), value3);
-		} else {
-			assertEquals(getAllColumns(field4), value4);
+	public void getDBNotes(String mbrNoteCourtUsersElId, String uiDestrictParam, String field1, String value1,
+			String field2, String value2, String field3, String value3) {
+		try {
+
+			if (getEL_Function(mbrNoteCourtUsersElId).equals(uiDestrictParam)) {
+				assertEquals(getAllColumns(field1), value1);
+
+				assertEquals(getAllColumns(field2), value2);
+
+				assertEquals(getAllColumns(field3), value3);
+
+			} else {
+				getMbrNote(mbrNoteCourtUsersElId);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
 
-	public String getRestrictParam(String param) {
+	public static void getMbrNote(String mbrNoteCourtUsersElId) {
+
+		if (getEL_Function(mbrNoteCourtUsersElId).equals("ynnnn")) {
+			assertTrue(DM_ACC_CRT.equals(Y));
+
+		} else {
+			assertTrue(DM_ACC_CRT.equals(N));
+		}
+
+		if (getEL_Function(mbrNoteCourtUsersElId).equals("nynnn")) {
+			assertTrue(DM_ACC_CTLINK.equals(Y));
+		} else {
+			assertTrue(DM_ACC_CTLINK.equals(N));
+		}
+
+		if (getEL_Function(mbrNoteCourtUsersElId).equals("nnnny")
+				|| getEL_Function(mbrNoteCourtUsersElId).equals("nnyny")
+				|| getEL_Function(mbrNoteCourtUsersElId).equals("nnnyn")
+				|| getEL_Function(mbrNoteCourtUsersElId).equals("nnynn")) {
+
+			assertTrue(DM_ACC_SPEC.equals(Y));
+
+		} else {
+			assertTrue(DM_ACC_SPEC.equals(N));
+		}
+
+	}
+
+	public static String getRestrictParam(String param) {
 		return param.substring(5).split(",")[0].replaceAll("'", "");
 	}
 
