@@ -22,7 +22,7 @@ public class ReferralCategories_StepDefinitions {
 
 		page = new iOS_ReferralCategoriesPage();
 
-		List<String> DBrefCatlist = executeQuery(DBType.CM5A,DB_REFERRAL_CATEGORIES);
+		List<String> DBrefCatlist = executeQuery(DBType.CMKA,DB_LIST_OF_CATEGORIES);
 		List<String> UIrefCatlist = page.UIreferralCategoriesList();
 		Collections.sort(DBrefCatlist);
 		assertEquals("-----RECORD COUNT MISMATCHED-----", UIrefCatlist, DBrefCatlist);
