@@ -33,7 +33,7 @@ If a referral requires voting, a collapsible Vote Information panel displays.  W
        Then  User checks each judge's vote  and the date  displays under their initials
     
 
-@Smoke
+@Regression
 @AMB_1038
 Scenario: 
 

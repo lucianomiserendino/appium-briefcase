@@ -1,5 +1,8 @@
 package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getRestrictParam;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -9,13 +12,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.informix.jdbcx.IfxConnectionPoolDataSource;
+
 import gov.uscourts.ao.mobileBriefcase.common.Configuration;
 
 public class DBUtilities {
 
-	final static String dbUrl = Configuration.getProperty("dbUrl");
+	final static String CMKA = Configuration.getProperty("dbUrl_CMKA");
+	final static String CM5A = Configuration.getProperty("dbUrl_CM5A");
 	final static String dbUsername = Configuration.getProperty("dbUsername");
 	final static String dbPwd = Configuration.getProperty("dbPwd");
+	final static String serverName = Configuration.getProperty("serverName");
+	final static String databaseName = Configuration.getProperty("databaseName");
+	final static int portNumber = Integer.parseInt(Configuration.getProperty("portNumber"));
 
 	private static Connection connection;
 	private static Statement statement;
@@ -26,7 +35,28 @@ public class DBUtilities {
 			switch (dbType) {
 			case CMKA:
 				Class.forName("com.informix.jdbc.IfxDriver");
-				connection = DriverManager.getConnection(dbUrl, dbUsername, dbPwd);
+				connection = DriverManager.getConnection(CMKA, dbUsername, dbPwd);
+				break;
+			case CM5A:
+				System.setProperty("javax.net.ssl.trustStore", "/Users/saltanakasabolotova/Desktop/cacerts.jks");
+				System.setProperty("javax.net.ssl.trustStorePassword", "password");
+
+				/* Instantiate Informix connection pooled data source */
+				IfxConnectionPoolDataSource cds = new IfxConnectionPoolDataSource();
+
+				/*
+				 * Set SSLConnection property to true and port pointing to SSL port on the
+				 * server
+				 */
+				cds.setIfxIFXHOST(CM5A);
+				cds.setServerName(serverName);
+				cds.setUser(dbUsername);
+				cds.setPassword(dbPwd);
+				cds.setDatabaseName(databaseName);
+				cds.setPortNumber(portNumber);
+				cds.setIfxSSLCONNECTION("true");
+				connection = cds.getPooledConnection().getConnection();
+
 				break;
 			default:
 				throw new RuntimeException("Invalid Database type");
@@ -73,8 +103,8 @@ public class DBUtilities {
 
 	}
 
-	public static List<String> executeQuery(String query) {
-		establishConnection(DBType.CMKA);
+	public static List<String> executeQuery(DBType dbType, String query) {
+		establishConnection(dbType);
 		List<String[]> queryResult = runSQLQuery(query);
 		List<String> result = new ArrayList<>();
 		queryResult.forEach(record -> result.add(record[0].trim()));
@@ -83,8 +113,8 @@ public class DBUtilities {
 
 	}
 
-	public static String getAllColumns(String query) {
-		establishConnection(DBType.CMKA);
+	public static String getAllColumns(DBType dbType, String query) {
+		establishConnection(dbType);
 		ResultSetMetaData metaData;
 		String allColumns = "";
 		try {
@@ -103,6 +133,12 @@ public class DBUtilities {
 			closeConnections();
 		}
 		return allColumns;
+
+	}
+
+	public static String getEL_Function(String mbrNoteCourtUsersElId, int index) {
+		final String mbrNote = MBR_NOTE + mbrNoteCourtUsersElId;
+		return getRestrictParam(getAllColumns(DBType.CMKA, mbrNote), index);
 
 	}
 
@@ -125,7 +161,7 @@ public class DBUtilities {
 	}
 
 	public enum DBType {
-		CMKA, MYSQL
+		CMKA, CM5A
 	}
 
 }

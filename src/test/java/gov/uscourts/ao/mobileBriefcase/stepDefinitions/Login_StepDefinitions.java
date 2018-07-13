@@ -1,30 +1,28 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Base.*;
-import java.net.MalformedURLException;
+import static gov.uscourts.ao.mobileBriefcase.common.Base.changeWindow;
 
 import cucumber.api.DataTable;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import gov.uscourts.ao.mobileBriefcase.Pages.LoginPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage;
 import gov.uscourts.ao.mobileBriefcase.common.iOSCapabilities;
 
 public class Login_StepDefinitions implements iOSCapabilities {
 
-	LoginPage logPage;
+	iOS_LoginPage logPage;
 
-	@Given("^User Navigates to Sever$")
-	public void user_Navigate_to_Sever() throws MalformedURLException {
-		logPage = new LoginPage();
+	@Given("^User Navigates to environment$")
+	public void user_Navigates_to_environment() {
+		logPage = new iOS_LoginPage();
 		logPage.selectEnvironment();
 		changeWindow("WEBVIEW");
-
 	}
 
 	@When("^User enters Credentials to Login$")
 	public void and_User_enters_Crdenetials_to_Login(DataTable userCredentials) {
-		logPage.sendCredentials( userCredentials);
+		logPage.sendCredentials(userCredentials);
 
 	}
 
@@ -41,12 +39,9 @@ public class Login_StepDefinitions implements iOSCapabilities {
 
 	}
 
-	@Then("^After user navigates to Appellate DC Development - CMKA - dev$")
-	public void after_user_navigates_to_Appellate_DC_Development_CMKA_dev() {
-		logPage.getCMKA();
-		
-
+	@Then("^After user selects a server \"([^\"]*)\"$")
+	public void after_user_selects_a_server(String server) {
+		logPage.getCMKA(server);
 	}
-
 
 }

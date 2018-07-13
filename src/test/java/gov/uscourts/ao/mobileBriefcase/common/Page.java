@@ -48,7 +48,7 @@ public class Page extends Base {
 	}
 
 	public static MobileElement waitForElement(MobileElement element) {
-		return (MobileElement) new WebDriverWait(driver, 70).until(ExpectedConditions.visibilityOf(element));
+		return (MobileElement) new WebDriverWait(driver, 100).until(ExpectedConditions.visibilityOf(element));
 
 	}
 
@@ -57,5 +57,7 @@ public class Page extends Base {
 		System.out.println(driver.getPageSource());
 
 	}
+
+
 
 }

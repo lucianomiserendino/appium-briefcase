@@ -34,15 +34,16 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class VoteInformationPanelPage {
+public class iOS_VoteInformationPanelPage {
 
-	public VoteInformationPanelPage() {
+	public iOS_VoteInformationPanelPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
@@ -78,7 +79,7 @@ public class VoteInformationPanelPage {
 	/** Observers filer's information */
 	public void getFilersInformation() {
 
-		String dbFilersInformation = getAllColumns(FILERs_INFORMATION).replaceAll(" ", "");
+		String dbFilersInformation = getAllColumns(DBType.CMKA,FILERs_INFORMATION).replaceAll(" ", "");
 		performPageLoad();
 		String uiFilersInformation = uiFilresInformation();
 
@@ -98,14 +99,14 @@ public class VoteInformationPanelPage {
 	}
 
 	public void verifyReliefIsDisplayed() {
-		assertTrue(findElement(By.xpath(locateElement(getAllColumns(RELIEF)))).isDisplayed());
+		assertTrue(findElement(By.xpath(locateElement(getAllColumns(DBType.CMKA,RELIEF)))).isDisplayed());
 	}
 
 	public void getJudgesVoteInfo() {
 
-		assertTrue(getAllColumns(JUDGEs_VOTE).equals(voteInformationPanel(SMC, voteInfo)));
+		assertTrue(getAllColumns(DBType.CMKA,JUDGEs_VOTE).equals(voteInformationPanel(SMC, voteInfo)));
 
-		assertTrue(getAllColumns(VOTE_DATE).split(" ")[0]
+		assertTrue(getAllColumns(DBType.CMKA,VOTE_DATE).split(" ")[0]
 				.equals(changeDateFormat(voteInformationPanel(RLW, voteInfo), "yyyy-MM-dd")));
 
 		getCollapsablePanel(selectUser, APPELLATE_JUDGES);

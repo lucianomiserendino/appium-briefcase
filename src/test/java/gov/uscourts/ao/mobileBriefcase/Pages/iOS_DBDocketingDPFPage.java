@@ -2,6 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getEL_Function;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_ACC_CRT;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_ACC_CTLINK;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_ACC_SPEC;
@@ -9,7 +10,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_DESCRIPTION;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOC_USER;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DU_PRID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_EVENT;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.APPELLATE_JUDGES;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.COLLOTON_STEVEN;
@@ -33,15 +33,16 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.PageFactory;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Constants;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class DBDocketingDPFPage implements Constants {
+public class iOS_DBDocketingDPFPage implements Constants {
 
-	public DBDocketingDPFPage() {
+	public iOS_DBDocketingDPFPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
@@ -88,7 +89,8 @@ public class DBDocketingDPFPage implements Constants {
 			clickOn(YESbtn);
 			clickOn(OKbtn);
 			getDBRecords(notes);
-			assertEquals(description, getAllColumns(DM_DESCRIPTION));
+			assertEquals(description, getAllColumns(DBType.CMKA,DM_DESCRIPTION));
+	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -101,35 +103,47 @@ public class DBDocketingDPFPage implements Constants {
 
 		case COURT_USERS:
 
-			getDBNotes(MBR_NOTE_COURT_USERS, "ynnnn", DM_ACC_CRT, Y, DM_ACC_CTLINK, N, DM_ACC_SPEC, N);
+			getDBNotes(COURT_USERS, eventCode.COURT_USERS, DM_ACC_CRT, Y, DM_ACC_CTLINK, N, DM_ACC_SPEC, N);
 
 			break;
 
 		case COURT_USERS_LINKED_TO_CASE:
 
-			getDBNotes(COURT_USERS_LINKED_TO_CASE, "nynnn", DM_ACC_CRT, N, DM_ACC_CTLINK, Y, DM_ACC_SPEC, N);
+			getDBNotes(COURT_USERS_LINKED_TO_CASE, eventCode.COURT_USERS_LINKED_TO_CASE, DM_ACC_CRT, N, DM_ACC_CTLINK,
+					Y, DM_ACC_SPEC, N);
 
 			break;
 
 		case PANEL_JUDGES_ONLY:
 
-			getDBNotes(PANEL_JUDGES_ONLY, "nnnny", DM_ACC_CRT, N, DM_ACC_CTLINK, N, DM_ACC_SPEC, Y);
-
-			assertEquals(getSortedList(DU_PRID), getSortedList(DOC_USER));
+			getDBNotes(PANEL_JUDGES_ONLY, eventCode.PANEL_JUDGES_ONLY, DM_ACC_CRT, N, DM_ACC_CTLINK, N, DM_ACC_SPEC, Y);
 
 			break;
 
 		case PANEL_JUDGES_AND_USERs_CHAMBERS:
 
-			break;
-		case PANEL_JUDGES_CHAMBERS:
+			getDBNotes(PANEL_JUDGES_AND_USERs_CHAMBERS, eventCode.PANEL_JUDGES_AND_USERs_CHAMBERS, DM_ACC_CRT, N,
+					DM_ACC_CTLINK, N, DM_ACC_SPEC, Y);
 
 			break;
+
+		case PANEL_JUDGES_CHAMBERS:
+
+			getDBNotes(PANEL_JUDGES_CHAMBERS, eventCode.PANEL_JUDGES_CHAMBERS, DM_ACC_CRT, N, DM_ACC_CTLINK, N,
+					DM_ACC_SPEC, Y);
+
+			break;
+
 		case USERs_CHAMBERS:
+
+			getDBNotes(USERs_CHAMBERS, eventCode.PANEL_JUDGES_ONLY, DM_ACC_CRT, N, DM_ACC_CTLINK, N, DM_ACC_SPEC, Y);
 
 			break;
 
 		case ONLY_GROUPS_AND_USERS:
+
+			getDBNotes(ONLY_GROUPS_AND_USERS, eventCode.PANEL_JUDGES_ONLY, DM_ACC_CRT, N, DM_ACC_CTLINK, N, DM_ACC_SPEC,
+					Y);
 
 			break;
 
@@ -139,17 +153,16 @@ public class DBDocketingDPFPage implements Constants {
 
 	}
 
-	public static List<String> getSortedList(String query) {
-		List<String> sortedList = new ArrayList<>();
-		sortedList.addAll(executeQuery(query));
-		sort(sortedList);
-		return sortedList;
-
+	public void verifyDOC_USER() {
+		assertEquals(getSortedList(DU_PRID), getSortedList(DOC_USER));
+	
 	}
 
-	public static String getEL_Function(String mbrNoteCourtUsersElId) {
-		final String mbrNote = MBR_NOTE + mbrNoteCourtUsersElId;
-		return getRestrictParam(getAllColumns(mbrNote));
+	public static List<String> getSortedList(String query) {
+		List<String> sortedList = new ArrayList<>();
+		sortedList.addAll(executeQuery(DBType.CMKA,query));
+		sort(sortedList);
+		return sortedList;
 
 	}
 
@@ -157,15 +170,15 @@ public class DBDocketingDPFPage implements Constants {
 			String field2, String value2, String field3, String value3) {
 		try {
 
-			if (getEL_Function(mbrNoteCourtUsersElId).equals(uiDestrictParam)) {
-				assertEquals(getAllColumns(field1), value1);
+			if (getEL_Function(mbrNoteCourtUsersElId, 5).equals(uiDestrictParam)) {
+				assertEquals(getAllColumns(DBType.CMKA,field1), value1);
 
-				assertEquals(getAllColumns(field2), value2);
-
-				assertEquals(getAllColumns(field3), value3);
-
+				assertEquals(getAllColumns(DBType.CMKA,field2), value2);
+		
+				assertEquals(getAllColumns(DBType.CMKA,field3), value3);
+		
 			} else {
-				getMbrNote(mbrNoteCourtUsersElId);
+	
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -173,41 +186,51 @@ public class DBDocketingDPFPage implements Constants {
 
 	}
 
-	public static void getMbrNote(String mbrNoteCourtUsersElId) {
-
-		if (getEL_Function(mbrNoteCourtUsersElId).equals("ynnnn")) {
-			assertTrue(DM_ACC_CRT.equals(Y));
-
-		} else {
-			assertTrue(DM_ACC_CRT.equals(N));
-		}
-
-		if (getEL_Function(mbrNoteCourtUsersElId).equals("nynnn")) {
+	public static void getMRB_NOTE(mbrNotes note) {
+		switch (note) {
+		case COURT_USERS:
 			assertTrue(DM_ACC_CTLINK.equals(Y));
-		} else {
-			assertTrue(DM_ACC_CTLINK.equals(N));
-		}
+			break;
 
-		if (getEL_Function(mbrNoteCourtUsersElId).equals("nnnny")
-				|| getEL_Function(mbrNoteCourtUsersElId).equals("nnyny")
-				|| getEL_Function(mbrNoteCourtUsersElId).equals("nnnyn")
-				|| getEL_Function(mbrNoteCourtUsersElId).equals("nnynn")) {
+		case COURT_USERS_LINKED_TO_CASE:
+			assertTrue(DM_ACC_CTLINK.equals(Y));
+			break;
 
+		case PANEL_JUDGES_ONLY:
 			assertTrue(DM_ACC_SPEC.equals(Y));
+			break;
 
-		} else {
-			assertTrue(DM_ACC_SPEC.equals(N));
+		case PANEL_JUDGES_AND_USERs_CHAMBERS:
+			assertTrue(DM_ACC_SPEC.equals(Y));
+			break;
+
+		case PANEL_JUDGES_CHAMBERS:
+			assertTrue(DM_ACC_SPEC.equals(Y));
+			break;
+
+		case USERs_CHAMBERS:
+			assertTrue(DM_ACC_SPEC.equals(Y));
+			break;
+
+		default:
+			break;
 		}
-
-	}
-
-	public static String getRestrictParam(String param) {
-		return param.substring(5).split(",")[0].replaceAll("'", "");
 	}
 
 	public enum mbrNotes {
 
 		COURT_USERS, COURT_USERS_LINKED_TO_CASE, PANEL_JUDGES_ONLY, PANEL_JUDGES_AND_USERs_CHAMBERS, PANEL_JUDGES_CHAMBERS, USERs_CHAMBERS, ONLY_GROUPS_AND_USERS
+	}
+
+	public interface eventCode {
+
+		public static final String COURT_USERS = "ynnnn";
+		public static final String COURT_USERS_LINKED_TO_CASE = "nynnn";
+		public static final String PANEL_JUDGES_ONLY = "nnnny";
+		public static final String PANEL_JUDGES_AND_USERs_CHAMBERS = "nnyny";
+		public static final String PANEL_JUDGES_CHAMBERS = "nnnyn";
+		public static final String USERs_CHAMBERS = "nnynn";
+
 	}
 
 }

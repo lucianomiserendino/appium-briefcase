@@ -19,8 +19,7 @@ public abstract class Base implements iOSCapabilities {
 	public static IOSDriver<MobileElement> driver;
 	private static DesiredCapabilities capabilities;
 	private static RemoteWebDriver remoteWebDriver;
-
-	/**
+		/**
 	 * Reads the property file and passes the values to DesiredCapability 
 	 */
 
@@ -41,11 +40,9 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(XCODE_SIGNING_ID);
 				SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 				SetCapabilitiy(TAKES_SCREENSHOT);
-			
-		
 
-				//driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
-				driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
+				driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
+				//driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
 
 
 				break;
@@ -54,9 +51,8 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(PLATFORM_NAME);
 				SetCapabilitiy(DEVICE_NAME);
 				SetCapabilitiy(APP);
-
-				remoteWebDriver = new RemoteWebDriver(new URL(Configuration.getProperty("Host")), capabilities);
-
+		
+		
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,8 +75,8 @@ public abstract class Base implements iOSCapabilities {
 			SetCapabilitiy(ENSURING_CLEAN_SESSION);
 			
 
-			//driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
-			driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
+			driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
+			//driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
 
 
 		} catch (MalformedURLException e) {

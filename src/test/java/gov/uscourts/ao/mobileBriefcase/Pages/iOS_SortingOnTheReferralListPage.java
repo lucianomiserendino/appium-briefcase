@@ -1,7 +1,10 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnCategory;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.MOTIONS_PETITIONS;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_CASES_IN_ASCENDING_ORDER;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_CASES_IN_DESCENDING_ORDER;
@@ -9,7 +12,9 @@ import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_DATES_I
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_DATES_IN_DESCENDING_ORDER;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveAllReferrals;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveDates;
@@ -17,17 +22,20 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveDates;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 
+import gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
+import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class SortingOnTheReferralListPage {
+public class iOS_SortingOnTheReferralListPage {
 
-	public SortingOnTheReferralListPage() {
+	public iOS_SortingOnTheReferralListPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
@@ -56,16 +64,31 @@ public class SortingOnTheReferralListPage {
 	@iOSFindBy(xpath = "//XCUIElementTypeButton[@name=' ↑ Case #']")
 	public static MobileElement caseUpArrowBtn;
 
+	public static String cmka = "Motions/Petitions";
+	public static String cm5a = "Motion/Petition";
+
 	public void clickOnMotionsPetitions() {
 		refresh();
-		clickOnCategory(MOTIONS_PETITIONS);
-		performPageLoad();
 
+		clickOnCategory(MOTIONS_PETITIONS);
+
+		findElement(By.xpath("//XCUIElementTypeTable[@name='Categories']/XCUIElementTypeCell[4]")).click();
+		select(Users.DASHBOARD);
+		findElement(By.xpath("//XCUIElementTypeTable[@name='Categories']/XCUIElementTypeCell[4]")).click();
+	}
+
+	public static void clickOnPanel(String element1, String element2) {
+		if (elementIsDisplayed(element1) == true) {
+			click(locateElement(element1));
+		} else {
+			click(locateElement(element2));
+		}
 	}
 
 	public void selectSortBtn() {
 		performPageLoad();
 		waitToBeClickable(sortArrowBtn);
+		referralsSortedByDatesInDescendingOrder();
 	}
 
 	public List<String> referralsSortedByDatesInDescendingOrder() {
@@ -97,8 +120,8 @@ public class SortingOnTheReferralListPage {
 	public List<String> referralsSortedByDatesInDefaultOrder(Actions sort, List<MobileElement> element, String substr,
 			int index) {
 		getSortPage(sort);
-		performPageLoad();
-		return retrieveDates(element, substr, index,"yyyy/MM/dd");
+		Page.pageLoad();
+		return retrieveDates(element, substr, index, "yyyy/MM/dd");
 
 	}
 

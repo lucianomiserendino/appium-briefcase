@@ -19,14 +19,15 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class ActionsPanelPage {
+public class iOS_ActionsPanelPage {
 
-	public ActionsPanelPage() {
+	public iOS_ActionsPanelPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
@@ -47,11 +48,11 @@ public class ActionsPanelPage {
 
 		try {
 
-			if (executeQuery(MBR_EVENT).size() > 0 && actions.isDisplayed()) {
+			if (executeQuery(DBType.CMKA, MBR_EVENT).size() > 0 && actions.isDisplayed()) {
 				getApplicableActions();
 				getPanel(ACTIONS);
 			} else {
-				assertTrue(!(executeQuery(MBR_EVENT).size() > 0));
+				assertTrue(!(executeQuery(DBType.CMKA, MBR_EVENT).size() > 0));
 			}
 		} catch (AssertionError e) {
 			e.printStackTrace();
@@ -81,7 +82,7 @@ public class ActionsPanelPage {
 
 	public static boolean isDisplayed() {
 		boolean isDisplayed = false;
-		List<String> dbApplicableActions = executeQuery(APPLICABLE_ACTIONS);
+		List<String> dbApplicableActions = executeQuery(DBType.CMKA, APPLICABLE_ACTIONS);
 		sort(dbApplicableActions);
 		try {
 			for (int i = 0; i < dbApplicableActions.size(); ++i) {

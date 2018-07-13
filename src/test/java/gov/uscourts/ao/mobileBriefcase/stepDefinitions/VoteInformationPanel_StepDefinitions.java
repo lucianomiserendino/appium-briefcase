@@ -3,14 +3,14 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import gov.uscourts.ao.mobileBriefcase.Pages.VoteInformationPanelPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.iOS_VoteInformationPanelPage;
 
 public class VoteInformationPanel_StepDefinitions {
-	VoteInformationPanelPage page;
+	iOS_VoteInformationPanelPage page;
 
 	@And("^User selects Judge Colloton  >> Petitions for Rehearing >> \"([^\"]*)\"$")
 	public void user_selects_Judge_Colloton_Petitions_for_Rehearing(String caseNumber) {
-		page = new VoteInformationPanelPage();
+		page = new iOS_VoteInformationPanelPage();
 		page.selectAJudje();
 		page.selectCase(caseNumber);
 

@@ -9,15 +9,15 @@ import java.util.List;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import gov.uscourts.ao.mobileBriefcase.Pages.SortingOnTheReferralListPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.iOS_SortingOnTheReferralListPage;
 
 public class SortingOnTheReferralList_StepDefinitions {
 
-	SortingOnTheReferralListPage page;
+	iOS_SortingOnTheReferralListPage page;
 
 	@Given("^User selects a judge and then the motions/petitions category$")
 	public void user_selects_a_judge_and_then_the_motions_petitions_category() {
-		page = new SortingOnTheReferralListPage();
+		page = new iOS_SortingOnTheReferralListPage();
 		page.clickOnMotionsPetitions();
 
 	}
@@ -30,6 +30,7 @@ public class SortingOnTheReferralList_StepDefinitions {
 		List<String> referralsSotedByDatesInDescendingOrder = page.referralsSortedByDatesInDescendingOrder();
 		sort(referralsSotedByDatesInDescendingOrder);
 		reverse(referralsSotedByDatesInDescendingOrder);
+		System.out.println(referralsSotedByDatesInDescendingOrder);
 
 		List<String> referralsSotedByDateInAscendingOrder = page.referralsSortedByDateInAscendingOrder();
 		reverse(referralsSotedByDateInAscendingOrder);

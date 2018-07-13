@@ -3,15 +3,15 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import gov.uscourts.ao.mobileBriefcase.Pages.AssignmentNotesPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.iOS_AssignmentNotesPage;
 
 public class AssignmentNotes_StepDefinitions {
 
-	AssignmentNotesPage page;
+	iOS_AssignmentNotesPage page;
 
 	@Given("^User selects \"([^\"]*)\"$")
 	public void user_selects(String assignment) {
-		page = new AssignmentNotesPage();
+		page = new iOS_AssignmentNotesPage();
 		page.selectAssignment(assignment);
 	}
 
@@ -38,7 +38,7 @@ public class AssignmentNotes_StepDefinitions {
 
 	@Given("^User selects Judge Colloton >> Motions/Petitions >> case \"([^\"]*)\"$")
 	public void user_selects_Judge_Colloton_Motions_Petitions_case(String caseNum) {
-		page = new AssignmentNotesPage();
+		page = new iOS_AssignmentNotesPage();
 		page.selectAUser();
 		page.getCase(caseNum);
 	}

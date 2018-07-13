@@ -20,15 +20,16 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.PageFactory;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Constants;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class AssignmentCategoriesPage implements Constants {
+public class iOS_AssignmentCategoriesPage implements Constants {
 
-	public AssignmentCategoriesPage() {
+	public iOS_AssignmentCategoriesPage() {
 
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
@@ -61,7 +62,7 @@ public class AssignmentCategoriesPage implements Constants {
 
 	public void getAssignmentCategories() {
 		List<String> uiAssignmentCategories = getListOfCategories();
-		List<String> dbAssignmentCategories = executeQuery(ASSIGNMENT_CATEGORIES);
+		List<String> dbAssignmentCategories = executeQuery(DBType.CMKA,ASSIGNMENT_CATEGORIES);
 		assertDbContainsAllFromUi(dbAssignmentCategories, uiAssignmentCategories);
 	}
 
@@ -74,7 +75,7 @@ public class AssignmentCategoriesPage implements Constants {
 	public void osberveReferralCategories() {
 
 		List<String> uiRefCategories = getReferralCategories();
-		List<String> dbuiRefCategories = executeQuery(REFERRAL_CATEGORIES);
+		List<String> dbuiRefCategories = executeQuery(DBType.CMKA,REFERRAL_CATEGORIES);
 		assertDbContainsAllFromUi(dbuiRefCategories, uiRefCategories);
 	}
 

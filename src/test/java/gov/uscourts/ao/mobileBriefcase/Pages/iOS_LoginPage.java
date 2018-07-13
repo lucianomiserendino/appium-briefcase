@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
+
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
@@ -15,14 +16,15 @@ import org.openqa.selenium.support.PageFactory;
 
 import cucumber.api.DataTable;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.*;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class LoginPage extends Base {
+public class iOS_LoginPage extends Base {
 
-	public LoginPage() {
+	public iOS_LoginPage() {
 
 		PageFactory.initElements(new AppiumFieldDecorator(Base.getInstance(PlatformVersions.IOS)), this);
 	}
@@ -41,6 +43,9 @@ public class LoginPage extends Base {
 	@FindBy(name = "SUBMIT2")
 	public WebElement submButton;
 
+	@FindBy(name = "Approved")
+	public WebElement approved;
+
 	@FindBy(partialLinkText = "Send Key to Device")
 	public WebElement sendKeyButton;
 
@@ -58,9 +63,10 @@ public class LoginPage extends Base {
 	@iOSFindBy(accessibility = "Logout of Briefcase")
 	public MobileElement logout;
 
-	public void selectEnvironment() {
+	public void selectEnvironment()  {
 
 		performPageLoad();
+
 		clickOn(server);
 	}
 
@@ -80,8 +86,10 @@ public class LoginPage extends Base {
 		clickOn(findElement(By.name(openBtn)));
 	}
 
-	public void getCMKA() {
-		waitToBeClickable(CMKA);
+	public void getCMKA(String server) {
+
+		clickOnPanel(server);
+
 		performPageLoad();
 	}
 

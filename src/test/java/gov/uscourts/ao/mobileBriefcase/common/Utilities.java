@@ -36,6 +36,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 
 import cucumber.api.DataTable;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
@@ -70,7 +71,9 @@ public class Utilities extends Base {
 		Iterator<MobileElement> itr = element.iterator();
 		while (itr.hasNext()) {
 			try {
+
 				dates = itr.next().getText().split(split);
+
 				referrals.add(changeDateFormat(dates[index].trim(), format));
 
 			} catch (Exception e) {
@@ -86,12 +89,12 @@ public class Utilities extends Base {
 	public static void getPanel(String query, String message, String element) {
 
 		try {
-			if (executeQuery(query).size() > 0) {
+			if (executeQuery(DBType.CMKA,query).size() > 0) {
 				assertTrue(message, elementIsDisplayed(element) == true);
 				clickOnPanel(element);
 
 			} else {
-				assertTrue(!(executeQuery(query).size() > 0));
+				assertTrue(!(executeQuery(DBType.CMKA,query).size() > 0));
 
 			}
 		} catch (Exception e) {
@@ -166,7 +169,7 @@ public class Utilities extends Base {
 	}
 
 	public static String getText(MobileElement elements) {
-		return elements.getText().trim();
+		return waitForElement(elements).getText().trim();
 
 	}
 
@@ -250,14 +253,14 @@ public class Utilities extends Base {
 	}
 
 	public static void assertThatDBEqualsToUI(String message, String query, List<String> uiValue) {
-		List<String> db = executeQuery(query);
+		List<String> db = executeQuery(DBType.CMKA,query);
 		Collections.sort(db);
 		List<String> ui = uiValue;
 		assertTrue(message, db.containsAll(ui));
 
 	}
 
-	public static List<String> getListOfCategories(MobileElement motionsPetitions, MobileElement casesOnCalendar,
+	public static List<String> getListOfCategoriesCMKA(MobileElement motionsPetitions, MobileElement casesOnCalendar,
 			MobileElement petitionsForRehearing, MobileElement screeningPanels) {
 		List<String> categories = new ArrayList<>();
 		categories.add(getText(motionsPetitions));
@@ -383,6 +386,10 @@ public class Utilities extends Base {
 		Date date = new Date();
 		return dateFormat.format(date);
 
+	}
+
+	public static String getRestrictParam(String param, int index) {
+		return param.substring(index).split(",")[0].replaceAll("'", "");
 	}
 
 }

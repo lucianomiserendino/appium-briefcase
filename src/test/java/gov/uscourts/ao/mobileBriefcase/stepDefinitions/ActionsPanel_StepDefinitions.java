@@ -2,14 +2,14 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import gov.uscourts.ao.mobileBriefcase.Pages.ActionsPanelPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.iOS_ActionsPanelPage;
 
 public class ActionsPanel_StepDefinitions {
-	ActionsPanelPage page;
+	iOS_ActionsPanelPage page;
 
 	@Given("^User verifies \"([^\"]*)\" is diplayed and  expands the Actions panel$")
 	public void user_verifies_is_diplayed_and_expands_the_Actions_panel(String actionsPanel) {
-		page = new ActionsPanelPage();
+		page = new iOS_ActionsPanelPage();
 		page.verifyActionsPanelIsDisplayed(actionsPanel);
 
 	}

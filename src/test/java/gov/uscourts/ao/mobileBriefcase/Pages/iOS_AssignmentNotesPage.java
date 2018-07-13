@@ -40,6 +40,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.PageFactory;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
@@ -47,9 +48,9 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class AssignmentNotesPage {
+public class iOS_AssignmentNotesPage {
 
-	public AssignmentNotesPage() {
+	public iOS_AssignmentNotesPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
@@ -100,7 +101,7 @@ public class AssignmentNotesPage {
 
 	public void getAssignmentLinkedtoTheReferral(String assignmentForKyle, String assignmentForEssley) {
 
-		List<String> dbReferralAssignments = executeQuery(STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_NAME);
+		List<String> dbReferralAssignments = executeQuery(DBType.CMKA,STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_NAME);
 		try {
 			if (isDisplayed(assignments))
 				;
@@ -108,7 +109,7 @@ public class AssignmentNotesPage {
 			assertTrue("STAFF ASSIGNMENTS LINKED TO THE REFERRAL ARE NOT DISPLAYED",
 					dbReferralAssignments.containsAll(listOfAssignments(assignmentForKyle, assignmentForEssley)));
 
-			List<String> dbCaseAssignments = executeQuery(ASSIGNED_DATES);
+			List<String> dbCaseAssignments = executeQuery(DBType.CMKA,ASSIGNED_DATES);
 			reverse(dbCaseAssignments);
 
 			assertEquals(" ASSIGNED DATES MISMATCH ", dbCaseAssignments,
@@ -131,11 +132,11 @@ public class AssignmentNotesPage {
 
 		List<String> uiCaseAssignmentName = new ArrayList<>();
 		uiCaseAssignmentName.add(getStaffAssigments(assignmentForCourtney));
-		List<String> dbCaseAssignmentsName = executeQuery(STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE_NAME);
+		List<String> dbCaseAssignmentsName = executeQuery(DBType.CMKA,STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE_NAME);
 
 		List<String> uiCaseAssignmentDesc = new ArrayList<>();
 		uiCaseAssignmentDesc.add(getAssignmentType(assignmentForCourtney));
-		List<String> dbCaseAssignmentsDesc = executeQuery(STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE_DESCRIPTION);
+		List<String> dbCaseAssignmentsDesc = executeQuery(DBType.CMKA,STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE_DESCRIPTION);
 
 		try {
 			if (isDisplayed(assignments))

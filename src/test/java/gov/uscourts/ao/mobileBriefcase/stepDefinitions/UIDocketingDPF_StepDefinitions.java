@@ -3,14 +3,14 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import gov.uscourts.ao.mobileBriefcase.Pages.UIDocketingDPFPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.iOS_UIDocketingDPFPage;
 
 public class UIDocketingDPF_StepDefinitions {
-	UIDocketingDPFPage page;
+	iOS_UIDocketingDPFPage page;
 
 	@Given("^User selects Motions/Petitions \"([^\"]*)\"$")
 	public void user_selects_Motions_Petitions(String caseNumber) {
-		page = new UIDocketingDPFPage();
+		page = new iOS_UIDocketingDPFPage();
 		page.getCase(caseNumber);
 	}
 

@@ -3,11 +3,11 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import gov.uscourts.ao.mobileBriefcase.Pages.AssignmentCategoriesPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.iOS_AssignmentCategoriesPage;
 
 public class AssignmentCategories_StepDefinitions {
 
-	AssignmentCategoriesPage page =new AssignmentCategoriesPage();;
+	iOS_AssignmentCategoriesPage page =new iOS_AssignmentCategoriesPage();;
 
 	@Given("^User selects staff attorney Benjamin Brown in the user's list$")
 	public void user_selects_staff_attorney_Benjamin_Brown_in_the_user_s_list() {

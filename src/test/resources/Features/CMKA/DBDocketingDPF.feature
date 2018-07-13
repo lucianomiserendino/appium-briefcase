@@ -28,7 +28,7 @@ Scenario:
 	Then User selects "note - panel judges only",user enters a comment in the editable field and submits . However  the dm_acc_crt = 'n', dm_acc_ctlink = 'n', dm_acc_spec = 'y'. 
 	And user verifies a doc_user record is  created for each judge on the panel 
 	
-	Then  User selects "note - panel judges and user's chambers",user enters a comment in the editable field and submits . However the dm_acc_crt = 'n', dm_acc_ctlink = 'n', dm_acc_spec = 'y'. 
+	Then  User selects "note - panel judges and users chambers",user enters a comment in the editable field and submits . However the dm_acc_crt = 'n', dm_acc_ctlink = 'n', dm_acc_spec = 'y'. 
 	And user verifies  a doc_user record is   created for each judge on the panel that's not the logged in judge. 
 	And user verifies  a doc_group record will be created for the logged in judge's chambers group 
 	

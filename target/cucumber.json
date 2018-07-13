@@ -11,19 +11,19 @@
         "steps": [
           {
             "result": {
-              "duration": 29337962841,
+              "duration": 24913446679,
               "status": "passed"
             },
             "line": 5,
-            "name": "User Navigates to Sever",
+            "name": "User Navigates to environment",
             "match": {
-              "location": "Login_StepDefinitions.user_Navigate_to_Sever()"
+              "location": "Login_StepDefinitions.user_Navigates_to_environment()"
             },
             "keyword": "Given "
           },
           {
             "result": {
-              "duration": 4302592695,
+              "duration": 1510085886,
               "status": "passed"
             },
             "line": 6,
@@ -51,7 +51,7 @@
           },
           {
             "result": {
-              "duration": 3938628352,
+              "duration": 2324947908,
               "status": "passed"
             },
             "line": 10,
@@ -63,7 +63,7 @@
           },
           {
             "result": {
-              "duration": 11164189762,
+              "duration": 9688360289,
               "status": "passed"
             },
             "line": 11,
@@ -72,18 +72,6 @@
               "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
             },
             "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 13651556162,
-              "status": "passed"
-            },
-            "line": 12,
-            "name": "After user navigates to Appellate DC Development - CMKA - dev",
-            "match": {
-              "location": "Login_StepDefinitions.after_user_navigates_to_Appellate_DC_Development_CMKA_dev()"
-            },
-            "keyword": "And "
           }
         ]
       },
@@ -91,7 +79,7 @@
         "before": [
           {
             "result": {
-              "duration": 97152,
+              "duration": 6358686776,
               "status": "passed"
             },
             "match": {
@@ -99,15 +87,16 @@
             }
           }
         ],
-        "line": 16,
+        "line": 24,
         "name": "",
-        "description": "A category entitled \"Pending Tasks\" will display on the dashboard if the judge has \nany pending assignments and the site table variable briefcaseShowPendingTasks \u003d\u0027y\u0027.",
-        "id": "pending-tasks-category-displays-on-the-dashboard;",
+        "description": "Referral categories display on the dashboard for the judge",
+        "id": "referral-categories-display-on-the-dashboard-for-the-judge;;;2",
         "after": [
           {
             "result": {
-              "duration": 16576517259,
-              "status": "passed"
+              "duration": 71026411039,
+              "error_message": "org.openqa.selenium.TimeoutException: Expected condition failed: waiting for presence of element located by: By.xpath: //*[contains(@name, \u0027NavigationRenderer\u0027)]/XCUIElementTypeButton[2] (tried for 70 second(s) with 500 MILLISECONDS interval)\n\tat org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:82)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:231)\n\tat gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElement(Page.java:37)\n\tat gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement(Utilities.java:178)\n\tat gov.uscourts.ao.mobileBriefcase.common.Utilities.logout(Utilities.java:277)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Hook.tearDown(Hook.java:32)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat cucumber.runtime.Utils$1.call(Utils.java:40)\n\tat cucumber.runtime.Timeout.timeout(Timeout.java:16)\n\tat cucumber.runtime.Utils.invoke(Utils.java:34)\n\tat cucumber.runtime.java.JavaHookDefinition.execute(JavaHookDefinition.java:60)\n\tat cucumber.runtime.Runtime.runHookIfTagsMatch(Runtime.java:224)\n\tat cucumber.runtime.Runtime.runHooks(Runtime.java:212)\n\tat cucumber.runtime.Runtime.runAfterHooks(Runtime.java:206)\n\tat cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:46)\n\tat cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.ExamplesRunner.run(ExamplesRunner.java:59)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.ScenarioOutlineRunner.run(ScenarioOutlineRunner.java:53)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.api.junit.Cucumber.run(Cucumber.java:100)\n\tat org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:86)\n\tat org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:538)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:760)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:460)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:206)\nCaused by: org.openqa.selenium.NoSuchElementException: Cannot locate an element using By.xpath: //*[contains(@name, \u0027NavigationRenderer\u0027)]/XCUIElementTypeButton[2]\nFor documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html\nBuild info: version: \u00273.6.0\u0027, revision: \u00276fbf3ec767\u0027, time: \u00272017-09-27T15:28:36.4Z\u0027\nSystem info: host: \u0027Saltanat-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:1469:d6f0:cd02:cabd%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.12.6\u0027, java.version: \u00271.8.0_162\u0027\nDriver info: driver.version: unknown\n\tat org.openqa.selenium.support.ui.ExpectedConditions.lambda$findElement$0(ExpectedConditions.java:882)\n\tat java.util.Optional.orElseThrow(Optional.java:290)\n\tat org.openqa.selenium.support.ui.ExpectedConditions.findElement(ExpectedConditions.java:881)\n\tat org.openqa.selenium.support.ui.ExpectedConditions.access$000(ExpectedConditions.java:43)\n\tat org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:182)\n\tat org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:179)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:208)\n\t... 59 more\n",
+              "status": "failed"
             },
             "match": {
               "location": "Hook.tearDown()"
@@ -115,37 +104,58 @@
           }
         ],
         "type": "scenario",
-        "keyword": "Scenario",
+        "keyword": "Scenario Outline",
         "steps": [
           {
             "result": {
-              "duration": 44394248770,
+              "duration": 15958794128,
+              "status": "passed"
+            },
+            "line": 19,
+            "name": "After user selects a server \"Appellate DC Development - CM5A\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Appellate DC Development - CM5A",
+                  "offset": 29
+                }
+              ],
+              "location": "Login_StepDefinitions.after_user_selects_a_server(String)"
+            },
+            "matchedColumns": [
+              0
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 105760721805,
               "status": "passed"
             },
             "line": 20,
-            "name": "If The judge has any pending assignments it will validate the total num of pending task on UI with DB",
+            "name": "User Observes the referral categories that display on the dashboard and DB",
             "match": {
-              "location": "ReferralCategories_StepDefinitions.if_The_judge_has_any_pending_assignments_it_will_validate_the_total_num_of_pending_task_on_UI_with_DB()"
+              "location": "ReferralCategories_StepDefinitions.user_Observes_the_referral_categories_that_display_on_the_dashboard_and_DB()"
             },
             "keyword": "Given "
           }
         ],
         "tags": [
           {
-            "line": 14,
-            "name": "@Smoke"
+            "line": 16,
+            "name": "@AMB_956"
           },
           {
             "line": 15,
-            "name": "@AMB_1008"
+            "name": "@Smoke"
           }
         ]
       }
     ],
-    "name": "Pending Tasks Category Displays on the Dashboard",
+    "name": "Referral Categories display on the dashboard for the judge",
     "description": "",
-    "id": "pending-tasks-category-displays-on-the-dashboard",
+    "id": "referral-categories-display-on-the-dashboard-for-the-judge",
     "keyword": "Feature",
-    "uri": "SmokeTests/PendingTasksCategory.feature"
+    "uri": "CMKA/ReferralCategories.feature"
   }
 ]
