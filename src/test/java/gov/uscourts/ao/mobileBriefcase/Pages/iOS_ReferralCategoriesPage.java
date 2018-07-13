@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DB_REFERRAL_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MOTIONS_PETITIONS_SI_VALUE_N;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MOTIONS_PETITIONS_SI_VALUE_Y;
@@ -12,7 +13,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.*;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getNumOfDisplayedCases;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
@@ -77,9 +78,8 @@ public class iOS_ReferralCategoriesPage {
 	public List<String> UIreferralCategoriesList() {
 		refresh();
 		performPageLoad();
-		// return getListOfCategoriesCMKA(motionsPetitions, casesOnCalendar,
-		// petitionsForRehearing, screeningPanels);
-		return getListOfCategoriesCM5A();
+		 return getListOfCategoriesCMKA(motionsPetitions, casesOnCalendar, petitionsForRehearing, screeningPanels);
+		//return getListOfCategoriesCM5A();
 	}
 
 	public List<String> getListOfCategoriesCM5A() {

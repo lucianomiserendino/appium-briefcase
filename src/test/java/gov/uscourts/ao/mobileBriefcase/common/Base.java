@@ -41,8 +41,8 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 				SetCapabilitiy(TAKES_SCREENSHOT);
 
-				driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
-				//driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
+				//driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
+				driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
 
 
 				break;
@@ -75,8 +75,8 @@ public abstract class Base implements iOSCapabilities {
 			SetCapabilitiy(ENSURING_CLEAN_SESSION);
 			
 
-			driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
-			//driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
+			//driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
+			driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
 
 
 		} catch (MalformedURLException e) {

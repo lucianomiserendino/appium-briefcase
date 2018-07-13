@@ -21,8 +21,8 @@ Scenario Outline:
 	
 		Examples: 
 		|server                        |
-		|Appellate DC Development - CM5A|
-		#|Appellate DC Development - CMKA|
+		#|Appellate DC Development - CM5A|
+		|Appellate DC Development - CMKA|
 
 	#NOTE:  The pending tasks category will not be included in this task.  
 	#This category is dynamically created if there are judge assignments. 
