@@ -63,7 +63,8 @@ public class iOS_ReferralCategoriesPage {
 	@iOSFindBy(accessibility = "Motions/Petitions")
 	public static MobileElement motionsPetitions;
 
-
+	@iOSFindBy(accessibility = "Test Automation")
+	public static MobileElement testAutomation;
 
 	public String verifyIfPendingTasksAreDisplayed() {
 		refresh();
@@ -78,8 +79,9 @@ public class iOS_ReferralCategoriesPage {
 	public List<String> UIreferralCategoriesList() {
 		refresh();
 		performPageLoad();
-		 return getListOfCategoriesCMKA(motionsPetitions, casesOnCalendar, petitionsForRehearing, screeningPanels);
-		//return getListOfCategoriesCM5A();
+		return getListOfCategoriesCMKA(motionsPetitions, casesOnCalendar, petitionsForRehearing, screeningPanels,
+				testAutomation);
+		// return getListOfCategoriesCM5A();
 	}
 
 	public List<String> getListOfCategoriesCM5A() {

@@ -261,12 +261,13 @@ public class Utilities extends Base {
 	}
 
 	public static List<String> getListOfCategoriesCMKA(MobileElement motionsPetitions, MobileElement casesOnCalendar,
-			MobileElement petitionsForRehearing, MobileElement screeningPanels) {
+			MobileElement petitionsForRehearing, MobileElement screeningPanels,MobileElement testAutomation) {
 		List<String> categories = new ArrayList<>();
 		categories.add(getText(motionsPetitions));
 		categories.add(getText(casesOnCalendar));
 		categories.add(getText(petitionsForRehearing));
 		categories.add(getText(screeningPanels));
+		categories.add(getText(testAutomation));
 		Collections.sort(categories);
 		return categories;
 
