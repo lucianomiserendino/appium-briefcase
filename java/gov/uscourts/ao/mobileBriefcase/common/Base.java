@@ -19,10 +19,10 @@ public abstract class Base implements iOSCapabilities {
 	public static IOSDriver<MobileElement> driver;
 	private static DesiredCapabilities capabilities;
 	private static RemoteWebDriver remoteWebDriver;
-
-	/**
-	 * Reads the property file and passes the values to DesiredCapability
+		/**
+	 * Reads the property file and passes the values to DesiredCapability 
 	 */
+
 
 	public static WebDriver getInstance(PlatformVersions drivers) {
 
@@ -41,9 +41,9 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 				SetCapabilitiy(TAKES_SCREENSHOT);
 
-				// driver = new IOSDriver<MobileElement>(new
-				// URL(Configuration.getProperty("host")), capabilities);
+				//driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
 				driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
+
 
 				break;
 
@@ -51,7 +51,8 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(PLATFORM_NAME);
 				SetCapabilitiy(DEVICE_NAME);
 				SetCapabilitiy(APP);
-
+		
+		
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,8 +60,10 @@ public abstract class Base implements iOSCapabilities {
 		}
 		return driver;
 	}
-
-	public static void safariInstance() {
+	
+	
+	
+	public static void safariInstance(){
 		capabilities = new DesiredCapabilities();
 
 		try {
@@ -70,16 +73,19 @@ public abstract class Base implements iOSCapabilities {
 			SetCapabilitiy(BROWSER_NAME);
 			SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 			SetCapabilitiy(ENSURING_CLEAN_SESSION);
+			
 
-			// driver = new IOSDriver<MobileElement>(new
-			// URL(Configuration.getProperty("host")), capabilities);
+			//driver = new IOSDriver<MobileElement>(new URL(Configuration.getProperty("host")), capabilities);
 			driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
+
 
 		} catch (MalformedURLException e) {
 
 			e.printStackTrace();
 		}
 		driver.close();
+
+	
 
 	}
 
@@ -89,7 +95,8 @@ public abstract class Base implements iOSCapabilities {
 	}
 
 	/**
-	 * This method is used for switching driver between "WEBVIEV" and "NATIVE_APP"
+	 * This method is used for switching driver between "WEBVIEV" and
+	 * "NATIVE_APP"
 	 */
 	public static void changeWindow(String type) {
 		performPageLoad();
@@ -107,9 +114,10 @@ public abstract class Base implements iOSCapabilities {
 		}
 
 	}
-
+	
+	
 	public enum PlatformVersions {
-		IOS, WINDOWS
-	}
+		   IOS,WINDOWS
+		}
 
 }
