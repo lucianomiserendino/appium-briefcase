@@ -2,14 +2,13 @@ Feature: Number of cases displayed for non-orally argued cases
 
 Background: 
 
-	Given  User Navigates to Sever 
+	Given  User Navigates to environment 
 	When  User enters Credentials to Login 
         |userName			|password	|
 		|chambers courtney|Test2020! |
 	
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
-	And After user navigates to Appellate DC Development - CMKA - dev
 
 		
 		
@@ -20,4 +19,5 @@ Scenario:
     a list of cases should dipslay for the judge for that category.
     Need to verify the correct number of referrals are being displayed.
     
+    Given  user selects a server "Appellate DC Development - CMKA" 
 	Given User  Observes the categories on the dashboard page. The Petitions for Rehearing, Motions/Petitions and Screening Panels categories are all non-orally argued categories.

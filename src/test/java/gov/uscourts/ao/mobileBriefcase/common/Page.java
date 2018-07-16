@@ -14,7 +14,7 @@ public class Page extends Base {
 	public static void performPageLoad() {
 		synchronized (driver) {
 			try {
-				driver.wait(8000);
+				driver.wait(9000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -48,7 +48,7 @@ public class Page extends Base {
 	}
 
 	public static MobileElement waitForElement(MobileElement element) {
-		return (MobileElement) new WebDriverWait(driver, 100).until(ExpectedConditions.visibilityOf(element));
+		return (MobileElement) new WebDriverWait(driver, 200).until(ExpectedConditions.visibilityOf(element));
 
 	}
 

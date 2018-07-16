@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
@@ -20,12 +21,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -52,6 +55,7 @@ public class Utilities extends Base {
 		List<String> referrals = new ArrayList<>();
 		List<MobileElement> el = elements;
 		Iterator<MobileElement> itr = el.iterator();
+		performPageLoad();
 		while (itr.hasNext()) {
 
 			dest = itr.next().getText().split(split);
@@ -69,9 +73,10 @@ public class Utilities extends Base {
 		List<MobileElement> element = elements;
 
 		Iterator<MobileElement> itr = element.iterator();
+		performPageLoad();
 		while (itr.hasNext()) {
 			try {
-
+				
 				dates = itr.next().getText().split(split);
 
 				referrals.add(changeDateFormat(dates[index].trim(), format));
@@ -89,12 +94,12 @@ public class Utilities extends Base {
 	public static void getPanel(String query, String message, String element) {
 
 		try {
-			if (executeQuery(DBType.CMKA,query).size() > 0) {
+			if (executeQuery(DBType.CMKA, query).size() > 0) {
 				assertTrue(message, elementIsDisplayed(element) == true);
 				clickOnPanel(element);
 
 			} else {
-				assertTrue(!(executeQuery(DBType.CMKA,query).size() > 0));
+				assertTrue(!(executeQuery(DBType.CMKA, query).size() > 0));
 
 			}
 		} catch (Exception e) {
@@ -253,23 +258,10 @@ public class Utilities extends Base {
 	}
 
 	public static void assertThatDBEqualsToUI(String message, String query, List<String> uiValue) {
-		List<String> db = executeQuery(DBType.CMKA,query);
+		List<String> db = executeQuery(DBType.CMKA, query);
 		Collections.sort(db);
 		List<String> ui = uiValue;
 		assertTrue(message, db.containsAll(ui));
-
-	}
-
-	public static List<String> getListOfCategoriesCMKA(MobileElement motionsPetitions, MobileElement casesOnCalendar,
-			MobileElement petitionsForRehearing, MobileElement screeningPanels,MobileElement testAutomation) {
-		List<String> categories = new ArrayList<>();
-		categories.add(getText(motionsPetitions));
-		categories.add(getText(casesOnCalendar));
-		categories.add(getText(petitionsForRehearing));
-		categories.add(getText(screeningPanels));
-		categories.add(getText(testAutomation));
-		Collections.sort(categories);
-		return categories;
 
 	}
 
@@ -344,6 +336,12 @@ public class Utilities extends Base {
 		pageLoad();
 		select(Users.MOTIONS_PETITIONS);
 		select(Users.DASHBOARD);
+		performPageLoad();
+		select(Users.MOTIONS_PETITIONS);
+		select(Users.DASHBOARD);
+		pageLoad();
+		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+
 	}
 
 	public static void verifyTextIsDisplayed(MobileElement element, String text) {
@@ -392,5 +390,9 @@ public class Utilities extends Base {
 	public static String getRestrictParam(String param, int index) {
 		return param.substring(index).split(",")[0].replaceAll("'", "");
 	}
+
+	
+	
+
 
 }

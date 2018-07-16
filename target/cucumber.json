@@ -1,0 +1,166 @@
+[
+  {
+    "line": 1,
+    "elements": [
+      {
+        "line": 3,
+        "name": "",
+        "description": "",
+        "type": "background",
+        "keyword": "Background",
+        "steps": [
+          {
+            "result": {
+              "duration": 23995084520,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "User Navigates to environment",
+            "match": {
+              "location": "Login_StepDefinitions.user_Navigates_to_environment()"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 1744162738,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "User enters Credentials to Login",
+            "match": {
+              "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login(DataTable)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "userName",
+                  "password"
+                ],
+                "line": 7
+              },
+              {
+                "cells": [
+                  "chambers courtney",
+                  "Test2020!"
+                ],
+                "line": 8
+              }
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 1498882261,
+              "status": "passed"
+            },
+            "line": 10,
+            "name": "User clicks on Send Key to Device",
+            "match": {
+              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 10070870653,
+              "status": "passed"
+            },
+            "line": 11,
+            "name": "User navigates to MobileBrifcase App",
+            "match": {
+              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
+            },
+            "keyword": "Then "
+          }
+        ]
+      },
+      {
+        "comments": [
+          {
+            "line": 24,
+            "value": "#|Appellate DC Development - CM5A|"
+          }
+        ],
+        "before": [
+          {
+            "result": {
+              "duration": 26416357092,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 25,
+        "name": "",
+        "description": "Referral categories display on the dashboard for the judge",
+        "id": "referral-categories-display-on-the-dashboard-for-the-judge;;;2",
+        "after": [
+          {
+            "result": {
+              "duration": 12665432228,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario Outline",
+        "steps": [
+          {
+            "result": {
+              "duration": 20848293073,
+              "status": "passed"
+            },
+            "line": 19,
+            "name": "After user selects a server \"Appellate DC Development - CMKA\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Appellate DC Development - CMKA",
+                  "offset": 29
+                }
+              ],
+              "location": "Login_StepDefinitions.after_user_selects_a_server(String)"
+            },
+            "matchedColumns": [
+              0
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 41046028658,
+              "status": "passed"
+            },
+            "line": 20,
+            "name": "User Observes the referral categories that display on the dashboard and DB",
+            "match": {
+              "location": "ReferralCategories_StepDefinitions.user_Observes_the_referral_categories_that_display_on_the_dashboard_and_DB()"
+            },
+            "keyword": "Given "
+          }
+        ],
+        "tags": [
+          {
+            "line": 16,
+            "name": "@AMB_956"
+          },
+          {
+            "line": 15,
+            "name": "@Smoke"
+          }
+        ]
+      }
+    ],
+    "name": "Referral Categories display on the dashboard for the judge",
+    "description": "",
+    "id": "referral-categories-display-on-the-dashboard-for-the-judge",
+    "keyword": "Feature",
+    "uri": "CMKA/ReferralCategories.feature"
+  }
+]

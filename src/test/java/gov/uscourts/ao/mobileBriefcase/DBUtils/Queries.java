@@ -3,16 +3,26 @@ package gov.uscourts.ao.mobileBriefcase.DBUtils;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.*;
 
 import gov.uscourts.ao.mobileBriefcase.common.Constants;
+import gov.uscourts.ao.mobileBriefcase.common.Servers.id;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.*;
 
 public class Queries {
 
 	public static final String CASEID = "82226";
+	private String peId;
 
 	public static String getId(String id) {
 		return id;
 
+	}
+
+	public void setPeId(String peId) {
+		this.peId = peId;
+	}
+
+	public String getPeId() {
+		return peId;
 	}
 
 	// Query to find appellate judge
@@ -285,7 +295,7 @@ public class Queries {
 			+ "cmr_id = " + getId(Constants.CMR_ID)
 			+ " and cmr_ph_id = ph_id and pj_pn_id = ph_pn_id and pj_ju_ao_code = ju_ao_code and ju_pe_id = pe_id and  pe_pr_prid = pr_prid";
 
-	public static final String DU_PRID = "select first " + executeQuery(DBType.CMKA,DOC_USER).size()
+	public static final String DU_PRID = "select first " + executeQuery(DBType.CMKA, DOC_USER).size()
 			+ " du_prid from  doc_user order by  du_date_created desc";
 
 	public static final String WILLIAMS_PE_ID = "(SELECT  PE_ID FROM PERSON, PERSONROLE WHERE "
@@ -294,5 +304,23 @@ public class Queries {
 	public static final String DB_REFERRAL_CATEGORIES = "SELECT DISTINCT (CYV_CATEGORY) FROM "
 			+ "CHM_MOBILE_REFERRAL, CHM_REFTYPE_VAL WHERE  CMR_JU_PE_ID = " + WILLIAMS_PE_ID
 			+ " AND CMR_DATE_END IS NULL  AND CMR_CYV_CODE = CYV_CODE AND CYV_IS_BRIEFCASE = 'y'";
+
+	
+	
+	public void getPeID(DBType dbtype,id id, String peId) {
+		executeQuery(dbtype,
+				"SELECT DISTINCT (CYV_CATEGORY) FROM " + "CHM_MOBILE_REFERRAL, CHM_REFTYPE_VAL WHERE  CMR_JU_PE_ID = "
+						+ getId(peId)
+						+ " AND CMR_DATE_END IS NULL  AND CMR_CYV_CODE = CYV_CODE AND CYV_IS_BRIEFCASE = 'y'");
+
+		switch (id) {
+		case COLLOTONS_PE_ID:
+
+			break;
+
+		default:
+			break;
+		}
+	}
 
 }

@@ -63,7 +63,7 @@ public class iOS_LoginPage extends Base {
 	@iOSFindBy(accessibility = "Logout of Briefcase")
 	public MobileElement logout;
 
-	public void selectEnvironment()  {
+	public void selectEnvironment() {
 
 		performPageLoad();
 
@@ -79,11 +79,14 @@ public class iOS_LoginPage extends Base {
 	}
 
 	public void sedKeyButton() {
+
 		waitToBeClickable(sendKeyButton);
 	}
 
 	public void open() {
+
 		clickOn(findElement(By.name(openBtn)));
+
 	}
 
 	public void getCMKA(String server) {

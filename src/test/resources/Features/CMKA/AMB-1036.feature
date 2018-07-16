@@ -5,14 +5,14 @@ Background:
 
 
 
-	Given  User Navigates to Sever 
+		Given  User Navigates to environment 
 	When  User enters Credentials to Login 
         |userName			|password	|
 		|SysadminKasabolotova|Asalta6268!z|
 	
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
-	And After user navigates to Appellate DC Development - CMKA - dev
+	Given  user selects a server "Appellate DC Development - CMKA" 
 		
 	And   User selects Judge Colloton  >> Petitions for Rehearing >> "15-3314"
 

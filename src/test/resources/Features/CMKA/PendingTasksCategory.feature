@@ -2,14 +2,14 @@ Feature: Pending Tasks Category Displays on the Dashboard
 
 Background: 
 
-	Given  User Navigates to Sever 
+		Given  User Navigates to environment 
 	When  User enters Credentials to Login 
         |userName			|password	|
 		|chambers courtney|Test2020! |
 	
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
-	And After user navigates to Appellate DC Development - CMKA - dev
+	Given  user selects a server "Appellate DC Development - CMKA" 
 	
 @Smoke
 @AMB_1008 

@@ -18,7 +18,7 @@ Scenario Outline:
 The default is by date referred in descending order (newest first). 
 	
 
-	And After user selects a server "<server>" 
+	Given  user selects a server "Appellate DC Development - CMKA" 
 	Given User selects a judge and then the motions/petitions category 
 	When User selects the sort button, clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in descending order (newest first). 
 	And  User clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order (oldest first). 

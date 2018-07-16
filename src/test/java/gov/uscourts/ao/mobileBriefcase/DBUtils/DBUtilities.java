@@ -56,6 +56,7 @@ public class DBUtilities {
 				cds.setPortNumber(portNumber);
 				cds.setIfxSSLCONNECTION("true");
 				connection = cds.getPooledConnection().getConnection();
+				
 
 				break;
 			default:
@@ -162,6 +163,10 @@ public class DBUtilities {
 
 	public enum DBType {
 		CMKA, CM5A
+	}
+	
+	public static void main(String[] args) {
+		establishConnection(DBType.CM5A);
 	}
 
 }

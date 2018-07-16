@@ -80,6 +80,7 @@ public class iOS_SortingOnTheReferralListPage {
 	public void selectSortBtn() {
 		performPageLoad();
 		waitToBeClickable(sortArrowBtn);
+		performPageLoad();
 		referralsSortedByDatesInDescendingOrder();
 	}
 
