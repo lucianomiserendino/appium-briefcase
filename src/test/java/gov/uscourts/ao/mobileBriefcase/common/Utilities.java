@@ -2,6 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.selectReferralCategory;
@@ -88,12 +89,13 @@ public class Utilities extends Base {
 
 	}
 
-	public static void getPanel(DBType dbtype,String query, String message, String element) {
+	public static void getPanel(DBType dbtype, String query, String message, String element) {
 
 		try {
 			if (executeQuery(dbtype, query).size() > 0) {
+				performPageLoad();
 				assertTrue(message, elementIsDisplayed(element) == true);
-
+				clickOnPanel(element);
 			} else {
 				assertTrue(!(executeQuery(dbtype, query).size() > 0));
 
@@ -104,7 +106,6 @@ public class Utilities extends Base {
 		}
 
 	}
-	
 
 	public static void selectCaseNumber(Actions action, String caseNum) {
 		clickOn(findElement(By.xpath(selectReferralCategory(action))));
@@ -335,7 +336,6 @@ public class Utilities extends Base {
 		select(Users.DASHBOARD);
 		performPageLoad();
 
-
 	}
 
 	public static void verifyTextIsDisplayed(MobileElement element, String text) {
@@ -384,9 +384,5 @@ public class Utilities extends Base {
 	public static String getRestrictParam(String param, int index) {
 		return param.substring(index).split(",")[0].replaceAll("'", "");
 	}
-
-
-
-
 
 }
