@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.FILED_DATE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.FILERs_INFORMATION;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGEs_INITIALS;
@@ -14,8 +15,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.COLLOT
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getColumnCount;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.voteInformationPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.PETITIONS_FOR_REHEARING;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.RLW;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.*;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.RWG;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SMC;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
@@ -41,6 +41,7 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
+
 public class iOS_VoteInformationPanelPage {
 
 	public iOS_VoteInformationPanelPage() {
@@ -60,7 +61,7 @@ public class iOS_VoteInformationPanelPage {
 
 	}
 
-	public void selectCase(String caseNumber) {
+	public void selectCase(Actions category, String caseNumber) {
 
 		performPageLoad();
 		selectCaseNumber(PETITIONS_FOR_REHEARING, caseNumber);
@@ -70,16 +71,14 @@ public class iOS_VoteInformationPanelPage {
 	/** Observe the Vote Information Panel displays */
 	public void getVoteInformationPanel(String element) {
 
-		getPanel(MBR_EVENT, "VOTE INFORMATION PANEL IS NOT DISPLAYED", element);
+		getPanel(DBType.CMKA,MBR_EVENT, "VOTE INFORMATION PANEL IS NOT DISPLAYED", element);
 
 	}
 
-	
-	
 	/** Observers filer's information */
 	public void getFilersInformation() {
 
-		String dbFilersInformation = getAllColumns(DBType.CMKA,FILERs_INFORMATION).replaceAll(" ", "");
+		String dbFilersInformation = getAllColumns(DBType.CMKA, FILERs_INFORMATION).replaceAll(" ", "");
 		performPageLoad();
 		String uiFilersInformation = uiFilresInformation();
 
@@ -99,14 +98,14 @@ public class iOS_VoteInformationPanelPage {
 	}
 
 	public void verifyReliefIsDisplayed() {
-		assertTrue(findElement(By.xpath(locateElement(getAllColumns(DBType.CMKA,RELIEF)))).isDisplayed());
+		assertTrue(findElement(By.xpath(locateElement(getAllColumns(DBType.CMKA, RELIEF)))).isDisplayed());
 	}
 
 	public void getJudgesVoteInfo() {
 
-		assertTrue(getAllColumns(DBType.CMKA,JUDGEs_VOTE).equals(voteInformationPanel(SMC, voteInfo)));
+		assertTrue(getAllColumns(DBType.CMKA, JUDGEs_VOTE).equals(voteInformationPanel(SMC, voteInfo)));
 
-		assertTrue(getAllColumns(DBType.CMKA,VOTE_DATE).split(" ")[0]
+		assertTrue(getAllColumns(DBType.CMKA, VOTE_DATE).split(" ")[0]
 				.equals(changeDateFormat(voteInformationPanel(RLW, voteInfo), "yyyy-MM-dd")));
 
 		getCollapsablePanel(selectUser, APPELLATE_JUDGES);

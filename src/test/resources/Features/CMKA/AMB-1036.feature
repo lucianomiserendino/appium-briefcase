@@ -33,17 +33,6 @@ If a referral requires voting, a collapsible Vote Information panel displays.  W
        Then  User checks each judge's vote  and the date  displays under their initials
     
 
-@Regression
-@AMB_1038
-Scenario: 
-
-       If there are records defined in the mbr_event table, 
-       a collapsible panel entitled "Actions" should display,when expanded all the applicable actions should display.
-
-      Given User verifies "Actions" is diplayed and  expands the Actions panel 
-      Then  User verifies the correct actions display for the selected referral 
-
-
 
 
 

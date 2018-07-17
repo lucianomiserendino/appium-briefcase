@@ -76,7 +76,7 @@ public class iOS_DBDocketingDPFPage implements Constants {
 	}
 
 	public void selectActionPanel(String actionsPanel) {
-		getPanel(MBR_EVENT, " THERE'RE NO ACTIONS OR MBR_EVENT TABLE IS EMPTY ", actionsPanel);
+		getPanel(DBType.CMKA,MBR_EVENT, " THERE'RE NO ACTIONS OR MBR_EVENT TABLE IS EMPTY ", actionsPanel);
 	}
 
 	public void selectAction(String action, mbrNotes notes) {

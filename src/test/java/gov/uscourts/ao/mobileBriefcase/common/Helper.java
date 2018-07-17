@@ -116,6 +116,7 @@ public class Helper {
 			break;
 
 		case ACTIONS:
+	
 			click(locateElement("Actions"));
 			break;
 

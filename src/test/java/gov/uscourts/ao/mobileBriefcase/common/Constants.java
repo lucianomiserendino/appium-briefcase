@@ -61,5 +61,17 @@ public interface Constants {
 	public static final String JUDGE_COLLOTON = "Colloton";
 
 	public static final String JUDGE_WILLIAMS = "Williams";
+	
+	public static final String CMR_ID_CM5A="3997";
+	
+	public static final String CMR_ID_CMKA="2303021";
+	
+	public static final String CASE_NUM_CMKA="";
+	
+	public static final String CASE_NUM_CM5A="12-6627";
+	
+	
+	
+	
 
 }

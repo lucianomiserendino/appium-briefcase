@@ -8,12 +8,13 @@ import gov.uscourts.ao.mobileBriefcase.common.Constants;
 
 public class Queries {
 
-	public static final String CASEID = "82226";
+
 
 	public static String getId(String id) {
 		return id;
 
 	}
+
 	public static final String PE_ID = "(SELECT  PE_ID FROM PERSON, PERSONROLE WHERE "
 			+ "PE_PR_PRID=PR_PRID AND PE_RT_CODE='jud' and PR_LAST_NAME='text')";
 	// Query to find appellate judge
@@ -21,8 +22,7 @@ public class Queries {
 			+ "PE_PR_PRID=PR_PRID AND PE_RT_CODE='jud' and PR_LAST_NAME='Colloton')";
 
 	public static final String CMR_ID = "SELECT cmr_id FROM chm_mobile_referral, chambers_case_to_referral, chambers_referral"
-			+ " WHERE cpr_vote_req = 'y' and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = " + CASEID
-			+ " and" + " cmr_cyv_code = 'prhr' and cmr_ju_pe_id = " + COLLOTONs_PE_ID;
+			+ " WHERE cpr_vote_req = 'y' and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = \"82226\" and" + " cmr_cyv_code = 'prhr' and cmr_ju_pe_id = " + COLLOTONs_PE_ID;
 
 	// Query to find the valid non-orally argued categories for the judge:
 	public static final String CYV_CATEGORY = "SELECT DISTINCT CYV_CATEGORY FROM CHM_MOBILE_REFERRAL,"
@@ -196,18 +196,6 @@ public class Queries {
 			+ "left join chm_vote_val on chv_cvv_code = cvv_code where a.ccr_id = 34870 and b.ccr_date_end is null and NVL(cpr_vote_complete,'') <> 'y' and "
 			+ "NVL(cpr_vote_req,'') <> 'n' and cvv_display='Deny' and ju_initials='SMC'order by chv_date_created  desc";
 
-	public static final String APPLICABLE_ACTIONS = "select el_list_text from mbr_event join event_list on el_id = me_el_id where "
-			+ "(me_cyv_code = (select cmr_cyv_code from chm_mobile_referral where cmr_id = (" + CMR_ID
-			+ ")) or me_cyv_code = \"-\" "
-			+ "or me_cyv_code is null) and (me_ic_code = (select cmr_ic_code from chm_mobile_referral where cmr_id = ("
-			+ CMR_ID + ")) "
-			+ "or me_ic_code is null or me_ic_code = \"-\") and (me_cav_code = (select distinct(cav_code) FROM chm_mobile_referral JOIN chambers_case_to_referral "
-			+ "on ccr_id = cmr_ccr_id JOIN chm_assign_to_case on chc_cpr_id = ccr_cpr_id and chc_cs_caseid = cmr_cs_caseid "
-			+ "JOIN chambers_assignment on cha_id = chc_cha_id and cha_chm_pe_id = cmr_ju_pe_id "
-			+ "JOIN chm_assign_type_val on cav_code = cha_cav_code JOIN chambers_assign_date on chd_cha_id = cha_id "
-			+ "join chm_assign_datetype_val on cdv_code = chd_cdv_code " + "WHERE chc_date_end is null and cmr_id = ("
-			+ CMR_ID + ")) or me_cav_code = \"-\" or me_cav_code is null) and el_functions is not null ";
-
 	public static final String ASSIGNMENT_CATEGORIES = "select distinct(sfa_display) from stfaty_mobile_referral, stfaty_ref_assign, "
 			+ "stfaty_assign_val where smr_ra_id = ra_id and ra_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, "
 			+ "stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' ) and smr_sfa_code = sfa_code and smr_date_end is null";
@@ -298,13 +286,18 @@ public class Queries {
 	public static final String BRIEFCASE_TARGET_ONLY_Y = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
 			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = ? AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'text' AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
 			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID AND CD_CASE_EXT  = 1";
-	
-	
+
 	public static final String BRIEFCASE_TARGET_ONLY_N = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
 			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = ? AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'text' AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
 			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID";
-	
-	
-	
-	
+
+	public static final String APPLICABLE_ACTIONS = "select el_list_text from mbr_event join event_list on el_id = me_el_id where "
+			+ "(me_cyv_code = (select cmr_cyv_code from chm_mobile_referral where cmr_id = ?) or me_cyv_code = \"-\" "
+			+ " or me_cyv_code is null) and (me_ic_code = (select cmr_ic_code from chm_mobile_referral where cmr_id = ?) "
+			+ "or me_ic_code is null or me_ic_code = \"-\") and (me_cav_code = (select distinct(cav_code) FROM chm_mobile_referral JOIN chambers_case_to_referral "
+			+ "on ccr_id = cmr_ccr_id JOIN chm_assign_to_case on chc_cpr_id = ccr_cpr_id and chc_cs_caseid = cmr_cs_caseid "
+			+ "JOIN chambers_assignment on cha_id = chc_cha_id and cha_chm_pe_id = cmr_ju_pe_id JOIN chm_assign_type_val on cav_code = cha_cav_code JOIN chambers_assign_date "
+			+ "on chd_cha_id = cha_id join chm_assign_datetype_val on cdv_code = chd_cdv_code "
+			+ " WHERE chc_date_end is null and cmr_id = ?) or me_cav_code = \"-\" or me_cav_code is null) and el_functions is not null";
+
 }

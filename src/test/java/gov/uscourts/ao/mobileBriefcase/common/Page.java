@@ -43,7 +43,7 @@ public class Page extends Base {
 	}
 
 	public static WebElement waitToBeClickable(WebElement element) {
-		new WebDriverWait(driver, 40).until(ExpectedConditions.elementToBeClickable(element)).click();
+		new WebDriverWait(driver, 100).until(ExpectedConditions.elementToBeClickable(element)).click();
 		return element;
 	}
 

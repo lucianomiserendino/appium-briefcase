@@ -2,10 +2,10 @@ package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.selectReferralCategory;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForElement;
@@ -88,15 +88,14 @@ public class Utilities extends Base {
 
 	}
 
-	public static void getPanel(String query, String message, String element) {
+	public static void getPanel(DBType dbtype,String query, String message, String element) {
 
 		try {
-			if (executeQuery(DBType.CMKA, query).size() > 0) {
+			if (executeQuery(dbtype, query).size() > 0) {
 				assertTrue(message, elementIsDisplayed(element) == true);
-				clickOnPanel(element);
 
 			} else {
-				assertTrue(!(executeQuery(DBType.CMKA, query).size() > 0));
+				assertTrue(!(executeQuery(dbtype, query).size() > 0));
 
 			}
 		} catch (Exception e) {
@@ -105,6 +104,7 @@ public class Utilities extends Base {
 		}
 
 	}
+	
 
 	public static void selectCaseNumber(Actions action, String caseNum) {
 		clickOn(findElement(By.xpath(selectReferralCategory(action))));

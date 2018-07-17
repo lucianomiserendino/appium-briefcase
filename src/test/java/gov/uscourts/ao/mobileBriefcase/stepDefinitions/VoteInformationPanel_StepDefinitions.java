@@ -12,7 +12,7 @@ public class VoteInformationPanel_StepDefinitions {
 	public void user_selects_Judge_Colloton_Petitions_for_Rehearing(String caseNumber) {
 		page = new iOS_VoteInformationPanelPage();
 		page.selectAJudje();
-		page.selectCase(caseNumber);
+		//page.selectCase(caseNumber);
 
 	}
 
