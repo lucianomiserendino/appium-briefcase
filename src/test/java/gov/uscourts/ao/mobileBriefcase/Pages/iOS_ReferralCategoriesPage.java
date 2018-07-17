@@ -118,4 +118,5 @@ public class iOS_ReferralCategoriesPage {
 		return referralCategories;
 	}
 
+
 }

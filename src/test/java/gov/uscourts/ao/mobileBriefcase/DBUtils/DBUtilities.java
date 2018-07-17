@@ -1,9 +1,5 @@
 package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PE_ID;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getRestrictParam;
@@ -19,7 +15,6 @@ import java.util.List;
 
 import com.informix.jdbcx.IfxConnectionPoolDataSource;
 
-import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Configuration;
 
 public class DBUtilities {
@@ -44,7 +39,7 @@ public class DBUtilities {
 				connection = DriverManager.getConnection(CMKA, dbUsername, dbPwd);
 				break;
 			case CM5A:
-				System.setProperty("javax.net.ssl.trustStore", "/Users/saltanakasabolotova/Desktop/cacerts.jks");
+				System.setProperty("javax.net.ssl.trustStore", "./src/test/resources/jks/cacerts.jks");
 				System.setProperty("javax.net.ssl.trustStorePassword", "password");
 
 				/* Instantiate Informix connection pooled data source */
