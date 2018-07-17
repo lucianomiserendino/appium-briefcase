@@ -1,6 +1,5 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.ANDERS_CASES;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.IFP_MOTION_IN_THIS_COURT;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.NO_ARGUMENT_REFERRALS;
@@ -51,7 +50,7 @@ public class Helper {
 
 	}
 
-	public static  void clickOnCategory(Actions action) {
+	public static void clickOnCategory(Actions action) {
 		clickOn(findElement(By.xpath(selectReferralCategory(action))));
 	}
 
@@ -185,22 +184,6 @@ public class Helper {
 		return findElement(By.xpath(getVoteInformation(initial, index))).getText();
 	}
 
-	public static List<String> getCategories(String name, int startRow, int endRow, int cellIndex) {
-
-		List<String> uiCategories = new ArrayList<>();
-
-		for (int i = startRow; i <= endRow; ++i) {
-
-			String actions = driver.findElement(By.xpath("//XCUIElementTypeTable[@name='" + name
-					+ "']/XCUIElementTypeCell[" + i + "]/XCUIElementTypeStaticText[" + cellIndex + "]")).getText()
-					.trim();
-			uiCategories.add(actions);
-			sort(uiCategories);
-		}
-		return uiCategories;
-
-	}
-
 	public static List<String> getReferralCategories() {
 		List<String> variables = new ArrayList<>();
 		variables.add(ANDERS_CASES);
@@ -227,8 +210,8 @@ public class Helper {
 		SMC, RLW, RWG,
 
 		FILERs_INFORMATION,
-		
-		SPLIT_BY_COMMA, REPLACE,SPLIT_BY_SPACE
-		
+
+		SPLIT_BY_COMMA, REPLACE, SPLIT_BY_SPACE
+
 	}
 }

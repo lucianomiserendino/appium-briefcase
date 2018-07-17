@@ -57,7 +57,9 @@ public interface Constants {
 	public static final String USERs_CHAMBERS = "3127";
 
 	public static final String ONLY_GROUPS_AND_USERS = "3072";
-	
-	
-	
+
+	public static final String JUDGE_COLLOTON = "Colloton";
+
+	public static final String JUDGE_WILLIAMS = "Williams";
+
 }

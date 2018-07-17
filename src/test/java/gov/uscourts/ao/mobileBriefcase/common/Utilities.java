@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
@@ -21,14 +20,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -76,7 +73,7 @@ public class Utilities extends Base {
 		performPageLoad();
 		while (itr.hasNext()) {
 			try {
-				
+
 				dates = itr.next().getText().split(split);
 
 				referrals.add(changeDateFormat(dates[index].trim(), format));
@@ -337,10 +334,7 @@ public class Utilities extends Base {
 		select(Users.MOTIONS_PETITIONS);
 		select(Users.DASHBOARD);
 		performPageLoad();
-		select(Users.MOTIONS_PETITIONS);
-		select(Users.DASHBOARD);
-		pageLoad();
-		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+
 
 	}
 
@@ -391,8 +385,8 @@ public class Utilities extends Base {
 		return param.substring(index).split(",")[0].replaceAll("'", "");
 	}
 
-	
-	
+
+
 
 
 }

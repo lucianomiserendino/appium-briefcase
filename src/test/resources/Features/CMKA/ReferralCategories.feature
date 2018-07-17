@@ -12,8 +12,8 @@ Background:
 	
 	
 	
-@Smoke
-@AMB_956 
+@Smoke_CMKA
+@AMB_956_CMKA
 Scenario: 
 	Referral categories display on the dashboard for the judge
 	Given  user selects a server "Appellate DC Development - CMKA" 
@@ -26,7 +26,7 @@ Scenario:
 		
 	
 @Smoke_CM5A 
-@AMB_956 
+@AMB_956_CM5A 
 Scenario: 
 	Referral categories display on the dashboard for the judge
 	Given  user selects a server "Appellate DC Development - CM5A" 

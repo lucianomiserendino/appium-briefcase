@@ -1,30 +1,21 @@
 package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.*;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.COURT_USERS;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Constants;
-import gov.uscourts.ao.mobileBriefcase.common.Servers.id;
-
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.*;
 
 public class Queries {
 
 	public static final String CASEID = "82226";
-	private String peId;
 
 	public static String getId(String id) {
 		return id;
 
 	}
-
-	public void setPeId(String peId) {
-		this.peId = peId;
-	}
-
-	public String getPeId() {
-		return peId;
-	}
-
+	public static final String PE_ID = "(SELECT  PE_ID FROM PERSON, PERSONROLE WHERE "
+			+ "PE_PR_PRID=PR_PRID AND PE_RT_CODE='jud' and PR_LAST_NAME='text')";
 	// Query to find appellate judge
 	public static final String COLLOTONs_PE_ID = "(SELECT  PE_ID FROM PERSON, PERSONROLE WHERE "
 			+ "PE_PR_PRID=PR_PRID AND PE_RT_CODE='jud' and PR_LAST_NAME='Colloton')";
@@ -84,8 +75,7 @@ public class Queries {
 
 	// Query to get valid categories for the logged in user
 	public static final String DB_LIST_OF_CATEGORIES = "SELECT DISTINCT (CYV_CATEGORY) FROM "
-			+ "CHM_MOBILE_REFERRAL, CHM_REFTYPE_VAL WHERE  CMR_JU_PE_ID = " + COLLOTONs_PE_ID
-			+ " AND CMR_DATE_END IS NULL  AND CMR_CYV_CODE = CYV_CODE AND CYV_IS_BRIEFCASE = 'y'";
+			+ "CHM_MOBILE_REFERRAL, CHM_REFTYPE_VAL WHERE  CMR_JU_PE_ID = \"?\" AND CMR_DATE_END IS NULL  AND CMR_CYV_CODE = CYV_CODE AND CYV_IS_BRIEFCASE = 'y'";
 
 	// To find if a judge has any pending assignments run the following
 	// query for the logged in judge:
@@ -301,26 +291,20 @@ public class Queries {
 	public static final String WILLIAMS_PE_ID = "(SELECT  PE_ID FROM PERSON, PERSONROLE WHERE "
 			+ "PE_PR_PRID=PR_PRID AND PE_RT_CODE='jud' and PR_LAST_NAME='Williams')";
 
-	public static final String DB_REFERRAL_CATEGORIES = "SELECT DISTINCT (CYV_CATEGORY) FROM "
-			+ "CHM_MOBILE_REFERRAL, CHM_REFTYPE_VAL WHERE  CMR_JU_PE_ID = " + WILLIAMS_PE_ID
-			+ " AND CMR_DATE_END IS NULL  AND CMR_CYV_CODE = CYV_CODE AND CYV_IS_BRIEFCASE = 'y'";
+	public static final String NON_ORALLY_ARGUED_CASES = "select distinct (cyv_category) from chm_mobile_referral, chm_reftype_val\n"
+			+ "where \n" + "cmr_ju_pe_id = ? and\n" + "cmr_date_end is null and\n" + "cmr_cyv_code = cyv_code and\n"
+			+ "cyv_is_briefcase = 'y' and\n" + "cyv_is_oral_arg = 'n'";
 
+	public static final String BRIEFCASE_TARGET_ONLY_Y = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
+			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = ? AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'text' AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
+			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID AND CD_CASE_EXT  = 1";
 	
 	
-	public void getPeID(DBType dbtype,id id, String peId) {
-		executeQuery(dbtype,
-				"SELECT DISTINCT (CYV_CATEGORY) FROM " + "CHM_MOBILE_REFERRAL, CHM_REFTYPE_VAL WHERE  CMR_JU_PE_ID = "
-						+ getId(peId)
-						+ " AND CMR_DATE_END IS NULL  AND CMR_CYV_CODE = CYV_CODE AND CYV_IS_BRIEFCASE = 'y'");
-
-		switch (id) {
-		case COLLOTONS_PE_ID:
-
-			break;
-
-		default:
-			break;
-		}
-	}
-
+	public static final String BRIEFCASE_TARGET_ONLY_N = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
+			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = ? AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'text' AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
+			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID";
+	
+	
+	
+	
 }

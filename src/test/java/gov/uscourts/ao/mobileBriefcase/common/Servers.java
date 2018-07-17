@@ -17,7 +17,5 @@ public class Servers {
 		CMKA, CM5A, CMLA
 	}
 
-	public enum id {
-		WILLIAMS_PE_ID, COLLOTONS_PE_ID
-	}
+
 }

@@ -1,6 +1,11 @@
 package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PE_ID;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getRestrictParam;
 
 import java.sql.Connection;
@@ -14,6 +19,7 @@ import java.util.List;
 
 import com.informix.jdbcx.IfxConnectionPoolDataSource;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Configuration;
 
 public class DBUtilities {
@@ -56,7 +62,6 @@ public class DBUtilities {
 				cds.setPortNumber(portNumber);
 				cds.setIfxSSLCONNECTION("true");
 				connection = cds.getPooledConnection().getConnection();
-				
 
 				break;
 			default:
@@ -161,12 +166,22 @@ public class DBUtilities {
 
 	}
 
+	public static String getID(String query, String id) {
+		return query.replace("?", id);
+	}
+
+	public static String getText(String query, String text) {
+		return query.replace("text", text);
+	}
+
+	public static String getPE_ID(DBType dbType, String judgeName) {
+
+		return getAllColumns(dbType, getText(PE_ID, judgeName));
+
+	}
+
 	public enum DBType {
 		CMKA, CM5A
-	}
-	
-	public static void main(String[] args) {
-		establishConnection(DBType.CM5A);
 	}
 
 }
