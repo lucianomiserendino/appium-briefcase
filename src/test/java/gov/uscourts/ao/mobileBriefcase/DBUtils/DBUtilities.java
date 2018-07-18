@@ -5,7 +5,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PE_ID;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getRestrictParam;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -35,9 +34,22 @@ public class DBUtilities {
 		try {
 			switch (dbType) {
 			case CMKA:
-				Class.forName("com.informix.jdbc.IfxDriver");
-				connection = DriverManager.getConnection(CMKA, dbUsername, dbPwd);
+				System.setProperty("javax.net.ssl.trustStore", "./src/test/resources/jks/cacerts.jks");
+				System.setProperty("javax.net.ssl.trustStorePassword", "password");
+				IfxConnectionPoolDataSource cd = new IfxConnectionPoolDataSource();
+
+				cd.setIfxIFXHOST("cmkadb.cmka.aocms.gtwy.dcn");
+				cd.setServerName("cmka_ssl");
+				cd.setUser("cmecf_readonly");
+				cd.setPassword("Read2CMECF");
+				cd.setDatabaseName("cmka_live");
+				cd.setPortNumber(9089);
+				cd.setIfxSSLCONNECTION("true");
+
+				connection = cd.getPooledConnection().getConnection();
+
 				break;
+
 			case CM5A:
 				System.setProperty("javax.net.ssl.trustStore", "./src/test/resources/jks/cacerts.jks");
 				System.setProperty("javax.net.ssl.trustStorePassword", "password");
@@ -178,5 +190,7 @@ public class DBUtilities {
 	public enum DBType {
 		CMKA, CM5A
 	}
-
+public static void main(String[] args) {
+	System.out.println(executeQuery(DBType.CMKA, "select* from mbr_event"));
+}
 }

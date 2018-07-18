@@ -66,7 +66,6 @@ public class iOS_LoginPage extends Base {
 	public void selectEnvironment() {
 
 		performPageLoad();
-
 		clickOn(server);
 	}
 
@@ -89,7 +88,7 @@ public class iOS_LoginPage extends Base {
 
 	}
 
-	public void getCMKA(String server) {
+	public void getServer(String server) {
 
 		clickOnPanel(server);
 

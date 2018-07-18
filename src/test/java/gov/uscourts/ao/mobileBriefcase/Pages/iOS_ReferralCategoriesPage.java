@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.BRIEFCASE_TARGET_ONLY_N;
@@ -10,7 +9,8 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DB_LIST_OF_CATEGOR
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.NON_ORALLY_ARGUED_CASES;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.*;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getNumOfDisplayedCases;
@@ -76,6 +76,7 @@ public class iOS_ReferralCategoriesPage {
 		return dbReferralCategories;
 	}
 
+
 	public void verifyNonOrallyArgCases(DBType dbtype, String pe_id) {
 		refresh();
 		getReffCategories(dbtype, pe_id);
@@ -91,9 +92,8 @@ public class iOS_ReferralCategoriesPage {
 			for (int i = 0; i < referralCategories.size(); ++i) {
 				performPageLoad();
 				MobileElement referrals = waitForElement(findElement(By.id(referralCategories.get(i))));
-				refresh();
-				pageLoad();
-				assertTrue(referrals.isDisplayed());
+				performPageLoad();
+				//assertTrue(referrals.isDisplayed());
 
 				String dbNonOrgCases = referrals.getText();
 

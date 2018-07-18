@@ -62,7 +62,7 @@ public class iOS_ActionsPanelPage {
 	public void verifyActionsPanelIsDisplayed(DBType dbtype, String actionsPanel) {
 
 		getPanel(dbtype, MBR_EVENT, " THERE'RE NO ACTIONS OR MBR_EVENT TABLE IS EMPTY ", actionsPanel);
-		
+
 	}
 
 	public void compareApplicableActions(DBType dbtype, String cmr_id) {
@@ -120,9 +120,6 @@ public class iOS_ActionsPanelPage {
 
 	}
 	
-	
-	public static void main(String[] args) {
-		System.out.println(executeQuery(DBType.CMKA, getID(APPLICABLE_ACTIONS, "2303021")));
-	}
+
 
 }

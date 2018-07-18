@@ -276,8 +276,7 @@ public class Queries {
 	public static final String DU_PRID = "select first " + executeQuery(DBType.CMKA, DOC_USER).size()
 			+ " du_prid from  doc_user order by  du_date_created desc";
 
-	public static final String WILLIAMS_PE_ID = "(SELECT  PE_ID FROM PERSON, PERSONROLE WHERE "
-			+ "PE_PR_PRID=PR_PRID AND PE_RT_CODE='jud' and PR_LAST_NAME='Williams')";
+
 
 	public static final String NON_ORALLY_ARGUED_CASES = "select distinct (cyv_category) from chm_mobile_referral, chm_reftype_val\n"
 			+ "where \n" + "cmr_ju_pe_id = ? and\n" + "cmr_date_end is null and\n" + "cmr_cyv_code = cyv_code and\n"

@@ -41,7 +41,7 @@ public class Login_StepDefinitions implements iOSCapabilities {
 
 	@Given("^user selects a server \"([^\"]*)\"$")
 	public void user_selects_a_server(String server) {
-		logPage.getCMKA(server);
+		logPage.getServer(server);
 	}
 
 }
