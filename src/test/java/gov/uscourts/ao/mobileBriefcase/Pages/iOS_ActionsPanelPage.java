@@ -119,5 +119,10 @@ public class iOS_ActionsPanelPage {
 		return isDisplayed;
 
 	}
+	
+	
+	public static void main(String[] args) {
+		System.out.println(executeQuery(DBType.CMKA, getID(APPLICABLE_ACTIONS, "2303021")));
+	}
 
 }

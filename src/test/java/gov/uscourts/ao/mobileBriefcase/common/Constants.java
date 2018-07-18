@@ -66,7 +66,7 @@ public interface Constants {
 	
 	public static final String CMR_ID_CMKA="2303021";
 	
-	public static final String CASE_NUM_CMKA="";
+	public static final String CASE_NUM_CMKA="15-3314";
 	
 	public static final String CASE_NUM_CM5A="12-6627";
 	

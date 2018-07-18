@@ -11,7 +11,7 @@ Background:
 	
 	
 	
-@Regression_CMKA 
+@Smoke_CMKA 
 @AMB_1038
 Scenario: 
 

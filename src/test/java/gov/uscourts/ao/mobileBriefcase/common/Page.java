@@ -32,7 +32,7 @@ public class Page extends Base {
 	}
 
 	public static By waitForPresenceOfElement(By element) {
-		new WebDriverWait(driver, 70).until(ExpectedConditions.presenceOfElementLocated((element)));
+		new WebDriverWait(driver, 100).until(ExpectedConditions.presenceOfElementLocated((element)));
 		return element;
 
 	}
