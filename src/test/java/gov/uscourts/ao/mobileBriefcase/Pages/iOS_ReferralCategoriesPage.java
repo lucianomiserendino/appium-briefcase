@@ -9,7 +9,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DB_LIST_OF_CATEGOR
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.NON_ORALLY_ARGUED_CASES;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
@@ -93,8 +92,7 @@ public class iOS_ReferralCategoriesPage {
 				performPageLoad();
 				MobileElement referrals = waitForElement(findElement(By.id(referralCategories.get(i))));
 				performPageLoad();
-				//assertTrue(referrals.isDisplayed());
-
+				
 				String dbNonOrgCases = referrals.getText();
 
 				referrals.click();
@@ -108,8 +106,8 @@ public class iOS_ReferralCategoriesPage {
 				List<String> UInonOrallyarguedCases = asList((getNumOfDisplayedCases(waitForElement(total))));
 
 				assertTrue("-----RECORD COUNT MISMATCHED-----",
-						briefcaseTargReferral_n.containsAll(UInonOrallyarguedCases)
-								|| briefcaseTargReferral_y.containsAll(UInonOrallyarguedCases));
+						briefcaseTargReferral_n.equals(UInonOrallyarguedCases)
+								|| briefcaseTargReferral_y.equals(UInonOrallyarguedCases));
 
 				select(Users.DASHBOARD);
 			}

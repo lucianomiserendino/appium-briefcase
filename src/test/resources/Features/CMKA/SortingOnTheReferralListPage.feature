@@ -11,7 +11,7 @@ Background:
 	Then User navigates to MobileBrifcase App 
 	
 	
-@Smoke 
+
 @AMB_1010 
 Scenario Outline: 
 	There is a sorting feature on the referral list page that enables users to sort referrals by date referred or case number.  

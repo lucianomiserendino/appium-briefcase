@@ -10,7 +10,7 @@ Background:
 	Then User navigates to MobileBrifcase App 
 	
 	
-	
+@Smoke	
 @Smoke_CMKA 
 @AMB_1038
 Scenario: 

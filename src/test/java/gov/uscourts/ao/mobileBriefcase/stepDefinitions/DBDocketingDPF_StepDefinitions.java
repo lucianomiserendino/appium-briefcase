@@ -54,14 +54,12 @@ public class DBDocketingDPF_StepDefinitions {
 
 	@Then("^user verifies  a doc_user record is   created for each judge on the panel that's not the logged in judge\\.$")
 	public void user_verifies_a_doc_user_record_is_created_for_each_judge_on_the_panel_that_s_not_the_logged_in_judge() {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+
 	}
 
 	@Then("^user verifies  a doc_group record will be created for the logged in judge's chambers group$")
 	public void user_verifies_a_doc_group_record_will_be_created_for_the_logged_in_judge_s_chambers_group() {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+	
 	}
 
 	@Then("^user verifies  a doc_user record will not be created$")

@@ -11,7 +11,7 @@
         "steps": [
           {
             "result": {
-              "duration": 40553858514,
+              "duration": 37051220727,
               "status": "passed"
             },
             "line": 5,
@@ -23,7 +23,7 @@
           },
           {
             "result": {
-              "duration": 11597451144,
+              "duration": 13020172482,
               "status": "passed"
             },
             "line": 6,
@@ -51,7 +51,7 @@
           },
           {
             "result": {
-              "duration": 8331542015,
+              "duration": 7159840694,
               "status": "passed"
             },
             "line": 9,
@@ -63,7 +63,7 @@
           },
           {
             "result": {
-              "duration": 14658269221,
+              "duration": 13939343145,
               "status": "passed"
             },
             "line": 10,
@@ -79,7 +79,7 @@
         "before": [
           {
             "result": {
-              "duration": 23474500235,
+              "duration": 4869302038,
               "status": "passed"
             },
             "match": {
@@ -87,14 +87,14 @@
             }
           }
         ],
-        "line": 16,
+        "line": 29,
         "name": "",
         "description": "\nIf there are records defined in the mbr_event table, \n     a collapsible panel entitled \"Actions\" should display,when expanded all the applicable actions should display.",
         "id": "display-actions-panel-and-actions;",
         "after": [
           {
             "result": {
-              "duration": 30410267120,
+              "duration": 29457394533,
               "status": "passed"
             },
             "match": {
@@ -107,15 +107,15 @@
         "steps": [
           {
             "result": {
-              "duration": 46212514565,
+              "duration": 21999372473,
               "status": "passed"
             },
-            "line": 20,
-            "name": "user selects a server \"Appellate DC Development - CMKA\"",
+            "line": 33,
+            "name": "user selects a server \"Appellate DC Development - CM5A\"",
             "match": {
               "arguments": [
                 {
-                  "val": "Appellate DC Development - CMKA",
+                  "val": "Appellate DC Development - CM5A",
                   "offset": 23
                 }
               ],
@@ -125,61 +125,71 @@
           },
           {
             "result": {
-              "duration": 103973520152,
+              "duration": 75185903633,
               "status": "passed"
             },
-            "line": 21,
-            "name": "User selects Judge \"Colloton\"  \u003e\u003e Motions/Petitions \u003e\u003e and anycase",
+            "line": 34,
+            "name": "User selects \"Williams\"  \u003e\u003e Motion/Petition \u003e\u003e and anycase",
             "match": {
               "arguments": [
                 {
-                  "val": "Colloton",
-                  "offset": 20
+                  "val": "Williams",
+                  "offset": 14
                 }
               ],
-              "location": "ActionsPanel_StepDefinitions.user_selects_Judge_Motions_Petitions_and_anycase(String)"
+              "location": "ActionsPanel_StepDefinitions.user_selects_Motion_Petition_and_anycase(String)"
             },
             "keyword": "When "
           },
           {
             "result": {
-              "duration": 35008920257,
+              "duration": 33169917289,
               "status": "passed"
             },
-            "line": 22,
-            "name": "User verifies \"Actions\" is diplayed and  expands the Actions panel (CMKA)",
+            "line": 35,
+            "name": "User verifies \"Actions\" is diplayed and  expands the Actions panel (CM5A)",
             "match": {
               "arguments": [
                 {
                   "val": "Actions",
                   "offset": 15
+                },
+                {
+                  "val": "5",
+                  "offset": 70
                 }
               ],
-              "location": "ActionsPanel_StepDefinitions.user_verifies_is_diplayed_and_expands_the_Actions_panel_CMKA(String)"
+              "location": "ActionsPanel_StepDefinitions.user_verifies_is_diplayed_and_expands_the_Actions_panel_CM_A(String,int)"
             },
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 155636811229,
+              "duration": 154195312624,
               "status": "passed"
             },
-            "line": 23,
-            "name": "User verifies the correct actions display for the selected referral (CMKA)",
+            "line": 36,
+            "name": "User verifies the correct actions display for the selected referral (CM5A)",
             "match": {
-              "location": "ActionsPanel_StepDefinitions.user_verifies_the_correct_actions_display_for_the_selected_referral_CMKA()"
+              "arguments": [
+                {
+                  "val": "5",
+                  "offset": 71
+                }
+              ],
+              "location": "ActionsPanel_StepDefinitions.user_verifies_the_correct_actions_display_for_the_selected_referral_CM_A(int)"
             },
             "keyword": "And "
           }
         ],
         "tags": [
           {
-            "line": 14,
-            "name": "@Smoke_CMKA"
+            "line": 27,
+            "name": "@Smoke_CM5A"
           },
           {
-            "line": 15,
-            "name": "@AMB_1038"
+            "line": 28,
+            "name": "@AMB_1038_CM5A"
           }
         ]
       }
@@ -189,315 +199,5 @@
     "id": "display-actions-panel-and-actions",
     "keyword": "Feature",
     "uri": "CMKA/ActionsFunctionality.feature"
-  },
-  {
-    "line": 1,
-    "elements": [
-      {
-        "line": 3,
-        "name": "",
-        "description": "",
-        "type": "background",
-        "keyword": "Background",
-        "steps": [
-          {
-            "result": {
-              "duration": 40894627763,
-              "status": "passed"
-            },
-            "line": 5,
-            "name": "User Navigates to environment",
-            "match": {
-              "location": "Login_StepDefinitions.user_Navigates_to_environment()"
-            },
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "duration": 11058578761,
-              "status": "passed"
-            },
-            "line": 6,
-            "name": "User enters Credentials to Login",
-            "match": {
-              "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login(DataTable)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "userName",
-                  "password"
-                ],
-                "line": 7
-              },
-              {
-                "cells": [
-                  "chambers courtney",
-                  "Test2020!"
-                ],
-                "line": 8
-              }
-            ],
-            "keyword": "When "
-          },
-          {
-            "result": {
-              "duration": 7708640623,
-              "status": "passed"
-            },
-            "line": 10,
-            "name": "User clicks on Send Key to Device",
-            "match": {
-              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
-            },
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "duration": 14091499361,
-              "status": "passed"
-            },
-            "line": 11,
-            "name": "User navigates to MobileBrifcase App",
-            "match": {
-              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
-            },
-            "keyword": "Then "
-          }
-        ]
-      },
-      {
-        "before": [
-          {
-            "result": {
-              "duration": 4140618882,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 17,
-        "name": "",
-        "description": "Tapping on a referral category that is not orally argued (chm_reftype_val.cdv_is_oral_arg\u003d\u0027n\u0027),\n  a list of cases should dipslay for the judge for that category.\n  Need to verify the correct number of referrals are being displayed.",
-        "id": "number-of-cases-displayed-for-non-orally-argued-cases;",
-        "after": [
-          {
-            "result": {
-              "duration": 28640305982,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.tearDown()"
-            }
-          }
-        ],
-        "type": "scenario",
-        "keyword": "Scenario",
-        "steps": [
-          {
-            "result": {
-              "duration": 44472304430,
-              "status": "passed"
-            },
-            "line": 22,
-            "name": "user selects a server \"Appellate DC Development - CMKA\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "Appellate DC Development - CMKA",
-                  "offset": 23
-                }
-              ],
-              "location": "Login_StepDefinitions.user_selects_a_server(String)"
-            },
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "duration": 229920687385,
-              "status": "passed"
-            },
-            "line": 23,
-            "name": "User  Observes the categories on the dashboard page (CMKA)",
-            "match": {
-              "location": "ReferralCategories_StepDefinitions.user_Observes_the_categories_on_the_dashboard_page_CMKA()"
-            },
-            "keyword": "Then "
-          }
-        ],
-        "tags": [
-          {
-            "line": 15,
-            "name": "@Smoke_CMKA"
-          },
-          {
-            "line": 16,
-            "name": "@AMB_973_CMKA"
-          }
-        ]
-      }
-    ],
-    "name": "Number of cases displayed for non-orally argued cases",
-    "description": "",
-    "id": "number-of-cases-displayed-for-non-orally-argued-cases",
-    "keyword": "Feature",
-    "uri": "CMKA/NonOrallyArguedCases.feature"
-  },
-  {
-    "line": 1,
-    "elements": [
-      {
-        "line": 3,
-        "name": "",
-        "description": "",
-        "type": "background",
-        "keyword": "Background",
-        "steps": [
-          {
-            "result": {
-              "duration": 40448644890,
-              "status": "passed"
-            },
-            "line": 5,
-            "name": "User Navigates to environment",
-            "match": {
-              "location": "Login_StepDefinitions.user_Navigates_to_environment()"
-            },
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "duration": 11543541729,
-              "status": "passed"
-            },
-            "line": 6,
-            "name": "User enters Credentials to Login",
-            "match": {
-              "location": "Login_StepDefinitions.and_User_enters_Crdenetials_to_Login(DataTable)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "userName",
-                  "password"
-                ],
-                "line": 7
-              },
-              {
-                "cells": [
-                  "chambers courtney",
-                  "Test2020!"
-                ],
-                "line": 8
-              }
-            ],
-            "keyword": "When "
-          },
-          {
-            "result": {
-              "duration": 7409620847,
-              "status": "passed"
-            },
-            "line": 10,
-            "name": "User clicks on Send Key to Device",
-            "match": {
-              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
-            },
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "duration": 13480715242,
-              "status": "passed"
-            },
-            "line": 11,
-            "name": "User navigates to MobileBrifcase App",
-            "match": {
-              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
-            },
-            "keyword": "Then "
-          }
-        ]
-      },
-      {
-        "before": [
-          {
-            "result": {
-              "duration": 3776985746,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 17,
-        "name": "",
-        "description": "Referral categories display on the dashboard for the judge",
-        "id": "referral-categories-display-on-the-dashboard-for-the-judge;",
-        "after": [
-          {
-            "result": {
-              "duration": 27223950788,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.tearDown()"
-            }
-          }
-        ],
-        "type": "scenario",
-        "keyword": "Scenario",
-        "steps": [
-          {
-            "result": {
-              "duration": 44008635224,
-              "status": "passed"
-            },
-            "line": 19,
-            "name": "user selects a server \"Appellate DC Development - CMKA\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "Appellate DC Development - CMKA",
-                  "offset": 23
-                }
-              ],
-              "location": "Login_StepDefinitions.user_selects_a_server(String)"
-            },
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "duration": 111992729569,
-              "status": "passed"
-            },
-            "line": 20,
-            "name": "User Observes the referral categories that display on the dashboard and DB (CMKA)",
-            "match": {
-              "location": "ReferralCategories_StepDefinitions.user_Observes_the_referral_categories_that_display_on_the_dashboard_and_DB_CMKA()"
-            },
-            "keyword": "And "
-          }
-        ],
-        "tags": [
-          {
-            "line": 15,
-            "name": "@Smoke_CMKA"
-          },
-          {
-            "line": 16,
-            "name": "@AMB_956_CMKA"
-          }
-        ]
-      }
-    ],
-    "name": "Referral Categories display on the dashboard for the judge",
-    "description": "",
-    "id": "referral-categories-display-on-the-dashboard-for-the-judge",
-    "keyword": "Feature",
-    "uri": "CMKA/ReferralCategories.feature"
   }
 ]

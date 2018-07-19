@@ -34,7 +34,7 @@ public class DBUtilities {
 		try {
 			switch (dbType) {
 			case CMKA:
-				System.setProperty("javax.net.ssl.trustStore", "./src/test/resources/jks/cacerts.jks");
+				System.setProperty("javax.net.ssl.trustStore", "./src/test/resources/cmka/cacerts.jks");
 				System.setProperty("javax.net.ssl.trustStorePassword", "password");
 				IfxConnectionPoolDataSource cd = new IfxConnectionPoolDataSource();
 
@@ -51,7 +51,7 @@ public class DBUtilities {
 				break;
 
 			case CM5A:
-				System.setProperty("javax.net.ssl.trustStore", "./src/test/resources/jks/cacerts.jks");
+				System.setProperty("javax.net.ssl.trustStore", "./src/test/resources/cm5a/cacerts.jks");
 				System.setProperty("javax.net.ssl.trustStorePassword", "password");
 
 				/* Instantiate Informix connection pooled data source */
@@ -190,7 +190,5 @@ public class DBUtilities {
 	public enum DBType {
 		CMKA, CM5A
 	}
-public static void main(String[] args) {
-	System.out.println(executeQuery(DBType.CMKA, "select* from mbr_event"));
-}
+
 }

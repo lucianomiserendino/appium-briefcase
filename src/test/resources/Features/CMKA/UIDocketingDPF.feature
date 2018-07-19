@@ -11,13 +11,14 @@ Background:
 		
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
-	Given  user selects a server "Appellate DC Development - CMKA" 
+	
 	
 	
 @Smoke 
 @AMB_1055 
 Scenario: 
 	Verify when an action is selected that contains the note DPF, the note DPF UI displays.
+	Given  user selects a server "Appellate DC Development - CMKA" 
 	Given User selects Motions/Petitions "15-3703" 
 	When User expands the Actions panel, selects an action 
 	Then User verifies the name of the action displays in the dark blue banner. 

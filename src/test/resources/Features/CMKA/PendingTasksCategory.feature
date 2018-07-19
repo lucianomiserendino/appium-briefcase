@@ -9,12 +9,12 @@ Background:
 	
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
-	Given  user selects a server "Appellate DC Development - CMKA" 
+	
 	
 @Smoke
 @AMB_1008 
 Scenario: 
 	A category entitled "Pending Tasks" will display on the dashboard if the judge has 
 	any pending assignments and the site table variable briefcaseShowPendingTasks ='y'. 
-	
+	Given  user selects a server "Appellate DC Development - CMKA" 
 	Given If The judge has any pending assignments it will validate the total num of pending task on UI with DB 
