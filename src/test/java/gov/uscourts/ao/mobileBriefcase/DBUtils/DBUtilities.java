@@ -2,6 +2,24 @@ package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PE_ID;
+import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.DATABASE_NAME_CM5A;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.DATABASE_NAME_CMKA;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBPWD_CM5A;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBPWD_CMKA;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBURL_CM5A;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBURL_CMKA;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBUSERNAME_CM5A;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBUSERNAME_CMKA;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.KEYPASS;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.PASS;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.PORT_NUMBER_CM5A;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.PORT_NUMBER_CMKA;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.SERVERNAME_CM5A;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.SERVERNAME_CMKA;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.SSLLOC_CM5A;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.SSLLOC_CMKA;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.SSL_STORE;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getRestrictParam;
 
 import java.sql.Connection;
@@ -14,17 +32,7 @@ import java.util.List;
 
 import com.informix.jdbcx.IfxConnectionPoolDataSource;
 
-import gov.uscourts.ao.mobileBriefcase.common.Configuration;
-
 public class DBUtilities {
-
-	final static String CMKA = Configuration.getProperty("dbUrl_CMKA");
-	final static String CM5A = Configuration.getProperty("dbUrl_CM5A");
-	final static String dbUsername = Configuration.getProperty("dbUsername");
-	final static String dbPwd = Configuration.getProperty("dbPwd");
-	final static String serverName = Configuration.getProperty("serverName");
-	final static String databaseName = Configuration.getProperty("databaseName");
-	final static int portNumber = Integer.parseInt(Configuration.getProperty("portNumber"));
 
 	private static Connection connection;
 	private static Statement statement;
@@ -34,41 +42,13 @@ public class DBUtilities {
 		try {
 			switch (dbType) {
 			case CMKA:
-				System.setProperty("javax.net.ssl.trustStore", "./src/test/resources/cmka/cacerts.jks");
-				System.setProperty("javax.net.ssl.trustStorePassword", "password");
-				IfxConnectionPoolDataSource cd = new IfxConnectionPoolDataSource();
-
-				cd.setIfxIFXHOST("cmkadb.cmka.aocms.gtwy.dcn");
-				cd.setServerName("cmka_ssl");
-				cd.setUser("cmecf_readonly");
-				cd.setPassword("Read2CMECF");
-				cd.setDatabaseName("cmka_live");
-				cd.setPortNumber(9089);
-				cd.setIfxSSLCONNECTION("true");
-
-				connection = cd.getPooledConnection().getConnection();
-
+				getIFXProperty(SSL_STORE, SSLLOC_CMKA, KEYPASS, PASS, DBURL_CMKA, SERVERNAME_CMKA, DBUSERNAME_CMKA,
+						DBPWD_CMKA, DATABASE_NAME_CMKA, PORT_NUMBER_CMKA);
 				break;
 
 			case CM5A:
-				System.setProperty("javax.net.ssl.trustStore", "./src/test/resources/cm5a/cacerts.jks");
-				System.setProperty("javax.net.ssl.trustStorePassword", "password");
-
-				/* Instantiate Informix connection pooled data source */
-				IfxConnectionPoolDataSource cds = new IfxConnectionPoolDataSource();
-
-				/*
-				 * Set SSLConnection property to true and port pointing to SSL port on the
-				 * server
-				 */
-				cds.setIfxIFXHOST(CM5A);
-				cds.setServerName(serverName);
-				cds.setUser(dbUsername);
-				cds.setPassword(dbPwd);
-				cds.setDatabaseName(databaseName);
-				cds.setPortNumber(portNumber);
-				cds.setIfxSSLCONNECTION("true");
-				connection = cds.getPooledConnection().getConnection();
+				getIFXProperty(SSL_STORE, SSLLOC_CM5A, KEYPASS, PASS, DBURL_CM5A, SERVERNAME_CM5A, DBUSERNAME_CM5A,
+						DBPWD_CM5A, DATABASE_NAME_CM5A, PORT_NUMBER_CM5A);
 
 				break;
 			default:
@@ -171,6 +151,31 @@ public class DBUtilities {
 			e.printStackTrace();
 		}
 
+	}
+
+	public static void getIFXProperty(String sslStore, String sslLoc, String keyPass, String valuePass, String dbURL,
+			String serverName, String dbUsername, String dbPwd, String databaseName, String port) {
+		setProperty(getProperty(sslStore), getProperty(sslLoc));
+		setProperty(getProperty(keyPass), getProperty(valuePass));
+		try {
+			IfxConnectionPoolDataSource conPool = new IfxConnectionPoolDataSource();
+			conPool.setIfxIFXHOST(getProperty(dbURL));
+			conPool.setServerName(getProperty(serverName));
+			conPool.setUser(getProperty(dbUsername));
+			conPool.setPassword(getProperty(dbPwd));
+			conPool.setDatabaseName(getProperty(databaseName));
+			conPool.setPortNumber(Integer.parseInt(getProperty(port)));
+			conPool.setIfxSSLCONNECTION("true");
+			connection = conPool.getPooledConnection().getConnection();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public static String setProperty(String key, String value) {
+		return System.setProperty(key, value);
 	}
 
 	public static String getID(String query, String id) {

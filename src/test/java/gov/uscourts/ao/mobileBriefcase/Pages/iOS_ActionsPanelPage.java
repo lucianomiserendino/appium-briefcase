@@ -119,8 +119,7 @@ public class iOS_ActionsPanelPage {
 		return isDisplayed;
 
 	}
-	
-	
+
 	
 
 
