@@ -6,7 +6,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.selectReferralCategory;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForElement;

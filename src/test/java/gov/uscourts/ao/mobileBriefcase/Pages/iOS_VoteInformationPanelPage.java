@@ -55,6 +55,8 @@ public class iOS_VoteInformationPanelPage {
 	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
 	public static MobileElement selectUser;
+	
+	
 
 	public void selectAJudje() {
 		getUserCategory(APPELLATE_JUDGES, selectUser, COLLOTON_STEVEN);
