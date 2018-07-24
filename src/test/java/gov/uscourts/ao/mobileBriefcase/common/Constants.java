@@ -4,9 +4,7 @@ public interface Constants {
 
 	public static final String SSL_STORE = "sslStore";
 
-	public static final String SSLLOC_CMKA = "sslLoc_CMKA";
-	
-	public static final String SSLLOC_CM5A = "sslLoc_CM5A";
+	public static final String SSL_LOC = "sslLoc";
 
 	public static final String KEYPASS = "keyPass";
 
@@ -23,18 +21,31 @@ public interface Constants {
 	public static final String DATABASE_NAME_CMKA = "databaseName_CMKA";
 
 	public static final String PORT_NUMBER_CMKA = "portNumber_CMKA";
+	
+	
+	
+	
+	
 
-	public static final String DBURL_CM5A = "dbUrl_CM5A";
+	public static final String DBURL_CM3A = "dbUrl_CM3A";
 
-	public static final String SERVERNAME_CM5A = "serverName_CM5A";
+	public static final String SERVERNAME_CM3A = "serverName_CM3A";
 
-	public static final String DBUSERNAME_CM5A = "dbUsername_CM5A";
+	public static final String DBUSERNAME_CM3A = "dbUsername_CM3A";
 
-	public static final String DBPWD_CM5A = "dbPwd_CM5A";
+	public static final String DBPWD_CM3A = "dbPwd_CM3A";
 
-	public static final String DATABASE_NAME_CM5A = "databaseName_CM5A";
+	public static final String DATABASE_NAME_CM3A = "databaseName_CM3A";
 
-	public static final String PORT_NUMBER_CM5A = "portNumber_CM5A";
+	public static final String PORT_NUMBER_CM3A = "portNumber_CM3A";
+	
+	
+	
+	
+	
+	
+	
+	
 
 	public static final String ANDERS_CASES = "Anders Cases";
 
@@ -92,16 +103,8 @@ public interface Constants {
 
 	public static final String ONLY_GROUPS_AND_USERS = "3072";
 
-	public static final String JUDGE_COLLOTON = "Colloton";
 
-	public static final String JUDGE_WILLIAMS = "Williams";
 
-	public static final String CMR_ID_CM5A = "3997";
 
-	public static final String CMR_ID_CMKA = "2303021";
-
-	public static final String CASE_NUM_CMKA = "15-3314";
-
-	public static final String CASE_NUM_CM5A = "12-6627";
 
 }

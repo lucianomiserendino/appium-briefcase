@@ -11,7 +11,7 @@ Background:
 	Then User navigates to MobileBrifcase App 
 	
 	
-@Smoke
+#@Smoke
 @AMB_1008 
 Scenario: 
 	A category entitled "Pending Tasks" will display on the dashboard if the judge has 

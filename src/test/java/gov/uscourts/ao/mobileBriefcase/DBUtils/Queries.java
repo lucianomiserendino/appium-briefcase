@@ -8,8 +8,6 @@ import gov.uscourts.ao.mobileBriefcase.common.Constants;
 
 public class Queries {
 
-
-
 	public static String getId(String id) {
 		return id;
 
@@ -22,7 +20,8 @@ public class Queries {
 			+ "PE_PR_PRID=PR_PRID AND PE_RT_CODE='jud' and PR_LAST_NAME='Colloton')";
 
 	public static final String CMR_ID = "SELECT cmr_id FROM chm_mobile_referral, chambers_case_to_referral, chambers_referral"
-			+ " WHERE cpr_vote_req = 'y' and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = \"82226\" and" + " cmr_cyv_code = 'prhr' and cmr_ju_pe_id = " + COLLOTONs_PE_ID;
+			+ " WHERE cpr_vote_req = 'y' and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = \"82226\" and"
+			+ " cmr_cyv_code = 'prhr' and cmr_ju_pe_id = " + COLLOTONs_PE_ID;
 
 	// Query to find the valid non-orally argued categories for the judge:
 	public static final String CYV_CATEGORY = "SELECT DISTINCT CYV_CATEGORY FROM CHM_MOBILE_REFERRAL,"
@@ -113,20 +112,6 @@ public class Queries {
 			+ " (Select max(chd_date) as maxnum, chd_cha_id from chambers_assign_date group by chd_cha_id)"
 			+ " maxresults WHERE ad.chd_cha_id in (2236, 2235)  and chd_cdv_code = cdv_code and ad.chd_cha_id= "
 			+ " maxresults.chd_cha_id and ad.chd_date = maxresults.maxnum ";
-
-	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE_NAME = "SELECT DISTINCT  pr_first_name FROM chm_mobile_referral, chambers_case_to_referral,"
-			+ " chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val WHERE "
-			+ "cmr_cs_caseid = 82226 and cmr_ccr_id = ccr_id and chc_cs_caseid = cmr_cs_caseid and chc_cpr_id = 1 and "
-			+ "chc_cha_id = cha_id and cha_ju_pe_id = " + COLLOTONs_PE_ID
-			+ " and chc_date_end is null and cha_chm_pe_id = pe_id and "
-			+ "pe_pr_prid = pr_prid and cha_cav_code = cav_code";
-
-	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE_DESCRIPTION = "SELECT DISTINCT  cav_description  FROM chm_mobile_referral, chambers_case_to_referral,"
-			+ " chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val WHERE "
-			+ "cmr_cs_caseid = 82226 and cmr_ccr_id = ccr_id and chc_cs_caseid = cmr_cs_caseid and chc_cpr_id = 1 and "
-			+ "chc_cha_id = cha_id and cha_ju_pe_id = " + COLLOTONs_PE_ID
-			+ " and chc_date_end is null and cha_chm_pe_id = pe_id and "
-			+ "pe_pr_prid = pr_prid and cha_cav_code = cav_code";
 
 	public static final String REFLIEF_TEXT = "SELECT rl_list_text FROM relief_list,"
 			+ " dktpart, chm_assign_to_case, chambers_case, chambers_case_to_referral WHERE chc_cha_id = 2235 "
@@ -276,8 +261,6 @@ public class Queries {
 	public static final String DU_PRID = "select first " + executeQuery(DBType.CMKA, DOC_USER).size()
 			+ " du_prid from  doc_user order by  du_date_created desc";
 
-
-
 	public static final String NON_ORALLY_ARGUED_CASES = "select distinct (cyv_category) from chm_mobile_referral, chm_reftype_val\n"
 			+ "where \n" + "cmr_ju_pe_id = ? and\n" + "cmr_date_end is null and\n" + "cmr_cyv_code = cyv_code and\n"
 			+ "cyv_is_briefcase = 'y' and\n" + "cyv_is_oral_arg = 'n'";
@@ -298,5 +281,23 @@ public class Queries {
 			+ "JOIN chambers_assignment on cha_id = chc_cha_id and cha_chm_pe_id = cmr_ju_pe_id JOIN chm_assign_type_val on cav_code = cha_cav_code JOIN chambers_assign_date "
 			+ "on chd_cha_id = cha_id join chm_assign_datetype_val on cdv_code = chd_cdv_code "
 			+ " WHERE chc_date_end is null and cmr_id = ?) or me_cav_code = \"-\" or me_cav_code is null) and el_functions is not null";
+
+	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE = "SELECT distinct pr_first_name "
+			+ "FROM chm_mobile_referral, chambers_case_to_referral, chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val\n"
+			+ "WHERE\n" + "cmr_cs_caseid = 'text' and\n" + "cmr_ccr_id = ccr_id and\n"
+			+ "--ccr_cpr_id = chc_cpr_id and\n" + "chc_cs_caseid = cmr_cs_caseid and\n" + "chc_cpr_id = 1 and\n"
+			+ "chc_cha_id = cha_id and\n" + "cha_ju_pe_id =? and\n" + "chc_date_end is null and\n"
+			+ "cha_chm_pe_id = pe_id and\n" + "pe_pr_prid = pr_prid and\n" + "cha_cav_code = cav_code";
+
+	public static final String CAV_DESCRIPTION = "SELECT distinct cav_description "
+			+ "FROM chm_mobile_referral, chambers_case_to_referral, chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val\n"
+			+ "WHERE\n" + "cmr_cs_caseid = 'text' and\n" + "cmr_ccr_id = ccr_id and\n"
+			+ "--ccr_cpr_id = chc_cpr_id and\n" + "chc_cs_caseid = cmr_cs_caseid and\n" + "chc_cpr_id = 1 and\n"
+			+ "chc_cha_id = cha_id and\n" + "cha_ju_pe_id =? and\n" + "chc_date_end is null and\n"
+			+ "cha_chm_pe_id = pe_id and\n" + "pe_pr_prid = pr_prid and\n" + "cha_cav_code = cav_code";
+
+	public static final String ASSIGNMENT_DATE_TYPE = "SELECT cdv_display FROM chambers_assign_date ad, "
+			+ "chm_assign_datetype_val,(Select max(chd_date) as maxnum, chd_cha_id from chambers_assign_date group by chd_cha_id) maxresults "
+			+ "WHERE ad.chd_cha_id =? and chd_cdv_code = cdv_code and ad.chd_cha_id=  maxresults.chd_cha_id and ad.chd_date = maxresults.maxnum";
 
 }

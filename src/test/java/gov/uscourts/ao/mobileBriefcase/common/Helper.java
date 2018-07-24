@@ -131,7 +131,7 @@ public class Helper {
 	}
 
 	public static String getPanelText(Actions action, String element) {
-		if (elementIsDisplayed(element)) {
+		if (elementIsDisplayed(element)==true) {
 			return getText(element);
 		} else {
 			getPanel(action);

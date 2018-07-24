@@ -1,9 +1,7 @@
 Feature: note DPF UI 
 
 Background: 
-
-
-	1	 	
+ 	
 	Given  User Navigates to environment 
 	When  User enters Credentials to Login 
 		|userName			|password	|
@@ -18,7 +16,7 @@ Background:
 @AMB_1055 
 Scenario: 
 	Verify when an action is selected that contains the note DPF, the note DPF UI displays.
-	Given  user selects a server "Appellate DC Development - CMKA" 
+	Given  user selects a "<server>" 
 	Given User selects Motions/Petitions "15-3703" 
 	When User expands the Actions panel, selects an action 
 	Then User verifies the name of the action displays in the dark blue banner. 

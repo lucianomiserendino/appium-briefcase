@@ -25,7 +25,7 @@ Scenario:
 3.  The relief on which the judge is ruling
 4.  Each judge's vote and the date they voted
 
-	Given  user selects a server 
+	Given  user selects a "<server>" 
 	And   User selects Judge Colloton  >> Petitions for Rehearing >> "15-3314" 
 	Given User observes the "Vote Information" panel displays.   This should only display if the referral requires voting 
 	Then   for each referral, observes the filer's name  first initial of pr_middle_name gn_display, party type and date filed displays in a light blue heading. 

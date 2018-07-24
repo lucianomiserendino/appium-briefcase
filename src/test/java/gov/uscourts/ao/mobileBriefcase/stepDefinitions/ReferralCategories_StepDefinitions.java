@@ -6,37 +6,32 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_ReferralCategoriesPage;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.*;
 
 public class ReferralCategories_StepDefinitions {
 	static iOS_ReferralCategoriesPage page;
 
-	@Given("^User Observes the referral categories that display on the dashboard and DB \\(CMKA\\)$")
-	public void user_Observes_the_referral_categories_that_display_on_the_dashboard_and_DB_CMKA() {
-
+	@Given("^User Observes the referral categories that display on \"([^\"]*)\" and on the dashboard using  \"([^\"]*)\" \\.$")
+	public void user_Observes_the_referral_categories_that_display_on_and_on_the_dashboard_using(String dbType,
+			String judge) {
 		page = new iOS_ReferralCategoriesPage();
-		page.getReferralCategories(DBType.CMKA, getPE_ID(DBType.CMKA, JUDGE_COLLOTON));
+		if (dbType.equals("CMKA")) {
+			page.getReferralCategories(DBType.CMKA, getPE_ID(DBType.CMKA, judge));
+		} else {
+			page.getReferralCategories(DBType.CM3A, getPE_ID(DBType.CM3A, judge));
+		}
 	}
-
-	@Given("^User Observes the referral categories that display on the dashboard and DB \\(CM(\\d+)A\\)$")
-	public void user_Observes_the_referral_categories_that_display_on_the_dashboard_and_DB_CM_A(int arg1) {
-
+	
+	
+	@Then("^User  Observes the categories on db \"([^\"]*)\"  and on the dashboard page  with judgeName \"([^\"]*)\"$")
+	public void user_Observes_the_categories_on_db_and_on_the_dashboard_page_with_judgeName(String dbType, String judge) {
 		page = new iOS_ReferralCategoriesPage();
-		page.getReferralCategories(DBType.CM5A, getPE_ID(DBType.CM5A, JUDGE_WILLIAMS));
+		if (dbType.equals("CMKA")) {
+			page.verifyNonOrallyArgCases(DBType.CMKA, getPE_ID(DBType.CMKA, judge));
+		} else {
+			page.verifyNonOrallyArgCases(DBType.CM3A, getPE_ID(DBType.CM3A, judge));
+		}
 	}
+	
 
-	@Then("^User  Observes the categories on the dashboard page \\(CMKA\\)$")
-	public void user_Observes_the_categories_on_the_dashboard_page_CMKA() {
-
-		page = new iOS_ReferralCategoriesPage();
-		page.verifyNonOrallyArgCases(DBType.CMKA, getPE_ID(DBType.CMKA, JUDGE_COLLOTON));
-	}
-
-	@Then("^User  Observes the categories on the dashboard page \\(CM(\\d+)A\\)$")
-	public void user_Observes_the_categories_on_the_dashboard_page_CM_A(int arg1) {
-
-		page = new iOS_ReferralCategoriesPage();
-		page.verifyNonOrallyArgCases(DBType.CM5A, getPE_ID(DBType.CM5A, JUDGE_WILLIAMS));
-	}
 
 }

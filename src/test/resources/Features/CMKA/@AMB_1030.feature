@@ -10,7 +10,7 @@ Background:
 	
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
-	Given  user selects a server "Appellate DC Development - CMKA" 
+	Given  user selects a server "<Appellate DC Development - CMKA>" 
 		  
     Given User selects Judge Colloton >> Motions/Petitions >> case "15-3314" 
 	When User  observes a collapsible panel entitled "Assignments" displays and expands the Assignments panel

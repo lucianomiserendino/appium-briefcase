@@ -14,6 +14,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getNumOfDisplayedCases;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.scroll;
 import static java.util.Arrays.asList;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertTrue;
@@ -63,8 +64,11 @@ public class iOS_ReferralCategoriesPage {
 			for (int i = 0; i < dbReferralCategories.size(); ++i) {
 				performPageLoad();
 				MobileElement referrals = waitForElement(findElement(By.id(dbReferralCategories.get(i))));
-
+				if (!referrals.isDisplayed())
+					;
+				scroll(1);
 				assertTrue(referrals.isDisplayed());
+
 			}
 		} catch (org.openqa.selenium.TimeoutException e) {
 
@@ -74,6 +78,7 @@ public class iOS_ReferralCategoriesPage {
 		sort(categories);
 		return dbReferralCategories;
 	}
+	
 
 
 	public void verifyNonOrallyArgCases(DBType dbtype, String pe_id) {
@@ -92,7 +97,7 @@ public class iOS_ReferralCategoriesPage {
 				performPageLoad();
 				MobileElement referrals = waitForElement(findElement(By.id(referralCategories.get(i))));
 				performPageLoad();
-				
+
 				String dbNonOrgCases = referrals.getText();
 
 				referrals.click();
@@ -105,9 +110,9 @@ public class iOS_ReferralCategoriesPage {
 
 				List<String> UInonOrallyarguedCases = asList((getNumOfDisplayedCases(waitForElement(total))));
 
-				assertTrue("-----RECORD COUNT MISMATCHED-----",
-						briefcaseTargReferral_n.equals(UInonOrallyarguedCases)
-								|| briefcaseTargReferral_y.equals(UInonOrallyarguedCases));
+				assertTrue("-----RECORD COUNT MISMATCHED-----", briefcaseTargReferral_n.equals(UInonOrallyarguedCases)
+						|| briefcaseTargReferral_y.equals(UInonOrallyarguedCases));
+
 
 				select(Users.DASHBOARD);
 			}
@@ -119,4 +124,7 @@ public class iOS_ReferralCategoriesPage {
 		return referralCategories;
 	}
 
+	
+
+	
 }

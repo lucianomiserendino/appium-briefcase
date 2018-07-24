@@ -1,11 +1,10 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getIndex;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,9 +13,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import cucumber.api.DataTable;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.*;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
@@ -63,16 +60,16 @@ public class iOS_LoginPage extends Base {
 	@iOSFindBy(accessibility = "Logout of Briefcase")
 	public MobileElement logout;
 
-	public void selectEnvironment() {
+	public void selectEnvironment(String env) {
 
 		performPageLoad();
-		clickOn(server);
+		clickOnPanel(env);
 	}
 
-	public void sendCredentials(DataTable userCredentials) {
+	public void sendCredentials(String Username,String Password) {
 
-		userName.sendKeys(getIndex(userCredentials, "userName"));
-		password.sendKeys(getIndex(userCredentials, "password"));
+		userName.sendKeys(Username);
+		password.sendKeys(Password);
 		waitToBeClickable(submButton);
 
 	}

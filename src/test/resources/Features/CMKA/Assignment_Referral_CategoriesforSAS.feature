@@ -9,9 +9,9 @@ Background:
 	
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
-	Given  user selects a server "Appellate DC Development - CMKA" 
+	Given  user selects a "<server>" 
 
-@B
+
 @Regression
 @AMB_1047
 Scenario: 
@@ -19,7 +19,7 @@ Scenario:
 	Given User selects staff attorney Benjamin Brown in the user's list
 	Then User observes the assignment categories that display on the dashboard. 
 	
-@B
+
 @Regression
 @AMB_1049
 	Scenario: 

@@ -3,22 +3,21 @@ package gov.uscourts.ao.mobileBriefcase.DBUtils;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PE_ID;
 import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.DATABASE_NAME_CM5A;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.DATABASE_NAME_CM3A;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.DATABASE_NAME_CMKA;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBPWD_CM5A;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBPWD_CM3A;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBPWD_CMKA;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBURL_CM5A;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBURL_CM3A;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBURL_CMKA;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBUSERNAME_CM5A;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBUSERNAME_CM3A;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBUSERNAME_CMKA;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.KEYPASS;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.PASS;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.PORT_NUMBER_CM5A;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.PORT_NUMBER_CM3A;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.PORT_NUMBER_CMKA;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.SERVERNAME_CM5A;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.SERVERNAME_CM3A;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.SERVERNAME_CMKA;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.SSLLOC_CM5A;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.SSLLOC_CMKA;
+import static gov.uscourts.ao.mobileBriefcase.common.Constants.SSL_LOC;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.SSL_STORE;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getRestrictParam;
 
@@ -42,13 +41,13 @@ public class DBUtilities {
 		try {
 			switch (dbType) {
 			case CMKA:
-				getIFXProperty(SSL_STORE, SSLLOC_CMKA, KEYPASS, PASS, DBURL_CMKA, SERVERNAME_CMKA, DBUSERNAME_CMKA,
+				getIFXProperty(SSL_STORE, SSL_LOC, KEYPASS, PASS, DBURL_CMKA, SERVERNAME_CMKA, DBUSERNAME_CMKA,
 						DBPWD_CMKA, DATABASE_NAME_CMKA, PORT_NUMBER_CMKA);
 				break;
 
-			case CM5A:
-				getIFXProperty(SSL_STORE, SSLLOC_CM5A, KEYPASS, PASS, DBURL_CM5A, SERVERNAME_CM5A, DBUSERNAME_CM5A,
-						DBPWD_CM5A, DATABASE_NAME_CM5A, PORT_NUMBER_CM5A);
+			case CM3A:
+				getIFXProperty(SSL_STORE, SSL_LOC, KEYPASS, PASS, DBURL_CM3A, SERVERNAME_CM3A, DBUSERNAME_CM3A,
+						DBPWD_CM3A, DATABASE_NAME_CM3A, PORT_NUMBER_CM3A);
 
 				break;
 			default:
@@ -193,7 +192,9 @@ public class DBUtilities {
 	}
 
 	public enum DBType {
-		CMKA, CM5A
+		CMKA, CM3A
 	}
+	
+
 
 }

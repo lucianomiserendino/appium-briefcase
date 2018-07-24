@@ -1,10 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNED_DATES;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE_DESCRIPTION;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE_NAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_NAME;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.APPELLATE_JUDGES;
@@ -128,37 +125,7 @@ public class iOS_AssignmentNotesPage {
 
 	}
 
-	public void getAssignmentLinkedtoCase(String assignmentForCourtney) {
-
-		List<String> uiCaseAssignmentName = new ArrayList<>();
-		uiCaseAssignmentName.add(getStaffAssigments(assignmentForCourtney));
-		List<String> dbCaseAssignmentsName = executeQuery(DBType.CMKA,STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE_NAME);
-
-		List<String> uiCaseAssignmentDesc = new ArrayList<>();
-		uiCaseAssignmentDesc.add(getAssignmentType(assignmentForCourtney));
-		List<String> dbCaseAssignmentsDesc = executeQuery(DBType.CMKA,STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE_DESCRIPTION);
-
-		try {
-			if (isDisplayed(assignments))
-				;
-			getPanel(ASSIGNMENTS);
-			assertTrue(" STAFF ASSIGNMENTS LINKED TO THE CASE ARE NOT DISPLAYED ",
-					dbCaseAssignmentsName.containsAll(uiCaseAssignmentName));
-
-			assertEquals(dbCaseAssignmentsDesc, uiCaseAssignmentDesc);
-
-			getPanel(ASSIGNMENTS);
-
-		} catch (AssertionError e) {
-			e.getMessage();
-
-		}
-
-		finally {
-			getCollapsablePanel(selectUser, Users.APPELLATE_JUDGES);
-		}
-	}
-
+	
 	public List<String> listOfAssignments(String assignmentForKyle, String assignmentForEssley) {
 		List<String> uiReferralAssignments = new ArrayList<>();
 		uiReferralAssignments.add(getStaffAssigments(assignmentForKyle));

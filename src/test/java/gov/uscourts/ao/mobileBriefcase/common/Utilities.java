@@ -384,4 +384,12 @@ public class Utilities extends Base {
 		return param.substring(index).split(",")[0].replaceAll("'", "");
 	}
 
+	public static void selectCaseNumber(String category, String caseNum) {
+		refresh();
+		clickOnPanel(category);
+		performPageLoad();
+		selectCase(locateElement(caseNum));
+
+	}
+
 }
