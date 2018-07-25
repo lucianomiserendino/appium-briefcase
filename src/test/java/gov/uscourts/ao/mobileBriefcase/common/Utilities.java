@@ -113,11 +113,11 @@ public class Utilities extends Base {
 
 	}
 
-	public static void scroll(int iCount) {
+	public static void scroll(int iCount, String direction) {
 
 		while (iCount > 0) {
 			HashMap<String, String> swipeObject = new HashMap<String, String>();
-			swipeObject.put("direction", "down");
+			swipeObject.put("direction", direction);
 
 			JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
 
@@ -142,7 +142,7 @@ public class Utilities extends Base {
 		if (caseDisplayed == true) {
 			findElement(By.xpath(Case)).click();
 		} else {
-			scroll(2);
+			scroll(2,"down");
 			findElement(By.xpath(Case)).click();
 		}
 
@@ -214,7 +214,7 @@ public class Utilities extends Base {
 			if (waitForElement(element).isDisplayed()) {
 				element.click();
 			} else {
-				scroll(1);
+				scroll(1,"down");
 			}
 
 		} catch (Exception e) {

@@ -11,15 +11,18 @@ import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getNumOfDisplayedCases;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.scroll;
 import static java.util.Arrays.asList;
 import static java.util.Collections.sort;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -49,6 +52,25 @@ public class iOS_ReferralCategoriesPage {
 	@iOSFindBy(xpath = "//*[contains(@name, 'Total')]")
 	public static MobileElement total;
 
+	public String verifyIfPendingTasksAreDisplayed() {
+		refresh();
+		if (pendingTasks.isDisplayed()) {
+			clickOn(pendingTasks);
+		}
+		performPageLoad();
+		return getNumOfDisplayedCases(total);
+
+	}
+
+	public void getPendingTasks(DBType dbtype, String query, String pe_id) {
+		List<String> DBPendingTasks = executeQuery(dbtype, getID(query, pe_id));
+		if (DBPendingTasks.size() > 0) {
+			List<String> UIPendingTasks = Arrays.asList(verifyIfPendingTasksAreDisplayed());
+
+			assertEquals("-----RECORD COUNT MISMATCHED-----", DBPendingTasks, UIPendingTasks);
+		}
+	}
+
 	public void getReferralCategories(DBType dbtype, String pe_id) {
 		refresh();
 		referralCategories(dbtype, getID(DB_LIST_OF_CATEGORIES, pe_id));
@@ -60,13 +82,10 @@ public class iOS_ReferralCategoriesPage {
 		List<String> dbReferralCategories = executeQuery(dbtype, query);
 		sort(dbReferralCategories);
 		try {
-			performPageLoad();
 			for (int i = 0; i < dbReferralCategories.size(); ++i) {
+				scroll(1, "down");
 				performPageLoad();
 				MobileElement referrals = waitForElement(findElement(By.id(dbReferralCategories.get(i))));
-				if (!referrals.isDisplayed())
-					;
-				scroll(1);
 				assertTrue(referrals.isDisplayed());
 
 			}
@@ -78,8 +97,6 @@ public class iOS_ReferralCategoriesPage {
 		sort(categories);
 		return dbReferralCategories;
 	}
-	
-
 
 	public void verifyNonOrallyArgCases(DBType dbtype, String pe_id) {
 		refresh();
@@ -94,6 +111,7 @@ public class iOS_ReferralCategoriesPage {
 		try {
 
 			for (int i = 0; i < referralCategories.size(); ++i) {
+				scroll(1, "down");
 				performPageLoad();
 				MobileElement referrals = waitForElement(findElement(By.id(referralCategories.get(i))));
 				performPageLoad();
@@ -113,7 +131,6 @@ public class iOS_ReferralCategoriesPage {
 				assertTrue("-----RECORD COUNT MISMATCHED-----", briefcaseTargReferral_n.equals(UInonOrallyarguedCases)
 						|| briefcaseTargReferral_y.equals(UInonOrallyarguedCases));
 
-
 				select(Users.DASHBOARD);
 			}
 		} catch (org.openqa.selenium.TimeoutException e) {
@@ -124,7 +141,4 @@ public class iOS_ReferralCategoriesPage {
 		return referralCategories;
 	}
 
-	
-
-	
 }

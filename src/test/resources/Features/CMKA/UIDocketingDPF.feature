@@ -12,7 +12,7 @@ Background:
 	
 	
 	
-@Smoke 
+
 @AMB_1055 
 Scenario: 
 	Verify when an action is selected that contains the note DPF, the note DPF UI displays.

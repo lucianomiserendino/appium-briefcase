@@ -117,7 +117,7 @@ public class DBUtilities {
 			int numberOfColumns = metaData.getColumnCount();
 			while (resultSet.next()) {
 				for (int i = 1; i <= numberOfColumns; i++) {
-					allColumns += resultSet.getString(i).trim();
+					allColumns += resultSet.getString(i);
 				}
 			}
 		} catch (Exception e) {

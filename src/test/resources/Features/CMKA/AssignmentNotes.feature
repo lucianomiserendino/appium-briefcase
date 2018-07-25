@@ -36,7 +36,7 @@ Scenario:
 	
 	
 @Regression
-@AMB_1021 
+@AMB_1021_ 
 Scenario: 
 	Staff members can be assigned to referrals and/or just cases. 
     Verify that staff assignments are displaying on the referral list page.
@@ -46,7 +46,7 @@ Scenario:
 	
 	
 @Regression
-@AMB_1021 
+@AMB_1021_
 Scenario: 
 	Staff members can be assigned to referrals and/or just cases. 
     Verify that staff assignments are displaying on the referral list page.

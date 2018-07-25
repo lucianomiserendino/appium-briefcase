@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PENDING_TASK_ASSIGNMENTS;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -32,6 +33,17 @@ public class ReferralCategories_StepDefinitions {
 		}
 	}
 	
+	
+
+	@Given("^If The judge has any pending assignments it will validate the total num of pending task on UI with DB \"([^\"]*)\" and  \"([^\"]*)\"$")
+	public void if_The_judge_has_any_pending_assignments_it_will_validate_the_total_num_of_pending_task_on_UI_with_DB_and(String dbType, String pe_id) {
+		page = new iOS_ReferralCategoriesPage();
+		if (dbType.equals("CMKA")) {
+			page.getPendingTasks(DBType.CMKA,PENDING_TASK_ASSIGNMENTS,  pe_id);
+		} else {
+			page.getPendingTasks(DBType.CM3A,PENDING_TASK_ASSIGNMENTS,  pe_id);
+		}
+	}
 
 
 }
