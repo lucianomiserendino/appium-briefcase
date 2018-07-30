@@ -32,12 +32,12 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class StaffAssignments {
+public class iOS_StaffAssignments {
 
 	@iOSFindBy(xpath = "//*[contains(@name, 'Assignments')]")
 	public static MobileElement assignments;
 
-	public StaffAssignments() {
+	public iOS_StaffAssignments() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 

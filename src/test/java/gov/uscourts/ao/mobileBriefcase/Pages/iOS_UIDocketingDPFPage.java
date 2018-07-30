@@ -9,7 +9,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getRestrictParam;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.verifyTextIsDisplayed;
 import static org.junit.Assert.assertTrue;
@@ -64,7 +63,6 @@ public class iOS_UIDocketingDPFPage extends Base {
 	public static MobileElement actionsName;
 
 	public void selectCase(String category, String caseNum) {
-		refresh();
 		selectCaseNumber(category, caseNum);
 	}
 

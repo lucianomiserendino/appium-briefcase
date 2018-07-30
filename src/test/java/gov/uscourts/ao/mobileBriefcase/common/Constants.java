@@ -21,11 +21,6 @@ public interface Constants {
 	public static final String DATABASE_NAME_CMKA = "databaseName_CMKA";
 
 	public static final String PORT_NUMBER_CMKA = "portNumber_CMKA";
-	
-	
-	
-	
-	
 
 	public static final String DBURL_CM3A = "dbUrl_CM3A";
 
@@ -38,14 +33,6 @@ public interface Constants {
 	public static final String DATABASE_NAME_CM3A = "databaseName_CM3A";
 
 	public static final String PORT_NUMBER_CM3A = "portNumber_CM3A";
-	
-	
-	
-	
-	
-	
-	
-	
 
 	public static final String ANDERS_CASES = "Anders Cases";
 
@@ -102,9 +89,5 @@ public interface Constants {
 	public static final String USERs_CHAMBERS = "3127";
 
 	public static final String ONLY_GROUPS_AND_USERS = "3072";
-
-
-
-
 
 }

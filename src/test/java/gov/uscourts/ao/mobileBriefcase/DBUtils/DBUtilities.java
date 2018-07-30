@@ -117,7 +117,7 @@ public class DBUtilities {
 			int numberOfColumns = metaData.getColumnCount();
 			while (resultSet.next()) {
 				for (int i = 1; i <= numberOfColumns; i++) {
-					allColumns += resultSet.getString(i);
+					allColumns += resultSet.getString(i).trim();
 				}
 			}
 		} catch (Exception e) {
@@ -133,7 +133,6 @@ public class DBUtilities {
 		return getRestrictParam(getAllColumns(DBType.CMKA, mbrNote), index);
 
 	}
-
 	public static void closeConnections() {
 		try {
 			if (resultSet != null) {
@@ -183,6 +182,10 @@ public class DBUtilities {
 
 	public static String getText(String query, String text) {
 		return query.replace("text", text);
+	}
+	
+	public static String getCyv_code(String query, String text) {
+		return query.replace("Code", text);
 	}
 
 	public static String getPE_ID(DBType dbType, String judgeName) {

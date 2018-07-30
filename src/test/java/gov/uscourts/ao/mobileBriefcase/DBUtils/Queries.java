@@ -36,51 +36,12 @@ public class Queries {
 			+ "AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
 			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID  AND CD_CASE_EXT  = 1";
 
-	// Query the site table where si_code = 'briefcaseTargetOnly' if the
-	// si_value = 'n' or does not exist, run the following query
-	public static final String MOTIONS_PETITIONS_SI_VALUE_N = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
-			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = " + COLLOTONs_PE_ID
-			+ "AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'Motions/Petitions' "
-			+ "AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
-			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID ";
-
-	public static final String PETITIONS_FOR_REHEARING_SI_VALUE_Y = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
-			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = " + COLLOTONs_PE_ID
-			+ " AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'Petitions for Rehearing' "
-			+ "AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
-			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID  AND CD_CASE_EXT  = 1";
-
-	// Query the site table where si_code = 'briefcaseTargetOnly' if the
-	// si_value = 'n' or does not exist, run the following query
-	public static final String PETITIONS_FOR_REHEARING_SI_VALUE_N = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
-			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = " + COLLOTONs_PE_ID
-			+ "AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'Petitions for Rehearing' "
-			+ "AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
-			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID ";
-
-	public static final String SCREENING_PANELS_SI_VALUE_Y = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
-			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = " + COLLOTONs_PE_ID
-			+ " AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'Screening Panels' "
-			+ "AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
-			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID  AND CD_CASE_EXT  = 1";
-
-	// Query the site table where si_code = 'briefcaseTargetOnly' if the
-	// si_value = 'n' or does not exist, run the following query
-	public static final String SCREENING_PANELS_SI_VALUE_N = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
-			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = " + COLLOTONs_PE_ID
-			+ "AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'Screening Panels' "
-			+ "AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
-			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID ";
-
-	// Query to get valid categories for the logged in user
-	public static final String DB_LIST_OF_CATEGORIES = "SELECT DISTINCT (CYV_CATEGORY) FROM "
-			+ "CHM_MOBILE_REFERRAL, CHM_REFTYPE_VAL WHERE  CMR_JU_PE_ID = \"?\" AND CMR_DATE_END IS NULL  AND CMR_CYV_CODE = CYV_CODE AND CYV_IS_BRIEFCASE = 'y'";
-
 	// To find if a judge has any pending assignments run the following
 	// query for the logged in judge:
 	public static final String PENDING_TASK_ASSIGNMENTS = "SELECT COUNT(CHC_CHA_ID) FROM CHM_MOBILE_REFERRAL, "
 			+ "CHAMBERS_CASE_TO_REFERRAL, CHM_ASSIGN_TO_CASE, CHAMBERS_ASSIGNMENT WHERE CMR_CCR_ID = CCR_ID AND CCR_CPR_ID = "
-			+ "CHC_CPR_ID AND CMR_CS_CASEID = CHC_CS_CASEID AND CHC_DATE_END IS null AND " + " CMR_JU_PE_ID = ? AND  CHC_CHA_ID = CHA_ID AND CMR_JU_PE_ID = CHA_CHM_PE_ID";
+			+ "CHC_CPR_ID AND CMR_CS_CASEID = CHC_CS_CASEID AND CHC_DATE_END IS null AND "
+			+ " CMR_JU_PE_ID = ? AND  CHC_CHA_ID = CHA_ID AND CMR_JU_PE_ID = CHA_CHM_PE_ID";
 
 	// Query to find staff assignments associated with the referral.
 	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_NAME = "SELECT DISTINCT pr_first_name FROM CHM_MOBILE_REFERRAL,"
@@ -125,31 +86,15 @@ public class Queries {
 			+ "chambers_assign_date group by chd_cha_id) maxresults WHERE ad.chd_cha_id in (2236, 2235)"
 			+ " and chd_cdv_code = cdv_code and ad.chd_cha_id=  maxresults.chd_cha_id and ad.chd_date = maxresults.maxnum";
 
-	public static final String VOTE_INFORMATION = "SELECT CMR_ID FROM CHM_MOBILE_REFERRAL,"
+	// CMR_CCR_ID
+
+	public static final String VOTE_INFORMATION = "SELECT CMR_CCR_ID FROM CHM_MOBILE_REFERRAL,"
 			+ " CHAMBERS_CASE_TO_REFERRAL, CHAMBERS_REFERRAL WHERE CPR_VOTE_REQ = 'y' AND "
 			+ "CMR_CCR_ID = CCR_ID AND CCR_CPR_ID = CPR_ID AND CMR_CS_CASEID = 82226 AND "
 			+ "CMR_CYV_CODE = 'prhr' AND CMR_JU_PE_ID = " + COLLOTONs_PE_ID;
 
-	public static final String FILERs_INFORMATION =
-
-			"select pr_last_name, pr_first_name,  pr_middle_name,  pt_description"
-					+ " from chm_mobile_referral join chambers_case_to_referral on cmr_ccr_id = ccr_id join relate_dktpart "
-					+ "on ccr_dp_dktpartid = rd_rel_dktpartid  join case_dktentry on rd_cre_cd_id = cd_id  join dktentry on "
-					+ "cd_dktentryid = de_dktentryid  join dktperson on cd_id = dep_cd_id and dep_type = 'filer' and dep_py_pcid <> 1 "
-					+ " join party on dep_py_pcid = py_pcid  join personrole on py_pe_id = pe_id  join pty_type_val"
-					+ " on py_pt_code = pt_code  join person on pr_prid = pe_pr_prid  left join generation_val on gn_code = pr_gn_code "
-					+ " where cmr_cs_caseid = 82226 and cmr_ju_pe_id = 32 and cmr_cyv_code = 'prhr' and cmr_ju_pe_id = 32 ";
-
 	public static final String JUDGEs_INITIALS = " SELECT ju_initials FROM chm_mobile_referral, "
-			+ "judge WHERE cmr_ccr_id = 34870 and cmr_ju_pe_id = ju_pe_id ";
-
-	public static final String FILED_DATE = ""
-			+ "select  de_date_filed from chm_mobile_referral join chambers_case_to_referral on cmr_ccr_id = ccr_id "
-			+ "join relate_dktpart on ccr_dp_dktpartid = rd_rel_dktpartid join case_dktentry on rd_cre_cd_id = cd_id "
-			+ "join dktentry on cd_dktentryid = de_dktentryid join dktperson on cd_id = dep_cd_id and dep_type = 'filer' and dep_py_pcid <> 1 "
-			+ "join party on dep_py_pcid = py_pcid join personrole on py_pe_id = pe_id join pty_type_val on py_pt_code = pt_code "
-			+ "join person on pr_prid = pe_pr_prid left join generation_val on gn_code = pr_gn_code "
-			+ "where cmr_cs_caseid = 82226 and cmr_ju_pe_id = 32 and cmr_cyv_code = 'prhr' and cmr_ju_pe_id = 32";
+			+ "judge WHERE cmr_ccr_id = ? and cmr_ju_pe_id = ju_pe_id ";
 
 	public static final String RELIEF = "select distinct  rl_list_text from chambers_case_to_referral b join chambers_case_to_referral a on"
 			+ " b.ccr_cpr_id = a.ccr_cpr_id join dktpart on dp_dktpartid = b.ccr_dp_dktpartid join relief_list on rl_id = dp_rlid "
@@ -157,7 +102,7 @@ public class Queries {
 			+ "join chambers_case on b.ccr_ccs_id = ccs_id join chm_reftype_val on cpr_cyv_code = cyv_code join case_dktentry on cd_id = dp_cd_id "
 			+ "join dktentry on cd_dktentryid = de_dktentryid left join doctype_val on dp_doc_type = dty_code join event_list on el_id = de_elid"
 			+ " left join chambers_vote left join (chm_vote_to_note inner join document on cvn_dm_dls_id = dm_dls_id and dm_internal_type = 'notevote'  ) on chv_id = cvn_chv_id "
-			+ "on chv_crj_id = crj_id and chv_date_end is null left join chm_vote_val on chv_cvv_code = cvv_code where a.ccr_id = 34870 and b.ccr_date_end is null and "
+			+ "on chv_crj_id = crj_id and chv_date_end is null left join chm_vote_val on chv_cvv_code = cvv_code where a.ccr_id = ? and b.ccr_date_end is null and "
 			+ "NVL(cpr_vote_complete,'') <> 'y' and NVL(cpr_vote_req,'') <> 'n' order by  rl_list_text desc";
 
 	public static final String JUDGEs_VOTE = "select distinct  cvv_display from chambers_case_to_referral b join chambers_case_to_referral a on "
@@ -168,7 +113,7 @@ public class Queries {
 			+ "left join chambers_vote left join (chm_vote_to_note inner join document on cvn_dm_dls_id = dm_dls_id "
 			+ "and dm_internal_type = 'notevote'  ) on chv_id = cvn_chv_id on chv_crj_id = crj_id and chv_date_end is null "
 			+ "left join chm_vote_val on chv_cvv_code = cvv_code where a.ccr_id = 34870 and b.ccr_date_end is null and NVL(cpr_vote_complete,'') <> 'y' "
-			+ "and NVL(cpr_vote_req,'') <> 'n' and cvv_display='Deny' and ju_initials='SMC'order by  cvv_display desc";
+			+ "and NVL(cpr_vote_req,'') <> 'n' and ju_initials='SMC'order by  cvv_display desc";
 
 	public static final String VOTE_DATE = " select distinct  chv_date_created "
 			+ "from chambers_case_to_referral b join chambers_case_to_referral a on b.ccr_cpr_id = a.ccr_cpr_id "
@@ -236,14 +181,8 @@ public class Queries {
 			+ " smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa' ) and smr_assign_pe_id = "
 			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' )";
 
-	public static final String MBR_EVENT = "select * from mbr_event";
-
-	public static final String ACTION_NAME = "select el_list_text FROM event_list where el_id=" + getId(COURT_USERS);
-
 	public static final String NOTE_DPF_DEFAULT_DESCRIPTION = "select el_functions FROM event_list  where el_id="
 			+ getId(COURT_USERS);
-
-	public static final String MBR_NOTE = "select el_functions FROM event_list  where el_id=";
 
 	public static final String DM_ACC_CRT = "select first 1 dm_acc_crt from  document order by dm_date_created desc";
 
@@ -260,17 +199,21 @@ public class Queries {
 	public static final String DU_PRID = "select first " + executeQuery(DBType.CMKA, DOC_USER).size()
 			+ " du_prid from  doc_user order by  du_date_created desc";
 
+	// Query to get valid categories for the logged in user
+	public static final String DB_LIST_OF_CATEGORIES = "SELECT DISTINCT (CYV_CATEGORY) FROM "
+			+ "CHM_MOBILE_REFERRAL, CHM_REFTYPE_VAL WHERE  CMR_JU_PE_ID = \"?\" AND CMR_DATE_END IS NULL  AND CMR_CYV_CODE = CYV_CODE AND CYV_IS_BRIEFCASE = 'y'";
+
 	public static final String NON_ORALLY_ARGUED_CASES = "select distinct (cyv_category) from chm_mobile_referral, chm_reftype_val\n"
 			+ "where \n" + "cmr_ju_pe_id = ? and\n" + "cmr_date_end is null and\n" + "cmr_cyv_code = cyv_code and\n"
 			+ "cyv_is_briefcase = 'y' and\n" + "cyv_is_oral_arg = 'n'";
 
-	public static final String BRIEFCASE_TARGET_ONLY_Y = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
-			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = ? AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'text' AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
-			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID AND CD_CASE_EXT  = 1";
+	public static final String BRIEFCASE_TARGET_ONLY_Y = "select count(distinct cs_caseid) from chm_mobile_referral, "
+			+ "chm_reftype_val, case_dktentry, case where cmr_ju_pe_id = ? and cmr_cyv_code = cyv_code  and cyv_category = 'text' and cmr_cs_caseid = cs_caseid and cmr_date_end is null and "
+			+ "cd_caseid = cmr_cs_caseid and cmr_dktentryid = cd_dktentryid and cd_case_ext  = 1";
 
-	public static final String BRIEFCASE_TARGET_ONLY_N = "SELECT COUNT(DISTINCT CS_CASEID) FROM CHM_MOBILE_REFERRAL, "
-			+ "CHM_REFTYPE_VAL, CASE_DKTENTRY, CASE WHERE CMR_JU_PE_ID = ? AND CMR_CYV_CODE = CYV_CODE  AND CYV_CATEGORY = 'text' AND CMR_CS_CASEID = CS_CASEID AND CMR_DATE_END IS NULL AND "
-			+ "CD_CASEID = CMR_CS_CASEID AND CMR_DKTENTRYID = CD_DKTENTRYID";
+	public static final String BRIEFCASE_TARGET_ONLY_N = "select count(distinct cs_caseid) from chm_mobile_referral, "
+			+ "chm_reftype_val, case_dktentry, case where cmr_ju_pe_id = ? and cmr_cyv_code = cyv_code  and cyv_category = 'text' and cmr_cs_caseid = cs_caseid and cmr_date_end is null and "
+			+ "cd_caseid = cmr_cs_caseid and cmr_dktentryid = cd_dktentryid";
 
 	public static final String APPLICABLE_ACTIONS = "select el_list_text from mbr_event join event_list on el_id = me_el_id where "
 			+ "(me_cyv_code = (select cmr_cyv_code from chm_mobile_referral where cmr_id = ?) or me_cyv_code = \"-\" "
@@ -303,6 +246,36 @@ public class Queries {
 			+ "chm_assign_datetype_val,(Select max(chd_date) as maxnum, chd_cha_id from chambers_assign_date group by chd_cha_id) maxresults "
 			+ "WHERE ad.chd_cha_id =? and chd_cdv_code = cdv_code and ad.chd_cha_id=  maxresults.chd_cha_id and ad.chd_date = maxresults.maxnum";
 
-	
-	
+	public static final String MBR_NOTE = "select el_functions FROM event_list  where el_id=?";
+
+	public static final String MBR_EVENT = "select * from mbr_event";
+
+	public static final String ACTION_NAME = "select el_list_text FROM event_list where el_id=?";
+
+	public static final String FILERS_INOFRMATION =
+
+			"select pr_last_name, pr_first_name,  pr_middle_name,  pt_display "
+					+ " from chm_mobile_referral join chambers_case_to_referral on cmr_ccr_id = ccr_id join relate_dktpart "
+					+ "on ccr_dp_dktpartid = rd_rel_dktpartid  join case_dktentry on rd_cre_cd_id = cd_id  join dktentry on "
+					+ "cd_dktentryid = de_dktentryid  join dktperson on cd_id = dep_cd_id and dep_type = 'filer' and dep_py_pcid <> 1 "
+					+ " join party on dep_py_pcid = py_pcid  join personrole on py_pe_id = pe_id  join pty_type_val"
+					+ " on py_pt_code = pt_code  join person on pr_prid = pe_pr_prid  left join generation_val on gn_code = pr_gn_code "
+					+ " where cmr_cs_caseid = text and cmr_ju_pe_id = ? and cmr_cyv_code = 'Code' and cmr_ju_pe_id = ? ";
+
+	public static final String FILERS_MIDDLE_NAME = "select pr_middle_name "
+			+ " from chm_mobile_referral join chambers_case_to_referral on cmr_ccr_id = ccr_id join relate_dktpart "
+			+ "on ccr_dp_dktpartid = rd_rel_dktpartid  join case_dktentry on rd_cre_cd_id = cd_id  join dktentry on "
+			+ "cd_dktentryid = de_dktentryid  join dktperson on cd_id = dep_cd_id and dep_type = 'filer' and dep_py_pcid <> 1 "
+			+ " join party on dep_py_pcid = py_pcid  join personrole on py_pe_id = pe_id  join pty_type_val"
+			+ " on py_pt_code = pt_code  join person on pr_prid = pe_pr_prid  left join generation_val on gn_code = pr_gn_code "
+			+ " where cmr_cs_caseid = text and cmr_ju_pe_id = ? and cmr_cyv_code = 'Code' and cmr_ju_pe_id = ? ";
+
+	public static final String FILED_DATE = ""
+			+ "select  de_date_filed from chm_mobile_referral join chambers_case_to_referral on cmr_ccr_id = ccr_id "
+			+ "join relate_dktpart on ccr_dp_dktpartid = rd_rel_dktpartid join case_dktentry on rd_cre_cd_id = cd_id "
+			+ "join dktentry on cd_dktentryid = de_dktentryid join dktperson on cd_id = dep_cd_id and dep_type = 'filer' and dep_py_pcid <> 1 "
+			+ "join party on dep_py_pcid = py_pcid join personrole on py_pe_id = pe_id join pty_type_val on py_pt_code = pt_code "
+			+ "join person on pr_prid = pe_pr_prid left join generation_val on gn_code = pr_gn_code "
+			+ "where cmr_cs_caseid = text and cmr_ju_pe_id = ? and cmr_cyv_code = 'Code' and cmr_ju_pe_id = ?";
+
 }

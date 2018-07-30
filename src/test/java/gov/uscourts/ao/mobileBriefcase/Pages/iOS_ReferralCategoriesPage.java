@@ -67,7 +67,7 @@ public class iOS_ReferralCategoriesPage {
 		if (DBPendingTasks.size() > 0) {
 			List<String> UIPendingTasks = Arrays.asList(verifyIfPendingTasksAreDisplayed());
 
-			assertEquals("-----RECORD COUNT MISMATCHED-----", DBPendingTasks, UIPendingTasks);
+			assertEquals("-----RECORD COUNT MISMATCH-----", DBPendingTasks, UIPendingTasks);
 		}
 	}
 
@@ -128,7 +128,7 @@ public class iOS_ReferralCategoriesPage {
 
 				List<String> UInonOrallyarguedCases = asList((getNumOfDisplayedCases(waitForElement(total))));
 
-				assertTrue("-----RECORD COUNT MISMATCHED-----", briefcaseTargReferral_n.equals(UInonOrallyarguedCases)
+				assertTrue("-----RECORD COUNT MISMATCH-----", briefcaseTargReferral_n.equals(UInonOrallyarguedCases)
 						|| briefcaseTargReferral_y.equals(UInonOrallyarguedCases));
 
 				select(Users.DASHBOARD);

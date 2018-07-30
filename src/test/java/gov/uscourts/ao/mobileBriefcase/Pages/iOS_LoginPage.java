@@ -75,20 +75,16 @@ public class iOS_LoginPage extends Base {
 	}
 
 	public void sedKeyButton() {
-
 		waitToBeClickable(sendKeyButton);
 	}
 
 	public void open() {
-
 		clickOn(findElement(By.name(openBtn)));
 
 	}
 
 	public void getServer(String server) {
-
 		clickOnPanel(server);
-
 		performPageLoad();
 	}
 

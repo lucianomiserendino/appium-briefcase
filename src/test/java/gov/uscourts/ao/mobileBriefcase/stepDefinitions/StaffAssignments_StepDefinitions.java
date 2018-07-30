@@ -3,15 +3,15 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
-import gov.uscourts.ao.mobileBriefcase.Pages.StaffAssignments;
+import gov.uscourts.ao.mobileBriefcase.Pages.iOS_StaffAssignments;
 
 public class StaffAssignments_StepDefinitions {
 
-	StaffAssignments page;
+	iOS_StaffAssignments page;
 
 	@When("^User selects Judge , \"([^\"]*)\" and  \"([^\"]*)\"$")
 	public void user_selects_Judge_and(String category, String caseNum) {
-		page = new StaffAssignments();
+		page = new iOS_StaffAssignments();
 		page.selectCase(category, caseNum);
 	}
 

@@ -11,6 +11,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
+import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -142,7 +143,7 @@ public class Utilities extends Base {
 		if (caseDisplayed == true) {
 			findElement(By.xpath(Case)).click();
 		} else {
-			scroll(2,"down");
+			scroll(2, "down");
 			findElement(By.xpath(Case)).click();
 		}
 
@@ -214,7 +215,7 @@ public class Utilities extends Base {
 			if (waitForElement(element).isDisplayed()) {
 				element.click();
 			} else {
-				scroll(1,"down");
+				scroll(1, "down");
 			}
 
 		} catch (Exception e) {
@@ -254,8 +255,8 @@ public class Utilities extends Base {
 
 	}
 
-	public static void assertThatDBEqualsToUI(String message, String query, List<String> uiValue) {
-		List<String> db = executeQuery(DBType.CMKA, query);
+	public static void assertThatDBEqualsToUI(String message, DBType dbType, String query, List<String> uiValue) {
+		List<String> db = executeQuery(dbType, query);
 		Collections.sort(db);
 		List<String> ui = uiValue;
 		assertTrue(message, db.containsAll(ui));
@@ -389,6 +390,26 @@ public class Utilities extends Base {
 		clickOnPanel(category);
 		performPageLoad();
 		selectCase(locateElement(caseNum));
+
+	}
+
+	public static boolean isDisplayed(DBType dbtype, String query, String xpath) {
+		boolean isDisplayed = false;
+		List<String> dbResult = executeQuery(dbtype, query);
+		sort(dbResult);
+		try {
+			for (int i = 0; i < dbResult.size(); ++i) {
+
+				MobileElement uiResult = findElement(
+						By.xpath(xpath + "[contains(@name, '" + dbResult.get(i) + "')]"));
+		
+				if (uiResult.isDisplayed())
+					isDisplayed = true;
+			}
+		} catch (Exception e) {
+			isDisplayed = false;
+		}
+		return isDisplayed;
 
 	}
 

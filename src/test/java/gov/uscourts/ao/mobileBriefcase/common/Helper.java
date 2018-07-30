@@ -121,7 +121,7 @@ public class Helper {
 			break;
 
 		case VOTE_INFORMATION:
-			click(locateElement("Vote informations"));
+			click(locateElement("Vote Information"));
 			break;
 
 		default:
