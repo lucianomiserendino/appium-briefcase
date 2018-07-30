@@ -3,43 +3,18 @@
     "line": 1,
     "elements": [
       {
-        "before": [
-          {
-            "result": {
-              "duration": 5482014956,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 23,
+        "line": 25,
         "name": "",
-        "description": "Verify when an action is selected that contains the note DPF, the note DPF UI displays.",
-        "id": "note-dpf-ui;;;2",
-        "after": [
-          {
-            "result": {
-              "duration": 40938690,
-              "error_message": "org.openqa.selenium.WebDriverException: \u003cHEAD\u003e\u003cTITLE\u003eConnection refused\u003c/TITLE\u003e\u003c/HEAD\u003e\n\u003cBODY BGCOLOR\u003d\"white\" FGCOLOR\u003d\"black\"\u003e\u003cH1\u003eConnection refused\u003c/H1\u003e\u003cHR\u003e\n\u003cFONT FACE\u003d\"Helvetica,Arial\"\u003e\u003cB\u003e\nDescription: Connection refused\u003c/B\u003e\u003c/FONT\u003e\n\u003cHR\u003e\n\u003c!-- default \"Connection refused\" response (502) --\u003e\n\u003c/BODY\u003e\nCommand duration or timeout: 36 milliseconds\nBuild info: version: \u00273.6.0\u0027, revision: \u00276fbf3ec767\u0027, time: \u00272017-09-27T15:28:36.4Z\u0027\nSystem info: host: \u0027Saltanat-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:1831:26b3:53f6:79c%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.12.6\u0027, java.version: \u00271.8.0_162\u0027\nDriver info: io.appium.java_client.ios.IOSDriver\nCapabilities [{networkConnectionEnabled\u003dfalse, xcodeOrgId\u003dU668BW448Y, bundleId\u003dgov.uscourts.ambbriefcase-beta, databaseEnabled\u003dfalse, deviceName\u003diPad Pro (12.9-inch) (2nd generation), xcodeSigningId\u003diPhone Developer, platform\u003dMAC, takes_screehshot\u003dtrue, platformVersion\u003d11.4, webStorageEnabled\u003dfalse, locationContextEnabled\u003dfalse, browserName\u003d, takesScreenshot\u003dtrue, javascriptEnabled\u003dtrue, udid\u003dB40FBCD3-0BE0-4137-8723-7A44EAFFB443, platformName\u003dMAC, autoAcceptAlerts\u003dtrue}]\nSession ID: 66a85025-716d-4fad-a7ae-79c6272d8fc7\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)\n\tat sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)\n\tat java.lang.reflect.Constructor.newInstance(Constructor.java:423)\n\tat org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:214)\n\tat org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:166)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:635)\n\tat io.appium.java_client.DefaultGenericMobileDriver.execute(DefaultGenericMobileDriver.java:42)\n\tat io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.execute(IOSDriver.java:1)\n\tat io.appium.java_client.PerformsTouchActions.performTouchAction(PerformsTouchActions.java:41)\n\tat io.appium.java_client.TouchAction.perform(TouchAction.java:325)\n\tat gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.tapByCoordinates(BriefcaseUsers.java:95)\n\tat gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select(BriefcaseUsers.java:60)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Hook.tearDown(Hook.java:28)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat cucumber.runtime.Utils$1.call(Utils.java:40)\n\tat cucumber.runtime.Timeout.timeout(Timeout.java:16)\n\tat cucumber.runtime.Utils.invoke(Utils.java:34)\n\tat cucumber.runtime.java.JavaHookDefinition.execute(JavaHookDefinition.java:60)\n\tat cucumber.runtime.Runtime.runHookIfTagsMatch(Runtime.java:224)\n\tat cucumber.runtime.Runtime.runHooks(Runtime.java:212)\n\tat cucumber.runtime.Runtime.runAfterHooks(Runtime.java:206)\n\tat cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:46)\n\tat cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.ExamplesRunner.run(ExamplesRunner.java:59)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.ScenarioOutlineRunner.run(ScenarioOutlineRunner.java:53)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.api.junit.Cucumber.run(Cucumber.java:100)\n\tat org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:86)\n\tat org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:538)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:760)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:460)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:206)\n",
-              "status": "failed"
-            },
-            "match": {
-              "location": "Hook.tearDown()"
-            }
-          }
-        ],
+        "description": "There is a sorting feature on the referral list page that enables users to sort referrals by date referred or case number.  \nThe default is by date referred in descending order (newest first).",
+        "id": "sorting-on-the-referral-list-page;;;2",
         "type": "scenario",
         "keyword": "Scenario Outline",
         "steps": [
           {
             "result": {
-              "duration": 31731842503,
-              "error_message": "org.openqa.selenium.WebDriverException: \u003cHEAD\u003e\u003cTITLE\u003eConnection refused\u003c/TITLE\u003e\u003c/HEAD\u003e\n\u003cBODY BGCOLOR\u003d\"white\" FGCOLOR\u003d\"black\"\u003e\u003cH1\u003eConnection refused\u003c/H1\u003e\u003cHR\u003e\n\u003cFONT FACE\u003d\"Helvetica,Arial\"\u003e\u003cB\u003e\nDescription: Connection refused\u003c/B\u003e\u003c/FONT\u003e\n\u003cHR\u003e\n\u003c!-- default \"Connection refused\" response (502) --\u003e\n\u003c/BODY\u003e\nCommand duration or timeout: 33 milliseconds\nBuild info: version: \u00273.6.0\u0027, revision: \u00276fbf3ec767\u0027, time: \u00272017-09-27T15:28:36.4Z\u0027\nSystem info: host: \u0027Saltanat-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:1831:26b3:53f6:79c%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.12.6\u0027, java.version: \u00271.8.0_162\u0027\nDriver info: io.appium.java_client.ios.IOSDriver\nCapabilities [{networkConnectionEnabled\u003dfalse, xcodeOrgId\u003dU668BW448Y, bundleId\u003dgov.uscourts.ambbriefcase-beta, databaseEnabled\u003dfalse, deviceName\u003diPad Pro (12.9-inch) (2nd generation), xcodeSigningId\u003diPhone Developer, platform\u003dMAC, takes_screehshot\u003dtrue, platformVersion\u003d11.4, webStorageEnabled\u003dfalse, locationContextEnabled\u003dfalse, browserName\u003d, takesScreenshot\u003dtrue, javascriptEnabled\u003dtrue, udid\u003dB40FBCD3-0BE0-4137-8723-7A44EAFFB443, platformName\u003dMAC, autoAcceptAlerts\u003dtrue}]\nSession ID: 66a85025-716d-4fad-a7ae-79c6272d8fc7\n*** Element info: {Using\u003dxpath, value\u003d//*[contains(@name, \u0027Integration\u0027)]}\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)\n\tat sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)\n\tat java.lang.reflect.Constructor.newInstance(Constructor.java:423)\n\tat org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:214)\n\tat org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:166)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:635)\n\tat io.appium.java_client.DefaultGenericMobileDriver.execute(DefaultGenericMobileDriver.java:42)\n\tat io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.execute(IOSDriver.java:1)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:398)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElements(DefaultGenericMobileDriver.java:54)\n\tat io.appium.java_client.AppiumDriver.findElements(AppiumDriver.java:149)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElementsByXPath(RemoteWebDriver.java:477)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElementsByXPath(DefaultGenericMobileDriver.java:144)\n\tat io.appium.java_client.AppiumDriver.findElementsByXPath(AppiumDriver.java:181)\n\tat org.openqa.selenium.By$ByXPath.findElements(By.java:356)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:359)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElements(DefaultGenericMobileDriver.java:50)\n\tat io.appium.java_client.AppiumDriver.findElements(AppiumDriver.java:145)\n\tat org.openqa.selenium.support.ui.ExpectedConditions.findElement(ExpectedConditions.java:881)\n\tat org.openqa.selenium.support.ui.ExpectedConditions.access$000(ExpectedConditions.java:43)\n\tat org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:182)\n\tat org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:179)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:208)\n\tat gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElement(Page.java:35)\n\tat gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement(Utilities.java:180)\n\tat gov.uscourts.ao.mobileBriefcase.common.Utilities.click(Utilities.java:133)\n\tat gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel(Helper.java:73)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage.selectEnvironment(iOS_LoginPage.java:66)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Login_StepDefinitions.user_Navigates_to_environment(Login_StepDefinitions.java:18)\n\tat ✽.Given User Navigates to  \"Integration\" environment(CMKA\u0026CM3A/UIDocketingDPF.feature:10)\n",
-              "status": "failed"
+              "status": "skipped"
             },
-            "line": 10,
+            "line": 11,
             "name": "User Navigates to  \"Integration\" environment",
             "match": {
               "arguments": [
@@ -59,7 +34,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 11,
+            "line": 12,
             "name": "User enters Credentials to Login \"chambers courtney\" and \"Test2020!\"",
             "match": {
               "arguments": [
@@ -84,7 +59,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 12,
+            "line": 13,
             "name": "User clicks on Send Key to Device",
             "match": {
               "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
@@ -95,7 +70,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 13,
+            "line": 14,
             "name": "User navigates to MobileBrifcase App",
             "match": {
               "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
@@ -106,7 +81,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 14,
+            "line": 15,
             "name": "user selects a \"Appellate DC Development - CMKA\"",
             "match": {
               "arguments": [
@@ -124,51 +99,13 @@
           },
           {
             "result": {
-              "status": "skipped"
-            },
-            "line": 15,
-            "name": "User selects category \"Motions/Petitions\" and \"15-3314\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "Motions/Petitions",
-                  "offset": 23
-                },
-                {
-                  "val": "15-3314",
-                  "offset": 47
-                }
-              ],
-              "location": "UIDocketingDPF_StepDefinitions.user_selects_category_and(String,String)"
-            },
-            "matchedColumns": [
-              4,
-              5
-            ],
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "status": "skipped"
+              "status": "undefined"
             },
             "line": 16,
-            "name": "User expands the Actions panel, selects an action from \"CMKA\" using \"3060\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "CMKA",
-                  "offset": 56
-                },
-                {
-                  "val": "3060",
-                  "offset": 69
-                }
-              ],
-              "location": "UIDocketingDPF_StepDefinitions.user_expands_the_Actions_panel_selects_an_action_from_using(String,String)"
-            },
+            "name": "User selects Judge,  \"Motions/Petitions\"",
+            "match": {},
             "matchedColumns": [
-              6,
-              7
+              4
             ],
             "keyword": "When "
           },
@@ -177,40 +114,42 @@
               "status": "skipped"
             },
             "line": 17,
-            "name": "User verifies the name of the action displays in the dark blue banner,use  \"CMKA\" and  \"3060\".",
+            "name": "User selects a judge and then the motions/petitions category",
             "match": {
-              "arguments": [
-                {
-                  "val": "CMKA",
-                  "offset": 76
-                },
-                {
-                  "val": "3060",
-                  "offset": 88
-                }
-              ],
-              "location": "UIDocketingDPF_StepDefinitions.user_verifies_the_name_of_the_action_displays_in_the_dark_blue_banner_use_and(String,String)"
+              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_a_judge_and_then_the_motions_petitions_category()"
             },
-            "matchedColumns": [
-              6,
-              7
-            ],
-            "keyword": "Then "
+            "keyword": "Given "
           },
           {
             "result": {
               "status": "skipped"
             },
             "line": 18,
-            "name": "User verifies the text \"Add New Note\" displays in the light blue banner.",
+            "name": "User selects the sort button, clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in descending order (newest first).",
             "match": {
-              "arguments": [
-                {
-                  "val": "Add New Note",
-                  "offset": 24
-                }
-              ],
-              "location": "UIDocketingDPF_StepDefinitions.user_verifies_the_text_displays_in_the_light_blue_banner(String)"
+              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_the_sort_button_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 19,
+            "name": "User clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order (oldest first).",
+            "match": {
+              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_ascending_order_oldest_first()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 20,
+            "name": "User clicks the Case Down Arrow button and  verifies the referrals are sorted by case number in descending order",
+            "match": {
+              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_descending_order()"
             },
             "keyword": "Then "
           },
@@ -218,76 +157,26 @@
             "result": {
               "status": "skipped"
             },
-            "line": 19,
-            "name": "user verifies an editable \"Description\" , \"Comment\" , \"Submit\" fields are  displayed.  The default description is defined in the Default description parameter of the note DPF (\"CMKA\" and \"3060\")",
+            "line": 21,
+            "name": "User clicks the Case Up Arrow button, verifies the referrals are sorted by case number in ascending order.",
             "match": {
-              "arguments": [
-                {
-                  "val": "Description",
-                  "offset": 27
-                },
-                {
-                  "val": "Comment",
-                  "offset": 43
-                },
-                {
-                  "val": "Submit",
-                  "offset": 55
-                },
-                {
-                  "val": "CMKA",
-                  "offset": 177
-                },
-                {
-                  "val": "3060",
-                  "offset": 188
-                }
-              ],
-              "location": "UIDocketingDPF_StepDefinitions.user_verifies_an_editable_fields_are_displayed_The_default_description_is_defined_in_the_Default_description_parameter_of_the_note_DPF_and(String,String,String,String,String)"
+              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Up_Arrow_button_verifies_the_referrals_are_sorted_by_case_number_in_ascending_order()"
             },
-            "matchedColumns": [
-              6,
-              7
-            ],
-            "keyword": "And "
+            "keyword": "Then "
           }
         ],
         "tags": [
           {
-            "line": 7,
-            "name": "@AMB_1055"
+            "line": 5,
+            "name": "@AMB_1010"
           }
         ]
       },
       {
-        "before": [
-          {
-            "result": {
-              "duration": 25523077,
-              "error_message": "org.openqa.selenium.remote.UnreachableBrowserException: Could not start a new session. Possible causes are invalid address of the remote server or browser start-up failure.\nBuild info: version: \u00273.6.0\u0027, revision: \u00276fbf3ec767\u0027, time: \u00272017-09-27T15:28:36.4Z\u0027\nSystem info: host: \u0027Saltanat-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:1831:26b3:53f6:79c%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.12.6\u0027, java.version: \u00271.8.0_162\u0027\nDriver info: driver.version: IOSDriver\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:622)\n\tat io.appium.java_client.DefaultGenericMobileDriver.execute(DefaultGenericMobileDriver.java:42)\n\tat io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.execute(IOSDriver.java:1)\n\tat org.openqa.selenium.remote.RemoteWebDriver.startSession(RemoteWebDriver.java:219)\n\tat org.openqa.selenium.remote.RemoteWebDriver.\u003cinit\u003e(RemoteWebDriver.java:142)\n\tat io.appium.java_client.DefaultGenericMobileDriver.\u003cinit\u003e(DefaultGenericMobileDriver.java:38)\n\tat io.appium.java_client.AppiumDriver.\u003cinit\u003e(AppiumDriver.java:83)\n\tat io.appium.java_client.AppiumDriver.\u003cinit\u003e(AppiumDriver.java:93)\n\tat io.appium.java_client.ios.IOSDriver.\u003cinit\u003e(IOSDriver.java:78)\n\tat gov.uscourts.ao.mobileBriefcase.common.Base.safariInstance(Base.java:74)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Hook.setUp(Hook.java:21)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat cucumber.runtime.Utils$1.call(Utils.java:40)\n\tat cucumber.runtime.Timeout.timeout(Timeout.java:16)\n\tat cucumber.runtime.Utils.invoke(Utils.java:34)\n\tat cucumber.runtime.java.JavaHookDefinition.execute(JavaHookDefinition.java:60)\n\tat cucumber.runtime.Runtime.runHookIfTagsMatch(Runtime.java:224)\n\tat cucumber.runtime.Runtime.runHooks(Runtime.java:212)\n\tat cucumber.runtime.Runtime.runBeforeHooks(Runtime.java:202)\n\tat cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:40)\n\tat cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.ExamplesRunner.run(ExamplesRunner.java:59)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.ScenarioOutlineRunner.run(ScenarioOutlineRunner.java:53)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.api.junit.Cucumber.run(Cucumber.java:100)\n\tat org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:86)\n\tat org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:538)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:760)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:460)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:206)\nCaused by: java.lang.ClassCastException: java.lang.String cannot be cast to java.util.Map\n\tat org.openqa.selenium.remote.ProtocolHandshake.createSession(ProtocolHandshake.java:108)\n\tat org.openqa.selenium.remote.ProtocolHandshake.createSession(ProtocolHandshake.java:73)\n\tat org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:138)\n\tat io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:89)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:601)\n\t... 66 more\n",
-              "status": "failed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 24,
+        "line": 26,
         "name": "",
-        "description": "Verify when an action is selected that contains the note DPF, the note DPF UI displays.",
-        "id": "note-dpf-ui;;;3",
-        "after": [
-          {
-            "result": {
-              "duration": 29511127,
-              "error_message": "org.openqa.selenium.WebDriverException: \u003cHEAD\u003e\u003cTITLE\u003eConnection refused\u003c/TITLE\u003e\u003c/HEAD\u003e\n\u003cBODY BGCOLOR\u003d\"white\" FGCOLOR\u003d\"black\"\u003e\u003cH1\u003eConnection refused\u003c/H1\u003e\u003cHR\u003e\n\u003cFONT FACE\u003d\"Helvetica,Arial\"\u003e\u003cB\u003e\nDescription: Connection refused\u003c/B\u003e\u003c/FONT\u003e\n\u003cHR\u003e\n\u003c!-- default \"Connection refused\" response (502) --\u003e\n\u003c/BODY\u003e\nCommand duration or timeout: 29 milliseconds\nBuild info: version: \u00273.6.0\u0027, revision: \u00276fbf3ec767\u0027, time: \u00272017-09-27T15:28:36.4Z\u0027\nSystem info: host: \u0027Saltanat-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:1831:26b3:53f6:79c%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.12.6\u0027, java.version: \u00271.8.0_162\u0027\nDriver info: io.appium.java_client.ios.IOSDriver\nCapabilities [{networkConnectionEnabled\u003dfalse, xcodeOrgId\u003dU668BW448Y, bundleId\u003dgov.uscourts.ambbriefcase-beta, databaseEnabled\u003dfalse, deviceName\u003diPad Pro (12.9-inch) (2nd generation), xcodeSigningId\u003diPhone Developer, platform\u003dMAC, takes_screehshot\u003dtrue, platformVersion\u003d11.4, webStorageEnabled\u003dfalse, locationContextEnabled\u003dfalse, browserName\u003d, takesScreenshot\u003dtrue, javascriptEnabled\u003dtrue, udid\u003dB40FBCD3-0BE0-4137-8723-7A44EAFFB443, platformName\u003dMAC, autoAcceptAlerts\u003dtrue}]\nSession ID: 66a85025-716d-4fad-a7ae-79c6272d8fc7\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)\n\tat sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)\n\tat java.lang.reflect.Constructor.newInstance(Constructor.java:423)\n\tat org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:214)\n\tat org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:166)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:635)\n\tat io.appium.java_client.DefaultGenericMobileDriver.execute(DefaultGenericMobileDriver.java:42)\n\tat io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.execute(IOSDriver.java:1)\n\tat io.appium.java_client.PerformsTouchActions.performTouchAction(PerformsTouchActions.java:41)\n\tat io.appium.java_client.TouchAction.perform(TouchAction.java:325)\n\tat gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.tapByCoordinates(BriefcaseUsers.java:95)\n\tat gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select(BriefcaseUsers.java:60)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Hook.tearDown(Hook.java:28)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat cucumber.runtime.Utils$1.call(Utils.java:40)\n\tat cucumber.runtime.Timeout.timeout(Timeout.java:16)\n\tat cucumber.runtime.Utils.invoke(Utils.java:34)\n\tat cucumber.runtime.java.JavaHookDefinition.execute(JavaHookDefinition.java:60)\n\tat cucumber.runtime.Runtime.runHookIfTagsMatch(Runtime.java:224)\n\tat cucumber.runtime.Runtime.runHooks(Runtime.java:212)\n\tat cucumber.runtime.Runtime.runAfterHooks(Runtime.java:206)\n\tat cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:46)\n\tat cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.ExamplesRunner.run(ExamplesRunner.java:59)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.ScenarioOutlineRunner.run(ScenarioOutlineRunner.java:53)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.api.junit.Cucumber.run(Cucumber.java:100)\n\tat org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:86)\n\tat org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:538)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:760)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:460)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:206)\n",
-              "status": "failed"
-            },
-            "match": {
-              "location": "Hook.tearDown()"
-            }
-          }
-        ],
+        "description": "There is a sorting feature on the referral list page that enables users to sort referrals by date referred or case number.  \nThe default is by date referred in descending order (newest first).",
+        "id": "sorting-on-the-referral-list-page;;;3",
         "type": "scenario",
         "keyword": "Scenario Outline",
         "steps": [
@@ -295,7 +184,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 10,
+            "line": 11,
             "name": "User Navigates to  \"Testing\" environment",
             "match": {
               "arguments": [
@@ -315,7 +204,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 11,
+            "line": 12,
             "name": "User enters Credentials to Login \"Chambers Haenni\" and \"Test2017!\"",
             "match": {
               "arguments": [
@@ -340,7 +229,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 12,
+            "line": 13,
             "name": "User clicks on Send Key to Device",
             "match": {
               "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
@@ -351,7 +240,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 13,
+            "line": 14,
             "name": "User navigates to MobileBrifcase App",
             "match": {
               "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
@@ -362,7 +251,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 14,
+            "line": 15,
             "name": "user selects a \"Appellate DC Installation Testing - CM3A\"",
             "match": {
               "arguments": [
@@ -380,51 +269,13 @@
           },
           {
             "result": {
-              "status": "skipped"
-            },
-            "line": 15,
-            "name": "User selects category \"Motion/Petition\" and \"12-6627\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "Motion/Petition",
-                  "offset": 23
-                },
-                {
-                  "val": "12-6627",
-                  "offset": 45
-                }
-              ],
-              "location": "UIDocketingDPF_StepDefinitions.user_selects_category_and(String,String)"
-            },
-            "matchedColumns": [
-              4,
-              5
-            ],
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "status": "skipped"
+              "status": "undefined"
             },
             "line": 16,
-            "name": "User expands the Actions panel, selects an action from \"CM3A\" using \"4260\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "CM3A",
-                  "offset": 56
-                },
-                {
-                  "val": "4260",
-                  "offset": 69
-                }
-              ],
-              "location": "UIDocketingDPF_StepDefinitions.user_expands_the_Actions_panel_selects_an_action_from_using(String,String)"
-            },
+            "name": "User selects Judge,  \"Motion/Petition\"",
+            "match": {},
             "matchedColumns": [
-              6,
-              7
+              4
             ],
             "keyword": "When "
           },
@@ -433,40 +284,42 @@
               "status": "skipped"
             },
             "line": 17,
-            "name": "User verifies the name of the action displays in the dark blue banner,use  \"CM3A\" and  \"4260\".",
+            "name": "User selects a judge and then the motions/petitions category",
             "match": {
-              "arguments": [
-                {
-                  "val": "CM3A",
-                  "offset": 76
-                },
-                {
-                  "val": "4260",
-                  "offset": 88
-                }
-              ],
-              "location": "UIDocketingDPF_StepDefinitions.user_verifies_the_name_of_the_action_displays_in_the_dark_blue_banner_use_and(String,String)"
+              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_a_judge_and_then_the_motions_petitions_category()"
             },
-            "matchedColumns": [
-              6,
-              7
-            ],
-            "keyword": "Then "
+            "keyword": "Given "
           },
           {
             "result": {
               "status": "skipped"
             },
             "line": 18,
-            "name": "User verifies the text \"Add New Note\" displays in the light blue banner.",
+            "name": "User selects the sort button, clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in descending order (newest first).",
             "match": {
-              "arguments": [
-                {
-                  "val": "Add New Note",
-                  "offset": 24
-                }
-              ],
-              "location": "UIDocketingDPF_StepDefinitions.user_verifies_the_text_displays_in_the_light_blue_banner(String)"
+              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_the_sort_button_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 19,
+            "name": "User clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order (oldest first).",
+            "match": {
+              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_ascending_order_oldest_first()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 20,
+            "name": "User clicks the Case Down Arrow button and  verifies the referrals are sorted by case number in descending order",
+            "match": {
+              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_descending_order()"
             },
             "keyword": "Then "
           },
@@ -474,52 +327,26 @@
             "result": {
               "status": "skipped"
             },
-            "line": 19,
-            "name": "user verifies an editable \"Description\" , \"Comment\" , \"Submit\" fields are  displayed.  The default description is defined in the Default description parameter of the note DPF (\"CM3A\" and \"4260\")",
+            "line": 21,
+            "name": "User clicks the Case Up Arrow button, verifies the referrals are sorted by case number in ascending order.",
             "match": {
-              "arguments": [
-                {
-                  "val": "Description",
-                  "offset": 27
-                },
-                {
-                  "val": "Comment",
-                  "offset": 43
-                },
-                {
-                  "val": "Submit",
-                  "offset": 55
-                },
-                {
-                  "val": "CM3A",
-                  "offset": 177
-                },
-                {
-                  "val": "4260",
-                  "offset": 188
-                }
-              ],
-              "location": "UIDocketingDPF_StepDefinitions.user_verifies_an_editable_fields_are_displayed_The_default_description_is_defined_in_the_Default_description_parameter_of_the_note_DPF_and(String,String,String,String,String)"
+              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Up_Arrow_button_verifies_the_referrals_are_sorted_by_case_number_in_ascending_order()"
             },
-            "matchedColumns": [
-              6,
-              7
-            ],
-            "keyword": "And "
+            "keyword": "Then "
           }
         ],
         "tags": [
           {
-            "line": 7,
-            "name": "@AMB_1055"
+            "line": 5,
+            "name": "@AMB_1010"
           }
         ]
       }
     ],
-    "name": "note DPF UI",
+    "name": "Sorting on the Referral List Page",
     "description": "",
-    "id": "note-dpf-ui",
+    "id": "sorting-on-the-referral-list-page",
     "keyword": "Feature",
-    "uri": "CMKA\u0026CM3A/UIDocketingDPF.feature"
+    "uri": "CMKA/SortingOnTheReferralListPage.feature"
   }
 ]

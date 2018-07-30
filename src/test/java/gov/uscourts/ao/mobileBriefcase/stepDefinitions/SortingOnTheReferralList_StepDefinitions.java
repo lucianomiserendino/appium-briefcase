@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_SortingOnTheReferralListPage;
@@ -15,11 +14,10 @@ public class SortingOnTheReferralList_StepDefinitions {
 
 	iOS_SortingOnTheReferralListPage page;
 
-	@Given("^User selects a judge and then the motions/petitions category$")
-	public void user_selects_a_judge_and_then_the_motions_petitions_category() {
+	@When("^User selects Judge,  \"([^\"]*)\"$")
+	public void user_selects_Judge(String category) {
 		page = new iOS_SortingOnTheReferralListPage();
-		page.clickOnMotionsPetitions();
-
+		page.clickOnMotionsPetitions(category);
 	}
 
 	@When("^User selects the sort button, clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in descending order \\(newest first\\)\\.$")

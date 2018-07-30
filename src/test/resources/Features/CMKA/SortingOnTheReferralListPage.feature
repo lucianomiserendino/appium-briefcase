@@ -1,16 +1,6 @@
 Feature: Sorting on the Referral List Page 
 
-Background: 
 
-	Given  User Navigates to environment 
-	When  User enters Credentials to Login 
-		|userName			|password	|
-		|chambers courtney  |Test2020!  |
-		
-	And User clicks on Send Key to Device 
-	Then User navigates to MobileBrifcase App 
-	
-	
 
 @AMB_1010 
 Scenario Outline: 
@@ -18,16 +8,22 @@ Scenario Outline:
 The default is by date referred in descending order (newest first). 
 	
 
-	Given  user selects a "<server>" 
-	Given User selects a judge and then the motions/petitions category 
+	Given  User Navigates to  "<environment>" environment 
+	When  User enters Credentials to Login "<userName>" and "<password>" 
+	And User clicks on Send Key to Device 
+	Then User navigates to MobileBrifcase App 
+	And  user selects a "<server>" 
+	When User selects Judge,  "<refCategory>"
 	When User selects the sort button, clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in descending order (newest first). 
 	And  User clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order (oldest first). 
 	Then User clicks the Case Down Arrow button and  verifies the referrals are sorted by case number in descending order 
 	Then  User clicks the Case Up Arrow button, verifies the referrals are sorted by case number in ascending order. 
 	
 	Examples: 
-		|server|
-		#|Appellate DC Development - CM5A|
-		|Appellate DC Development - CMKA|
+		|environment   |userName          |password  |server                                   |refCategory       |
+		|Integration   |chambers courtney |Test2020!|Appellate DC Development - CMKA           |Motions/Petitions |
+		#|Testing       |Chambers Haenni   |Test2017!|Appellate DC Installation Testing - CM3A  |Motion/Petition   | 
 		
+		
+
 		

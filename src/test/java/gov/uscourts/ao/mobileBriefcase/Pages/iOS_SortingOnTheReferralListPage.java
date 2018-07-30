@@ -1,10 +1,8 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnCategory;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.MOTIONS_PETITIONS;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.*;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_CASES_IN_ASCENDING_ORDER;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_CASES_IN_DESCENDING_ORDER;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_DATES_IN_ASCENDING_ORDER;
@@ -22,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.PageFactory;
 
+import gov.uscourts.ao.mobileBriefcase.common.Helper;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
@@ -63,18 +62,10 @@ public class iOS_SortingOnTheReferralListPage {
 	public static String cmka = "Motions/Petitions";
 	public static String cm5a = "Motion/Petition";
 
-	public void clickOnMotionsPetitions() {
+	public void clickOnMotionsPetitions(String category) {
 		refresh();
-
-		clickOnCategory(MOTIONS_PETITIONS);
-	}
-
-	public static void clickOnPanel(String element1, String element2) {
-		if (elementIsDisplayed(element1) == true) {
-			click(locateElement(element1));
-		} else {
-			click(locateElement(element2));
-		}
+		clickOnPanel(category);
+		performPageLoad();
 	}
 
 	public void selectSortBtn() {
