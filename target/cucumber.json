@@ -3,16 +3,39 @@
     "line": 1,
     "elements": [
       {
-        "line": 24,
+        "before": [
+          {
+            "result": {
+              "duration": 5929647227,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 23,
         "name": "",
         "description": "There is a sorting feature on the referral list page that enables users to sort referrals by date referred or case number.  \nThe default is by date referred in descending order (newest first).",
         "id": "sorting-on-the-referral-list-page;;;2",
+        "after": [
+          {
+            "result": {
+              "duration": 41322740197,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
         "type": "scenario",
         "keyword": "Scenario Outline",
         "steps": [
           {
             "result": {
-              "status": "skipped"
+              "duration": 45614126919,
+              "status": "passed"
             },
             "line": 11,
             "name": "User Navigates to  \"Integration\" environment",
@@ -32,7 +55,8 @@
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 14128854260,
+              "status": "passed"
             },
             "line": 12,
             "name": "User enters Credentials to Login \"chambers courtney\" and \"Test2020!\"",
@@ -57,7 +81,8 @@
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 7876491062,
+              "status": "passed"
             },
             "line": 13,
             "name": "User clicks on Send Key to Device",
@@ -68,7 +93,8 @@
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 15327037213,
+              "status": "passed"
             },
             "line": 14,
             "name": "User navigates to MobileBrifcase App",
@@ -79,7 +105,8 @@
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 54042279980,
+              "status": "passed"
             },
             "line": 15,
             "name": "user selects a \"Appellate DC Development - CMKA\"",
@@ -99,7 +126,8 @@
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 74682482001,
+              "status": "passed"
             },
             "line": 16,
             "name": "User selects Judge,  \"Motions/Petitions\"",
@@ -119,45 +147,19 @@
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 494004302186,
+              "status": "passed"
             },
-            "line": 17,
-            "name": "User selects the sort button, clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in descending order (newest first).",
-            "match": {
-              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_the_sort_button_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first()"
-            },
-            "keyword": "When "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 18,
-            "name": "User clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order (oldest first).",
-            "match": {
-              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_ascending_order_oldest_first()"
-            },
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
+            "comments": [
+              {
+                "line": 17,
+                "value": "#When User selects the sort button, clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in descending order (newest first). User clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order (oldest first)."
+              }
+            ],
             "line": 19,
-            "name": "User clicks the Case Down Arrow button and  verifies the referrals are sorted by case number in descending order",
+            "name": "User clicks the Case Down Arrow button and  verifies the referrals are sorted by case number in descending order . User clicks the Case Up Arrow button, verifies the referrals are sorted by case number in ascending order.",
             "match": {
-              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_descending_order()"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 20,
-            "name": "User clicks the Case Up Arrow button, verifies the referrals are sorted by case number in ascending order.",
-            "match": {
-              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Up_Arrow_button_verifies_the_referrals_are_sorted_by_case_number_in_ascending_order()"
+              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_descending_order_User_clicks_the_Case_Up_Arrow_button_verifies_the_referrals_are_sorted_by_case_number_in_ascending_order()"
             },
             "keyword": "Then "
           }
@@ -174,6 +176,6 @@
     "description": "",
     "id": "sorting-on-the-referral-list-page",
     "keyword": "Feature",
-    "uri": "CMKA/SortingOnTheReferralListPage.feature"
+    "uri": "CMKA\u0026CM3A/SortingOnTheReferralListPage.feature"
   }
 ]
