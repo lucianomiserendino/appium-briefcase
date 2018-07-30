@@ -3,7 +3,7 @@
     "line": 1,
     "elements": [
       {
-        "line": 25,
+        "line": 24,
         "name": "",
         "description": "There is a sorting feature on the referral list page that enables users to sort referrals by date referred or case number.  \nThe default is by date referred in descending order (newest first).",
         "id": "sorting-on-the-referral-list-page;;;2",
@@ -99,11 +99,19 @@
           },
           {
             "result": {
-              "status": "undefined"
+              "status": "skipped"
             },
             "line": 16,
             "name": "User selects Judge,  \"Motions/Petitions\"",
-            "match": {},
+            "match": {
+              "arguments": [
+                {
+                  "val": "Motions/Petitions",
+                  "offset": 22
+                }
+              ],
+              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_Judge(String)"
+            },
             "matchedColumns": [
               4
             ],
@@ -114,17 +122,6 @@
               "status": "skipped"
             },
             "line": 17,
-            "name": "User selects a judge and then the motions/petitions category",
-            "match": {
-              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_a_judge_and_then_the_motions_petitions_category()"
-            },
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 18,
             "name": "User selects the sort button, clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in descending order (newest first).",
             "match": {
               "location": "SortingOnTheReferralList_StepDefinitions.user_selects_the_sort_button_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first()"
@@ -135,177 +132,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 19,
-            "name": "User clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order (oldest first).",
-            "match": {
-              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_ascending_order_oldest_first()"
-            },
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 20,
-            "name": "User clicks the Case Down Arrow button and  verifies the referrals are sorted by case number in descending order",
-            "match": {
-              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_descending_order()"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 21,
-            "name": "User clicks the Case Up Arrow button, verifies the referrals are sorted by case number in ascending order.",
-            "match": {
-              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Up_Arrow_button_verifies_the_referrals_are_sorted_by_case_number_in_ascending_order()"
-            },
-            "keyword": "Then "
-          }
-        ],
-        "tags": [
-          {
-            "line": 5,
-            "name": "@AMB_1010"
-          }
-        ]
-      },
-      {
-        "line": 26,
-        "name": "",
-        "description": "There is a sorting feature on the referral list page that enables users to sort referrals by date referred or case number.  \nThe default is by date referred in descending order (newest first).",
-        "id": "sorting-on-the-referral-list-page;;;3",
-        "type": "scenario",
-        "keyword": "Scenario Outline",
-        "steps": [
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 11,
-            "name": "User Navigates to  \"Testing\" environment",
-            "match": {
-              "arguments": [
-                {
-                  "val": "Testing",
-                  "offset": 20
-                }
-              ],
-              "location": "Login_StepDefinitions.user_Navigates_to_environment(String)"
-            },
-            "matchedColumns": [
-              0
-            ],
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 12,
-            "name": "User enters Credentials to Login \"Chambers Haenni\" and \"Test2017!\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "Chambers Haenni",
-                  "offset": 34
-                },
-                {
-                  "val": "Test2017!",
-                  "offset": 56
-                }
-              ],
-              "location": "Login_StepDefinitions.user_enters_Credentials_to_Login_and(String,String)"
-            },
-            "matchedColumns": [
-              1,
-              2
-            ],
-            "keyword": "When "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 13,
-            "name": "User clicks on Send Key to Device",
-            "match": {
-              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
-            },
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 14,
-            "name": "User navigates to MobileBrifcase App",
-            "match": {
-              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 15,
-            "name": "user selects a \"Appellate DC Installation Testing - CM3A\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "Appellate DC Installation Testing - CM3A",
-                  "offset": 16
-                }
-              ],
-              "location": "Login_StepDefinitions.user_selects_a(String)"
-            },
-            "matchedColumns": [
-              3
-            ],
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "status": "undefined"
-            },
-            "line": 16,
-            "name": "User selects Judge,  \"Motion/Petition\"",
-            "match": {},
-            "matchedColumns": [
-              4
-            ],
-            "keyword": "When "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 17,
-            "name": "User selects a judge and then the motions/petitions category",
-            "match": {
-              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_a_judge_and_then_the_motions_petitions_category()"
-            },
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
             "line": 18,
-            "name": "User selects the sort button, clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in descending order (newest first).",
-            "match": {
-              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_the_sort_button_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first()"
-            },
-            "keyword": "When "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 19,
             "name": "User clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order (oldest first).",
             "match": {
               "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_ascending_order_oldest_first()"
@@ -316,7 +143,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 20,
+            "line": 19,
             "name": "User clicks the Case Down Arrow button and  verifies the referrals are sorted by case number in descending order",
             "match": {
               "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_descending_order()"
@@ -327,7 +154,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 21,
+            "line": 20,
             "name": "User clicks the Case Up Arrow button, verifies the referrals are sorted by case number in ascending order.",
             "match": {
               "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Up_Arrow_button_verifies_the_referrals_are_sorted_by_case_number_in_ascending_order()"

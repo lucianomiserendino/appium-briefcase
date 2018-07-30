@@ -1,15 +1,13 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.*;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_CASES_IN_ASCENDING_ORDER;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_CASES_IN_DESCENDING_ORDER;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_DATES_IN_ASCENDING_ORDER;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_DATES_IN_DESCENDING_ORDER;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveAllReferrals;
@@ -20,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.PageFactory;
 
-import gov.uscourts.ao.mobileBriefcase.common.Helper;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
