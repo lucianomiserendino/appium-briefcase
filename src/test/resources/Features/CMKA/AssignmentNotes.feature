@@ -12,10 +12,7 @@ Feature: Display of Assignment Notes
      3.The note description
      4.The text of the note
  
-  
 
-	If there are records defined in the mbr_event table, 
-       a collapsible panel entitled "Actions" should display,when expanded all the applicable actions should display.
 	Given  User Navigates to  "<environment>" environment 
 	When  User enters Credentials to Login "<userName>" and "<password>" 
 	And User clicks on Send Key to Device 
@@ -34,8 +31,8 @@ Feature: Display of Assignment Notes
 		|environment   |userName          |password  |server                                   |refCat       | caseNum |dbType| 
 		|Integration   |chambers courtney |Test2020!|Appellate DC Development - CMKA           |Motions/Petitions | 15-3314  |CMKA  |
 	
-@Smoke		
-@AMB_1021 
+		
+	@AMB_1020 
 Scenario Outline: 
 	Staff members can be assigned to referrals and/or just cases. 
     Verify that staff assignments are displaying on the referral list page.
@@ -52,8 +49,8 @@ Scenario Outline:
 	Then User observes there is an assignment for "Kyle Essley" and "Daniel Hay" 
 	
 	Examples: 
-		|environment   |userName          |password  |server                                    |category          |case    |
-		|Integration   |chambers courtney |Test2020! |Appellate DC Development - CMKA           |Motions/Petitions |15-3314 |
+		|environment   |userName          |password  |server                                    |assignmnet         |category          |case    |
+		|Integration   |chambers courtney |Test2020! |Appellate DC Development - CMKA           |Chambers Courtney  |Motions/Petitions |15-3314 |
 		
 	
 	

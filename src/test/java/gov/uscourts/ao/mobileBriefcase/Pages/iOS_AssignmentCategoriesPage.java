@@ -55,7 +55,6 @@ public class iOS_AssignmentCategoriesPage implements Constants {
 	public static MobileElement staffAttorney;
 
 	public void selectAnAttorney() {
-
 		getUserCategory(STAFF_ATTORNEYS, selectUser, BROWN_BENJAMIN);
 
 	}
@@ -94,8 +93,6 @@ public class iOS_AssignmentCategoriesPage implements Constants {
 			getCollapsablePanel(selectUser, STAFF_ATTORNEYS);
 
 		}
-	
-
 	}
 
 	public static List<String> getListOfCategories() {

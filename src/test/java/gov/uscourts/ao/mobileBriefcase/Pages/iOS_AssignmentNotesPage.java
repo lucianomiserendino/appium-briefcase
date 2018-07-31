@@ -32,7 +32,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.PageFactory;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -93,6 +95,7 @@ public class iOS_AssignmentNotesPage {
 			if (isDisplayed(assignments))
 				;
 			getPanel(ASSIGNMENTS);
+		
 			assertTrue("STAFF ASSIGNMENTS LINKED TO THE REFERRAL ARE NOT DISPLAYED",
 					dbReferralAssignments.containsAll(listOfAssignments(assignmentForKyle, assignmentForEssley)));
 
@@ -111,7 +114,6 @@ public class iOS_AssignmentNotesPage {
 
 
 	}
-
 
 	public List<String> listOfAssignments(String assignmentForKyle, String assignmentForEssley) {
 		List<String> uiReferralAssignments = new ArrayList<>();
@@ -167,6 +169,11 @@ public class iOS_AssignmentNotesPage {
 			e.printStackTrace();
 		}
 
+	}
+	
+	
+	public static void main(String[] args) {
+		System.out.println(DBUtilities.executeQuery(DBType.CMKA, Queries.ASSIGNMENT_DATETYPE_DATE));
 	}
 
 }
