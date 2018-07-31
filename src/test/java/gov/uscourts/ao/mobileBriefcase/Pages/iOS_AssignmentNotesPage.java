@@ -17,7 +17,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanelText;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ASSIGNMENTS;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.MOTIONS_PETITIONS;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getCollapsablePanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getText;
@@ -85,8 +84,8 @@ public class iOS_AssignmentNotesPage {
 
 	}
 
-	public void getCase(String caseNum) {
-		selectCaseNumber(MOTIONS_PETITIONS, caseNum);
+	public void selectCase(String category, String caseNum) {
+		selectCaseNumber(category, caseNum);
 	}
 
 	public void verifyAssignmentIsDisplayed(String assignmentOnReferral) {
@@ -125,7 +124,7 @@ public class iOS_AssignmentNotesPage {
 
 	}
 
-	
+
 	public List<String> listOfAssignments(String assignmentForKyle, String assignmentForEssley) {
 		List<String> uiReferralAssignments = new ArrayList<>();
 		uiReferralAssignments.add(getStaffAssigments(assignmentForKyle));
@@ -167,7 +166,7 @@ public class iOS_AssignmentNotesPage {
 		assertAssignmentNotes("TEXT IS NOT DISPLYED", assignmentNoteText, ASSIGNMENT_NOTE_TEXT,
 				assignmentAssignedNoteText, ASSIGNMENT_ASSIGNED_NOTE_TEXT);
 
-		getCollapsablePanel(selectUser, APPELLATE_JUDGES);
+	
 	}
 
 	public static void assertAssignmentNotes(String message, MobileElement el1, String assign1, MobileElement el2,

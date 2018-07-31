@@ -2,15 +2,27 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_AssignmentNotesPage;
 
 public class AssignmentNotes_StepDefinitions {
 
 	iOS_AssignmentNotesPage page;
 
+	@When("^User selects Judge, then   \"([^\"]*)\" and  \"([^\"]*)\"$")
+	public void user_selects_Judge_then_and(String category, String caseNum)  {
+		page = new iOS_AssignmentNotesPage();
+		page.selectCase(category, caseNum);
+
+	}
+	
+	@Then("^User  observes a collapsible panel entitled \"([^\"]*)\" is displayed and expands the Assignments panel$")
+	public void user_observes_a_collapsible_panel_entitled_is_displayed_and_expands_the_Assignments_panel(String assignmentOnReferral)  {
+	page.verifyAssignmentIsDisplayed(assignmentOnReferral);
+	}
+
 	@Given("^User selects \"([^\"]*)\"$")
 	public void user_selects(String assignment) {
-		page = new iOS_AssignmentNotesPage();
 		page.selectAssignment(assignment);
 	}
 
@@ -34,15 +46,6 @@ public class AssignmentNotes_StepDefinitions {
 	public void user_verifies_text_displays_under_the_description() {
 		page.verifyText();
 	}
-
-	@Given("^User selects Judge Colloton >> Motions/Petitions >> case \"([^\"]*)\"$")
-	public void user_selects_Judge_Colloton_Motions_Petitions_case(String caseNum) {
-		page = new iOS_AssignmentNotesPage();
-		page.selectAUser();
-		page.getCase(caseNum);
-	}
-
-
 
 
 
