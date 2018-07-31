@@ -3,43 +3,24 @@
     "line": 1,
     "elements": [
       {
-        "before": [
-          {
-            "result": {
-              "duration": 5603593587,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 35,
+        "line": 45,
         "name": "",
-        "description": "Display of Assignment Notes.\nIf a judge or staff assignment is selected and there are assignment \nor assignment date notes attached to the assignment/date, the following information will display:\n1.A light blue banner with the heading \"Assignment Notes\"\n2.The date of the note\n3.The note description\n4.The text of the note\n\n\n\nIf there are records defined in the mbr_event table, \n  a collapsible panel entitled \"Actions\" should display,when expanded all the applicable actions should display.",
+        "description": "Staff members can be assigned to referrals and/or just cases. \n  Verify that staff assignments are displaying on the referral list page.\n  Staff assignments linked to the referral are displayed",
         "id": "display-of-assignment-notes;;;2",
-        "after": [
-          {
-            "result": {
-              "duration": 183121580,
-              "error_message": "org.openqa.selenium.WebDriverException: An unknown server-side error occurred while processing the command. Original error: A session is either terminated or not started (WARNING: The server did not provide any stacktrace information)\nCommand duration or timeout: 0 milliseconds\nBuild info: version: \u00273.6.0\u0027, revision: \u00276fbf3ec767\u0027, time: \u00272017-09-27T15:28:36.4Z\u0027\nSystem info: host: \u0027Saltanat-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:8c7:b567:4987:b4dc%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.12.6\u0027, java.version: \u00271.8.0_162\u0027\nDriver info: io.appium.java_client.ios.IOSDriver\nCapabilities [{networkConnectionEnabled\u003dfalse, xcodeOrgId\u003dU668BW448Y, bundleId\u003dgov.uscourts.ambbriefcase-beta, databaseEnabled\u003dfalse, deviceName\u003diPad Pro (12.9-inch) (2nd generation), xcodeSigningId\u003diPhone Developer, platform\u003dMAC, takes_screehshot\u003dtrue, platformVersion\u003d11.4, webStorageEnabled\u003dfalse, locationContextEnabled\u003dfalse, browserName\u003d, takesScreenshot\u003dtrue, javascriptEnabled\u003dtrue, udid\u003dB40FBCD3-0BE0-4137-8723-7A44EAFFB443, platformName\u003dMAC, autoAcceptAlerts\u003dtrue}]\nSession ID: c94ea412-456b-4948-9daa-c56ca6e9a533\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)\n\tat sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)\n\tat java.lang.reflect.Constructor.newInstance(Constructor.java:423)\n\tat org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:214)\n\tat org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:166)\n\tat org.openqa.selenium.remote.http.JsonHttpResponseCodec.reconstructValue(JsonHttpResponseCodec.java:40)\n\tat org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:80)\n\tat org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:44)\n\tat org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:160)\n\tat io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:89)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:601)\n\tat io.appium.java_client.DefaultGenericMobileDriver.execute(DefaultGenericMobileDriver.java:42)\n\tat io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.execute(IOSDriver.java:1)\n\tat io.appium.java_client.PerformsTouchActions.performTouchAction(PerformsTouchActions.java:41)\n\tat io.appium.java_client.TouchAction.perform(TouchAction.java:325)\n\tat gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.tapByCoordinates(BriefcaseUsers.java:95)\n\tat gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select(BriefcaseUsers.java:60)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Hook.tearDown(Hook.java:28)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat cucumber.runtime.Utils$1.call(Utils.java:40)\n\tat cucumber.runtime.Timeout.timeout(Timeout.java:16)\n\tat cucumber.runtime.Utils.invoke(Utils.java:34)\n\tat cucumber.runtime.java.JavaHookDefinition.execute(JavaHookDefinition.java:60)\n\tat cucumber.runtime.Runtime.runHookIfTagsMatch(Runtime.java:224)\n\tat cucumber.runtime.Runtime.runHooks(Runtime.java:212)\n\tat cucumber.runtime.Runtime.runAfterHooks(Runtime.java:206)\n\tat cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:46)\n\tat cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.ExamplesRunner.run(ExamplesRunner.java:59)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.ScenarioOutlineRunner.run(ScenarioOutlineRunner.java:53)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.api.junit.Cucumber.run(Cucumber.java:100)\n\tat org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:86)\n\tat org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:538)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:760)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:460)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:206)\n",
-              "status": "failed"
-            },
-            "match": {
-              "location": "Hook.tearDown()"
-            }
-          }
-        ],
         "type": "scenario",
         "keyword": "Scenario Outline",
         "steps": [
           {
             "result": {
-              "duration": 12323664290,
-              "error_message": "org.openqa.selenium.WebDriverException: An unknown server-side error occurred while processing the command. Original error: A session is either terminated or not started (WARNING: The server did not provide any stacktrace information)\nCommand duration or timeout: 0 milliseconds\nBuild info: version: \u00273.6.0\u0027, revision: \u00276fbf3ec767\u0027, time: \u00272017-09-27T15:28:36.4Z\u0027\nSystem info: host: \u0027Saltanat-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:8c7:b567:4987:b4dc%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.12.6\u0027, java.version: \u00271.8.0_162\u0027\nDriver info: io.appium.java_client.ios.IOSDriver\nCapabilities [{networkConnectionEnabled\u003dfalse, xcodeOrgId\u003dU668BW448Y, bundleId\u003dgov.uscourts.ambbriefcase-beta, databaseEnabled\u003dfalse, deviceName\u003diPad Pro (12.9-inch) (2nd generation), xcodeSigningId\u003diPhone Developer, platform\u003dMAC, takes_screehshot\u003dtrue, platformVersion\u003d11.4, webStorageEnabled\u003dfalse, locationContextEnabled\u003dfalse, browserName\u003d, takesScreenshot\u003dtrue, javascriptEnabled\u003dtrue, udid\u003dB40FBCD3-0BE0-4137-8723-7A44EAFFB443, platformName\u003dMAC, autoAcceptAlerts\u003dtrue}]\nSession ID: c94ea412-456b-4948-9daa-c56ca6e9a533\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)\n\tat sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)\n\tat java.lang.reflect.Constructor.newInstance(Constructor.java:423)\n\tat org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:214)\n\tat org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:166)\n\tat org.openqa.selenium.remote.http.JsonHttpResponseCodec.reconstructValue(JsonHttpResponseCodec.java:40)\n\tat org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:80)\n\tat org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:44)\n\tat org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:160)\n\tat io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:89)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:601)\n\tat io.appium.java_client.DefaultGenericMobileDriver.execute(DefaultGenericMobileDriver.java:46)\n\tat io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.execute(IOSDriver.java:1)\n\tat io.appium.java_client.HasSessionDetails.getSessionDetails(HasSessionDetails.java:38)\n\tat io.appium.java_client.HasSessionDetails.getSessionDetail(HasSessionDetails.java:55)\n\tat io.appium.java_client.HasSessionDetails.getPlatformName(HasSessionDetails.java:62)\n\tat io.appium.java_client.pagefactory.AppiumFieldDecorator.\u003cinit\u003e(AppiumFieldDecorator.java:98)\n\tat io.appium.java_client.pagefactory.AppiumFieldDecorator.\u003cinit\u003e(AppiumFieldDecorator.java:78)\n\tat io.appium.java_client.pagefactory.AppiumFieldDecorator.\u003cinit\u003e(AppiumFieldDecorator.java:146)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage.\u003cinit\u003e(iOS_LoginPage.java:26)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Login_StepDefinitions.user_Navigates_to_environment(Login_StepDefinitions.java:17)\n\tat ✽.Given User Navigates to  \"Integration\" environment(CMKA/AssignmentNotes.feature:19)\n",
-              "status": "failed"
+              "status": "skipped"
             },
-            "line": 19,
+            "comments": [
+              {
+                "line": 32,
+                "value": "#These are staff assignments associated with the referral"
+              }
+            ],
+            "line": 34,
             "name": "User Navigates to  \"Integration\" environment",
             "match": {
               "arguments": [
@@ -59,7 +40,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 20,
+            "line": 35,
             "name": "User enters Credentials to Login \"chambers courtney\" and \"Test2020!\"",
             "match": {
               "arguments": [
@@ -84,7 +65,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 21,
+            "line": 36,
             "name": "User clicks on Send Key to Device",
             "match": {
               "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
@@ -95,7 +76,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 22,
+            "line": 37,
             "name": "User navigates to MobileBrifcase App",
             "match": {
               "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
@@ -106,7 +87,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 23,
+            "line": 38,
             "name": "user selects a \"Appellate DC Development - CMKA\"",
             "match": {
               "arguments": [
@@ -126,24 +107,24 @@
             "result": {
               "status": "skipped"
             },
-            "line": 24,
-            "name": "User selects Judge, then   \"Motions/Petitions\" and  \"15-3314\"",
+            "line": 39,
+            "name": "User selects Judge , \"Motions/Petitions\" and  \"15-3314\"",
             "match": {
               "arguments": [
                 {
                   "val": "Motions/Petitions",
-                  "offset": 28
+                  "offset": 22
                 },
                 {
                   "val": "15-3314",
-                  "offset": 53
+                  "offset": 47
                 }
               ],
-              "location": "AssignmentNotes_StepDefinitions.user_selects_Judge_then_and(String,String)"
+              "location": "StaffAssignments_StepDefinitions.user_selects_Judge_and(String,String)"
             },
             "matchedColumns": [
-              4,
-              5
+              5,
+              6
             ],
             "keyword": "When "
           },
@@ -151,7 +132,7 @@
             "result": {
               "status": "skipped"
             },
-            "line": 25,
+            "line": 40,
             "name": "User  observes a collapsible panel entitled \"Assignments\" displays and expands the Assignments panel",
             "match": {
               "arguments": [
@@ -166,80 +147,18 @@
           },
           {
             "result": {
-              "status": "skipped"
+              "status": "undefined"
             },
-            "line": 26,
-            "name": "User selects \"Daniel Hay\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "Daniel Hay",
-                  "offset": 14
-                }
-              ],
-              "location": "AssignmentNotes_StepDefinitions.user_selects(String)"
-            },
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 27,
-            "name": "User verifies the \"Assignment Notes\" banner displays",
-            "match": {
-              "arguments": [
-                {
-                  "val": "Assignment Notes",
-                  "offset": 19
-                }
-              ],
-              "location": "AssignmentNotes_StepDefinitions.user_verifies_the_banner_displays(String)"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 28,
-            "name": "User verifies the date of the assignment note displays,left justified",
-            "match": {
-              "location": "AssignmentNotes_StepDefinitions.user_verifies_the_date_of_the_assignment_note_displays_left_justified()"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 29,
-            "name": "User verifies the note description displays next to the date",
-            "match": {
-              "location": "AssignmentNotes_StepDefinitions.user_verifies_the_note_description_displays_next_to_the_date()"
-            },
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 30,
-            "name": "User verifies text displays under the description",
-            "match": {
-              "location": "AssignmentNotes_StepDefinitions.user_verifies_text_displays_under_the_description()"
-            },
+            "line": 41,
+            "name": "User observes there is an assignment for \"Kyle Essley\" and \"Daniel Hay\"",
+            "match": {},
             "keyword": "Then "
           }
         ],
         "tags": [
           {
-            "line": 5,
-            "name": "@AMB_1033"
-          },
-          {
-            "line": 4,
-            "name": "@Regression"
+            "line": 27,
+            "name": "@AMB_1020"
           }
         ]
       }
@@ -248,6 +167,6 @@
     "description": "",
     "id": "display-of-assignment-notes",
     "keyword": "Feature",
-    "uri": "CMKA/AssignmentNotes.feature"
+    "uri": "CMKA\u0026CM3A/StaffAssignments.feature"
   }
 ]

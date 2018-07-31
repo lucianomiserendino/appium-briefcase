@@ -34,19 +34,26 @@ Feature: Display of Assignment Notes
 		|environment   |userName          |password  |server                                   |refCat       | caseNum |dbType| 
 		|Integration   |chambers courtney |Test2020!|Appellate DC Development - CMKA           |Motions/Petitions | 15-3314  |CMKA  |
 	
-		
-		
-	
-	
-@Regression
-@AMB_1021_ 
-Scenario: 
+@Smoke		
+@AMB_1021 
+Scenario Outline: 
 	Staff members can be assigned to referrals and/or just cases. 
     Verify that staff assignments are displaying on the referral list page.
     Staff assignments linked to the referral are displayed
 	#These are staff assignments associated with the referral
+	
+	Given  User Navigates to  "<environment>" environment 
+	When  User enters Credentials to Login "<userName>" and "<password>" 
+	And User clicks on Send Key to Device 
+	Then User navigates to MobileBrifcase App 
+	And  user selects a "<server>" 
+	When User selects Judge , "<category>" and  "<case>" 
+	Then User  observes a collapsible panel entitled "Assignments" displays and expands the Assignments panel 
 	Then User observes there is an assignment for "Kyle Essley" and "Daniel Hay" 
 	
-	
+	Examples: 
+		|environment   |userName          |password  |server                                    |category          |case    |
+		|Integration   |chambers courtney |Test2020! |Appellate DC Development - CMKA           |Motions/Petitions |15-3314 |
+		
 	
 	

@@ -4,8 +4,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNED_DATES;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_NAME;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
-import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.APPELLATE_JUDGES;
-import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.COLLOTON_STEVEN;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.ASSIGNMENT_ASSIGNED_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.ASSIGNMENT_ASSIGNED_NOTE_DATE;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.ASSIGNMENT_ASSIGNED_NOTE_TEXT;
@@ -18,9 +16,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanelText;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ASSIGNMENTS;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getCollapsablePanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getText;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getUserCategory;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveDates;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
@@ -37,7 +33,6 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
-import gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -79,10 +74,6 @@ public class iOS_AssignmentNotesPage {
 	@iOSFindBy(xpath = "//*[contains(@name, 'Assigned')]")
 	public static List<MobileElement> assignedDates;
 
-	public void selectAUser() {
-		getUserCategory(APPELLATE_JUDGES, selectUser, COLLOTON_STEVEN);
-
-	}
 
 	public void selectCase(String category, String caseNum) {
 		selectCaseNumber(category, caseNum);
@@ -118,9 +109,6 @@ public class iOS_AssignmentNotesPage {
 
 		}
 
-		finally {
-			getCollapsablePanel(selectUser, Users.APPELLATE_JUDGES);
-		}
 
 	}
 

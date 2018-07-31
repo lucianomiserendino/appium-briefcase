@@ -47,6 +47,11 @@ public class AssignmentNotes_StepDefinitions {
 		page.verifyText();
 	}
 
+	@Then("^User observes there is an assignment for \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void user_observes_there_is_an_assignment_for_and(String assignmentForKyle, String assignmentForEssley)  {
+		page = new iOS_AssignmentNotesPage();
+		page.getAssignmentLinkedtoTheReferral(assignmentForKyle, assignmentForEssley);
+	}
 
 
 }
