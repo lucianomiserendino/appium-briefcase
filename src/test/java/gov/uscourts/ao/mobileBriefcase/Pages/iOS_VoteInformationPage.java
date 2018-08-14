@@ -1,5 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getCyv_code;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
@@ -11,14 +12,23 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGEs_INITIALS;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_EVENT;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.RELIEF;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.getText;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.VOTE_INFORMATION;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.changeDateFormat;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
+import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -26,11 +36,12 @@ import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
-public class iOS_VoteInformationPanelPage {
+public class iOS_VoteInformationPage {
 
-	public iOS_VoteInformationPanelPage() {
+	public iOS_VoteInformationPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
@@ -50,31 +61,73 @@ public class iOS_VoteInformationPanelPage {
 	public void getFilersInformation(FILERs_INFO info, DBType dbType, String pe_id, String caseId, String cyv_code,
 			String ccr_id) {
 		switch (info) {
-		case FILLRES_INFORMATION:
+		case VOTE_INFO_FILLRES_INFORMATION:
 
-			String uiFilerInformation = uiFilerInformation(FILERs_INFO.UI_FILER_INFORMATION, dbType, pe_id, caseId,
-					cyv_code);
-			String dbFilerInformation = dbFilerInformation(FILERs_INFO.DB_FILER_INFORMATION, dbType, pe_id, caseId,
-					cyv_code);
+			String voteInfoUifilerinformation = uiFilerInformation(FILERs_INFO.UI_FILER_INFORMATION, dbType, pe_id,
+					caseId, cyv_code);
+			String voteInfoDbFilerInformation = dbFilerInformation(FILERs_INFO.DB_FILER_INFORMATION, dbType, pe_id,
+					caseId, cyv_code);
 
-			assertEquals("FILER's INFO MISMATCH", dbFilerInformation, uiFilerInformation);
+			assertEquals("FILER's INFO MISMATCH", voteInfoDbFilerInformation, voteInfoUifilerinformation);
 
-			String uiFiledDate = uiFilerInformation(FILERs_INFO.UI_FILED_DATE, dbType, pe_id, caseId, cyv_code);
-			String dbFiledDate = dbFiledDate(dbType, pe_id, caseId, cyv_code);
+			String voteInfoUiFiledDate = uiFilerInformation(FILERs_INFO.UI_FILED_DATE, dbType, pe_id, caseId, cyv_code);
+			String voteInfoDbFiledDate = dbFiledDate(dbType, pe_id, caseId, cyv_code);
 
-			assertEquals("FILED DATE MISMATCH", dbFiledDate, uiFiledDate);
+			assertEquals("FILED DATE MISMATCH", voteInfoDbFiledDate, voteInfoUiFiledDate);
 
 			break;
-		case RELIEF:
+		case VOTE_INFO_RELIEF:
 
-			String uiRelief = getVoteInf(VOTE_INFORMATION, getAllColumns(dbType, getID(RELIEF, ccr_id)));
-			String dbRelief = getAllColumns(dbType, getID(RELIEF, ccr_id));
+			String voteInfoUiRelief = getVoteInf(VOTE_INFORMATION, getAllColumns(dbType, getID(RELIEF, ccr_id)));
+			String voteInfoDBRelief = getAllColumns(dbType, getID(RELIEF, ccr_id));
 
-			assertEquals("RELIEF MISMATCH", dbRelief, uiRelief);
+			assertEquals("RELIEF MISMATCH", voteInfoDBRelief, voteInfoUiRelief);
+			break;
+
+		case JUDGE_VOTE_FILLRES_INFORMATION:
+			String judgeVoteUifilerinformation = uiFilerInformatiONJudgeVotePage(FILERs_INFO.UI_FILER_INFORMATION,
+					dbType, pe_id, caseId, cyv_code);
+
+			String judgeVoteDbfilerinformation = dbFilerInformation(FILERs_INFO.DB_FILER_INFORMATION, dbType, pe_id,
+					caseId, cyv_code);
+			assertEquals("VOTE INFORMATION MISMATCH ON JUDGE VOTE DPF PAGE", judgeVoteDbfilerinformation,
+					judgeVoteUifilerinformation);
+
+			String judgeVoteUiFiledDate = uiFilerInformatiONJudgeVotePage(FILERs_INFO.UI_FILED_DATE, dbType, pe_id,
+					caseId, cyv_code);
+			String judgeVoteDbFiledDate = dbFiledDate(dbType, pe_id, caseId, cyv_code);
+
+			assertEquals("FILED DATE MISMATCH", judgeVoteDbFiledDate, judgeVoteUiFiledDate);
+
+			break;
+
+		case JUDGE_VOTE_RELIEF:
+
+			reliefsAreDisplayed(dbType, getID(RELIEF, ccr_id));
+
 			break;
 
 		default:
 			break;
+		}
+	}
+
+	public static void reliefsAreDisplayed(DBType dbtype, String query) {
+
+		List<String> dbResult = executeQuery(dbtype, query);
+		sort(dbResult);
+		try {
+			for (int i = 0; i < dbResult.size(); ++i) {
+
+				MobileElement uiResult = findElement(By.xpath("[contains(@name, '" + dbResult.get(i) + "')]"));
+
+				if (uiResult.isDisplayed()) {
+
+					assertTrue(uiResult.isDisplayed());
+				}
+			}
+		} catch (Exception e) {
+			e.getMessage();
 		}
 	}
 
@@ -114,7 +167,7 @@ public class iOS_VoteInformationPanelPage {
 		default:
 			break;
 		case UI_FILED_DATE:
-			information += changeDateFormat(filersInfo.split("Filed:")[1].trim(), "yyyy-MM-dd");
+			information += changeDateFormat(filersInfo.split("Filed:")[1].trim(),"MM/dd/yyyy", "yyyy-MM-dd");
 			break;
 		}
 		return information;
@@ -152,8 +205,34 @@ public class iOS_VoteInformationPanelPage {
 						+ element + "')]"));
 	}
 
+	/** verify it contains the judgeVote DPF */
+
+	public void verifyElementsAreDisplayed(String action, String enterVote, String label) {
+		clickOnPanel(ACTIONS, action);
+		assertElementIsDisplayed(action);
+		assertElementIsDisplayed(enterVote);
+		assertElementIsDisplayed(label);
+		assertTrue(isDisplayed(getLabel(label)) == true);
+
+	}
+
+	public void assertElementIsDisplayed(String element) {
+		assertTrue(elementIsDisplayed(element) == true);
+	}
+
+	public static MobileElement getLabel(String toggle) {
+		return findElement(By.xpath(locateElement(toggle) + "//following-sibling::XCUIElementTypeSwitch"));
+	}
+
+	public String uiFilerInformatiONJudgeVotePage(FILERs_INFO info, DBType dbType, String pe_id, String caseId,
+			String cyv_code) {
+		return filersInfo(info, getText(
+				getAllColumns(dbType, getCyv_code(getText(getID(FILERS_MIDDLE_NAME, pe_id), caseId), cyv_code))));
+
+	}
+
 	public enum FILERs_INFO {
-		FILLRES_INFORMATION, FILED_DATE, UI_FILER_INFORMATION, DB_FILER_INFORMATION, UI_FILED_DATE, RELIEF, JUDGE_INITIALS
+		VOTE_INFO_FILLRES_INFORMATION, JUDGE_VOTE_FILLRES_INFORMATION, FILED_DATE, UI_FILER_INFORMATION, DB_FILER_INFORMATION, UI_FILED_DATE, VOTE_INFO_RELIEF, JUDGE_VOTE_RELIEF, JUDGE_INITIALS
 	}
 
 }

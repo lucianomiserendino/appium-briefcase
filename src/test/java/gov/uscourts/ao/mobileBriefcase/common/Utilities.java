@@ -53,7 +53,6 @@ public class Utilities extends Base {
 		List<String> referrals = new ArrayList<>();
 		List<MobileElement> el = elements;
 		Iterator<MobileElement> itr = el.iterator();
-		performPageLoad();
 		while (itr.hasNext()) {
 
 			dest = itr.next().getText().split(split);
@@ -71,13 +70,12 @@ public class Utilities extends Base {
 		List<MobileElement> element = elements;
 
 		Iterator<MobileElement> itr = element.iterator();
-		performPageLoad();
 		while (itr.hasNext()) {
 			try {
 
 				dates = itr.next().getText().split(split);
 
-				referrals.add(changeDateFormat(dates[index].trim(), format));
+				referrals.add(changeDateFormat(dates[index].trim(), "MM/dd/yyyy", format));
 
 			} catch (Exception e) {
 
@@ -149,9 +147,9 @@ public class Utilities extends Base {
 
 	}
 
-	public static String changeDateFormat(String element, String format) {
-		format1 = new SimpleDateFormat("MM/dd/yyyy");
-		format2 = new SimpleDateFormat(format);
+	public static String changeDateFormat(String element, String actualFormat, String modiffiedFormat) {
+		format1 = new SimpleDateFormat(actualFormat);
+		format2 = new SimpleDateFormat(modiffiedFormat);
 		java.util.Date date = null;
 
 		try {
@@ -400,9 +398,8 @@ public class Utilities extends Base {
 		try {
 			for (int i = 0; i < dbResult.size(); ++i) {
 
-				MobileElement uiResult = findElement(
-						By.xpath(xpath + "[contains(@name, '" + dbResult.get(i) + "')]"));
-		
+				MobileElement uiResult = findElement(By.xpath(xpath + "[contains(@name, '" + dbResult.get(i) + "')]"));
+
 				if (uiResult.isDisplayed())
 					isDisplayed = true;
 			}

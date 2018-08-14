@@ -55,6 +55,7 @@ public class iOS_AssignmentCategoriesPage implements Constants {
 	public static MobileElement staffAttorney;
 
 	public void selectAnAttorney() {
+
 		getUserCategory(STAFF_ATTORNEYS, selectUser, BROWN_BENJAMIN);
 
 	}
@@ -76,6 +77,7 @@ public class iOS_AssignmentCategoriesPage implements Constants {
 		List<String> uiRefCategories = getReferralCategories();
 		List<String> dbuiRefCategories = executeQuery(DBType.CMKA,REFERRAL_CATEGORIES);
 		assertDbContainsAllFromUi(dbuiRefCategories, uiRefCategories);
+		getCollapsablePanel(selectUser, STAFF_ATTORNEYS);
 	}
 
 	public static void assertDbContainsAllFromUi(List<String> ui, List<String> db) {
@@ -87,12 +89,7 @@ public class iOS_AssignmentCategoriesPage implements Constants {
 		} catch (AssertionError e) {
 			e.printStackTrace();
 		}
-
-		finally {
-
-			getCollapsablePanel(selectUser, STAFF_ATTORNEYS);
-
-		}
+	
 	}
 
 	public static List<String> getListOfCategories() {

@@ -9,6 +9,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getPanel;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.scroll;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertTrue;
@@ -35,14 +36,12 @@ public class iOS_ActionsPanelPage {
 	@iOSFindBy(xpath = "//*[contains(@name, 'Actions')]")
 	public static MobileElement actions;
 
-	
 	public void selectCase(String category, String caseNum) {
 		selectCaseNumber(category, caseNum);
 	}
 
-
 	public void verifyActionsPanelIsDisplayed(DBType dbtype, String actionsPanel) {
-		
+
 		getPanel(dbtype, MBR_EVENT, " THERE'RE NO ACTIONS OR MBR_EVENT TABLE IS EMPTY ", actionsPanel);
 
 	}
@@ -92,8 +91,13 @@ public class iOS_ActionsPanelPage {
 				MobileElement actions = findElement(
 						By.xpath("//XCUIElementTypeTable[@name='DocumentList']/child::*//*[contains(@name, '"
 								+ dbApplicableActions.get(i) + "')]"));
-				if (actions.isDisplayed())
+				if (actions.isDisplayed()) {
 					isDisplayed = true;
+				} else {
+					scroll(1, "down");
+					isDisplayed = true;
+				}
+
 			}
 		} catch (Exception e) {
 			isDisplayed = false;
@@ -101,7 +105,5 @@ public class iOS_ActionsPanelPage {
 		return isDisplayed;
 
 	}
-
-
 
 }

@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getEL_Function;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_ACC_CRT;
@@ -18,7 +19,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SCREENING_PANELS;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getStreamOfRandomInts;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.*;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getUserCategory;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
@@ -72,6 +73,7 @@ public class iOS_DBDocketingDPFPage implements Constants {
 	}
 
 	public void selectCase(String caseNumber) {
+		refresh();
 		selectCaseNumber(SCREENING_PANELS, caseNumber);
 	}
 
@@ -168,18 +170,17 @@ public class iOS_DBDocketingDPFPage implements Constants {
 
 	public void getDBNotes(String mbrNoteCourtUsersElId, String uiDestrictParam, String field1, String value1,
 			String field2, String value2, String field3, String value3) {
-		try {
-
-			if (getEL_Function(mbrNoteCourtUsersElId, 5).equals(uiDestrictParam)) {
+	try {
+		
+				assertEquals(getEL_Function(mbrNoteCourtUsersElId, 5), uiDestrictParam);
+				
 				assertEquals(getAllColumns(DBType.CMKA,field1), value1);
 
 				assertEquals(getAllColumns(DBType.CMKA,field2), value2);
 		
 				assertEquals(getAllColumns(DBType.CMKA,field3), value3);
 		
-			} else {
-	
-			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

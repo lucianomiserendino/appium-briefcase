@@ -13,7 +13,7 @@ public class DBDocketingDPF_StepDefinitions {
 	@Given("^Select Judge Colloton , Screening Panels \"([^\"]*)\"$")
 	public void select_Judge_Colloton_Screening_Panels(String caseNumber) {
 		page = new iOS_DBDocketingDPFPage();
-		page.selectAJudje();
+		//page.selectAJudje();
 		page.selectCase(caseNumber);
 	}
 

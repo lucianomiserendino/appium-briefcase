@@ -133,7 +133,7 @@ public class iOS_StaffAssignments {
 
 	public static String getAssignedDate(String assignmentDate) {
 		return changeDateFormat(getAssignment(assignmentDate).getText()
-				.substring(getAssignment(assignmentDate).getText().length() - 9).trim(), "yyyy-MM-dd");
+				.substring(getAssignment(assignmentDate).getText().length() - 9).trim(),"MM/dd/yyyy", "yyyy-MM-dd");
 	}
 
 }

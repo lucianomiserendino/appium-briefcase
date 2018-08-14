@@ -179,13 +179,12 @@ public class DBUtilities {
 	public static String getID(String query, String id) {
 		return query.replace("?", id);
 	}
-
 	public static String getText(String query, String text) {
-		return query.replace("text", text);
+		return query.replace("TEXT", text);
 	}
-	
+
 	public static String getCyv_code(String query, String text) {
-		return query.replace("Code", text);
+		return query.replace("CODE", text);
 	}
 
 	public static String getPE_ID(DBType dbType, String judgeName) {

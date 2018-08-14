@@ -23,7 +23,6 @@ public class AssignmentCategories_StepDefinitions {
 
 	@Given("^User selects SA Benjamin Brown and assignment type \"([^\"]*)\"$")
 	public void user_selects_SA_Benjamin_Brown_and_assignment_type(String assignmentType){
-		page.selectAnAttorney();
 
 		page.selectAssignmentType();
 	}
