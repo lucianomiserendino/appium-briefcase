@@ -71,9 +71,9 @@ public class iOS_ReferralCategoriesPage {
 		}
 	}
 
-	public void getReferralCategories(DBType dbtype, String pe_id) {
+	public void getReferralCategories(DBType dbtype, String query) {
 		refresh();
-		referralCategories(dbtype, getID(DB_LIST_OF_CATEGORIES, pe_id));
+		System.out.println(referralCategories(dbtype, query));
 
 	}
 
@@ -85,7 +85,7 @@ public class iOS_ReferralCategoriesPage {
 			for (int i = 0; i < dbReferralCategories.size(); ++i) {
 				scroll(1, "down");
 				performPageLoad();
-				MobileElement referrals = waitForElement(findElement(By.id(dbReferralCategories.get(i))));
+				MobileElement referrals = waitForElement(findElement(By.xpath("//*[contains(@name, '"+dbReferralCategories.get(i)+"')]")));
 				assertTrue(referrals.isDisplayed());
 
 			}

@@ -1,7 +1,7 @@
 Feature: Display of Assignment Notes 
 
 	
-@Smoke
+
 @AMB_1033 
    Scenario Outline: 
 	Display of Assignment Notes.
@@ -31,7 +31,7 @@ Feature: Display of Assignment Notes
 		|environment   |userName          |password  |server                                   |refCat       | caseNum |dbType| 
 		|Integration   |chambers courtney |Test2020!|Appellate DC Development - CMKA           |Motions/Petitions | 15-3314  |CMKA  |
 	
-		
+	@Smoke	
 	@AMB_1020 
 Scenario Outline: 
 	Staff members can be assigned to referrals and/or just cases. 

@@ -14,7 +14,7 @@ public class Queries {
 	}
 
 	public static final String PE_ID = "(SELECT  PE_ID FROM PERSON, PERSONROLE WHERE "
-			+ "PE_PR_PRID=PR_PRID AND PE_RT_CODE='jud' and PR_LAST_NAME='text')";
+			+ "PE_PR_PRID=PR_PRID AND PE_RT_CODE='jud' and PR_LAST_NAME='TEXT')";
 	// Query to find appellate judge
 	public static final String COLLOTONs_PE_ID = "(SELECT  PE_ID FROM PERSON, PERSONROLE WHERE "
 			+ "PE_PR_PRID=PR_PRID AND PE_RT_CODE='jud' and PR_LAST_NAME='Colloton')";
@@ -193,7 +193,7 @@ public class Queries {
 
 	// Query to get valid categories for the logged in user
 	public static final String DB_LIST_OF_CATEGORIES = "SELECT DISTINCT (CYV_CATEGORY) FROM "
-			+ "CHM_MOBILE_REFERRAL, CHM_REFTYPE_VAL WHERE  CMR_JU_PE_ID = \"?\" AND CMR_DATE_END IS NULL  AND CMR_CYV_CODE = CYV_CODE AND CYV_IS_BRIEFCASE = 'y'";
+			+ "CHM_MOBILE_REFERRAL, CHM_REFTYPE_VAL WHERE  CMR_JU_PE_ID = ? AND CMR_DATE_END IS NULL  AND CMR_CYV_CODE = CYV_CODE AND CYV_IS_BRIEFCASE = 'y'";
 
 	public static final String NON_ORALLY_ARGUED_CASES = "select distinct (cyv_category) from chm_mobile_referral, chm_reftype_val\n"
 			+ "where \n" + "cmr_ju_pe_id = ? and\n" + "cmr_date_end is null and\n" + "cmr_cyv_code = cyv_code and\n"
@@ -319,6 +319,7 @@ public class Queries {
 			+ " on chv_crj_id = crj_id and chv_date_end is null left join chm_vote_val on chv_cvv_code = cvv_code where a.ccr_id = ? and b.ccr_date_end is null and "
 			+ "NVL(cpr_vote_complete,'') <> 'y' and NVL(cpr_vote_req,'') <> 'n' and rl_list_text='TEXT'  order by  ju_initials desc";
 	
-
+	public static final String REFERRAL_CATEGORIES_FOR_STAFFATTORNEY="select distinct(sfa_display) from stfaty_mobile_referral, stfaty_ref_assign, "
+			+ "stfaty_assign_val where smr_ra_id = ra_id and ra_pe_id = ? and smr_sfa_code = sfa_code and smr_date_end is null";
 	
 }

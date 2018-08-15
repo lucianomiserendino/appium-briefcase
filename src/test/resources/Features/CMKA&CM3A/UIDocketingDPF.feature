@@ -3,7 +3,7 @@ Feature: note DPF UI
 
 
 
-
+@Smoke
 @AMB_1055 
 Scenario Outline: 
 	Verify when an action is selected that contains the note DPF, the note DPF UI displays.
@@ -21,7 +21,7 @@ Scenario Outline:
 	Examples: 
 		|environment   |userName          |password  |server                                   |refCategory       | caseNume |dbType| el_id|
 		|Integration   |chambers courtney |Test2020!|Appellate DC Development - CMKA           |Motions/Petitions | 15-3314  |CMKA  |3060  |
-		|Testing       |Chambers Haenni   |Test2017!|Appellate DC Installation Testing - CM3A  |Motion/Petition   | 12-6627  |CM3A  |4260  |
+		#|Testing       |Chambers Haenni   |Test2017!|Appellate DC Installation Testing - CM3A  |Motion/Petition   | 12-6627  |CM3A  |4260  |
 		
 		
 		

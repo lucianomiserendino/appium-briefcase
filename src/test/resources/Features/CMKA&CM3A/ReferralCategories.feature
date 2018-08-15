@@ -1,12 +1,13 @@
-Feature: Referral Categories display on the dashboard for the judge 
+Feature: Referral Categories display on the dashboard for the judge and SAs
 
 
 
 
 @Smoke 
 @AMB_956 
+@AMB_1120
 Scenario Outline: 
-	Referral categories display on the dashboard for the judge
+	Referral categories display on the dashboard for the judge and SAs
 	
 	Given  User Navigates to  "<environment>" environment 
 	When  User enters Credentials to Login "<userName>" and "<password>" 
@@ -20,9 +21,10 @@ Scenario Outline:
 	# The bookmarked category is also not included in this task.
 	
 	Examples: 
-		|environment   |userName          |password  | server                                  |judgeName  |dbType |
-		|Integration   |chambers courtney |Test2020! | Appellate DC Development - CMKA         |Colloton   |CMKA   | 
-		|Testing       |Chambers Haenni   |Test2017! |Appellate DC Installation Testing - CM3A |Williams   |CM3A   | 
+		|environment   |userName             |password  | server                                  |judgeName  |dbType       |
+		|Integration   |chambers courtney    |Test2020! | Appellate DC Development - CMKA         |Colloton   |CMKA         | 
+		|Integration   |KristenStaffAttorney |Test2022! | Appellate DC Development - CMKA         |434        |CMKA-StaffAtt| 
+		#|Testing       |Chambers Haenni      |Test2017! |Appellate DC Installation Testing - CM3A |Williams   |CM3A         | 
 		
 		
 		

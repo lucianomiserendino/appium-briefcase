@@ -22,8 +22,8 @@ public class BriefcaseUsers extends Base {
 	private static final int BANKRUPTCY_JUDGE_SALADINO_THOMAS_X = 176;
 	private static final int BANKRUPTCY_JUDGE_SALADINO_THOMAS_Y = 338;
 
-	private static final int MOTIONS_PETITIONS_X = 195;
-	private static final int MOTIONS_PETITIONS_Y = 697;
+	private static final int MOTIONS_PETITIONS_X = 268;
+	private static final int MOTIONS_PETITIONS_Y = 338;
 
 	private static final int DASHBOARD_X = 33;
 	private static final int DASHBOARD_Y = 116;

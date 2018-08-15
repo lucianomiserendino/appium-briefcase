@@ -3,7 +3,6 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
-import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_JudgeVoteDPFPage;
 
 public class JudgeVoteDPF_StepDefinitions {
@@ -21,9 +20,9 @@ public class JudgeVoteDPF_StepDefinitions {
 			String viewVotes, String dbType, String ccrId) {
 
 		if (dbType.equals("cmka")) {
-			page.selectViewVotes(DBType.CMKA, Queries.JUDGE_VOTE_DPF_RELIEF, ccrId, viewVotes);
+			page.selectViewVotes(DBType.CMKA, ccrId, viewVotes);
 		} else {
-			page.selectViewVotes(DBType.CM3A, Queries.JUDGE_VOTE_DPF_RELIEF, ccrId, viewVotes);
+			page.selectViewVotes(DBType.CM3A, ccrId, viewVotes);
 		}
 	}
 
@@ -36,6 +35,11 @@ public class JudgeVoteDPF_StepDefinitions {
 		} else {
 			page.verifyJudgesInfo(DBType.CM3A, ccrId);
 		}
+	}
+
+	@Then("^user selects a vote and adds notes to a vote$")
+	public void user_selects_a_vote_and_adds_notes_to_a_vote() {
+		page.getVoteSelection(DBType.CMKA, "35683");
 	}
 
 }

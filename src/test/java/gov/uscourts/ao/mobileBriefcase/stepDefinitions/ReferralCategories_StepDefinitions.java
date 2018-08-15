@@ -1,7 +1,8 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PENDING_TASK_ASSIGNMENTS;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.*;
+
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.*;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -16,9 +17,11 @@ public class ReferralCategories_StepDefinitions {
 			String judge) {
 		page = new iOS_ReferralCategoriesPage();
 		if (dbType.equals("CMKA")) {
-			page.getReferralCategories(DBType.CMKA, getPE_ID(DBType.CMKA, judge));
-		} else {
-			page.getReferralCategories(DBType.CM3A, getPE_ID(DBType.CM3A, judge));
+			page.getReferralCategories(DBType.CMKA,getID(DB_LIST_OF_CATEGORIES, getPE_ID(DBType.CMKA, judge)));
+		} else if(dbType.equals("CMKA-StaffAtt")) {
+			page.getReferralCategories(DBType.CMKA, getID(REFERRAL_CATEGORIES_FOR_STAFFATTORNEY, judge));
+	}else {
+			page.getReferralCategories(DBType.CM3A,getID(DB_LIST_OF_CATEGORIES, getPE_ID(DBType.CM3A, judge)));
 		}
 	}
 	

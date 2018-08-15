@@ -18,8 +18,8 @@ Scenario Outline:
 	
 	Examples: 
 		|environment   |userName          |password  |server                                   |refCategory       | caseNume |dbType| cmr_id |
-		#|Integration   |chambers courtney |Test2020!|Appellate DC Development - CMKA           |Motions/Petitions | 15-3314  |CMKA  | 2303021|
-		|Testing       |Chambers Haenni   |Test2017!|Appellate DC Installation Testing - CM3A  |Motion/Petition   | 12-6627  |CM3A  | 364   |
+		|Integration   |chambers courtney |Test2020!|Appellate DC Development - CMKA           |Motions/Petitions | 15-3314  |CMKA  | 2303021|
+		#|Testing       |Chambers Haenni   |Test2017!|Appellate DC Installation Testing - CM3A  |Motion/Petition   | 12-6627  |CM3A  | 364   |
 		
 		
 		

@@ -9,6 +9,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_INITIAL;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_INITIALS;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_VOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_VOTE_DATE;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGE_VOTE_DPF_RELIEF;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
@@ -19,6 +20,9 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utilities.changeDateFormat;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElements;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getStreamOfRandomInts;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.sendKeys;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertTrue;
 
@@ -41,19 +45,24 @@ public class iOS_JudgeVoteDPFPage {
 	@iOSFindBy(xpath = "//*[contains(@name, 'Close')]")
 	public static MobileElement close;
 
+	@iOSFindBy(xpath = "//XCUIElementTypeTextView[2]")
+	public static MobileElement commentField;
+	
+	@iOSFindBy(xpath = "//*[contains(@name, 'Apply')]")
+	public static MobileElement applyBtn;
+
 	public void selectAction(String action) {
 		clickOnPanel(ACTIONS, action);
 	}
 
 	/** verify relief is displayed on the popup page */
-	public void selectViewVotes(DBType dbType, String query, String ccr_id, String viewVotes) {
+	public void selectViewVotes(DBType dbType, String ccr_id, String viewVotes) {
 
-		String reliefText = getAllColumns(dbType, getID(query, ccr_id));
+		String relief = getRelief(dbType, JUDGE_VOTE_DPF_RELIEF, ccr_id);
 
-		click("//XCUIElementTypeStaticText[contains(@name, '" + reliefText
+		click("//XCUIElementTypeStaticText[contains(@name, '" + relief
 				+ "')]/preceding-sibling::XCUIElementTypeStaticText[contains(@name, '" + viewVotes + "')]");
-
-		elementIsDisplayed(reliefText);
+		elementIsDisplayed(relief);
 
 	}
 
@@ -125,6 +134,32 @@ public class iOS_JudgeVoteDPFPage {
 		finally {
 			clickOn(close);
 		}
+	}
+
+	public void getVoteSelection(DBType dbType, String ccr_id) {
+		String reliefText = getRelief(dbType, JUDGE_VOTE_DPF_RELIEF, ccr_id);
+		click("//XCUIElementTypeStaticText[contains(@name, '" + reliefText
+				+ "')]/preceding-sibling::XCUIElementTypeStaticText[2]");
+
+		List<MobileElement> votes = findElements(
+				By.xpath("//XCUIElementTypeTable[@name='VoteOptions']/XCUIElementTypeCell"));
+		for (int i = 0; i < votes.size(); i++) {
+			MobileElement vote = votes.get(0);
+			vote.click();
+
+			click("//XCUIElementTypeStaticText[contains(@name, '" + reliefText
+					+ "')]/preceding-sibling::XCUIElementTypeStaticText[3]");
+
+			
+			commentField.clear();
+			sendKeys(commentField, getStreamOfRandomInts());
+
+		}
+
+	}
+
+	public String getRelief(DBType dbType, String query, String ccr_id) {
+		return getAllColumns(dbType, getID(query, ccr_id));
 	}
 
 }
