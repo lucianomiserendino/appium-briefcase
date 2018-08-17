@@ -36,10 +36,12 @@ public class JudgeVoteDPF_StepDefinitions {
 			page.verifyJudgesInfo(DBType.CM3A, ccrId);
 		}
 	}
-
-	@Then("^user selects a vote and adds notes to a vote$")
-	public void user_selects_a_vote_and_adds_notes_to_a_vote() {
-		page.getVoteSelection(DBType.CMKA, "35683");
+	
+	@Then("^user selects a vote and adds notes to a vote  \"([^\"]*)\"$")
+	public void user_selects_a_vote_and_adds_notes_to_a_vote(String ccrID){
+		page.getVoteSelection(DBType.CMKA, ccrID);
 	}
+	
+
 
 }
