@@ -183,7 +183,7 @@ public class DBUtilities {
 		return query.replace("TEXT", text);
 	}
 
-	public static String getCyv_code(String query, String text) {
+	public static String getCode(String query, String text) {
 		return query.replace("CODE", text);
 	}
 

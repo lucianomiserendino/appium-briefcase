@@ -1,6 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.*;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
@@ -63,7 +63,7 @@ public class iOS_LoginPage extends Base {
 	public void selectEnvironment(String env) {
 
 		performPageLoad();
-		clickOnPanel(env);
+		clickOnElement(env);
 	}
 
 	public void sendCredentials(String Username,String Password) {
@@ -84,7 +84,7 @@ public class iOS_LoginPage extends Base {
 	}
 
 	public void getServer(String server) {
-		clickOnPanel(server);
+		clickOnElement(server);
 		performPageLoad();
 	}
 

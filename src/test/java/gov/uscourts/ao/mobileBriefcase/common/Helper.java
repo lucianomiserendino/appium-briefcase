@@ -67,7 +67,7 @@ public class Helper {
 
 	}
 
-	public static void clickOnPanel(String element) {
+	public static void clickOnElement(String element) {
 		if (elementIsDisplayed(element) == true)
 			;
 		click(locateElement(element));

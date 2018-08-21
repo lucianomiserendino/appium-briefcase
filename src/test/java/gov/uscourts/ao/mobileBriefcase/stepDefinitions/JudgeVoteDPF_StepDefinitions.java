@@ -1,5 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
@@ -9,9 +10,14 @@ public class JudgeVoteDPF_StepDefinitions {
 
 	iOS_JudgeVoteDPFPage page;
 
+	@Given("^user selects the \"([^\"]*)\" and case \"([^\"]*)\"$")
+	public void user_selects_the_and_case(String category, String caseNum) {
+		page = new iOS_JudgeVoteDPFPage();
+		page.selectCase(category, caseNum);
+	}
+
 	@When("^select  action \"([^\"]*)\"$")
 	public void select_action(String action) {
-		page = new iOS_JudgeVoteDPFPage();
 		page.selectAction(action);
 	}
 
@@ -37,11 +43,15 @@ public class JudgeVoteDPF_StepDefinitions {
 		}
 	}
 	
-	@Then("^user selects a vote and adds notes to a vote  \"([^\"]*)\"$")
-	public void user_selects_a_vote_and_adds_notes_to_a_vote(String ccrID){
-		page.getVoteSelection(DBType.CMKA, ccrID);
-	}
 	
+	@Then("^user selects a vote and adds notes to a vote\\. Use  db \"([^\"]*)\" ,ccrID \"([^\"]*)\" , elID  \"([^\"]*)\" , actionName \"([^\"]*)\"$")
+	public void user_selects_a_vote_and_adds_notes_to_a_vote_Use_db_ccrID_elID_actionName(String dbType, String ccr_id, String elID, String actionName){
+		if (dbType.equals("cmka")) {
+			page.getVoteSelection(DBType.CMKA, ccr_id, elID,actionName);
+		} else {
+			page.getVoteSelection(DBType.CM3A, ccr_id, elID,actionName);
+		}
+	}
 
 
 }

@@ -15,12 +15,15 @@ public class AssignmentNotes_StepDefinitions {
 		page.selectCase(category, caseNum);
 
 	}
+
 	
-	@Then("^User  observes a collapsible panel entitled \"([^\"]*)\" is displayed and expands the Assignments panel$")
-	public void user_observes_a_collapsible_panel_entitled_is_displayed_and_expands_the_Assignments_panel(String assignmentOnReferral)  {
-	page.verifyAssignmentIsDisplayed(assignmentOnReferral);
+	@Then("^User  observes a collapsible panel entitled \"([^\"]*)\" displays and expands the assignments panel$")
+	public void user_observes_a_collapsible_panel_entitled_displays_and_expands_the_assignments_panel(String assignmentOnReferral)  {
+
+		page.verifyAssignmentIsDisplayed(assignmentOnReferral);
 	}
 
+	
 	@Given("^User selects \"([^\"]*)\"$")
 	public void user_selects(String assignment) {
 		page.selectAssignment(assignment);

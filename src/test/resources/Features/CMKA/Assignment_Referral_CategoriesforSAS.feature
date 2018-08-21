@@ -20,7 +20,7 @@ Scenario Outline:
 	
 	Examples: 
 		|environment   |userName             |password     |server                            |
-		|Integration   |SysadminKasabolotova |Asalta6268!z |Appellate DC Development - CMKA   |
+		|Integration   |SysadminKasabolotova |Asalta6268!Z |Appellate DC Development - CMKA   |
 		
 		
 

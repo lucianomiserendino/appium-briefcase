@@ -28,9 +28,8 @@ public class StaffAssignments_StepDefinitions {
 			page.getAssignmentLinkedtoCase(assignment, DBType.CMKA, cmr_cs_caseid, cha_ju_pe_id, chd_cha_id);
 		} else {
 			page.getAssignmentLinkedtoCase(assignment, DBType.CM3A, cmr_cs_caseid, cha_ju_pe_id, chd_cha_id);
-
 		}
-
 	}
+
 
 }

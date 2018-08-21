@@ -19,7 +19,7 @@ Scenario Outline:
 	Examples: 
 		|environment   |userName          |password  |server                                   |judgeName |dbType |
 		|Integration   |chambers courtney |Test2020! |Appellate DC Development - CMKA          |Colloton  |CMKA   | 
-		#|Testing       |Chambers Haenni   |Test2017! |Appellate DC Installation Testing - CM3A |Williams  |CM3A|  | 
+		|Testing       |judgewilliams   |Testpass1!  |Appellate DC Installation Testing - CM3A |Williams  |CM3A|  | 
 	
 	
 	

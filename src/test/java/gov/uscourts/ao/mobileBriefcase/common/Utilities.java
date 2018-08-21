@@ -1,11 +1,12 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.selectReferralCategory;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.*;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForElement;
@@ -93,7 +94,7 @@ public class Utilities extends Base {
 			if (executeQuery(dbtype, query).size() > 0) {
 				performPageLoad();
 				assertTrue(message, elementIsDisplayed(element) == true);
-				clickOnPanel(element);
+				clickOnElement(element);
 			} else {
 				assertTrue(!(executeQuery(dbtype, query).size() > 0));
 
@@ -207,21 +208,6 @@ public class Utilities extends Base {
 
 	}
 
-	public static void clickOn(MobileElement element) {
-
-		try {
-			if (waitForElement(element).isDisplayed()) {
-				element.click();
-			} else {
-				scroll(1, "down");
-			}
-
-		} catch (Exception e) {
-			e.getMessage();
-		}
-
-	}
-
 	public static void captureScreenShots() {
 
 		String path = "./src/test/resources/pdfScreenShots";
@@ -298,8 +284,8 @@ public class Utilities extends Base {
 		navigateBack(element, user);
 	}
 
-	public static String getIndex(DataTable userCredentials, String object) {
-		List<Map<String, String>> credentials = userCredentials.asMaps(String.class, String.class);
+	public static String getIndex(DataTable table, String object) {
+		List<Map<String, String>> credentials = table.asMaps(String.class, String.class);
 		return credentials.get(0).get(object);
 	}
 
@@ -385,7 +371,7 @@ public class Utilities extends Base {
 
 	public static void selectCaseNumber(String category, String caseNum) {
 		refresh();
-		clickOnPanel(category);
+		clickOnElement(category);
 		performPageLoad();
 		selectCase(locateElement(caseNum));
 

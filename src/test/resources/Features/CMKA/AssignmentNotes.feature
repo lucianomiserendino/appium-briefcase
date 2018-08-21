@@ -1,7 +1,7 @@
 Feature: Display of Assignment Notes 
 
 	
-
+@Smoke
 @AMB_1033 
    Scenario Outline: 
 	Display of Assignment Notes.
@@ -19,7 +19,7 @@ Feature: Display of Assignment Notes
 	Then User navigates to MobileBrifcase App 
 	And  user selects a "<server>" 
 	When User selects Judge, then   "<refCat>" and  "<caseNum>" 
-	Then User  observes a collapsible panel entitled "Assignments" displays and expands the Assignments panel 
+	Then User  observes a collapsible panel entitled "Assignments" displays and expands the assignments panel 
 	Given User selects "Daniel Hay" 
 	Then User verifies the "Assignment Notes" banner displays 
 	Then User verifies the date of the assignment note displays,left justified 
@@ -32,7 +32,7 @@ Feature: Display of Assignment Notes
 		|Integration   |chambers courtney |Test2020!|Appellate DC Development - CMKA           |Motions/Petitions | 15-3314  |CMKA  |
 	
 	@Smoke	
-	@AMB_1020 
+	@AMB_1021
 Scenario Outline: 
 	Staff members can be assigned to referrals and/or just cases. 
     Verify that staff assignments are displaying on the referral list page.

@@ -85,6 +85,7 @@ public class iOS_StaffAssignments {
 		uiCaseAssignment.add(assignment);
 		List<String> dbCaseAssignment = executeQuery(dbtype, query);
 		assertTrue("RECORD COUNT MISMATCH ", dbCaseAssignment.containsAll(uiCaseAssignment));
+
 	}
 
 	public static String getAssignmentDateType(Actions action, String assignment) {
@@ -133,7 +134,7 @@ public class iOS_StaffAssignments {
 
 	public static String getAssignedDate(String assignmentDate) {
 		return changeDateFormat(getAssignment(assignmentDate).getText()
-				.substring(getAssignment(assignmentDate).getText().length() - 9).trim(),"MM/dd/yyyy", "yyyy-MM-dd");
+				.substring(getAssignment(assignmentDate).getText().length() - 9).trim(), "MM/dd/yyyy", "yyyy-MM-dd");
 	}
 
 }

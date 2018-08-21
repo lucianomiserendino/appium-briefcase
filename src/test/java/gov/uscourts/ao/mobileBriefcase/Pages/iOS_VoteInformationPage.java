@@ -2,7 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getCyv_code;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getCode;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.FILED_DATE;
@@ -133,18 +133,18 @@ public class iOS_VoteInformationPage {
 
 	public String uiFilerInformation(FILERs_INFO info, DBType dbType, String pe_id, String caseId, String cyv_code) {
 		return filersInfo(info, getVoteInf(VOTE_INFORMATION,
-				getAllColumns(dbType, getCyv_code(getText(getID(FILERS_MIDDLE_NAME, pe_id), caseId), cyv_code))));
+				getAllColumns(dbType, getCode(getText(getID(FILERS_MIDDLE_NAME, pe_id), caseId), cyv_code))));
 
 	}
 
 	public String dbFilerInformation(FILERs_INFO info, DBType dbType, String pe_id, String caseId, String cyv_code) {
 		return filersInfo(info,
-				(getAllColumns(dbType, getCyv_code(getText(getID(FILERS_INOFRMATION, pe_id), caseId), cyv_code))));
+				(getAllColumns(dbType, getCode(getText(getID(FILERS_INOFRMATION, pe_id), caseId), cyv_code))));
 
 	}
 
 	public String dbFiledDate(DBType dbType, String pe_id, String caseId, String cyv_code) {
-		return getAllColumns(dbType, getCyv_code(getText(getID(FILED_DATE, pe_id), caseId), cyv_code));
+		return getAllColumns(dbType, getCode(getText(getID(FILED_DATE, pe_id), caseId), cyv_code));
 
 	}
 
@@ -167,7 +167,7 @@ public class iOS_VoteInformationPage {
 		default:
 			break;
 		case UI_FILED_DATE:
-			information += changeDateFormat(filersInfo.split("Filed:")[1].trim(),"MM/dd/yyyy", "yyyy-MM-dd");
+			information += changeDateFormat(filersInfo.split("Filed:")[1].trim(), "MM/dd/yyyy", "yyyy-MM-dd");
 			break;
 		}
 		return information;
@@ -226,8 +226,8 @@ public class iOS_VoteInformationPage {
 
 	public String uiFilerInformatiONJudgeVotePage(FILERs_INFO info, DBType dbType, String pe_id, String caseId,
 			String cyv_code) {
-		return filersInfo(info, getText(
-				getAllColumns(dbType, getCyv_code(getText(getID(FILERS_MIDDLE_NAME, pe_id), caseId), cyv_code))));
+		return filersInfo(info,
+				getText(getAllColumns(dbType, getCode(getText(getID(FILERS_MIDDLE_NAME, pe_id), caseId), cyv_code))));
 
 	}
 
