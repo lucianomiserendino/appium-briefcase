@@ -29,7 +29,7 @@ Feature: Display of Assignment Notes
 	
 		Examples: 
 		|environment   |userName          |password  |server                                   |refCat       | caseNum |dbType| 
-		|Integration   |chambers courtney |Test2020!|Appellate DC Development - CMKA           |Motions/Petitions | 15-3314  |CMKA  |
+		|Integration   |chambers courtney |Test2021!|Appellate DC Development - CMKA           |Motions/Petitions | 15-3314  |CMKA  |
 	
 	@Smoke	
 	@AMB_1021
@@ -50,7 +50,7 @@ Scenario Outline:
 	
 	Examples: 
 		|environment   |userName          |password  |server                                    |assignmnet         |category          |case    |
-		|Integration   |chambers courtney |Test2020! |Appellate DC Development - CMKA           |Chambers Courtney  |Motions/Petitions |15-3314 |
+		|Integration   |chambers courtney |Test2021! |Appellate DC Development - CMKA           |Chambers Courtney  |Motions/Petitions |15-3314 |
 		
 	
 	
