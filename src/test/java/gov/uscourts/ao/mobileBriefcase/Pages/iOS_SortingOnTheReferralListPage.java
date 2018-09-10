@@ -56,9 +56,6 @@ public class iOS_SortingOnTheReferralListPage {
 	@iOSFindBy(xpath = "//XCUIElementTypeButton[@name=' ↑ Case #']")
 	public static MobileElement caseUpArrowBtn;
 
-	public static String cmka = "Motions/Petitions";
-	public static String cm5a = "Motion/Petition";
-
 	public void clickOnMotionsPetitions(String category) {
 		refresh();
 		clickOnElement(category);

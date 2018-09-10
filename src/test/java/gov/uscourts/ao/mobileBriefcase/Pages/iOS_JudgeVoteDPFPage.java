@@ -23,6 +23,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElements;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getParameter;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getStreamOfRandomInts;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
@@ -33,6 +34,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
@@ -41,6 +43,7 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class iOS_JudgeVoteDPFPage {
@@ -71,6 +74,7 @@ public class iOS_JudgeVoteDPFPage {
 	public static MobileElement cancel;
 	@iOSFindBy(id = "Yes")
 
+	@WithTimeout(time = 20, unit = TimeUnit.SECONDS)
 	public static MobileElement yesBtn;
 	@iOSFindBy(id = "OK")
 	public static MobileElement okBtn;
@@ -181,7 +185,7 @@ public class iOS_JudgeVoteDPFPage {
 
 	public void addVote(DBType dbType, String query, String relief, String actionName) {
 		if (getParameter(getAllColumns(dbType, query), 4).equals("SKIP")) {
-			assertNull(" THE 'NOTE HISTORY PARAMETER' IS NOT SET TO 'SKIP' ", commentField.getText());
+			assertNull(" THE \"NOTE HISTORY PARAMETER\" IS NOT SET TO \"SKIP\" ", commentField.getText());
 			clickOnElement("Cancel");
 		} else {
 			try {
@@ -197,7 +201,7 @@ public class iOS_JudgeVoteDPFPage {
 				clickOnPanel(ACTIONS, actionName);
 				getIndexOf(relief, 3);
 				assertEquals(
-						" THE 'NOTE HISTORY PARAMETER' IS SET TO 'Y, HOWEVER THE TEXT OF THE PREVIOUS VOTE NOTE IS NOT DISPLYED CORRECTLY! ",
+						" THE \"NOTE HISTORY PARAMETER\" IS SET TO \"Y\", HOWEVER THE TEXT OF THE PREVIOUS VOTE NOTE IS NOT DISPLYED CORRECTLY! ",
 						text, getText(commentField));
 				clickOn(cancel);
 
@@ -223,12 +227,6 @@ public class iOS_JudgeVoteDPFPage {
 
 	public String getRelief(DBType dbType, String query, String ccr_id) {
 		return getAllColumns(dbType, getID(query, ccr_id));
-	}
-
-	public static String getParameter(String value, int index) {
-		String[] parValue = value.substring(value.indexOf("(") + 1, value.indexOf(")") - 1).split(",");
-		return parValue[index].replaceAll("'", "");
-
 	}
 
 }

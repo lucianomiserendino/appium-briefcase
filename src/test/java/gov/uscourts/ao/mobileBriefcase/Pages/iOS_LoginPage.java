@@ -23,7 +23,7 @@ public class iOS_LoginPage extends Base {
 
 	public iOS_LoginPage() {
 
-		PageFactory.initElements(new AppiumFieldDecorator(Base.getInstance(PlatformVersions.IOS)), this);
+		PageFactory.initElements(new AppiumFieldDecorator(Base.getInstance(Drivers.IOS)), this);
 	}
 
 	private String openBtn = "Open";

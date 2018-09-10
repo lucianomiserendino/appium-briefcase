@@ -24,34 +24,20 @@ public class JudgeVoteDPF_StepDefinitions {
 	@Then("^user selects the \"([^\"]*)\" button next to the relief\\. User verifies  a popup displays\\.  In the red banner, the relief they are voting , \"([^\"]*)\" , \"([^\"]*)\"$")
 	public void user_selects_the_button_next_to_the_relief_User_verifies_a_popup_displays_In_the_red_banner_the_relief_they_are_voting(
 			String viewVotes, String dbType, String ccrId) {
-
-		if (dbType.equals("cmka")) {
-			page.selectViewVotes(DBType.CMKA, ccrId, viewVotes);
-		} else {
-			page.selectViewVotes(DBType.CM3A, ccrId, viewVotes);
-		}
+		page.selectViewVotes(DBType.valueOf(dbType), ccrId, viewVotes);
 	}
 
 	@Then("^user verifies each judges' initials to whom the referral was sent , as well as their vote and date they voted, \"([^\"]*)\" , \"([^\"]*)\"$")
 	public void user_verifies_each_judges_initials_to_whom_the_referral_was_sent_as_well_as_their_vote_and_date_they_voted(
 			String dbType, String ccrId) {
-
-		if (dbType.equals("cmka")) {
-			page.verifyJudgesInfo(DBType.CMKA, ccrId);
-		} else {
-			page.verifyJudgesInfo(DBType.CM3A, ccrId);
-		}
+		page.verifyJudgesInfo(DBType.valueOf(dbType), ccrId);
 	}
-	
-	
+
 	@Then("^user selects a vote and adds notes to a vote\\. Use  db \"([^\"]*)\" ,ccrID \"([^\"]*)\" , elID  \"([^\"]*)\" , actionName \"([^\"]*)\"$")
-	public void user_selects_a_vote_and_adds_notes_to_a_vote_Use_db_ccrID_elID_actionName(String dbType, String ccr_id, String elID, String actionName){
-		if (dbType.equals("cmka")) {
-			page.getVoteSelection(DBType.CMKA, ccr_id, elID,actionName);
-		} else {
-			page.getVoteSelection(DBType.CM3A, ccr_id, elID,actionName);
-		}
-	}
+	public void user_selects_a_vote_and_adds_notes_to_a_vote_Use_db_ccrID_elID_actionName(String dbType, String ccr_id,
+			String elID, String actionName) {
+		page.getVoteSelection(DBType.valueOf(dbType), ccr_id, elID, actionName);
 
+	}
 
 }

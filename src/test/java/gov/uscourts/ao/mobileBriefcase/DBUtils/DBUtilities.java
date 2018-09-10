@@ -187,6 +187,7 @@ public class DBUtilities {
 		return query.replace("CODE", text);
 	}
 
+
 	public static String getPE_ID(DBType dbType, String judgeName) {
 
 		return getAllColumns(dbType, getText(PE_ID, judgeName));

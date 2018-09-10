@@ -317,4 +317,22 @@ public class Queries {
 	public static final String REFERRAL_CATEGORIES_FOR_STAFFATTORNEY = "select distinct(sfa_display) from stfaty_mobile_referral, stfaty_ref_assign, "
 			+ "stfaty_assign_val where smr_ra_id = ra_id and ra_pe_id = ? and smr_sfa_code = sfa_code and smr_date_end is null";
 
+	// Query to find Staff Members
+	public static final String STAFF_MEMBERS_FIRST_NAME = "SELECT pr_first_name FROM group inner join member on gp_id = mb_gp_id_parent "
+			+ " join personrole on pe_pr_prid = mb_ur_pr_prid join person on pe_pr_prid = pr_prid join user on ur_pr_prid = pr_prid where pe_rt_code TEXT and  "
+			+ " gp_id in (select gp_id from group inner join member on gp_id = mb_gp_id_parent join person on pr_prid = mb_ur_pr_prid join personrole on pe_pr_prid = pr_prid  where pe_id = '?'"
+			+ " and gp_name like '%Chambers%') and pe_date_end is null and pr_prid <> (select pr_prid from personrole join person on pe_pr_prid = pr_prid where pe_id = '?' and ur_date_disabled is null )";
+
+	public static final String STAFF_MEMBERS_LAST_NAME = "SELECT pr_last_name FROM group inner join member on gp_id = mb_gp_id_parent "
+			+ " join personrole on pe_pr_prid = mb_ur_pr_prid join person on pe_pr_prid = pr_prid join user on ur_pr_prid = pr_prid where  pe_rt_code TEXT and  "
+			+ " gp_id in (select gp_id from group inner join member on gp_id = mb_gp_id_parent join person on pr_prid = mb_ur_pr_prid join personrole on pe_pr_prid = pr_prid  where pe_id = '?'"
+			+ " and gp_name like '%Chambers%') and pe_date_end is null and pr_prid <> (select pr_prid from personrole join person on pe_pr_prid = pr_prid where pe_id = '?' and ur_date_disabled is null )";
+
+	public static final String ASSIGNMENT_TYPE_IS_SKIP = "SELECT cav_display FROM chm_assign_type_val  WHERE cav_chm_role in ('staff', 'all')"
+			+ " and cav_date_end is null  ORDER BY cav_display";
+
+	public static final String ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST = "SELECT cav_display \n"
+			+ "	FROM chm_assign_type_val \n" + "	WHERE cav_chm_role in ('staff', 'all')\n"
+			+ "	and cav_date_end is null\n" + "	and cav_code in (TEXT)\n" + "	ORDER BY cav_display";
+
 }

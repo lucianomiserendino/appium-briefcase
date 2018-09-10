@@ -1,16 +1,16 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.*;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.selectReferralCategory;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfWebElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
@@ -55,7 +55,6 @@ public class Utilities extends Base {
 		List<MobileElement> el = elements;
 		Iterator<MobileElement> itr = el.iterator();
 		while (itr.hasNext()) {
-
 			dest = itr.next().getText().split(split);
 			referrals.add(dest[index].trim());
 
@@ -175,13 +174,27 @@ public class Utilities extends Base {
 
 	}
 
+	public static WebElement findWebElement(By element) {
+		return webDriver.findElement(waitForPresenceOfWebElement(element));
+
+	}
+
 	public static MobileElement findElement(By element) {
 		return driver.findElement(waitForPresenceOfElement(element));
 
 	}
 
+	public static String findElementAndGetText(By element) {
+		return driver.findElement(waitForPresenceOfElement(element)).getText().trim();
+
+	}
+
 	public static List<MobileElement> findElements(By elements) {
-		return driver.findElements(elements);
+		return driver.findElements(waitForPresenceOfElement(elements));
+	}
+
+	public static List<WebElement> findWebElements(By elements) {
+		return webDriver.findElements(elements);
 	}
 
 	public static boolean isDisplayed(By by) {
@@ -355,6 +368,11 @@ public class Utilities extends Base {
 		} catch (Exception e) {
 			e.getMessage();
 		}
+	}
+
+	public static String getParameter(String value, int index) {
+		String[] parValue = value.substring(value.indexOf("(") + 1, value.indexOf(")") - 1).split(",");
+		return parValue[index].replaceAll("'", "");
 
 	}
 
@@ -395,5 +413,15 @@ public class Utilities extends Base {
 		return isDisplayed;
 
 	}
+	
+
+	public static String splitBy(String string, int index) {
+		if (string.trim().contains(" ")) {
+			return string.split(" ")[index];
+		} else {
+			return string.split("-")[index];
+		}
+	}
+
 
 }

@@ -28,4 +28,20 @@ public interface iOSCapabilities {
 
 	public static final String ENSURING_CLEAN_SESSION = "ensureCleanSession";
 
+	public static final String CHROME_DRIVER = "chromeDriver";
+
+	public static final String CHROME_DRIVER_KYE = "chromeDriverKye";
+
+	public static final String COPY_DEL_CASE = "copyDelCase";
+
+	public static final String USERNAME = "userName";
+
+	public static final String PASSWORD = "password";
+
+	public static final String CASE = "caseNum";
+
+	public static final String SINGLE_TABLE_EDITOR = "singleTableEditor";
+	
+	public static final String DATA_UPDATER="dataUpdater";
+
 }

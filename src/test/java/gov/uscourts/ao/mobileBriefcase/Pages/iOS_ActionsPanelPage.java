@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.APPLICABLE_ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_EVENT;

@@ -1,5 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
+import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 
 import java.net.MalformedURLException;
@@ -7,6 +8,7 @@ import java.net.URL;
 import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -19,12 +21,13 @@ public abstract class Base implements iOSCapabilities {
 	public static IOSDriver<MobileElement> driver;
 	private static DesiredCapabilities capabilities;
 	private static RemoteWebDriver remoteWebDriver;
+	public static WebDriver webDriver;
 
 	/**
 	 * Reads the property file and passes the values to DesiredCapability
 	 */
 
-	public static WebDriver getInstance(PlatformVersions drivers) {
+	public static WebDriver getInstance(Drivers drivers) {
 
 		try {
 			capabilities = new DesiredCapabilities();
@@ -41,9 +44,9 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 				SetCapabilitiy(TAKES_SCREENSHOT);
 
+				driver = new IOSDriver<MobileElement>(new URL(getProperty("host")), capabilities);
 				// driver = new IOSDriver<MobileElement>(new
-				// URL(Configuration.getProperty("host")), capabilities);
-				driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
+				// URL(System.getProperty("remotewebdriver.url")), capabilities);
 
 				break;
 
@@ -71,9 +74,9 @@ public abstract class Base implements iOSCapabilities {
 			SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 			SetCapabilitiy(ENSURING_CLEAN_SESSION);
 
+			driver = new IOSDriver<MobileElement>(new URL(getProperty("host")), capabilities);
 			// driver = new IOSDriver<MobileElement>(new
-			// URL(Configuration.getProperty("host")), capabilities);
-			driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
+			// URL(System.getProperty("remotewebdriver.url")), capabilities);
 
 		} catch (MalformedURLException e) {
 
@@ -83,8 +86,14 @@ public abstract class Base implements iOSCapabilities {
 
 	}
 
+	public static void getUrl(String url) {
+		System.setProperty(getProperty(CHROME_DRIVER_KYE), getProperty(CHROME_DRIVER));
+		webDriver = new ChromeDriver();
+		webDriver.get(getProperty(url));
+	}
+
 	public static void SetCapabilitiy(String type) {
-		capabilities.setCapability(type, Configuration.getProperty(type));
+		capabilities.setCapability(type, getProperty(type));
 
 	}
 
@@ -101,14 +110,15 @@ public abstract class Base implements iOSCapabilities {
 		}
 	}
 
-	public static void closeDriver() {
+	public static void closeIOSDriver() {
 		if (driver != null) {
 			driver.quit();
 		}
 
 	}
+	
 
-	public enum PlatformVersions {
+	public enum Drivers {
 		IOS, WINDOWS
 	}
 

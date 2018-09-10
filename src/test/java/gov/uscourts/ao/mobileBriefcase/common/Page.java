@@ -20,6 +20,16 @@ public class Page extends Base {
 			}
 		}
 	}
+	
+	public static void waitForPageToBeLoaded() {
+		synchronized (webDriver) {
+			try {
+				webDriver.wait(300000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public static void pageLoad() {
 		synchronized (driver) {
@@ -37,6 +47,11 @@ public class Page extends Base {
 
 	}
 
+	public static By waitForPresenceOfWebElement(By element) {
+		new WebDriverWait(webDriver, 200).until(ExpectedConditions.presenceOfElementLocated((element)));
+		return element;
+
+	}
 	public static List<WebElement> waitForPresenceOfElements(List<WebElement> elements) {
 		return new WebDriverWait(driver, 70).until(ExpectedConditions.visibilityOfAllElements(elements));
 

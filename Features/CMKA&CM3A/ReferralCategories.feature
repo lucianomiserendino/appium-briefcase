@@ -24,7 +24,7 @@ Scenario Outline:
 		|environment   |userName             |password  | server                                  |judgeName  |dbType       |
 		|Integration   |chambers courtney    |Test2021! | Appellate DC Development - CMKA         |Colloton   |CMKA         | 
 		|Integration   |KristenStaffAttorney |Test2022! | Appellate DC Development - CMKA         |434        |CMKA-StaffAtt| 
-     	#|Testing       |judgewilliams       |Testpass1! |Appellate DC Installation Testing - CM3A |Williams   |CM3A         | 
+     	|Testing       |judgewilliams       |Testpass1! |Appellate DC Installation Testing - CM3A |Williams   |CM3A         | 
 		
 		
 		

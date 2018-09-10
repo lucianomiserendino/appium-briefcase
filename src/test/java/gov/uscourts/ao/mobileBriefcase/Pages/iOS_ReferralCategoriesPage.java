@@ -72,7 +72,7 @@ public class iOS_ReferralCategoriesPage {
 
 	public void getReferralCategories(DBType dbtype, String query) {
 		refresh();
-		System.out.println(referralCategories(dbtype, query));
+		referralCategories(dbtype, query);
 
 	}
 
@@ -80,9 +80,10 @@ public class iOS_ReferralCategoriesPage {
 		List<String> categories = new ArrayList<>();
 		List<String> dbReferralCategories = executeQuery(dbtype, query);
 		sort(dbReferralCategories);
+		scroll(1, "down");
 		try {
 			for (int i = 0; i < dbReferralCategories.size(); ++i) {
-				scroll(1, "down");
+				//scroll(1, "down");
 				performPageLoad();
 				MobileElement referrals = waitForElement(findElement(By.xpath("//*[contains(@name, '"+dbReferralCategories.get(i)+"')]")));
 				assertTrue(referrals.isDisplayed());
@@ -107,10 +108,11 @@ public class iOS_ReferralCategoriesPage {
 
 		List<String> referralCategories = executeQuery(dbtype, getID(NON_ORALLY_ARGUED_CASES, pe_id));
 		sort(referralCategories);
+		scroll(1, "down");
 		try {
 
 			for (int i = 0; i < referralCategories.size(); ++i) {
-				scroll(1, "down");
+				//scroll(1, "down");
 				performPageLoad();
 				MobileElement referrals = waitForElement(findElement(By.id(referralCategories.get(i))));
 				performPageLoad();
