@@ -2,28 +2,19 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_AssignmentNotesPage;
 
 public class AssignmentNotes_StepDefinitions {
 
 	iOS_AssignmentNotesPage page;
 
-	@When("^User selects Judge, then   \"([^\"]*)\" and  \"([^\"]*)\"$")
-	public void user_selects_Judge_then_and(String category, String caseNum)  {
-		page = new iOS_AssignmentNotesPage();
-		page.selectCase(category, caseNum);
-
-	}
-
-	
 	@Then("^User  observes a collapsible panel entitled \"([^\"]*)\" displays and expands the assignments panel$")
-	public void user_observes_a_collapsible_panel_entitled_displays_and_expands_the_assignments_panel(String assignmentOnReferral)  {
-
+	public void user_observes_a_collapsible_panel_entitled_displays_and_expands_the_assignments_panel(
+			String assignmentOnReferral) {
+		page = new iOS_AssignmentNotesPage();
 		page.verifyAssignmentIsDisplayed(assignmentOnReferral);
 	}
 
-	
 	@Given("^User selects \"([^\"]*)\"$")
 	public void user_selects(String assignment) {
 		page.selectAssignment(assignment);
@@ -51,10 +42,9 @@ public class AssignmentNotes_StepDefinitions {
 	}
 
 	@Then("^User observes there is an assignment for \"([^\"]*)\" and \"([^\"]*)\"$")
-	public void user_observes_there_is_an_assignment_for_and(String assignmentForKyle, String assignmentForEssley)  {
+	public void user_observes_there_is_an_assignment_for_and(String assignmentForKyle, String assignmentForEssley) {
 		page = new iOS_AssignmentNotesPage();
 		page.getAssignmentLinkedtoTheReferral(assignmentForKyle, assignmentForEssley);
 	}
-
 
 }

@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.APPLICABLE_ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_EVENT;
@@ -11,7 +10,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.scroll;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertTrue;
 
@@ -36,10 +34,6 @@ public class iOS_ActionsPanelPage {
 	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'Actions')]")
 	public static MobileElement actions;
-
-	public void selectCase(String category, String caseNum) {
-		selectCaseNumber(category, caseNum);
-	}
 
 	public void verifyActionsPanelIsDisplayed(DBType dbtype, String actionsPanel) {
 

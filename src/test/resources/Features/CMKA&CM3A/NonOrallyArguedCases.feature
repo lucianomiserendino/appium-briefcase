@@ -1,7 +1,7 @@
 Feature: Number of cases displayed for non-orally argued cases 
 
 @Smoke
-@AMB_973
+@AMB-973
 Scenario Outline: 
 	Tapping on a referral category that is not orally argued (chm_reftype_val.cdv_is_oral_arg='n'),
     a list of cases should dipslay for the judge for that category.
@@ -18,7 +18,7 @@ Scenario Outline:
 	
 	Examples: 
 		|environment   |userName          |password  |server                                   |judgeName |dbType |
-		|Integration   |chambers courtney |Test2020! |Appellate DC Development - CMKA          |Colloton  |CMKA   | 
+		|Integration   |chambers courtney |Test2021! |Appellate DC Development - CMKA          |Colloton  |CMKA   | 
 		#|Testing       |judgewilliams   |Testpass1!  |Appellate DC Installation Testing - CM3A |Williams  |CM3A|  | 
 	
 	

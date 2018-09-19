@@ -5,6 +5,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getCode;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_INITIAL;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_INITIALS;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_VOTE;
@@ -26,7 +27,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElements;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getParameter;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getStreamOfRandomInts;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getText;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -79,10 +79,6 @@ public class iOS_JudgeVoteDPFPage {
 	@iOSFindBy(id = "OK")
 	public static MobileElement okBtn;
 
-	public void selectCase(String category, String caseNum) {
-		selectCaseNumber(category, caseNum);
-	}
-
 	public void selectAction(String action) {
 		clickOnPanel(ACTIONS, action);
 	}
@@ -115,6 +111,7 @@ public class iOS_JudgeVoteDPFPage {
 
 		List<String> dbInitial = executeQuery(dbtype, getText(getID(initial, ccr_id), reliefText));
 		sort(dbInitial);
+
 		try {
 			/** verify all initials are displayed */
 
@@ -167,7 +164,7 @@ public class iOS_JudgeVoteDPFPage {
 		}
 	}
 
-	public void getVoteSelection(DBType dbType, String ccr_id, String elId, String actionName) {
+	public void getVoteSelection(DBType dbType, String ccr_id, String elId) {
 		String reliefText = getRelief(dbType, JUDGE_VOTE_DPF_RELIEF, ccr_id);
 		getIndexOf(reliefText, 2);
 
@@ -179,11 +176,11 @@ public class iOS_JudgeVoteDPFPage {
 		}
 		getIndexOf(reliefText, 3);
 
-		addVote(dbType, getID(MBR_NOTE, elId), reliefText, actionName);
+		addVote(dbType, getID(MBR_NOTE, elId), reliefText, elId);
 
 	}
 
-	public void addVote(DBType dbType, String query, String relief, String actionName) {
+	public void addVote(DBType dbType, String query, String relief, String el_id) {
 		if (getParameter(getAllColumns(dbType, query), 4).equals("SKIP")) {
 			assertNull(" THE \"NOTE HISTORY PARAMETER\" IS NOT SET TO \"SKIP\" ", commentField.getText());
 			clickOnElement("Cancel");
@@ -198,7 +195,7 @@ public class iOS_JudgeVoteDPFPage {
 				clickOn(submit);
 				clickOn(yesBtn);
 				clickOn(okBtn);
-				clickOnPanel(ACTIONS, actionName);
+				clickOnPanel(ACTIONS, getAllColumns(dbType, getID(ACTION_NAME, el_id)));
 				getIndexOf(relief, 3);
 				assertEquals(
 						" THE \"NOTE HISTORY PARAMETER\" IS SET TO \"Y\", HOWEVER THE TEXT OF THE PREVIOUS VOTE NOTE IS NOT DISPLYED CORRECTLY! ",

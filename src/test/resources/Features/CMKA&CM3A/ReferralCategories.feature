@@ -4,8 +4,7 @@ Feature: Referral Categories display on the dashboard for the judge and SAs
 
 
 @Smoke 
-@AMB_956 
-@AMB_1120
+@AMB-956 
 Scenario Outline: 
 	Referral categories display on the dashboard for the judge and SAs
 	
@@ -23,8 +22,9 @@ Scenario Outline:
 	Examples: 
 		|environment   |userName             |password  | server                                  |judgeName  |dbType       |
 		|Integration   |chambers courtney    |Test2021! | Appellate DC Development - CMKA         |Colloton   |CMKA         | 
-		|Integration   |KristenStaffAttorney |Test2022! | Appellate DC Development - CMKA         |434        |CMKA-StaffAtt| 
      	#|Testing       |judgewilliams       |Testpass1! |Appellate DC Installation Testing - CM3A |Williams   |CM3A         | 
+     	
+     	
 		
 		
 		

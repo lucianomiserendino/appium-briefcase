@@ -12,6 +12,7 @@ import io.appium.java_client.MobileElement;
 public class Page extends Base {
 
 	public static void performPageLoad() {
+		
 		synchronized (driver) {
 			try {
 				driver.wait(9000);
@@ -21,15 +22,6 @@ public class Page extends Base {
 		}
 	}
 	
-	public static void waitForPageToBeLoaded() {
-		synchronized (webDriver) {
-			try {
-				webDriver.wait(300000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 
 	public static void pageLoad() {
 		synchronized (driver) {
@@ -71,6 +63,14 @@ public class Page extends Base {
 		performPageLoad();
 		System.out.println(driver.getPageSource());
 
+	}
+	
+	public static void sleep(int millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 

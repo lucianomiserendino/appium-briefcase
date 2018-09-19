@@ -4,18 +4,28 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNEES_CAV_DESCRIPTION;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNEES_CHA_ID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNEEs_FIRST_NAME;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNEEs_LAST_NAME;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_DUE_DATE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE_IS_SKIP;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHAMBERS_ASSIGNMENT;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHAMBERS_ASSIGN_DATE;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHM_ASSIGN_TO_CASE;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.LATEST_CREATED_CASE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_MEMBERS_FIRST_NAME;
+import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages.clickOnPanel;
+import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages.getActionName;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanelText;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ASSIGNMENTS;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.changeDateFormat;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElementAndGetText;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElements;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getParameter;
@@ -41,8 +51,11 @@ public class iOS_CreateStaffAssignmentsPage {
 
 	String yesBTN = "Yes";
 	String okBTN = "OK";
+	String backBTN = "Back";
+	static String staffMember = "Staff Member";
+	static String assignment = "Assignment";
 
-	public void getElementNextToDropDown(String element, String dropDowN) {
+	public static void getElementNextToDropDown(String element, String dropDowN) {
 		click(getDropDown(element, dropDowN));
 
 	}
@@ -56,52 +69,45 @@ public class iOS_CreateStaffAssignmentsPage {
 		switch (screenTypeParam) {
 		case "ja":
 			screenParam += "='ja'";
-
 			break;
 
 		case "lwclk":
 			screenParam += "='lwclk'";
-
 			break;
+
 		case "lwclk:ja":
 			screenParam += "in ('ja','lwclk')";
-
 			break;
+
 		case "staff":
 			screenParam += "not in ('aty')";
-
 			break;
+
 		default:
 			break;
 		}
 
 		getStaffMembers(dbType, STAFF_MEMBERS_FIRST_NAME, peID, screenParam, 0);
-
 		return screenParam;
 
 	}
 
+	/** get a list of staff based on the screen parameter in the DPF */
 	public void getStaffMembers(DBType dbtype, String staffMember, String peID, String screenTypeParam, int index) {
 
 		List<String> dbStafMembers = executeQuery(dbtype, getText(getID(staffMember, peID), screenTypeParam));
 		sort(dbStafMembers);
-
 		try {
 
 			List<String> uiStaffMembers = new ArrayList<>();
-
 			List<MobileElement> allStaffMembers = findElements(By
 					.xpath("//XCUIElementTypeTable[@name='OptionList']/XCUIElementTypeCell/XCUIElementTypeStaticText"));
-
 			for (MobileElement staffMembers : allStaffMembers) {
-
 				uiStaffMembers.add(staffMembers.getText().split(" ")[index]);
 				sort(uiStaffMembers);
 			}
-			assertEquals("*******************STAFF MEMBERS VALIDATION ERROR!!!*******************", dbStafMembers,
-					uiStaffMembers);
-
-			selectAssignment(allStaffMembers);
+			assertEquals("********STAFF MEMBERS VALIDATION ERROR!!!********", dbStafMembers, uiStaffMembers);
+			selectAssignment(allStaffMembers, 1);
 
 		} catch (AssertionError e) {
 			e.getMessage();
@@ -109,67 +115,77 @@ public class iOS_CreateStaffAssignmentsPage {
 
 	}
 
-	public void getAssignmentType(DBType dbType, String elId) {
+	/** verify assignment types based on assignment types parameter */
+	public static void getAssignmentType(DBType dbType, String elId, int index) {
 
 		List<String> uiAssignmenType = new ArrayList<>();
 		try {
-			List<MobileElement> allAssignmenTypes = findElements(By
-					.xpath("//XCUIElementTypeTable[@name='OptionList']/XCUIElementTypeCell/XCUIElementTypeStaticText"));
-
-			for (MobileElement type : allAssignmenTypes) {
-				uiAssignmenType.add(type.getText().trim());
-				sort(uiAssignmenType);
-			}
+		 List<MobileElement>allAssignmenTypes =getUiAssignmentType(uiAssignmenType);
 
 			String assignmentType = getParameter(getAllColumns(dbType, getID(MBR_NOTE, elId)), 1);
 			if (assignmentType.equals("SKIP")) {
 				List<String> dbAssignmentTypeSKIP = executeQuery(dbType, ASSIGNMENT_TYPE_IS_SKIP);
 				sort(dbAssignmentTypeSKIP);
-
-				assertEquals("*******************ASSIGNMENT TYPE VALIDATION ERROR!!!*******************",
-						dbAssignmentTypeSKIP, uiAssignmenType);
-
+				assertEquals("*********ASSIGNMENT TYPE VALIDATION ERROR!!!*********", dbAssignmentTypeSKIP,
+						uiAssignmenType);
 			} else {
 				List<String> dbAssignmentTypeColonDelimitedList = executeQuery(dbType, getText(
 						ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST, "'" + assignmentType.replaceAll(":", "','") + "'"));
 				sort(dbAssignmentTypeColonDelimitedList);
-
-				assertEquals("*******************ASSIGNMENT TYPE VALIDATION ERROR!!!*******************",
+				assertEquals("*********ASSIGNMENT TYPE VALIDATION ERROR!!!*********",
 						dbAssignmentTypeColonDelimitedList, uiAssignmenType);
 			}
-			selectAssignment(allAssignmenTypes);
+			selectAssignment(allAssignmenTypes, index);
 		} catch (Exception e) {
 			e.getMessage();
 		}
-
 	}
 
-	public void selectADate(int index) {
+	public static List<MobileElement> getUiAssignmentType(List<String> uiAssignmenType) {
+		uiAssignmenType = new ArrayList<>();
+
+		List<MobileElement> allAssignmenTypes = findElements(
+				By.xpath("//XCUIElementTypeTable[@name='OptionList']/XCUIElementTypeCell/XCUIElementTypeStaticText"));
+		for (MobileElement type : allAssignmenTypes) {
+			uiAssignmenType.add(type.getText().trim());
+			sort(uiAssignmenType);
+		}
+		return allAssignmenTypes;
+	}
+
+	public static List<String> remove(List<String> dbAssignmentTypeSKIP, String text, List<String> uiAssignmenType) {
+		if (dbAssignmentTypeSKIP.contains(text)) {
+			dbAssignmentTypeSKIP.remove(text);
+		}
+		assertEquals("*********ASSIGNMENT TYPE VALIDATION ERROR!!!*********", dbAssignmentTypeSKIP, uiAssignmenType);
+		return dbAssignmentTypeSKIP;
+	}
+
+	public static void selectADate(int index) {
 		List<MobileElement> date = driver.findElements(By.xpath(
 				"//XCUIElementTypeApplication[@name='Briefcase [Test]']/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther"));
 		date.get(date.size() - index).click();
 
 	}
 
-	public void selectAssignment(List<MobileElement> list) {
+	public static void selectAssignment(List<MobileElement> list, int index) {
 		if (list.size() > 1) {
-			list.get(1).click();
+			list.get(index).click();
 		} else {
 			list.get(0).click();
-
 		}
 	}
 
-	public String getDropDown(String listOfStaff, String dropDowName) {
+	public static String getDropDown(String listOfStaff, String dropDowName) {
 		return locateElement(
 				listOfStaff + "')]/preceding-sibling:: XCUIElementTypeStaticText[contains(@name, '" + dropDowName + "");
 	}
 
-	public String getSelectedText(String xpath) {
+	public static String getSelectedText(String xpath) {
 		return findElementAndGetText(By.xpath("//*[contains(@name, 'Staff Member')]" + xpath));
 	}
 
-	public String getSelectedAssignment(String assignment) {
+	public static String getSelectedAssignment(String assignment) {
 		String xpath = "";
 		if (assignment.equals("Staff Member")) {
 			return xpath += getSelectedText("/preceding-sibling:: XCUIElementTypeStaticText");
@@ -183,64 +199,160 @@ public class iOS_CreateStaffAssignmentsPage {
 		}
 	}
 
-	public String getCreatedAssignmentNameAndAssignmentType(String staffMember, String assignmnetType) {
+	public static String getCreatedAssignmentNameAndAssignmentType(String staffMember, String assignmnetType) {
 		return findElementAndGetText(By.xpath("//*[contains(@name, '" + staffMember + ", " + assignmnetType + "')]"));
 
 	}
 
-	public String getCreatedAssignmentDueDate(String staffMember, String assignmnetType) {
+	public String getCreatedAssignmentType(String staffMember, String assignmnetType) {
 		return findElementAndGetText(By.xpath("//*[contains(@name, '" + staffMember + ", " + assignmnetType
 				+ "')]/following-sibling:: XCUIElementTypeStaticText[1]"));
 
 	}
 
-	public void getTextOfSelectedOption(String apply, String submit, DBType dbType, String peId) {
+	public MobileElement getExistingAssignment(String assineeName, String AssignmentTypeAndDate) {
+		return findElement(By.xpath("//*[contains(@name, '" + assineeName
+				+ "')]/following-sibling:: XCUIElementTypeStaticText[contains(@name, '" + AssignmentTypeAndDate
+				+ "')]"));
+	}
+
+	public MobileElement getExistingAssignmentDateType(String assignDateType) {
+		return findElement(By
+				.xpath("//*[contains(@name, '" + assignDateType + "')]/preceding-sibling:: XCUIElementTypeStaticText"));
+	}
+
+	public MobileElement getExistingAssignmentDate(String assignDateType, String assignedDate) {
+		return findElement(By.xpath("//*[contains(@name, '" + assignDateType
+				+ "')]/preceding-sibling:: XCUIElementTypeStaticText[contains(@name, '" + assignedDate + "')]"));
+	}
+
+	/** verify the new assignment is displayed on the chmassign dpf screen */
+
+	public void getExistingAssignment(String apply, String submit, DBType dbType, String peId, String elID) {
+
 		String staffMember = getSelectedAssignment("Staff Member");
 		String satffMembersFName = splitBy(getSelectedAssignment("Staff Member"), 0);
 		String satffMembersLName = splitBy(getSelectedAssignment("Staff Member"), 1);
 		String assignment = getSelectedAssignment("Assignment");
 		clickOnElement(apply);
+
 		String createdAssignmentNamechmAssignPage = getCreatedAssignmentNameAndAssignmentType(staffMember, assignment);
-		String createdAssignmentTypechmAssignPage = getCreatedAssignmentDueDate(staffMember, assignment);
+		String createdAssignmentTypechmAssignPage = getCreatedAssignmentType(staffMember, assignment);
+		try {
+			clickOnElement(submit);
+			clickOnElement(yesBTN);
+			clickOnElement(okBTN);
 
-		clickOnElement(submit);
-		clickOnElement(yesBTN);
-		clickOnElement(okBTN);
-		getPanel(ACTIONS);
-		assertEquals(createdAssignmentNamechmAssignPage, getPanelText(ASSIGNMENTS, createdAssignmentNamechmAssignPage));
-		assertEquals(createdAssignmentTypechmAssignPage, getPanelText(ASSIGNMENTS, createdAssignmentTypechmAssignPage));
+			String peID = getAllColumns(dbType, getID("SELECT first 1 pe_id\n"
+					+ "FROM group inner join member on gp_id = mb_gp_id_parent \n"
+					+ "join personrole on pe_pr_prid = mb_ur_pr_prid \n" + "join person on pe_pr_prid = pr_prid \n"
+					+ "join user on ur_pr_prid = pr_prid \n" + "where  pr_first_name='" + satffMembersFName
+					+ "' and pr_last_name='" + satffMembersLName
+					+ "' and   gp_id in (select gp_id from group inner join member on gp_id = mb_gp_id_parent join person on pr_prid = mb_ur_pr_prid \n"
+					+ "join personrole on pe_pr_prid = pr_prid where pe_id = '?' and gp_name like '%Chambers%') and pe_date_end is null and pr_prid <> \n"
+					+ "(select pr_prid from personrole join person on pe_pr_prid = pr_prid where pe_id = '?' and ur_date_disabled is null ) order by pe_date_created desc",
+					peId));
 
-		getPanel(ASSIGNMENTS);
+			String dbAssignmentType = getAllColumns(dbType,
+					"SELECT cav_code  FROM chm_assign_type_val WHERE cav_display='" + assignment
+							+ "' and cav_chm_role in ('staff', 'all') and cav_date_end is null ORDER BY cav_display");
 
-		String peID = getAllColumns(DBType.CMKA, getID("SELECT first 1 pe_id\n"
-				+ "FROM group inner join member on gp_id = mb_gp_id_parent \n"
-				+ "join personrole on pe_pr_prid = mb_ur_pr_prid \n" + "join person on pe_pr_prid = pr_prid \n"
-				+ "join user on ur_pr_prid = pr_prid \n" + "where  pr_first_name='" + satffMembersFName
-				+ "' and pr_last_name='" + satffMembersLName
-				+ "' and   gp_id in (select gp_id from group inner join member on gp_id = mb_gp_id_parent join person on pr_prid = mb_ur_pr_prid \n"
-				+ "join personrole on pe_pr_prid = pr_prid where pe_id = '?' and gp_name like '%Chambers%') and pe_date_end is null and pr_prid <> \n"
-				+ "(select pr_prid from personrole join person on pe_pr_prid = pr_prid where pe_id = '?' and ur_date_disabled is null ) order by pe_date_created desc",
-				peId));
+			String dbChambersAssignment = getAllColumns(dbType, getID(
+					"select first 1 cha_id,cha_date_created from chambers_assignment where cha_ju_pe_id = ? and cha_assigner_ju_pe_id = ?  and "
+							+ "cha_chm_pe_id = '" + peID + "' and cha_cav_code = '" + dbAssignmentType
+							+ "' order by cha_date_created desc",
+					peId));
 
-		String dbAssignmentType = getAllColumns(dbType, "SELECT cav_code  FROM chm_assign_type_val WHERE cav_display='"
-				+ assignment + "' and cav_chm_role in ('staff', 'all') and cav_date_end is null ORDER BY cav_display");
+			/*** verify the following records are created in cmecf */
 
-		List<String> ui = executeQuery(dbType, getID(
-				"select first 1 cha_id,cha_date_created from chambers_assignment where cha_ju_pe_id = ? and cha_assigner_ju_pe_id = ?  and "
-						+ "cha_chm_pe_id = '" + peID + "' and cha_cav_code = '" + dbAssignmentType
-						+ "' order by cha_date_created desc",
-				peId));
+			getCreatedRecords(dbType, dbChambersAssignment, getID(CHAMBERS_ASSIGNMENT, peId));
+			getCreatedRecords(dbType, dbChambersAssignment, CHM_ASSIGN_TO_CASE);
+			getCreatedRecords(dbType, dbChambersAssignment, CHAMBERS_ASSIGN_DATE);
 
-		List<String> db = executeQuery(dbType, getID(
-				"select first 1 cha_id,cha_date_created  from chambers_assignment where cha_ju_pe_id = ? and cha_assigner_ju_pe_id =? order by cha_date_created desc",
-				peId));
-		assertEquals(db, ui);
+			/** once the assignment is created, validate ui with db */
+			clickOnExistingAssignment(createdAssignmentNamechmAssignPage, createdAssignmentTypechmAssignPage, dbType,
+					elID);
+			verifyExistingStaffAssignment(dbType, peId, "CMR_CS_CASEID", elID);
+		} catch (Exception e) {
+			e.getMessage();
+		}
 
 	}
 
-	public static String replaceTo(String oldText, String newText) {
-		return oldText.replace(oldText, newText);
+	public static void verifyExistingStaffAssignment(DBType dbType, String peID, String textToReplaceWith,
+			String elId) {
 
+		String uiStaffMembersFName = splitBy(getSelectedAssignment("Staff Member"), 0);
+		String dbStaffMembersFName = getCreatedAssignment(dbType, ASSIGNEEs_FIRST_NAME, peID, textToReplaceWith);
+		assertEquals("******PLEASE MAKE SURE STAFF MEMBER'S FIRST NAME IS CORRECT*******", dbStaffMembersFName,
+				uiStaffMembersFName);
+
+		String uiStaffMembersLName = splitBy(getSelectedAssignment("Staff Member"), 1);
+		String dbStaffMembersLName = getCreatedAssignment(dbType, ASSIGNEEs_LAST_NAME, peID, textToReplaceWith);
+		assertEquals("******PLEASE MAKE SURE STAFF MEMBER'S LAST NAME IS CORRECT*******", dbStaffMembersLName,
+				uiStaffMembersLName);
+
+		String uiAssignmentType = getSelectedAssignment("Assignment");
+		String dbAssignmentType = getCreatedAssignment(dbType, ASSIGNEES_CAV_DESCRIPTION, peID, textToReplaceWith);
+		assertEquals("******PLEASE MAKE SURE ASSIGNMENT TYPE IS CORRECT*******", dbAssignmentType, uiAssignmentType);
+
+		String uiAssignmentDueDate = getSelectedAssignment("Assignment Due");
+		String dbAssignmentDueDate = changeDateFormat(
+				getAllColumns(dbType,
+						getID(ASSIGNMENT_DUE_DATE,
+								getCreatedAssignment(dbType, ASSIGNEES_CHA_ID, peID, textToReplaceWith))),
+				"yyyy-MM-dd", "MM/d/yyyy");
+		assertEquals("******PLEASE MAKE SURE ASSIGNMENT DUE DATE IS CORRECT*******", dbAssignmentDueDate,
+				uiAssignmentDueDate);
+
+		getElementNextToDropDown(assignment, dbAssignmentType);
+		removeExistingAssignmentType(dbType, elId, 2, dbAssignmentType);
+
+		getElementNextToDropDown("Assignment Due", dbAssignmentDueDate);
+		selectADate(3);
+	}
+
+	public static void removeExistingAssignmentType(DBType dbType, String elId, int index, String text) {
+		List<String> uiAssignmenType = new ArrayList<>();
+		try {
+		List<MobileElement>allAssignmenTypes =getUiAssignmentType(uiAssignmenType);
+			String assignmentType = getParameter(getAllColumns(dbType, getID(MBR_NOTE, elId)), 1);
+			if (assignmentType.equals("SKIP")) {
+				List<String> dbAssignmentTypeSKIP = executeQuery(dbType, ASSIGNMENT_TYPE_IS_SKIP);
+
+				remove(dbAssignmentTypeSKIP, text, uiAssignmenType);
+			} else {
+
+				List<String> dbAssignmentTypeColonDelimitedList = executeQuery(dbType, getText(
+						ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST, "'" + assignmentType.replaceAll(":", "','") + "'"));
+				remove(dbAssignmentTypeColonDelimitedList, text, uiAssignmenType);
+			}
+			selectAssignment(allAssignmenTypes, index);
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+
+	/** Verify the records are created in CM/ECF */
+	public void getCreatedRecords(DBType dbType, String expected, String actual) {
+		String CMECF_TABLES = getAllColumns(dbType, actual);
+		assertEquals("********PLEASE VERIFY THAT RECORDS IN CMECF ARE CREATED CORRECTLY!!!********", expected,
+				CMECF_TABLES);
+	}
+
+	public static String getCreatedAssignment(DBType dbType, String query, String peId, String textToReplaceWith) {
+		String latestCase = getAllColumns(dbType, LATEST_CREATED_CASE);
+		return getAllColumns(dbType, replace(getID(query, peId), textToReplaceWith, latestCase));
+
+	}
+
+	public void clickOnExistingAssignment(String AssignName, String AssignType, DBType dbType, String elID) {
+		clickOnPanel(ACTIONS, getActionName(dbType, elID));
+		getExistingAssignment(AssignName, AssignType).click();
+	}
+
+	public static String replace(String text, String oldText, String newText) {
+		return text.replace(oldText, newText);
 	}
 
 }

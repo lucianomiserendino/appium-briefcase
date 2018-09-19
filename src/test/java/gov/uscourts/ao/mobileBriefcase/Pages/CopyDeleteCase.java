@@ -41,7 +41,15 @@ public class CopyDeleteCase extends Base {
 
 	public static String CASE_NUMBER_OF_THE_TASE_TO_BE_DELETED = "*//input[@name='fromCase'])[2]";
 
-	public static String DELETE_CASE = "*//input[@value='Delete Case'][2]";
+	public static String DELETE_CASE = "(*//input[@value='Delete Case'])[2]";
+
+	public static String CONFIRM_DELETE_PAGE = "*//b[contains(.,'Confirm Delete Case')]";
+
+	public static String CONFIRM_DELETE = "Confirm Delete Case";
+
+	public static String CONFIRM_DELETE_BTN = "Delete Case";
+
+	public static String DELETE_CASE_INFO_REPORT_PAGE = "*//b[contains(.,'Delete Case Information Report')]";
 
 	public static String createARandomCase() {
 		return new SimpleDateFormat("yy-Hm").format(new Date());
@@ -93,7 +101,8 @@ public class CopyDeleteCase extends Base {
 		findElementAndsendKeys(By.name(CASE_NUMBER_TO_BE_USED_FOR_NEW_CASE), caseNum);
 		findElementAndclick(By.xpath(COPY_CASE));
 		confirm(CONFIRM_COPY_PAGE, CONFIRM_COPY, CONFIRM_COPY_BTN);
-		assertEquals("******CASE CANNOT BE COPIED, PLEASE ENTER A VALID CASE NUMBER******",findWebElement(By.xpath(CASE_INFO_REPORT)).getText(), (COPY_CASE_INFO_REPORT));
+		assertEquals("******CASE CANNOT BE COPIED, PLEASE ENTER A VALID CASE NUMBER******",
+				findWebElement(By.xpath(CASE_INFO_REPORT)).getText(), (COPY_CASE_INFO_REPORT));
 		closeWebDriver();
 
 		getURLandLogin(SINGLE_TABLE_EDITOR);
@@ -109,17 +118,19 @@ public class CopyDeleteCase extends Base {
 				.sendKeys(case_date_entered.replace(case_date_entered.substring(2, 4), splitBy(caseNum, 0)));
 		findElementThatcontains("update1").click();
 
-		assertEquals("*******CASE CANNOT BE UPDATED, PLEASE ENTER A VALID CASE NUMBER********",findWebElement(By.xpath(UPDATED_RECORD)).getText().trim(), (UPDATED_RECORD_RESULT));
+		assertEquals("*******CASE CANNOT BE UPDATED, PLEASE ENTER A VALID CASE NUMBER********",
+				findWebElement(By.xpath(UPDATED_RECORD)).getText().trim(), (UPDATED_RECORD_RESULT));
 		closeWebDriver();
 
 		getURLandLogin(DATA_UPDATER);
 
 	}
 
-	public static void deleteCase(String caseN) {
+	public void deleteCase(String caseN) {
 		getURLandLogin(COPY_DEL_CASE);
-		findWebElement(By.xpath(CASE_NUMBER_OF_THE_TASE_TO_BE_DELETED)).sendKeys(caseN);
-		findElementAndclick(By.name(DELETE_CASE));
+		findElementsAndsendKeys(By.name(CASE_NUMBER_OF_THE_CASE_TO_BE_COPIED), 1, caseN);
+		findElementAndclick(By.xpath(DELETE_CASE));
+		confirm(CONFIRM_DELETE_PAGE, CONFIRM_DELETE, CONFIRM_DELETE_BTN);
 
 	}
 
@@ -129,4 +140,5 @@ public class CopyDeleteCase extends Base {
 		}
 
 	}
+
 }

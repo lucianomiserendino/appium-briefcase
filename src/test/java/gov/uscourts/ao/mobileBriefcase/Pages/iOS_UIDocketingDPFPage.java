@@ -5,11 +5,9 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getRestrictParam;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getParameter;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.verifyTextIsDisplayed;
 import static org.junit.Assert.assertTrue;
 
@@ -62,20 +60,6 @@ public class iOS_UIDocketingDPFPage extends Base {
 	@iOSFindBy(xpath = "//XCUIElementTypeOther[4]/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static MobileElement actionsName;
 
-	public void selectCase(String category, String caseNum) {
-		selectCaseNumber(category, caseNum);
-	}
-
-	public void getActionsPanel(DBType dbType, String el_id) {
-
-		getPanel(ACTIONS);
-		String action = "//XCUIElementTypeTable[@name='DocumentList']/child::*//*[contains(@name, '"
-				+ getAllColumns(dbType, getID(ACTION_NAME, el_id)) + "')]";
-
-		clickOnPanel(ACTIONS, action);
-
-	}
-
 	public void verifyActionName(DBType dbType, String el_id) {
 		verifyTextIsDisplayed(actionsName, getAllColumns(dbType, getID(ACTION_NAME, el_id)).trim());
 	}
@@ -96,20 +80,15 @@ public class iOS_UIDocketingDPFPage extends Base {
 
 	public void getDefaulDescription(DBType dbType, String el_id) {
 		try {
-			if (getEL_Function(dbType, el_id, 31).equals("SKIP")) {
+			if (getParameter(getAllColumns(dbType, getID(MBR_NOTE, el_id)), 4).equals("SKIP")) {
 				assertTrue(descriptionField.getText().equals("Transaction Note"));
 			} else {
-				assertTrue(getEL_Function(dbType, el_id, 31).equals(descriptionField.getText()));
+				assertTrue(getParameter(getAllColumns(dbType, getID(MBR_NOTE, el_id)), 4)
+						.equals(descriptionField.getText()));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static String getEL_Function(DBType dbType, String el_id, int index) {
-		final String mbrNote = getID(MBR_NOTE, el_id);
-		return getRestrictParam(getAllColumns(dbType, mbrNote), index);
-
 	}
 
 	public static void clickOnPanel(Actions panel, String penlRow) {

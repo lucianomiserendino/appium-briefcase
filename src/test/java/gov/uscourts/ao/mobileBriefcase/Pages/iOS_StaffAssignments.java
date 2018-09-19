@@ -16,7 +16,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.changeDateFormat;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.split;
 import static org.junit.Assert.assertTrue;
 
@@ -39,10 +38,6 @@ public class iOS_StaffAssignments {
 
 	public iOS_StaffAssignments() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-	}
-
-	public void selectCase(String category, String caseNum) {
-		selectCaseNumber(category, caseNum);
 	}
 
 	public void verifyAssignmentIsDisplayed(String assignmentOnReferral) {

@@ -44,8 +44,8 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 				SetCapabilitiy(TAKES_SCREENSHOT);
 
-				// driver = new IOSDriver<MobileElement>(new
-				// URL(Configuration.getProperty("host")), capabilities);
+//				 driver = new IOSDriver<MobileElement>(new
+//				 URL(Configuration.getProperty("host")), capabilities);
 				driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
 
 				break;
@@ -54,7 +54,10 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(PLATFORM_NAME);
 				SetCapabilitiy(DEVICE_NAME);
 				SetCapabilitiy(APP);
-
+				break;
+			case WEBRIVER:
+				System.setProperty(getProperty(CHROME_DRIVER_KYE), getProperty(CHROME_DRIVER));
+				webDriver = new ChromeDriver();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -74,8 +77,8 @@ public abstract class Base implements iOSCapabilities {
 			SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 			SetCapabilitiy(ENSURING_CLEAN_SESSION);
 
-			// driver = new IOSDriver<MobileElement>(new
-			// URL(Configuration.getProperty("host")), capabilities);
+//			 driver = new IOSDriver<MobileElement>(new
+//			 URL(Configuration.getProperty("host")), capabilities);
 			driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
 
 		} catch (MalformedURLException e) {
@@ -86,10 +89,8 @@ public abstract class Base implements iOSCapabilities {
 
 	}
 
-
 	public static void getUrl(String url) {
-		System.setProperty(getProperty(CHROME_DRIVER_KYE), getProperty(CHROME_DRIVER));
-		webDriver = new ChromeDriver();
+		getInstance(Drivers.WEBRIVER);
 		webDriver.get(getProperty(url));
 	}
 
@@ -117,8 +118,8 @@ public abstract class Base implements iOSCapabilities {
 		}
 
 	}
-	
 
 	public enum Drivers {
-		IOS, WINDOWS
-	}}
+		IOS, WINDOWS, WEBRIVER
+	}
+}

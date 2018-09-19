@@ -30,13 +30,13 @@ public class iOS_CommonPages {
 		selectCaseNumber(category, caseNum);
 	}
 
-	public void getActionsPanel(DBType dbType, String el_id) {
+	public static void getActionsPanel(DBType dbType, String el_id) {
 		getPanel(ACTIONS);
 		clickOnPanel(ACTIONS, getActionName(dbType, el_id));
 
 	}
 
-	public String getActionName(DBType dbType, String el_id) {
+	public static String getActionName(DBType dbType, String el_id) {
 		return "//XCUIElementTypeTable[@name='DocumentList']/child::*//*[contains(@name, '"
 				+ getAllColumns(dbType, getID(ACTION_NAME, el_id)) + "')]";
 

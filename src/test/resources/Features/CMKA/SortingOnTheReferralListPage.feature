@@ -1,7 +1,7 @@
 Feature: Sorting on the Referral List Page 
 
 
-
+#@Smoke
 @AMB_1010 
 Scenario Outline: 
 	There is a sorting feature on the referral list page that enables users to sort referrals by date referred or case number.  
@@ -20,7 +20,7 @@ The default is by date referred in descending order (newest first).
 	
 	Examples: 
 		|environment   |userName          |password  |server                                   |refCategory       |
-		|Integration   |chambers courtney |Test2020!|Appellate DC Development - CMKA           |Motions/Petitions |
+		|Integration   |chambers courtney |Test2021!|Appellate DC Development - CMKA           |Motions/Petitions |
 		|Testing       |judgewilliams   |Testpass1! |Test2017!|Appellate DC Installation Testing - CM3A  |Motion/Petition   | 
 		
 		

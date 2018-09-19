@@ -1,14 +1,14 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCase.closeWebDriver;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCase.createARandomCase;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.sleep;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCase;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_CreateStaffAssignmentsPage;
@@ -28,7 +28,7 @@ public class CreateStaffAssignments_StepDefinitions {
 		} catch (Exception e) {
 			e.getMessage();
 		} finally {
-			Thread.sleep(40000);
+			sleep(50000);
 			closeWebDriver();
 
 		}
@@ -67,7 +67,7 @@ public class CreateStaffAssignments_StepDefinitions {
 	@Then("^User verifies when tapping the drop-down a popup displays a list of staff based on the screen parameter in the DPF, \"([^\"]*)\" , \"([^\"]*)\" , \"([^\"]*)\"$")
 	public void user_verifies_when_tapping_the_drop_down_a_popup_displays_a_list_of_staff_based_on_the_screen_parameter_in_the_DPF(
 			String dbType, String elId, String peId) {
-		page1.verifyListOfStaff(DBType.valueOf(dbType), elId, peId);
+		page1.verifyListOfStaff(valueOf(dbType), elId, peId);
 
 	}
 
@@ -80,8 +80,7 @@ public class CreateStaffAssignments_StepDefinitions {
 	@Then("^User verifies that when you tap the Please Select button next to the Assignment label, a pop-up displays with valid assignment types\\.  , \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_verifies_that_when_you_tap_the_Please_Select_button_next_to_the_Assignment_label_a_pop_up_displays_with_valid_assignment_types_and(
 			String dbType, String elID) {
-		page1.getAssignmentType(DBType.valueOf(dbType), elID);
-		//performPageLoad();
+		page1.getAssignmentType(valueOf(dbType), elID,1);
 
 	}
 
@@ -109,10 +108,29 @@ public class CreateStaffAssignments_StepDefinitions {
 
 	}
 
-	@Then("^User clicks on \"([^\"]*)\" and then \"([^\"]*)\" button and verifies that beck end \"([^\"]*)\" is updated correctly using \"([^\"]*)\"$")
+	@Then("^User clicks on \"([^\"]*)\" and then \"([^\"]*)\" button and verifies that beck end \"([^\"]*)\" is updated correctly using \"([^\"]*)\" ,\"([^\"]*)\"$")
 	public void user_clicks_on_and_then_button_and_verifies_that_beck_end_is_updated_correctly_using(String apply,
-			String submit, String dbType, String cha_ju_pe_id) {
-		page1.getTextOfSelectedOption(apply, submit, DBType.valueOf(dbType), cha_ju_pe_id);
+			String submit, String dbType, String cha_ju_pe_id, String elId) {
+		page1.getExistingAssignment(apply, submit, valueOf(dbType), cha_ju_pe_id, elId);
+		//
+		// try {
+		// //page2.deleteCase(caseN);
+		// sleep(50000);
+		// assertTrue(findWebElement(By.xpath(DELETE_CASE_INFO_REPORT_PAGE)).isDisplayed());
+		//
+		// } catch (Exception e) {
+		// e.getMessage();
+		//
+		// } finally {
+		//
+		// closeWebDriver();
+
+		// }
+	}
+
+	@Then("^User taps on an existing staff assignment in the chmAssign DPF and it will display a new page$")
+	public void user_taps_on_an_existing_staff_assignment_in_the_chmAssign_DPF_and_it_will_display_a_new_page() {
+
 	}
 
 }

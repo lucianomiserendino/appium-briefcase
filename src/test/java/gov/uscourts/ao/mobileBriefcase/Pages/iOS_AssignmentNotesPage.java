@@ -19,7 +19,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveDates;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.split;
 import static java.util.Collections.reverse;
 import static java.util.Collections.sort;
@@ -74,11 +73,6 @@ public class iOS_AssignmentNotesPage {
 	@iOSFindBy(xpath = "//*[contains(@name, 'Assigned')]")
 	public static List<MobileElement> assignedDates;
 
-
-	public void selectCase(String category, String caseNum) {
-		selectCaseNumber(category, caseNum);
-	}
-
 	public void verifyAssignmentIsDisplayed(String assignmentOnReferral) {
 		performPageLoad();
 		assertTrue(isDisplayed(assignments));
@@ -88,16 +82,16 @@ public class iOS_AssignmentNotesPage {
 
 	public void getAssignmentLinkedtoTheReferral(String assignmentForKyle, String assignmentForEssley) {
 
-		List<String> dbReferralAssignments = executeQuery(DBType.CMKA,STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_NAME);
+		List<String> dbReferralAssignments = executeQuery(DBType.CMKA, STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_NAME);
 		try {
 			if (isDisplayed(assignments))
 				;
 			getPanel(ASSIGNMENTS);
-		
+
 			assertTrue("STAFF ASSIGNMENTS LINKED TO THE REFERRAL ARE NOT DISPLAYED",
 					dbReferralAssignments.containsAll(listOfAssignments(assignmentForKyle, assignmentForEssley)));
 
-			List<String> dbCaseAssignments = executeQuery(DBType.CMKA,ASSIGNED_DATES);
+			List<String> dbCaseAssignments = executeQuery(DBType.CMKA, ASSIGNED_DATES);
 			reverse(dbCaseAssignments);
 
 			assertEquals(" ASSIGNED DATES MISMATCH ", dbCaseAssignments,
@@ -109,7 +103,6 @@ public class iOS_AssignmentNotesPage {
 			e.getMessage();
 
 		}
-
 
 	}
 
@@ -154,7 +147,6 @@ public class iOS_AssignmentNotesPage {
 		assertAssignmentNotes("TEXT IS NOT DISPLYED", assignmentNoteText, ASSIGNMENT_NOTE_TEXT,
 				assignmentAssignedNoteText, ASSIGNMENT_ASSIGNED_NOTE_TEXT);
 
-	
 	}
 
 	public static void assertAssignmentNotes(String message, MobileElement el1, String assign1, MobileElement el2,
@@ -168,6 +160,5 @@ public class iOS_AssignmentNotesPage {
 		}
 
 	}
-	
-	
+
 }

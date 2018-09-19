@@ -133,6 +133,7 @@ public class DBUtilities {
 		return getRestrictParam(getAllColumns(DBType.CMKA, mbrNote), index);
 
 	}
+
 	public static void closeConnections() {
 		try {
 			if (resultSet != null) {
@@ -179,6 +180,7 @@ public class DBUtilities {
 	public static String getID(String query, String id) {
 		return query.replace("?", id);
 	}
+
 	public static String getText(String query, String text) {
 		return query.replace("TEXT", text);
 	}
@@ -187,17 +189,17 @@ public class DBUtilities {
 		return query.replace("CODE", text);
 	}
 
-
 	public static String getPE_ID(DBType dbType, String judgeName) {
-
 		return getAllColumns(dbType, getText(PE_ID, judgeName));
 
+	}
+
+	public static DBType valueOf(String dbType) {
+		return DBType.valueOf(dbType);
 	}
 
 	public enum DBType {
 		CMKA, CM3A
 	}
-	
-
 
 }

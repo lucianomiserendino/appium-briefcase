@@ -21,7 +21,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -64,9 +63,8 @@ public class iOS_ReferralCategoriesPage {
 	public void getPendingTasks(DBType dbtype, String query, String pe_id) {
 		List<String> DBPendingTasks = executeQuery(dbtype, getID(query, pe_id));
 		if (DBPendingTasks.size() > 0) {
-			List<String> UIPendingTasks = Arrays.asList(verifyIfPendingTasksAreDisplayed());
-
-			assertEquals("-----RECORD COUNT MISMATCH-----", DBPendingTasks, UIPendingTasks);
+			List<String> UIPendingTasks = asList(verifyIfPendingTasksAreDisplayed());
+			assertEquals("-----RECORD COUNT MISMATCH-----", asList(DBPendingTasks.size()), UIPendingTasks);
 		}
 	}
 
@@ -80,12 +78,12 @@ public class iOS_ReferralCategoriesPage {
 		List<String> categories = new ArrayList<>();
 		List<String> dbReferralCategories = executeQuery(dbtype, query);
 		sort(dbReferralCategories);
-		scroll(1, "down");
+		// scroll(1, "down");
 		try {
 			for (int i = 0; i < dbReferralCategories.size(); ++i) {
-				//scroll(1, "down");
 				performPageLoad();
-				MobileElement referrals = waitForElement(findElement(By.xpath("//*[contains(@name, '"+dbReferralCategories.get(i)+"')]")));
+				MobileElement referrals = waitForElement(
+						findElement(By.xpath("//*[contains(@name, '" + dbReferralCategories.get(i) + "')]")));
 				assertTrue(referrals.isDisplayed());
 
 			}
@@ -112,7 +110,7 @@ public class iOS_ReferralCategoriesPage {
 		try {
 
 			for (int i = 0; i < referralCategories.size(); ++i) {
-				//scroll(1, "down");
+				// scroll(1, "down");
 				performPageLoad();
 				MobileElement referrals = waitForElement(findElement(By.id(referralCategories.get(i))));
 				performPageLoad();
