@@ -38,7 +38,7 @@ public class Queries {
 
 	// To find if a judge has any pending assignments run the following
 	// query for the logged in judge:
-	public static final String PENDING_TASK_ASSIGNMENTS = "\n" + "select distinct  cav_display, chc_cs_caseid\n"
+	public static final String PENDING_TASK_ASSIGNMENTS = "select  count(distinct concat(cav_display, chc_cs_caseid)) "
 			+ "			 FROM chm_mobile_referral JOIN chambers_case_to_referral on ccr_id = cmr_ccr_id \n"
 			+ "			 join chambers_referral on ccr_cpr_id = cpr_id \n"
 			+ "			 JOIN chm_assign_to_case on chc_cpr_id = ccr_cpr_id and chc_cs_caseid = cmr_cs_caseid \n"
@@ -374,5 +374,32 @@ public class Queries {
 			+ "    group by chd_cha_id) maxresults\n" + "WHERE ad.chd_cha_id = ? and\n"
 			+ "chd_cdv_code = cdv_code and\n" + "ad.chd_cha_id=  maxresults.chd_cha_id and\n"
 			+ "ad.chd_date = maxresults.maxnum";
+
+	public static final String CHAMBERS_PE_ID = "SELECT first 1 pe_id\n"
+			+ "FROM group inner join member on gp_id = mb_gp_id_parent \n"
+			+ "join personrole on pe_pr_prid = mb_ur_pr_prid \n" + "join person on pe_pr_prid = pr_prid \n"
+			+ "join user on ur_pr_prid = pr_prid \n"
+			+ "where  pr_first_name='PR_FIRST_NAME' and pr_last_name='PR_LAST_NAME' and   gp_id in (select gp_id from group inner join member on gp_id = mb_gp_id_parent join person on pr_prid = mb_ur_pr_prid \n"
+			+ "join personrole on pe_pr_prid = pr_prid where pe_id = '?' and gp_name like '%Chambers%') and pe_date_end is null and pr_prid <> \n"
+			+ "(select pr_prid from personrole join person on pe_pr_prid = pr_prid where pe_id = '?' and ur_date_disabled is null ) order by pe_date_created desc";
+
+	public static final String CHC_DATE_END = "select first 1 chc_date_end from chambers_assignment \n"
+			+ "join chambers_assign_date on cha_id = chd_cha_id \n"
+			+ "join chm_assign_to_case on chc_cha_id = ? order by cha_last_updated desc";
+	
+
+	public static final String CHD_DATE = "select first 1 chd_date from chambers_assignment \n"
+			+ "join chambers_assign_date on cha_id = chd_cha_id \n"
+			+ "join chm_assign_to_case on chc_cha_id = ? order by cha_last_updated desc";
+
+	public static final String CHA_CAV_CODE = "select first 1 cha_cav_code from chambers_assignment \n"
+			+ "join chambers_assign_date on cha_id = chd_cha_id \n"
+			+ "join chm_assign_to_case on chc_cha_id = ? order by cha_last_updated desc";
+	
+
+	public static final String CAV_CODE = "SELECT cav_code  \n" + "	FROM chm_assign_type_val \n"
+			+ "	WHERE cav_display='TEXT' ";
+	
+	
 
 }

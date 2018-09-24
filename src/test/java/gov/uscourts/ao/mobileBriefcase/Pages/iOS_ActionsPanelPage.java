@@ -36,7 +36,6 @@ public class iOS_ActionsPanelPage {
 	public static MobileElement actions;
 
 	public void verifyActionsPanelIsDisplayed(DBType dbtype, String actionsPanel) {
-
 		getPanel(dbtype, MBR_EVENT, " THERE'RE NO ACTIONS OR MBR_EVENT TABLE IS EMPTY ", actionsPanel);
 
 	}

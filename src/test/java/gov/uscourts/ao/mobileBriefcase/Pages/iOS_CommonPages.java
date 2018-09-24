@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
@@ -17,6 +18,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.*;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
@@ -32,6 +34,7 @@ public class iOS_CommonPages {
 
 	public static void getActionsPanel(DBType dbType, String el_id) {
 		getPanel(ACTIONS);
+		performPageLoad();
 		clickOnPanel(ACTIONS, getActionName(dbType, el_id));
 
 	}

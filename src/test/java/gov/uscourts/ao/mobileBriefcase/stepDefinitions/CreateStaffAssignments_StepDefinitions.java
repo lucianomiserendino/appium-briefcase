@@ -1,10 +1,16 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCase.DELETE_CASE_INFO_REPORT_PAGE;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCase.closeWebDriver;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCase.createARandomCase;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.sleep;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findWebElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
+import static org.junit.Assert.assertTrue;
+
+import org.openqa.selenium.By;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -28,16 +34,15 @@ public class CreateStaffAssignments_StepDefinitions {
 		} catch (Exception e) {
 			e.getMessage();
 		} finally {
-			sleep(50000);
+			sleep(60000);
 			closeWebDriver();
-
 		}
-
 	}
 
 	@When("^User selects a Judge, category: \"([^\"]*)\" and case$")
 	public void user_selects_a_Judge_category_and_case(String category) {
 		page = new iOS_CommonPages();
+		refresh();
 		page.selectCategoryAndCase(category, caseN);
 
 	}
@@ -80,7 +85,7 @@ public class CreateStaffAssignments_StepDefinitions {
 	@Then("^User verifies that when you tap the Please Select button next to the Assignment label, a pop-up displays with valid assignment types\\.  , \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_verifies_that_when_you_tap_the_Please_Select_button_next_to_the_Assignment_label_a_pop_up_displays_with_valid_assignment_types_and(
 			String dbType, String elID) {
-		page1.getAssignmentType(valueOf(dbType), elID,1);
+		page1.getAssignmentType(valueOf(dbType), elID, 1);
 
 	}
 
@@ -88,14 +93,14 @@ public class CreateStaffAssignments_StepDefinitions {
 	public void user_verifies_that_A_date_field_will_be_displayed_for_each_value_followed_by_Verifies_when_tapping_a_the_date_field_that_a_calendar_pop_ups_and_today_s_date_is_selected_by_default_Select_a_date_and_verify_the_date_field_is_populated_with_the_date(
 			String assigned, String selectDate) {
 		page1.getElementNextToDropDown(assigned, selectDate);
-		page1.selectADate(2);
+		page1.selectADate(7);
 	}
 
 	@Then("^User verifies that  A date field \"([^\"]*)\" is displayed, followed by \"([^\"]*)\"\\.  Verifies when tapping a the date field, that a calendar pop-ups \\. Select a date and verify the date field is populated with the date$")
 	public void user_verifies_that_A_date_field_is_displayed_followed_by_Verifies_when_tapping_a_the_date_field_that_a_calendar_pop_ups_Select_a_date_and_verify_the_date_field_is_populated_with_the_date(
 			String assignmnetDue, String selectDate) {
 		page1.getElementNextToDropDown(assignmnetDue, selectDate);
-		page1.selectADate(1);
+		page1.selectADate(5);
 
 	}
 
@@ -112,25 +117,19 @@ public class CreateStaffAssignments_StepDefinitions {
 	public void user_clicks_on_and_then_button_and_verifies_that_beck_end_is_updated_correctly_using(String apply,
 			String submit, String dbType, String cha_ju_pe_id, String elId) {
 		page1.getExistingAssignment(apply, submit, valueOf(dbType), cha_ju_pe_id, elId);
-		//
-		// try {
-		// //page2.deleteCase(caseN);
-		// sleep(50000);
-		// assertTrue(findWebElement(By.xpath(DELETE_CASE_INFO_REPORT_PAGE)).isDisplayed());
-		//
-		// } catch (Exception e) {
-		// e.getMessage();
-		//
-		// } finally {
-		//
-		// closeWebDriver();
 
-		// }
+		try {
+			page2.deleteCase(caseN);
+			sleep(70000);
+			assertTrue(findWebElement(By.xpath(DELETE_CASE_INFO_REPORT_PAGE)).isDisplayed());
+
+		} catch (Exception e) {
+			e.getMessage();
+
+		} finally {
+
+			closeWebDriver();
+
+		}
 	}
-
-	@Then("^User taps on an existing staff assignment in the chmAssign DPF and it will display a new page$")
-	public void user_taps_on_an_existing_staff_assignment_in_the_chmAssign_DPF_and_it_will_display_a_new_page() {
-
-	}
-
 }

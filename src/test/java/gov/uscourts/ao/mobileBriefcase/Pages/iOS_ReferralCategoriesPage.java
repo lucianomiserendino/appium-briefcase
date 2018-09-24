@@ -64,7 +64,7 @@ public class iOS_ReferralCategoriesPage {
 		List<String> DBPendingTasks = executeQuery(dbtype, getID(query, pe_id));
 		if (DBPendingTasks.size() > 0) {
 			List<String> UIPendingTasks = asList(verifyIfPendingTasksAreDisplayed());
-			assertEquals("-----RECORD COUNT MISMATCH-----", asList(DBPendingTasks.size()), UIPendingTasks);
+			assertEquals("-----RECORD COUNT MISMATCH-----", DBPendingTasks, UIPendingTasks);
 		}
 	}
 

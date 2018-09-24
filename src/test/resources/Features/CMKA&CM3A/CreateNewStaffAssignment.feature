@@ -1,9 +1,9 @@
 Feature: Display of Assignment Notes 
 
 
-
-@AMB_1123 
-@AMB_1137
+@Smoke
+@AMB-1123 
+@AMB-1137
 @AMB-1170
 Scenario Outline: 
 	This task is to verify that a chambers user is able to create a new staff assignment.And verify a chambers user can edit existing staff assignments
@@ -16,7 +16,6 @@ Scenario Outline:
 	When User selects a Judge, category: "<category>" and case 
 	Then User  selects action using dbType "<dbType>" and  "<actionElID>"  and verifies the name of the action displays in the dark blue banner 
 	Then User  verifies the "Assignments"  in a light blue banner , "New Staff Assignment"  and "Submit" button display on the page 
-	
 	When User taps on "New Staff Assignment" it  will display a new page. Verify page is entitled "Create Assignment" 
 	And User verifies a label "Staff Member" and "Please Select" is  displayed next to the  drop-down that contains a list of staff and click on it 
 	Then User verifies when tapping the drop-down a popup displays a list of staff based on the screen parameter in the DPF, "<dbType>" , "<actionElID>" , "<cha_ju_pe_id>" 
@@ -26,8 +25,6 @@ Scenario Outline:
 	Then User verifies that  A date field "Assignment Due" is displayed, followed by "Select Date".  Verifies when tapping a the date field, that a calendar pop-ups . Select a date and verify the date field is populated with the date
 	And User verifies "Comment"  is displayed under the assignment  date type and a text area displays next to the label enabling the user to enter notes about the assignment. Then  User verifies  "Apply" button displays . If the user clicks the Apply button, the popup will close and the new assignment will display on the chmAssign DPF screen. And User verifies  "Cancel" button displays. If the user clicks Cancel, the popup will close and no data will be saved. 
 	Then User clicks on "Apply" and then "Submit" button and verifies that beck end "<dbType>" is updated correctly using "<cha_ju_pe_id>" ,"<actionElID>"
-	#And User taps on an existing staff assignment in the chmAssign DPF and it will display a new page 
-	#Then User verifies page is entitled "Modify Assignment"
 	
 	
 	Examples: 
@@ -35,16 +32,3 @@ Scenario Outline:
 		|Integration   |judge werner      |Test2018! |Appellate DC Development - CMKA           |Test Automation         |CMKA   |18-8339  |3145         |34          |82271       |CMKA  |
 		
 		
-
-
-
-#5. Verify page is entitled "Modify Assignment" . 
-#6. The same screen that displays for new assignments will display (AMB-809,
-#AMB-882). Verify the assignees name is just label and it is not selectable.
-#User cannot change to whom the assignment was made. 
-#7. Verify the user can update the assignment type, assignment dates, terminate
-#an assignment and/or add a note. 
-#8. Verify tapping the "Apply" button will close the screen and the chmAssign DPF
-#panel will be populated with the edits. 
-#9. Verify tapping the "Cancel" button will close the screen and no changes will
-#be saved.
