@@ -76,18 +76,6 @@ public interface Constants {
 
 	public static final String CMR_ID = "2303033";
 
-	public static final String COURT_USERS = "3060";
 
-	public static final String COURT_USERS_LINKED_TO_CASE = "3070";
-
-	public static final String PANEL_JUDGES_ONLY = "3128";
-
-	public static final String PANEL_JUDGES_AND_USERs_CHAMBERS = "3118";
-
-	public static final String PANEL_JUDGES_CHAMBERS = "3074";
-
-	public static final String USERs_CHAMBERS = "3127";
-
-	public static final String ONLY_GROUPS_AND_USERS = "3072";
 
 }

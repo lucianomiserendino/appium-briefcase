@@ -2,23 +2,33 @@ Feature: note DPF back-end updates
 
 
 
-@AMB_1075 
-Scenario Outline: 
+@AMB-1075 
+Scenario: 
 	Adding a note back-end database updates.
-       hen User expands the Actions panel, selects an action
-       
-      
-	Assignment Categories display on the dashboard for SAs
-	Given  User Navigates to  "<environment>" environment 
-	When  User enters Credentials to Login "<userName>" and "<password>" 
+            
+	Given  User Navigates to  "Integration" environment 
+	When  User enters Credentials to Login "chambers courtney" and "Test2021!" 
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
-	And  user selects a "<server>" 
-	Given Select Judge Colloton , Screening Panels "15-3703" 
-	When User  selects an "Action" 
+	And  user selects a "Appellate DC Development - CMKA" 
+	When User selects Judge,  "Screening Panels" and  "15-3703" 
+	Then User selecs action, enters a comment in the editable field, submits and verifies Db "CMKA" is updated correctly
 	
-	Then User selects "note - court users",user enters a comment in the editable field and submits . However dm_acc_crt = 'y', dm_acc_ctlink = 'n', dm_acc_spec = 'n'. No doc_group or doc_user records are created. 
+	|el_list_text                           | dm_acc_crt | dm_acc_ctlink  | dm_acc_spec |
+	|note - court users                     |     y      |      n         |      n      |
+	#|note - court users linked to case      |     n      |      y         |      n      |
+	|note - panel judges only               |     n      |      n         |      y      |
+	|note - panel judges and users chambers |     n      |      n         |      y      |
+	|note - panel judges chambers           |     n      |      n         |      y      |
+	|note - users chambers                  |     n      |      n         |      y      |
+	|note - only groups and users           |     n      |      n         |      y      |
+	
+	
+	
+	#Then User selects "note - court users",user enters a comment in the editable field and submits . However dm_acc_crt = 'y', dm_acc_ctlink = 'n', dm_acc_spec = 'n'. No doc_group or doc_user records are created. 
 	#Then User selects "note - court users linked to case"user enters a comment in the editable field and submits . However the dm_acc_crt = 'n', dm_acc_ctlink = 'y', dm_acc_spec = 'n'. No doc_group or doc_user records are created 
+	
+	
 	
 	#Then User selects "note - panel judges only",user enters a comment in the editable field and submits . However  the dm_acc_crt = 'n', dm_acc_ctlink = 'n', dm_acc_spec = 'y'. 
 	#And user verifies a doc_user record is  created for each judge on the panel 
@@ -41,10 +51,6 @@ Scenario Outline:
 	#And user verifies  a doc_group record will be created for the groups ids following the pipe in the Note Available - Default Group IDs
 	
 	
-	
-	
-		Examples: 
-		|environment   |userName          |password  |server                          |
-		|Integration   |chambers courtney |Test2020! |Appellate DC Development - CMKA |
+
 		
 		

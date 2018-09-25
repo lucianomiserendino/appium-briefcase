@@ -277,7 +277,6 @@ public class Utilities extends Base {
 	}
 
 	public static void navigateBack(MobileElement element, Users user) {
-
 		element.click();
 		Page.performPageLoad();
 		select(user);
@@ -297,9 +296,9 @@ public class Utilities extends Base {
 		navigateBack(element, user);
 	}
 
-	public static String getIndex(DataTable table, String object) {
-		List<Map<String, String>> credentials = table.asMaps(String.class, String.class);
-		return credentials.get(0).get(object);
+	public static void getIndexOfDataTable(DataTable table,int index1, int index2) {
+		List<Map<Integer, Integer>> credentials = table.asMaps(Integer.class, Integer.class);
+		credentials.get(index1).get(index2);
 	}
 
 	public static void getUserCategory(Users userCategory, MobileElement selectUser, Users user) {

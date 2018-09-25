@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.COURT_USERS;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Constants;
@@ -178,8 +177,9 @@ public class Queries {
 			+ " smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa' ) and smr_assign_pe_id = "
 			+ "(SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' )";
 
-	public static final String NOTE_DPF_DEFAULT_DESCRIPTION = "select el_functions FROM event_list  where el_id="
-			+ getId(COURT_USERS);
+	// public static final String NOTE_DPF_DEFAULT_DESCRIPTION = "select
+	// el_functions FROM event_list where el_id="
+	// + getId(COURT_USERS);
 
 	public static final String DM_ACC_CRT = "select first 1 dm_acc_crt from  document order by dm_date_created desc";
 

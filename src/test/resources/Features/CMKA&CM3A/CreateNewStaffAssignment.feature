@@ -1,4 +1,4 @@
-Feature: Display of Assignment Notes 
+Feature: create/edit/terminate  staff assignments
 
 
 @Smoke
