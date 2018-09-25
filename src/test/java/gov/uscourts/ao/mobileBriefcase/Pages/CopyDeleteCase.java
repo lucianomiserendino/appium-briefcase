@@ -14,6 +14,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import gov.uscourts.ao.mobileBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.common.Helper;
+import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 
 public class CopyDeleteCase extends Base {
 
@@ -139,6 +141,11 @@ public class CopyDeleteCase extends Base {
 			webDriver.close();
 		}
 
+	}
+
+	public void getRedBullet() {
+		Helper.getPanel(Actions.AO_MOTION_FILED);
+		
 	}
 
 }

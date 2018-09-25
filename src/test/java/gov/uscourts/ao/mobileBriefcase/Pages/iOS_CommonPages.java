@@ -8,7 +8,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.*;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.scroll;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
@@ -20,7 +20,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
-import gov.uscourts.ao.mobileBriefcase.common.Utilities;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
 public class iOS_CommonPages {

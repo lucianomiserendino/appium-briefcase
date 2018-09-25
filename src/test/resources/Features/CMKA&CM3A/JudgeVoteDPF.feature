@@ -2,7 +2,7 @@ Feature: JudgeVote DPF UI
 
 
 
-@S
+
 		@Smoke
 		@AMB-1100
 		@AMB-1103 

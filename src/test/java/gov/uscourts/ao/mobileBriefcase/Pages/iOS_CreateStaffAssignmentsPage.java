@@ -417,5 +417,8 @@ public class iOS_CreateStaffAssignmentsPage {
 		}
 		assertEquals("*********ASSIGNMENT TYPE VALIDATION ERROR!!!*********", dbAssignmentType, uiAssignmenType);
 	}
+	
+	
+	
 
 }

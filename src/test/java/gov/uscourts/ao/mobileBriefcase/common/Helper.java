@@ -124,6 +124,10 @@ public class Helper {
 			click(locateElement("Vote Information"));
 			break;
 
+		case AO_MOTION_FILED:
+			click(locateElement("AO - motion filed"));
+			break;
+			
 		default:
 			break;
 		}
@@ -205,7 +209,7 @@ public class Helper {
 		PENDING_TASKS, PETITIONS_FOR_REHEARING, CASES_ON_CALENDAR, MOTIONS_PETITIONS, SCREENING_PANELS,
 
 		/** Panels */
-		ASSIGNMENTS, VOTE_INFORMATION, ACTIONS, JUDGMENT_FILED, PETITION_FILED,
+		ASSIGNMENTS, VOTE_INFORMATION, ACTIONS, JUDGMENT_FILED, PETITION_FILED,AO_MOTION_FILED,
 
 		/** Judge's initials */
 		SMC, RLW, RWG,

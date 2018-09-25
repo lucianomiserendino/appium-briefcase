@@ -5,7 +5,6 @@ Feature: Display of Assignment Notes
 @AMB-1123 
 @AMB-1137
 @AMB-1170
-@S
 Scenario Outline: 
 	This task is to verify that a chambers user is able to create a new staff assignment.And verify a chambers user can edit existing staff assignments
 	Given User creates a new case
