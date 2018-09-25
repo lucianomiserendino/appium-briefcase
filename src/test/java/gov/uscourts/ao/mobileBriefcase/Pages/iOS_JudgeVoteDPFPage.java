@@ -175,7 +175,6 @@ public class iOS_JudgeVoteDPFPage {
 			vote.click();
 		}
 		getIndexOf(reliefText, 3);
-
 		addVote(dbType, getID(MBR_NOTE, elId), reliefText, elId);
 
 	}

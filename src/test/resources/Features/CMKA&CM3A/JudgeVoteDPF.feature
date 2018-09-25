@@ -2,8 +2,8 @@ Feature: JudgeVote DPF UI
 
 
 
-
-		#@Smoke
+@S
+		@Smoke
 		@AMB-1100
 		@AMB-1103 
 		Scenario Outline: 

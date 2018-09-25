@@ -3,16 +3,16 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 
 import cucumber.api.java.en.Then;
-import gov.uscourts.ao.mobileBriefcase.Pages.iOS_StaffAssignments;
+import gov.uscourts.ao.mobileBriefcase.Pages.iOS_StaffAssignmentsPage;
 
 public class StaffAssignments_StepDefinitions {
 
-	iOS_StaffAssignments page;
+	iOS_StaffAssignmentsPage page;
 
 	@Then("^User  observes a collapsible panel entitled \"([^\"]*)\" displays and expands the Assignments panel$")
 	public void user_observes_a_collapsible_panel_entitled_displays_and_expands_the_Assignments_panel(
 			String assignments) {
-		page = new iOS_StaffAssignments();
+		page = new iOS_StaffAssignmentsPage();
 		page.verifyAssignmentIsDisplayed(assignments);
 	}
 

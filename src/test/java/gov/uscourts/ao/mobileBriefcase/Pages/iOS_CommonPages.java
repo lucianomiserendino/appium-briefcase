@@ -1,15 +1,16 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.*;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.scroll;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
 import static org.junit.Assert.assertTrue;
 
@@ -18,8 +19,8 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.*;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
+import gov.uscourts.ao.mobileBriefcase.common.Utilities;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
 public class iOS_CommonPages {
@@ -35,7 +36,11 @@ public class iOS_CommonPages {
 	public static void getActionsPanel(DBType dbType, String el_id) {
 		getPanel(ACTIONS);
 		performPageLoad();
-		clickOnPanel(ACTIONS, getActionName(dbType, el_id));
+		if (isDisplayed(By.xpath(getActionName(dbType, el_id)))) {
+			click(getActionName(dbType, el_id));
+		} else {
+			clickOnPanel(ACTIONS, getActionName(dbType, el_id));
+		}
 
 	}
 
@@ -51,6 +56,7 @@ public class iOS_CommonPages {
 				click(penlRow);
 			} else {
 				getPanel(panel);
+				scroll(1, "down");
 				click(penlRow);
 			}
 		} catch (NoSuchElementException e) {
