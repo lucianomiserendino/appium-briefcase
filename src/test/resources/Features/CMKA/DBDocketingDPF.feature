@@ -1,7 +1,6 @@
 Feature: note DPF back-end updates 
 
 
-
 @AMB-1075 
 Scenario: 
 	Adding a note back-end database updates.

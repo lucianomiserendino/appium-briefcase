@@ -2,7 +2,7 @@ Feature: Assignment Categories display on the dashboard for SAs, Referral catego
 
 
 
-@Smoke
+
 @AMB_1047 
 @AMB_1049 
 Scenario Outline: 

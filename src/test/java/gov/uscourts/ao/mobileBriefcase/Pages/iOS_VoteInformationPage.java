@@ -23,7 +23,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utilities.changeDateFormat;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -45,13 +44,8 @@ public class iOS_VoteInformationPage {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
-	public void selectCase(String category, String caseNum) {
-		selectCaseNumber(category, caseNum);
-	}
-
 	/** Observe the Vote Information Panel displays */
 	public void getVoteInformationPanel(DBType dbType, String element) {
-
 		getPanel(dbType, MBR_EVENT, "VOTE INFORMATION PANEL IS NOT DISPLAYED", element);
 
 	}

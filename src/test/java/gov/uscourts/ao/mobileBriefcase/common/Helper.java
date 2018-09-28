@@ -89,6 +89,8 @@ public class Helper {
 
 	}
 
+
+
 	/** Panel name, actions, */
 	public static void getPanel(Actions panel, List<MobileElement> actions, String element) {
 
@@ -116,7 +118,7 @@ public class Helper {
 			break;
 
 		case ACTIONS:
-	
+
 			click(locateElement("Actions"));
 			break;
 
@@ -124,10 +126,10 @@ public class Helper {
 			click(locateElement("Vote Information"));
 			break;
 
-		case AO_MOTION_FILED:
-			click(locateElement("AO - motion filed"));
+		case BRIEFS:
+			click(locateElement("Briefs"));
 			break;
-			
+
 		default:
 			break;
 		}
@@ -135,7 +137,7 @@ public class Helper {
 	}
 
 	public static String getPanelText(Actions action, String element) {
-		if (elementIsDisplayed(element)==true) {
+		if (elementIsDisplayed(element) == true) {
 			return getText(element);
 		} else {
 			getPanel(action);
@@ -209,7 +211,7 @@ public class Helper {
 		PENDING_TASKS, PETITIONS_FOR_REHEARING, CASES_ON_CALENDAR, MOTIONS_PETITIONS, SCREENING_PANELS,
 
 		/** Panels */
-		ASSIGNMENTS, VOTE_INFORMATION, ACTIONS, JUDGMENT_FILED, PETITION_FILED,AO_MOTION_FILED,
+		ASSIGNMENTS, VOTE_INFORMATION, ACTIONS, JUDGMENT_FILED, PETITION_FILED, BRIEFS,
 
 		/** Judge's initials */
 		SMC, RLW, RWG,
@@ -219,4 +221,5 @@ public class Helper {
 		SPLIT_BY_COMMA, REPLACE, SPLIT_BY_SPACE
 
 	}
+
 }

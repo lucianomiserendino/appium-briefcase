@@ -17,7 +17,7 @@ Scenario Outline:
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And  user selects a "<server>" 
-	And   User selects judge, category "<refCategory>"  and "<caseNume>" 
+	When User selects Judge,  "<refCategory>" and  "<caseNum>"
 	Given User observes ( "<dbType>" ) the "Vote Information" panel displays.   This should only display if the referral requires voting 
 	Then   for each referral, observes the filer's name  first initial of pr_middle_name gn_display  party type and date filed displays in a light blue heading. Use "<dbType>", "<cmr_ju_pe_id>" , "<cmr_cs_caseid>" ,"<cmr_cyv_code>" , "<ccr_id>" .
 	And observes the judge's initials display in the same heading and db "<dbType>" using  "<ccr_id>"
@@ -27,7 +27,7 @@ Scenario Outline:
 	
 	
 	Examples: 
-		|environment   |userName          |password  |server                                   |refCategory             | caseNume |dbType| cmr_cs_caseid |cmr_ju_pe_id|cmr_cyv_code|ccr_id|
+		|environment   |userName          |password  |server                                   |refCategory             | caseNum  |dbType| cmr_cs_caseid |cmr_ju_pe_id|cmr_cyv_code|ccr_id|
 		|Integration   |chambers courtney |Test2021!|Appellate DC Development - CMKA           |Petitions for Rehearing | 15-3314  |CMKA  | 82226         |32          |prhr        |34870 |
 	#	|Testing       |judgewilliams   |Testpass1! |Appellate DC Installation Testing - CM3A  |Rehearing Petition      | 11-1012  |CM3A  | 67317         |2189563     |rhr         |2973  |
 		

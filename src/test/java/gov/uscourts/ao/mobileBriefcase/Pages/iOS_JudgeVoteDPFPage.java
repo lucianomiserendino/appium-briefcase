@@ -116,10 +116,10 @@ public class iOS_JudgeVoteDPFPage {
 			/** verify all initials are displayed */
 
 			for (int inits = 0; inits < dbInitials.size(); ++inits) {
-				MobileElement uiJudgeInitis = waitForElement(findElement(By
+				MobileElement uiJudgeInits = waitForElement(findElement(By
 						.xpath("//XCUIElementTypeOther[@name='JudgesVotesList_Container']/child::*//*[contains(@name, '"
 								+ dbInitials.get(inits) + "')]")));
-				assertTrue(uiJudgeInitis.isDisplayed());
+				assertTrue(uiJudgeInits.isDisplayed());
 			}
 
 			for (int init = 0; init < dbInitial.size(); ++init) {
