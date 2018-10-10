@@ -128,6 +128,17 @@ public class DBUtilities {
 
 	}
 
+	public static void insertData(DBType dbType, String query) {
+		establishConnection(dbType);
+		try {
+			statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			 statement.executeUpdate(query);
+		} catch (Exception e) {
+			e.getMessage();
+			closeConnections();
+		}
+	}
+
 	public static String getEL_Function(String mbrNoteCourtUsersElId, int index) {
 		final String mbrNote = MBR_NOTE + mbrNoteCourtUsersElId;
 		return getRestrictParam(getAllColumns(DBType.CMKA, mbrNote), index);

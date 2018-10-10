@@ -1,7 +1,7 @@
 Feature: create/edit/terminate  staff assignments
 
 
-@Smoke
+@Local
 @AMB-1123 
 @AMB-1137
 @AMB-1170
@@ -28,7 +28,7 @@ Scenario Outline:
 	
 	
 	Examples: 
-		|environment   |userName          |password  |server                                    |category                |dbType |case     |actionElID   |cha_ju_pe_id|cmr_cs_caseid|dbtype|
-		|Integration   |judge werner      |Test2018! |Appellate DC Development - CMKA           |Test Automation         |CMKA   |18-8339  |3145         |34          |82271       |CMKA  |
+		|environment   |userName          |password  |server                                    |category                |dbType |actionElID   |cha_ju_pe_id|cmr_cs_caseid|dbtype|
+		|Integration   |judge werner      |Test2019! |Appellate DC Development - CMKA           |Test Automation         |CMKA   |3145         |34          |82271        |CMKA  |
 		
 		

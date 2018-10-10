@@ -1,24 +1,27 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
+
 import static gov.uscourts.ao.mobileBriefcase.common.Base.getInstance;
-import static gov.uscourts.ao.mobileBriefcase.common.Base.safariInstance;
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.logout;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.scroll;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCase;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.common.Base.Drivers;
+import gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.Coordinates;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
 public class iOS_RedBulletsPage {
@@ -27,10 +30,11 @@ public class iOS_RedBulletsPage {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
-	private static String settingsPage = "//*[contains(@name, 'NavigationRenderer')]/XCUIElementTypeButton[2]";
-	private static String logout = "Logout of Briefcase";
-	private static String OKBtn = "OK";
 	String back = "Back";
+
+	String close = "Close";
+
+	String PDFPageView = "PDF View";
 
 	public static void verifyRedBullet(RedBullet dispayed, String value) {
 		switch (dispayed) {
@@ -47,12 +51,12 @@ public class iOS_RedBulletsPage {
 
 	public static void verifyRedBulletIsDisplayed(String value) {
 		performPageLoad();
-		assertTrue(getRedBullet(value));
+		assertTrue("*******RED BULLET IS NOT DISPLAYED FOR UNVIEWED REFERRAL********", getRedBullet(value));
 	}
 
 	public static void verifyRedBulletIsNotDisplayed(String value) {
 		performPageLoad();
-		assertFalse(getRedBullet(value));
+		assertFalse("*******RED BULLET IS DISPLAYED FOR ALEARDY VIEWED REFERRAL*******", getRedBullet(value));
 	}
 
 	public static boolean getRedBullet(String value) {
@@ -88,14 +92,16 @@ public class iOS_RedBulletsPage {
 		assertRedBullet(category, autosync, RedBullet.IS_DISPLAYED);
 		click(locateElement(autosync));
 		performPageLoad();
+		select(Coordinates.DISMISS);
+		performPageLoad();
+		assertTrue("********CAN'T OPEN A DOCUMENT IN BRIEFCASE FROM THE NDA LINK*********",
+				findElement(By.id(PDFPageView)).isDisplayed());
+		select(Coordinates.DISMISS);
+		findElement(By.id(close)).click();
+		assertRedBulletIsNotDisplayed(autosync);
 		driver.closeApp();
 		getInstance(Drivers.IOS);
 
-	}
-
-	public void logOut() {
-		logout(settingsPage, logout, OKBtn, OKBtn);
-		safariInstance();
 	}
 
 	public void assertRedBulletIsNotDisplayed(String autosync) {

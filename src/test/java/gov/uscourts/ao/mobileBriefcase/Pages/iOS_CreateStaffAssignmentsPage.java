@@ -34,6 +34,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElementAndGetText;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElements;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getParameter;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.splitBy;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
@@ -407,18 +408,11 @@ public class iOS_CreateStaffAssignmentsPage {
 		getExistingAssignment(AssignName, AssignType).click();
 	}
 
-	public static String replace(String text, String oldText, String newText) {
-		return text.replace(oldText, newText);
-	}
-
 	public static void removeText(List<String> dbAssignmentType, String text, List<String> uiAssignmenType) {
 		if (dbAssignmentType.contains(text)) {
 			dbAssignmentType.remove(text);
 		}
 		assertEquals("*********ASSIGNMENT TYPE VALIDATION ERROR!!!*********", dbAssignmentType, uiAssignmenType);
 	}
-	
-	
-	
 
 }

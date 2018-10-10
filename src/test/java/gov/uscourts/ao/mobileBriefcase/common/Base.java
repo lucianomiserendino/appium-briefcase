@@ -44,9 +44,9 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 				SetCapabilitiy(TAKES_SCREENSHOT);
 
-//				 driver = new IOSDriver<MobileElement>(new
-//				 URL(Configuration.getProperty("host")), capabilities);
-				driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
+				 driver = new IOSDriver<MobileElement>(new
+				 URL(Configuration.getProperty("host")), capabilities);
+				//driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
 
 				break;
 
@@ -77,9 +77,9 @@ public abstract class Base implements iOSCapabilities {
 			SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 			SetCapabilitiy(ENSURING_CLEAN_SESSION);
 
-//			 driver = new IOSDriver<MobileElement>(new
-//			 URL(Configuration.getProperty("host")), capabilities);
-			driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
+			 driver = new IOSDriver<MobileElement>(new
+			 URL(Configuration.getProperty("host")), capabilities);
+		//	driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
 
 		} catch (MalformedURLException e) {
 
@@ -100,7 +100,7 @@ public abstract class Base implements iOSCapabilities {
 	}
 
 	/**
-	 * This method is used for switching driver between "WEBVIEV" and "NATIVE_APP"
+	 * This method is used for switching driver between "WEBVIEW" and "NATIVE_APP"
 	 */
 	public static void changeWindow(String type) {
 		performPageLoad();

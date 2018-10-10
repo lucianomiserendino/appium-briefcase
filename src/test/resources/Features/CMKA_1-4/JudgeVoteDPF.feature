@@ -2,7 +2,7 @@ Feature: JudgeVote DPF UI
 
 
 
-        @A
+        
 		@Smoke
 		@AMB-1100
 		@AMB-1103 
@@ -27,7 +27,7 @@ Feature: JudgeVote DPF UI
 			
 			Examples: 
 				|environment   |userName        |password  |server                                     |category                | caseNum     | dbType| ccr_id |el_id|
-				|Integration   |judge werner    |Test2018! |Appellate DC Development - CMKA            |Test Automation         |15-2594      | CMKA  |35683   | 3141|
+				|Integration   |judge werner    |Test2019! |Appellate DC Development - CMKA            |Test Automation         |15-2594      | CMKA  |35683   | 3141|
 				#|Testing       |judgewilliams   |Testpass1! |Appellate DC Installation Testing - CM3A  |Rehearing Petition      |11-1012      |CM3A   |2973    | 4255|
 				
 				

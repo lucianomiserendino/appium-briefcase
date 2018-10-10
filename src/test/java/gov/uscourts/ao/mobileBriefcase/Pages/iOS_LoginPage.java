@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.*;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
@@ -26,7 +27,7 @@ public class iOS_LoginPage extends Base {
 		PageFactory.initElements(new AppiumFieldDecorator(Base.getInstance(Drivers.IOS)), this);
 	}
 
-	private String openBtn = "Open";
+	private static String openBtn = "Open";
 
 	@iOSFindBy(accessibility = "Integration")
 	public MobileElement server;
@@ -57,16 +58,19 @@ public class iOS_LoginPage extends Base {
 	@iOSFindBy(xpath = "//*[contains(@name, 'NavigationRenderer')]/XCUIElementTypeButton[2]")
 	public MobileElement settingsIcon;
 
+	@iOSFindBy(xpath = "//*[contains(@name, 'Briefcase')]/preceding-sibling::XCUIElementTypeStaticText[contains(@name, 'Test notice for user that is logged in')]")
+	public MobileElement testUserLoginPopUp;
+
 	@iOSFindBy(accessibility = "Logout of Briefcase")
 	public MobileElement logout;
 
 	public void selectEnvironment(String env) {
 
 		performPageLoad();
-		clickOnElement(env);
+		select(env);
 	}
 
-	public void sendCredentials(String Username,String Password) {
+	public void sendCredentials(String Username, String Password) {
 
 		userName.sendKeys(Username);
 		password.sendKeys(Password);
@@ -78,14 +82,25 @@ public class iOS_LoginPage extends Base {
 		waitToBeClickable(sendKeyButton);
 	}
 
-	public void open() {
+	public static void open() {
 		clickOn(findElement(By.name(openBtn)));
 
 	}
 
 	public void getServer(String server) {
-		clickOnElement(server);
+		select(server);
 		performPageLoad();
+	}
+
+	public void select(String env) {
+		if (elementIsDisplayed(env) == true) {
+			clickOnElement(env);
+		} else {
+				clickOnElement("OK");
+				performPageLoad();
+				clickOnElement(env);
+
+		}
 	}
 
 }

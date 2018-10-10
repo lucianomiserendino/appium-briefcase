@@ -1,7 +1,8 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
-import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users.DASHBOARD;
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.select;
+
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.Coordinates.DASHBOARD;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.logout;
 
 import cucumber.api.java.After;

@@ -15,7 +15,7 @@ Scenario:
 	
 	|el_list_text                           | dm_acc_crt | dm_acc_ctlink  | dm_acc_spec |
 	|note - court users                     |     y      |      n         |      n      |
-	#|note - court users linked to case      |     n      |      y         |      n      |
+	|note - court users linked to case      |     n      |      y         |      n      |
 	|note - panel judges only               |     n      |      n         |      y      |
 	|note - panel judges and users chambers |     n      |      n         |      y      |
 	|note - panel judges chambers           |     n      |      n         |      y      |

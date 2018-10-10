@@ -23,7 +23,7 @@ public class RedBullets_StepDefintions {
 	String caseN = createARandomCase();
 
 	@Given("^User creates a  case$")
-	public void user_creates_a_case() throws Throwable {
+	public void user_creates_a_case() {
 		page2 = new CopyDeleteCase();
 		try {
 			page2.copyCaseAndUpdateSingleTableEditor(caseN);
@@ -31,7 +31,7 @@ public class RedBullets_StepDefintions {
 		} catch (Exception e) {
 			e.getMessage();
 		} finally {
-			sleep(60000);
+			sleep(100000);
 			closeWebDriver();
 		}
 	}
@@ -53,7 +53,7 @@ public class RedBullets_StepDefintions {
 		page1 = new iOS_CommonPages();
 		page.getReferral("Test Automation", "IS_NOT_DISPLAYED", caseN);
 		page.assertRedBulletIsNotDisplayed(document);
-		page.logOut();
+		page1.logOut();
 	}
 
 	@When("^User selects a Judge, category: \"([^\"]*)\", created case and verifies Red Bullet for previously viewed Referral and Documnet doesn't display$")
@@ -64,7 +64,7 @@ public class RedBullets_StepDefintions {
 
 		try {
 			page2.deleteCase(caseN);
-			sleep(70000);
+			sleep(100000);
 			assertTrue(findWebElement(By.xpath(DELETE_CASE_INFO_REPORT_PAGE)).isDisplayed());
 
 		} catch (Exception e) {

@@ -2,6 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_ACC_CRT;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_ACC_CTLINK;
@@ -9,10 +10,12 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_ACC_SPEC;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_DESCRIPTION;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOC_USER;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DU_PRID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getParameter;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getStreamOfRandomInts;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.sendKeys;
@@ -103,5 +106,12 @@ public class iOS_DBDocketingDPFPage implements Constants {
 		return sortedList;
 
 	}
+	
+	
+public static void main(String[] args) {
+	System.out.println(getParameter(getAllColumns(DBType.CMKA, getID(MBR_NOTE, "3060")), 0));
+	System.out.println(getAllColumns(DBType.CMKA, getID(MBR_NOTE, "3060")));
+
+}
 
 }

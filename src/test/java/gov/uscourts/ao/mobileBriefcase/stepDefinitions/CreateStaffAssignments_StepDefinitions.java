@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
-
 import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCase.DELETE_CASE_INFO_REPORT_PAGE;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCase.closeWebDriver;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCase.createARandomCase;
@@ -119,18 +118,18 @@ public class CreateStaffAssignments_StepDefinitions {
 			String submit, String dbType, String cha_ju_pe_id, String elId) {
 		page1.getExistingAssignment(apply, submit, valueOf(dbType), cha_ju_pe_id, elId);
 
-		try {
-			page2.deleteCase(caseN);
-			sleep(70000);
-			assertTrue(findWebElement(By.xpath(DELETE_CASE_INFO_REPORT_PAGE)).isDisplayed());
-
-		} catch (Exception e) {
-			e.getMessage();
-
-		} finally {
-
-			closeWebDriver();
-
-		}
+		 try {
+		 page2.deleteCase(caseN);
+		 sleep(70000);
+		 assertTrue(findWebElement(By.xpath(DELETE_CASE_INFO_REPORT_PAGE)).isDisplayed());
+		
+		 } catch (Exception e) {
+		 e.getMessage();
+		
+		 } finally {
+		
+		 closeWebDriver();
+		
+		 }
 	}
 }

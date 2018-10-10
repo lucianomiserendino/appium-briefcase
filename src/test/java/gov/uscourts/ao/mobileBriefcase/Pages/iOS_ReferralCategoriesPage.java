@@ -1,20 +1,21 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.BRIEFCASE_TARGET_ONLY_N;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.BRIEFCASE_TARGET_ONLY_Y;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.NON_ORALLY_ARGUED_CASES;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
-import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getNumOfDisplayedCases;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.scroll;
 import static java.util.Arrays.asList;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
@@ -28,7 +29,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
-import gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users;
+import gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.Coordinates;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
@@ -70,15 +71,14 @@ public class iOS_ReferralCategoriesPage {
 
 	public void getReferralCategories(DBType dbtype, String query) {
 		refresh();
-		referralCategories(dbtype, query);
+		categories(dbtype, query);
 
 	}
 
-	public static List<String> referralCategories(DBType dbtype, String query) {
+	public static List<String> categories(DBType dbtype, String query) {
 		List<String> categories = new ArrayList<>();
 		List<String> dbReferralCategories = executeQuery(dbtype, query);
 		sort(dbReferralCategories);
-		// scroll(1, "down");
 		try {
 			for (int i = 0; i < dbReferralCategories.size(); ++i) {
 				performPageLoad();
@@ -106,11 +106,9 @@ public class iOS_ReferralCategoriesPage {
 
 		List<String> referralCategories = executeQuery(dbtype, getID(NON_ORALLY_ARGUED_CASES, pe_id));
 		sort(referralCategories);
-		scroll(1, "down");
 		try {
 
 			for (int i = 0; i < referralCategories.size(); ++i) {
-				// scroll(1, "down");
 				performPageLoad();
 				MobileElement referrals = waitForElement(findElement(By.id(referralCategories.get(i))));
 				performPageLoad();
@@ -130,7 +128,7 @@ public class iOS_ReferralCategoriesPage {
 				assertTrue("-----RECORD COUNT MISMATCH-----", briefcaseTargReferral_n.equals(UInonOrallyarguedCases)
 						|| briefcaseTargReferral_y.equals(UInonOrallyarguedCases));
 
-				select(Users.DASHBOARD);
+				select(Coordinates.DASHBOARD);
 			}
 		} catch (org.openqa.selenium.TimeoutException e) {
 

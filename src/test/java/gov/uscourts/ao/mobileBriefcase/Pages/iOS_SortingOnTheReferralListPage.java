@@ -6,7 +6,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_CASES_I
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_CASES_IN_DESCENDING_ORDER;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_DATES_IN_ASCENDING_ORDER;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_DATES_IN_DESCENDING_ORDER;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
@@ -31,9 +30,7 @@ public class iOS_SortingOnTheReferralListPage {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
-	@iOSFindBy(xpath = "//*[@label='Motions/Petitions']")
-	public static MobileElement motionsPetitions;
-
+	@WithTimeout(time = 1500, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/child::*//*[contains(@name, 'Date')]")
 	public static List<MobileElement> dates;
 
@@ -41,32 +38,41 @@ public class iOS_SortingOnTheReferralListPage {
 	@iOSFindBy(xpath = "//*[contains(@name, 'Sort')]")
 	public static MobileElement sortArrowBtn;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name=' ↓ Date']")
+	@iOSFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Date')])[1]")
 	public static MobileElement dateArrowDownBtn;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeButton[@name=' ↑ Date']")
+	@iOSFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Date')])[2]")
 	public static MobileElement dateArrowUpBtn;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeButton[@name=' ↓ Case #']")
+	@iOSFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Case')])[1]")
 	public static MobileElement caseDownArrowBtn;
 
+	@WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/child::*//*[contains(@name, '-')]")
 	public static List<MobileElement> cases;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeButton[@name=' ↑ Case #']")
+	@iOSFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Case')])[2]")
 	public static MobileElement caseUpArrowBtn;
 
 	public void clickOnMotionsPetitions(String category) {
+		performPageLoad();
 		refresh();
 		clickOnElement(category);
-		performPageLoad();
 	}
 
 	public void selectSortBtn() {
-		performPageLoad();
 		waitToBeClickable(sortArrowBtn);
-		performPageLoad();
 		referralsSortedByDatesInDescendingOrder();
+	}
+
+	public List<String> referralsSortedByDate(Actions action) {
+		return referralsSortedByDatesInDefaultOrder(action, dates, "Date: ", 1);
+
+	}
+
+	public List<String> referralsSortedByCase(Actions action) {
+		return retrieveCases(action, cases, " ", 0);
+
 	}
 
 	public List<String> referralsSortedByDatesInDescendingOrder() {
@@ -91,14 +97,12 @@ public class iOS_SortingOnTheReferralListPage {
 
 	public List<String> retrieveCases(Actions sort, List<MobileElement> element, String substr, int index) {
 		getSortPage(sort);
-		performPageLoad();
 		return retrieveAllReferrals(element, substr, index);
 	}
 
 	public List<String> referralsSortedByDatesInDefaultOrder(Actions sort, List<MobileElement> element, String substr,
 			int index) {
 		getSortPage(sort);
-		pageLoad();
 		return retrieveDates(element, substr, index, "yyyy/MM/dd");
 
 	}

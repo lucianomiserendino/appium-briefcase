@@ -15,7 +15,7 @@ public class Page extends Base {
 		
 		synchronized (driver) {
 			try {
-				driver.wait(9000);
+				driver.wait(10000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -34,7 +34,7 @@ public class Page extends Base {
 	}
 
 	public static By waitForPresenceOfElement(By element) {
-		new WebDriverWait(driver, 100).until(ExpectedConditions.presenceOfElementLocated((element)));
+		new WebDriverWait(driver, 150).until(ExpectedConditions.presenceOfElementLocated((element)));
 		return element;
 
 	}

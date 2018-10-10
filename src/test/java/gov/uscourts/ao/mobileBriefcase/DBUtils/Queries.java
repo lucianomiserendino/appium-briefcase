@@ -386,7 +386,6 @@ public class Queries {
 	public static final String CHC_DATE_END = "select first 1 chc_date_end from chambers_assignment \n"
 			+ "join chambers_assign_date on cha_id = chd_cha_id \n"
 			+ "join chm_assign_to_case on chc_cha_id = ? order by cha_last_updated desc";
-	
 
 	public static final String CHD_DATE = "select first 1 chd_date from chambers_assignment \n"
 			+ "join chambers_assign_date on cha_id = chd_cha_id \n"
@@ -395,11 +394,25 @@ public class Queries {
 	public static final String CHA_CAV_CODE = "select first 1 cha_cav_code from chambers_assignment \n"
 			+ "join chambers_assign_date on cha_id = chd_cha_id \n"
 			+ "join chm_assign_to_case on chc_cha_id = ? order by cha_last_updated desc";
-	
 
 	public static final String CAV_CODE = "SELECT cav_code  \n" + "	FROM chm_assign_type_val \n"
 			+ "	WHERE cav_display='TEXT' ";
-	
-	
 
+	public static final String REFERRALS_CMR_CCR_ID = "SELECT cmr_ccr_id FROM case, chm_mobile_referral WHERE cs_year=CS_YEAR"
+			+ " and cs_number = 'CS_NUMBER' and cs_caseid = cmr_cs_caseid and cmr_cyv_code='autotst' and cmr_ju_pe_id = ? ";
+
+	public static final String UPDATE_CHAMBERS_CASE_TO_REFERRAL = "UPDATE\n" + "  chambers_case_to_referral\n" + "SET\n"
+			+ "  ccr_date_end = 'TEXT' where ccr_id =?";
+
+	public static final String CCR_DATE_END = "select ccr_date_end from chambers_case_to_referral where ccr_id =?";
+
+	public static final String CASE_ID = "SELECT cs_caseid FROM case WHERE cs_year = 'CS_YEAR' and cs_number = 'CS_NUMBER'";
+
+	public static final String DKT_ENTRY_ID = "SELECT distinct cmr_dktentryid FROM chm_mobile_referral WHERE cmr_cs_caseid = ?";
+	
+	public static final String SI_VALUE="SELECT si_value FROM site WHERE si_code = 'briefcaseAppLinkRoot'";
+	
+	
+	public static final String CMD_DM_DLS_ID=" SELECT first 1 cmd_dm_dls_id FROM chm_mobile_docs, chm_mobile_referral\n" + 
+	"		 WHERE cmd_cmr_id = cmr_id  and cmr_cs_caseid =?";
 }

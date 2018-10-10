@@ -1,7 +1,8 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.select;
+
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
@@ -13,6 +14,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfEleme
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfWebElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static java.util.Collections.sort;
+import static java.util.Comparator.comparing;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -21,6 +23,8 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -39,7 +43,7 @@ import org.openqa.selenium.WebElement;
 
 import cucumber.api.DataTable;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
-import gov.uscourts.ao.mobileBriefcase.common.BriefcaseUsers.Users;
+import gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.Coordinates;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
@@ -53,12 +57,14 @@ public class Utilities extends Base {
 		String[] dest;
 		List<String> referrals = new ArrayList<>();
 		List<MobileElement> el = elements;
+		pageLoad();
 		Iterator<MobileElement> itr = el.iterator();
 		while (itr.hasNext()) {
 			dest = itr.next().getText().split(split);
 			referrals.add(dest[index].trim());
 
 		}
+
 		return referrals;
 
 	}
@@ -66,7 +72,7 @@ public class Utilities extends Base {
 	public static List<String> retrieveDates(List<MobileElement> elements, String split, int index, String format) {
 		String[] dates;
 		List<String> referrals = new ArrayList<>();
-
+		pageLoad();
 		List<MobileElement> element = elements;
 
 		Iterator<MobileElement> itr = element.iterator();
@@ -92,7 +98,7 @@ public class Utilities extends Base {
 		try {
 			if (executeQuery(dbtype, query).size() > 0) {
 				performPageLoad();
-				assertTrue(message, elementIsDisplayed(element) == true);
+				assertTrue(message, elementIsDisplayed(element));
 				clickOnElement(element);
 			} else {
 				assertTrue(!(executeQuery(dbtype, query).size() > 0));
@@ -141,7 +147,7 @@ public class Utilities extends Base {
 		if (caseDisplayed == true) {
 			findElement(By.xpath(Case)).click();
 		} else {
-			scroll(2, "down");
+			scroll(1, "down");
 			findElement(By.xpath(Case)).click();
 		}
 
@@ -276,47 +282,47 @@ public class Utilities extends Base {
 		findElement(By.name(back)).click();
 	}
 
-	public static void navigateBack(MobileElement element, Users user) {
+	public static void navigateBack(MobileElement element, Coordinates user) {
 		element.click();
 		Page.performPageLoad();
 		select(user);
 		driver.navigate().back();
 	}
 
-	public static void selectAUser(Users user) {
+	public static void selectAUser(Coordinates user) {
 		select(user);
 		pageLoad();
-		select(Users.MOTIONS_PETITIONS);
-		select(Users.DASHBOARD);
+		select(Coordinates.MOTIONS_PETITIONS);
+		select(Coordinates.DASHBOARD);
 
 	}
 
-	public static void getCollapsablePanel(MobileElement element, Users user) {
-		selectAUser(Users.DASHBOARD);
+	public static void getCollapsablePanel(MobileElement element, Coordinates user) {
+		selectAUser(Coordinates.DASHBOARD);
 		navigateBack(element, user);
 	}
 
-	public static void getIndexOfDataTable(DataTable table,int index1, int index2) {
+	public static void getIndexOfDataTable(DataTable table, int index1, int index2) {
 		List<Map<Integer, Integer>> credentials = table.asMaps(Integer.class, Integer.class);
 		credentials.get(index1).get(index2);
 	}
 
-	public static void getUserCategory(Users userCategory, MobileElement selectUser, Users user) {
+	public static void getUserCategory(Coordinates userCategory, MobileElement selectUser, Coordinates user) {
 
 		waitToBeClickable(selectUser);
 
 		switch (userCategory) {
 
 		case STAFF_ATTORNEYS:
-			select(Users.STAFF_ATTORNEYS);
+			select(Coordinates.STAFF_ATTORNEYS);
 			break;
 
 		case APPELLATE_JUDGES:
-			select(Users.APPELLATE_JUDGES);
+			select(Coordinates.APPELLATE_JUDGES);
 			break;
 
 		case BANKRUPTCY_JUDGES:
-			select(Users.BANKRUPTCY_JUDGES);
+			select(Coordinates.BANKRUPTCY_JUDGES);
 			break;
 
 		default:
@@ -328,8 +334,8 @@ public class Utilities extends Base {
 
 	public static void refresh() {
 		pageLoad();
-		select(Users.MOTIONS_PETITIONS);
-		select(Users.DASHBOARD);
+		select(Coordinates.MOTIONS_PETITIONS);
+		select(Coordinates.DASHBOARD);
 		performPageLoad();
 
 	}
@@ -405,6 +411,7 @@ public class Utilities extends Base {
 
 				if (uiResult.isDisplayed())
 					isDisplayed = true;
+				System.out.println(uiResult.getText());
 			}
 		} catch (Exception e) {
 			isDisplayed = false;
@@ -412,7 +419,6 @@ public class Utilities extends Base {
 		return isDisplayed;
 
 	}
-	
 
 	public static String splitBy(String string, int index) {
 		if (string.trim().contains(" ")) {
@@ -422,5 +428,21 @@ public class Utilities extends Base {
 		}
 	}
 
+	public static String replace(String text, String oldText, String newText) {
+		return text.replace(oldText, newText);
+	}
 
+	public static String replace(String text, String oldText1, String newText1, String oldText2, String newText2) {
+		return text.replace(oldText1, newText1).replace(oldText2, newText2);
+	}
+
+	public static String getCurrentDateTime() {
+		return DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
+
+	}
+
+	public static List<String> sortStringListByLength(List<String> list) {
+		sort(list, comparing(String::length));
+		return list;
+	}
 }

@@ -4,12 +4,14 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
+import static gov.uscourts.ao.mobileBriefcase.common.Base.safariInstance;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.logout;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.scroll;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
 import static org.junit.Assert.assertTrue;
@@ -27,6 +29,10 @@ public class iOS_CommonPages {
 	public iOS_CommonPages() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
+
+	private static String settingsPage = "//*[contains(@name, 'NavigationRenderer')]/XCUIElementTypeButton[2]";
+	private static String logout = "Logout of Briefcase";
+	private static String OKBtn = "OK";
 
 	public void selectCategoryAndCase(String category, String caseNum) {
 		selectCaseNumber(category, caseNum);
@@ -72,6 +78,11 @@ public class iOS_CommonPages {
 
 	public void verifyElementIsDisplayed(String element) {
 		assertTrue(" PLEASE ENSURE THAT ELEMENT IS DISPLAYED ", elementIsDisplayed(element));
+	}
+
+	public void logOut() {
+		logout(settingsPage, logout, OKBtn, OKBtn);
+		safariInstance();
 	}
 
 }
