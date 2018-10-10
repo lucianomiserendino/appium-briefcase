@@ -94,7 +94,7 @@ public class iOS_RedBulletsPage {
 		performPageLoad();
 		select(Coordinates.DISMISS);
 		performPageLoad();
-		assertTrue("********CAN'T OPEN A DOCUMENT IN BRIEFCASE FROM THE NDA LINK*********",
+		assertTrue("********PDF IS NOT DOWNLOADED*********",
 				findElement(By.id(PDFPageView)).isDisplayed());
 		select(Coordinates.DISMISS);
 		findElement(By.id(close)).click();

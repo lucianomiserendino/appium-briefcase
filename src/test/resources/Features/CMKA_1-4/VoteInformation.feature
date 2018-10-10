@@ -4,7 +4,7 @@ Feature: Display Vote Information Panel, filer info and judge's initials
 
 	
 @Smoke 
-@AMB_1036 
+@AMB-1036 
 Scenario Outline: 
 	If a referral requires voting, a collapsible Vote Information panel displays.  When expanded, it displays the following information:
 1.  The name and party type of the person who filed the motion/petition

@@ -1,7 +1,7 @@
 Feature: Login as a Staff attorney 
 
 
-@Smoke 
+
 @AMB-1046 
 Scenario Outline: 
 	The Sync button is used to download any pending referrals and documents.  

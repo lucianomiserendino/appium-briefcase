@@ -1,7 +1,7 @@
 Feature: Display Actions Panel and actions 
 
 
-@Smoke 
+ 
 @AMB-1038 
 Scenario Outline: 
 

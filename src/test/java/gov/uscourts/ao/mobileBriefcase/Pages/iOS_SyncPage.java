@@ -14,9 +14,9 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class iOS_Sync {
+public class iOS_SyncPage {
 
-	public iOS_Sync() {
+	public iOS_SyncPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
