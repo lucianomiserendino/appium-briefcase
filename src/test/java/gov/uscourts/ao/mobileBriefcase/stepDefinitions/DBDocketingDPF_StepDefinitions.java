@@ -9,16 +9,14 @@ import gov.uscourts.ao.mobileBriefcase.models.ElListText;
 public class DBDocketingDPF_StepDefinitions {
 	iOS_DBDocketingDPFPage page;
 
-	@Then("^User selecs action, enters a comment in the editable field, submits and verifies Db \"([^\"]*)\" is updated correctly$")
-	public void user_selecs_action_enters_a_comment_in_the_editable_field_submits_and_verifies_Db_is_updated_correctly(String dbType,List<ElListText> table)  {
-
+	@Then("^User selecs action, enters a comment in the editable field, submits and verifies Db \"([^\"]*)\" is updated correctly, \\( use \"([^\"]*)\"  and \"([^\"]*)\" \\)$")
+	public void user_selecs_action_enters_a_comment_in_the_editable_field_submits_and_verifies_Db_is_updated_correctly_use_and(
+			String dbType, String caseNume, String peID, List<ElListText> table) {
 		page = new iOS_DBDocketingDPFPage();
-		int values=6;
+		int values = 1;
 		for (int i = 0; i < values; i++) {
-			page.selectAction(table, i,dbType);
+			page.selectAction(table, i, dbType, caseNume, peID);
 		}
 
-		
-       
 	}
 }

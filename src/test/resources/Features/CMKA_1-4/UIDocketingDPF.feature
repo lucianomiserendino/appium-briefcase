@@ -2,7 +2,7 @@ Feature: note DPF UI
 
 
 
-
+@D
 @Smoke
 @AMB-1055 
 Scenario Outline: 

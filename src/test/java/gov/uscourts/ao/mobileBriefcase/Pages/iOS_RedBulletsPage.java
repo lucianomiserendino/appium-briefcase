@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
-
 import static gov.uscourts.ao.mobileBriefcase.common.Base.getInstance;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
@@ -11,9 +10,9 @@ import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.scroll;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCase;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.update;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -81,7 +80,7 @@ public class iOS_RedBulletsPage {
 	}
 
 	public void getReferral(String category, String verify, String caseNum) {
-		refresh();
+		update();
 		clickOnElement(category);
 		performPageLoad();
 		verifyRedBullet(RedBullet.valueOf(verify), getRefferal(caseNum));
@@ -94,8 +93,7 @@ public class iOS_RedBulletsPage {
 		performPageLoad();
 		select(Coordinates.DISMISS);
 		performPageLoad();
-		assertTrue("********PDF IS NOT DOWNLOADED*********",
-				findElement(By.id(PDFPageView)).isDisplayed());
+		assertTrue("********PDF IS NOT DOWNLOADED*********", findElement(By.id(PDFPageView)).isDisplayed());
 		select(Coordinates.DISMISS);
 		findElement(By.id(close)).click();
 		assertRedBulletIsNotDisplayed(autosync);
@@ -120,7 +118,7 @@ public class iOS_RedBulletsPage {
 		if (elementIsDisplayed(penlRow) == true) {
 			verifyRedBullet(displayed, getDocument(penlRow));
 
-			/** if auto is Brief is Displayed but auto is not Displayed */
+			/** if Brief is Displayed but auto is not Displayed */
 		} else if (elementIsDisplayed(panel) == true && elementIsDisplayed(penlRow) == false) {
 			click(locateElement(panel));
 			verifyRedBullet(displayed, getDocument(penlRow));
@@ -130,7 +128,7 @@ public class iOS_RedBulletsPage {
 			if (elementIsDisplayed(penlRow) == true) {
 				verifyRedBullet(displayed, getDocument(penlRow));
 
-				/** if auto is Brief is Displayed but auto is not Displayed */
+				/** if Brief is Displayed but auto is not Displayed */
 			} else if (elementIsDisplayed(panel) == true && elementIsDisplayed(penlRow) == false) {
 				scroll(1, "down");
 				click(locateElement(panel));

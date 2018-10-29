@@ -1,13 +1,16 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
-
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.BRIEFCASE_TARGET_ONLY_N;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.BRIEFCASE_TARGET_ONLY_Y;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.NON_ORALLY_ARGUED_CASES;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.REFERRAL_DOCUMENTS;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.lbrrpt_CATEGORY;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.lbrrpt_CYV_CATEGORY;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
@@ -15,7 +18,8 @@ import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getNumOfDisplayedCases;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.replace;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.update;
 import static java.util.Arrays.asList;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
@@ -52,7 +56,7 @@ public class iOS_ReferralCategoriesPage {
 	public static MobileElement total;
 
 	public String verifyIfPendingTasksAreDisplayed() {
-		refresh();
+		update();
 		if (pendingTasks.isDisplayed()) {
 			clickOn(pendingTasks);
 		}
@@ -70,7 +74,7 @@ public class iOS_ReferralCategoriesPage {
 	}
 
 	public void getReferralCategories(DBType dbtype, String query) {
-		refresh();
+		update();
 		categories(dbtype, query);
 
 	}
@@ -82,10 +86,8 @@ public class iOS_ReferralCategoriesPage {
 		try {
 			for (int i = 0; i < dbReferralCategories.size(); ++i) {
 				performPageLoad();
-				MobileElement referrals = waitForElement(
-						findElement(By.xpath("//*[contains(@name, '" + dbReferralCategories.get(i) + "')]")));
+				MobileElement referrals = waitForElement(findElement(By.id(dbReferralCategories.get(i))));
 				assertTrue(referrals.isDisplayed());
-
 			}
 		} catch (org.openqa.selenium.TimeoutException e) {
 
@@ -96,15 +98,16 @@ public class iOS_ReferralCategoriesPage {
 		return dbReferralCategories;
 	}
 
-	public void verifyNonOrallyArgCases(DBType dbtype, String pe_id) {
-		refresh();
-		getReffCategories(dbtype, pe_id);
+	public void verifyNonOrallyArgCases(DBType dbtype, String cyvCategory, String pe_id) {
+		update();
+		getReffCategories(dbtype, cyvCategory, pe_id);
 
 	}
 
-	public static List<String> getReffCategories(DBType dbtype, String pe_id) {
+	public static List<String> getReffCategories(DBType dbtype, String cyvCategory, String pe_id) {
 
-		List<String> referralCategories = executeQuery(dbtype, getID(NON_ORALLY_ARGUED_CASES, pe_id));
+		List<String> referralCategories = executeQuery(dbtype,
+				getID(replace(NON_ORALLY_ARGUED_CASES, "CMR_CYV_CODE", cyvCategory), pe_id));
 		sort(referralCategories);
 		try {
 
@@ -136,6 +139,28 @@ public class iOS_ReferralCategoriesPage {
 		}
 
 		return referralCategories;
+	}
+
+	/**
+	 * If the chm_mobile_referral.cmr_cyv_code = 'lbrrpt', verify  cyv_category 
+	 * displays on the Dashboard page. 
+	 */
+	public void get_lbrrpt_CATEGORY(DBType dbType, String cyvCategory, String pe_id) {
+		update();
+		MobileElement lbrrptCategory;
+		String peID = getPE_ID(dbType, pe_id);
+		List<String> cmr_cyv_code = executeQuery(dbType, getID(lbrrpt_CATEGORY, peID));
+		if (cmr_cyv_code.contains(cyvCategory)) {
+			String cyv_category = getAllColumns(dbType,
+					getID(replace(lbrrpt_CYV_CATEGORY, "CMR_CYV_CODE", cyvCategory), peID));
+			lbrrptCategory = waitForElement(findElement(By.id(cyv_category)));
+			assertTrue(lbrrptCategory.isDisplayed());
+			lbrrptCategory.click();
+
+			/** Verify only documents display the referral detail page */
+			categories(dbType, getID(REFERRAL_DOCUMENTS, peID));
+		}
+
 	}
 
 }

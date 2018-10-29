@@ -21,8 +21,7 @@ Scenario Outline:
 	Given User observes ( "<dbType>" ) the "Vote Information" panel displays.   This should only display if the referral requires voting 
 	Then   for each referral, observes the filer's name  first initial of pr_middle_name gn_display  party type and date filed displays in a light blue heading. Use "<dbType>", "<cmr_ju_pe_id>" , "<cmr_cs_caseid>" ,"<cmr_cyv_code>" , "<ccr_id>" .
 	And observes the judge's initials display in the same heading and db "<dbType>" using  "<ccr_id>"
-
-	#Then  User checks each judge's vote  and the date  displays under their initials 
+	Then  User checks each judge's vote  and the date  displays under their initials 
 	
 	
 	

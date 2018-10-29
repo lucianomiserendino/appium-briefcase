@@ -25,6 +25,6 @@ This task is to automate the display of the red bullet icon.
 	And  User clicks on Send Key to Device 
 	Then  User navigates to MobileBrifcase App 
 	And   user selects a "Appellate DC Development - CMKA" 
-	When User selects a Judge, category: "Test Automation", created case and verifies Red Bullet for previously viewed Referral and Documnet doesn't display
+	When User selects a Judge, category: "Test Automation", created case and verifies Red Bullet for previously viewed Referral and Documnet "Autosync doc" doesn't display
 	
 	

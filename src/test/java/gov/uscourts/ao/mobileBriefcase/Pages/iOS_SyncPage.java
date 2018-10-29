@@ -1,13 +1,13 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.common.Helper.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.sleep;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.update;
 import static org.junit.Assert.assertTrue;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 
 import io.appium.java_client.MobileElement;
@@ -31,21 +31,20 @@ public class iOS_SyncPage {
 
 	public void verifySyncCompletes() {
 
-		refresh();
+		update();
 		try {
 			pageLoad();
 			syncBTN.click();
 			sleep(200000);
-			MobileElement syncCount = findElement(By.xpath("//*[contains(@name, 'Available for download')]"));
-			String result = syncCount.getText().split(",")[1].trim().split(" ")[0];
-			if (syncCount.isDisplayed() && !result.equals("0")) {
+			String sycnCount = getText("Available for download").split(",")[1].trim().split(" ")[0];
+			if (elementIsDisplayed("Available for download") == true && !sycnCount.equals("0")) {
 				syncBTN.click();
 				sleep(100000);
-				assertTrue("*******THE SYNC DIDN'T COMPLETE*******", result.equals("0"));
+				assertTrue("*******THE SYNC DIDN'T COMPLETE*******", sycnCount.equals("0"));
 
 			} else {
 				sleep(150000);
-				assertTrue("*******THE SYNC DIDN'T COMPLETE*******", result.equals("0"));
+				assertTrue("*******THE SYNC DIDN'T COMPLETE*******", sycnCount.equals("0"));
 			}
 		} catch (Exception e) {
 			e.getMessage();

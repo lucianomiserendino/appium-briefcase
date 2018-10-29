@@ -3,7 +3,6 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 
@@ -15,6 +14,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
@@ -40,9 +40,6 @@ public class iOS_LoginPage extends Base {
 
 	@FindBy(name = "SUBMIT2")
 	public WebElement submButton;
-
-	@FindBy(name = "Approved")
-	public WebElement approved;
 
 	@FindBy(partialLinkText = "Send Key to Device")
 	public WebElement sendKeyButton;
@@ -74,12 +71,14 @@ public class iOS_LoginPage extends Base {
 
 		userName.sendKeys(Username);
 		password.sendKeys(Password);
-		waitToBeClickable(submButton);
+		Page.sleep(15000);
+		submButton.click();
 
 	}
 
 	public void sedKeyButton() {
-		waitToBeClickable(sendKeyButton);
+		Page.sleep(15000);
+		sendKeyButton.click();
 	}
 
 	public static void open() {
@@ -96,9 +95,9 @@ public class iOS_LoginPage extends Base {
 		if (elementIsDisplayed(env) == true) {
 			clickOnElement(env);
 		} else {
-				clickOnElement("OK");
-				performPageLoad();
-				clickOnElement(env);
+			clickOnElement("OK");
+			performPageLoad();
+			clickOnElement(env);
 
 		}
 	}

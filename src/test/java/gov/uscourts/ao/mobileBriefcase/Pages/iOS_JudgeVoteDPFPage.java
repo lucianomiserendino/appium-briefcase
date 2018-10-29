@@ -25,6 +25,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElements;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getParameter;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getRandomInt;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getStreamOfRandomInts;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getText;
 import static java.util.Collections.sort;
@@ -32,6 +33,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +42,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
-import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
@@ -51,6 +52,8 @@ public class iOS_JudgeVoteDPFPage {
 	public iOS_JudgeVoteDPFPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
+
+	String select = "Please Select";
 
 	@iOSFindBy(id = "Close")
 	public static MobileElement close;
@@ -76,6 +79,8 @@ public class iOS_JudgeVoteDPFPage {
 
 	@WithTimeout(time = 20, unit = TimeUnit.SECONDS)
 	public static MobileElement yesBtn;
+
+	@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSFindBy(id = "OK")
 	public static MobileElement okBtn;
 
@@ -102,7 +107,7 @@ public class iOS_JudgeVoteDPFPage {
 
 	public static void getJudgesInitials(DBType dbtype, String ccr_id, String initials, String initial, String votes,
 			String voteDates) {
-		String reliefText = getAllColumns(dbtype, getID(Queries.JUDGE_VOTE_DPF_RELIEF, ccr_id));
+		String reliefText = getAllColumns(dbtype, getID(JUDGE_VOTE_DPF_RELIEF, ccr_id));
 
 		List<String> dbInitials = executeQuery(dbtype, getText(getID(initials, ccr_id), reliefText));
 		sort(dbInitials);
@@ -119,6 +124,7 @@ public class iOS_JudgeVoteDPFPage {
 				MobileElement uiJudgeInits = waitForElement(findElement(By
 						.xpath("//XCUIElementTypeOther[@name='JudgesVotesList_Container']/child::*//*[contains(@name, '"
 								+ dbInitials.get(inits) + "')]")));
+
 				assertTrue(uiJudgeInits.isDisplayed());
 			}
 
@@ -165,21 +171,36 @@ public class iOS_JudgeVoteDPFPage {
 	}
 
 	public void getVoteSelection(DBType dbType, String ccr_id, String elId) {
+
 		String reliefText = getRelief(dbType, JUDGE_VOTE_DPF_RELIEF, ccr_id);
 		getIndexOf(reliefText, 2);
 
 		List<MobileElement> votes = findElements(
-				By.xpath("//XCUIElementTypeTable[@name='VoteOptions']/XCUIElementTypeCell"));
-		for (int i = 0; i < votes.size(); i++) {
-			MobileElement vote = votes.get(1);
-			vote.click();
+				By.xpath("//XCUIElementTypeTable[@name='VoteOptions']/XCUIElementTypeCell/XCUIElementTypeStaticText"));
+		String voteList = "";
+
+		Iterator<MobileElement> i = votes.iterator();
+		while (i.hasNext()) {
+			MobileElement row = i.next();
+			voteList += row.getText();
+		}
+		if (voteList.contains(select)) {
+			votes.remove(select);
+			selectVote(votes);
+		} else {
+			selectVote(votes);
 		}
 		getIndexOf(reliefText, 3);
-		addVote(dbType, getID(MBR_NOTE, elId), reliefText, elId);
-
+		String note = addVote(dbType, getID(MBR_NOTE, elId), reliefText, elId);
 	}
 
-	public void addVote(DBType dbType, String query, String relief, String el_id) {
+	public void selectVote(List<MobileElement> votes) {
+		int vote = getRandomInt(votes.size());
+		votes.get(vote).click();
+	}
+
+	public String addVote(DBType dbType, String query, String relief, String el_id) {
+		String text = "";
 		if (getParameter(getAllColumns(dbType, query), 4).equals("SKIP")) {
 			assertNull(" THE \"NOTE HISTORY PARAMETER\" IS NOT SET TO \"SKIP\" ", commentField.getText());
 			clickOnElement("Cancel");
@@ -189,7 +210,7 @@ public class iOS_JudgeVoteDPFPage {
 				clickOn(commentField);
 				clickOn(selectAll);
 				clickOn(cut);
-				String text = sendKeys(commentField, "TEST-" + getStreamOfRandomInts());
+				text += sendKeys(commentField, "TEST-" + getStreamOfRandomInts());
 				clickOn(applyBtn);
 				clickOn(submit);
 				clickOn(yesBtn);
@@ -202,23 +223,20 @@ public class iOS_JudgeVoteDPFPage {
 				clickOn(cancel);
 
 			} catch (NoSuchElementException e) {
-
 				e.printStackTrace();
 			}
-
 		}
+		return text;
 	}
 
 	public void getIndexOf(String relief, int index) {
 		click("//XCUIElementTypeStaticText[contains(@name, '" + relief
 				+ "')]/preceding-sibling::XCUIElementTypeStaticText[" + index + "]");
-
 	}
 
 	public static String sendKeys(MobileElement elements, String text) {
 		elements.sendKeys(text);
 		return text;
-
 	}
 
 	public String getRelief(DBType dbType, String query, String ccr_id) {

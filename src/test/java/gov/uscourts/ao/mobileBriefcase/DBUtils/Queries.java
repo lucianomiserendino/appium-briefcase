@@ -1,10 +1,5 @@
 package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
-import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
-import gov.uscourts.ao.mobileBriefcase.common.Constants;
-
 public class Queries {
 
 	public static String getId(String id) {
@@ -187,14 +182,45 @@ public class Queries {
 
 	public static final String DM_ACC_SPEC = "select first 1 dm_acc_spec from  document order by dm_date_created desc";
 
+	public static final String DM_DATE_CREATED = "select first 1 dm_date_created from  document order by dm_date_created desc";
+
 	public static final String DM_DESCRIPTION = "select first 1 dm_description from  document order by  dm_date_created desc";
 
-	public static final String DOC_USER = "select distinct pr_prid from person, chm_mobile_referral, panel_case, panel, panel_to_judge, judge, personrole where "
-			+ "cmr_id = " + getId(Constants.CMR_ID)
-			+ " and cmr_ph_id = ph_id and pj_pn_id = ph_pn_id and pj_ju_ao_code = ju_ao_code and ju_pe_id = pe_id and  pe_pr_prid = pr_prid";
+	public static final String DU_PRID = "select  du_prid  from  doc_user where  du_date_created='DU_DATE_CREATED'";
 
-	public static final String DU_PRID = "select first " + executeQuery(DBType.CMKA, DOC_USER).size()
-			+ " du_prid from  doc_user order by  du_date_created desc";
+	public static final String DCG_GROUP = "select  dcg_group from  doc_group  where dcg_date_created='DCG_DATE_CREATED'";
+
+	public static final String CHAMBERS_GROUP_ID = "select distinct gp_id from group, personrole, person, member where "
+			+ "mb_ur_pr_prid = pr_prid and mb_gp_id_parent = gp_id and pe_pr_prid=? and gp_name LIKE '%PR_LAST_NAME''s Chambers%'";
+
+	public static final String cmr_id = "SELECT cmr_id FROM case, chm_mobile_referral WHERE cs_year = 'CS_YEAR' and cs_number = 'CS_NUMBER' and cs_caseid = cmr_cs_caseid "
+			+ "and cmr_cyv_code CMR_CYV_CODE and cmr_ju_pe_id ='CMR_JU_PE_ID'";
+
+	public static final String PANEL_JUDGES_PR_PRID = "select distinct pr_prid from person, chm_mobile_referral, panel_case, panel, panel_to_judge, judge, personrole\n"
+			+ "where \n" + "cmr_id = 'CMR_ID'" + "" + " and\n" + "cmr_ph_id = ph_id and\n" + "--ph_pn_id = pn_id and\n"
+			+ "pj_pn_id = ph_pn_id and\n" + "pj_ju_ao_code = ju_ao_code and\n" + "ju_pe_id" + "" + " = pe_id and \n"
+			+ "pe_pr_prid = pr_prid";
+
+	public static final String LOGED_IN_JUDGES_PR_PRID = "select distinct pr_prid from person, chm_mobile_referral, panel_case, panel, panel_to_judge, judge, personrole\n"
+			+ "where \n" + "cmr_id = 'CMR_ID'" + "" + " and\n" + "cmr_ph_id = ph_id and\n" + "--ph_pn_id = pn_id and\n"
+			+ "pj_pn_id = ph_pn_id and\n" + "pj_ju_ao_code = ju_ao_code and\n" + "ju_pe_id" + "" + " = pe_id and \n"
+			+ "pe_pr_prid = pr_prid and ju_pe_id = ?";
+
+	public static final String LOGED_IN_JUDGES_LAST_NAME = "select distinct pr_last_name from person, chm_mobile_referral, panel_case, panel, panel_to_judge, judge, personrole\n"
+			+ "where \n" + "cmr_id = 'CMR_ID'" + "" + " and\n" + "cmr_ph_id = ph_id and\n" + "--ph_pn_id = pn_id and\n"
+			+ "pj_pn_id = ph_pn_id and\n" + "pj_ju_ao_code = ju_ao_code and\n" + "ju_pe_id" + "" + " = pe_id and \n"
+			+ "pe_pr_prid = pr_prid and ju_pe_id = ?";
+
+	// public static final String DOC_USER = "select distinct pr_prid from person,
+	// chm_mobile_referral, panel_case, panel, panel_to_judge, judge, personrole
+	// where "
+	// + "cmr_id = " + getId(Constants.CMR_ID)
+	// + " and cmr_ph_id = ph_id and pj_pn_id = ph_pn_id and pj_ju_ao_code =
+	// ju_ao_code and ju_pe_id = pe_id and pe_pr_prid = pr_prid";
+	//
+	// public static final String DU_PRID = "select first " +
+	// executeQuery(DBType.CMKA, DOC_USER).size()
+	// + " du_prid from doc_user order by du_date_created desc";
 
 	// Query to get valid categories for the logged in user
 	public static final String DB_LIST_OF_CATEGORIES = "SELECT DISTINCT (CYV_CATEGORY) FROM "
@@ -202,7 +228,15 @@ public class Queries {
 
 	public static final String NON_ORALLY_ARGUED_CASES = "select distinct (cyv_category) from chm_mobile_referral, chm_reftype_val\n"
 			+ "where \n" + "cmr_ju_pe_id = ? and\n" + "cmr_date_end is null and\n" + "cmr_cyv_code = cyv_code and\n"
-			+ "cyv_is_briefcase = 'y' and\n" + "cyv_is_oral_arg = 'n'";
+			+ "cyv_is_briefcase = 'y' and\n" + "cyv_is_oral_arg = 'n' and  cmr_cyv_code != 'CMR_CYV_CODE'";
+
+	public static final String lbrrpt_CATEGORY = "select distinct (cmr_cyv_code) from chm_mobile_referral, chm_reftype_val where cmr_ju_pe_id = ? and cmr_date_end is null and cmr_cyv_code = cyv_code and\n"
+			+ "			cyv_is_briefcase = 'y' and cyv_is_oral_arg = 'n' ";
+
+	public static final String lbrrpt_CYV_CATEGORY = "select distinct (cyv_category) from chm_mobile_referral, chm_reftype_val where cmr_ju_pe_id = ? and cmr_date_end is null and cmr_cyv_code = cyv_code and\n"
+			+ "			cyv_is_briefcase = 'y' and cyv_is_oral_arg = 'n' and cmr_cyv_code = 'CMR_CYV_CODE'";
+
+	public static final String REFERRAL_DOCUMENTS = "select cmd_description from chm_mobile_docs join chm_mobile_referral on cmr_id = cmd_cmr_id where cmr_cyv_code = 'lbrrpt' and cmr_date_end is null and cmr_ju_pe_id =?  and cmd_doc_category='Briefs'";
 
 	public static final String BRIEFCASE_TARGET_ONLY_Y = "select count(distinct cs_caseid) from chm_mobile_referral, "
 			+ "chm_reftype_val, case_dktentry, case where cmr_ju_pe_id = ? and cmr_cyv_code = cyv_code  and cyv_category = 'TEXT' and cmr_cs_caseid = cs_caseid and cmr_date_end is null and "
@@ -281,7 +315,7 @@ public class Queries {
 			+ "join dktentry on cd_dktentryid = de_dktentryid left join doctype_val on dp_doc_type = dty_code join event_list on el_id = de_elid"
 			+ " left join chambers_vote left join (chm_vote_to_note inner join document on cvn_dm_dls_id = dm_dls_id and dm_internal_type = 'notevote'  ) on chv_id = cvn_chv_id "
 			+ "on chv_crj_id = crj_id and chv_date_end is null left join chm_vote_val on chv_cvv_code = cvv_code where a.ccr_id = ? and b.ccr_date_end is null and "
-			+ "NVL(cpr_vote_complete,'') <> 'y' and NVL(cpr_vote_req,'') <> 'n' order by  rl_list_text desc";
+			+ "NVL(cpr_vote_complete,'') <> 'y' and NVL(cpr_vote_req,'') <> 'n' order by  rl_list_text asc";
 
 	public static final String JUDGES_INITIAL = "select ju_initials    from chambers_case_to_referral b join chambers_case_to_referral a on"
 			+ " b.ccr_cpr_id = a.ccr_cpr_id join dktpart on dp_dktpartid = b.ccr_dp_dktpartid join relief_list on rl_id = dp_rlid "
@@ -399,7 +433,7 @@ public class Queries {
 			+ "	WHERE cav_display='TEXT' ";
 
 	public static final String REFERRALS_CMR_CCR_ID = "SELECT cmr_ccr_id FROM case, chm_mobile_referral WHERE cs_year=CS_YEAR"
-			+ " and cs_number = 'CS_NUMBER' and cs_caseid = cmr_cs_caseid and cmr_cyv_code='autotst' and cmr_ju_pe_id = ? ";
+			+ " and cs_number = 'CS_NUMBER' and cs_caseid = cmr_cs_caseid and cmr_cyv_code='autotst' and cmr_ju_pe_id =CMR_JU_PE_ID ? ";
 
 	public static final String UPDATE_CHAMBERS_CASE_TO_REFERRAL = "UPDATE\n" + "  chambers_case_to_referral\n" + "SET\n"
 			+ "  ccr_date_end = 'TEXT' where ccr_id =?";
@@ -408,11 +442,14 @@ public class Queries {
 
 	public static final String CASE_ID = "SELECT cs_caseid FROM case WHERE cs_year = 'CS_YEAR' and cs_number = 'CS_NUMBER'";
 
-	public static final String DKT_ENTRY_ID = "SELECT distinct cmr_dktentryid FROM chm_mobile_referral WHERE cmr_cs_caseid = ?";
-	
-	public static final String SI_VALUE="SELECT si_value FROM site WHERE si_code = 'briefcaseAppLinkRoot'";
-	
-	
-	public static final String CMD_DM_DLS_ID=" SELECT first 1 cmd_dm_dls_id FROM chm_mobile_docs, chm_mobile_referral\n" + 
-	"		 WHERE cmd_cmr_id = cmr_id  and cmr_cs_caseid =?";
+	public static final String DKT_ENTRY_ID = "SELECT first 1 distinct cmr_dktentryid FROM chm_mobile_referral WHERE cmr_cs_caseid = ?";
+
+	public static final String SI_VALUE = "SELECT si_value FROM site WHERE si_code = 'briefcaseAppLinkRoot'";
+
+	public static final String CMD_DM_DLS_ID = " SELECT first 1 cmd_dm_dls_id FROM chm_mobile_docs, chm_mobile_referral\n"
+			+ "		 WHERE cmd_cmr_id = cmr_id  and cmr_cs_caseid =?";
+
+	public static final String DM_DLS_ID = "SELECT dm_dls_id FROM document, case_dktentry where cd_caseid = ? and "
+			+ "dm_dktentryid = cd_dktentryid and dm_internal_type = 'noteTrans'";
+
 }

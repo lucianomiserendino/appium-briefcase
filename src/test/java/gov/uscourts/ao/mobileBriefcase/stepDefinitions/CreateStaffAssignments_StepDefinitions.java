@@ -7,7 +7,7 @@ import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCase.createARandom
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.sleep;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findWebElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.update;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.By;
@@ -42,7 +42,7 @@ public class CreateStaffAssignments_StepDefinitions {
 	@When("^User selects a Judge, category: \"([^\"]*)\" and case$")
 	public void user_selects_a_Judge_category_and_case(String category) {
 		page = new iOS_CommonPages();
-		refresh();
+		update();
 		page.selectCategoryAndCase(category, caseN);
 
 	}
@@ -118,18 +118,17 @@ public class CreateStaffAssignments_StepDefinitions {
 			String submit, String dbType, String cha_ju_pe_id, String elId) {
 		page1.getExistingAssignment(apply, submit, valueOf(dbType), cha_ju_pe_id, elId);
 
-		 try {
-		 page2.deleteCase(caseN);
-		 sleep(70000);
-		 assertTrue(findWebElement(By.xpath(DELETE_CASE_INFO_REPORT_PAGE)).isDisplayed());
-		
-		 } catch (Exception e) {
-		 e.getMessage();
-		
-		 } finally {
-		
-		 closeWebDriver();
-		
-		 }
+		try {
+			page2.deleteCase(caseN);
+			sleep(70000);
+			assertTrue(findWebElement(By.xpath(DELETE_CASE_INFO_REPORT_PAGE)).isDisplayed());
+
+		} catch (Exception e) {
+			e.getMessage();
+
+		} finally {
+			closeWebDriver();
+
+		}
 	}
 }

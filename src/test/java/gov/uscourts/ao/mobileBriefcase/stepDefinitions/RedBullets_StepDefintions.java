@@ -56,10 +56,10 @@ public class RedBullets_StepDefintions {
 		page1.logOut();
 	}
 
-	@When("^User selects a Judge, category: \"([^\"]*)\", created case and verifies Red Bullet for previously viewed Referral and Documnet doesn't display$")
+	@When("^User selects a Judge, category: \"([^\"]*)\", created case and verifies Red Bullet for previously viewed Referral and Documnet \"([^\"]*)\" doesn't display$")
 	public void user_selects_a_Judge_category_created_case_and_verifies_Red_Bullet_for_previously_viewed_Referral_and_Documnet_doesn_t_display(
-			String document) {
-		page.getReferral("Test Automation", "IS_NOT_DISPLAYED", caseN);
+			String category, String document) {
+		page.getReferral(category, "IS_NOT_DISPLAYED", caseN);
 		page.assertRedBulletIsNotDisplayed(document);
 
 		try {

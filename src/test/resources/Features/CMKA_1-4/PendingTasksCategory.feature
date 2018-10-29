@@ -1,6 +1,6 @@
 Feature: Pending Tasks Category Displays on the Dashboard 
 
-
+@D
 @Smoke
 @AMB-1008 
 Scenario Outline: 

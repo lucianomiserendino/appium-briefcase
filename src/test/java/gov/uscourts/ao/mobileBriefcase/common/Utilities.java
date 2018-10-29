@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
@@ -32,6 +31,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -332,7 +332,7 @@ public class Utilities extends Base {
 
 	}
 
-	public static void refresh() {
+	public static void update() {
 		pageLoad();
 		select(Coordinates.MOTIONS_PETITIONS);
 		select(Coordinates.DASHBOARD);
@@ -393,7 +393,7 @@ public class Utilities extends Base {
 	}
 
 	public static void selectCaseNumber(String category, String caseNum) {
-		refresh();
+		update();
 		clickOnElement(category);
 		performPageLoad();
 		selectCase(locateElement(caseNum));
@@ -411,7 +411,6 @@ public class Utilities extends Base {
 
 				if (uiResult.isDisplayed())
 					isDisplayed = true;
-				System.out.println(uiResult.getText());
 			}
 		} catch (Exception e) {
 			isDisplayed = false;
@@ -436,6 +435,11 @@ public class Utilities extends Base {
 		return text.replace(oldText1, newText1).replace(oldText2, newText2);
 	}
 
+	public static String replace(String text, String oldText1, String newText1, String oldText2, String newText2,
+			String oldText3, String newText3) {
+		return text.replace(oldText1, newText1).replace(oldText2, newText2).replace(oldText3, newText3);
+	}
+
 	public static String getCurrentDateTime() {
 		return DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
 
@@ -445,4 +449,9 @@ public class Utilities extends Base {
 		sort(list, comparing(String::length));
 		return list;
 	}
+
+	public static int getRandomInt(int index) {
+		return index -1 - new Random().nextInt(index);
+	}
+
 }

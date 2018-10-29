@@ -147,6 +147,8 @@ public class iOS_VoteInformationPage {
 				"//*[contains(@name, 'Vote Information')]/following:: XCUIElementTypeStaticText");
 
 	}
+	
+	
 
 	public String filersInfo(FILERs_INFO info, String filersInfo) {
 

@@ -1,22 +1,18 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
-
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.insertData;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CCR_DATE_END;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.REFERRALS_CMR_CCR_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.UPDATE_CHAMBERS_CASE_TO_REFERRAL;
+import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages.getCMRID;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getCurrentDateTime;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.replace;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.splitBy;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -34,11 +30,7 @@ public class iOS_TerminateReferrals {
 
 	/** find the ccr_id for the referral */
 	public static String getCMR_CCR_ID(String caseNum, String dbType, String peID) {
-
-		String caseYear = splitBy(caseNum, 0);
-		String caseNumber = splitBy(caseNum, 1);
-		return getAllColumns(valueOf(dbType),
-				getID(replace(REFERRALS_CMR_CCR_ID, "CS_YEAR", caseYear, "CS_NUMBER", caseNumber), peID));
+		return getCMRID(valueOf(dbType), caseNum, peID, "='autotst'");
 
 	}
 

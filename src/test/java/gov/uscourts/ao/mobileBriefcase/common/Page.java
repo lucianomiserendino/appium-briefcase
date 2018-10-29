@@ -34,13 +34,13 @@ public class Page extends Base {
 	}
 
 	public static By waitForPresenceOfElement(By element) {
-		new WebDriverWait(driver, 150).until(ExpectedConditions.presenceOfElementLocated((element)));
+		new WebDriverWait(driver, 350).until(ExpectedConditions.presenceOfElementLocated((element)));
 		return element;
 
 	}
 
 	public static By waitForPresenceOfWebElement(By element) {
-		new WebDriverWait(webDriver, 200).until(ExpectedConditions.presenceOfElementLocated((element)));
+		new WebDriverWait(webDriver, 350).until(ExpectedConditions.presenceOfElementLocated((element)));
 		return element;
 
 	}
@@ -50,7 +50,7 @@ public class Page extends Base {
 	}
 
 	public static WebElement waitToBeClickable(WebElement element) {
-		new WebDriverWait(driver, 100).until(ExpectedConditions.elementToBeClickable(element)).click();
+		new WebDriverWait(webDriver, 300).until(ExpectedConditions.elementToBeClickable(element)).click();
 		return element;
 	}
 

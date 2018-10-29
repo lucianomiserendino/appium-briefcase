@@ -7,7 +7,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getReferralCategories;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.update;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -36,7 +36,7 @@ public class iOS_StaffAttorneyPage {
 	}
 
 	public void verifyDataOnTheDashboard(String dbType, String query) {
-		refresh();
+		update();
 		assertTrue(isDisplayed(valueOf(dbType), query,
 				"//XCUIElementTypeTable[@name='Categories']/XCUIElementTypeCell/XCUIElementTypeStaticText"));
 	}

@@ -4,11 +4,15 @@ public interface iOSCapabilities {
 
 	public static final String PLATFORM_NAME = "platformName";
 
+	public static final String PLATFORM_NAME_w = "platformName_w";
+
 	public static final String PLATFORM_VERSION = "platformVersion";
 
 	public static final String UDID = "udid";
 
 	public static final String DEVICE_NAME = "deviceName";
+
+	public static final String DEVICE_NAME_w = "deviceName_w";
 
 	public static final String BUNDLE_ID = "bundleId";
 
@@ -23,6 +27,8 @@ public interface iOSCapabilities {
 	public static final String TAKES_SCREENSHOT = "takes_screehshot";
 
 	public static final String HOST = "host";
+
+	public static final String REMOTE_HOST = "remoteHost";
 
 	public static final String APP = "app";
 
@@ -41,7 +47,15 @@ public interface iOSCapabilities {
 	public static final String CASE = "caseNum";
 
 	public static final String SINGLE_TABLE_EDITOR = "singleTableEditor";
-	
-	public static final String DATA_UPDATER="dataUpdater";
+
+	public static final String DATA_UPDATER = "dataUpdater";
+
+	public static final String CMECF_HELP_DESK_UTILITY = "cmecfhelpdeskutility";
+
+	public static final String ATTORNEY_FILLING_URL = "attorneyFillingURL";
+
+	public static final String ATTORNEY_FIRST_NAME = "attorneyFirstName";
+
+	public static final String ATTORNEY_LAST_NAME = "attorneyLastName";
 
 }

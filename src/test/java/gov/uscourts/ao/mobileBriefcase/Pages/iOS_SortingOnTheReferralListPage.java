@@ -9,9 +9,9 @@ import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_DATES_I
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.refresh;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveAllReferrals;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveDates;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.update;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -56,7 +56,7 @@ public class iOS_SortingOnTheReferralListPage {
 
 	public void clickOnMotionsPetitions(String category) {
 		performPageLoad();
-		refresh();
+		update();
 		clickOnElement(category);
 	}
 

@@ -3,18 +3,41 @@
     "line": 1,
     "elements": [
       {
-        "line": 5,
+        "before": [
+          {
+            "result": {
+              "duration": 5644880896,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 30,
         "name": "",
-        "description": "",
-        "type": "background",
-        "keyword": "Background",
+        "description": "In the judgeVote DPF, when the user selects the View Votes button, a popup should display with each judge\u0027s vote and the day they voted.\nThe judgeVote DPF enables judges to add notes to a vote. \nThere is a parameter in the judgeVote DPF called Note History.  \nIf the parameter is set to \u0027y\u0027, the text of the previous vote note (if there is one), \nshould display when the judge adds a note to a new vote. \n To the judge, it appears that he/she is just editing an existing vote, even though CM/ECF is creating a new note.",
+        "id": "judgevote-dpf-ui;;;2",
+        "after": [
+          {
+            "result": {
+              "duration": 14636251917,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario Outline",
         "steps": [
           {
             "result": {
-              "duration": 36176959705,
+              "duration": 32813140601,
               "status": "passed"
             },
-            "line": 6,
+            "line": 16,
             "name": "User Navigates to  \"Integration\" environment",
             "match": {
               "arguments": [
@@ -25,14 +48,17 @@
               ],
               "location": "Login_StepDefinitions.user_Navigates_to_environment(String)"
             },
+            "matchedColumns": [
+              0
+            ],
             "keyword": "Given "
           },
           {
             "result": {
-              "duration": 2003670702,
+              "duration": 15993319023,
               "status": "passed"
             },
-            "line": 7,
+            "line": 17,
             "name": "User enters Credentials to Login \"judge werner\" and \"Test2019!\"",
             "match": {
               "arguments": [
@@ -47,14 +73,18 @@
               ],
               "location": "Login_StepDefinitions.user_enters_Credentials_to_Login_and(String,String)"
             },
+            "matchedColumns": [
+              1,
+              2
+            ],
             "keyword": "When "
           },
           {
             "result": {
-              "duration": 2252472064,
+              "duration": 15334717047,
               "status": "passed"
             },
-            "line": 8,
+            "line": 18,
             "name": "User clicks on Send Key to Device",
             "match": {
               "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
@@ -63,10 +93,10 @@
           },
           {
             "result": {
-              "duration": 11697296213,
+              "duration": 11514378563,
               "status": "passed"
             },
-            "line": 9,
+            "line": 19,
             "name": "User navigates to MobileBrifcase App",
             "match": {
               "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
@@ -75,10 +105,10 @@
           },
           {
             "result": {
-              "duration": 29161706964,
+              "duration": 22513657495,
               "status": "passed"
             },
-            "line": 10,
+            "line": 20,
             "name": "user selects a \"Appellate DC Development - CMKA\"",
             "match": {
               "arguments": [
@@ -89,111 +119,171 @@
               ],
               "location": "Login_StepDefinitions.user_selects_a(String)"
             },
+            "matchedColumns": [
+              3
+            ],
             "keyword": "And "
-          }
-        ]
-      },
-      {
-        "before": [
+          },
           {
             "result": {
-              "duration": 7563995297,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 26,
-        "name": "",
-        "description": "\nUser\u0027s can set preferences for the Notices of Docket Activity (NDA) they receive to include links to open documents, \n  notes and case information in Briefcase (see attachment).  When these links are clicked, the item will open in Briefcase rather\n  than in a browser window.  The URL that is used is created by using the value of the site table variable \"briefcaseAppLinkRoot\"\n  followed by information about the docket entry and/or document.",
-        "id": "links-in-nda-open-in-briefcase;;;2",
-        "after": [
-          {
-            "result": {
-              "duration": 152024006766,
-              "error_message": "org.openqa.selenium.TimeoutException: Expected condition failed: waiting for presence of element located by: By.xpath: //*[contains(@name, \u0027NavigationRenderer\u0027)]/XCUIElementTypeButton[2] (tried for 150 second(s) with 500 MILLISECONDS interval)\n\tat org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:82)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:231)\n\tat gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElement(Page.java:37)\n\tat gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement(Utilities.java:189)\n\tat gov.uscourts.ao.mobileBriefcase.common.Utilities.logout(Utilities.java:270)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Hook.tearDown(Hook.java:30)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat cucumber.runtime.Utils$1.call(Utils.java:40)\n\tat cucumber.runtime.Timeout.timeout(Timeout.java:16)\n\tat cucumber.runtime.Utils.invoke(Utils.java:34)\n\tat cucumber.runtime.java.JavaHookDefinition.execute(JavaHookDefinition.java:60)\n\tat cucumber.runtime.Runtime.runHookIfTagsMatch(Runtime.java:224)\n\tat cucumber.runtime.Runtime.runHooks(Runtime.java:212)\n\tat cucumber.runtime.Runtime.runAfterHooks(Runtime.java:206)\n\tat cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:46)\n\tat cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.ExamplesRunner.run(ExamplesRunner.java:59)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.ScenarioOutlineRunner.run(ScenarioOutlineRunner.java:53)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.api.junit.Cucumber.run(Cucumber.java:100)\n\tat org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:86)\n\tat org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:538)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:760)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:460)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:206)\nCaused by: org.openqa.selenium.NoSuchElementException: Cannot locate an element using By.xpath: //*[contains(@name, \u0027NavigationRenderer\u0027)]/XCUIElementTypeButton[2]\nFor documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html\nBuild info: version: \u00273.6.0\u0027, revision: \u00276fbf3ec767\u0027, time: \u00272017-09-27T15:28:36.4Z\u0027\nSystem info: host: \u0027Saltanat-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:8c4:6d57:3f7e:4b4b%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.12.6\u0027, java.version: \u00271.8.0_162\u0027\nDriver info: driver.version: unknown\n\tat org.openqa.selenium.support.ui.ExpectedConditions.lambda$findElement$0(ExpectedConditions.java:882)\n\tat java.util.Optional.orElseThrow(Optional.java:290)\n\tat org.openqa.selenium.support.ui.ExpectedConditions.findElement(ExpectedConditions.java:881)\n\tat org.openqa.selenium.support.ui.ExpectedConditions.access$000(ExpectedConditions.java:43)\n\tat org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:182)\n\tat org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:179)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:208)\n\t... 59 more\n",
-              "status": "failed"
-            },
-            "match": {
-              "location": "Hook.tearDown()"
-            }
-          }
-        ],
-        "type": "scenario",
-        "keyword": "Scenario Outline",
-        "steps": [
-          {
-            "result": {
-              "duration": 73136058411,
+              "duration": 63952195572,
               "status": "passed"
             },
             "line": 21,
-            "name": "user  selects  case \"18-92018\" that is in Briefcase for a judge.( \"CMKA\" ) Verifies the docket entry page in Briefcase displays the docket entry( Open a Docket Entry in Briefcase from the NDA link)",
+            "name": "User selects Judge,  \"Test Automation\" and  \"15-2594\"",
             "match": {
               "arguments": [
                 {
-                  "val": "18-92018",
-                  "offset": 21
+                  "val": "Test Automation",
+                  "offset": 22
                 },
                 {
-                  "val": "CMKA",
-                  "offset": 67
+                  "val": "15-2594",
+                  "offset": 45
                 }
               ],
-              "location": "NoticesOfDocketActivity_StepDefinitions.user_selects_case_that_is_in_Briefcase_for_a_judge_Verifies_the_docket_entry_page_in_Briefcase_displays_the_docket_entry_Open_a_Docket_Entry_in_Briefcase_from_the_NDA_link(String,String)"
+              "location": "Common_StepDefinitions.user_selects_Judge_and(String,String)"
             },
             "matchedColumns": [
-              0,
-              1
+              4,
+              5
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 63979975567,
+              "status": "passed"
+            },
+            "line": 22,
+            "name": "User  selects action using dbType \"CMKA\" and  \"3142\"  and verifies the name of the action displays in the dark blue banner",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CMKA",
+                  "offset": 35
+                },
+                {
+                  "val": "3142",
+                  "offset": 47
+                }
+              ],
+              "location": "Common_StepDefinitions.user_selects_action_using_dbType_and_and_verifies_the_name_of_the_action_displays_in_the_dark_blue_banner(String,String)"
+            },
+            "matchedColumns": [
+              6,
+              8
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 215339953880,
-              "error_message": "org.openqa.selenium.TimeoutException: Expected condition failed: waiting for presence of element located by: By.id: PDF View (tried for 150 second(s) with 500 MILLISECONDS interval)\n\tat org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:82)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:231)\n\tat gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElement(Page.java:37)\n\tat gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement(Utilities.java:189)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.iOS_NoticesOfDocketActivityPage.openADocumentInBriefCase(iOS_NoticesOfDocketActivityPage.java:129)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.NoticesOfDocketActivity_StepDefinitions.verify_the_document_opens_in_briefcase_by_using_the_same_and_Open_a_document_in_Briefcase_from_the_NDA_link(NoticesOfDocketActivity_StepDefinitions.java:19)\n\tat ✽.Then Verify the document opens in briefcase by using the same \"18-92018\" and \"CMKA\" (Open a document in Briefcase from the NDA link).(CMKA_1-4/LinksInNDA.feature:22)\nCaused by: org.openqa.selenium.NoSuchElementException: Cannot locate an element using By.id: PDF View\nFor documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html\nBuild info: version: \u00273.6.0\u0027, revision: \u00276fbf3ec767\u0027, time: \u00272017-09-27T15:28:36.4Z\u0027\nSystem info: host: \u0027Saltanat-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:8c4:6d57:3f7e:4b4b%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.12.6\u0027, java.version: \u00271.8.0_162\u0027\nDriver info: driver.version: unknown\n\tat org.openqa.selenium.support.ui.ExpectedConditions.lambda$findElement$0(ExpectedConditions.java:882)\n\tat java.util.Optional.orElseThrow(Optional.java:290)\n\tat org.openqa.selenium.support.ui.ExpectedConditions.findElement(ExpectedConditions.java:881)\n\tat org.openqa.selenium.support.ui.ExpectedConditions.access$000(ExpectedConditions.java:43)\n\tat org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:182)\n\tat org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:179)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:208)\n\tat gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElement(Page.java:37)\n\tat gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement(Utilities.java:189)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.iOS_NoticesOfDocketActivityPage.openADocumentInBriefCase(iOS_NoticesOfDocketActivityPage.java:129)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.NoticesOfDocketActivity_StepDefinitions.verify_the_document_opens_in_briefcase_by_using_the_same_and_Open_a_document_in_Briefcase_from_the_NDA_link(NoticesOfDocketActivity_StepDefinitions.java:19)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat cucumber.runtime.Utils$1.call(Utils.java:40)\n\tat cucumber.runtime.Timeout.timeout(Timeout.java:16)\n\tat cucumber.runtime.Utils.invoke(Utils.java:34)\n\tat cucumber.runtime.java.JavaStepDefinition.execute(JavaStepDefinition.java:38)\n\tat cucumber.runtime.StepDefinitionMatch.runStep(StepDefinitionMatch.java:37)\n\tat cucumber.runtime.Runtime.runStep(Runtime.java:300)\n\tat cucumber.runtime.model.StepContainer.runStep(StepContainer.java:44)\n\tat cucumber.runtime.model.StepContainer.runSteps(StepContainer.java:39)\n\tat cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:44)\n\tat cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.ExamplesRunner.run(ExamplesRunner.java:59)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.ScenarioOutlineRunner.run(ScenarioOutlineRunner.java:53)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat cucumber.api.junit.Cucumber.run(Cucumber.java:100)\n\tat org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:86)\n\tat org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:538)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:760)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:460)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:206)\n",
-              "status": "failed"
+              "duration": 12792348014,
+              "status": "passed"
             },
-            "line": 22,
-            "name": "Verify the document opens in briefcase by using the same \"18-92018\" and \"CMKA\" (Open a document in Briefcase from the NDA link).",
+            "line": 23,
+            "name": "user selects the \"View Votes\" button next to the relief. User verifies  a popup displays.  In the red banner, the relief they are voting , \"CMKA\" , \"35683\"",
             "match": {
               "arguments": [
                 {
-                  "val": "18-92018",
-                  "offset": 58
+                  "val": "View Votes",
+                  "offset": 18
                 },
                 {
                   "val": "CMKA",
-                  "offset": 73
+                  "offset": 140
+                },
+                {
+                  "val": "35683",
+                  "offset": 149
                 }
               ],
-              "location": "NoticesOfDocketActivity_StepDefinitions.verify_the_document_opens_in_briefcase_by_using_the_same_and_Open_a_document_in_Briefcase_from_the_NDA_link(String,String)"
+              "location": "JudgeVoteDPF_StepDefinitions.user_selects_the_button_next_to_the_relief_User_verifies_a_popup_displays_In_the_red_banner_the_relief_they_are_voting(String,String,String)"
             },
             "matchedColumns": [
-              0,
-              1
+              6,
+              7
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 77239657428,
+              "status": "passed"
+            },
+            "line": 24,
+            "name": "user verifies each judges\u0027 initials to whom the referral was sent , as well as their vote and date they voted, \"CMKA\" , \"35683\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CMKA",
+                  "offset": 112
+                },
+                {
+                  "val": "35683",
+                  "offset": 121
+                }
+              ],
+              "location": "JudgeVoteDPF_StepDefinitions.user_verifies_each_judges_initials_to_whom_the_referral_was_sent_as_well_as_their_vote_and_date_they_voted(String,String)"
+            },
+            "matchedColumns": [
+              6,
+              7
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 91607034449,
+              "status": "passed"
+            },
+            "line": 25,
+            "name": "user selects a vote and adds notes to a vote. Use  db \"CMKA\" ,ccrID \"35683\" , elID  \"3142\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CMKA",
+                  "offset": 55
+                },
+                {
+                  "val": "35683",
+                  "offset": 69
+                },
+                {
+                  "val": "3142",
+                  "offset": 85
+                }
+              ],
+              "location": "JudgeVoteDPF_StepDefinitions.user_selects_a_vote_and_adds_notes_to_a_vote_Use_db_ccrID_elID(String,String,String)"
+            },
+            "matchedColumns": [
+              6,
+              7,
+              8
             ],
             "keyword": "Then "
           }
         ],
         "tags": [
           {
-            "line": 13,
-            "name": "@AMB-1189"
+            "line": 8,
+            "name": "@AMB-1103"
           },
           {
-            "line": 12,
+            "line": 6,
             "name": "@Smoke"
+          },
+          {
+            "line": 7,
+            "name": "@AMB-1100"
           }
         ]
       }
     ],
-    "name": "Links in NDA open in Briefcase",
+    "name": "JudgeVote DPF UI",
     "description": "",
-    "id": "links-in-nda-open-in-briefcase",
+    "id": "judgevote-dpf-ui",
     "keyword": "Feature",
-    "uri": "CMKA_1-4/LinksInNDA.feature"
+    "uri": "CMKA_1-4/JudgeVoteDPF.feature"
   }
 ]

@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -20,8 +21,9 @@ public abstract class Base implements iOSCapabilities {
 
 	public static IOSDriver<MobileElement> driver;
 	private static DesiredCapabilities capabilities;
-	private static RemoteWebDriver remoteWebDriver;
 	public static WebDriver webDriver;
+	public static WebDriver winAppDriver;
+	public static WebElement webElement;
 
 	/**
 	 * Reads the property file and passes the values to DesiredCapability
@@ -44,20 +46,26 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 				SetCapabilitiy(TAKES_SCREENSHOT);
 
-				// driver = new IOSDriver<MobileElement>(new
-				// URL(Configuration.getProperty("host")), capabilities);
-				driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
+				//driver = new IOSDriver<MobileElement>(new URL(getProperty("host")), capabilities);
+				 driver = new IOSDriver<MobileElement>(new
+				 URL(System.getProperty("remotewebdriver.url")), capabilities);
 
 				break;
 
 			case WINDOWS:
-				SetCapabilitiy(PLATFORM_NAME);
-				SetCapabilitiy(DEVICE_NAME);
+
+				capabilities = new DesiredCapabilities();
+				SetCapabilitiy(PLATFORM_NAME_w);
+				SetCapabilitiy(DEVICE_NAME_w);
 				SetCapabilitiy(APP);
+				winAppDriver = new RemoteWebDriver(new URL(getProperty(REMOTE_HOST)), capabilities);
+
 				break;
+
 			case WEBRIVER:
 				System.setProperty(getProperty(CHROME_DRIVER_KYE), getProperty(CHROME_DRIVER));
 				webDriver = new ChromeDriver();
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -77,9 +85,9 @@ public abstract class Base implements iOSCapabilities {
 			SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 			SetCapabilitiy(ENSURING_CLEAN_SESSION);
 
-			// driver = new IOSDriver<MobileElement>(new
-			// URL(Configuration.getProperty("host")), capabilities);
-			driver = new IOSDriver<MobileElement>(new URL(System.getProperty("remotewebdriver.url")), capabilities);
+			//driver = new IOSDriver<MobileElement>(new URL(getProperty("host")), capabilities);
+			 driver = new IOSDriver<MobileElement>(new
+			 URL(System.getProperty("remotewebdriver.url")), capabilities);
 
 		} catch (MalformedURLException e) {
 
@@ -122,4 +130,5 @@ public abstract class Base implements iOSCapabilities {
 	public enum Drivers {
 		IOS, WINDOWS, WEBRIVER
 	}
+
 }

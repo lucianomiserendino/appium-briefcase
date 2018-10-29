@@ -75,15 +75,14 @@ public class CopyDeleteCase extends Base {
 		return webDriver.findElement(By.xpath("//*[contains(@name, '" + xpath + "')][" + index + "]"));
 	}
 
-	public static void login() {
-		findElementAndsendKeys(By.name("usernameEntered"), getProperty(USERNAME));
-		findElementAndsendKeys(By.name("password"), getProperty(PASSWORD));
+	public static void login(String name,String password) {
+		findElementAndsendKeys(By.name("usernameEntered"), getProperty(name));
+		findElementAndsendKeys(By.name("password"), getProperty(password));
 		findElementAndclick(By.name("SUBMIT2"));
 	}
-
 	public static void getURLandLogin(String URL) {
 		getUrl(URL);
-		login();
+		login(USERNAME,PASSWORD);
 	}
 
 	public static void confirm(String title, String expected, String action) {

@@ -2,6 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PE_ID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.cmr_id;
 import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.DATABASE_NAME_CM3A;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.DATABASE_NAME_CMKA;
@@ -20,6 +21,8 @@ import static gov.uscourts.ao.mobileBriefcase.common.Constants.SERVERNAME_CMKA;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.SSL_LOC;
 import static gov.uscourts.ao.mobileBriefcase.common.Constants.SSL_STORE;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getRestrictParam;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.replace;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.splitBy;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -30,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.informix.jdbcx.IfxConnectionPoolDataSource;
+
+import gov.uscourts.ao.mobileBriefcase.common.Utilities;
 
 public class DBUtilities {
 
@@ -99,7 +104,11 @@ public class DBUtilities {
 		establishConnection(dbType);
 		List<String[]> queryResult = runSQLQuery(query);
 		List<String> result = new ArrayList<>();
-		queryResult.forEach(record -> result.add(record[0].trim()));
+		if (!result.equals(null)) {
+			queryResult.forEach(record -> result.add(record[0].trim()));
+		} else {
+			return null;
+		}
 		closeConnections();
 		return result;
 
@@ -132,7 +141,7 @@ public class DBUtilities {
 		establishConnection(dbType);
 		try {
 			statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			 statement.executeUpdate(query);
+			statement.executeUpdate(query);
 		} catch (Exception e) {
 			e.getMessage();
 			closeConnections();

@@ -3,6 +3,7 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.cmr_id;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.safariInstance;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
@@ -12,8 +13,10 @@ import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.logout;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.scroll;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.splitBy;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.By;
@@ -76,11 +79,19 @@ public class iOS_CommonPages {
 
 	}
 
-	public void verifyElementIsDisplayed(String element) {
+	public static void verifyElementIsDisplayed(String element) {
 		assertTrue(" PLEASE ENSURE THAT ELEMENT IS DISPLAYED ", elementIsDisplayed(element));
 	}
 
-	public void logOut() {
+	public static String getCMRID(DBType dbType, String caseNum, String peId, String cmr_cyv_code) {
+		String caseYear = splitBy(caseNum, 0);
+		String caseNumber = splitBy(caseNum, 1);
+		return getAllColumns(dbType,
+				replace(replace(cmr_id, "CS_YEAR", caseYear, "CS_NUMBER", caseNumber, "CMR_JU_PE_ID", peId),
+						"CMR_CYV_CODE", cmr_cyv_code));
+	}
+
+	public static void logOut() {
 		logout(settingsPage, logout, OKBtn, OKBtn);
 		safariInstance();
 	}

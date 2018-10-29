@@ -21,12 +21,11 @@ public class ReferralCategories_StepDefinitions {
 
 	}
 
-	@Then("^User  Observes the categories on db \"([^\"]*)\"  and on the dashboard page  with judgeName \"([^\"]*)\"$")
+	@Then("^User  Observes the categories on db \"([^\"]*)\"  and on the dashboard page \\( \"([^\"]*)\" \\) with judgeName \"([^\"]*)\"$")
 	public void user_Observes_the_categories_on_db_and_on_the_dashboard_page_with_judgeName(String dbType,
-			String judge) {
+			String cmr_cyv_code, String judge) {
 		page = new iOS_ReferralCategoriesPage();
-		page.verifyNonOrallyArgCases(valueOf(dbType), getPE_ID(valueOf(dbType), judge));
-
+		page.verifyNonOrallyArgCases(valueOf(dbType), cmr_cyv_code, getPE_ID(valueOf(dbType), judge));
 	}
 
 	@Given("^If The judge has any pending assignments it will validate the total num of pending task on UI with DB \"([^\"]*)\" and  \"([^\"]*)\"$")
@@ -37,4 +36,10 @@ public class ReferralCategories_StepDefinitions {
 
 	}
 
+	@Given("^In \"([^\"]*)\" , If the chm_mobile_referral\\.cmr_cyv_code = \"([^\"]*)\" , verify  cyv_category  displays on the Dashboard page\\. Verify case number don't display for  referrals where the chm_mobile_referral\\.cmr_cyv_code = 'lbrrpt', Verify only  documents display the referral detail page\\. Verify any actions, assignment, or additional case information don't  display\\.Use judge \"([^\"]*)\"$")
+	public void in_If_the_chm_mobile_referral_cmr_cyv_code_verify_cyv_category_displays_on_the_Dashboard_page_Verify_case_number_don_t_display_for_referrals_where_the_chm_mobile_referral_cmr_cyv_code_lbrrpt_Verify_only_documents_display_the_referral_detail_page_Verify_any_actions_assignment_or_additional_case_information_don_t_display_Use_judge(
+			String dbType, String lbrrpt, String peId) {
+		page = new iOS_ReferralCategoriesPage();
+		page.get_lbrrpt_CATEGORY(valueOf(dbType), lbrrpt, peId);
+	}
 }

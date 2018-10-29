@@ -6,6 +6,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CMD_DM_DLS_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DKT_ENTRY_ID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_DLS_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SI_VALUE;
 import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage.open;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.changeWindow;
@@ -29,15 +30,6 @@ import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class iOS_NoticesOfDocketActivityPage {
 
-	@iOSFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[1]")
-	public static MobileElement searchIcon;
-
-	@iOSFindBy(xpath = "//XCUIElementTypeTextField")
-	public static MobileElement searchTextField;
-
-	@iOSFindBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
-	public static MobileElement searchBTN;
-
 	String backBTN = "Back";
 
 	String event = "Event";
@@ -48,27 +40,61 @@ public class iOS_NoticesOfDocketActivityPage {
 
 	String PDFPageView = "PDF View";
 
+	String transactionNote = "Transaction Note";
+
+	String addANote = "Adding a note to display in briefcase";
+
+	@iOSFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[1]")
+	public static MobileElement searchIcon;
+
+	@iOSFindBy(xpath = "//XCUIElementTypeTextField")
+	public static MobileElement searchTextField;
+
+	@iOSFindBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
+	public static MobileElement searchBTN;
+
 	public iOS_NoticesOfDocketActivityPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
-	public static String findACaseID(String caseNum, String index) {
+	public static String getCase(String caseNum, String index) {
 		return caseNum.split("-")[Integer.valueOf(index)];
-
 	}
 
-	/** Find the caseid by running this query */
+	/** Find the case id by running this query */
 
-	public static String getCaseID(String caseNum, String dbType) {
+	public static String findACaseID(String caseNum, String dbType) {
 		return getAllColumns(valueOf(dbType),
-				replace(CASE_ID, "CS_YEAR", findACaseID(caseNum, "0"), "CS_NUMBER", findACaseID(caseNum, "1")));
+				replace(CASE_ID, "CS_YEAR", getCase(caseNum, "0"), "CS_NUMBER", getCase(caseNum, "1")));
 	}
 
-	/**
-	 * Find a docket entry for that case by querying the chm_mobile_referral table
-	 */
-	public static String getDocketEntry(String caseNum, String dbType) {
-		return getAllColumns(valueOf(dbType), getID(DKT_ENTRY_ID, getCaseID(caseNum, dbType)));
+	public static String getDocID(ID Id, String caseNum, String dbType) {
+
+		String id = "";
+
+		switch (Id) {
+		/**
+		 * Find a docket entry for that case by querying the chm_mobile_referral table
+		 */
+		case DOCKETENTRY_ID:
+			id += getID(DKT_ENTRY_ID, findACaseID(caseNum, dbType));
+			break;
+
+		/** Query for a document ID by running the following query */
+
+		case DOCUMNET_ID:
+			id += getID(CMD_DM_DLS_ID, findACaseID(caseNum, dbType));
+			break;
+
+		/** Query for a note by running the following query */
+
+		case NOTE_ID:
+			id += getID(DM_DLS_ID, findACaseID(caseNum, dbType));
+			break;
+		default:
+			break;
+		}
+		return getAllColumns(valueOf(dbType), id);
 	}
 
 	/**
@@ -82,24 +108,13 @@ public class iOS_NoticesOfDocketActivityPage {
 
 	/** Run the following URLS in the browser on the iPad */
 
-	public static String openDocketEntryInBriefcase(String caseNum, String dbType) {
-		String docketEntry = getSiValue(dbType) + "queryecf?caseid=" + getCaseID(caseNum, dbType) + "&dktentryid="
-				+ getDocketEntry(caseNum, dbType);
-		return docketEntry;
-
+	public static String getDktentryid(String caseNum, String dbType) {
+		return getSiValue(dbType) + "queryecf?caseid=" + findACaseID(caseNum, dbType) + "&dktentryid="
+				+ getDocID(ID.DOCKETENTRY_ID, caseNum, dbType);
 	}
 
-	public static String openDocInBriefcase(String caseNum, String dbType) {
-		String docketEntry = getSiValue(dbType) + "viewdocument?dmdlsid=" + getDocumnetID(caseNum, dbType) + "&caseid="
-				+ getCaseID(caseNum, dbType);
-		return docketEntry;
-
-	}
-
-	/** Query for a document ID by running the following query */
-
-	public static String getDocumnetID(String caseNum, String dbType) {
-		return getAllColumns(valueOf(dbType), getID(CMD_DM_DLS_ID, getCaseID(caseNum, dbType)));
+	public static String getDocumentAndNoteID(String caseNum, String dbType, String id) {
+		return getSiValue(dbType) + "viewdocument?dmdlsid=" + id + "&caseid=" + findACaseID(caseNum, dbType);
 	}
 
 	public void searchForACase(String caseNum) {
@@ -109,20 +124,19 @@ public class iOS_NoticesOfDocketActivityPage {
 
 	}
 
-	public void openDktEntryInBriefcase(String caseNum, String dbType) {
+	/** Open a Docket Entry in Briefcase from the NDA link */
 
+	public void openADktEntryInBriefcase(String caseNum, String dbType) {
 		searchForACase(caseNum);
-		loadNDALinksInBriefcase(openDocketEntryInBriefcase(caseNum, dbType));
-		assertTrue("*********CAN'T OPEN A DOCKET ENTRY IN BRIEFCASE FROM THE NDA LINK*********",
-				findElement(By.id(event)).isDisplayed() && findElement(By.id(docketText)).isDisplayed());
-		for (int i = 0; i < 3; i++) {
-			findElement(By.name(backBTN)).click();
-		}
-
+		loadNDALinksInBriefcase(getDktentryid(caseNum, dbType));
+		verifyElementsAreDisplayed("DOCKET ENTRY", event, docketText);
+		clickBack(3);
 	}
 
+	/** Open a document in Briefcase from the NDA link */
+
 	public void openADocumentInBriefCase(String caseNum, String dbType) {
-		loadNDALinksInBriefcase(openDocInBriefcase(caseNum, dbType));
+		loadNDALinksInBriefcase(getDocumentAndNoteID(caseNum, dbType, "2832314"));
 		select(Coordinates.DISMISS);
 		performPageLoad();
 		assertTrue("********CAN'T OPEN A DOCUMENT IN BRIEFCASE FROM THE NDA LINK*********",
@@ -130,6 +144,16 @@ public class iOS_NoticesOfDocketActivityPage {
 		select(Coordinates.DISMISS);
 		findElement(By.id(close)).click();
 		findElement(By.name(backBTN)).click();
+	}
+
+	/** Open a note in Briefcase from the NDA link */
+
+	public void openANoteInBriefcase(String caseNum, String dbType) {
+		searchForACase(caseNum);
+		loadNDALinksInBriefcase(getDocumentAndNoteID(caseNum, dbType, getDocID(ID.NOTE_ID, caseNum, dbType)));
+		verifyElementsAreDisplayed("NOTE", transactionNote, addANote);
+		clickBack(2);
+
 	}
 
 	public void loadNDALinksInBriefcase(String ndaLink) {
@@ -145,5 +169,19 @@ public class iOS_NoticesOfDocketActivityPage {
 		}
 	}
 
+	public void clickBack(int backBtn) {
+		for (int i = 0; i < backBtn; i++) {
+			findElement(By.name(backBTN)).click();
+		}
+	}
+
+	public void verifyElementsAreDisplayed(String link, String el1, String el2) {
+		assertTrue("*********CAN'T OPEN A " + link + " IN BRIEFCASE FROM THE NDA LINK*********",
+				findElement(By.id(el1)).isDisplayed() && findElement(By.id(el2)).isDisplayed());
+	}
+
+	public enum ID {
+		DOCKETENTRY_ID, DOCUMNET_ID, NOTE_ID
+	}
 
 }
