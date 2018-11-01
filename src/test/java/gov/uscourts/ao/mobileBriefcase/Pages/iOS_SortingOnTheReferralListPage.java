@@ -2,14 +2,10 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_CASES_IN_ASCENDING_ORDER;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_CASES_IN_DESCENDING_ORDER;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_DATES_IN_ASCENDING_ORDER;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.SORT_DATES_IN_DESCENDING_ORDER;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveAllReferrals;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveAllCases;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveDates;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.update;
 
@@ -30,7 +26,7 @@ public class iOS_SortingOnTheReferralListPage {
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
 
-	@WithTimeout(time = 1500, unit = TimeUnit.SECONDS)
+	@WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/child::*//*[contains(@name, 'Date')]")
 	public static List<MobileElement> dates;
 
@@ -62,49 +58,16 @@ public class iOS_SortingOnTheReferralListPage {
 
 	public void selectSortBtn() {
 		waitToBeClickable(sortArrowBtn);
-		referralsSortedByDatesInDescendingOrder();
 	}
 
 	public List<String> referralsSortedByDate(Actions action) {
-		return referralsSortedByDatesInDefaultOrder(action, dates, "Date: ", 1);
-
+		getSortPage(action);
+		return retrieveDates(dates, "Date: ", 1, "yyyy/MM/dd");
 	}
 
 	public List<String> referralsSortedByCase(Actions action) {
-		return retrieveCases(action, cases, " ", 0);
-
-	}
-
-	public List<String> referralsSortedByDatesInDescendingOrder() {
-		return referralsSortedByDatesInDefaultOrder(SORT_DATES_IN_DESCENDING_ORDER, dates, "Date: ", 1);
-
-	}
-
-	public List<String> referralsSortedByDateInAscendingOrder() {
-		return referralsSortedByDatesInDefaultOrder(SORT_DATES_IN_ASCENDING_ORDER, dates, "Date: ", 1);
-
-	}
-
-	public List<String> referralsSortedByCasesInDescendingOrder() {
-		return retrieveCases(SORT_CASES_IN_DESCENDING_ORDER, cases, " ", 0);
-
-	}
-
-	public List<String> referralsSortedByCasesInAscendingOrder() {
-		return retrieveCases(SORT_CASES_IN_ASCENDING_ORDER, cases, " ", 0);
-
-	}
-
-	public List<String> retrieveCases(Actions sort, List<MobileElement> element, String substr, int index) {
-		getSortPage(sort);
-		return retrieveAllReferrals(element, substr, index);
-	}
-
-	public List<String> referralsSortedByDatesInDefaultOrder(Actions sort, List<MobileElement> element, String substr,
-			int index) {
-		getSortPage(sort);
-		return retrieveDates(element, substr, index, "yyyy/MM/dd");
-
+		getSortPage(action);
+		return retrieveAllCases(cases, " ", 0);
 	}
 
 	public void getSortPage(Actions sort) {

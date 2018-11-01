@@ -1,5 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.tapByCoordinates;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
@@ -71,14 +72,17 @@ public class iOS_LoginPage extends Base {
 
 		userName.sendKeys(Username);
 		password.sendKeys(Password);
-		Page.sleep(15000);
 		submButton.click();
+		Page.sleep(10000);
+		driver.navigate().back();
 
 	}
 
 	public void sedKeyButton() {
-		Page.sleep(15000);
+
 		sendKeyButton.click();
+		// temprorarily just for testing
+		tapByCoordinates(815, 367);
 	}
 
 	public static void open() {

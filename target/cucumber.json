@@ -6,7 +6,7 @@
         "before": [
           {
             "result": {
-              "duration": 5644880896,
+              "duration": 5634711391,
               "status": "passed"
             },
             "match": {
@@ -14,14 +14,14 @@
             }
           }
         ],
-        "line": 30,
+        "line": 22,
         "name": "",
-        "description": "In the judgeVote DPF, when the user selects the View Votes button, a popup should display with each judge\u0027s vote and the day they voted.\nThe judgeVote DPF enables judges to add notes to a vote. \nThere is a parameter in the judgeVote DPF called Note History.  \nIf the parameter is set to \u0027y\u0027, the text of the previous vote note (if there is one), \nshould display when the judge adds a note to a new vote. \n To the judge, it appears that he/she is just editing an existing vote, even though CM/ECF is creating a new note.",
-        "id": "judgevote-dpf-ui;;;2",
+        "description": "There is a sorting feature on the referral list page that enables users to sort referrals by date referred or case number.  \nThe default is by date referred in descending order (newest first).",
+        "id": "sorting-on-the-referral-list-page;;;2",
         "after": [
           {
             "result": {
-              "duration": 14636251917,
+              "duration": 19196,
               "status": "passed"
             },
             "match": {
@@ -34,10 +34,10 @@
         "steps": [
           {
             "result": {
-              "duration": 32813140601,
+              "duration": 31325719141,
               "status": "passed"
             },
-            "line": 16,
+            "line": 11,
             "name": "User Navigates to  \"Integration\" environment",
             "match": {
               "arguments": [
@@ -55,20 +55,20 @@
           },
           {
             "result": {
-              "duration": 15993319023,
+              "duration": 10405157778,
               "status": "passed"
             },
-            "line": 17,
-            "name": "User enters Credentials to Login \"judge werner\" and \"Test2019!\"",
+            "line": 12,
+            "name": "User enters Credentials to Login \"chambers courtney\" and \"Test2021!\"",
             "match": {
               "arguments": [
                 {
-                  "val": "judge werner",
+                  "val": "chambers courtney",
                   "offset": 34
                 },
                 {
-                  "val": "Test2019!",
-                  "offset": 53
+                  "val": "Test2021!",
+                  "offset": 58
                 }
               ],
               "location": "Login_StepDefinitions.user_enters_Credentials_to_Login_and(String,String)"
@@ -81,10 +81,10 @@
           },
           {
             "result": {
-              "duration": 15334717047,
+              "duration": 889011383,
               "status": "passed"
             },
-            "line": 18,
+            "line": 13,
             "name": "User clicks on Send Key to Device",
             "match": {
               "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
@@ -93,10 +93,10 @@
           },
           {
             "result": {
-              "duration": 11514378563,
+              "duration": 11052499420,
               "status": "passed"
             },
-            "line": 19,
+            "line": 14,
             "name": "User navigates to MobileBrifcase App",
             "match": {
               "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
@@ -105,10 +105,10 @@
           },
           {
             "result": {
-              "duration": 22513657495,
+              "duration": 22933593283,
               "status": "passed"
             },
-            "line": 20,
+            "line": 15,
             "name": "user selects a \"Appellate DC Development - CMKA\"",
             "match": {
               "arguments": [
@@ -126,164 +126,66 @@
           },
           {
             "result": {
-              "duration": 63952195572,
+              "duration": 57886669490,
               "status": "passed"
             },
-            "line": 21,
-            "name": "User selects Judge,  \"Test Automation\" and  \"15-2594\"",
+            "line": 16,
+            "name": "User selects Judge,  \"Screening Panels\"",
             "match": {
               "arguments": [
                 {
-                  "val": "Test Automation",
+                  "val": "Screening Panels",
                   "offset": 22
-                },
-                {
-                  "val": "15-2594",
-                  "offset": 45
                 }
               ],
-              "location": "Common_StepDefinitions.user_selects_Judge_and(String,String)"
+              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_Judge(String)"
             },
             "matchedColumns": [
-              4,
-              5
+              4
             ],
             "keyword": "When "
           },
           {
             "result": {
-              "duration": 63979975567,
+              "duration": 76731079369,
               "status": "passed"
             },
-            "line": 22,
-            "name": "User  selects action using dbType \"CMKA\" and  \"3142\"  and verifies the name of the action displays in the dark blue banner",
+            "line": 17,
+            "name": "User selects the sort button, clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in descending order (newest first). User clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order (oldest first).",
             "match": {
-              "arguments": [
-                {
-                  "val": "CMKA",
-                  "offset": 35
-                },
-                {
-                  "val": "3142",
-                  "offset": 47
-                }
-              ],
-              "location": "Common_StepDefinitions.user_selects_action_using_dbType_and_and_verifies_the_name_of_the_action_displays_in_the_dark_blue_banner(String,String)"
+              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_the_sort_button_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first_User_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_ascending_order_oldest_first()"
             },
-            "matchedColumns": [
-              6,
-              8
-            ],
-            "keyword": "Then "
+            "keyword": "When "
           },
           {
             "result": {
-              "duration": 12792348014,
+              "duration": 70718177385,
               "status": "passed"
             },
-            "line": 23,
-            "name": "user selects the \"View Votes\" button next to the relief. User verifies  a popup displays.  In the red banner, the relief they are voting , \"CMKA\" , \"35683\"",
+            "line": 18,
+            "name": "User clicks the Case Down Arrow button and  verifies the referrals are sorted by case number in descending order . User clicks the Case Up Arrow button, verifies the referrals are sorted by case number in ascending order.",
             "match": {
-              "arguments": [
-                {
-                  "val": "View Votes",
-                  "offset": 18
-                },
-                {
-                  "val": "CMKA",
-                  "offset": 140
-                },
-                {
-                  "val": "35683",
-                  "offset": 149
-                }
-              ],
-              "location": "JudgeVoteDPF_StepDefinitions.user_selects_the_button_next_to_the_relief_User_verifies_a_popup_displays_In_the_red_banner_the_relief_they_are_voting(String,String,String)"
+              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_descending_order_User_clicks_the_Case_Up_Arrow_button_verifies_the_referrals_are_sorted_by_case_number_in_ascending_order()"
             },
-            "matchedColumns": [
-              6,
-              7
-            ],
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 77239657428,
-              "status": "passed"
-            },
-            "line": 24,
-            "name": "user verifies each judges\u0027 initials to whom the referral was sent , as well as their vote and date they voted, \"CMKA\" , \"35683\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "CMKA",
-                  "offset": 112
-                },
-                {
-                  "val": "35683",
-                  "offset": 121
-                }
-              ],
-              "location": "JudgeVoteDPF_StepDefinitions.user_verifies_each_judges_initials_to_whom_the_referral_was_sent_as_well_as_their_vote_and_date_they_voted(String,String)"
-            },
-            "matchedColumns": [
-              6,
-              7
-            ],
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "duration": 91607034449,
-              "status": "passed"
-            },
-            "line": 25,
-            "name": "user selects a vote and adds notes to a vote. Use  db \"CMKA\" ,ccrID \"35683\" , elID  \"3142\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "CMKA",
-                  "offset": 55
-                },
-                {
-                  "val": "35683",
-                  "offset": 69
-                },
-                {
-                  "val": "3142",
-                  "offset": 85
-                }
-              ],
-              "location": "JudgeVoteDPF_StepDefinitions.user_selects_a_vote_and_adds_notes_to_a_vote_Use_db_ccrID_elID(String,String,String)"
-            },
-            "matchedColumns": [
-              6,
-              7,
-              8
-            ],
             "keyword": "Then "
           }
         ],
         "tags": [
           {
-            "line": 8,
-            "name": "@AMB-1103"
-          },
-          {
-            "line": 6,
+            "line": 4,
             "name": "@Smoke"
           },
           {
-            "line": 7,
-            "name": "@AMB-1100"
+            "line": 5,
+            "name": "@AMB-1010"
           }
         ]
       }
     ],
-    "name": "JudgeVote DPF UI",
+    "name": "Sorting on the Referral List Page",
     "description": "",
-    "id": "judgevote-dpf-ui",
+    "id": "sorting-on-the-referral-list-page",
     "keyword": "Feature",
-    "uri": "CMKA_1-4/JudgeVoteDPF.feature"
+    "uri": "CMKA_1-4/SortingOnTheReferralListPage.feature"
   }
 ]

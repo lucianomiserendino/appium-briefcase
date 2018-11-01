@@ -8,6 +8,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>io.appium</groupId>
+			<artifactId>java-client</artifactId>
+			<version>6.0.0-BETA4</version>
+		</dependency>
+		<dependency>
 			<groupId>org.seleniumhq.selenium.grid</groupId>
 			<artifactId>selenium-grid-hub</artifactId>
 			<version>1.0.5</version>
@@ -47,12 +52,6 @@
 			<groupId>info.cukes</groupId>
 			<artifactId>cucumber-java</artifactId>
 			<version>1.2.5</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.appium</groupId>
-			<artifactId>java-client</artifactId>
-			<version>5.0.4</version>
 		</dependency>
 
 		<dependency>

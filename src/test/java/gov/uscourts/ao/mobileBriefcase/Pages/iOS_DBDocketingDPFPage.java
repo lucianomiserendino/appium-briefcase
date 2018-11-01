@@ -11,10 +11,9 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DU_PRID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.LOGED_IN_JUDGES_LAST_NAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.LOGED_IN_JUDGES_PR_PRID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PANEL_JUDGES_PR_PRID;
+import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages.getActionsPanel;
 import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages.getCMRID;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getStreamOfRandomInts;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getText;
@@ -69,7 +68,8 @@ public class iOS_DBDocketingDPFPage implements Constants {
 
 		list = table.get(index);
 		try {
-			clickOnPanel(ACTIONS, list.getElListText());
+			
+			getActionsPanel(valueOf(dbType), list.getElListText());
 			sendKeys(commentField, "Test-" + getStreamOfRandomInts());
 			sendKeys(descriptionField, "Test-" + getStreamOfRandomInts() + "-");
 			String description = getText(descriptionField);
@@ -122,6 +122,16 @@ public class iOS_DBDocketingDPFPage implements Constants {
 			 */
 		} else if (list.getElListText().equals("note - panel judges and users chambers")) {
 			assertTrue(docUserTable.equals(panelJudges) && docGroupTable.equals(panelJudgesChambersGroupID));
+			System.out.println(docGroupTable + "***************docGroupTable");
+			System.out.println(panelJudgesChambersGroupID + "****************panelJudgesChambersGroupID");
+
+			/**
+			 * A doc_user record will not be created. A doc_group record will be created for
+			 * the panel members chambers
+			 */
+		} else if (list.getElListText().equals("note - panel judges chambers")) {
+			assertTrue(isNull(docUserTable));
+			System.out.println(docGroupTable + "****************docGroupTable");
 
 		}
 	}

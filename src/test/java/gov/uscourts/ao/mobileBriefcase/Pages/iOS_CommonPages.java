@@ -14,7 +14,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.logout;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.replace;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.scroll;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.splitBy;
 import static org.junit.Assert.assertTrue;
@@ -25,6 +24,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
+import gov.uscourts.ao.mobileBriefcase.common.Utilities;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
 public class iOS_CommonPages {
@@ -64,8 +64,13 @@ public class iOS_CommonPages {
 				click(penlRow);
 			} else {
 				getPanel(panel);
-				scroll(1, "down");
-				click(penlRow);
+				if (isDisplayed(By.xpath(penlRow)) == true) {
+					click(penlRow);
+				} else {
+					Utilities.scrollTo(penlRow);
+					click(penlRow);
+
+				}
 			}
 		} catch (NoSuchElementException e) {
 			e.printStackTrace();

@@ -4,11 +4,14 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 
 import cucumber.api.java.en.Then;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_JudgeVoteDPFPage;
 
 public class JudgeVoteDPF_StepDefinitions {
 
 	iOS_JudgeVoteDPFPage page;
+
+	public String noteVote = "";
 
 	@Then("^user selects the \"([^\"]*)\" button next to the relief\\. User verifies  a popup displays\\.  In the red banner, the relief they are voting , \"([^\"]*)\" , \"([^\"]*)\"$")
 	public void user_selects_the_button_next_to_the_relief_User_verifies_a_popup_displays_In_the_red_banner_the_relief_they_are_voting(
@@ -26,7 +29,13 @@ public class JudgeVoteDPF_StepDefinitions {
 	@Then("^user selects a vote and adds notes to a vote\\. Use  db \"([^\"]*)\" ,ccrID \"([^\"]*)\" , elID  \"([^\"]*)\"$")
 	public void user_selects_a_vote_and_adds_notes_to_a_vote_Use_db_ccrID_elID(String dbType, String ccr_id,
 			String elID) {
-		page.getVoteSelection(valueOf(dbType), ccr_id, elID);
+		noteVote += page.getVoteSelection(valueOf(dbType), ccr_id, elID);
+	}
+
+	@Then("^user verifies a note icon displays on the left of a judge's vote$")
+	public void user_verifies_a_note_icon_displays_on_the_left_of_a_judge_s_vote() {
+		
+		page.selectVoteInfo(DBType.CMKA, "35683",noteVote);
 	}
 
 }

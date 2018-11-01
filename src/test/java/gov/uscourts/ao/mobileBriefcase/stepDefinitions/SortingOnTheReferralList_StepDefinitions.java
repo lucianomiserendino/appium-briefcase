@@ -1,15 +1,17 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.sortStringListByLength;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.sortArray;
 import static java.util.Collections.reverse;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.List;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_SortingOnTheReferralListPage;
+import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 
 public class SortingOnTheReferralList_StepDefinitions {
 
@@ -26,30 +28,37 @@ public class SortingOnTheReferralList_StepDefinitions {
 
 		page.selectSortBtn();
 
-		List<String> referralsSotedByDatesInDescendingOrder = page.referralsSortedByDatesInDescendingOrder();
+		List<String> referralsSotedByDatesInDescendingOrder = page
+				.referralsSortedByDate(Actions.SORT_DATES_IN_DESCENDING_ORDER);
 		sort(referralsSotedByDatesInDescendingOrder);
 		reverse(referralsSotedByDatesInDescendingOrder);
 
-		List<String> referralsSotedByDateInAscendingOrder = page.referralsSortedByDateInAscendingOrder();
+		List<String> referralsSotedByDateInAscendingOrder = page
+				.referralsSortedByDate(Actions.SORT_DATES_IN_ASCENDING_ORDER);
 		reverse(referralsSotedByDateInAscendingOrder);
 
 		assertTrue("REFERRALS ARE NOT SORTED BY  DATE",
 				referralsSotedByDatesInDescendingOrder.equals(referralsSotedByDateInAscendingOrder));
+
 	}
 
 	@Then("^User clicks the Case Down Arrow button and  verifies the referrals are sorted by case number in descending order \\. User clicks the Case Up Arrow button, verifies the referrals are sorted by case number in ascending order\\.$")
 	public void user_clicks_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_descending_order_User_clicks_the_Case_Up_Arrow_button_verifies_the_referrals_are_sorted_by_case_number_in_ascending_order() {
-		List<String> referralsSortedByCasesInDescendingOrder = page.referralsSortedByCasesInDescendingOrder();
 
+		List<String> referralsSortedByCasesInDescendingOrder = page
+				.referralsSortedByCase(Actions.SORT_CASES_IN_DESCENDING_ORDER);
 		reverse(referralsSortedByCasesInDescendingOrder);
-		sortStringListByLength(referralsSortedByCasesInDescendingOrder);
 
-		List<String> referralsSortedByCasesInAscendingOrder = page.referralsSortedByCasesInAscendingOrder();
+		String[] arr = referralsSortedByCasesInDescendingOrder.toArray(new String[0]);
+		Arrays.toString(arr);
+		sortArray(arr);
 
-		System.out.println(referralsSortedByCasesInDescendingOrder + "*************************");
-		System.out.println(referralsSortedByCasesInAscendingOrder + "*************************");
-		// assertTrue("REFERRALS ARE NOT SORTED BY CASE NUMBER IN DESCENDING ORDER",
-		// referralsSortedByCasesInDescendingOrder.equals(referralsSortedByCasesInAscendingOrder));
+		List<String> referralsSortedByCasesInAscendingOrder = page
+				.referralsSortedByCase(Actions.SORT_CASES_IN_ASCENDING_ORDER);
+
+		assertTrue("REFERRALS ARE NOT SORTED BY CASE NUMBER IN DESCENDING ORDER",
+				Arrays.asList(arr).equals(referralsSortedByCasesInAscendingOrder));
+
 	}
 
 }

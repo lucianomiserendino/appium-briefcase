@@ -53,7 +53,7 @@ public class Utilities extends Base {
 	static SimpleDateFormat format1;
 	static SimpleDateFormat format2;
 
-	public static List<String> retrieveAllReferrals(List<MobileElement> elements, String split, int index) {
+	public static List<String> retrieveAllCases(List<MobileElement> elements, String split, int index) {
 		String[] dest;
 		List<String> referrals = new ArrayList<>();
 		List<MobileElement> el = elements;
@@ -64,7 +64,6 @@ public class Utilities extends Base {
 			referrals.add(dest[index].trim());
 
 		}
-
 		return referrals;
 
 	}
@@ -78,9 +77,7 @@ public class Utilities extends Base {
 		Iterator<MobileElement> itr = element.iterator();
 		while (itr.hasNext()) {
 			try {
-
 				dates = itr.next().getText().split(split);
-
 				referrals.add(changeDateFormat(dates[index].trim(), "MM/dd/yyyy", format));
 
 			} catch (Exception e) {
@@ -147,8 +144,22 @@ public class Utilities extends Base {
 		if (caseDisplayed == true) {
 			findElement(By.xpath(Case)).click();
 		} else {
-			scroll(1, "down");
-			findElement(By.xpath(Case)).click();
+			scrollTo(xpath);
+		}
+
+	}
+
+	public static void scrollTo(String name) {
+		try {
+			HashMap<String, String> scrollObject = new HashMap<>();
+			scrollObject.put("direction", "down");
+			scrollObject.put("toVisible", "true");
+			scrollObject.put("predicateString", "value == '" + name + "'");
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("mobile:scroll", scrollObject);
+			findElement(By.xpath(name)).click();
+		} catch (Exception e) {
+
 		}
 
 	}
@@ -186,6 +197,7 @@ public class Utilities extends Base {
 	}
 
 	public static MobileElement findElement(By element) {
+
 		return driver.findElement(waitForPresenceOfElement(element));
 
 	}
@@ -451,7 +463,49 @@ public class Utilities extends Base {
 	}
 
 	public static int getRandomInt(int index) {
-		return index -1 - new Random().nextInt(index);
+		return index - 1 - new Random().nextInt(index);
+	}
+
+	public static void clickOnRandomValue(List<MobileElement> value) {
+		value.get(getRandomInt(value.size())).click();
+	}
+
+	public static String[] sortArray(String[] arr) {
+		String tmp = "";
+		String tempValue1 = "";
+		String tempValue2 = "";
+		for (int i = 0; i < arr.length - 1; i++) {
+			if (arr[i].length() == arr[i + 1].length()) {
+				if (arr[i].compareTo(arr[i + 1]) > 1) {
+					tmp = arr[i];
+					arr[i] = arr[i + 1];
+					arr[i + 1] = tmp;
+				}
+			} else if (arr[i].length() > arr[i + 1].length()) {
+				tempValue1 = arr[i].substring(0, arr[i].length() - 2);
+				tempValue2 = arr[i + 1];
+				while (tempValue1.length() > tempValue2.length()) {
+					tempValue1 = tempValue1.substring(0, tempValue1.length() - 1);
+				}
+				if (tempValue1.compareTo(tempValue2) > 1) {
+					tmp = arr[i];
+					arr[i] = arr[i + 1];
+					arr[i + 1] = tmp;
+				}
+			} else if (arr[i].length() < arr[i + 1].length()) {
+				tempValue1 = arr[i];
+				tempValue2 = arr[i + 1].substring(0, arr[i].length() - 1);
+				while (tempValue1.length() < tempValue2.length()) {
+					tempValue2 = tempValue2.substring(0, tempValue2.length() - 1);
+				}
+				if (tempValue1.compareTo(tempValue2) > 1) {
+					tmp = arr[i];
+					arr[i] = arr[i + 1];
+					arr[i + 1] = tmp;
+				}
+			}
+		}
+		return arr;
 	}
 
 }

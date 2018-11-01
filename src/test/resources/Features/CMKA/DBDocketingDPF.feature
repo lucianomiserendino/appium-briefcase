@@ -10,17 +10,17 @@ Scenario:
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And  user selects a "Appellate DC Development - CMKA" 
-	When User selects Judge,  "Screening Panels" and  "15-2014" 
+	When User selects Judge,  "Test Automation" and  "15-2594" 
 	Then User selecs action, enters a comment in the editable field, submits and verifies Db "CMKA" is updated correctly, ( use "15-2014"  and "34" ) 
 	
-		|el_list_text                           | dm_acc_crt | dm_acc_ctlink  | dm_acc_spec |
-		#|note - court users                     |     y      |      n         |      n      |
-		#|note - court users linked to case      |     n      |      y         |      n      |
-		#|note - panel judges only               |     n      |      n         |      y      |
-		|note - panel judges and users chambers |     n      |      n         |      y      |
-		#|note - panel judges chambers           |     n      |      n         |      y      |
-		#|note - users chambers                  |     n      |      n         |      y      |
-		#|note - only groups and users           |     n      |      n         |      y      |
+		|el_list_text  | dm_acc_crt | dm_acc_ctlink  | dm_acc_spec |
+		#|3060         |     y      |      n         |      n      |
+		|3070         |     n      |      y         |      n      |
+		#|3128         |     n      |      n         |      y      |
+		#|3118         |     n      |      n         |      y      |
+		#|3074         |     n      |      n         |      y      |
+		#|3127         |     n      |      n         |      y      |
+		#|3072         |     n      |      n         |      y      |
 		
 		
 		

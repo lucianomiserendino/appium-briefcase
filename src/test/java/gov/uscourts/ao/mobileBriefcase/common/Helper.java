@@ -91,7 +91,7 @@ public class Helper {
 
 
 
-	/** Panel name, actions, */
+	/** Panel name, actions */
 	public static void getPanel(Actions panel, List<MobileElement> actions, String element) {
 
 		getPanel(panel);

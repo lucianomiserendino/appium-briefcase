@@ -12,7 +12,7 @@ import io.appium.java_client.MobileElement;
 public class Page extends Base {
 
 	public static void performPageLoad() {
-		
+
 		synchronized (driver) {
 			try {
 				driver.wait(10000);
@@ -21,7 +21,6 @@ public class Page extends Base {
 			}
 		}
 	}
-	
 
 	public static void pageLoad() {
 		synchronized (driver) {
@@ -34,7 +33,7 @@ public class Page extends Base {
 	}
 
 	public static By waitForPresenceOfElement(By element) {
-		new WebDriverWait(driver, 350).until(ExpectedConditions.presenceOfElementLocated((element)));
+		new WebDriverWait(driver, 100).until(ExpectedConditions.presenceOfElementLocated((element)));
 		return element;
 
 	}
@@ -44,13 +43,14 @@ public class Page extends Base {
 		return element;
 
 	}
+
 	public static List<WebElement> waitForPresenceOfElements(List<WebElement> elements) {
 		return new WebDriverWait(driver, 70).until(ExpectedConditions.visibilityOfAllElements(elements));
 
 	}
 
 	public static WebElement waitToBeClickable(WebElement element) {
-		new WebDriverWait(webDriver, 300).until(ExpectedConditions.elementToBeClickable(element)).click();
+		new WebDriverWait(driver, 100).until(ExpectedConditions.elementToBeClickable(element)).click();
 		return element;
 	}
 
@@ -64,7 +64,7 @@ public class Page extends Base {
 		System.out.println(driver.getPageSource());
 
 	}
-	
+
 	public static void sleep(int millis) {
 		try {
 			Thread.sleep(millis);
@@ -72,7 +72,5 @@ public class Page extends Base {
 			e.printStackTrace();
 		}
 	}
-
-
 
 }
