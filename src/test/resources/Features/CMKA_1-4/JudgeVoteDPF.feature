@@ -23,7 +23,7 @@ Scenario Outline:
 	Then user selects the "View Votes" button next to the relief. User verifies  a popup displays.  In the red banner, the relief they are voting , "<dbType>" , "<ccr_id>" 
 	And user verifies each judges' initials to whom the referral was sent , as well as their vote and date they voted, "<dbType>" , "<ccr_id>" 
 	Then user selects a vote and adds notes to a vote. Use  db "<dbType>" ,ccrID "<ccr_id>" , elID  "<el_id>" 
-	Then user verifies a note icon displays on the left of a judge's vote 
+	#Then user verifies a note icon displays on the left of a judge's vote 
 	#Then user verifies tapping on the note icon will display the note in a popup
 	#Then user verifies the title of the popup should be the document.dm description of the note note and the date it was created
 	#Then user verifies the text of the note display in the section of the popup

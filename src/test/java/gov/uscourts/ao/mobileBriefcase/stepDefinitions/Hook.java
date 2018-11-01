@@ -20,9 +20,9 @@ public class Hook extends Base implements iOSCapabilities {
 	@After
 
 	public void tearDown() {
-//		select(DASHBOARD);
-//		iOS_CommonPages.logOut();
-//		driver.quit();
+		select(DASHBOARD);
+		iOS_CommonPages.logOut();
+		driver.quit();
 
 	}
 
