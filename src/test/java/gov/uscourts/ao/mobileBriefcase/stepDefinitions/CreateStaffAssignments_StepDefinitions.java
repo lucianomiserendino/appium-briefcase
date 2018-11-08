@@ -7,7 +7,6 @@ import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCase.createARandom
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.sleep;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findWebElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.update;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.By;
@@ -42,7 +41,6 @@ public class CreateStaffAssignments_StepDefinitions {
 	@When("^User selects a Judge, category: \"([^\"]*)\" and case$")
 	public void user_selects_a_Judge_category_and_case(String category) {
 		page = new iOS_CommonPages();
-		update();
 		page.selectCategoryAndCase(category, caseN);
 
 	}

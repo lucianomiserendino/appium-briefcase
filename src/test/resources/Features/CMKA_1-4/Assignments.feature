@@ -8,7 +8,7 @@ Background:
 	Then  User navigates to MobileBrifcase App 
 	And   user selects a "Appellate DC Development - CMKA" 
 	
-@Smoke 
+
 @AMB-1021 
 Scenario Outline: 
 	Staff members can be assigned to referrals and/or just cases. 
@@ -31,7 +31,7 @@ Scenario Outline:
 		
 		
 		
-		@Smoke 
+	 
 		@AMB-1033 
 		Scenario Outline: 
 			Display of Assignment Notes.

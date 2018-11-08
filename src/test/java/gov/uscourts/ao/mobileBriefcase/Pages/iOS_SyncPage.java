@@ -1,24 +1,16 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.sleep;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.update;
 import static org.junit.Assert.assertTrue;
 
-import org.openqa.selenium.support.PageFactory;
-
+import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class iOS_SyncPage {
-
-	public iOS_SyncPage() {
-		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-	}
+public class iOS_SyncPage extends AppiumPageFactory {
 
 	@iOSFindBy(xpath = "//XCUIElementTypeOther[3]/XCUIElementTypeButton")
 	public static MobileElement syncBTN;
@@ -31,7 +23,6 @@ public class iOS_SyncPage {
 
 	public void verifySyncCompletes() {
 
-		update();
 		try {
 			pageLoad();
 			syncBTN.click();

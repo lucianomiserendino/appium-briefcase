@@ -3,7 +3,7 @@ Feature: Display Vote Information Panel, filer info and judge's initials
 
 
 	
-@Smoke 
+
 @AMB-1036 
 Scenario Outline: 
 	If a referral requires voting, a collapsible Vote Information panel displays.  When expanded, it displays the following information:
@@ -22,7 +22,7 @@ Scenario Outline:
 	Then   for each referral, observes the filer's name  first initial of pr_middle_name gn_display  party type and date filed displays in a light blue heading. Use "<dbType>", "<cmr_ju_pe_id>" , "<cmr_cs_caseid>" ,"<cmr_cyv_code>" , "<ccr_id>" .
 	And observes the judge's initials display in the same heading and db "<dbType>" using  "<ccr_id>"
 	Then  User checks each judge's vote  and the date  displays under their initials 
-	
+	Then kjki
 	
 	
 	Examples: 

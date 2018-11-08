@@ -9,9 +9,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DKT_ENTRY_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_DLS_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SI_VALUE;
 import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage.open;
-import static gov.uscourts.ao.mobileBriefcase.common.Base.changeWindow;
-import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
-import static gov.uscourts.ao.mobileBriefcase.common.Base.safariInstance;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
@@ -21,14 +18,13 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utilities.sendKeys;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.PageFactory;
 
+import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.Coordinates;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class iOS_NoticesOfDocketActivityPage {
+public class iOS_NoticesOfDocketActivityPage extends AppiumPageFactory {
 
 	String backBTN = "Back";
 
@@ -52,10 +48,6 @@ public class iOS_NoticesOfDocketActivityPage {
 
 	@iOSFindBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
 	public static MobileElement searchBTN;
-
-	public iOS_NoticesOfDocketActivityPage() {
-		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-	}
 
 	public static String getCase(String caseNum, String index) {
 		return caseNum.split("-")[Integer.valueOf(index)];

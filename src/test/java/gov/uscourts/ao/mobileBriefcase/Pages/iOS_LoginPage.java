@@ -1,32 +1,25 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.tapByCoordinates;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Utilities.tapByCoordinates;
 
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import gov.uscourts.ao.mobileBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class iOS_LoginPage extends Base {
-
-	public iOS_LoginPage() {
-
-		PageFactory.initElements(new AppiumFieldDecorator(Base.getInstance(Drivers.IOS)), this);
-	}
+public class iOS_LoginPage extends AppiumPageFactory {
 
 	private static String openBtn = "Open";
 
@@ -62,11 +55,11 @@ public class iOS_LoginPage extends Base {
 	@iOSFindBy(accessibility = "Logout of Briefcase")
 	public MobileElement logout;
 
-	public void selectEnvironment(String env) {
-
-		performPageLoad();
-		select(env);
-	}
+	 public void selectEnvironment(String env) {
+	
+	 performPageLoad();
+	 select(env);
+	 }
 
 	public void sendCredentials(String Username, String Password) {
 
@@ -81,6 +74,7 @@ public class iOS_LoginPage extends Base {
 	public void sedKeyButton() {
 
 		sendKeyButton.click();
+		Page.sleep(10000);
 		// temprorarily just for testing
 		tapByCoordinates(815, 367);
 	}
@@ -93,6 +87,7 @@ public class iOS_LoginPage extends Base {
 	public void getServer(String server) {
 		select(server);
 		performPageLoad();
+	
 	}
 
 	public void select(String env) {

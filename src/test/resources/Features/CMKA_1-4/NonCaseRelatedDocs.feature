@@ -7,7 +7,7 @@ Background:
 	And  User clicks on Send Key to Device 
 	Then  User navigates to MobileBrifcase App 
 	And   user selects a "Appellate DC Development - CMKA" 
-@D	
+
 @Smoke 
 @AMB-1207 
 Scenario: 

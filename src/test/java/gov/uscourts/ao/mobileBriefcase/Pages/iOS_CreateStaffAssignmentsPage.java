@@ -23,7 +23,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_MEMBERS_FIRST_NAME;
 import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages.clickOnPanel;
 import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages.getActionName;
-import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
@@ -43,21 +42,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
-public class iOS_CreateStaffAssignmentsPage {
+public class iOS_CreateStaffAssignmentsPage extends AppiumPageFactory {
 
 	static String yesBTN = "Yes";
 	static String okBTN = "OK";
 	static String backBTN = "Back";
-
-	public iOS_CreateStaffAssignmentsPage() {
-		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-	}
 
 	public static void getElementNextToDropDown(String element, String dropDowN) {
 		click(getDropDown(element, dropDowN));

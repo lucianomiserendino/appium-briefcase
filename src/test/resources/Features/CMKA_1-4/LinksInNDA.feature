@@ -9,7 +9,7 @@ Background:
 	Then  User navigates to MobileBrifcase App 
 	And   user selects a "Appellate DC Development - CMKA" 
 	
-@Smoke 
+
 @AMB-1189 
 Scenario Outline: 
 

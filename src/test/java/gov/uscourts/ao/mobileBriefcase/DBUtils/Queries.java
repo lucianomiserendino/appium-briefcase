@@ -126,6 +126,23 @@ public class Queries {
 			+ " WHERE smr_mrc_id = mrc_id and smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
 			+ " WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa'  order by mrc_name";
 
+	public static final String ID_OF_THE_REFERRAL_CATEGORY = "SELECT mrc_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
+			+ " WHERE smr_mrc_id = mrc_id and smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
+			+ " WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa' and mrc_name='MRC_NAME' order by mrc_name";
+
+	// Query to to find the number of referrals in each categories
+	public static final String REFERRAL_NUMBERS = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = SMR_MRC_ID "
+			+ "and smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa')";
+
+	public static final String DOCUMENT_CATEGORIES = "SELECT distinct cmd_doc_category FROM chm_mobile_docs, stfaty_mobile_referral\n"
+			+ "WHERE smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa')  and\n"
+			+ "smr_mrc_id = SMR_MRC_ID  and\n" + "smr_id = cmd_smr_id ";
+	
+	
+	public static final String DOCUMENT_DESCRIPTION = "SELECT distinct cmd_description FROM chm_mobile_docs, stfaty_mobile_referral\n"
+			+ "WHERE smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa')  and\n"
+			+ "smr_mrc_id = SMR_MRC_ID  and\n" + "smr_id = cmd_smr_id and cmd_doc_category = 'CMD_DOC_CATEGORY'";
+
 	// Query to Verify the number of referrals in each anders_cases category
 	public static final String ANDERS_CASES = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = (SELECT distinct mrc_id FROM"
 			+ " stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and mrc_name=\"Anders Cases\" and smr_assign_pe_id = "

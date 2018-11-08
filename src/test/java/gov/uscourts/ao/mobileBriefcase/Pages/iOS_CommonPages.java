@@ -4,8 +4,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.cmr_id;
-import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
-import static gov.uscourts.ao.mobileBriefcase.common.Base.safariInstance;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
@@ -20,24 +18,20 @@ import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Utilities;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
-public class iOS_CommonPages {
-
-	public iOS_CommonPages() {
-		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-	}
+public class iOS_CommonPages extends AppiumPageFactory {
 
 	private static String settingsPage = "//*[contains(@name, 'NavigationRenderer')]/XCUIElementTypeButton[2]";
 	private static String logout = "Logout of Briefcase";
 	private static String OKBtn = "OK";
 
 	public void selectCategoryAndCase(String category, String caseNum) {
+
 		selectCaseNumber(category, caseNum);
 	}
 
@@ -67,7 +61,7 @@ public class iOS_CommonPages {
 				if (isDisplayed(By.xpath(penlRow)) == true) {
 					click(penlRow);
 				} else {
-					Utilities.scrollTo(penlRow);
+					Utilities.scroll(1, "down");
 					click(penlRow);
 
 				}
@@ -97,7 +91,7 @@ public class iOS_CommonPages {
 	}
 
 	public static void logOut() {
-		logout(settingsPage, logout, OKBtn, OKBtn);
+		logout(settingsPage, logout, OKBtn);
 		safariInstance();
 	}
 

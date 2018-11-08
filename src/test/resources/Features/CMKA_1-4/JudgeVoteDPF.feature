@@ -3,7 +3,7 @@ Feature: JudgeVote DPF UI
 
 
 
-@Smoke 
+
 @AMB-1100 
 @AMB-1103 
 Scenario Outline: 

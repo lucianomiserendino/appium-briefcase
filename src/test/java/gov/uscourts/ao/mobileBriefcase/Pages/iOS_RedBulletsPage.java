@@ -1,7 +1,5 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
-import static gov.uscourts.ao.mobileBriefcase.common.Base.getInstance;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
@@ -12,22 +10,15 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.scroll;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCase;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.update;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.PageFactory;
 
-import gov.uscourts.ao.mobileBriefcase.common.Base.Drivers;
+import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.Coordinates;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
-public class iOS_RedBulletsPage {
-
-	public iOS_RedBulletsPage() {
-		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-	}
+public class iOS_RedBulletsPage extends AppiumPageFactory {
 
 	String back = "Back";
 
@@ -80,7 +71,7 @@ public class iOS_RedBulletsPage {
 	}
 
 	public void getReferral(String category, String verify, String caseNum) {
-		update();
+
 		clickOnElement(category);
 		performPageLoad();
 		verifyRedBullet(RedBullet.valueOf(verify), getRefferal(caseNum));

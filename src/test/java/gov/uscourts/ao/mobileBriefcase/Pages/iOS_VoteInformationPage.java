@@ -11,7 +11,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.FILERS_MIDDLE_NAME
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGEs_INITIALS;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_EVENT;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.RELIEF;
-import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
@@ -31,18 +30,13 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
-public class iOS_VoteInformationPage {
-
-	public iOS_VoteInformationPage() {
-		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-	}
+public class iOS_VoteInformationPage extends AppiumPageFactory {
 
 	/** Observe the Vote Information Panel displays */
 	public void getVoteInformationPanel(DBType dbType, String element) {
@@ -147,8 +141,6 @@ public class iOS_VoteInformationPage {
 				"//*[contains(@name, 'Vote Information')]/following:: XCUIElementTypeStaticText");
 
 	}
-	
-	
 
 	public String filersInfo(FILERs_INFO info, String filersInfo) {
 

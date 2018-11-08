@@ -1,12 +1,9 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.APPLICABLE_ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_EVENT;
-import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getPanel;
@@ -16,20 +13,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.support.PageFactory;
-
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class iOS_ActionsPanelPage {
-
-	public iOS_ActionsPanelPage() {
-		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-	}
+public class iOS_ActionsPanelPage extends AppiumPageFactory {
 
 	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'Actions')]")
@@ -82,4 +73,6 @@ public class iOS_ActionsPanelPage {
 				"//*[contains(@name, 'Actions')]/following:: XCUIElementTypeCell//*");
 	}
 
+	
+	
 }

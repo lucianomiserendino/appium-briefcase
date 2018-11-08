@@ -1,30 +1,22 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveAllCases;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveDates;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.update;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.support.PageFactory;
-
+import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class iOS_SortingOnTheReferralListPage {
-
-	public iOS_SortingOnTheReferralListPage() {
-		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-	}
+public class iOS_SortingOnTheReferralListPage extends AppiumPageFactory {
 
 	@WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/child::*//*[contains(@name, 'Date')]")
@@ -52,7 +44,7 @@ public class iOS_SortingOnTheReferralListPage {
 
 	public void clickOnMotionsPetitions(String category) {
 		performPageLoad();
-		update();
+
 		clickOnElement(category);
 	}
 

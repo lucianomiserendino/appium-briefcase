@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -25,10 +26,6 @@ public abstract class Base implements iOSCapabilities {
 	public static WebDriver winAppDriver;
 	public static WebElement webElement;
 
-	/**
-	 * Reads the property file and passes the values to DesiredCapability
-	 */
-
 	public static WebDriver getInstance(Drivers drivers) {
 
 		try {
@@ -45,12 +42,8 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(XCODE_SIGNING_ID);
 				SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 				SetCapabilitiy(TAKES_SCREENSHOT);
-				capabilities.setCapability("deviceType", "ipad");
-				//driver = new IOSDriver<MobileElement>(new URL(getProperty("host")), capabilities);
-				
-				 driver = new IOSDriver<MobileElement>(new
-				 URL(System.getProperty("remotewebdriver.url")), capabilities);
-
+				SetCapabilitiy(DEVICE_TYPE);
+				getDriver();
 				break;
 
 			case WINDOWS:
@@ -85,13 +78,10 @@ public abstract class Base implements iOSCapabilities {
 			SetCapabilitiy(BROWSER_NAME);
 			SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 			SetCapabilitiy(ENSURING_CLEAN_SESSION);
-			capabilities.setCapability("deviceType", "ipad");
+			SetCapabilitiy(DEVICE_TYPE);
+			getDriver();
 
-			//driver = new IOSDriver<MobileElement>(new URL(getProperty("host")), capabilities);
-			 driver = new IOSDriver<MobileElement>(new
-			 URL(System.getProperty("remotewebdriver.url")), capabilities);
-
-		} catch (MalformedURLException e) {
+		} catch (Exception e) {
 
 			e.printStackTrace();
 		}
@@ -99,18 +89,47 @@ public abstract class Base implements iOSCapabilities {
 
 	}
 
+	public static void closeIOSDriver() {
+		if (driver != null) {
+			driver.quit();
+		}
+
+	}
+
+	public static void getDriver() {
+
+		try {
+			getHost(getProperty("host"));
+		} catch (WebDriverException e) {
+			getHost(System.getProperty("remotewebdriver.url"));
+		}
+
+	}
+
+	public static void getHost(String host) {
+		try {
+			driver = new IOSDriver<MobileElement>(new URL(host), capabilities);
+		} catch (MalformedURLException v) {
+			v.printStackTrace();
+		}
+	}
+
 	public static void getUrl(String url) {
 		getInstance(Drivers.WEBRIVER);
 		webDriver.get(getProperty(url));
 	}
 
+	/**
+	 * Reads the property file and passes the values to DesiredCapability
+	 */
 	public static void SetCapabilitiy(String type) {
 		capabilities.setCapability(type, getProperty(type));
 
 	}
 
 	/**
-	 * This method is used for switching driver between "WEBVIEW" and "NATIVE_APP"
+	 * This method is used for switching the driver between "WEBVIEW" and
+	 * "NATIVE_APP"
 	 */
 	public static void changeWindow(String type) {
 		performPageLoad();
@@ -122,18 +141,8 @@ public abstract class Base implements iOSCapabilities {
 		}
 	}
 
-	public static void closeIOSDriver() {
-		if (driver != null) {
-			driver.quit();
-		}
-
-	}
-
 	public enum Drivers {
 		IOS, WINDOWS, WEBRIVER
 	}
 
-	public static void main(String[] args) {
-		getInstance(Drivers.IOS);
-	}
 }

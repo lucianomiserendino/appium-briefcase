@@ -13,7 +13,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.LOGED_IN_JUDGES_PR
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PANEL_JUDGES_PR_PRID;
 import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages.getActionsPanel;
 import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages.getCMRID;
-import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getStreamOfRandomInts;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getText;
@@ -25,21 +24,15 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.support.PageFactory;
-
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Constants;
 import gov.uscourts.ao.mobileBriefcase.models.ElListText;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class iOS_DBDocketingDPFPage implements Constants {
-
-	public iOS_DBDocketingDPFPage() {
-		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-	}
+public class iOS_DBDocketingDPFPage extends AppiumPageFactory implements Constants {
 
 	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTextView[1]")
@@ -68,7 +61,7 @@ public class iOS_DBDocketingDPFPage implements Constants {
 
 		list = table.get(index);
 		try {
-			
+
 			getActionsPanel(valueOf(dbType), list.getElListText());
 			sendKeys(commentField, "Test-" + getStreamOfRandomInts());
 			sendKeys(descriptionField, "Test-" + getStreamOfRandomInts() + "-");
@@ -122,8 +115,6 @@ public class iOS_DBDocketingDPFPage implements Constants {
 			 */
 		} else if (list.getElListText().equals("note - panel judges and users chambers")) {
 			assertTrue(docUserTable.equals(panelJudges) && docGroupTable.equals(panelJudgesChambersGroupID));
-			System.out.println(docGroupTable + "***************docGroupTable");
-			System.out.println(panelJudgesChambersGroupID + "****************panelJudgesChambersGroupID");
 
 			/**
 			 * A doc_user record will not be created. A doc_group record will be created for
@@ -131,7 +122,6 @@ public class iOS_DBDocketingDPFPage implements Constants {
 			 */
 		} else if (list.getElListText().equals("note - panel judges chambers")) {
 			assertTrue(isNull(docUserTable));
-			System.out.println(docGroupTable + "****************docGroupTable");
 
 		}
 	}

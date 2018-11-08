@@ -11,7 +11,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.NON_ORALLY_ARGUED_
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.REFERRAL_DOCUMENTS;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.lbrrpt_CATEGORY;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.lbrrpt_CYV_CATEGORY;
-import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForElement;
@@ -19,7 +18,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getNumOfDisplayedCases;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.replace;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.update;
 import static java.util.Arrays.asList;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
@@ -30,22 +28,15 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.Coordinates;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class iOS_ReferralCategoriesPage {
-
-	public iOS_ReferralCategoriesPage() {
-
-		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-
-	}
+public class iOS_ReferralCategoriesPage extends AppiumPageFactory {
 
 	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "Pending Tasks")
@@ -56,7 +47,7 @@ public class iOS_ReferralCategoriesPage {
 	public static MobileElement total;
 
 	public String verifyIfPendingTasksAreDisplayed() {
-		update();
+
 		if (pendingTasks.isDisplayed()) {
 			clickOn(pendingTasks);
 		}
@@ -74,7 +65,7 @@ public class iOS_ReferralCategoriesPage {
 	}
 
 	public void getReferralCategories(DBType dbtype, String query) {
-		update();
+
 		categories(dbtype, query);
 
 	}
@@ -99,7 +90,6 @@ public class iOS_ReferralCategoriesPage {
 	}
 
 	public void verifyNonOrallyArgCases(DBType dbtype, String cyvCategory, String pe_id) {
-		update();
 		getReffCategories(dbtype, cyvCategory, pe_id);
 
 	}
@@ -146,7 +136,7 @@ public class iOS_ReferralCategoriesPage {
 	 * displays on the Dashboard page. 
 	 */
 	public void get_lbrrpt_CATEGORY(DBType dbType, String cyvCategory, String pe_id) {
-		update();
+
 		MobileElement lbrrptCategory;
 		String peID = getPE_ID(dbType, pe_id);
 		List<String> cmr_cyv_code = executeQuery(dbType, getID(lbrrpt_CATEGORY, peID));

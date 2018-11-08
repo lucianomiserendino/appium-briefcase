@@ -1,34 +1,21 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
-import static gov.uscourts.ao.mobileBriefcase.common.Base.getInstance;
-import static gov.uscourts.ao.mobileBriefcase.common.Base.webDriver;
 import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.sleep;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfWebElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findWebElement;
-import static gov.uscourts.ao.mobileBriefcase.common.iOSCapabilities.ATTORNEY_FILLING_URL;
-import static gov.uscourts.ao.mobileBriefcase.common.iOSCapabilities.ATTORNEY_FIRST_NAME;
-import static gov.uscourts.ao.mobileBriefcase.common.iOSCapabilities.ATTORNEY_LAST_NAME;
-import static gov.uscourts.ao.mobileBriefcase.common.iOSCapabilities.CMECF_HELP_DESK_UTILITY;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.PageFactory;
 
-import gov.uscourts.ao.mobileBriefcase.common.Base.Drivers;
+import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class iOS_AutoSyncPage {
-
-	public iOS_AutoSyncPage() {
-		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-	}
+public class iOS_AutoSyncPage extends AppiumPageFactory {
 
 	private static String PACERUser = "//*[text()='PACER User']";
 	private static String currentSetting = "//div[@id='current']";
@@ -71,12 +58,11 @@ public class iOS_AutoSyncPage {
 				currentSettingText.equals("PACER User - CSO ID required"));
 	}
 
-	
 	public static void getUrl(String url) {
 		getInstance(Drivers.WEBRIVER);
 		webDriver.get(getProperty(url));
 	}
-	
+
 	/**
 	 * Go to the attorney filing URL and login, Click the CM/ECF Document Filing
 	 * System link and enter the user name and password on the next screen (leave
@@ -105,7 +91,7 @@ public class iOS_AutoSyncPage {
 	public static void enterDescriptionAndselectPDFDoc() {
 		sendKeys(By.xpath(descriptionField), "Attorney Documnet");
 		click(By.xpath(browseBTN));
-		//have to complete this step
+		// have to complete this step
 		click(By.xpath(filer));
 		click(By.xpath(continueUploadPage));
 		click(By.xpath(continueUploadPage));

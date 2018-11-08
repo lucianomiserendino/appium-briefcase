@@ -5,13 +5,11 @@ import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.select
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.selectReferralCategory;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfWebElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static java.util.Collections.sort;
 import static java.util.Comparator.comparing;
 import static org.junit.Assert.assertEquals;
@@ -44,7 +42,6 @@ import org.openqa.selenium.WebElement;
 import cucumber.api.DataTable;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.Coordinates;
-import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 
@@ -108,13 +105,6 @@ public class Utilities extends Base {
 
 	}
 
-	public static void selectCaseNumber(Actions action, String caseNum) {
-		clickOn(findElement(By.xpath(selectReferralCategory(action))));
-		performPageLoad();
-		selectCase(locateElement(caseNum));
-
-	}
-
 	public static void scroll(int iCount, String direction) {
 
 		while (iCount > 0) {
@@ -144,22 +134,8 @@ public class Utilities extends Base {
 		if (caseDisplayed == true) {
 			findElement(By.xpath(Case)).click();
 		} else {
-			scrollTo(xpath);
-		}
-
-	}
-
-	public static void scrollTo(String name) {
-		try {
-			HashMap<String, String> scrollObject = new HashMap<>();
-			scrollObject.put("direction", "down");
-			scrollObject.put("toVisible", "true");
-			scrollObject.put("predicateString", "value == '" + name + "'");
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			js.executeScript("mobile:scroll", scrollObject);
-			findElement(By.xpath(name)).click();
-		} catch (Exception e) {
-
+			scroll(1, "down");
+			findElement(By.xpath(Case)).click();
 		}
 
 	}
@@ -278,11 +254,11 @@ public class Utilities extends Base {
 
 	}
 
-	public static void logout(String xpath, String id, String name, String Name) {
+	public static void logout(String xpath, String id, String name) {
 		clickOn(findElement(By.xpath(xpath)));
 		clickOn(findElement(By.id(id)));
 		clickOn(findElement(By.name(name)));
-		clickOn(findElement(By.name(Name)));
+		clickOn(findElement(By.name(name)));
 	}
 
 	public static String split(String caseNum, String substr, int index) {
@@ -317,39 +293,6 @@ public class Utilities extends Base {
 	public static void getIndexOfDataTable(DataTable table, int index1, int index2) {
 		List<Map<Integer, Integer>> credentials = table.asMaps(Integer.class, Integer.class);
 		credentials.get(index1).get(index2);
-	}
-
-	public static void getUserCategory(Coordinates userCategory, MobileElement selectUser, Coordinates user) {
-
-		waitToBeClickable(selectUser);
-
-		switch (userCategory) {
-
-		case STAFF_ATTORNEYS:
-			select(Coordinates.STAFF_ATTORNEYS);
-			break;
-
-		case APPELLATE_JUDGES:
-			select(Coordinates.APPELLATE_JUDGES);
-			break;
-
-		case BANKRUPTCY_JUDGES:
-			select(Coordinates.BANKRUPTCY_JUDGES);
-			break;
-
-		default:
-			break;
-		}
-		selectAUser(user);
-
-	}
-
-	public static void update() {
-		pageLoad();
-		select(Coordinates.MOTIONS_PETITIONS);
-		select(Coordinates.DASHBOARD);
-		performPageLoad();
-
 	}
 
 	public static void verifyTextIsDisplayed(MobileElement element, String text) {
@@ -402,14 +345,6 @@ public class Utilities extends Base {
 
 	public static String getRestrictParam(String param, int index) {
 		return param.substring(index).split(",")[0].replaceAll("'", "");
-	}
-
-	public static void selectCaseNumber(String category, String caseNum) {
-		update();
-		clickOnElement(category);
-		performPageLoad();
-		selectCase(locateElement(caseNum));
-
 	}
 
 	public static boolean isDisplayed(DBType dbtype, String query, String xpath) {
@@ -508,4 +443,57 @@ public class Utilities extends Base {
 		return arr;
 	}
 
+	public static void selectCaseNumber(String category, String caseNum) {
+		clickOnElement(category);
+		performPageLoad();
+		// selectCase(caseNum);
+		selectCase(locateElement(caseNum));
+
+	}
+
+	public static void selectUser(MobileElement users, By by) {
+		scrollDown(users, by);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void scrollDown(MobileElement element, By by) {
+		while (true) {
+			try {
+
+				if (element.isDisplayed()) {
+					clickOn(element);
+
+					break;
+				} else {
+
+					JavascriptExecutor js = (JavascriptExecutor) driver;
+					Map<String, Object> params = setCoordinates();
+					SetCapabilitiy(DURATION);
+					SetCapabilitiy(FROM);
+					SetCapabilitiy(FROM);
+					SetCapabilitiy(TO);
+					SetCapabilitiy(TO);
+					params.put("element", ((MobileElement) driver.findElement(by)).getId());
+					js.executeScript("mobile: dragFromToForDuration", params);
+				}
+			} catch (Exception NoSuchElementException) {
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void SetCapabilitiy(Object value) {
+		setCoordinates().put(Configuration.getProperty((String) value), Configuration.getProperty((String) value));
+	}
+
+	@SuppressWarnings("rawtypes")
+	public static HashMap setCoordinates() {
+		return new HashMap<>();
+
+	}
+
+	public static TouchAction tapByCoordinates(int x, int y) {
+		return new TouchAction(driver).tap(x, y).perform();
+
+	}
 }

@@ -12,7 +12,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_VOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_VOTE_DATE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGE_VOTE_DPF_RELIEF;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
-import static gov.uscourts.ao.mobileBriefcase.common.Base.driver;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
@@ -45,19 +44,14 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.PageFactory;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class iOS_JudgeVoteDPFPage {
-
-	public iOS_JudgeVoteDPFPage() {
-		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-	}
+public class iOS_JudgeVoteDPFPage extends AppiumPageFactory {
 
 	String select = "Please Select";
 
@@ -285,7 +279,8 @@ public class iOS_JudgeVoteDPFPage {
 
 		assertTrue(elementIsDisplayed(note));
 		String a = splitBy(getText(note), 1);
-		System.out.println(getText(note)+"****************");
+		System.out.println(getText(note) + "****************");
 		System.out.println(a + "***************splited date");
 	}
+
 }

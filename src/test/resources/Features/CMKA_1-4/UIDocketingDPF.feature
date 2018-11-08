@@ -2,7 +2,7 @@ Feature: note DPF UI
 
 
 
-@D
+
 @Smoke
 @AMB-1055 
 Scenario Outline: 
@@ -19,7 +19,7 @@ Scenario Outline:
 	
 	Examples: 
 		|environment   |userName          |password  |server                                   |category       | caseNum |dbType| el_id|
-		|Integration   |chambers courtney |Test2021!|Appellate DC Development - CMKA           |Motions/Petitions | 15-3314  |CMKA  |3060  |
+		|Integration   |chambers courtney |Test2021!|Appellate DC Development - CMKA           |Motions/Petitions | 15-3703  |CMKA  |3153  |
 		#|Testing       |judgewilliams   |Testpass1! |Appellate DC Installation Testing - CM3A  |Motion/Petition   | 12-6627  |CM3A  |4260  |
 		
 		

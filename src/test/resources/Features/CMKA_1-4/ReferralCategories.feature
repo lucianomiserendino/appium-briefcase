@@ -2,7 +2,7 @@ Feature: Referral Categories display on the dashboard for the judge and SAs
 
 
 
-@D
+
 @Smoke 
 @AMB-956 
 Scenario Outline: 

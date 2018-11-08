@@ -14,6 +14,8 @@ public interface iOSCapabilities {
 
 	public static final String DEVICE_NAME_w = "deviceName_w";
 
+	public static final String DEVICE_TYPE = "deviceType";
+
 	public static final String BUNDLE_ID = "bundleId";
 
 	public static final String BROWSER_NAME = "browserName";
@@ -57,5 +59,11 @@ public interface iOSCapabilities {
 	public static final String ATTORNEY_FIRST_NAME = "attorneyFirstName";
 
 	public static final String ATTORNEY_LAST_NAME = "attorneyLastName";
+
+	public static final String DURATION = "duration";
+
+	public static final String FROM = "from";
+
+	public static final String TO = "to";
 
 }

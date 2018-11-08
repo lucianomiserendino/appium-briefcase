@@ -6,7 +6,6 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage;
-import gov.uscourts.ao.mobileBriefcase.common.Page;
 import gov.uscourts.ao.mobileBriefcase.common.iOSCapabilities;
 
 public class Login_StepDefinitions implements iOSCapabilities {
@@ -19,7 +18,6 @@ public class Login_StepDefinitions implements iOSCapabilities {
 		logPage = new iOS_LoginPage();
 		logPage.selectEnvironment(env);
 		changeWindow("WEBVIEW");
-		
 
 	}
 
