@@ -12,14 +12,20 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
-import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class iOS_LoginPage extends AppiumPageFactory {
+public class iOS_LoginPage extends Base {
+
+	public iOS_LoginPage() {
+		PageFactory.initElements(new AppiumFieldDecorator(Base.getInstance(Drivers.IOS)), this);
+	}
 
 	private static String openBtn = "Open";
 
@@ -55,11 +61,11 @@ public class iOS_LoginPage extends AppiumPageFactory {
 	@iOSFindBy(accessibility = "Logout of Briefcase")
 	public MobileElement logout;
 
-	 public void selectEnvironment(String env) {
-	
-	 performPageLoad();
-	 select(env);
-	 }
+	public void selectEnvironment(String env) {
+
+		performPageLoad();
+		select(env);
+	}
 
 	public void sendCredentials(String Username, String Password) {
 
@@ -87,7 +93,7 @@ public class iOS_LoginPage extends AppiumPageFactory {
 	public void getServer(String server) {
 		select(server);
 		performPageLoad();
-	
+
 	}
 
 	public void select(String env) {

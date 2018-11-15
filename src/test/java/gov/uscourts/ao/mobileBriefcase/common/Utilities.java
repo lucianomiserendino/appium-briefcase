@@ -258,7 +258,7 @@ public class Utilities extends Base {
 		clickOn(findElement(By.xpath(xpath)));
 		clickOn(findElement(By.id(id)));
 		clickOn(findElement(By.name(name)));
-		clickOn(findElement(By.name(name)));
+		//clickOn(findElement(By.name(name)));
 	}
 
 	public static String split(String caseNum, String substr, int index) {
@@ -447,7 +447,8 @@ public class Utilities extends Base {
 		clickOnElement(category);
 		performPageLoad();
 		// selectCase(caseNum);
-		selectCase(locateElement(caseNum));
+		Utilities.scrollDown(caseNum);
+		//selectCase(locateElement(caseNum));
 
 	}
 
@@ -495,5 +496,36 @@ public class Utilities extends Base {
 	public static TouchAction tapByCoordinates(int x, int y) {
 		return new TouchAction(driver).tap(x, y).perform();
 
+	}
+	
+	public static void scrollDown(String ca) {
+
+		MobileElement el =driver.findElement(By.xpath(
+						"//XCUIElementTypeTable[@name='AvailableJudges']/child::*//*[contains(@name, '"+ca+"')]"));
+	
+		while (true) {
+			Page.performPageLoad();
+			System.out.println(el.isDisplayed() + "*****************************");
+			try {
+				if (el.isDisplayed()) {
+					el.click();
+
+					break;
+				} else {
+
+					JavascriptExecutor js = (JavascriptExecutor) driver;
+					Map<String, Object> params = new HashMap<>();
+					params.put("fromX", 600);
+					params.put("fromY", 600);
+					params.put("toX", 500);
+					params.put("toY", 500);
+					params.put("duration", 2.0);
+					((MobileElement) driver.findElement(By.id("AvailableJudges_Container"))).getId();
+					js.executeScript("mobile: dragFromToForDuration", params);
+				}
+			} catch (IndexOutOfBoundsException e) {
+
+			}
+		}
 	}
 }

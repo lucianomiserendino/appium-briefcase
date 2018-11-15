@@ -1,0 +1,1388 @@
+[
+  {
+    "line": 1,
+    "elements": [
+      {
+        "line": 3,
+        "name": "",
+        "description": "",
+        "type": "background",
+        "keyword": "Background",
+        "steps": [
+          {
+            "result": {
+              "duration": 31181851836,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "User Navigates to  \"Integration\" environment",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Integration",
+                  "offset": 20
+                }
+              ],
+              "location": "Login_StepDefinitions.user_Navigates_to_environment(String)"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 10585521250,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "User enters Credentials to Login \"chambers courtney\" and \"Test2021!\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "chambers courtney",
+                  "offset": 34
+                },
+                {
+                  "val": "Test2021!",
+                  "offset": 58
+                }
+              ],
+              "location": "Login_StepDefinitions.user_enters_Credentials_to_Login_and(String,String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 10937437266,
+              "status": "passed"
+            },
+            "line": 7,
+            "name": "User clicks on Send Key to Device",
+            "match": {
+              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 11058402580,
+              "status": "passed"
+            },
+            "line": 8,
+            "name": "User navigates to MobileBrifcase App",
+            "match": {
+              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 20903355819,
+              "status": "passed"
+            },
+            "line": 9,
+            "name": "user selects a \"Appellate DC Development - CMKA\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Appellate DC Development - CMKA",
+                  "offset": 16
+                }
+              ],
+              "location": "Login_StepDefinitions.user_selects_a(String)"
+            },
+            "keyword": "And "
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 9811434943,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 13,
+        "name": "",
+        "description": "User shouldn\u0027t see  case number when view documents that are not case related",
+        "id": "non-case-related-docs---suppress-case-number-for-\u0027lbrrpt\u0027-category;",
+        "after": [
+          {
+            "result": {
+              "duration": 20092088765,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 36166920763,
+              "status": "passed"
+            },
+            "line": 16,
+            "name": "In \"CMKA\" , If the chm_mobile_referral.cmr_cyv_code \u003d \"lbrrpt\" , verify  cyv_category  displays on the Dashboard page. Verify case number don\u0027t display for  referrals where the chm_mobile_referral.cmr_cyv_code \u003d \u0027lbrrpt\u0027, Verify only  documents display the referral detail page. Verify any actions, assignment, or additional case information don\u0027t  display.Use judge \"Colloton\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CMKA",
+                  "offset": 4
+                },
+                {
+                  "val": "lbrrpt",
+                  "offset": 55
+                },
+                {
+                  "val": "Colloton",
+                  "offset": 368
+                }
+              ],
+              "location": "ReferralCategories_StepDefinitions.in_If_the_chm_mobile_referral_cmr_cyv_code_verify_cyv_category_displays_on_the_Dashboard_page_Verify_case_number_don_t_display_for_referrals_where_the_chm_mobile_referral_cmr_cyv_code_lbrrpt_Verify_only_documents_display_the_referral_detail_page_Verify_any_actions_assignment_or_additional_case_information_don_t_display_Use_judge(String,String,String)"
+            },
+            "keyword": "Given "
+          }
+        ],
+        "tags": [
+          {
+            "line": 11,
+            "name": "@Smoke"
+          },
+          {
+            "line": 12,
+            "name": "@AMB-1207"
+          }
+        ]
+      }
+    ],
+    "name": "Non case related docs - Suppress case number for \u0027lbrrpt\u0027 category",
+    "description": "",
+    "id": "non-case-related-docs---suppress-case-number-for-\u0027lbrrpt\u0027-category",
+    "keyword": "Feature",
+    "uri": "CMKA_1-4/NonCaseRelatedDocs.feature"
+  },
+  {
+    "line": 1,
+    "elements": [
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 5130223226,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 22,
+        "name": "",
+        "description": "Tapping on a referral category that is not orally argued (chm_reftype_val.cdv_is_oral_arg\u003d\u0027n\u0027),\n  a list of cases should dipslay for the judge for that category.\n  Need to verify the correct number of referrals are being displayed.",
+        "id": "number-of-cases-displayed-for-non-orally-argued-cases;;;2",
+        "after": [
+          {
+            "result": {
+              "duration": 20392418363,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario Outline",
+        "steps": [
+          {
+            "result": {
+              "duration": 31490759776,
+              "status": "passed"
+            },
+            "line": 11,
+            "name": "User Navigates to  \"Integration\" environment",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Integration",
+                  "offset": 20
+                }
+              ],
+              "location": "Login_StepDefinitions.user_Navigates_to_environment(String)"
+            },
+            "matchedColumns": [
+              0
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 10654953208,
+              "status": "passed"
+            },
+            "line": 12,
+            "name": "User enters Credentials to Login \"chambers courtney\" and \"Test2021!\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "chambers courtney",
+                  "offset": 34
+                },
+                {
+                  "val": "Test2021!",
+                  "offset": 58
+                }
+              ],
+              "location": "Login_StepDefinitions.user_enters_Credentials_to_Login_and(String,String)"
+            },
+            "matchedColumns": [
+              1,
+              2
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 10951869079,
+              "status": "passed"
+            },
+            "line": 13,
+            "name": "User clicks on Send Key to Device",
+            "match": {
+              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 11150894319,
+              "status": "passed"
+            },
+            "line": 14,
+            "name": "User navigates to MobileBrifcase App",
+            "match": {
+              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 20932153970,
+              "status": "passed"
+            },
+            "line": 15,
+            "name": "user selects a \"Appellate DC Development - CMKA\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Appellate DC Development - CMKA",
+                  "offset": 16
+                }
+              ],
+              "location": "Login_StepDefinitions.user_selects_a(String)"
+            },
+            "matchedColumns": [
+              3
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 66799899247,
+              "error_message": "java.lang.AssertionError: -----RECORD COUNT MISMATCH-----\n\tat org.junit.Assert.fail(Assert.java:88)\n\tat org.junit.Assert.assertTrue(Assert.java:41)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.iOS_ReferralCategoriesPage.getReffCategories(iOS_ReferralCategoriesPage.java:121)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.iOS_ReferralCategoriesPage.verifyNonOrallyArgCases(iOS_ReferralCategoriesPage.java:93)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.ReferralCategories_StepDefinitions.user_Observes_the_categories_on_db_and_on_the_dashboard_page_with_judgeName(ReferralCategories_StepDefinitions.java:28)\n\tat ✽.Then User  Observes the categories on db \"CMKA\"  and on the dashboard page ( \"lbrrpt\" ) with judgeName \"Colloton\"(CMKA_1-4/NonOrallyArguedCases.feature:16)\n",
+              "status": "failed"
+            },
+            "line": 16,
+            "name": "User  Observes the categories on db \"CMKA\"  and on the dashboard page ( \"lbrrpt\" ) with judgeName \"Colloton\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CMKA",
+                  "offset": 37
+                },
+                {
+                  "val": "lbrrpt",
+                  "offset": 73
+                },
+                {
+                  "val": "Colloton",
+                  "offset": 99
+                }
+              ],
+              "location": "ReferralCategories_StepDefinitions.user_Observes_the_categories_on_db_and_on_the_dashboard_page_with_judgeName(String,String,String)"
+            },
+            "matchedColumns": [
+              4,
+              5,
+              6
+            ],
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 5,
+            "name": "@AMB-973"
+          },
+          {
+            "line": 4,
+            "name": "@Smoke"
+          }
+        ]
+      }
+    ],
+    "name": "Number of cases displayed for non-orally argued cases",
+    "description": "",
+    "id": "number-of-cases-displayed-for-non-orally-argued-cases",
+    "keyword": "Feature",
+    "uri": "CMKA_1-4/NonOrallyArguedCases.feature"
+  },
+  {
+    "line": 1,
+    "elements": [
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 5210188945,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 19,
+        "name": "",
+        "description": "A category entitled \"Pending Tasks\" will display on the dashboard if the judge has \nany pending assignments and the site table variable briefcaseShowPendingTasks \u003d\u0027y\u0027.",
+        "id": "pending-tasks-category-displays-on-the-dashboard;;;2",
+        "after": [
+          {
+            "result": {
+              "duration": 19966475926,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario Outline",
+        "steps": [
+          {
+            "result": {
+              "duration": 31208271817,
+              "status": "passed"
+            },
+            "line": 10,
+            "name": "User Navigates to  \"Integration\" environment",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Integration",
+                  "offset": 20
+                }
+              ],
+              "location": "Login_StepDefinitions.user_Navigates_to_environment(String)"
+            },
+            "matchedColumns": [
+              0
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 10597538224,
+              "status": "passed"
+            },
+            "line": 11,
+            "name": "User enters Credentials to Login \"chambers courtney\" and \"Test2021!\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "chambers courtney",
+                  "offset": 34
+                },
+                {
+                  "val": "Test2021!",
+                  "offset": 58
+                }
+              ],
+              "location": "Login_StepDefinitions.user_enters_Credentials_to_Login_and(String,String)"
+            },
+            "matchedColumns": [
+              1,
+              2
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 10995870458,
+              "status": "passed"
+            },
+            "line": 12,
+            "name": "User clicks on Send Key to Device",
+            "match": {
+              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 11095115324,
+              "status": "passed"
+            },
+            "line": 13,
+            "name": "User navigates to MobileBrifcase App",
+            "match": {
+              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 21204405039,
+              "status": "passed"
+            },
+            "line": 14,
+            "name": "user selects a \"Appellate DC Development - CMKA\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Appellate DC Development - CMKA",
+                  "offset": 16
+                }
+              ],
+              "location": "Login_StepDefinitions.user_selects_a(String)"
+            },
+            "matchedColumns": [
+              3
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 19003684016,
+              "status": "passed"
+            },
+            "line": 15,
+            "name": "If The judge has any pending assignments it will validate the total num of pending task on UI with DB \"CMKA\" and  \"32\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CMKA",
+                  "offset": 103
+                },
+                {
+                  "val": "32",
+                  "offset": 115
+                }
+              ],
+              "location": "ReferralCategories_StepDefinitions.if_The_judge_has_any_pending_assignments_it_will_validate_the_total_num_of_pending_task_on_UI_with_DB_and(String,String)"
+            },
+            "matchedColumns": [
+              4,
+              5
+            ],
+            "keyword": "Given "
+          }
+        ],
+        "tags": [
+          {
+            "line": 4,
+            "name": "@Smoke"
+          },
+          {
+            "line": 5,
+            "name": "@AMB-1008"
+          }
+        ]
+      }
+    ],
+    "name": "Pending Tasks Category Displays on the Dashboard",
+    "description": "",
+    "id": "pending-tasks-category-displays-on-the-dashboard",
+    "keyword": "Feature",
+    "uri": "CMKA_1-4/PendingTasksCategory.feature"
+  },
+  {
+    "line": 1,
+    "elements": [
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 4969366167,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 24,
+        "name": "",
+        "description": "Referral categories display on the dashboard for the judge and SAs",
+        "id": "referral-categories-display-on-the-dashboard-for-the-judge-and-sas;;;2",
+        "after": [
+          {
+            "result": {
+              "duration": 19744931875,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario Outline",
+        "steps": [
+          {
+            "result": {
+              "duration": 31243789820,
+              "status": "passed"
+            },
+            "line": 11,
+            "name": "User Navigates to  \"Integration\" environment",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Integration",
+                  "offset": 20
+                }
+              ],
+              "location": "Login_StepDefinitions.user_Navigates_to_environment(String)"
+            },
+            "matchedColumns": [
+              0
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 10631550707,
+              "status": "passed"
+            },
+            "line": 12,
+            "name": "User enters Credentials to Login \"chambers courtney\" and \"Test2021!\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "chambers courtney",
+                  "offset": 34
+                },
+                {
+                  "val": "Test2021!",
+                  "offset": 58
+                }
+              ],
+              "location": "Login_StepDefinitions.user_enters_Credentials_to_Login_and(String,String)"
+            },
+            "matchedColumns": [
+              1,
+              2
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 10930441459,
+              "status": "passed"
+            },
+            "line": 13,
+            "name": "User clicks on Send Key to Device",
+            "match": {
+              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 11188807055,
+              "status": "passed"
+            },
+            "line": 14,
+            "name": "User navigates to MobileBrifcase App",
+            "match": {
+              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 21631480275,
+              "status": "passed"
+            },
+            "line": 15,
+            "name": "user selects a \"Appellate DC Development - CMKA\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Appellate DC Development - CMKA",
+                  "offset": 16
+                }
+              ],
+              "location": "Login_StepDefinitions.user_selects_a(String)"
+            },
+            "matchedColumns": [
+              3
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 67241294060,
+              "status": "passed"
+            },
+            "line": 16,
+            "name": "User Observes the referral categories that display on \"CMKA\" and on the dashboard using  \"Colloton\" .",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CMKA",
+                  "offset": 55
+                },
+                {
+                  "val": "Colloton",
+                  "offset": 90
+                }
+              ],
+              "location": "ReferralCategories_StepDefinitions.user_Observes_the_referral_categories_that_display_on_and_on_the_dashboard_using(String,String)"
+            },
+            "matchedColumns": [
+              4,
+              5
+            ],
+            "keyword": "And "
+          }
+        ],
+        "tags": [
+          {
+            "line": 6,
+            "name": "@Smoke"
+          },
+          {
+            "line": 7,
+            "name": "@AMB-956"
+          }
+        ]
+      }
+    ],
+    "name": "Referral Categories display on the dashboard for the judge and SAs",
+    "description": "",
+    "id": "referral-categories-display-on-the-dashboard-for-the-judge-and-sas",
+    "keyword": "Feature",
+    "uri": "CMKA_1-4/ReferralCategories.feature"
+  },
+  {
+    "line": 1,
+    "elements": [
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 5177939921,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 22,
+        "name": "",
+        "description": "There is a sorting feature on the referral list page that enables users to sort referrals by date referred or case number.  \nThe default is by date referred in descending order (newest first).",
+        "id": "sorting-on-the-referral-list-page;;;2",
+        "after": [
+          {
+            "result": {
+              "duration": 19980198064,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario Outline",
+        "steps": [
+          {
+            "result": {
+              "duration": 33093980589,
+              "status": "passed"
+            },
+            "line": 11,
+            "name": "User Navigates to  \"Integration\" environment",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Integration",
+                  "offset": 20
+                }
+              ],
+              "location": "Login_StepDefinitions.user_Navigates_to_environment(String)"
+            },
+            "matchedColumns": [
+              0
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 10610052083,
+              "status": "passed"
+            },
+            "line": 12,
+            "name": "User enters Credentials to Login \"chambers courtney\" and \"Test2021!\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "chambers courtney",
+                  "offset": 34
+                },
+                {
+                  "val": "Test2021!",
+                  "offset": 58
+                }
+              ],
+              "location": "Login_StepDefinitions.user_enters_Credentials_to_Login_and(String,String)"
+            },
+            "matchedColumns": [
+              1,
+              2
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 10992310140,
+              "status": "passed"
+            },
+            "line": 13,
+            "name": "User clicks on Send Key to Device",
+            "match": {
+              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 11090157818,
+              "status": "passed"
+            },
+            "line": 14,
+            "name": "User navigates to MobileBrifcase App",
+            "match": {
+              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 20936585973,
+              "status": "passed"
+            },
+            "line": 15,
+            "name": "user selects a \"Appellate DC Development - CMKA\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Appellate DC Development - CMKA",
+                  "offset": 16
+                }
+              ],
+              "location": "Login_StepDefinitions.user_selects_a(String)"
+            },
+            "matchedColumns": [
+              3
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 24865328118,
+              "status": "passed"
+            },
+            "line": 16,
+            "name": "User selects Judge,  \"Screening Panels\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Screening Panels",
+                  "offset": 22
+                }
+              ],
+              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_Judge(String)"
+            },
+            "matchedColumns": [
+              4
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 83601184162,
+              "status": "passed"
+            },
+            "line": 17,
+            "name": "User selects the sort button, clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in descending order (newest first). User clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order (oldest first).",
+            "match": {
+              "location": "SortingOnTheReferralList_StepDefinitions.user_selects_the_sort_button_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first_User_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_ascending_order_oldest_first()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 74421766990,
+              "status": "passed"
+            },
+            "line": 18,
+            "name": "User clicks the Case Down Arrow button and  verifies the referrals are sorted by case number in descending order . User clicks the Case Up Arrow button, verifies the referrals are sorted by case number in ascending order.",
+            "match": {
+              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_descending_order_User_clicks_the_Case_Up_Arrow_button_verifies_the_referrals_are_sorted_by_case_number_in_ascending_order()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 4,
+            "name": "@Smoke"
+          },
+          {
+            "line": 5,
+            "name": "@AMB-1010"
+          }
+        ]
+      }
+    ],
+    "name": "Sorting on the Referral List Page",
+    "description": "",
+    "id": "sorting-on-the-referral-list-page",
+    "keyword": "Feature",
+    "uri": "CMKA_1-4/SortingOnTheReferralListPage.feature"
+  },
+  {
+    "line": 1,
+    "elements": [
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 5443769391,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 35,
+        "name": "",
+        "description": "Login as a Staff attorney and verify data is displayed on the Dashboard\n\t\tStaff attorney assignments are court definable in the stfaty_assign_val table.   Staff attorney referrals are stored in the stfaty_mobile_referral table.\nThere is a FK to the sftaty_assign_val table (smr_sfa_code).  This is how the assignment category is obtained.\nAssignment categories are listed on the Dashboard page for staff attorneys.  Once an assignment category is selected, referrals are \ngrouped based on referral categories.  Each referral category is displayed as a collapsible panel.  This task is to verify each referral category is\ndisplayed and the number of referrals is correct for each category.\nIf selecting a referral, the documents display on the referral detail page.  They are grouped by document category.  \nEach document category is a collapsible panel.  This task is to verify the correct document categories and number of docs\n in each category display for a selected referral.",
+        "id": "login-as-a-staff-attorney:-assignment-categories-display-on-the-dashboard-for-sas,-referral-categories-display-for-sas-,-verify-document-categories-display;;;2",
+        "after": [
+          {
+            "result": {
+              "duration": 20809818831,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario Outline",
+        "steps": [
+          {
+            "result": {
+              "duration": 31595012820,
+              "status": "passed"
+            },
+            "line": 21,
+            "name": "User Navigates to  \"Integration\" environment",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Integration",
+                  "offset": 20
+                }
+              ],
+              "location": "Login_StepDefinitions.user_Navigates_to_environment(String)"
+            },
+            "matchedColumns": [
+              0
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 10649687971,
+              "status": "passed"
+            },
+            "line": 22,
+            "name": "User enters Credentials to Login \"KristenStaffAttorney\" and \"Test2022!\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "KristenStaffAttorney",
+                  "offset": 34
+                },
+                {
+                  "val": "Test2022!",
+                  "offset": 61
+                }
+              ],
+              "location": "Login_StepDefinitions.user_enters_Credentials_to_Login_and(String,String)"
+            },
+            "matchedColumns": [
+              1,
+              2
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 10973968866,
+              "status": "passed"
+            },
+            "line": 23,
+            "name": "User clicks on Send Key to Device",
+            "match": {
+              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 11163495087,
+              "status": "passed"
+            },
+            "line": 24,
+            "name": "User navigates to MobileBrifcase App",
+            "match": {
+              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 19905348566,
+              "status": "passed"
+            },
+            "line": 25,
+            "name": "user selects a \"Appellate DC Development - CMKA\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Appellate DC Development - CMKA",
+                  "offset": 16
+                }
+              ],
+              "location": "Login_StepDefinitions.user_selects_a(String)"
+            },
+            "matchedColumns": [
+              3
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 18802141088,
+              "status": "passed"
+            },
+            "line": 26,
+            "name": "User verifies Data is displayed on the Dashboard, retriev categories from \"CMKA\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CMKA",
+                  "offset": 75
+                }
+              ],
+              "location": "StaffAttorney_StepDefinitions.user_verifies_Data_is_displayed_on_the_Dashboard_retriev_categories_from(String)"
+            },
+            "matchedColumns": [
+              4
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 22494000463,
+              "status": "passed"
+            },
+            "line": 27,
+            "name": "User selects assignment type \"Senior Staff Attorney\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Senior Staff Attorney",
+                  "offset": 30
+                }
+              ],
+              "location": "StaffAttorney_StepDefinitions.user_selects_assignment_type(String)"
+            },
+            "matchedColumns": [
+              5
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 51761151689,
+              "status": "passed"
+            },
+            "line": 28,
+            "name": "User observes there are six referral categories listed.",
+            "match": {
+              "location": "StaffAttorney_StepDefinitions.user_observes_there_are_six_referral_categories_listed()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 107109395002,
+              "status": "passed"
+            },
+            "line": 29,
+            "name": "User  selects  \"Anders Cases\" and  \"15-3015\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Anders Cases",
+                  "offset": 16
+                },
+                {
+                  "val": "15-3015",
+                  "offset": 36
+                }
+              ],
+              "location": "StaffAttorney_StepDefinitions.user_selects_and(String,String)"
+            },
+            "matchedColumns": [
+              6,
+              7
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 83177709049,
+              "status": "passed"
+            },
+            "line": 30,
+            "name": "User verifies the document categories and the number of docs displayed for each category after selecting \"Anders Cases\"  and \"CMKA\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Anders Cases",
+                  "offset": 106
+                },
+                {
+                  "val": "CMKA",
+                  "offset": 126
+                }
+              ],
+              "location": "StaffAttorney_StepDefinitions.user_verifies_the_document_categories_and_the_number_of_docs_displayed_for_each_category_after_selecting_and(String,String)"
+            },
+            "matchedColumns": [
+              4,
+              6
+            ],
+            "keyword": "And "
+          }
+        ],
+        "tags": [
+          {
+            "line": 5,
+            "name": "@AMB-1047"
+          },
+          {
+            "line": 6,
+            "name": "@AMB-1049"
+          },
+          {
+            "line": 4,
+            "name": "@Smoke"
+          },
+          {
+            "line": 8,
+            "name": "@AMB-1050"
+          },
+          {
+            "line": 7,
+            "name": "@AMB-1120"
+          }
+        ]
+      }
+    ],
+    "name": "Login as a Staff attorney: Assignment Categories display on the dashboard for SAs, Referral categories display for SAs , Verify Document Categories display",
+    "description": "",
+    "id": "login-as-a-staff-attorney:-assignment-categories-display-on-the-dashboard-for-sas,-referral-categories-display-for-sas-,-verify-document-categories-display",
+    "keyword": "Feature",
+    "uri": "CMKA_1-4/StaffAttorney.feature"
+  },
+  {
+    "line": 1,
+    "elements": [
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 5690211643,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 22,
+        "name": "",
+        "description": "Verify when an action is selected that contains the note DPF, the note DPF UI displays.",
+        "id": "note-dpf-ui;;;2",
+        "after": [
+          {
+            "result": {
+              "duration": 20879455975,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario Outline",
+        "steps": [
+          {
+            "result": {
+              "duration": 31394241040,
+              "status": "passed"
+            },
+            "line": 10,
+            "name": "User Navigates to  \"Integration\" environment",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Integration",
+                  "offset": 20
+                }
+              ],
+              "location": "Login_StepDefinitions.user_Navigates_to_environment(String)"
+            },
+            "matchedColumns": [
+              0
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 10665235414,
+              "status": "passed"
+            },
+            "line": 11,
+            "name": "User enters Credentials to Login \"chambers courtney\" and \"Test2021!\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "chambers courtney",
+                  "offset": 34
+                },
+                {
+                  "val": "Test2021!",
+                  "offset": 58
+                }
+              ],
+              "location": "Login_StepDefinitions.user_enters_Credentials_to_Login_and(String,String)"
+            },
+            "matchedColumns": [
+              1,
+              2
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 10815013103,
+              "status": "passed"
+            },
+            "line": 12,
+            "name": "User clicks on Send Key to Device",
+            "match": {
+              "location": "Login_StepDefinitions.user_clicks_on_Send_Key_to_Device()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 11124500248,
+              "status": "passed"
+            },
+            "line": 13,
+            "name": "User navigates to MobileBrifcase App",
+            "match": {
+              "location": "Login_StepDefinitions.user_navigates_to_MobileBrifcase_App()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 20765309107,
+              "status": "passed"
+            },
+            "line": 14,
+            "name": "user selects a \"Appellate DC Development - CMKA\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Appellate DC Development - CMKA",
+                  "offset": 16
+                }
+              ],
+              "location": "Login_StepDefinitions.user_selects_a(String)"
+            },
+            "matchedColumns": [
+              3
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 33725253793,
+              "error_message": "org.openqa.selenium.NoSuchElementException: An element could not be located on the page using the given search parameters.\nFor documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html\nBuild info: version: \u00273.9.1\u0027, revision: \u002763f7b50\u0027, time: \u00272018-02-07T22:25:02.294Z\u0027\nSystem info: host: \u0027Saltanat-MacBook-Pro.local\u0027, ip: \u00272600:8806:6200:2810:c9b5:6e36:9b38:54ec%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.14.1\u0027, java.version: \u00271.8.0_162\u0027\nDriver info: io.appium.java_client.ios.IOSDriver\nCapabilities {autoAcceptAlerts: true, browserName: , bundleId: gov.uscourts.ambbriefcase-beta, databaseEnabled: false, deviceName: iPad Pro (12.9-inch), deviceType: ipad, javascriptEnabled: true, locationContextEnabled: false, networkConnectionEnabled: false, platform: MAC, platformName: MAC, platformVersion: 12.1, takesScreenshot: true, takes_screehshot: true, udid: 872E11BA-9CB0-46FC-9FF8-09A..., webStorageEnabled: false, xcodeOrgId: U668BW448Y, xcodeSigningId: iPhone Developer}\nSession ID: cce2d8dd-9275-4cf2-9497-d593be9afb19\n*** Element info: {Using\u003dxpath, value\u003d//XCUIElementTypeTable[@name\u003d\u0027AvailableJudges\u0027]/child::*//*[contains(@name, \u002715-3703\u0027)]}\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)\n\tat sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)\n\tat java.lang.reflect.Constructor.newInstance(Constructor.java:423)\n\tat org.openqa.selenium.remote.http.W3CHttpResponseCodec.createException(W3CHttpResponseCodec.java:187)\n\tat org.openqa.selenium.remote.http.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:122)\n\tat org.openqa.selenium.remote.http.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:49)\n\tat org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:160)\n\tat io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:129)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:601)\n\tat io.appium.java_client.DefaultGenericMobileDriver.execute(DefaultGenericMobileDriver.java:42)\n\tat io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.execute(IOSDriver.java:1)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:371)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElement(DefaultGenericMobileDriver.java:62)\n\tat io.appium.java_client.AppiumDriver.findElement(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElement(IOSDriver.java:1)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElementByXPath(RemoteWebDriver.java:473)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElementByXPath(DefaultGenericMobileDriver.java:152)\n\tat io.appium.java_client.AppiumDriver.findElementByXPath(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElementByXPath(IOSDriver.java:1)\n\tat org.openqa.selenium.By$ByXPath.findElement(By.java:361)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:363)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElement(DefaultGenericMobileDriver.java:58)\n\tat io.appium.java_client.AppiumDriver.findElement(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElement(IOSDriver.java:1)\n\tat gov.uscourts.ao.mobileBriefcase.common.Utilities.scrollDown(Utilities.java:503)\n\tat gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCaseNumber(Utilities.java:450)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages.selectCategoryAndCase(iOS_CommonPages.java:35)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Common_StepDefinitions.user_selects_Judge_and(Common_StepDefinitions.java:16)\n\tat ✽.When User selects Judge,  \"Motions/Petitions\" and  \"15-3703\"(CMKA_1-4/UIDocketingDPF.feature:15)\n",
+              "status": "failed"
+            },
+            "line": 15,
+            "name": "User selects Judge,  \"Motions/Petitions\" and  \"15-3703\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Motions/Petitions",
+                  "offset": 22
+                },
+                {
+                  "val": "15-3703",
+                  "offset": 47
+                }
+              ],
+              "location": "Common_StepDefinitions.user_selects_Judge_and(String,String)"
+            },
+            "matchedColumns": [
+              4,
+              5
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 16,
+            "name": "User  selects action using dbType \"CMKA\" and  \"3153\"  and verifies the name of the action displays in the dark blue banner",
+            "match": {
+              "arguments": [
+                {
+                  "val": "CMKA",
+                  "offset": 35
+                },
+                {
+                  "val": "3153",
+                  "offset": 47
+                }
+              ],
+              "location": "Common_StepDefinitions.user_selects_action_using_dbType_and_and_verifies_the_name_of_the_action_displays_in_the_dark_blue_banner(String,String)"
+            },
+            "matchedColumns": [
+              6,
+              7
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 17,
+            "name": "User verifies the text \"Add New Note\" displays in the light blue banner.",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Add New Note",
+                  "offset": 24
+                }
+              ],
+              "location": "UIDocketingDPF_StepDefinitions.user_verifies_the_text_displays_in_the_light_blue_banner(String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 18,
+            "name": "user verifies an editable \"Description\" , \"Comment\" , \"Submit\" fields are  displayed.  The default description is defined in the Default description parameter of the note DPF (\"CMKA\" and \"3153\")",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Description",
+                  "offset": 27
+                },
+                {
+                  "val": "Comment",
+                  "offset": 43
+                },
+                {
+                  "val": "Submit",
+                  "offset": 55
+                },
+                {
+                  "val": "CMKA",
+                  "offset": 177
+                },
+                {
+                  "val": "3153",
+                  "offset": 188
+                }
+              ],
+              "location": "UIDocketingDPF_StepDefinitions.user_verifies_an_editable_fields_are_displayed_The_default_description_is_defined_in_the_Default_description_parameter_of_the_note_DPF_and(String,String,String,String,String)"
+            },
+            "matchedColumns": [
+              6,
+              7
+            ],
+            "keyword": "And "
+          }
+        ],
+        "tags": [
+          {
+            "line": 6,
+            "name": "@Smoke"
+          },
+          {
+            "line": 7,
+            "name": "@AMB-1055"
+          }
+        ]
+      }
+    ],
+    "name": "note DPF UI",
+    "description": "",
+    "id": "note-dpf-ui",
+    "keyword": "Feature",
+    "uri": "CMKA_1-4/UIDocketingDPF.feature"
+  }
+]

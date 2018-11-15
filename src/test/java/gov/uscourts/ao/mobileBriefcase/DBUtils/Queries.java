@@ -253,7 +253,7 @@ public class Queries {
 	public static final String lbrrpt_CYV_CATEGORY = "select distinct (cyv_category) from chm_mobile_referral, chm_reftype_val where cmr_ju_pe_id = ? and cmr_date_end is null and cmr_cyv_code = cyv_code and\n"
 			+ "			cyv_is_briefcase = 'y' and cyv_is_oral_arg = 'n' and cmr_cyv_code = 'CMR_CYV_CODE'";
 
-	public static final String REFERRAL_DOCUMENTS = "select cmd_description from chm_mobile_docs join chm_mobile_referral on cmr_id = cmd_cmr_id where cmr_cyv_code = 'lbrrpt' and cmr_date_end is null and cmr_ju_pe_id =?  and cmd_doc_category='Briefs'";
+	public static final String REFERRAL_DOCUMENTS = "select cmd_description from chm_mobile_docs join chm_mobile_referral on cmr_id = cmd_cmr_id where cmr_cyv_code = 'lbrrpt' and cmr_date_end is null and cmr_ju_pe_id =? ";
 
 	public static final String BRIEFCASE_TARGET_ONLY_Y = "select count(distinct cs_caseid) from chm_mobile_referral, "
 			+ "chm_reftype_val, case_dktentry, case where cmr_ju_pe_id = ? and cmr_cyv_code = cyv_code  and cyv_category = 'TEXT' and cmr_cs_caseid = cs_caseid and cmr_date_end is null and "

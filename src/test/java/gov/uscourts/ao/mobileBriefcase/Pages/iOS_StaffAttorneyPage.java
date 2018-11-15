@@ -26,6 +26,7 @@ import org.openqa.selenium.By;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.common.Utilities;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
@@ -115,7 +116,8 @@ public class iOS_StaffAttorneyPage extends AppiumPageFactory {
 		isDisplayed(dbType, replace(DOCUMENT_CATEGORIES, "SMR_MRC_ID", getDocumentCategories(dbType, referral)),
 				"//XCUIElementTypeStaticText");
 		assertTrue(getDocuments(referral));
-		
+		driver.navigate().back();
+		click(locateElement(referral));
 	}
 
 	public boolean getDocuments(String referral) {
