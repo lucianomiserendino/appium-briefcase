@@ -2,10 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.common;
 
 import io.appium.java_client.TouchAction;
 
-public class BriefcaseCoordinates extends Base {
-
-	private static final int MOTIONS_PETITIONS_X = 268;
-	private static final int MOTIONS_PETITIONS_Y = 338;
+public class Coordinates extends Base {
 
 	private static final int DASHBOARD_X = 33;
 	private static final int DASHBOARD_Y = 116;
@@ -16,7 +13,7 @@ public class BriefcaseCoordinates extends Base {
 	private static final int DISMISS_X = 506;
 	private static final int DISMISS_Y = 741;
 
-	public static void select(Coordinates coordinates) {
+	public static void select(BriefcaseCoordinates coordinates) {
 
 		switch (coordinates) {
 
@@ -28,9 +25,6 @@ public class BriefcaseCoordinates extends Base {
 			tapByCoordinates(DISMISS_X, DISMISS_Y);
 			break;
 
-		case MOTIONS_PETITIONS:
-			tapByCoordinates(MOTIONS_PETITIONS_X, MOTIONS_PETITIONS_Y);
-			break;
 		case DASHBOARD:
 			tapByCoordinates(DASHBOARD_X, DASHBOARD_Y);
 			break;
@@ -47,14 +41,9 @@ public class BriefcaseCoordinates extends Base {
 
 	}
 
-	public enum Coordinates {
+	public enum BriefcaseCoordinates {
 
-		BACK, DISMISS,
-		/** Referral categories */
-
-		/** Dashboard Categories */
-
-		MOTIONS_PETITIONS, DASHBOARD,
+		BACK, DISMISS, DASHBOARD,
 
 	}
 

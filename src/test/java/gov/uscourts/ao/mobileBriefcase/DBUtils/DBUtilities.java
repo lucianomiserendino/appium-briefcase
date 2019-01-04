@@ -1,28 +1,24 @@
 package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DATABASE_NAME;
+
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DBPWD;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DBURL;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DBUSERNAME;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_SERVERNAME;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CMKA_DATABASE_NAME;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CMKA_DBPWD;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CMKA_DBURL;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CMKA_DBUSERNAME;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CMKA_SERVERNAME;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.KEYPASS;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.PASS;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.PORT_NUMBER;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.SSL_LOC;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.SSL_STORE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PE_ID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.cmr_id;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.DATABASE_NAME_CM3A;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.DATABASE_NAME_CMKA;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBPWD_CM3A;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBPWD_CMKA;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBURL_CM3A;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBURL_CMKA;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBUSERNAME_CM3A;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.DBUSERNAME_CMKA;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.KEYPASS;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.PASS;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.PORT_NUMBER_CM3A;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.PORT_NUMBER_CMKA;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.SERVERNAME_CM3A;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.SERVERNAME_CMKA;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.SSL_LOC;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.SSL_STORE;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getRestrictParam;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.replace;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.splitBy;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -34,8 +30,6 @@ import java.util.List;
 
 import com.informix.jdbcx.IfxConnectionPoolDataSource;
 
-import gov.uscourts.ao.mobileBriefcase.common.Utilities;
-
 public class DBUtilities {
 
 	private static Connection connection;
@@ -46,15 +40,15 @@ public class DBUtilities {
 		try {
 			switch (dbType) {
 			case CMKA:
-				getIFXProperty(SSL_STORE, SSL_LOC, KEYPASS, PASS, DBURL_CMKA, SERVERNAME_CMKA, DBUSERNAME_CMKA,
-						DBPWD_CMKA, DATABASE_NAME_CMKA, PORT_NUMBER_CMKA);
+				getIFXProperty(SSL_STORE, SSL_LOC, KEYPASS, PASS, CMKA_DBURL, CMKA_SERVERNAME, CMKA_DBUSERNAME,
+						CMKA_DBPWD, CMKA_DATABASE_NAME, PORT_NUMBER);
 				break;
 
 			case CM3A:
-				getIFXProperty(SSL_STORE, SSL_LOC, KEYPASS, PASS, DBURL_CM3A, SERVERNAME_CM3A, DBUSERNAME_CM3A,
-						DBPWD_CM3A, DATABASE_NAME_CM3A, PORT_NUMBER_CM3A);
-
+				getIFXProperty(SSL_STORE, SSL_LOC, KEYPASS, PASS, CM3A_DBURL, CM3A_SERVERNAME, CM3A_DBUSERNAME,
+						CM3A_DBPWD, CM3A_DATABASE_NAME, PORT_NUMBER);
 				break;
+
 			default:
 				throw new RuntimeException("Invalid Database type");
 			}
@@ -148,12 +142,6 @@ public class DBUtilities {
 		}
 	}
 
-	public static String getEL_Function(String mbrNoteCourtUsersElId, int index) {
-		final String mbrNote = MBR_NOTE + mbrNoteCourtUsersElId;
-		return getRestrictParam(getAllColumns(DBType.CMKA, mbrNote), index);
-
-	}
-
 	public static void closeConnections() {
 		try {
 			if (resultSet != null) {
@@ -193,30 +181,31 @@ public class DBUtilities {
 
 	}
 
-	public static String setProperty(String key, String value) {
-		return System.setProperty(key, value);
-	}
-
 	public static String getID(String query, String id) {
 		return query.replace("?", id);
 	}
 
-	public static String getText(String query, String text) {
-		return query.replace("TEXT", text);
+	public static String getPE_ID(DBType dbType, String PE_RT_CODE, String judgeName) {
+		return getAllColumns(dbType, replace(PE_ID, "PE_RT_CODE", PE_RT_CODE, "PR_LAST_NAME", judgeName));
+
 	}
 
-	public static String getCode(String query, String text) {
-		return query.replace("CODE", text);
-	}
-
-	public static String getPE_ID(DBType dbType, String judgeName) {
-		return getAllColumns(dbType, getText(PE_ID, judgeName));
-
+	public static String setProperty(String key, String value) {
+		return System.setProperty(key, value);
 	}
 
 	public static DBType valueOf(String dbType) {
 		return DBType.valueOf(dbType);
 	}
+	
+	public static String getText(String query, String text) {
+		return query.replace("TEXT", text);
+	}
+	
+	public static String getCode(String query, String text) {
+		return query.replace("CODE", text);
+	}
+
 
 	public enum DBType {
 		CMKA, CM3A

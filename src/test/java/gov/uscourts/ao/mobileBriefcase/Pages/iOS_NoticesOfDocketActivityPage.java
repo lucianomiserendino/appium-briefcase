@@ -9,18 +9,19 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DKT_ENTRY_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_DLS_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SI_VALUE;
 import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage.open;
-import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.select;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.pageLoad;
+import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage.searchForACase;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.common.Coordinates.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.replace;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.sendKeys;
 import static org.junit.Assert.assertTrue;
 
-import org.openqa.selenium.By;
-
+import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.Coordinates;
+import gov.uscourts.ao.mobileBriefcase.common.Coordinates.BriefcaseCoordinates;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
@@ -101,19 +102,12 @@ public class iOS_NoticesOfDocketActivityPage extends AppiumPageFactory {
 	/** Run the following URLS in the browser on the iPad */
 
 	public static String getDktentryid(String caseNum, String dbType) {
-		return getSiValue(dbType) + "queryecf?caseid=" + findACaseID(caseNum, dbType) + "&dktentryid="
-				+ getDocID(ID.DOCKETENTRY_ID, caseNum, dbType);
+		return getSiValue(dbType) + "queryecf?caseid=" + findACaseID(caseNum, dbType) + "&dktentryid=4352678";
+		// + getDocID(ID.DOCKETENTRY_ID, caseNum, dbType);
 	}
 
 	public static String getDocumentAndNoteID(String caseNum, String dbType, String id) {
 		return getSiValue(dbType) + "viewdocument?dmdlsid=" + id + "&caseid=" + findACaseID(caseNum, dbType);
-	}
-
-	public void searchForACase(String caseNum) {
-		searchIcon.click();
-		sendKeys(searchTextField, caseNum);
-		searchBTN.click();
-
 	}
 
 	/** Open a Docket Entry in Briefcase from the NDA link */
@@ -129,19 +123,16 @@ public class iOS_NoticesOfDocketActivityPage extends AppiumPageFactory {
 
 	public void openADocumentInBriefCase(String caseNum, String dbType) {
 		loadNDALinksInBriefcase(getDocumentAndNoteID(caseNum, dbType, "2832314"));
-		select(Coordinates.DISMISS);
-		performPageLoad();
+		select(BriefcaseCoordinates.DISMISS);
+		performPageLoad(driver);
 		assertTrue("********CAN'T OPEN A DOCUMENT IN BRIEFCASE FROM THE NDA LINK*********",
-				findElement(By.id(PDFPageView)).isDisplayed());
-		select(Coordinates.DISMISS);
-		findElement(By.id(close)).click();
-		findElement(By.name(backBTN)).click();
+				isDisplayed(Locator.ID, PDFPageView));
+		tap(Locator.NAME, close);
 	}
 
 	/** Open a note in Briefcase from the NDA link */
 
 	public void openANoteInBriefcase(String caseNum, String dbType) {
-		searchForACase(caseNum);
 		loadNDALinksInBriefcase(getDocumentAndNoteID(caseNum, dbType, getDocID(ID.NOTE_ID, caseNum, dbType)));
 		verifyElementsAreDisplayed("NOTE", transactionNote, addANote);
 		clickBack(2);
@@ -155,7 +146,7 @@ public class iOS_NoticesOfDocketActivityPage extends AppiumPageFactory {
 			driver.get(ndaLink);
 			changeWindow("NATIVE");
 			open();
-			pageLoad();
+			performPageLoad(driver);
 		} catch (Exception e) {
 			e.getMessage();
 		}
@@ -163,13 +154,14 @@ public class iOS_NoticesOfDocketActivityPage extends AppiumPageFactory {
 
 	public void clickBack(int backBtn) {
 		for (int i = 0; i < backBtn; i++) {
-			findElement(By.name(backBTN)).click();
+			tap(Locator.ID, backBTN);
+
 		}
 	}
 
 	public void verifyElementsAreDisplayed(String link, String el1, String el2) {
 		assertTrue("*********CAN'T OPEN A " + link + " IN BRIEFCASE FROM THE NDA LINK*********",
-				findElement(By.id(el1)).isDisplayed() && findElement(By.id(el2)).isDisplayed());
+				isDisplayed(Locator.ID, el1) == true && isDisplayed(Locator.ID, el2) == true);
 	}
 
 	public enum ID {

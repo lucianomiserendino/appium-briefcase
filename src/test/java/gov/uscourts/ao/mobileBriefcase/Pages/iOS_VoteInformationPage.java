@@ -9,38 +9,31 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.FILED_DATE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.FILERS_INOFRMATION;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.FILERS_MIDDLE_NAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGEs_INITIALS;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_EVENT;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.RELIEF;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.getText;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.VOTE_INFORMATION;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.changeDateFormat;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getPanel;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.changeDateFormat;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
+import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
 
 public class iOS_VoteInformationPage extends AppiumPageFactory {
 
 	/** Observe the Vote Information Panel displays */
 	public void getVoteInformationPanel(DBType dbType, String element) {
-		getPanel(dbType, MBR_EVENT, "VOTE INFORMATION PANEL IS NOT DISPLAYED", element);
+		getPanel(Panel.Vote_Information);
 
 	}
 
@@ -66,7 +59,7 @@ public class iOS_VoteInformationPage extends AppiumPageFactory {
 			break;
 		case VOTE_INFO_RELIEF:
 
-			String voteInfoUiRelief = getVoteInf(VOTE_INFORMATION, getAllColumns(dbType, getID(RELIEF, ccr_id)));
+			String voteInfoUiRelief = getVoteInf(Panel.Vote_Information, getAllColumns(dbType, getID(RELIEF, ccr_id)));
 			String voteInfoDBRelief = getAllColumns(dbType, getID(RELIEF, ccr_id));
 
 			assertEquals("RELIEF MISMATCH", voteInfoDBRelief, voteInfoUiRelief);
@@ -107,7 +100,7 @@ public class iOS_VoteInformationPage extends AppiumPageFactory {
 		try {
 			for (int i = 0; i < dbResult.size(); ++i) {
 
-				MobileElement uiResult = findElement(By.xpath("[contains(@name, '" + dbResult.get(i) + "')]"));
+				MobileElement uiResult = findElementBy(Locator.XPATH, "[contains(@name, '" + dbResult.get(i) + "')]");
 
 				if (uiResult.isDisplayed()) {
 
@@ -120,7 +113,7 @@ public class iOS_VoteInformationPage extends AppiumPageFactory {
 	}
 
 	public String uiFilerInformation(FILERs_INFO info, DBType dbType, String pe_id, String caseId, String cyv_code) {
-		return filersInfo(info, getVoteInf(VOTE_INFORMATION,
+		return filersInfo(info, getVoteInf(Panel.Vote_Information,
 				getAllColumns(dbType, getCode(getText(getID(FILERS_MIDDLE_NAME, pe_id), caseId), cyv_code))));
 
 	}
@@ -137,7 +130,7 @@ public class iOS_VoteInformationPage extends AppiumPageFactory {
 	}
 
 	public void getJudgeInitials(DBType dbType, String ccr_id) {
-		isDisplayed(dbType, getID(JUDGEs_INITIALS, ccr_id),
+		exist(dbType, getID(JUDGEs_INITIALS, ccr_id),
 				"//*[contains(@name, 'Vote Information')]/following:: XCUIElementTypeStaticText");
 
 	}
@@ -162,7 +155,7 @@ public class iOS_VoteInformationPage extends AppiumPageFactory {
 
 	}
 
-	public static String getVoteInf(Actions panel, String voteInfo) {
+	public static String getVoteInf(Panel panel, String voteInfo) {
 		String info = "";
 
 		if (voteInfoIsDisplayed(voteInfo) == true) {
@@ -181,41 +174,61 @@ public class iOS_VoteInformationPage extends AppiumPageFactory {
 	}
 
 	public static String getVoteInfoText(String element) {
-		return findElement(By.xpath(
+		return findElementBy(Locator.XPATH,
 				"//*[contains(@name, 'Vote Information')]/following:: XCUIElementTypeStaticText[contains(@name, '"
-						+ element + "')]")).getText();
+						+ element + "')]").getText();
 
 	}
 
 	public static boolean voteInfoIsDisplayed(String element) {
-		return isDisplayed(By.xpath(
+		return isDisplayed(Locator.XPATH,
 				"//*[contains(@name, 'Vote Information')]/following:: XCUIElementTypeStaticText[contains(@name, '"
-						+ element + "')]"));
+						+ element + "')]");
 	}
 
 	/** verify it contains the judgeVote DPF */
 
 	public void verifyElementsAreDisplayed(String action, String enterVote, String label) {
-		clickOnPanel(ACTIONS, action);
+		// clickOnPanel(ACTIONS, action);
 		assertElementIsDisplayed(action);
 		assertElementIsDisplayed(enterVote);
 		assertElementIsDisplayed(label);
-		assertTrue(isDisplayed(getLabel(label)) == true);
+		assertTrue(getLabel(label).isDisplayed() == true);
 
 	}
 
 	public void assertElementIsDisplayed(String element) {
-		assertTrue(elementIsDisplayed(element) == true);
+		assertTrue(isDisplayed(Locator.XPATH, element) == true);
 	}
 
 	public static MobileElement getLabel(String toggle) {
-		return findElement(By.xpath(locateElement(toggle) + "//following-sibling::XCUIElementTypeSwitch"));
+		return findElementBy(Locator.XPATH, containsElement(toggle) + "//following-sibling::XCUIElementTypeSwitch");
 	}
 
 	public String uiFilerInformatiONJudgeVotePage(FILERs_INFO info, DBType dbType, String pe_id, String caseId,
 			String cyv_code) {
 		return filersInfo(info,
-				getText(getAllColumns(dbType, getCode(getText(getID(FILERS_MIDDLE_NAME, pe_id), caseId), cyv_code))));
+				getAllColumns(dbType, getCode(getText(getID(FILERS_MIDDLE_NAME, pe_id), caseId), cyv_code)));
+
+	}
+
+	public static boolean exist(DBType dbtype, String query, String xpath) {
+		boolean isDisplayed = false;
+		List<String> dbResult = executeQuery(dbtype, query);
+		sort(dbResult);
+		try {
+			for (int i = 0; i < dbResult.size(); ++i) {
+
+				MobileElement uiResult = findElementBy(Locator.XPATH,
+						xpath + "[contains(@name, '" + dbResult.get(i) + "')]");
+
+				if (uiResult.isDisplayed())
+					isDisplayed = true;
+			}
+		} catch (Exception e) {
+			isDisplayed = false;
+		}
+		return isDisplayed;
 
 	}
 

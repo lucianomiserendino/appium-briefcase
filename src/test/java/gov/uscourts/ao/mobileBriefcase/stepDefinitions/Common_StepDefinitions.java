@@ -1,26 +1,37 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Categories;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 
 public class Common_StepDefinitions {
+	CommonPages page;
 
-	iOS_CommonPages page;
+	@Then("^User selects \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void user_selects_and(String category, String caseNumber) {
+		page = new CommonPages();
+		page.getCategoryWithCase(category, caseNumber);
+	}
 
-	@When("^User selects Judge,  \"([^\"]*)\" and  \"([^\"]*)\"$")
-	public void user_selects_Judge_and(String category, String caseNum) {
-		page = new iOS_CommonPages();
-		page.selectCategoryAndCase(category, caseNum);
+	@Then("^User verifies \"([^\"]*)\" panel is displayed and expands the  panel$")
+	public void user_verifies_panel_is_displayed_and_expands_the_panel(String panel) {
+		page.getPanel(Panel.valueOf(panel));
 	}
 
 	@Then("^User  selects action using dbType \"([^\"]*)\" and  \"([^\"]*)\"  and verifies the name of the action displays in the dark blue banner$")
 	public void user_selects_action_using_dbType_and_and_verifies_the_name_of_the_action_displays_in_the_dark_blue_banner(
 			String dbType, String elID) {
-		page = new iOS_CommonPages();
-		page.selectAction(valueOf(dbType), elID);
+		page.selectAction(valueOf(dbType), "Actions", elID);
+	}
+
+	@When("^User selects a  \"([^\"]*)\"$")
+	public void user_selects_a(String category) {
+		page = new CommonPages();
+		page.selectReferral(category, Categories);
 	}
 
 }

@@ -13,13 +13,13 @@ Scenario Outline:
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And  user selects a "<server>" 
-	Then User  Observes the categories on db "<dbType>"  and on the dashboard page ( "<cmr_cyv_code>" ) with judgeName "<judgeName>" 
+	Then User  Observes the categories on db "<dbType>"  and on the dashboard page ( "<cmr_cyv_code>" ) with judgeName "<judgeName>" and "<PE_RT_CODE>"
 	
 	
 	
 	Examples: 
-		|environment   |userName          |password  |server                                   |judgeName |dbType |cmr_cyv_code|
-		|Integration   |chambers courtney |Test2021! |Appellate DC Development - CMKA          |Colloton  |CMKA   | lbrrpt     |
+		|environment   |userName          |password  |server        |judgeName |dbType |cmr_cyv_code|PE_RT_CODE|
+		|INTEGRATION   |chambers courtney |Test2021! |CMKA          |Colloton  |CMKA   | lbrrpt     |jud       |
 		#|Testing       |judgewilliams   |Testpass1!  |Appellate DC Installation Testing - CM3A |Williams  |CM3A|  | 
 		
 		

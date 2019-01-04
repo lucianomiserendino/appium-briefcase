@@ -9,25 +9,15 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_DATE_TY
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CAV_DESCRIPTION;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_NAME;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.ASSIGNMENT_ASSIGNED_NOTE;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.ASSIGNMENT_ASSIGNED_NOTE_DATE;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.ASSIGNMENT_ASSIGNED_NOTE_TEXT;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.ASSIGNMENT_NOTE;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.ASSIGNMENT_NOTE_DATE;
-import static gov.uscourts.ao.mobileBriefcase.common.Constants.ASSIGNMENT_NOTE_TEXT;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanelText;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ASSIGNMENTS;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getPanel;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.changeDateFormat;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getText;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.retrieveDates;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.split;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.changeDateFormat;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.retrieveAllCases;
 import static java.util.Collections.reverse;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
@@ -40,13 +30,25 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
+import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class iOS_AssignmentsPage extends AppiumPageFactory {
+	public static final String ASSIGNMENT_NOTE_DATE = "3/2/2018";
+
+	public static final String ASSIGNMENT_ASSIGNED_NOTE_DATE = "5/14/2018";
+
+	public static final String ASSIGNMENT_NOTE = "Assignment Note";
+
+	public static final String ASSIGNMENT_ASSIGNED_NOTE = "Assignment Assigned Note";
+
+	public static final String ASSIGNMENT_NOTE_TEXT = "This one has a note.";
+
+	public static final String ASSIGNMENT_ASSIGNED_NOTE_TEXT = "Assignment date type note.";
 
 	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
@@ -78,18 +80,20 @@ public class iOS_AssignmentsPage extends AppiumPageFactory {
 	public static List<MobileElement> assignedDates;
 
 	public void verifyAssignmentIsDisplayed(String assignmentOnReferral) {
-		performPageLoad();
-		assertTrue(isDisplayed(assignments));
+		performPageLoad(driver);
+		assertTrue(assignments.isDisplayed());
 		assertTrue(split(assignments.getText(), " ", 1).equals(assignmentOnReferral));
 
 	}
 
 	public void selectAssignment(String assignment) {
-		clickOnPanel(Actions.ASSIGNMENTS, assignment);
+		getPanel(Panel.Assignments);
+		tap(Locator.XPATH, containsElement(assignment));
+
 	}
 
 	public void verifyAssignmentNotes(String assignmentNotes) {
-		assertTrue(elementIsDisplayed(assignmentNotes) == true);
+		assertTrue(findElementBy(Locator.XPATH, containsElement(assignmentNotes)).isDisplayed() == true);
 	}
 
 	public void verifyAssignmentDates() {
@@ -113,9 +117,9 @@ public class iOS_AssignmentsPage extends AppiumPageFactory {
 
 		List<String> dbReferralAssignments = executeQuery(DBType.CMKA, STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_NAME);
 		try {
-			if (isDisplayed(assignments))
+			if (assignments.isDisplayed())
 				;
-			getPanel(ASSIGNMENTS);
+			getPanel(Panel.Assignments);
 
 			assertTrue("STAFF ASSIGNMENTS LINKED TO THE REFERRAL ARE NOT DISPLAYED",
 					dbReferralAssignments.containsAll(listOfAssignments(assignmentForKyle, assignmentForEssley)));
@@ -123,10 +127,9 @@ public class iOS_AssignmentsPage extends AppiumPageFactory {
 			List<String> dbCaseAssignments = executeQuery(DBType.CMKA, ASSIGNED_DATES);
 			reverse(dbCaseAssignments);
 
-			assertEquals(" ASSIGNED DATES MISMATCH ", dbCaseAssignments,
-					retrieveDates(assignedDates, " ", 1, "yyyy-MM-dd"));
+			assertEquals(" ASSIGNED DATES MISMATCH ", dbCaseAssignments, retrieveAllCases(assignedDates, " ", 1));
 
-			getPanel(ASSIGNMENTS);
+			getPanel(Panel.Assignments);
 
 		} catch (Exception e) {
 			e.getMessage();
@@ -144,12 +147,12 @@ public class iOS_AssignmentsPage extends AppiumPageFactory {
 	}
 
 	public String getStaffAssigments(String assignments) {
-		return split(getPanelText(ASSIGNMENTS, assignments), " ", 0);
+		return split(assignments, " ", 0);
 
 	}
 
 	public String getAssignmentType(String assignments) {
-		return getPanelText(ASSIGNMENTS, assignments).split(",")[1].trim();
+		return assignments.split(",")[1].trim();
 
 	}
 
@@ -169,9 +172,9 @@ public class iOS_AssignmentsPage extends AppiumPageFactory {
 			String chd_cha_id) {
 
 		try {
-			if (isDisplayed(assignments))
+			if (assignments.isDisplayed())
 				;
-			getPanel(ASSIGNMENTS);
+			getPanel(Panel.Assignments);
 
 			compareDBwithUI(getStaffAssigments(assignment), dbtype,
 					getText(getID(STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE, cha_ju_pe_id), cmr_cs_caseid));
@@ -179,12 +182,13 @@ public class iOS_AssignmentsPage extends AppiumPageFactory {
 			compareDBwithUI(getAssignmentType(assignment), dbtype,
 					getText(getID(CAV_DESCRIPTION, cha_ju_pe_id), cmr_cs_caseid));
 
-			compareDBwithUI(getAssignmentDateType(ASSIGNMENTS, assignment), dbtype,
+			compareDBwithUI(getAssignmentDateType(Panel.Assignments, assignment), dbtype,
 					getID(ASSIGNMENT_DATE_TYPE, chd_cha_id));
 
-			compareDBwithUI(getAssignmentDate(ASSIGNMENTS, assignment), dbtype, getID(ASSIGNMENT_DATE, chd_cha_id));
+			compareDBwithUI(getAssignmentDate(Panel.Assignments, assignment), dbtype,
+					getID(ASSIGNMENT_DATE, chd_cha_id));
 
-			getPanel(ASSIGNMENTS);
+			getPanel(Panel.Assignments);
 
 		} catch (AssertionError e) {
 			e.printStackTrace();
@@ -201,19 +205,19 @@ public class iOS_AssignmentsPage extends AppiumPageFactory {
 
 	}
 
-	public static String getAssignmentDateType(Actions action, String assignment) {
+	public static String getAssignmentDateType(Panel panel, String assignment) {
 		MobileElement dateType = getAssignment(assignment);
 
 		if (dateType.isDisplayed()) {
 			return getAssignmentDateType(assignment);
 
 		} else {
-			getPanel(action);
+			getPanel(panel);
 			return getAssignmentDateType(assignment);
 		}
 	}
 
-	public static String getAssignmentDate(Actions action, String assignment) {
+	public static String getAssignmentDate(Panel action, String assignment) {
 		MobileElement date = getAssignment(assignment);
 
 		if (date.isDisplayed()) {
@@ -226,7 +230,7 @@ public class iOS_AssignmentsPage extends AppiumPageFactory {
 	}
 
 	public static MobileElement getAssignment(String assignment) {
-		return findElement(By.xpath(locateElement(assignment) + "/following-sibling::XCUIElementTypeStaticText[1]"));
+		return findElement(By.xpath(containsElement(assignment) + "/following-sibling::XCUIElementTypeStaticText[1]"));
 
 	}
 
@@ -238,6 +242,11 @@ public class iOS_AssignmentsPage extends AppiumPageFactory {
 	public static String getAssignedDate(String assignmentDate) {
 		return changeDateFormat(getAssignment(assignmentDate).getText()
 				.substring(getAssignment(assignmentDate).getText().length() - 9).trim(), "MM/dd/yyyy", "yyyy-MM-dd");
+	}
+
+	public static String split(String caseNum, String substr, int index) {
+		return (caseNum + " ").split(substr)[index].split(" ")[0].trim();
+
 	}
 
 }

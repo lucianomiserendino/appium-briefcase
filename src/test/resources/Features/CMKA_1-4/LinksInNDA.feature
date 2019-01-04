@@ -3,13 +3,14 @@ Feature: Links in NDA open in Briefcase
 
 
 Background: 
-	Given  User Navigates to  "Integration" environment 
-	When   User enters Credentials to Login "judge werner" and "Test2019!" 
-	And  User clicks on Send Key to Device 
-	Then  User navigates to MobileBrifcase App 
-	And   user selects a "Appellate DC Development - CMKA" 
-	
 
+	Given  User Navigates to  "INTEGRATION" environment 
+	When   User enters Credentials to Login "judge werner" and "Test2019!" 
+	And User clicks on Send Key to Device 
+	Then User navigates to MobileBrifcase App 
+	And  user selects a "CMKA" 
+	
+	
 @AMB-1189 
 Scenario Outline: 
 

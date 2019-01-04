@@ -2,11 +2,13 @@ Feature: Display of Assignments and Assignment Notes
 
 Background: 
 
-	Given  User Navigates to  "Integration" environment 
-	When   User enters Credentials to Login "chambers courtney" and "Test2021!" 
-	And  User clicks on Send Key to Device 
-	Then  User navigates to MobileBrifcase App 
-	And   user selects a "Appellate DC Development - CMKA" 
+	Given  User Navigates to  "INTEGRATION" environment 
+	When  User enters Credentials to Login "s haenni" and "Test2020!" 
+	And User clicks on Send Key to Device 
+	Then User navigates to MobileBrifcase App 
+	And  user selects a "CMKA" 
+	Then User selects a userCategory "Appellate_Judges" and  name "Colloton" 
+	Then User selects "MOTIONS_PETITIONS" and "15-3314" 
 	
 
 @AMB-1021 
@@ -14,12 +16,17 @@ Scenario Outline:
 	Staff members can be assigned to referrals and/or just cases. 
     Verify that staff assignments are displaying on the referral list page.
 
-	When User selects Judge,  "<category>" and  "<case>" 
+
 	Then User  observes a collapsible panel entitled "Assignments" displays and expands the Assignments panel 
-	#This staff assignment is associated with the case.
-	And User observes there is an assignment for "<assignmnet>" , "<dbtype>",  where  cmr_cs_caseid equals"<cmr_cs_caseid>" ,cha_ju_pe_id equals "<cha_ju_pe_id>" and chd_cha_id equals "<chd_cha_id>" 
+	#These staff assignments linked to the referral
+	And User observes there is an assignment for 
+	
+	|assignment |
+	|Kyle Essley|
+	|Daniel Hay |
+	
 	#These are staff assignments associated with the referral
-	Then User observes there is an assignment for "Kyle Essley" and "Daniel Hay" 
+	#Then User observes there is an assignment for "Kyle Essley" and "Daniel Hay" 
 	
 	
 	Examples: 

@@ -1,20 +1,18 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Base.changeWindow;
-
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage;
+import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.common.iOSCapabilities;
 
-public class Login_StepDefinitions implements iOSCapabilities {
+public class Login_StepDefinitions extends Base implements iOSCapabilities {
 
 	iOS_LoginPage logPage;
 
 	@Given("^User Navigates to  \"([^\"]*)\" environment$")
 	public void user_Navigates_to_environment(String env) {
-
 		logPage = new iOS_LoginPage();
 		logPage.selectEnvironment(env);
 		changeWindow("WEBVIEW");
@@ -23,7 +21,6 @@ public class Login_StepDefinitions implements iOSCapabilities {
 
 	@When("^User enters Credentials to Login \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_enters_Credentials_to_Login_and(String username, String password) {
-	
 		logPage.sendCredentials(username, password);
 	}
 
@@ -43,6 +40,11 @@ public class Login_StepDefinitions implements iOSCapabilities {
 	@Given("^user selects a \"([^\"]*)\"$")
 	public void user_selects_a(String server) {
 		logPage.getServer(server);
+	}
+
+	@Then("^User selects a userCategory \"([^\"]*)\" and  name \"([^\"]*)\"$")
+	public void user_selects_a_userCategory_and_name(String availableJudges, String user) {
+		logPage.selectUser(availableJudges, user);
 	}
 
 }

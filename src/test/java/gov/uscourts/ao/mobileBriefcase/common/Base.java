@@ -21,7 +21,7 @@ import io.appium.java_client.ios.IOSDriver;
 public abstract class Base implements iOSCapabilities {
 
 	public static IOSDriver<MobileElement> driver;
-	private static DesiredCapabilities capabilities;
+	protected static DesiredCapabilities capabilities;
 	public static WebDriver webDriver;
 	public static WebDriver winAppDriver;
 	public static WebElement webElement;
@@ -35,7 +35,11 @@ public abstract class Base implements iOSCapabilities {
 
 				SetCapabilitiy(PLATFORM_NAME);
 				SetCapabilitiy(PLATFORM_VERSION);
-				SetCapabilitiy(UDID);
+				try {
+					SetCapabilitiy(LOCAL_UDID);
+				} catch (WebDriverException e) {
+					SetCapabilitiy(REMOTE_UDID);
+				}
 				SetCapabilitiy(DEVICE_NAME);
 				SetCapabilitiy(BUNDLE_ID);
 				SetCapabilitiy(XCODE_ORG_ID);
@@ -99,7 +103,7 @@ public abstract class Base implements iOSCapabilities {
 	public static void getDriver() {
 
 		try {
-			getHost(getProperty("host"));
+			getHost(getProperty(LOCAL_HOST));
 		} catch (WebDriverException e) {
 			getHost(System.getProperty("remotewebdriver.url"));
 		}
@@ -132,7 +136,7 @@ public abstract class Base implements iOSCapabilities {
 	 * "NATIVE_APP"
 	 */
 	public static void changeWindow(String type) {
-		performPageLoad();
+		performPageLoad(driver);
 		Set<String> windows = ((AppiumDriver<MobileElement>) driver).getContextHandles();
 		for (String window : windows) {
 			if (window.contains(type))

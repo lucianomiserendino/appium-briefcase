@@ -12,29 +12,27 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_DUE_DAT
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE_IS_SKIP;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CAV_CODE;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CAV_DESCRIPTION;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHAMBERS_ASSIGNMENT;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHAMBERS_ASSIGN_DATE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHA_CAV_CODE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHC_DATE_END;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHD_DATE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHM_ASSIGN_TO_CASE;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.LATEST_CREATED_CASE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_MEMBERS_FIRST_NAME;
-import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages.clickOnPanel;
-import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages.getActionName;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.Actions.ACTIONS;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.changeDateFormat;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElementAndGetText;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElements;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getParameter;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.replace;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.splitBy;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectAction;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.changeDateFormat;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.clickOnNumberInRange;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.clickOnRandomValue;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.getParameter;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.splitBy;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 
@@ -42,24 +40,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
 
-public class iOS_CreateStaffAssignmentsPage extends AppiumPageFactory {
+public class iOS_chmAssignDPFPage extends AppiumPageFactory {
 
 	static String yesBTN = "Yes";
 	static String okBTN = "OK";
 	static String backBTN = "Back";
 
 	public static void getElementNextToDropDown(String element, String dropDowN) {
-		click(getDropDown(element, dropDowN));
-
+		tap(Locator.XPATH, getDropDown(element, dropDowN));
 	}
 
 	public static String getDropDown(String listOfStaff, String dropDowName) {
-		return locateElement(
+		return containsElement(
 				listOfStaff + "')]/preceding-sibling:: XCUIElementTypeStaticText[contains(@name, '" + dropDowName + "");
 	}
 
@@ -89,10 +89,9 @@ public class iOS_CreateStaffAssignmentsPage extends AppiumPageFactory {
 		default:
 			break;
 		}
-
 		getStaffMembers(dbType, STAFF_MEMBERS_FIRST_NAME, peID, screenParam, 0);
-		return screenParam;
-
+		Page.performPageLoad(driver);
+		return getStaffMember();
 	}
 
 	/** get a list of staff based on the screen parameter in the DPF */
@@ -101,59 +100,83 @@ public class iOS_CreateStaffAssignmentsPage extends AppiumPageFactory {
 		List<String> dbStafMembers = executeQuery(dbtype, getText(getID(staffMember, peID), screenTypeParam));
 		sort(dbStafMembers);
 		try {
-
 			List<String> uiStaffMembers = new ArrayList<>();
-			List<MobileElement> allStaffMembers = findElements(By
+			List<MobileElement> allStaffMembers = driver.findElements(By
 					.xpath("//XCUIElementTypeTable[@name='OptionList']/XCUIElementTypeCell/XCUIElementTypeStaticText"));
 			for (MobileElement staffMembers : allStaffMembers) {
 				uiStaffMembers.add(staffMembers.getText().split(" ")[index]);
 				sort(uiStaffMembers);
 			}
 			assertEquals("********STAFF MEMBERS VALIDATION ERROR!!!********", dbStafMembers, uiStaffMembers);
-			selectAssignment(allStaffMembers, 1);
+			clickOnRandomValue(allStaffMembers);
 
 		} catch (AssertionError e) {
 			e.getMessage();
 		}
 	}
 
-	public static void selectAssignment(List<MobileElement> list, int index) {
-		if (list.size() > 1) {
-
-			list.get(list.size() - index).click();
-		} else {
-			list.get(0).click();
-		}
-	}
-
-	/** verify assignment types based on assignment types parameter */
-	public static void getAssignmentType(DBType dbType, String elId, int index) {
+	/**
+	 * Verify that when you tap the Please Select button next to the Assignment
+	 * label, a pop-up displays with valid assignment types
+	 */
+	public void getAssignmentType(DBType dbType, String elId, String cha_ju_pe_id, String cmr_cs_caseid,
+			String cmr_cyv_code, String pr_first_name, String pr_last_name) {
 
 		List<String> uiAssignmenType = new ArrayList<>();
 		try {
-			List<MobileElement> allAssignmenTypes = findElements(By
+			List<MobileElement> allAssignmenTypes = driver.findElements(By
 					.xpath("//XCUIElementTypeTable[@name='OptionList']/XCUIElementTypeCell/XCUIElementTypeStaticText"));
 			for (MobileElement type : allAssignmenTypes) {
 				uiAssignmenType.add(type.getText().trim());
 				sort(uiAssignmenType);
 			}
-
 			String assignmentType = getParameter(getAllColumns(dbType, getID(MBR_NOTE, elId)), 1);
 			if (assignmentType.equals("SKIP")) {
-				List<String> dbAssignmentTypeSKIP = executeQuery(dbType, ASSIGNMENT_TYPE_IS_SKIP);
-				sort(dbAssignmentTypeSKIP);
-				assertEquals("*********ASSIGNMENT TYPE VALIDATION ERROR!!!*********", dbAssignmentTypeSKIP,
-						uiAssignmenType);
+				/** If the assignment types parameter is set to SKIP, use this query */
+				getValidAssignmentTypes(dbType, ASSIGNMENT_TYPE_IS_SKIP, uiAssignmenType, cha_ju_pe_id, cmr_cs_caseid,
+						cmr_cyv_code, pr_first_name, pr_last_name);
 			} else {
-				List<String> dbAssignmentTypeColonDelimitedList = executeQuery(dbType, getText(
-						ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST, "'" + assignmentType.replaceAll(":", "','") + "'"));
-				sort(dbAssignmentTypeColonDelimitedList);
-				assertEquals("*********ASSIGNMENT TYPE VALIDATION ERROR!!!*********",
-						dbAssignmentTypeColonDelimitedList, uiAssignmenType);
+				/**
+				 * If the assignment types parameter contains a colon delimited list, use this
+				 * query
+				 */
+				getValidAssignmentTypes(dbType,
+						getText(ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST,
+								"'" + assignmentType.replaceAll(":", "','") + "'"),
+						uiAssignmenType, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code, pr_first_name, pr_last_name);
 			}
-			selectAssignment(allAssignmenTypes, index);
+			clickOnNumberInRange(allAssignmenTypes);
 		} catch (Exception e) {
 			e.getMessage();
+		}
+	}
+
+	/** verify assignment types based on assignment types parameter */
+	public static void getValidAssignmentTypes(DBType dbType, String query, List<String> uiAssignmenType,
+			String cha_ju_pe_id, String cmr_cs_caseid, String cmr_cyv_code, String pr_first_name, String pr_last_name) {
+
+		List<String> dbAssignmentType = executeQuery(dbType, query);
+		sort(dbAssignmentType);
+		try {
+			/**
+			 * this line checks if a staff member exists with that assignment type, if yes
+			 * that assignment type won't be displayed after you tap the Please Select
+			 * button next to the Assignment
+			 */
+			List<String> cavDescription = executeQuery(dbType,
+					replace(replace(getID(CAV_DESCRIPTION, cha_ju_pe_id), "CMR_CS_CASEID", cmr_cs_caseid),
+							"CMR_CYV_CODE", cmr_cyv_code, "PR_FIRST_NAME", pr_first_name, "PR_LAST_NAME",
+							pr_last_name));
+
+			for (int i = 0; i < cavDescription.size(); i++) {
+				if (cavDescription.size() > 0 && dbAssignmentType.contains(cavDescription.get(i))) {
+					dbAssignmentType.remove(cavDescription.get(i));
+				}
+			}
+		} catch (NullPointerException e) {
+			e.getMessage();
+		} finally {
+			assertEquals("*********ASSIGNMENT TYPE VALIDATION ERROR!!!*********", dbAssignmentType, uiAssignmenType);
 		}
 	}
 
@@ -179,17 +202,17 @@ public class iOS_CreateStaffAssignmentsPage extends AppiumPageFactory {
 	}
 
 	public static String getCreatedAssignmentNameAndAssignmentType(String staffMember, String assignmnetType) {
-		return findElementAndGetText(By.xpath("//*[contains(@name, '" + staffMember + ", " + assignmnetType + "')]"));
+		return getText(Locator.XPATH, "//*[contains(@name, '" + staffMember + ", " + assignmnetType + "')]");
 
 	}
 
 	public String getCreatedAssignmentType(String staffMember, String assignmnetType) {
-		return findElementAndGetText(By.xpath("//*[contains(@name, '" + staffMember + ", " + assignmnetType
-				+ "')]/following-sibling:: XCUIElementTypeStaticText[1]"));
+		return getText(Locator.XPATH, "//*[contains(@name, '" + staffMember + ", " + assignmnetType
+				+ "')]/following-sibling:: XCUIElementTypeStaticText[1]");
 
 	}
 
-	public String getStaffMember() {
+	public static String getStaffMember() {
 		return getSelectedAssignment("Staff Member");
 	}
 
@@ -214,30 +237,36 @@ public class iOS_CreateStaffAssignmentsPage extends AppiumPageFactory {
 	}
 
 	public void clickOn(String submit, String yes, String ok) {
-		clickOnElement(submit);
-		clickOnElement(yes);
-		clickOnElement(ok);
+
+		contains(submit).click();
+		contains(yes).click();
+		contains(ok).click();
+
 	}
 
 	public void getExistingAssignment(String apply, String submit, DBType dbType, String peId, String elID) {
+
+		String staffMember = getStaffMember();
+		String staffMembersFName = getStaffMembersFullName(0);
+		String staffMembersLName = getStaffMembersFullName(1);
+		String assignment = getAssignment();
+
+		contains(apply).click();
+
+		String createdAssignmentNamechmAssignPage = getCreatedAssignmentNameAndAssignmentType(staffMember, assignment);
+		String createdAssignmentTypechmAssignPage = getCreatedAssignmentType(staffMember, assignment);
+
 		try {
-			String staffMember = getStaffMember();
-			String satffMembersFName = getStaffMembersFullName(0);
-			String satffMembersLName = getStaffMembersFullName(1);
-			String assignment = getAssignment();
-
-			clickOnElement(apply);
-
-			String createdAssignmentNamechmAssignPage = getCreatedAssignmentNameAndAssignmentType(staffMember,
-					assignment);
-			String createdAssignmentTypechmAssignPage = getCreatedAssignmentType(staffMember, assignment);
-
 			clickOn(submit, yesBTN, okBTN);
+		} catch (WebDriverException e) {
+			e.getMessage();
+		} finally {
+
 			String peID = getAllColumns(dbType, getID("SELECT first 1 pe_id\n"
 					+ "FROM group inner join member on gp_id = mb_gp_id_parent \n"
 					+ "join personrole on pe_pr_prid = mb_ur_pr_prid \n" + "join person on pe_pr_prid = pr_prid \n"
-					+ "join user on ur_pr_prid = pr_prid \n" + "where  pr_first_name='" + satffMembersFName
-					+ "' and pr_last_name='" + satffMembersLName
+					+ "join user on ur_pr_prid = pr_prid \n" + "where  pr_first_name='" + staffMembersFName
+					+ "' and pr_last_name='" + staffMembersLName
 					+ "' and   gp_id in (select gp_id from group inner join member on gp_id = mb_gp_id_parent join person on pr_prid = mb_ur_pr_prid \n"
 					+ "join personrole on pe_pr_prid = pr_prid where pe_id = '?' and gp_name like '%Chambers%') and pe_date_end is null and pr_prid <> \n"
 					+ "(select pr_prid from personrole join person on pe_pr_prid = pr_prid where pe_id = '?' and ur_date_disabled is null ) order by pe_date_created desc",
@@ -263,15 +292,12 @@ public class iOS_CreateStaffAssignmentsPage extends AppiumPageFactory {
 					elID);
 
 			verifyExistingStaffAssignment(dbType, peId, "CMR_CS_CASEID", elID);
-
-		} catch (Exception e) {
-			e.getMessage();
 		}
 
 	}
 
 	public static String getSelectedText(String xpath) {
-		return findElementAndGetText(By.xpath("//*[contains(@name, 'Staff Member')]" + xpath));
+		return getText(Locator.XPATH, "//*[contains(@name, 'Staff Member')]" + xpath);
 	}
 
 	public MobileElement getExistingAssignment(String assineeName, String AssignmentTypeAndDate) {
@@ -286,7 +312,6 @@ public class iOS_CreateStaffAssignmentsPage extends AppiumPageFactory {
 	}
 
 	/** verify the new assignment is displayed on the chmassign dpf screen */
-
 	public static void verifyExistingStaffAssignment(DBType dbType, String peID, String textToReplaceWith,
 			String elId) {
 
@@ -301,7 +326,6 @@ public class iOS_CreateStaffAssignmentsPage extends AppiumPageFactory {
 				uiStaffMembersLName);
 
 		String uiAssignedDate = getAssignedDate();
-
 		String uiAssignmentType = getAssignment();
 		String dbAssignmentType = getCreatedAssignment(dbType, ASSIGNEES_CAV_DESCRIPTION, peID, textToReplaceWith);
 		assertEquals("******PLEASE MAKE SURE ASSIGNMENT TYPE IS CORRECT*******", dbAssignmentType, uiAssignmentType);
@@ -317,7 +341,7 @@ public class iOS_CreateStaffAssignmentsPage extends AppiumPageFactory {
 
 		String cha_id = getCreatedAssignment(dbType, ASSIGNEES_CHA_ID, peID, "CMR_CS_CASEID");
 
-		click(locateElement(uiAssignmentType));
+		contains(uiAssignmentType).click();
 		removeExistingAssignmentType(dbType, elId, 1, uiAssignmentType);
 
 		getElementNextToDropDown("Assigned", uiAssignedDate);
@@ -329,18 +353,17 @@ public class iOS_CreateStaffAssignmentsPage extends AppiumPageFactory {
 		getElementNextToDropDown("Assignment Completed", "Select Date");
 		selectADate(1);
 
-		clickOnElement("Apply");
-
-		click(locateElement(uiStaffMembersFName));
+		contains("Apply").click();
+		contains(uiStaffMembersFName).click();
 
 		String assignmenType = getExistingAssignmentDateType("Assignment", 1);
 		String assignmentDueDate = getExistingAssignmentDateType("Assignment Due", 1);
 		String assignmentCompletedDate = getExistingAssignmentDateType("Assignment Completed", 1);
 
-		clickOnElement("Apply");
-		clickOnElement("Submit");
-		clickOnElement(yesBTN);
-		clickOnElement(okBTN);
+		contains("Apply").click();
+		contains("Submit").click();
+		contains(yesBTN).click();
+		contains(okBTN).click();
 
 		String uiAssignmenType = getAllColumns(dbType, getText(CAV_CODE, assignmenType));
 		String dbAssignmenType = getAllColumns(dbType, getID(CHA_CAV_CODE, cha_id));
@@ -354,13 +377,12 @@ public class iOS_CreateStaffAssignmentsPage extends AppiumPageFactory {
 				"MM/d/yyyy");
 		assertEquals("*****ASSIGNMENT DUE DATE ERROR******", dbAssignmentDue, assignmentDueDate);
 
-		getPanel(ACTIONS);
 	}
 
 	public static void removeExistingAssignmentType(DBType dbType, String elId, int index, String text) {
 		List<String> uiAssignmenType = new ArrayList<>();
 
-		List<MobileElement> allAssignmenTypes = findElements(
+		List<MobileElement> allAssignmenTypes = driver.findElements(
 				By.xpath("//XCUIElementTypeTable[@name='OptionList']/XCUIElementTypeCell/XCUIElementTypeStaticText"));
 		for (MobileElement type : allAssignmenTypes) {
 			uiAssignmenType.add(type.getText().trim());
@@ -377,7 +399,8 @@ public class iOS_CreateStaffAssignmentsPage extends AppiumPageFactory {
 						ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST, "'" + assignmentType.replaceAll(":", "','") + "'"));
 				removeText(dbAssignmentTypeColonDelimitedList, text, uiAssignmenType);
 			}
-			selectAssignment(allAssignmenTypes, index);
+
+			clickOnRandomValue(allAssignmenTypes);
 		} catch (Exception e) {
 			e.getMessage();
 
@@ -389,16 +412,17 @@ public class iOS_CreateStaffAssignmentsPage extends AppiumPageFactory {
 		String CMECF_TABLES = getAllColumns(dbType, actual);
 		assertEquals("********PLEASE VERIFY THAT RECORDS IN CMECF ARE CREATED CORRECTLY!!!********", expected,
 				CMECF_TABLES);
+
 	}
 
 	public static String getCreatedAssignment(DBType dbType, String query, String peId, String textToReplaceWith) {
-		String latestCase = getAllColumns(dbType, LATEST_CREATED_CASE);
-		return getAllColumns(dbType, replace(getID(query, peId), textToReplaceWith, latestCase));
+		// String latestCase = getAllColumns(dbType, LATEST_CREATED_CASE);
+		return getAllColumns(dbType, replace(getID(query, peId), textToReplaceWith, "82226"));
 
 	}
 
 	public void clickOnExistingAssignment(String AssignName, String AssignType, DBType dbType, String elID) {
-		clickOnPanel(ACTIONS, getActionName(dbType, elID));
+		selectAction(dbType, "Actions", elID);
 		getExistingAssignment(AssignName, AssignType).click();
 	}
 

@@ -1,13 +1,12 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findWebElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findWebElements;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.splitBy;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.splitBy;
 import static org.junit.Assert.assertEquals;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -55,12 +54,19 @@ public class CopyDeleteCase extends Base {
 		return new SimpleDateFormat("yy-Hm").format(new Date());
 	}
 
-	public static void findElementAndsendKeys(By element, String value) {
-		findWebElement(element).sendKeys(value);
+	public static WebElement findWebElement(By element) {
+		return webDriver.findElement(element);
+
 	}
 
+	public static List<WebElement> findWebElements(By elements) {
+		return webDriver.findElements(elements);
+	}
 	public static void findElementsAndsendKeys(By element, int index, String value) {
 		findWebElements(element).get(index).sendKeys(value);
+	}
+	public static void findElementAndsendKeys(By element, String value) {
+		findWebElement(element).sendKeys(value);
 	}
 
 	public static void findElementAndclick(By element) {

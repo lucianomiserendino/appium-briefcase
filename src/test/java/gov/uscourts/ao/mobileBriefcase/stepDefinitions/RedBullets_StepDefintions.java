@@ -1,80 +1,33 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCase.DELETE_CASE_INFO_REPORT_PAGE;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCase.closeWebDriver;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCase.createARandomCase;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.sleep;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findWebElement;
-import static org.junit.Assert.assertTrue;
-
-import org.openqa.selenium.By;
-
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCase;
-import gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_RedBulletsPage;
 
 public class RedBullets_StepDefintions {
 	iOS_RedBulletsPage page;
-	iOS_CommonPages page1;
-	CopyDeleteCase page2;
-	String caseN = createARandomCase();
 
-	@Given("^User creates a  case$")
-	public void user_creates_a_case() {
-		page2 = new CopyDeleteCase();
-		try {
-			page2.copyCaseAndUpdateSingleTableEditor(caseN);
+	int unviewedReferrals = 0;
+	String viewedReferrals = "";
 
-		} catch (Exception e) {
-			e.getMessage();
-		} finally {
-			sleep(100000);
-			closeWebDriver();
-		}
-	}
-
-	@When("^User selects a Judge, category: \"([^\"]*)\" and created case$")
-	public void user_selects_a_Judge_category_and_created_case(String category) {
+	@Then("^User selects a category that has unviewed referrals and verifies that the red bullet icon displays next to any unviewed referrals$")
+	public void user_selects_a_category_that_has_unviewed_referrals_and_verifies_that_the_red_bullet_icon_displays_next_to_any_unviewed_referrals() {
 		page = new iOS_RedBulletsPage();
-		page.getReferral(category, "IS_DISPLAYED", caseN);
+		unviewedReferrals += page.getUnviewedReferral();
+		
+
 	}
 
-	@Then("^User selects \"([^\"]*)\"  and clicks on \"([^\"]*)\"$")
-	public void user_selects_and_clicks_on(String category, String document) {
-		page.downloadTheDocument(category, document);
+	@Then("^User taps on a referral and then gets back to the referral list page\\.  Verifies the red bullet is removed indicating the referral has been viewed$")
+	public void user_taps_on_a_referral_and_then_gets_back_to_the_referral_list_page_Verifies_the_red_bullet_is_removed_indicating_the_referral_has_been_viewed() {
+		viewedReferrals += page.getViewedReferral(unviewedReferrals);
+
 	}
 
-	@Then("^User closes Briefcase app, opens back and verifies the red bullet does not display for viewed referrals/documnets \"([^\"]*)\"\\. Then User logs out\\.$")
-	public void user_closes_Briefcase_app_opens_back_and_verifies_the_red_bullet_does_not_display_for_viewed_referrals_documnets_Then_User_logs_out(
-			String document) {
-		page1 = new iOS_CommonPages();
-		page.getReferral("Test Automation", "IS_NOT_DISPLAYED", caseN);
-		page.assertRedBulletIsNotDisplayed(document);
-		page1.logOut();
-	}
+	@Then("^User closes the app and reopen and go back to the category that contains the referral that was just viewed$")
+	public void user_closes_the_app_and_reopen_and_go_back_to_the_category_that_contains_the_referral_that_was_just_viewed() {
+		page = new iOS_RedBulletsPage();
+		page.verifyRedBulletIsRemoved(unviewedReferrals,viewedReferrals);
 
-	@When("^User selects a Judge, category: \"([^\"]*)\", created case and verifies Red Bullet for previously viewed Referral and Documnet \"([^\"]*)\" doesn't display$")
-	public void user_selects_a_Judge_category_created_case_and_verifies_Red_Bullet_for_previously_viewed_Referral_and_Documnet_doesn_t_display(
-			String category, String document) {
-		page.getReferral(category, "IS_NOT_DISPLAYED", caseN);
-		page.assertRedBulletIsNotDisplayed(document);
-
-		try {
-			page2.deleteCase(caseN);
-			sleep(100000);
-			assertTrue(findWebElement(By.xpath(DELETE_CASE_INFO_REPORT_PAGE)).isDisplayed());
-
-		} catch (Exception e) {
-			e.getMessage();
-
-		} finally {
-
-			closeWebDriver();
-
-		}
 	}
 
 }

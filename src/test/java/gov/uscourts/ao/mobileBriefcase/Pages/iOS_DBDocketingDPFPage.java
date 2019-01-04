@@ -11,13 +11,13 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DU_PRID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.LOGED_IN_JUDGES_LAST_NAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.LOGED_IN_JUDGES_PR_PRID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PANEL_JUDGES_PR_PRID;
-import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages.getActionsPanel;
-import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages.getCMRID;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.clickOn;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getStreamOfRandomInts;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getText;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.replace;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.sendKeys;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCMRID;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectAction;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.getStreamOfRandomInts;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -26,13 +26,12 @@ import java.util.concurrent.TimeUnit;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.common.Constants;
 import gov.uscourts.ao.mobileBriefcase.models.ElListText;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class iOS_DBDocketingDPFPage extends AppiumPageFactory implements Constants {
+public class iOS_DBDocketingDPFPage extends AppiumPageFactory {
 
 	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTextView[1]")
@@ -52,26 +51,26 @@ public class iOS_DBDocketingDPFPage extends AppiumPageFactory implements Constan
 	@iOSFindBy(id = "Yes")
 	public static MobileElement YESbtn;
 
+	@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSFindBy(id = "OK")
 	public static MobileElement OKbtn;
 
 	ElListText list;
 
-	public void selectAction(List<ElListText> table, int index, String dbType, String caseNum, String peID) {
+	public void selectActioName(List<ElListText> table, int index, String dbType, String caseNum, String peID) {
 
 		list = table.get(index);
 		try {
 
-			getActionsPanel(valueOf(dbType), list.getElListText());
+			selectAction(valueOf(dbType), "Actions", list.getElListText());
 			sendKeys(commentField, "Test-" + getStreamOfRandomInts());
 			sendKeys(descriptionField, "Test-" + getStreamOfRandomInts() + "-");
 			String description = getText(descriptionField);
-			clickOn(submit);
-			clickOn(YESbtn);
-			clickOn(OKbtn);
+			tap(submit);
+			tap(YESbtn);
+			tap(OKbtn);
 			getDataTable(table, index, valueOf(dbType), caseNum, peID);
 			assertEquals(description, getAllColumns(valueOf(dbType), DM_DESCRIPTION));
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -82,7 +81,7 @@ public class iOS_DBDocketingDPFPage extends AppiumPageFactory implements Constan
 		list = table.get(index);
 		// assertEquals(getAllColumns(dbType, DM_ACC_CRT), list.getDm_acc_crt());
 		// assertEquals(getAllColumns(dbType, DM_ACC_CTLINK), list.getDm_acc_ctlink());
-		// assertEquals(getAllColumns(dbType, DM_ACC_SPEC), list.getDm_acc_spec());
+		 //assertEquals(getAllColumns(dbType, DM_ACC_SPEC), list.getDm_acc_spec());
 		getDocUserRecord(dbType, table, index, caseNum, peID);
 	}
 
@@ -100,6 +99,7 @@ public class iOS_DBDocketingDPFPage extends AppiumPageFactory implements Constan
 
 			/** No doc_group or doc_user records will be created */
 		} else if (list.getElListText().equals("note - court users linked to case")) {
+
 			assertTrue(isNull(docUserTable) && isNull(docGroupTable));
 
 			/**
@@ -126,7 +126,7 @@ public class iOS_DBDocketingDPFPage extends AppiumPageFactory implements Constan
 		}
 	}
 
-	public boolean isNull(String table) {
+	public static boolean isNull(String table) {
 		return table.isEmpty();
 
 	}

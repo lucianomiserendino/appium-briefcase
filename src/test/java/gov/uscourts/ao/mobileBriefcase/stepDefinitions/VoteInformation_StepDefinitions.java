@@ -6,13 +6,13 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
-import gov.uscourts.ao.mobileBriefcase.Pages.iOS_CommonPages;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_VoteInformationPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_VoteInformationPage.FILERs_INFO;
 
 public class VoteInformation_StepDefinitions {
 	iOS_VoteInformationPage page;
-	iOS_CommonPages page1;
+	CommonPages page1;
 
 	@Given("^User observes \\( \"([^\"]*)\" \\) the \"([^\"]*)\" panel displays\\.   This should only display if the referral requires voting$")
 	public void user_observes_the_panel_displays_This_should_only_display_if_the_referral_requires_voting(String dbType,
@@ -41,20 +41,14 @@ public class VoteInformation_StepDefinitions {
 	}
 
 	@Then("^User checks each judge's vote  and the date  displays under their initials$")
-	public void user_checks_each_judge_s_vote_and_the_date_displays_under_their_initials(){
+	public void user_checks_each_judge_s_vote_and_the_date_displays_under_their_initials() {
 
 	}
-	
-	
-	
-	
-	
-	
 
 	@Given("^user selects the \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_selects_the_and(String category, String caseNum) {
-		page1 = new iOS_CommonPages();
-		page1.selectCategoryAndCase(category, caseNum);
+		page1 = new CommonPages();
+		page1.getCategoryWithCase(category, caseNum);
 	}
 
 	@When("^user  selects action \"([^\"]*)\" , user verifies the name of the action , \"([^\"]*)\",a toggle under the Enter Vote banner and the label \"([^\"]*)\"  displays$")

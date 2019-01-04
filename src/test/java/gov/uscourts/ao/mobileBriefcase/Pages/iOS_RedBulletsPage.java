@@ -1,136 +1,87 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.select;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.clickOnElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.getText;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.locateElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.scroll;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.selectCase;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ReferralsList;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectReferral;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrolldown;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 
+import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.common.BriefcaseCoordinates.Coordinates;
+import gov.uscourts.ao.mobileBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.common.Page;
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.pagefactory.WithTimeout;
+import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class iOS_RedBulletsPage extends AppiumPageFactory {
+	@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
+	@iOSFindBy(accessibility = "Back")
+	public MobileElement back;
 
-	String back = "Back";
+	@WithTimeout(time = 200, unit = TimeUnit.SECONDS)
+	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/XCUIElementTypeCell/XCUIElementTypeStaticText[contains(@name, 'Viewed')]")
+	public List<MobileElement> unviewedReferrals;
 
-	String close = "Close";
+	static String unviewedReferral = "(//XCUIElementTypeTable[@name='ReferralsList']/XCUIElementTypeCell/XCUIElementTypeStaticText[contains(@name, 'Viewed')])[1]/preceding-sibling::XCUIElementTypeStaticText[contains(@name, '-')]";
 
-	String PDFPageView = "PDF View";
-
-	public static void verifyRedBullet(RedBullet dispayed, String value) {
-		switch (dispayed) {
-		case IS_DISPLAYED:
-			verifyRedBulletIsDisplayed(value);
-			break;
-		case IS_NOT_DISPLAYED:
-			verifyRedBulletIsNotDisplayed(value);
-			break;
-		default:
-			break;
-		}
-	}
-
-	public static void verifyRedBulletIsDisplayed(String value) {
-		performPageLoad();
-		assertTrue("*******RED BULLET IS NOT DISPLAYED FOR UNVIEWED REFERRAL********", getRedBullet(value));
-	}
-
-	public static void verifyRedBulletIsNotDisplayed(String value) {
-		performPageLoad();
-		assertFalse("*******RED BULLET IS DISPLAYED FOR ALEARDY VIEWED REFERRAL*******", getRedBullet(value));
-	}
-
-	public static boolean getRedBullet(String value) {
-		return elementIsDisplayed(value);
-	}
-
-	public static String getDocument(String autoSync) {
-		return autoSync + "')]/preceding-sibling::XCUIElementTypeStaticText[contains(@name, 'Viewed";
+	public int getUnviewedReferral() {
+		return unviewedReferrals.size();
 
 	}
 
-	public static String getRefferal(String caseNum) {
-		String sibling = "";
-		sibling += "following";
-		String viewed = caseNum + "')]/" + sibling + "-sibling::XCUIElementTypeStaticText[contains(@name, 'Viewed";
-		if (elementIsDisplayed(viewed)) {
-			return viewed;
-		} else {
-			return viewed.replace(sibling, "preceding");
-		}
+	public String getViewedReferral(int unviewedRef) {
+		String redBullet = "";
+		if (unviewedRef > 0)
+			redBullet += findElementAndScrollDown(Locator.XPATH, unviewedReferral, ReferralsList);
+		tap(back);
+		assertEquals("VERIFY THE RED BULLET IS REMOVED", unviewedRef - 1, unviewedReferrals.size());
+		return redBullet;
+	}
+
+	public static int getRedBullet(String xpath) {
+		List<MobileElement> redBullet = driver.findElements(By.xpath(xpath));
+		return redBullet.size();
 
 	}
 
-	public void getReferral(String category, String verify, String caseNum) {
-
-		clickOnElement(category);
-		performPageLoad();
-		verifyRedBullet(RedBullet.valueOf(verify), getRefferal(caseNum));
-		selectCase(locateElement(caseNum));
-	}
-
-	public void downloadTheDocument(String category, String autosync) {
-		assertRedBullet(category, autosync, RedBullet.IS_DISPLAYED);
-		click(locateElement(autosync));
-		performPageLoad();
-		select(Coordinates.DISMISS);
-		performPageLoad();
-		assertTrue("********PDF IS NOT DOWNLOADED*********", findElement(By.id(PDFPageView)).isDisplayed());
-		select(Coordinates.DISMISS);
-		findElement(By.id(close)).click();
-		assertRedBulletIsNotDisplayed(autosync);
+	public void verifyRedBulletIsRemoved(int unviewedRef, String element) {
 		driver.closeApp();
-		getInstance(Drivers.IOS);
-
+		Base.getInstance(Drivers.IOS);
+		selectReferral("Motions/Petitions", ReferralsList);
+		Page.performPageLoad(driver);
+		 assertEquals("VERIFIES THE RED BULLET IS REMOVED", unviewedRef - 1,
+		 unviewedReferrals.size());
 	}
 
-	public void assertRedBulletIsNotDisplayed(String autosync) {
-		assertRedBullet("Briefs", autosync, RedBullet.IS_NOT_DISPLAYED);
-		clickOnElement(back);
-
-	}
-
-	public static String getCaseNum() {
-		return getText("Case #").split("#")[1].trim();
-	}
-
-	public static void assertRedBullet(String panel, String penlRow, RedBullet displayed) {
-
-		/** if auto is Displayed */
-		if (elementIsDisplayed(penlRow) == true) {
-			verifyRedBullet(displayed, getDocument(penlRow));
-
-			/** if Brief is Displayed but auto is not Displayed */
-		} else if (elementIsDisplayed(panel) == true && elementIsDisplayed(penlRow) == false) {
-			click(locateElement(panel));
-			verifyRedBullet(displayed, getDocument(penlRow));
-
-		} else {
-			scroll(1, "down");
-			if (elementIsDisplayed(penlRow) == true) {
-				verifyRedBullet(displayed, getDocument(penlRow));
-
-				/** if Brief is Displayed but auto is not Displayed */
-			} else if (elementIsDisplayed(panel) == true && elementIsDisplayed(penlRow) == false) {
-				scroll(1, "down");
-				click(locateElement(panel));
-				verifyRedBullet(displayed, getDocument(penlRow));
-
+	public static String findElementAndScrollDown(Locator locator, String element, MobileElement el) {
+		String text = "";
+		Boolean elementNotFound = true;
+		while (elementNotFound) {
+			try {
+				MobileElement elem = findElementBy(locator, element);
+				if (elem.isDisplayed()) {
+					text += elem.getText().split(" ")[0];
+		
+					elem.click();
+					break;
+				} else {
+					scrolldown(el);
+				}
+			} catch (NoSuchElementException e) {
+				scrolldown(el);
 			}
 		}
+		return text;
+
 	}
 
-	public enum RedBullet {
-		IS_DISPLAYED, IS_NOT_DISPLAYED
-	}
 
 }

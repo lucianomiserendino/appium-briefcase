@@ -1,16 +1,17 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCase.findWebElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.elementIsDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.sleep;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfWebElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.findWebElement;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSFindBy;
@@ -40,8 +41,9 @@ public class iOS_AutoSyncPage extends AppiumPageFactory {
 	/** Get number of new documents from the counter on the sync button */
 	public String getCounter() {
 		String availableDocs = "";
-		if (elementIsDisplayed("Available for download")) {
-			availableDocs += getText("Available for download").split(",")[1].trim().split(" ")[0];
+		if (isDisplayed(Locator.XPATH, containsElement("Available for download")) == true) {
+			availableDocs += getText(Locator.XPATH,
+					containsElement("Available for download").split(",")[1].trim().split(" ")[0]);
 		}
 		return availableDocs;
 	}
@@ -99,16 +101,16 @@ public class iOS_AutoSyncPage extends AppiumPageFactory {
 	}
 
 	public static void click(By by) {
-		findWebElement(waitForPresenceOfWebElement(by)).click();
+		findWebElement(by).click();
 		sleep(1200);
 	}
 
 	public static void sendKeys(By by, String text) {
-		findWebElement(waitForPresenceOfWebElement(by)).sendKeys(text);
+		findWebElement(by).sendKeys(text);
 	}
 
 	public static WebElement containsName(String name) {
-		return findWebElement(waitForPresenceOfWebElement(By.xpath("//*[contains(@name, '" + name + "')]")));
+		return findWebElement(By.xpath(containsElement("//*[contains(@name, '" + name + "')]")));
 	}
 
 }

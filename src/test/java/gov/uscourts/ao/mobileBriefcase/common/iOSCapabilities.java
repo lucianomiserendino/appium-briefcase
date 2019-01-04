@@ -8,7 +8,9 @@ public interface iOSCapabilities {
 
 	public static final String PLATFORM_VERSION = "platformVersion";
 
-	public static final String UDID = "udid";
+	public static final String LOCAL_UDID = "localUdid";
+	
+	public static final String REMOTE_UDID = "remoteUdid";
 
 	public static final String DEVICE_NAME = "deviceName";
 
@@ -28,7 +30,7 @@ public interface iOSCapabilities {
 
 	public static final String TAKES_SCREENSHOT = "takes_screehshot";
 
-	public static final String HOST = "host";
+	public static final String LOCAL_HOST = "host";
 
 	public static final String REMOTE_HOST = "remoteHost";
 
@@ -62,8 +64,14 @@ public interface iOSCapabilities {
 
 	public static final String DURATION = "duration";
 
-	public static final String FROM = "from";
+	public static final String FROM_X = "fromX";
 
-	public static final String TO = "to";
+	public static final String FROM_Y = "fromY";
+
+	public static final String TO_X = "toX";
+
+	public static final String TO_Y = "toY";
+	
+	
 
 }

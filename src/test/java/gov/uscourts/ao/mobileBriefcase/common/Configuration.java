@@ -27,5 +27,5 @@ public class Configuration {
 	public static String getProperty(String keyName) {
 		return configFile.getProperty(keyName);
 	}
-
+	
 }

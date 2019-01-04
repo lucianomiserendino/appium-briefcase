@@ -12,7 +12,7 @@ public class UIDocketingDPF_StepDefinitions {
 	@Then("^User verifies the text \"([^\"]*)\" displays in the light blue banner\\.$")
 	public void user_verifies_the_text_displays_in_the_light_blue_banner(String text) {
 		page = new iOS_UIDocketingDPFPage();
-		page.verifyAddNewNoteDisplayed(text);
+		page.verifyElementIsDisplayed(text);
 	}
 
 	@Then("^user verifies an editable \"([^\"]*)\" , \"([^\"]*)\" , \"([^\"]*)\" fields are  displayed\\.  The default description is defined in the Default description parameter of the note DPF \\(\"([^\"]*)\" and \"([^\"]*)\"\\)$")

@@ -22,7 +22,6 @@ public class NoticesOfDocketActivity_StepDefinitions {
 	@Then("^user verifies the note opens in Briefcase by using the same \"([^\"]*)\" and \"([^\"]*)\"  \\(Open a note in Briefcase from the NDA link\\)$")
 	public void user_verifies_the_note_opens_in_Briefcase_by_using_the_same_and_Open_a_note_in_Briefcase_from_the_NDA_link(
 			String caseNum, String dbType) {
-		page = new iOS_NoticesOfDocketActivityPage();
 		page.openANoteInBriefcase(caseNum, dbType);
 	}
 

@@ -15,7 +15,7 @@ public class DBDocketingDPF_StepDefinitions {
 		page = new iOS_DBDocketingDPFPage();
 		int values = 1;
 		for (int i = 0; i < values; i++) {
-			page.selectAction(table, i, dbType, caseNume, peID);
+			page.selectActioName(table, i, dbType, caseNume, peID);
 		}
 
 	}

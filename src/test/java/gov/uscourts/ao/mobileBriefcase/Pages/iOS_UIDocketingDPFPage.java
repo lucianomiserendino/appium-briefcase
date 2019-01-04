@@ -2,23 +2,18 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
-import static gov.uscourts.ao.mobileBriefcase.common.Helper.getPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.click;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.getParameter;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.isDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Utilities.verifyTextIsDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.getParameter;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.common.Helper.Actions;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
@@ -29,74 +24,47 @@ public class iOS_UIDocketingDPFPage extends AppiumPageFactory {
 	@iOSFindBy(xpath = "//XCUIElementTypeTextView[1]")
 	public static MobileElement descriptionField;
 
-	@WithTimeout(time = 5, unit = TimeUnit.SECONDS)
-	@iOSFindBy(id = "Add New Note")
-	public static MobileElement addNewNote;
-
-	@iOSFindBy(id = "Description")
-	public static MobileElement description;
-
-	@iOSFindBy(id = "Comment")
-	public static MobileElement comments;
-
-	@iOSFindBy(id = "Submit")
-	public static MobileElement submit;
-
-	@WithTimeout(time = 30, unit = TimeUnit.SECONDS)
-	@iOSFindBy(id = "//XCUIElementTypeCell[2]/XCUIElementTypeTextView[1]")
-	public static MobileElement noteText;
-
-	@WithTimeout(time = 30, unit = TimeUnit.SECONDS)
-	@iOSFindBy(id = "//XCUIElementTypeTable[@name='DocketingDPFList']/XCUIElementTypeCell[2]/XCUIElementTypeTextView[1]")
-	public static MobileElement defaultDescription;
-
-	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[4]/XCUIElementTypeOther/XCUIElementTypeStaticText")
-	public static MobileElement actionsName;
-
-	public void verifyActionName(DBType dbType, String el_id) {
-		verifyTextIsDisplayed(actionsName, getAllColumns(dbType, getID(ACTION_NAME, el_id)).trim());
-	}
-
-	public void verifyAddNewNoteDisplayed(String text) {
-		verifyTextIsDisplayed(addNewNote, text);
-	}
-
 	public void verifyFieldsAreDisplayed(String descriptionText, String commentText, String submitText, DBType dbType,
 			String el_id) {
 
-		verifyTextIsDisplayed(description, descriptionText);
+		verifyElementIsDisplayed(descriptionText);
 		getDefaulDescription(dbType, el_id);
-		verifyTextIsDisplayed(comments, commentText);
-		verifyTextIsDisplayed(submit, submitText);
-
+		verifyElementIsDisplayed(commentText);
+		verifyElementIsDisplayed(submitText);
 	}
 
+	/**
+	 * Verify an editable description field displays. The default description is
+	 * defined in the Default description parameter of the note DPF. It will always
+	 * be in the 5th position in the note DPF. If the value is 'SKIP', the note
+	 * description should default to 'Transaction Note'
+	 */
 	public void getDefaulDescription(DBType dbType, String el_id) {
 		try {
 			if (getParameter(getAllColumns(dbType, getID(MBR_NOTE, el_id)), 4).equals("SKIP")) {
 				assertTrue(descriptionField.getText().equals("Transaction Note"));
 			} else {
-				assertTrue(getParameter(getAllColumns(dbType, getID(MBR_NOTE, el_id)), 4)
-						.equals(descriptionField.getText()));
+				String dbParam = replaceWithEmptyString(getParameter(getAllColumns(dbType, getID(MBR_NOTE, el_id)), 4),
+						"\\");
+				String uiParam = replaceWithEmptyString(descriptionField.getText(), "'");
+		
+				assertEquals("NOTE DESCRIPTION MISMATCH", dbParam, uiParam);
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void clickOnPanel(Actions panel, String penlRow) {
-		try {
-			if (isDisplayed(By.xpath(penlRow)) == true) {
-				click(penlRow);
-			} else {
-				getPanel(panel);
-				click(penlRow);
-			}
-		} catch (NoSuchElementException e) {
-			e.printStackTrace();
-		}
+	public void verifyElementIsDisplayed(String text) {
+		assertTrue(isDisplayed(Locator.XPATH, containsElement(text)));
 
+	}
+
+	public static String replaceWithEmptyString(String text, String charac) {
+		if (text.contains(charac))
+			;
+		return text.replace(charac, "").trim();
 	}
 
 }
