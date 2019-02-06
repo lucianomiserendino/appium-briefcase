@@ -1,8 +1,5 @@
 package gov.uscourts.ao.mobileBriefcase.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ElListText {
 
 	private String el_id;
@@ -46,10 +43,5 @@ public class ElListText {
 	public String getDm_date_created() {
 		return dm_date_created;
 	}
-
-	
-	
-	
-
 
 }

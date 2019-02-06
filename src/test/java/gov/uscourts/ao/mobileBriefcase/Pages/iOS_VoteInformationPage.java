@@ -14,6 +14,8 @@ import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.changeDateFormat;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
@@ -24,6 +26,7 @@ import java.util.List;
 import org.openqa.selenium.NoSuchElementException;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
@@ -31,10 +34,23 @@ import io.appium.java_client.MobileElement;
 
 public class iOS_VoteInformationPage extends AppiumPageFactory {
 
-	/** Observe the Vote Information Panel displays */
+	/** Verify the Vote Information Panel displays */
 	public void getVoteInformationPanel(DBType dbType, String element) {
-		getPanel(Panel.Vote_Information);
+		tap(Locator.XPATH, containsElement(element));
 
+	}
+
+	/**
+	 * For each referral, observe the filer's name (pr_last_name + , + pr_first_name
+	 * + first initial of pr_middle_name + , + gn_display) party type
+	 * (pt_description) and date filed (de_date_filed) displays in a light blue
+	 * heading. The SQL below returns the filer information for the referral in case
+	 * 15-3314:
+	 */
+	public static List<String> returnTheFillerInformation(DBType dbType, String field, String cmr_cs_caseid,
+			String cmr_ju_pe_id, String cmr_cyv_code) {
+		return executeQuery(dbType, replace(replace(Queries.FILLERs_INFORMATION, "FIELD", field), "CMR_CS_CASEID",
+				cmr_cs_caseid, "CMR_JU_PE_ID", cmr_ju_pe_id, "CMR_CYV_CODE", cmr_cyv_code));
 	}
 
 	/** Observers filer's information */
@@ -63,6 +79,7 @@ public class iOS_VoteInformationPage extends AppiumPageFactory {
 			String voteInfoDBRelief = getAllColumns(dbType, getID(RELIEF, ccr_id));
 
 			assertEquals("RELIEF MISMATCH", voteInfoDBRelief, voteInfoUiRelief);
+
 			break;
 
 		case JUDGE_VOTE_FILLRES_INFORMATION:
@@ -130,8 +147,8 @@ public class iOS_VoteInformationPage extends AppiumPageFactory {
 	}
 
 	public void getJudgeInitials(DBType dbType, String ccr_id) {
-		exist(dbType, getID(JUDGEs_INITIALS, ccr_id),
-				"//*[contains(@name, 'Vote Information')]/following:: XCUIElementTypeStaticText");
+		assertTrue(exist(dbType, getID(JUDGEs_INITIALS, ccr_id),
+				"//*[contains(@name, 'Vote Information')]/following:: XCUIElementTypeStaticText"));
 
 	}
 

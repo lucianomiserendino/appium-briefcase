@@ -29,7 +29,8 @@ public interface iOSCapabilities {
 	public static final String AUTO_ACCEPT_ALERTS = "autoAcceptAlerts";
 
 	public static final String TAKES_SCREENSHOT = "takes_screehshot";
-
+	public static final String NO_RESET = "noReset";
+	
 	public static final String LOCAL_HOST = "host";
 
 	public static final String REMOTE_HOST = "remoteHost";

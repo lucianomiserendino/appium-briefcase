@@ -28,7 +28,7 @@ import io.appium.java_client.pagefactory.iOSFindBy;
 public class iOS_LoginPage extends Base {
 
 	public iOS_LoginPage() {
-		initElements(new AppiumFieldDecorator(getInstance(Drivers.IOS)), this);
+		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
 	}
 
 	static String open = "Open";
@@ -63,12 +63,12 @@ public class iOS_LoginPage extends Base {
 	public static WebElement password;
 
 	@FindBy(name = "SUBMIT2")
-	public WebElement submButton;
+	public static WebElement submButton;
 
 	@FindBy(partialLinkText = "Send Key to Device")
 	public WebElement sendKeyButton;
 
-	@WithTimeout(time = 200, unit = TimeUnit.SECONDS)
+	@WithTimeout(time = 300, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "Appellate DC Development - CMKA")
 	public MobileElement cmka;
 
@@ -186,9 +186,13 @@ public class iOS_LoginPage extends Base {
 
 	public void getServer(String server) {
 		try {
+
+			performPageLoad(driver);
 			getServer(Server.valueOf(server));
+
 		} catch (Exception e) {
 			tap(Locator.NAME, okButton);
+			performPageLoad(driver);
 			getServer(Server.valueOf(server));
 		}
 		performPageLoad(driver);
@@ -252,7 +256,7 @@ public class iOS_LoginPage extends Base {
 
 	}
 
-	public static void searchForACase(String caseNum) {		
+	public static void searchForACase(String caseNum) {
 		tap(searchIcon);
 		sendKeys(searchTextField, caseNum);
 		tap(searchBTN);

@@ -9,7 +9,7 @@ Feature: create/edit/terminate  staff assignments
 Scenario Outline: 
 	This task is to verify that a chambers user is able to create a new staff assignment.And verify a chambers user can edit existing staff assignments
 	Given  User Navigates to  "INTEGRATION" environment 
-	When   User enters Credentials to Login "s haenni" and "Test2020!" 
+	When   User enters Credentials to Login "s haenni" and "Test2021!" 
 	And  User clicks on Send Key to Device 
 	Then  User navigates to MobileBrifcase App 
 	And   user selects a "CMKA" 
@@ -20,8 +20,11 @@ Scenario Outline:
 	When User taps on "New Staff Assignment" it  will display a new page. Verify page is entitled "Create Assignment" 
 	And User verifies a label "Staff Member" and "Please Select" is  displayed next to the  drop-down that contains a list of staff and click on it 
 	Then User verifies when tapping the drop-down a popup displays a list of staff based on the screen parameter in the DPF, "<dbType>" , "<actionElID>" , "<cha_ju_pe_id>" 
+	
 	Then user verifies  a label "Assignment" is  displayed  under the staff drop-down , "Please Select" is the default value and clicks on it 
 	And User verifies that when you tap the Please Select button next to the Assignment label, a pop-up displays with valid assignment types.  , "<dbType>" and "<actionElID>" 
+	
+	
 	
 	Then User verifies that  A date field "Assigned" will be displayed for each value followed by "Select Date".  Verifies when tapping a the date field, that a calendar pop-ups and today's date is selected by default.  Select a date and verify the date field is populated with the date 
 	Then User verifies that  A date field "Assignment Due" is displayed, followed by "Select Date".  Verifies when tapping a the date field, that a calendar pop-ups . Select a date and verify the date field is populated with the date

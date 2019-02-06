@@ -52,5 +52,6 @@ public class ReferralCategories_StepDefinitions {
 		page.getNewReferralsCount();
 	}
 
+	
 
 }

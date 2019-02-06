@@ -26,7 +26,7 @@ public abstract class Base implements iOSCapabilities {
 	public static WebDriver winAppDriver;
 	public static WebElement webElement;
 
-	public static WebDriver getInstance(Drivers drivers) {
+	public static WebDriver getInstance(Driver drivers) {
 
 		try {
 			capabilities = new DesiredCapabilities();
@@ -57,7 +57,6 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(DEVICE_NAME_w);
 				SetCapabilitiy(APP);
 				winAppDriver = new RemoteWebDriver(new URL(getProperty(REMOTE_HOST)), capabilities);
-
 				break;
 
 			case WEBRIVER:
@@ -89,7 +88,6 @@ public abstract class Base implements iOSCapabilities {
 
 			e.printStackTrace();
 		}
-		driver.close();
 
 	}
 
@@ -119,7 +117,7 @@ public abstract class Base implements iOSCapabilities {
 	}
 
 	public static void getUrl(String url) {
-		getInstance(Drivers.WEBRIVER);
+		getInstance(Driver.WEBRIVER);
 		webDriver.get(getProperty(url));
 	}
 
@@ -145,7 +143,7 @@ public abstract class Base implements iOSCapabilities {
 		}
 	}
 
-	public enum Drivers {
+	public enum Driver {
 		IOS, WINDOWS, WEBRIVER
 	}
 

@@ -1,5 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
+import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElementLocated;
+
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -50,7 +52,7 @@ public class Actions extends Base {
 		default:
 			break;
 		}
-		return findElement(by);
+		return waitForPresenceOfElementLocated(by, driver);
 	}
 
 	public static MobileElement findElement(By by) {
@@ -96,6 +98,7 @@ public class Actions extends Base {
 
 	public static String getText(Locator identifier, String element) {
 		return findElementBy(identifier, element).getText().trim();
+
 	}
 
 	public static String split(String text, String splitBy, int index) {
@@ -121,7 +124,7 @@ public class Actions extends Base {
 		try {
 			MobileElement el = findElementBy(locator, element);
 			if (el.isDisplayed())
-				isDisplayed = true;
+			isDisplayed = true;
 		} catch (WebDriverException e) {
 			isDisplayed = false;
 		}

@@ -6,7 +6,7 @@ Feature: Applied Cases link
 Scenario: 
 	Display Applied Cases link  when bookmarking case/referral
 	Given  User Navigates to  "INTEGRATION" environment 
-	When  User enters Credentials to Login "s haenni" and "Test2020!" 
+	When  User enters Credentials to Login "s haenni" and "Test2021!" 
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And  user selects a "CMKA" 

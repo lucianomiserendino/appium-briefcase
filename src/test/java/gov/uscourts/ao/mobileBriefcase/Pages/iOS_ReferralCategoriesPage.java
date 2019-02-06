@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
@@ -23,6 +22,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForVisibilityOfElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.expandPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.getNumOfDisplayedCases;
+import static java.lang.Integer.valueOf;
 import static java.util.Arrays.asList;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
@@ -32,7 +32,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import static java.lang.Integer.*;
+
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
@@ -98,6 +98,7 @@ public class iOS_ReferralCategoriesPage extends AppiumPageFactory {
 						findElementBy(Locator.XPATH, "//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '"
 								+ dbReferralCategories.get(i) + "')]"),
 						driver);
+				System.out.println(referrals.getText()+"********************************");
 				assertTrue(
 						"*****" + dbReferralCategories.get(i).toUpperCase() + " IS NOT DISPLAYED ON THE DASHBOARD*****",
 						referrals.isDisplayed());
@@ -226,7 +227,8 @@ public class iOS_ReferralCategoriesPage extends AppiumPageFactory {
 
 			if (!(newReferralCount == 0)) {
 
-				int newReferralCountInNavigation = valueOf(getNumberOfNewItems(referralCategories.get(i).getText(), 1, "preceding").getText());
+				int newReferralCountInNavigation = valueOf(
+						getNumberOfNewItems(referralCategories.get(i).getText(), 1, "preceding").getText());
 				assertEquals(
 						"*********" + referralCategories.get(i).getText().toUpperCase()
 								+ " COUNT IS OFF IN THE NAVIGATION*********",
@@ -247,4 +249,5 @@ public class iOS_ReferralCategoriesPage extends AppiumPageFactory {
 		return "(//XCUIElementTypeStaticText[@name='" + category + "'])[" + index + "]/" + sibling
 				+ "-sibling::XCUIElementTypeStaticText[1]";
 	}
+
 }

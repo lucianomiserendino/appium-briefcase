@@ -34,7 +34,7 @@ public class Page extends Base {
 
 		synchronized (driver) {
 			try {
-				driver.wait(10000);
+				driver.wait(18000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

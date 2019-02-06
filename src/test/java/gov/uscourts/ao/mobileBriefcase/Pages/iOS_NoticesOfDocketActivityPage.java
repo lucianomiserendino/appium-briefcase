@@ -10,10 +10,8 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_DLS_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SI_VALUE;
 import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage.open;
 import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage.searchForACase;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Coordinates.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
@@ -116,7 +114,7 @@ public class iOS_NoticesOfDocketActivityPage extends AppiumPageFactory {
 		searchForACase(caseNum);
 		loadNDALinksInBriefcase(getDktentryid(caseNum, dbType));
 		verifyElementsAreDisplayed("DOCKET ENTRY", event, docketText);
-		clickBack(3);
+		clickBack(4);
 	}
 
 	/** Open a document in Briefcase from the NDA link */
@@ -133,10 +131,10 @@ public class iOS_NoticesOfDocketActivityPage extends AppiumPageFactory {
 	/** Open a note in Briefcase from the NDA link */
 
 	public void openANoteInBriefcase(String caseNum, String dbType) {
+
 		loadNDALinksInBriefcase(getDocumentAndNoteID(caseNum, dbType, getDocID(ID.NOTE_ID, caseNum, dbType)));
 		verifyElementsAreDisplayed("NOTE", transactionNote, addANote);
-		clickBack(2);
-
+		tap(Locator.ID, backBTN);
 	}
 
 	public void loadNDALinksInBriefcase(String ndaLink) {
@@ -153,9 +151,12 @@ public class iOS_NoticesOfDocketActivityPage extends AppiumPageFactory {
 	}
 
 	public void clickBack(int backBtn) {
-		for (int i = 0; i < backBtn; i++) {
+		try {
+			for (int i = 0; i < backBtn; i++) {
+				tap(Locator.ID, backBTN);
+			}
+		} catch (Exception e) {
 			tap(Locator.ID, backBTN);
-
 		}
 	}
 

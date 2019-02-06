@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
@@ -10,7 +11,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForVisibilityOfEle
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.sort;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,6 +61,7 @@ public class Utility extends Base {
 					}
 				} else {
 					scrolldown(el);
+					performPageLoad(driver);
 				}
 			} catch (NoSuchElementException e) {
 				scrolldown(el);
@@ -212,16 +213,14 @@ public class Utility extends Base {
 
 	public static String clickOnNumberInRange(List<MobileElement> value) {
 		String text = "";
-		int index = getRandomNumberInRange(1, value.size());
+		int index = getRandomNumberInRange(1, value.size()-1);
 		text += value.get(index).getText().trim();
 		value.get(index).click();
 		return text;
 	}
 
 	public static String getStreamOfRandomInts() {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		Date date = new Date();
-		return dateFormat.format(date);
+		return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
 
 	}
 

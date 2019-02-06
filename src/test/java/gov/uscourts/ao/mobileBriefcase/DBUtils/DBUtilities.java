@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DATABASE_NAME;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DBPWD;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DBURL;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DBUSERNAME;
@@ -53,7 +52,6 @@ public class DBUtilities {
 				throw new RuntimeException("Invalid Database type");
 			}
 		} catch (Exception e) {
-
 			e.printStackTrace();
 		}
 	}
@@ -197,15 +195,14 @@ public class DBUtilities {
 	public static DBType valueOf(String dbType) {
 		return DBType.valueOf(dbType);
 	}
-	
+
 	public static String getText(String query, String text) {
 		return query.replace("TEXT", text);
 	}
-	
+
 	public static String getCode(String query, String text) {
 		return query.replace("CODE", text);
 	}
-
 
 	public enum DBType {
 		CMKA, CM3A

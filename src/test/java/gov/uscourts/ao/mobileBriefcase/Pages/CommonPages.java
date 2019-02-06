@@ -4,7 +4,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASE_ID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.cmr_id;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CMR_CCR_ID;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
@@ -131,7 +131,6 @@ public class CommonPages extends AppiumPageFactory {
 		expandPanel(panels);
 	}
 
-
 	public static void selectAction(DBType dbType, String panel, String el_id) {
 
 		performPageLoad(driver);
@@ -143,16 +142,8 @@ public class CommonPages extends AppiumPageFactory {
 		} catch (AssertionError e) {
 			e.getMessage();
 		} finally {
-			String actionName1 = "";
-			String actionName2 = getAllColumns(dbType, getID(ACTION_NAME, el_id));
-			if (actionName2.contains("'")) {
-				actionName1 += actionName2.split("'")[0];
-				getActionName(actionName1);
-				
-			} else {
-				getActionName(actionName2);
-		
-			}
+			getActionName(getAllColumns(dbType, getID(ACTION_NAME, el_id)));
+
 		}
 	}
 
@@ -167,11 +158,11 @@ public class CommonPages extends AppiumPageFactory {
 		String caseYear = splitBy(caseNum, 0);
 		String caseNumber = splitBy(caseNum, 1);
 		return getAllColumns(dbType,
-				replace(replace(cmr_id, "CS_YEAR", caseYear, "CS_NUMBER", caseNumber, "CMR_JU_PE_ID", peId),
+				replace(replace(CMR_CCR_ID, "CS_YEAR", caseYear, "CS_NUMBER", caseNumber, "CMR_JU_PE_ID", peId),
 						"CMR_CYV_CODE", cmr_cyv_code));
 	}
 
-	public void verifyElementIsDisplayed(String element) {
+	public static void verifyElementIsDisplayed(String element) {
 		assertTrue(" PLEASE ENSURE THAT " + element.toUpperCase() + " IS DISPLAYED ", contains(element).isDisplayed());
 	}
 
@@ -206,12 +197,11 @@ public class CommonPages extends AppiumPageFactory {
 	}
 
 	public enum Panel {
-		Assignments, Vote_Information, Actions, Judgment_Filed, Petition_Filed, Briefs,
+		Assignments, Vote_Information, Actions, Judgment_Filed, Petition_Filed, Briefs
 	}
 
 	public enum Category {
 		PENDING_TASKS, PETITIONS_FOR_REHEARING, CASES_ON_CALENDAR, MOTIONS_PETITIONS, SCREENING_PANELS, REFERENCE_DOCUMENTS, TEST_AUTOMATION
 	}
-	
 
 }

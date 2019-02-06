@@ -1,10 +1,13 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import cucumber.api.java.en.Then;
+import gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_NoticesOfDocketActivityPage;
+import gov.uscourts.ao.mobileBriefcase.common.Base;
 
-public class NoticesOfDocketActivity_StepDefinitions {
+public class NoticesOfDocketActivity_StepDefinitions extends Base {
 	iOS_NoticesOfDocketActivityPage page;
+	iOS_LoginPage page1;
 
 	@Then("^user  selects  case \"([^\"]*)\" that is in Briefcase for a judge\\.\\( \"([^\"]*)\" \\) Verifies the docket entry page in Briefcase displays the docket entry\\( Open a Docket Entry in Briefcase from the NDA link\\)$")
 	public void user_selects_case_that_is_in_Briefcase_for_a_judge_Verifies_the_docket_entry_page_in_Briefcase_displays_the_docket_entry_Open_a_Docket_Entry_in_Briefcase_from_the_NDA_link(
@@ -23,6 +26,9 @@ public class NoticesOfDocketActivity_StepDefinitions {
 	public void user_verifies_the_note_opens_in_Briefcase_by_using_the_same_and_Open_a_note_in_Briefcase_from_the_NDA_link(
 			String caseNum, String dbType) {
 		page.openANoteInBriefcase(caseNum, dbType);
+		page1 = new iOS_LoginPage();
+		page1.logout();
+
 	}
 
 }

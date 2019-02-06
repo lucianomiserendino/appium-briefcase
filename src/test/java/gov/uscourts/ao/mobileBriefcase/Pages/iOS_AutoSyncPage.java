@@ -61,7 +61,7 @@ public class iOS_AutoSyncPage extends AppiumPageFactory {
 	}
 
 	public static void getUrl(String url) {
-		getInstance(Drivers.WEBRIVER);
+		getInstance(Driver.WEBRIVER);
 		webDriver.get(getProperty(url));
 	}
 

@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
@@ -12,7 +11,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_VOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_VOTE_DATE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGE_VOTE_DPF_RELIEF;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.*;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectAction;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElement;
@@ -20,12 +19,12 @@ import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForVisibilityOfElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.changeDateFormat;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.clickOnNumberInRange;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.findElementAndScrollDown;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.getParameter;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.getStreamOfRandomInts;
 import static java.util.Collections.sort;
@@ -164,9 +163,7 @@ public class iOS_JudgeVoteDPFPage extends AppiumPageFactory {
 			}
 		} catch (org.openqa.selenium.TimeoutException e) {
 			e.printStackTrace();
-		}
-
-		finally {
+		} finally {
 			tap(close);
 		}
 
@@ -176,30 +173,29 @@ public class iOS_JudgeVoteDPFPage extends AppiumPageFactory {
 	public String getVoteSelection(DBType dbType, String ccr_id, String elId) {
 		String voteText = "";
 		String reliefText = getRelief(dbType, ccr_id);
-		if(isDisplayed(Locator.XPATH, getIndexOf(reliefText, 2))==true) {
-		tap(Locator.XPATH, getIndexOf(reliefText, 2));
-	}else {
-		tap(back);
-		findElementAndScrollDown(Locator.XPATH,
-				"(//XCUIElementTypeTable[@name='DocumentList']/XCUIElementTypeCell//*[contains(@name, '" + getID(ACTION_NAME, elId)
-						+ "')])[2]",
-				DocumentList);
-		tap(Locator.XPATH, getIndexOf(reliefText, 2));
-	}
+		if (isDisplayed(Locator.XPATH, getIndexOf(reliefText, 2)) == true) {
+			tap(Locator.XPATH, getIndexOf(reliefText, 2));
+		} else {
+			tap(back);
+			CommonPages.getActionName(getAllColumns(dbType, getID(ACTION_NAME, elId)));
+			tap(Locator.XPATH, getIndexOf(reliefText, 2));
+		}
 		List<MobileElement> votes = driver.findElements(
 				By.xpath("//XCUIElementTypeTable[@name='VoteOptions']/XCUIElementTypeCell/XCUIElementTypeStaticText"));
 		String voteList = "";
-
 		Iterator<MobileElement> i = votes.iterator();
 		while (i.hasNext()) {
 			MobileElement row = i.next();
 			voteList += row.getText();
-
 		}
-		if (voteList.contains(select)) {
-			votes.remove(select);
+		if (voteList.contains(select) || voteList.contains("No Change")) {
+			try {
+				votes.remove(select);
+				votes.remove("No Change");
+			} catch (NoSuchElementException e) {
+				e.getMessage();
+			}
 			voteText += clickOnNumberInRange(votes);
-
 		} else {
 			voteText += clickOnNumberInRange(votes);
 		}
@@ -227,9 +223,9 @@ public class iOS_JudgeVoteDPFPage extends AppiumPageFactory {
 		getVote(relief, voteText, 2).click();
 		performPageLoad(driver);
 		assertTrue(isDisplayed(Locator.XPATH, containsElement(getTodaysDate())));
-
 		String title = getAllColumns(dbType, DM_DESCRIPTION);
 		assertTrue(isDisplayed(Locator.XPATH, containsElement(title)));
+		tap(cancel);
 
 	}
 
@@ -240,14 +236,13 @@ public class iOS_JudgeVoteDPFPage extends AppiumPageFactory {
 			tap(cancel);
 		} else {
 			try {
-				if (commentField.getText().isEmpty()) {
+				if (getText(commentField).isEmpty()) {
 					sendANote();
 					tap(commentField);
 				}
 				tap(commentField);
 				tap(commentField);
 				tap(selectAll);
-
 				tap(cut);
 				text += sendANote();
 				tap(applyBtn);
@@ -281,7 +276,7 @@ public class iOS_JudgeVoteDPFPage extends AppiumPageFactory {
 
 	public static String sendANote() {
 		String note = getTodaysDate();
-		commentField.sendKeys(note);
+		sendKeys(commentField, note);
 		return note;
 
 	}

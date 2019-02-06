@@ -1,7 +1,7 @@
 Feature: Display Actions Panel and actions 
 
 
-
+@Regression
 @AMB-1038 
 Scenario: 
 
@@ -9,7 +9,7 @@ Scenario:
        a collapsible panel entitled "Actions" should display,when expanded all the applicable actions should display.
        
 	Given  User Navigates to  "INTEGRATION" environment 
-	When  User enters Credentials to Login "s haenni" and "Test2020!" 
+	When  User enters Credentials to Login "s haenni" and "Test2021!" 
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And  user selects a "CMKA" 
