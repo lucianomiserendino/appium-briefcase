@@ -1,4 +1,5 @@
 Feature: Display correct days for calendared cases 
+@CMKA
 @Regression
 @AMB-1249 
 Scenario: 

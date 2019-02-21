@@ -170,8 +170,9 @@ public class iOS_JudgeVoteDPFPage extends AppiumPageFactory {
 	}
 
 	@SuppressWarnings("unlikely-arg-type")
-	public String getVoteSelection(DBType dbType, String ccr_id, String elId) {
+	public String getVoteSelection(DBType dbType,String dpfName, String ccr_id, String elId) {
 		String voteText = "";
+		String text = "";
 		String reliefText = getRelief(dbType, ccr_id);
 		if (isDisplayed(Locator.XPATH, getIndexOf(reliefText, 2)) == true) {
 			tap(Locator.XPATH, getIndexOf(reliefText, 2));
@@ -188,22 +189,33 @@ public class iOS_JudgeVoteDPFPage extends AppiumPageFactory {
 			MobileElement row = i.next();
 			voteList += row.getText();
 		}
-		if (voteList.contains(select) || voteList.contains("No Change")) {
+		if (voteList.contains(select)) {
 			try {
 				votes.remove(select);
-				votes.remove("No Change");
+
 			} catch (NoSuchElementException e) {
 				e.getMessage();
 			}
 			voteText += clickOnNumberInRange(votes);
+			text += getVoteName(voteText, reliefText);
+
 		} else {
 			voteText += clickOnNumberInRange(votes);
+			text += getVoteName(voteText, reliefText);
 		}
 		tap(Locator.XPATH, getIndexOf(reliefText, 3));
 
-		addVote(dbType, getID(MBR_NOTE, elId), reliefText, elId);
+		addVote(dbType,dpfName, getID(MBR_NOTE, elId), reliefText, elId);
 		tap(dashboard);
-		return voteText;
+		return text;
+	}
+
+	public String getVoteName(String voteText, String reliefText) {
+		if (voteText.equals("No Change")) {
+			return getText(Locator.XPATH, getIndexOf(reliefText, 5));
+		} else {
+			return voteText;
+		}
 	}
 
 	/**
@@ -225,13 +237,13 @@ public class iOS_JudgeVoteDPFPage extends AppiumPageFactory {
 		assertTrue(isDisplayed(Locator.XPATH, containsElement(getTodaysDate())));
 		String title = getAllColumns(dbType, DM_DESCRIPTION);
 		assertTrue(isDisplayed(Locator.XPATH, containsElement(title)));
-		tap(cancel);
+		tap(close);
 
 	}
 
-	public void addVote(DBType dbType, String query, String relief, String el_id) {
+	public void addVote(DBType dbType,String dpfName, String query, String relief, String el_id) {
 		String text = "";
-		if (getParameter(getAllColumns(dbType, query), 4).equals("SKIP")) {
+		if (getParameter(getAllColumns(dbType, query),dpfName, 4).equals("SKIP")) {
 			assertNull(" THE \"NOTE HISTORY PARAMETER\" IS NOT SET TO \"SKIP\" ", commentField.getText());
 			tap(cancel);
 		} else {

@@ -13,6 +13,7 @@ import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
@@ -21,10 +22,10 @@ public class iOS_AutoSyncPage extends AppiumPageFactory {
 	private static String PACERUser = "//*[text()='PACER User']";
 	private static String currentSetting = "//div[@id='current']";
 	private static String documentFilingSystem = "CM/ECF Document Filing System";
-	private static String userName = "loginName";
-	private static String password = "password";
-	private static String loginBTN = "fbtnLogin";
-	private static String checkBox = "//*[contains(@class, 'ckboxlCol1')]";
+	private static String userName = "//input[@id='loginForm:userName' or @id='login:loginName' or @id='loginForm:loginName']";
+	private static String password = "//input[@id='login:password' or @id='loginForm:password']";
+	private static String loginBTN = "//button/span[contains(text(),'Login')]";
+	private static String checkBox = "span[class='ui-chkbox-icon ui-icon ui-icon-blank ui-c']";
 	private static String continueBTN = "//div[@id='regmsg:pgroup']/button[@id='regmsg:bpmConfirm']";
 	private static String attorneyFillingLink = "Filing";
 	private static String eventName = "//table[@role='grid']/tbody/tr/td/span[text()='AO - brief filed ']";
@@ -54,7 +55,8 @@ public class iOS_AutoSyncPage extends AppiumPageFactory {
 	 */
 	public static void getCMECFHelpDeskUtility(String element) {
 		getUrl(CMECF_HELP_DESK_UTILITY);
-		findWebElement(By.xpath(element)).click();
+		Page.sleep(10000);
+		findWebElement(By.xpath(PACERUser)).click();
 		String currentSettingText = findWebElement(By.xpath(currentSetting)).getText();
 		assertTrue("*********USER TYPE WASN'T CHANGED FROM COURT USER TO PUBLIC USER***********",
 				currentSettingText.equals("PACER User - CSO ID required"));
@@ -75,16 +77,18 @@ public class iOS_AutoSyncPage extends AppiumPageFactory {
 		getCMECFHelpDeskUtility(PACERUser);
 		webDriver.get(getProperty(ATTORNEY_FILLING_URL));
 		findWebElement(By.linkText(documentFilingSystem)).click();
-		containsName(userName).sendKeys(getProperty(ATTORNEY_FIRST_NAME));
-		containsName(password).sendKeys(getProperty(ATTORNEY_LAST_NAME));
-		containsName(loginBTN).click();
-		click(By.xpath(checkBox));
+		Page.sleep(10000);
+		findWebElement(By.xpath(userName)).sendKeys(getProperty(ATTORNEY_FIRST_NAME));
+		findWebElement(By.xpath(password)).sendKeys(getProperty(ATTORNEY_LAST_NAME));
+		findWebElement(By.xpath(loginBTN)).click();
+		Page.sleep(10000);
+		click(By.cssSelector(checkBox));
 		click(By.xpath(continueBTN));
-
+		click(By.linkText(attorneyFillingLink));
 	}
 
 	public static void enterCaseNumber(String caseNum) {
-		click(By.linkText(attorneyFillingLink));
+		Page.sleep(10000);
 		sendKeys(By.id(caseNumberFiled), caseNum);
 		click(By.xpath(eventName));
 		click(By.xpath(continueFillingPage));
@@ -113,4 +117,8 @@ public class iOS_AutoSyncPage extends AppiumPageFactory {
 		return findWebElement(By.xpath(containsElement("//*[contains(@name, '" + name + "')]")));
 	}
 
+	public static void main(String[] args) {
+		getAttorneyFillingURL();
+		enterCaseNumber("15-0");
+	}
 }

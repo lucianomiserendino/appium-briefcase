@@ -179,7 +179,7 @@ public class Queries {
 	public static final String PANEL_JUDGES_PR_PRID = "select distinct pr_prid from person, chm_mobile_referral, panel_case, panel, panel_to_judge, judge, personrole\n"
 			+ "where \n" + "cmr_id = 'CMR_ID'" + "" + " and\n" + "cmr_ph_id = ph_id and\n" + "--ph_pn_id = pn_id and\n"
 			+ "pj_pn_id = ph_pn_id and\n" + "pj_ju_ao_code = ju_ao_code and\n" + "ju_pe_id" + "" + " = pe_id and \n"
-			+ "pe_pr_prid = pr_prid";
+			+ "pe_pr_prid = pr_prid and\n" + "pj_date_remove is null";
 
 	public static final String LOGED_IN_JUDGES_PR_PRID = "select distinct pr_prid from person, chm_mobile_referral, panel_case, panel, panel_to_judge, judge, personrole\n"
 			+ "where \n" + "cmr_id = 'CMR_ID'" + "" + " and\n" + "cmr_ph_id = ph_id and\n" + "--ph_pn_id = pn_id and\n"
@@ -190,6 +190,11 @@ public class Queries {
 			+ "where \n" + "cmr_id = 'CMR_ID'" + "" + " and\n" + "cmr_ph_id = ph_id and\n" + "--ph_pn_id = pn_id and\n"
 			+ "pj_pn_id = ph_pn_id and\n" + "pj_ju_ao_code = ju_ao_code and\n" + "ju_pe_id" + "" + " = pe_id and \n"
 			+ "pe_pr_prid = pr_prid and ju_pe_id = ?";
+
+	public static final String PR_LAST_NAME = "select distinct pr_last_name   from person, chm_mobile_referral, panel_case, panel, panel_to_judge, judge, personrole\n"
+			+ "where \n" + "cmr_id = CMR_ID and\n" + "cmr_ph_id = ph_id and\n" + "--ph_pn_id = pn_id and\n"
+			+ "pj_pn_id = ph_pn_id and\n" + "pj_ju_ao_code = ju_ao_code and\n" + "ju_pe_id = pe_id and \n"
+			+ "pe_pr_prid = pr_prid and pr_prid='PR_PRID' and pj_date_remove is null";
 
 	public static final String STAFF_ASSIGNMENTS_ASSOCIATED_WITH_THE_REFERRAL = "SELECT distinct pr_first_name cha_id\n"
 			+ "	FROM chm_mobile_referral, chambers_case_to_referral, chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val\n"
@@ -291,9 +296,9 @@ public class Queries {
 			+ "inner join chm_reftype_val on cyv_code = cmr_cyv_code \n"
 			+ "where cmr_ju_pe_id = 'CMR_JU_PE_ID' and cyv_is_oral_arg = 'y' and cmr_cs_caseid='CMR_CS_CASEID' and cmr_date_end is null ";
 
-	public static final String SET_BRIEFCASE_CT_ADMIN_DKT_VALUE = "UPDATE  site SET  si_value = '?' where si_code ='briefcaseCtAdminDkt'";
+	public static final String SET_SITE_TABLE_VARIABLE_VALUE = "UPDATE  site SET  si_value = 'SI_VALUE' where si_code ='SI_CODE'";
 
-	public static final String BRIEFCASE_CT_ADMIN_DKT_VALUE = "SELECT si_value FROM site WHERE si_code = 'briefcaseCtAdminDkt";
+	public static final String SITE_TABLE_VARIABLE_VALUE = "SELECT si_value FROM site WHERE si_code = 'SI_CODE";
 
 	public static final String RELIEF = "select distinct  rl_list_text from chambers_case_to_referral b join chambers_case_to_referral a on"
 			+ " b.ccr_cpr_id = a.ccr_cpr_id join dktpart on dp_dktpartid = b.ccr_dp_dktpartid join relief_list on rl_id = dp_rlid "
@@ -311,15 +316,14 @@ public class Queries {
 			+ " on py_pt_code = pt_code  join person on pr_prid = pe_pr_prid  left join generation_val on gn_code = pr_gn_code "
 			+ " where cmr_cs_caseid = 'TEXT' and cmr_ju_pe_id = ? and cmr_cyv_code = 'CODE' and cmr_ju_pe_id = ? ";
 
-	public static final String FILERS_INOFRMATION =
-			"select pr_last_name, pr_first_name,  pr_middle_name,gn_display,  pt_display "
-					+ " from chm_mobile_referral join chambers_case_to_referral on cmr_ccr_id = ccr_id join relate_dktpart "
-					+ "on ccr_dp_dktpartid = rd_rel_dktpartid  join case_dktentry on rd_cre_cd_id = cd_id  join dktentry on "
-					+ "cd_dktentryid = de_dktentryid  join dktperson on cd_id = dep_cd_id and dep_type = 'filer' and dep_py_pcid <> 1 "
-					+ " join party on dep_py_pcid = py_pcid  join personrole on py_pe_id = pe_id  join pty_type_val"
-					+ " on py_pt_code = pt_code  join person on pr_prid = pe_pr_prid  left join generation_val on gn_code = pr_gn_code "
-					+ " where cmr_cs_caseid = 'TEXT' and cmr_ju_pe_id = ? and cmr_cyv_code = 'CODE' and cmr_ju_pe_id = ? ";
-	
+	public static final String FILERS_INOFRMATION = "select pr_last_name, pr_first_name,  pr_middle_name,gn_display,  pt_display "
+			+ " from chm_mobile_referral join chambers_case_to_referral on cmr_ccr_id = ccr_id join relate_dktpart "
+			+ "on ccr_dp_dktpartid = rd_rel_dktpartid  join case_dktentry on rd_cre_cd_id = cd_id  join dktentry on "
+			+ "cd_dktentryid = de_dktentryid  join dktperson on cd_id = dep_cd_id and dep_type = 'filer' and dep_py_pcid <> 1 "
+			+ " join party on dep_py_pcid = py_pcid  join personrole on py_pe_id = pe_id  join pty_type_val"
+			+ " on py_pt_code = pt_code  join person on pr_prid = pe_pr_prid  left join generation_val on gn_code = pr_gn_code "
+			+ " where cmr_cs_caseid = 'TEXT' and cmr_ju_pe_id = ? and cmr_cyv_code = 'CODE' and cmr_ju_pe_id = ? ";
+
 	public static final String FILED_DATE = "select  de_date_filed from chm_mobile_referral join chambers_case_to_referral on cmr_ccr_id = ccr_id "
 			+ "join relate_dktpart on ccr_dp_dktpartid = rd_rel_dktpartid join case_dktentry on rd_cre_cd_id = cd_id "
 			+ "join dktentry on cd_dktentryid = de_dktentryid join dktperson on cd_id = dep_cd_id and dep_type = 'filer' and dep_py_pcid <> 1 "

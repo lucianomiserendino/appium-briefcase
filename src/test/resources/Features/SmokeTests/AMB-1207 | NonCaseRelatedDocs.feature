@@ -9,6 +9,7 @@ Background:
 	And  user selects a "CMKA" 
 	Then User selects a userCategory "Appellate_Judges" and  name "Colloton" 
 	
+@CMKA
 @Smoke	
 @AMB-1207 
 Scenario: 

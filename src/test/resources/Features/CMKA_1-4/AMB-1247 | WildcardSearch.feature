@@ -1,5 +1,5 @@
 Feature: Case Query -- return case list for wildcard searches 
-
+@CMKA
 @Regression
 @AMB-1247 
 Scenario: 

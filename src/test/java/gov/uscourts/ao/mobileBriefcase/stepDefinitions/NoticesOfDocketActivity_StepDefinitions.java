@@ -1,10 +1,12 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
+import static gov.uscourts.ao.mobileBriefcase.common.Coordinates.select;
+
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.iOS_NoticesOfDocketActivityPage;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
-
+import gov.uscourts.ao.mobileBriefcase.common.Coordinates.BriefcaseCoordinates;
 public class NoticesOfDocketActivity_StepDefinitions extends Base {
 	iOS_NoticesOfDocketActivityPage page;
 	iOS_LoginPage page1;
@@ -26,8 +28,7 @@ public class NoticesOfDocketActivity_StepDefinitions extends Base {
 	public void user_verifies_the_note_opens_in_Briefcase_by_using_the_same_and_Open_a_note_in_Briefcase_from_the_NDA_link(
 			String caseNum, String dbType) {
 		page.openANoteInBriefcase(caseNum, dbType);
-		page1 = new iOS_LoginPage();
-		page1.logout();
+		select(BriefcaseCoordinates.DISMISS) ;
 
 	}
 

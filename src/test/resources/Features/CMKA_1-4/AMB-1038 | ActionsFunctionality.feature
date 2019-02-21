@@ -1,6 +1,6 @@
 Feature: Display Actions Panel and actions 
 
-
+@CMKA
 @Regression
 @AMB-1038 
 Scenario: 

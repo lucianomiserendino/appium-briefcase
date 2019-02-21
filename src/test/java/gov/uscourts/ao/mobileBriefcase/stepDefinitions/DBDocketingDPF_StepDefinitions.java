@@ -13,7 +13,7 @@ public class DBDocketingDPF_StepDefinitions {
 	public void user_selecs_action_enters_a_comment_in_the_editable_field_submits_and_verifies_Db_is_updated_correctly_use_and(
 			String dbType, String caseNume, String peID, List<ElListText> table) {
 		page = new iOS_DBDocketingDPFPage();
-		int values = 1;
+		int values = table.size();
 		for (int i = 0; i < values; i++) {
 			page.selectActioName(table, i, dbType, caseNume, peID);
 		}

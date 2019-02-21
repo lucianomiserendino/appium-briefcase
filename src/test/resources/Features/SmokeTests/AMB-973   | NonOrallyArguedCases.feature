@@ -1,6 +1,6 @@
 Feature: Number of cases displayed for non-orally argued cases 
 
-
+@CMKA
 @Smoke 
 @AMB-973 
 Scenario Outline: 

@@ -25,12 +25,11 @@ public class JudgeVoteDPF_StepDefinitions {
 		page.verifyJudgesVote(valueOf(dbType), ccrId);
 	}
 
-	@Then("^user selects a vote and adds notes to a vote\\. Use  db \"([^\"]*)\" ,ccrID \"([^\"]*)\" , elID  \"([^\"]*)\"$")
-	public void user_selects_a_vote_and_adds_notes_to_a_vote_Use_db_ccrID_elID(String dbType, String ccr_id,
-			String elId) {
+	@Then("^user selects a vote and adds notes to a vote\\. Use  db \"([^\"]*)\" ,ccrID \"([^\"]*)\" , elID  \"([^\"]*)\" , and dpf \"([^\"]*)\"$")
+	public void user_selects_a_vote_and_adds_notes_to_a_vote_Use_db_ccrID_elID_and_dpf(String dbType, String ccr_id,
+			String elId, String dpfName) throws Throwable {
 		page = new iOS_JudgeVoteDPFPage();
-		vote += page.getVoteSelection(valueOf(dbType), ccr_id, elId);
-
+		vote += page.getVoteSelection(valueOf(dbType), dpfName, ccr_id, elId);
 	}
 
 	@Then("^User verifies judge's vote is updated in Vote Information Panel\\. Use  db \"([^\"]*)\" ,ccrID \"([^\"]*)\"$")

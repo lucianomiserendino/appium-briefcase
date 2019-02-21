@@ -75,20 +75,20 @@ public class iOS_chmAssignDPFPage extends AppiumPageFactory {
 				listOfStaff + "')]/preceding-sibling:: XCUIElementTypeStaticText[contains(@name, '" + dropDowName + "");
 	}
 
-	public void createNewStaffAssignment(DBType dbType, String elId, String cha_ju_pe_id, String cmr_cyv_code,
+	public void createNewStaffAssignment(DBType dbType,String dpfName, String elId, String cha_ju_pe_id, String cmr_cyv_code,
 			String cmr_cs_caseid, String caseNumber) {
 
 		/******************
 		 * @AMB-1123 ****** STEP 1 --Select a staff member
 		 */
 		getElementNextToDropDown("Staff Member", "Please Select");
-		staffMember += getAvailableStaffMembers(dbType, elId, cha_ju_pe_id);
+		staffMember += getAvailableStaffMembers(dbType,dpfName, elId, cha_ju_pe_id);
 		String staffFName = splitBy(staffMember, 0);
 		String staffLName = splitBy(staffMember, 1);
 
 		/** STEP 2 --Select an assignment */
 		getElementNextToDropDown("Assignment", "Please Select");
-		getAssignmentType(dbType, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code, staffFName, staffLName);
+		getAssignmentType(dbType,dpfName, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code, staffFName, staffLName);
 
 		/** STEP 3 --Select an Assigned Date */
 		getElementNextToDropDown("Assigned", "Select Date");
@@ -117,7 +117,7 @@ public class iOS_chmAssignDPFPage extends AppiumPageFactory {
 		/******************
 		 * @AMB-1170, @AMB-1173
 		 */
-		modifyExistingStaffAssignment(assignmentNameAndType, assignmentDate, dbType, elId, cha_ju_pe_id, cmr_cs_caseid,
+		modifyExistingStaffAssignment(assignmentNameAndType, assignmentDate, dbType,dpfName, elId, cha_ju_pe_id, cmr_cs_caseid,
 				cmr_cyv_code, staffFName, staffLName);
 	}
 
@@ -129,9 +129,9 @@ public class iOS_chmAssignDPFPage extends AppiumPageFactory {
 	 * in the judge's chambers -----Screen param = staff - list all staff members in
 	 * the judge's chambers
 	 */
-	public String getAvailableStaffMembers(DBType dbType, String elId, String peID) {
+	public static String getAvailableStaffMembers(DBType dbType,String dpfName, String elId, String peID) {
 
-		String screenTypeParam = getParameter(getAllColumns(dbType, getID(MBR_NOTE, elId)), 0);
+		String screenTypeParam = getParameter(getAllColumns(dbType, getID(MBR_NOTE, elId)),dpfName, 0);
 
 		String screenParam = "";
 
@@ -165,7 +165,7 @@ public class iOS_chmAssignDPFPage extends AppiumPageFactory {
 	 * gets a list of staff based on the screen parameter in the DPF, compares staff
 	 * members that are displayed on the ui with db and selects one
 	 */
-	public void getListOfAvailableStaffMembers(DBType dbtype, String staffMember, String peID, String screenTypeParam,
+	public static void getListOfAvailableStaffMembers(DBType dbtype, String staffMember, String peID, String screenTypeParam,
 			int index) {
 
 		List<String> dbStafMembers = executeQuery(dbtype, getText(getID(staffMember, peID), screenTypeParam));
@@ -191,7 +191,7 @@ public class iOS_chmAssignDPFPage extends AppiumPageFactory {
 	 * Verify that when you tap the Please Select button next to the Assignment
 	 * label, a pop-up displays with valid assignment types
 	 */
-	public static void getAssignmentType(DBType dbType, String elId, String cha_ju_pe_id, String cmr_cs_caseid,
+	public static void getAssignmentType(DBType dbType,String dpfName, String elId, String cha_ju_pe_id, String cmr_cs_caseid,
 			String cmr_cyv_code, String pr_first_name, String pr_last_name) {
 
 		List<String> uiAssignmenType = new ArrayList<>();
@@ -203,7 +203,7 @@ public class iOS_chmAssignDPFPage extends AppiumPageFactory {
 				uiAssignmenType.add(type.getText().trim());
 				sort(uiAssignmenType);
 			}
-			String assignmentType = getParameter(getAllColumns(dbType, getID(MBR_NOTE, elId)), 1);
+			String assignmentType = getParameter(getAllColumns(dbType, getID(MBR_NOTE, elId)),dpfName, 1);
 			if (assignmentType.equals("SKIP")) {
 				/** If the assignment type parameter is set to SKIP, use this query */
 				getValidAssignmentTypes(dbType, ASSIGNMENT_TYPE_IS_SKIP, uiAssignmenType, cha_ju_pe_id, cmr_cs_caseid,
@@ -257,7 +257,7 @@ public class iOS_chmAssignDPFPage extends AppiumPageFactory {
 		}
 	}
 
-	public String newUIAssignment(DBType dbType, String peId, String elID, String staffMembersFName,
+	public static String newUIAssignment(DBType dbType, String peId, String elID, String staffMembersFName,
 			String staffMembersLName, String caseNumber) {
 
 		String assignment = getChmAssign(chmAssign.ASSIGNMENT);
@@ -284,7 +284,7 @@ public class iOS_chmAssignDPFPage extends AppiumPageFactory {
 	}
 
 	/** check the back-end updates when a new staff assignment is created */
-	public void newDBAssignment(DBType dbType, String peId, String elID, String staffMembersFName,
+	public static void newDBAssignment(DBType dbType, String peId, String elID, String staffMembersFName,
 			String staffMembersLName, String assignment) {
 
 		String peID = getAllColumns(dbType, getID("SELECT first 1 pe_id\n"
@@ -315,20 +315,20 @@ public class iOS_chmAssignDPFPage extends AppiumPageFactory {
 
 	}
 
-	public void modifyExistingStaffAssignment(String assgnNameAndType, String assgnDate, DBType dbType, String elId,
+	public void modifyExistingStaffAssignment(String assgnNameAndType, String assgnDate, DBType dbType,String dpfName, String elId,
 			String cha_ju_pe_id, String cmr_cs_caseid, String cmr_cyv_code, String pr_first_name, String pr_last_name) {
 
 		/** After the new assignment is created it clicks on it */
 		clickOnExistingAssignment(assgnNameAndType, assgnDate, dbType, elId);
 
-		modifyExistingStaffAssignment(dbType, cha_ju_pe_id, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code,
+		modifyExistingStaffAssignment(dbType,dpfName, cha_ju_pe_id, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code,
 				pr_first_name, pr_last_name);
 	}
 
 	/**
 	 * verify the new assignment is displayed on the chmassign dpf screen and modify
 	 */
-	public static void modifyExistingStaffAssignment(DBType dbType, String peID, String elId, String cha_ju_pe_id,
+	public static void modifyExistingStaffAssignment(DBType dbType,String dpfName, String peID, String elId, String cha_ju_pe_id,
 			String cmr_cs_caseid, String cmr_cyv_code, String pr_first_name, String pr_last_name) {
 
 		String uiAssignedDate = getChmAssign(chmAssign.ASSIGNED_DATE);
@@ -355,7 +355,7 @@ public class iOS_chmAssignDPFPage extends AppiumPageFactory {
 		 * * @AMB-1170 Modifying existing assignment
 		 */
 
-		getAssignmentType(dbType, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code, pr_first_name, pr_last_name);
+		getAssignmentType(dbType,dpfName, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code, pr_first_name, pr_last_name);
 		performPageLoad(driver);
 		String modAssignmentType = getChmAssign(chmAssign.ASSIGNMENT);
 
@@ -453,7 +453,7 @@ public class iOS_chmAssignDPFPage extends AppiumPageFactory {
 	}
 
 	/** Verify the records are created in CM/ECF */
-	public void getCreatedRecords(DBType dbType, String expected, String actual) {
+	public static void getCreatedRecords(DBType dbType, String expected, String actual) {
 		String CMECF_TABLES = getAllColumns(dbType, actual);
 		assertEquals("********PLEASE VERIFY THAT RECORDS IN CMECF ARE CREATED CORRECTLY!!!********", expected,
 				CMECF_TABLES);

@@ -10,6 +10,7 @@ Background:
 	Then User navigates to MobileBrifcase App 
 	And  user selects a "CMKA" 
 	Then User selects a userCategory "Staff_Attorneys" and  name "Brown, Benjamin" 
+@CMKA
 @Smoke	
 @AMB-1047 
 Scenario: 
@@ -17,6 +18,7 @@ Scenario:
   Staff attorney referrals are stored in the stfaty_mobile_referral table. There is a FK to the sftaty_assign_val table (smr_sfa_code). 
    This is how the assignment category is obtained. 
 	Given User verifies Data is displayed on the Dashboard, retrieves categories from "CMKA" 
+@CMKA
 @Smoke	
 @AMB-1049 
 Scenario: 
@@ -28,6 +30,7 @@ Scenario:
 	
 	Given  User selects assignment type "Senior Staff Attorney" 
 	When  User observes there are six referral categories listed. 
+@CMKA
 @Smoke	
 @AMB-1050 
 Scenario: 

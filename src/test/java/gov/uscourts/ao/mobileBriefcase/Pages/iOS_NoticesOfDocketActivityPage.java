@@ -114,7 +114,7 @@ public class iOS_NoticesOfDocketActivityPage extends AppiumPageFactory {
 		searchForACase(caseNum);
 		loadNDALinksInBriefcase(getDktentryid(caseNum, dbType));
 		verifyElementsAreDisplayed("DOCKET ENTRY", event, docketText);
-		clickBack(4);
+		//clickBack(4);
 	}
 
 	/** Open a document in Briefcase from the NDA link */
@@ -134,7 +134,8 @@ public class iOS_NoticesOfDocketActivityPage extends AppiumPageFactory {
 
 		loadNDALinksInBriefcase(getDocumentAndNoteID(caseNum, dbType, getDocID(ID.NOTE_ID, caseNum, dbType)));
 		verifyElementsAreDisplayed("NOTE", transactionNote, addANote);
-		tap(Locator.ID, backBTN);
+		clickBack(1);
+		
 	}
 
 	public void loadNDALinksInBriefcase(String ndaLink) {

@@ -8,6 +8,7 @@ Background:
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And  user selects a "CMKA" 
+@CMKA
 @Smoke		
 @AMB-1120
 Scenario: 

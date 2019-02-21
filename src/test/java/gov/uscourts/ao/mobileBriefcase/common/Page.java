@@ -2,20 +2,22 @@ package gov.uscourts.ao.mobileBriefcase.common;
 
 import java.util.List;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.functions.ExpectedCondition;
 
 public class Page extends Base {
 
 	public static MobileElement waitForPresenceOfElementLocated(By element, WebDriver driver) {
-		return (MobileElement) new WebDriverWait(driver, 100)
+		return (MobileElement) new WebDriverWait(driver, 200)
 				.until(ExpectedConditions.presenceOfElementLocated((element)));
-
 	}
 
 	public static List<WebElement> waitForVisibilityOfAllElements(List<WebElement> elements, WebDriver driver) {
@@ -48,5 +50,7 @@ public class Page extends Base {
 			e.printStackTrace();
 		}
 	}
+
+
 
 }

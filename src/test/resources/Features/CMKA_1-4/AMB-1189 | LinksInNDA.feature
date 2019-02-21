@@ -20,8 +20,8 @@ Scenario Outline:
     followed by information about the docket entry and/or document. 
     
 	Then user  selects  case "<case>" that is in Briefcase for a judge.( "<dbType>" ) Verifies the docket entry page in Briefcase displays the docket entry( Open a Docket Entry in Briefcase from the NDA link) 
-	Then user verifies the document opens in briefcase by using the same "<case>" and "<dbType>" (Open a document in Briefcase from the NDA link). 
-	Then  user verifies the note opens in Briefcase by using the same "<case>" and "<dbType>"  (Open a note in Briefcase from the NDA link) 
+	#Then user verifies the document opens in briefcase by using the same "<case>" and "<dbType>" (Open a document in Briefcase from the NDA link). 
+	#Then  user verifies the note opens in Briefcase by using the same "<case>" and "<dbType>"  (Open a note in Briefcase from the NDA link) 
 	Examples: 
 	
 		|case    | dbType |

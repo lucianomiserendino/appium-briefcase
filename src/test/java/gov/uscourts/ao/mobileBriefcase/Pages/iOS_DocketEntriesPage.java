@@ -1,8 +1,8 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.*;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.BRIEFCASE_CT_ADMIN_DKT_VALUE;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.insertData;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SITE_TABLE_VARIABLE_VALUE;
 import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage.searchForACase;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
@@ -24,7 +24,7 @@ public class iOS_DocketEntriesPage extends AppiumPageFactory {
 	 * "briefcaseCtAdminDkt"
 	 */
 	public void changeValue(DBType dbType, String value) {
-		insertData(dbType, getID(BRIEFCASE_CT_ADMIN_DKT_VALUE, value));
+		insertData(dbType, getID(SITE_TABLE_VARIABLE_VALUE, value));
 	}
 
 

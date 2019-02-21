@@ -1,5 +1,5 @@
 Feature: Docket Entries for Chambers Users 
-
+@CMKA
 @Regression
 @AMB-1234 
 Scenario: 

@@ -2,9 +2,11 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.insertData;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CMR_CCR_ID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SET_SITE_TABLE_VARIABLE_VALUE;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
@@ -142,7 +144,16 @@ public class CommonPages extends AppiumPageFactory {
 		} catch (AssertionError e) {
 			e.getMessage();
 		} finally {
-			getActionName(getAllColumns(dbType, getID(ACTION_NAME, el_id)));
+			String actionName1 = "";
+			String actionName2 = getAllColumns(dbType, getID(ACTION_NAME, el_id));
+			if (actionName2.contains("'")) {
+				actionName1 += actionName2.split("'")[0];
+				getActionName(actionName1);
+
+			} else {
+				getActionName(actionName2);
+
+			}
 
 		}
 	}
@@ -174,6 +185,15 @@ public class CommonPages extends AppiumPageFactory {
 	public static String getCaseNumber(MobileElement caseNumber, int index) {
 		return caseNumber.getText().split(" ")[0].split("-")[index];
 
+	}
+
+	/**
+	 * This method changes the value of the site table variable
+	 * 
+	 */
+
+	public static void setValue(DBType dbType, String si_value, String si_code) {
+		insertData(dbType, replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE", si_value, "SI_CODE", si_code));
 	}
 
 	public static String getCase(Case caseN, MobileElement uiCaseNumber) {

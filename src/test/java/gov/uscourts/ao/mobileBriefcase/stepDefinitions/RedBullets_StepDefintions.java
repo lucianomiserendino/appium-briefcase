@@ -34,7 +34,7 @@ public class RedBullets_StepDefintions extends Base {
 		page = new iOS_RedBulletsPage();
 		assertEquals("WHEN CLOSING AND REOPENING THE APP ITEMS APPEAR AS NEW", afterViewingReferral,
 				afterViewingReferral1 += page.verifyRedBulletIsRemoved());
-		sleep(20000);
+		sleep(30000);
 		page1 = new iOS_LoginPage();
 		page1.logout();
 		safariInstance();

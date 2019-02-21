@@ -1,6 +1,6 @@
 Feature: Sorting on the Referral List Page 
 
-
+@CMKA
 @Smoke 
 @AMB-1010 
 Scenario Outline: 

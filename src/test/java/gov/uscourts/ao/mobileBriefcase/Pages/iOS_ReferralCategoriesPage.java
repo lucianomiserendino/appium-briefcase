@@ -98,7 +98,6 @@ public class iOS_ReferralCategoriesPage extends AppiumPageFactory {
 						findElementBy(Locator.XPATH, "//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '"
 								+ dbReferralCategories.get(i) + "')]"),
 						driver);
-				System.out.println(referrals.getText()+"********************************");
 				assertTrue(
 						"*****" + dbReferralCategories.get(i).toUpperCase() + " IS NOT DISPLAYED ON THE DASHBOARD*****",
 						referrals.isDisplayed());

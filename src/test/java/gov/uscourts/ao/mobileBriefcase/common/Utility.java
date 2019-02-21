@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
@@ -198,9 +197,9 @@ public class Utility extends Base {
 		return index - 1 - new Random().nextInt(index);
 	}
 
-	public static String getParameter(String value, int index) {
-		String[] parValue = value.substring(value.indexOf("(") + 1, value.indexOf(")") - 1).split(",");
-		return parValue[index].replaceAll("'", "");
+	public static String getParameter(String value, String dpfName, int index) {
+		String[] parValue = value.substring(value.indexOf(dpfName + "(")).split(",");
+		return parValue[index].split("'")[1];
 
 	}
 
@@ -213,7 +212,7 @@ public class Utility extends Base {
 
 	public static String clickOnNumberInRange(List<MobileElement> value) {
 		String text = "";
-		int index = getRandomNumberInRange(1, value.size()-1);
+		int index = getRandomNumberInRange(1, value.size() - 1);
 		text += value.get(index).getText().trim();
 		value.get(index).click();
 		return text;

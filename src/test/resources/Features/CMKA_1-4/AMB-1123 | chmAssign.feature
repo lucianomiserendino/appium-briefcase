@@ -1,6 +1,6 @@
 Feature: chmAssign 
 
-
+@CMKA 
 @Regression 
 @AMB-1123 
 @AMB-1137 
@@ -18,10 +18,10 @@ Scenario Outline:
 	Then User selects a userCategory "Appellate_Judges" and  name "Colloton" 
 	Then  User selects "<refCat>" and "<caseNum>" 
 	Then User  selects action using dbType "<dbType>" and  "<actionElID>"  and verifies the name of the action displays in the dark blue banner 
-	Then user creates a new assignment, checks the back-end, edits existing assignment and checks the db  by using "<dbType>", "<actionElID>", "<cha_ju_pe_id>", "<cmr_cyv_code>", "<cmr_cs_caseid>", "<caseNum>"); 
+	Then user creates a new assignment, checks the back-end, edits existing assignment and checks the db  by using "<dbType>", "<dpfName>" , "<actionElID>", "<cha_ju_pe_id>", "<cmr_cyv_code>", "<cmr_cs_caseid>", "<caseNum>"); 
 	#follow steps in @AMB-1123,@AMB-1137,@AMB-1170,@AMB-1173)
 	
 	
 	Examples: 
-		|dbType |actionElID   |cha_ju_pe_id|cmr_cs_caseid|dbtype|cmr_cyv_code|caseNum|refCat                 |caseNum|
-		|CMKA   |3116         |32          |82226        |CMKA  |prhr        |15-3314|PETITIONS_FOR_REHEARING|15-3314|
+		|dbType |actionElID   |cha_ju_pe_id|cmr_cs_caseid|dbtype|cmr_cyv_code|caseNum|refCat                 |caseNum|dpfName  |
+		|CMKA   |3116         |32          |82226        |CMKA  |prhr        |15-3314|PETITIONS_FOR_REHEARING|15-3314|chmAssign|

@@ -1,7 +1,7 @@
 Feature: Red bullet displays for new referrals and does not display for viewed referrals 
 
-
-
+@CMKA
+@Regression
 @AMB-1152 
 Scenario Outline: 
 	A red bullet icon displays next to referrals which the user has not viewed yet. 

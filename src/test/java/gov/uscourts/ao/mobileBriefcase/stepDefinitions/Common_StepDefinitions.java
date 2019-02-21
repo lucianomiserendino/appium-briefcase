@@ -3,6 +3,7 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Categories;
 
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
@@ -34,4 +35,10 @@ public class Common_StepDefinitions {
 		page.selectReferral(category, Categories);
 	}
 
+	@Given("^On \"([^\"]*)\" user sets the si_value of the site var to \"([^\"]*)\"  and si_code \"([^\"]*)\"$")
+	public void on_user_sets_the_si_value_of_the_site_var_to_and_si_code(String dbType, String si_value,
+			String si_code) {
+		page = new CommonPages();
+		page.setValue(valueOf(dbType), si_value, si_code);
+	}
 }

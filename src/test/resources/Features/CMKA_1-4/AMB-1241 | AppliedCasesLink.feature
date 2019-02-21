@@ -1,6 +1,6 @@
 Feature: Applied Cases link 
 
-
+@CMKA
 @Regression
 @AMB-1241
 Scenario: 
