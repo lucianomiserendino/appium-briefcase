@@ -6,6 +6,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.getParameter;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;
@@ -42,14 +43,17 @@ public class iOS_UIDocketingDPFPage extends AppiumPageFactory {
 		try {
 			if (getParameter(getAllColumns(dbType, getID(MBR_NOTE, el_id)), dpfName, 4).equals("SKIP")) {
 				// assertTrue(descriptionField.getText().equals("Transaction Note"));
-				System.out.println(descriptionField.getText() + "*********************");
-				System.out.println(descriptionField.getText() + "*********************");
+
+					System.out.println(descriptionField.getText()+"*****************");
+		
+			
 			} else {
 				String dbParam = replaceWithEmptyString(
 						getParameter(getAllColumns(dbType, getID(MBR_NOTE, el_id)), dpfName, 4), "\\");
 				String uiParam = replaceWithEmptyString(descriptionField.getText(), "'");
-				System.out.println(dbParam + "*********************");
-				System.out.println(uiParam + "*********************");
+		
+				System.out.println(dbParam+"*****************");
+				System.out.println(uiParam+"*****************");
 				// assertEquals("NOTE DESCRIPTION MISMATCH", dbParam, uiParam);
 
 			}

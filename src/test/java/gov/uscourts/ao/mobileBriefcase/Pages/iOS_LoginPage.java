@@ -79,7 +79,7 @@ public class iOS_LoginPage extends Base {
 	public MobileElement cm5a;
 
 	@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='nav']/XCUIElementTypeCell[2]")
+	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
 	public static MobileElement dashboard;
 
 	@WithTimeout(time = 15, unit = TimeUnit.SECONDS)

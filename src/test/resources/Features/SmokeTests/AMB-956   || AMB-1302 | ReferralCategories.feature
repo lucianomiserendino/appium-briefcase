@@ -20,7 +20,7 @@ Scenario Outline:
 	
 	Examples: 
 		|environment |userName          |password  |judgeName  |dbType       |PE_RT_CODE|server|
-		|INTEGRATION |chambers courtney |Test2021! |Colloton   |CMKA         | jud      |CMKA  |
+		|INTEGRATION |chambers courtney |Test2022! |Colloton   |CMKA         | jud      |CMKA  |
 		#|INTEGRATION |JAHaenni          |Test2021! |Benton|    |CMKA         | jud      |CMKA  |  
 		
 		

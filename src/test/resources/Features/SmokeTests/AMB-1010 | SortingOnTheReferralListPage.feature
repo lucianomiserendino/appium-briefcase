@@ -1,7 +1,7 @@
 Feature: Sorting on the Referral List Page 
 
-@CMKA
-@Smoke 
+
+#@Smoke 
 @AMB-1010 
 Scenario Outline: 
 	There is a sorting feature on the referral list page that enables users to sort referrals by date referred or case number.  
@@ -19,7 +19,7 @@ The default is by date referred in descending order (newest first).
 	
 	Examples: 
 		|environment   |userName          |password  |server         |refCategory       |
-		|INTEGRATION   |chambers courtney |Test2021! |CMKA           |Screening Panels  |
+		|INTEGRATION   |chambers courtney |Test2022! |CMKA           |Screening Panels  |
 		#|Testing       |judgewilliams   |Testpass1! |Test2017!|Appellate DC Installation Testing - CM3A  |Motion/Petition   | 
 		
 		

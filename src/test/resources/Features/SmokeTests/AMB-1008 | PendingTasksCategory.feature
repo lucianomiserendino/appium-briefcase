@@ -1,6 +1,6 @@
 Feature: Pending Tasks Category Displays on the Dashboard 
 
-@CMKA
+
 @Smoke 
 @AMB-1008 
 Scenario Outline: 
@@ -16,7 +16,7 @@ Scenario Outline:
 	
 	Examples: 
 		|environment   |userName          |password  |server        |pe_id        |dbtype|PE_RT_CODE|
-		|INTEGRATION   |chambers courtney |Test2021! |CMKA          |Colloton     |CMKA  |jud       |
+		|INTEGRATION   |chambers courtney |Test2022! |CMKA          |Colloton     |CMKA  |jud       |
 		#|Testing       |judgewilliams   |Testpass1! |Appellate DC Installation Testing - CM3A  |2189563|CM3A  |
 		
 		

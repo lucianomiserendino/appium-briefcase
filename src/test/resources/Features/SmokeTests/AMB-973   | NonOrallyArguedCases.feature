@@ -19,7 +19,7 @@ Scenario Outline:
 	
 	Examples: 
 		|environment   |userName          |password  |server        |judgeName |dbType |cmr_cyv_code|PE_RT_CODE|
-		|INTEGRATION   |chambers courtney |Test2021! |CMKA          |Colloton  |CMKA   | lbrrpt     |jud       |
+		|INTEGRATION   |chambers courtney |Test2022! |CMKA          |Colloton  |CMKA   | lbrrpt     |jud       |
 		#|Testing       |judgewilliams   |Testpass1!  |Appellate DC Installation Testing - CM3A |Williams  |CM3A|  | 
 		
 		
