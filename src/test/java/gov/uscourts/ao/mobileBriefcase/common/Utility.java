@@ -28,15 +28,17 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.offset.PointOption;
 
 public class Utility extends Base {
 
 	static SimpleDateFormat format1;
 	static SimpleDateFormat format2;
 
-	@SuppressWarnings({ "rawtypes", "deprecation" })
 	public static void tapByCoordinate(String xCoordinates, String yCoordinates) {
-		new TouchAction(driver).tap(getCoordinates(xCoordinates), getCoordinates(yCoordinates)).perform();
+		new TouchAction(driver)
+				.tap(new PointOption().withCoordinates(getCoordinates(xCoordinates), getCoordinates(yCoordinates)))
+				.perform();
 	}
 
 	public static int getCoordinates(String coordinates) {

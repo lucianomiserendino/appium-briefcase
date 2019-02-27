@@ -21,15 +21,15 @@ import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class iOS_RedBulletsPage extends AppiumPageFactory {
-	@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "Back")
 	public MobileElement back;
 
-	@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'Total')]")
 	public MobileElement unViewed;
 
-	@WithTimeout(time = 200, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 200, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/XCUIElementTypeCell/XCUIElementTypeStaticText[contains(@name, 'Viewed')]")
 	public List<MobileElement> unviewedReferrals;
 

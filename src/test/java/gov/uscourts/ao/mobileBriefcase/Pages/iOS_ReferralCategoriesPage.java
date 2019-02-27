@@ -43,15 +43,15 @@ import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class iOS_ReferralCategoriesPage extends AppiumPageFactory {
 
-	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "Pending Tasks")
 	public static MobileElement pendingTasks;
 
-	@WithTimeout(time = 30, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 30, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'Total')]")
 	public static MobileElement total;
 
-	@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='Categories']/XCUIElementTypeCell/XCUIElementTypeStaticText[2]")
 	public static List<MobileElement> referralCategories;
 

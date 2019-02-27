@@ -74,15 +74,15 @@ public class iOS_JudgeVoteDPFPage extends AppiumPageFactory {
 	@iOSFindBy(id = "Submit")
 	public static MobileElement submit;
 
-	@WithTimeout(time = 60, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 60, unit = TimeUnit.SECONDS)
 	@iOSFindBy(id = "Yes")
 	public static MobileElement yesBtn;
 
-	@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSFindBy(id = "OK")
 	public static MobileElement okBtn;
 
-	@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='nav']/XCUIElementTypeCell[2]")
 	public static MobileElement dashboard;
 

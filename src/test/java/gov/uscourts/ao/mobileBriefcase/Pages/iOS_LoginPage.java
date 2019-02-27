@@ -46,7 +46,7 @@ public class iOS_LoginPage extends Base {
 	@iOSFindBy(accessibility = "Production")
 	public MobileElement production;
 
-	@WithTimeout(time = 200, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 200, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "Integration")
 	public MobileElement integration;
 
@@ -68,7 +68,7 @@ public class iOS_LoginPage extends Base {
 	@FindBy(partialLinkText = "Send Key to Device")
 	public WebElement sendKeyButton;
 
-	@WithTimeout(time = 300, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 300, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "Appellate DC Development - CMKA")
 	public MobileElement cmka;
 
@@ -78,11 +78,11 @@ public class iOS_LoginPage extends Base {
 	@iOSFindBy(accessibility = "Appellate DC Development - CM5A")
 	public MobileElement cm5a;
 
-	@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
 	public static MobileElement dashboard;
 
-	@WithTimeout(time = 15, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 15, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
 	public MobileElement selectUser;
 

@@ -30,11 +30,11 @@ import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class iOS_StaffAttorneyPage extends AppiumPageFactory {
 
-	@WithTimeout(time = 15, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 15, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'Senior Staff Attorney')]")
 	public static MobileElement staffAttorney;
 
-	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
 	public static MobileElement selectUser;
 

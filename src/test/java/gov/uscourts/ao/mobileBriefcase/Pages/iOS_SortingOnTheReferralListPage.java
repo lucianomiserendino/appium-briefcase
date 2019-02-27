@@ -14,11 +14,11 @@ import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class iOS_SortingOnTheReferralListPage extends AppiumPageFactory {
 
-	@WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/child::*//*[contains(@name, 'Date')]")
 	public static List<MobileElement> dates;
 
-	@WithTimeout(time = 60, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 60, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'Sort')]")
 	public static MobileElement sortArrowBtn;
 
@@ -31,7 +31,7 @@ public class iOS_SortingOnTheReferralListPage extends AppiumPageFactory {
 	@iOSFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Case')])[1]")
 	public static MobileElement caseDownArrowBtn;
 
-	@WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/child::*//*[contains(@name, '-')]")
 	public static List<MobileElement> cases;
 

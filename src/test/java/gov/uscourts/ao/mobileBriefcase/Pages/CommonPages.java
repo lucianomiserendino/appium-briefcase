@@ -28,23 +28,23 @@ import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class CommonPages extends AppiumPageFactory {
 
-	@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "PendingTasksList")
 	public MobileElement PendingTasksList;
 
-	@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "ReferralsList")
 	public static MobileElement ReferralsList;
 
-	@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "SessionGroups")
 	public MobileElement SessionGroups;
 
-	@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "DocumentList")
 	public static MobileElement DocumentList;
 
-	@WithTimeout(time = 20, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 20, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "Categories")
 	public static MobileElement Categories;
 

@@ -50,7 +50,7 @@ public class iOS_AssignmentsPage extends AppiumPageFactory {
 
 	public static final String ASSIGNMENT_ASSIGNED_NOTE_TEXT = "Assignment date type note.";
 
-	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
 	public static MobileElement selectUser;
 
@@ -72,7 +72,7 @@ public class iOS_AssignmentsPage extends AppiumPageFactory {
 	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='Private Note - Assignment Assigned Note']/XCUIElementTypeOther/XCUIElementTypeStaticText[2]")
 	public static MobileElement assignmentAssignedNoteText;
 
-	@WithTimeout(time = 5, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 5, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'Assignments')]")
 	public static MobileElement assignments;
 

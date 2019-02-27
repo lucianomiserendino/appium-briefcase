@@ -40,15 +40,15 @@ import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class iOS_DBDocketingDPFPage extends AppiumPageFactory {
 
-	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTextView[1]")
 	public static MobileElement descriptionField;
 
-	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTextView[2]")
 	public static MobileElement commentField;
 
-	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
 	public static MobileElement selectUser;
 
@@ -58,7 +58,7 @@ public class iOS_DBDocketingDPFPage extends AppiumPageFactory {
 	@iOSFindBy(id = "Yes")
 	public static MobileElement YESbtn;
 
-	@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSFindBy(id = "OK")
 	public static MobileElement OKbtn;
 

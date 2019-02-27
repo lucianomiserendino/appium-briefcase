@@ -20,7 +20,7 @@ import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class iOS_UIDocketingDPFPage extends AppiumPageFactory {
 
-	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTextView[1]")
 	public static MobileElement descriptionField;
 

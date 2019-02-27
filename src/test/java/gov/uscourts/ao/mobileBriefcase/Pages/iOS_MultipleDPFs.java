@@ -26,7 +26,7 @@ import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class iOS_MultipleDPFs extends AppiumPageFactory {
 
-	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTextView[2]")
 	public static MobileElement commentField;
 

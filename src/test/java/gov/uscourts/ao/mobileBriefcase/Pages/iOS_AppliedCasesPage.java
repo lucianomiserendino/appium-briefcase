@@ -19,11 +19,11 @@ import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class iOS_AppliedCasesPage extends AppiumPageFactory {
 
-	@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[2]")
 	public MobileElement bookmarkBTN;
 
-	@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Bookmarked'])[1]")
 	public MobileElement bookOnDashboard;
 

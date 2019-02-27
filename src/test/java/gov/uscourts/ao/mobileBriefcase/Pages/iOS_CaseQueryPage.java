@@ -31,7 +31,7 @@ public class iOS_CaseQueryPage extends AppiumPageFactory {
 	@iOSFindBy(accessibility = "ResultsList")
 	public static MobileElement category;
 
-	@WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
+	//@WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/child::*//*[contains(@name, '-')]")
 	public static List<MobileElement> cases;
 

@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.offset.PointOption;
 
 public class Coordinates extends Base {
 
@@ -37,9 +38,9 @@ public class Coordinates extends Base {
 	}
 
 	public static TouchAction tapByCoordinates(int x, int y) {
-		return new TouchAction(driver).tap(x, y).perform();
-
+		return new TouchAction(driver).tap(new PointOption().withCoordinates(x, y)).perform();
 	}
+
 
 	public enum BriefcaseCoordinates {
 
