@@ -58,9 +58,9 @@ public class Queries {
 			+ " WHERE smr_mrc_id = mrc_id and smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
 			+ " WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa'  order by mrc_name";
 
-	public static final String ID_OF_THE_REFERRAL_CATEGORY = "SELECT mrc_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
+	public static final String ID_OF_THE_REFERRAL_CATEGORY = "SELECT distinct(mrc_id),mrc_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
 			+ " WHERE smr_mrc_id = mrc_id and smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
-			+ " WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa' and mrc_name='MRC_NAME' order by mrc_name";
+			+ " WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa') and  mrc_name='MRC_NAME'  and smr_sfa_code = 'sstfa'";
 
 	/** Query to to find the number of referrals in each categories */
 	public static final String REFERRAL_NUMBERS = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = SMR_MRC_ID "

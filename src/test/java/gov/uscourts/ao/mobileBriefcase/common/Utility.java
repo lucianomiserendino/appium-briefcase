@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
@@ -170,7 +169,7 @@ public class Utility extends Base {
 				uiResult = findElementBy(Locator.XPATH, xpath + "[contains(@name, '" + dbResult.get(i) + "')]");
 
 				if (uiResult.isDisplayed())
-					isDisplayed = true;
+				isDisplayed = true;
 			}
 		} catch (AssertionError e) {
 			isDisplayed = false;
@@ -182,7 +181,8 @@ public class Utility extends Base {
 	public static void expandPanel(String element) {
 		try {
 
-			MobileElement referral = findElementBy(Locator.XPATH, containsElement(element));
+			MobileElement referral = findElementBy(Locator.XPATH, "(//XCUIElementTypeStaticText[@name='" + element
+					+ "']/following::XCUIElementTypeOther/XCUIElementTypeStaticText)[1]");
 			if (referral.isDisplayed() && referral.getText().contains("(")) {
 				referral.click();
 			}
@@ -201,8 +201,8 @@ public class Utility extends Base {
 
 	public static String getParameter(String value, String dpfName, int index) {
 		String[] parValue = value.substring(value.indexOf(dpfName + "(")).split(",");
-		return parValue[index].split("'")[1];
-
+		// return parValue[index].split("'")[1];
+		return parValue[index];
 	}
 
 	public static int getRandomNumberInRange(int min, int max) {
@@ -236,6 +236,14 @@ public class Utility extends Base {
 	public static void replace(String text) {
 		if (text.contains(" "))
 			text.replace(" ", "_");
+	}
+
+	public static String toArray(List<String> num) {
+		String id = "";
+		Object[] objects = num.toArray();
+		for (Object obj : objects)
+			id += obj;
+		return id;
 	}
 
 }

@@ -7,17 +7,17 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
-import gov.uscourts.ao.mobileBriefcase.Pages.iOS_VoteInformationPage;
-import gov.uscourts.ao.mobileBriefcase.Pages.iOS_VoteInformationPage.FILERs_INFO;
+import gov.uscourts.ao.mobileBriefcase.Pages.VoteInformationPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.VoteInformationPage.FILERs_INFO;
 
 public class VoteInformation_StepDefinitions {
-	iOS_VoteInformationPage page;
+	VoteInformationPage page;
 	CommonPages page1;
 
 	@Given("^User observes \\( \"([^\"]*)\" \\) the \"([^\"]*)\" panel displays\\.   This should only display if the referral requires voting$")
 	public void user_observes_the_panel_displays_This_should_only_display_if_the_referral_requires_voting(String dbType,
 			String voteInfo) {
-		page = new iOS_VoteInformationPage();
+		page = new VoteInformationPage();
 		page.getVoteInformationPanel(valueOf(dbType), voteInfo);
 
 	}
@@ -54,7 +54,7 @@ public class VoteInformation_StepDefinitions {
 	@When("^user  selects action \"([^\"]*)\" , user verifies the name of the action , \"([^\"]*)\",a toggle under the Enter Vote banner and the label \"([^\"]*)\"  displays$")
 	public void user_selects_action_user_verifies_the_name_of_the_action_a_toggle_under_the_Enter_Vote_banner_and_the_label_displays(
 			String action, String enterVote, String label) {
-		page = new iOS_VoteInformationPage();
+		page = new VoteInformationPage();
 		page.verifyElementsAreDisplayed(action, enterVote, label);
 	}
 

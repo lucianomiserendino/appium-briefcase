@@ -5,11 +5,11 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
-import gov.uscourts.ao.mobileBriefcase.Pages.iOS_AssignmentsPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.AssignmentsPage;
 
 public class Assignments_StepDefinitions {
 
-	iOS_AssignmentsPage page;
+	AssignmentsPage page;
 
 	@Then("^User  observes a collapsible panel entitled \"([^\"]*)\" displays and expands the Assignments panel$")
 	public void user_observes_a_collapsible_panel_entitled_displays_and_expands_the_Assignments_panel(
@@ -19,7 +19,7 @@ public class Assignments_StepDefinitions {
 
 	@Then("^User observes there is an assignment for \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_observes_there_is_an_assignment_for_and(String assignmentForKyle, String assignmentForEssley) {
-		page = new iOS_AssignmentsPage();
+		page = new AssignmentsPage();
 		page.getAssignmentLinkedtoTheReferral(assignmentForKyle, assignmentForEssley);
 
 	}

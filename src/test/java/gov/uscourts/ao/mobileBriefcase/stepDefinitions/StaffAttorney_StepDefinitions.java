@@ -6,32 +6,31 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SAs_ASSIGNMENT_CAT
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import gov.uscourts.ao.mobileBriefcase.Pages.iOS_StaffAttorneyPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.StaffAttorneyPage;
 
 public class StaffAttorney_StepDefinitions {
-	iOS_StaffAttorneyPage page;
+	StaffAttorneyPage page;
 
 	@Given("^User verifies Data is displayed on the Dashboard, retrieves categories from \"([^\"]*)\"$")
 	public void user_verifies_Data_is_displayed_on_the_Dashboard_retrieves_categories_from(String dbType) {
-		page = new iOS_StaffAttorneyPage();
+		page = new StaffAttorneyPage();
 		page.verifyDataOnTheDashboard(dbType, SAs_ASSIGNMENT_CATEGORIES);
 	}
 
 	@Given("^User selects assignment type \"([^\"]*)\"$")
 	public void user_selects_assignment_type(String assignmentType) {
-		page = new iOS_StaffAttorneyPage();
+		page = new StaffAttorneyPage();
 		page.selectAssignmentType(assignmentType);
 	}
 
-	@When("^User observes there are six referral categories listed\\.$")
-	public void user_observes_there_are_six_referral_categories_listed() {
-		page.osberveReferralCategories();
-
+	@When("^User observes there are six referral categories listed on UI and DB \"([^\"]*)\"$")
+	public void user_observes_there_are_six_referral_categories_listed_on_UI_and_DB(String dbType) {
+		page.osberveReferralCategories(valueOf(dbType));
 	}
 
 	@Then("^User selects category \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_selects_category_and(String category, String caseNum) {
-		page = new iOS_StaffAttorneyPage();
+		page = new StaffAttorneyPage();
 		page.tapOnReferralCategory(category, caseNum);
 	}
 

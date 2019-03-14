@@ -5,22 +5,22 @@ import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Categories;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
-import gov.uscourts.ao.mobileBriefcase.Pages.iOS_AppliedCasesPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.AppliedCasesPage;
 
 public class AppliedCases_StepDefinitions {
 	CommonPages page1;
-	iOS_AppliedCasesPage page;
+	AppliedCasesPage page;
 String caseN="";
 	@Then("^user checks if \"([^\"]*)\" is bookmarked$")
 	public void user_checks_if_is_bookmarked(String caseNumber) {
-		page = new iOS_AppliedCasesPage();
+		page = new AppliedCasesPage();
 		caseN+=caseNumber;
 		page.getBookmarkedReferral(caseN);
 	}
 
 	@When("^User selects \"([^\"]*)\" for panel \"([^\"]*)\"$")
 	public void user_selects_for_panel(String date, String panel) {
-		page = new iOS_AppliedCasesPage();
+		page = new AppliedCasesPage();
 		page.selectDate(date, panel);
 	}
 
@@ -35,7 +35,7 @@ String caseN="";
 			String panel) {
 		page1 = new CommonPages();
 		page1.selectReferral(category, Categories);
-		page = new iOS_AppliedCasesPage();
+		page = new AppliedCasesPage();
 		page.selectDate(date, panel);
 		page.verifyAppliedCaseLinkIsDisplayed(caseN);
 	}

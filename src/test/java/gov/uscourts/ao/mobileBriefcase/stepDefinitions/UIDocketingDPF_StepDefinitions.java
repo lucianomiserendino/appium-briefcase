@@ -3,14 +3,14 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 
 import cucumber.api.java.en.Then;
-import gov.uscourts.ao.mobileBriefcase.Pages.iOS_UIDocketingDPFPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.UIDocketingDPFPage;
 
 public class UIDocketingDPF_StepDefinitions {
-	iOS_UIDocketingDPFPage page;
+	UIDocketingDPFPage page;
 
 	@Then("^User verifies the text \"([^\"]*)\" displays in the light blue banner\\.$")
 	public void user_verifies_the_text_displays_in_the_light_blue_banner(String text) {
-		page = new iOS_UIDocketingDPFPage();
+		page = new UIDocketingDPFPage();
 		page.verifyElementIsDisplayed(text);
 	}
 

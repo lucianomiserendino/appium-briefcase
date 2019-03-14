@@ -6,10 +6,10 @@ import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
-import gov.uscourts.ao.mobileBriefcase.Pages.iOS_MultipleDPFs;
+import gov.uscourts.ao.mobileBriefcase.Pages.MultipleDPFs;
 
 public class MultipleDPFs_StepDefinitions {
-	iOS_MultipleDPFs page;
+	MultipleDPFs page;
 	CommonPages page1;
 
 	@Then("^create a staff assignment  by using \"([^\"]*)\", \"([^\"]*)\" , \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
@@ -21,13 +21,13 @@ public class MultipleDPFs_StepDefinitions {
 		page1.verifyElementIsDisplayed("New Staff Assignment");
 		contains("New Staff Assignment").click();
 		page1.verifyElementIsDisplayed("Create Assignment");
-		page = new iOS_MultipleDPFs();
+		page = new MultipleDPFs();
 		page.createAnAssignment(valueOf(dbType), dpfName, elId, cha_ju_pe_id, cmr_cyv_code, cmr_cs_caseid);
 	}
 
 	@Then("^user adds a Note in the comment field$")
 	public void user_adds_a_Note_in_the_comment_field() {
-		page = new iOS_MultipleDPFs();
+		page = new MultipleDPFs();
 		page.addANote();
 	}
 

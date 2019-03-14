@@ -17,34 +17,31 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utility.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.splitBy;
 import static org.junit.Assert.assertTrue;
 
-import java.util.concurrent.TimeUnit;
-
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class CommonPages extends AppiumPageFactory {
 
-	//@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "PendingTasksList")
 	public MobileElement PendingTasksList;
 
-	//@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "ReferralsList")
 	public static MobileElement ReferralsList;
 
-	//@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "SessionGroups")
 	public MobileElement SessionGroups;
 
-	//@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "DocumentList")
 	public static MobileElement DocumentList;
 
-	//@WithTimeout(time = 20, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 20, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "Categories")
 	public static MobileElement Categories;
 
@@ -160,7 +157,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	public static void getActionName(String element) {
 		findElementAndScrollDown(Locator.XPATH,
-				"//XCUIElementTypeTable[@name='DocumentList']/XCUIElementTypeCell//*[contains(@name, '" + element
+				"//XCUIElementTypeOther[@name='DocumentList']//XCUIElementTypeStaticText[contains(@name, '" + element
 						+ "')]",
 				DocumentList);
 	}

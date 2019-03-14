@@ -2,7 +2,7 @@ Feature: Display reliefs in Vote Info panel/judgeVote DPF for applied cases
 
 
 
-@AMB-1008 
+@AMB-1292
 Scenario: 
 	Given  User Navigates to  "INTEGRATION" environment 
 	When  User enters Credentials to Login "judge werner" and "Test2019!" 

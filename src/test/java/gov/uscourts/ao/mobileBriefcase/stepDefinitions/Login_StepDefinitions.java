@@ -3,17 +3,17 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.LoginPage;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.common.iOSCapabilities;
 
 public class Login_StepDefinitions extends Base implements iOSCapabilities {
 
-	iOS_LoginPage logPage;
+	LoginPage logPage;
 
 	@Given("^User Navigates to  \"([^\"]*)\" environment$")
 	public void user_Navigates_to_environment(String env) {
-		logPage = new iOS_LoginPage();
+		logPage = new LoginPage();
 		logPage.selectEnvironment(env);
 		changeWindow("WEBVIEW");
 

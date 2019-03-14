@@ -1,6 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage.logout;
+import static gov.uscourts.ao.mobileBriefcase.Pages.LoginPage.logout;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;

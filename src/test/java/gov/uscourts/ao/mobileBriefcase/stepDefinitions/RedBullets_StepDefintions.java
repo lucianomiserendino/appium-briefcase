@@ -4,19 +4,19 @@ import static gov.uscourts.ao.mobileBriefcase.common.Page.sleep;
 import static org.junit.Assert.assertEquals;
 
 import cucumber.api.java.en.Then;
-import gov.uscourts.ao.mobileBriefcase.Pages.iOS_LoginPage;
-import gov.uscourts.ao.mobileBriefcase.Pages.iOS_RedBulletsPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.LoginPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.RedBulletsPage;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
 
 public class RedBullets_StepDefintions extends Base {
-	iOS_RedBulletsPage page;
-	iOS_LoginPage page1;
+	RedBulletsPage page;
+	LoginPage page1;
 	int afterViewingReferral = 0;
 	int afterViewingReferral1 = 0;
 
 	@Then("^User selects a category that has unviewed referrals and verifies that the red bullet icon displays next to any unviewed referrals$")
 	public void user_selects_a_category_that_has_unviewed_referrals_and_verifies_that_the_red_bullet_icon_displays_next_to_any_unviewed_referrals() {
-		page = new iOS_RedBulletsPage();
+		page = new RedBulletsPage();
 		page.getUnviewedReferral();
 
 	}
@@ -31,11 +31,11 @@ public class RedBullets_StepDefintions extends Base {
 	public void user_closes_the_app_and_reopen_and_go_back_to_the_category_that_contains_the_referral_that_was_just_viewed() {
 		driver.closeApp();
 		Base.getInstance(Driver.IOS);
-		page = new iOS_RedBulletsPage();
+		page = new RedBulletsPage();
 		assertEquals("WHEN CLOSING AND REOPENING THE APP ITEMS APPEAR AS NEW", afterViewingReferral,
 				afterViewingReferral1 += page.verifyRedBulletIsRemoved());
 		sleep(30000);
-		page1 = new iOS_LoginPage();
+		page1 = new LoginPage();
 		page1.logout();
 		safariInstance();
 		driver.close();
@@ -43,7 +43,7 @@ public class RedBullets_StepDefintions extends Base {
 
 	@Then("^User goes back to the category that contains the referral that was just viewed and verify the bullet does not display$")
 	public void user_goes_back_to_the_category_that_contains_the_referral_that_was_just_viewed_and_verify_the_bullet_does_not_display() {
-		page = new iOS_RedBulletsPage();
+		page = new RedBulletsPage();
 
 		assertEquals("WHEN CLOSING AND REOPENING THE APP ITEMS APPEAR AS NEW", afterViewingReferral,
 				page.verifyRedBulletIsRemoved());
