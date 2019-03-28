@@ -42,9 +42,8 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 	public void getDefaulDescription(DBType dbType, String dpfName, String el_id) {
 		try {
 			if (getParameter(getAllColumns(dbType, getID(MBR_NOTE, el_id)), dpfName, 4).equals("SKIP")) {
-				// assertTrue(descriptionField.getText().equals("Transaction Note"));
+				 assertTrue(descriptionField.getText().equals("Transaction Note"));
 
-					System.out.println(descriptionField.getText()+"*****************");
 		
 			
 			} else {
@@ -52,9 +51,7 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 						getParameter(getAllColumns(dbType, getID(MBR_NOTE, el_id)), dpfName, 4), "\\");
 				String uiParam = replaceWithEmptyString(descriptionField.getText(), "'");
 		
-				System.out.println(dbParam+"*****************");
-				System.out.println(uiParam+"*****************");
-				// assertEquals("NOTE DESCRIPTION MISMATCH", dbParam, uiParam);
+				assertEquals("NOTE DESCRIPTION MISMATCH", dbParam, uiParam);
 
 			}
 		} catch (Exception e) {

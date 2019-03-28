@@ -1,7 +1,7 @@
 Feature: Pending Tasks Category Displays on the Dashboard 
 
 
-@Smoke 
+#@Smoke 
 @AMB-1008 
 Scenario Outline: 
 	A category entitled "Pending Tasks" will display on the dashboard if the judge has 

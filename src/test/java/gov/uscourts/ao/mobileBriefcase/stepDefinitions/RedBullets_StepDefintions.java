@@ -44,7 +44,6 @@ public class RedBullets_StepDefintions extends Base {
 	@Then("^User goes back to the category that contains the referral that was just viewed and verify the bullet does not display$")
 	public void user_goes_back_to_the_category_that_contains_the_referral_that_was_just_viewed_and_verify_the_bullet_does_not_display() {
 		page = new RedBulletsPage();
-
 		assertEquals("WHEN CLOSING AND REOPENING THE APP ITEMS APPEAR AS NEW", afterViewingReferral,
 				page.verifyRedBulletIsRemoved());
 	}

@@ -27,7 +27,7 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class StaffAttorneyPage extends AppiumPageFactory {
-
+	CommonPages page = new CommonPages();
 	// @WithTimeout(time = 15, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'Senior Staff Attorney')]")
 	public static MobileElement staffAttorney;
@@ -37,7 +37,10 @@ public class StaffAttorneyPage extends AppiumPageFactory {
 	public static MobileElement selectUser;
 
 	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name='▷']")
-	public static List<MobileElement> unViewed;
+	public static List<MobileElement> right;
+
+	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name='▽']")
+	public static List<MobileElement> down;
 
 	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='▽'])[1]")
 	public static MobileElement viewed;
@@ -64,20 +67,8 @@ public class StaffAttorneyPage extends AppiumPageFactory {
 	 * referrals in each categories, matches the number of referrals in the DB
 	 */
 	public void osberveReferralCategories(DBType dbType) {
-		getCollapsiblePanel(dbType, SAs_REFERRAL_CATEGORIES);
+		page.getCollapsiblePanel(dbType, SAs_REFERRAL_CATEGORIES);
 		getReferralCategories(dbType);
-	}
-
-	public void getCollapsiblePanel(DBType dbType, String refCategory) {
-		List<String> category = executeQuery(dbType, refCategory);
-
-		if (unViewed.size() < category.size()) {
-			for (int i = 0; i < category.size(); i++) {
-				if (viewed.isDisplayed()) {
-					viewed.click();
-				}
-			}
-		}
 	}
 
 	public static void getReferralCategories(DBType dbType) {
@@ -108,11 +99,11 @@ public class StaffAttorneyPage extends AppiumPageFactory {
 
 						dbRefCategories.add(category.get(i) + " (" + refNumbers.get(k) + ")");
 					}
-
 				}
 			}
 			assertEquals("NUMBER OF REFERRALS IN EACH CATEGORIES, DOESN'T MATCH THE NUMBER OF REFERRALS IN THE DB",
 					dbRefCategories, uiRefCategories);
+
 		} catch (Exception e) {
 			e.getMessage();
 		}
@@ -128,8 +119,7 @@ public class StaffAttorneyPage extends AppiumPageFactory {
 	}
 
 	public void tapOnReferralCategory(String category, String caseNumber) {
-		// expandPanel(category);
-		getCollapsiblePanel(DBType.CMKA, SAs_REFERRAL_CATEGORIES);
+		page.getCollapsiblePanel(DBType.CMKA, SAs_REFERRAL_CATEGORIES);
 		findElementBy(Locator.XPATH, containsElement(category)).click();
 		findElementBy(Locator.XPATH, containsElement(caseNumber)).click();
 
@@ -150,29 +140,36 @@ public class StaffAttorneyPage extends AppiumPageFactory {
 	}
 
 	public void getCategories(DBType dbType, String refID) {
-		getCollapsiblePanel(dbType, getDocCategories(dbType, refID));
-		assertTrue(elementIsDisplayed(dbType, getDocCategories(dbType, refID), "//XCUIElementTypeStaticText"));
+		page.getCollapsiblePanel(dbType, getDocCategories(dbType, refID));
 		assertTrue(getDocuments(refID, dbType));
 	}
 
 	public boolean getDocuments(String refID, DBType dbType) {
-
 		boolean isDisplayed = false;
-		List<String> docCategory = executeQuery(dbType, getDocCategories(dbType, refID));
-		sort(docCategory);
-
+		MobileElement uiDocs = null;
+		List<String> dbDocs = executeQuery(dbType, getDocCategories(dbType, refID));
+		sort(dbDocs);
 		try {
-			for (int i = 0; i < docCategory.size(); ++i) {
+			for (int i = 0; i < dbDocs.size(); ++i) {
+
+				uiDocs = findElementBy(Locator.XPATH,
+						"//XCUIElementTypeStaticText[contains(@name, '" + dbDocs.get(i) + "')]");
+
+				if (uiDocs.isDisplayed())
+					isDisplayed = true;
+
+				uiDocs.click();
 
 				List<String> docDesc = executeQuery(dbType, replace(DOCUMENT_DESCRIPTION, "CMD_DOC_CATEGORY",
-						docCategory.get(i), "SMR_MRC_ID", toArray(getDocumentCategories(dbType, refID))));
+						dbDocs.get(i), "SMR_MRC_ID", toArray(getDocumentCategories(dbType, refID))));
 				for (int j = 0; j < docDesc.size(); j++) {
 
-					MobileElement uiResult = findElementBy(Locator.XPATH, containsElement(docCategory.get(i)
+					MobileElement uiResult = findElementBy(Locator.XPATH, containsElement(dbDocs.get(i)
 							+ "')]/following:: XCUIElementTypeStaticText[contains(@name, '" + docDesc.get(j)));
 
 					if (uiResult.isDisplayed())
 						isDisplayed = true;
+
 				}
 			}
 		} catch (Exception e) {

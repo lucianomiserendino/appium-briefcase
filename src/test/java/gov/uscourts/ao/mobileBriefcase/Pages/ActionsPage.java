@@ -5,17 +5,13 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.APPLICABLE_ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.DocumentList;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForVisibilityOfElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.expandPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.findElementAndScrollDown;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrolldown;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.NoSuchElementException;
@@ -28,10 +24,11 @@ public class ActionsPage extends AppiumPageFactory {
 
 	public void getApplicableActions(String dbType, String panel, String cmr_id) {
 		performPageLoad(driver);
-
-		findElementAndScrollDown(Locator.XPATH, containsElement(panel), DocumentList);
+		// getCollapsiblePanel();
+		// findElementAndScrollDown(Locator.XPATH, containsElement(panel),
+		// DocumentList);
 		try {
-			expandPanel(panel);
+			// expandPanel(panel);
 			actionIsDisplayed(dbType, DocumentList, cmr_id);
 
 		} catch (AssertionError e) {
@@ -78,7 +75,5 @@ public class ActionsPage extends AppiumPageFactory {
 			}
 		}
 	}
-	
-
 
 }

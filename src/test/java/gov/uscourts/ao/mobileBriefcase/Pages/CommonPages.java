@@ -1,5 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.insertData;
@@ -11,11 +12,15 @@ import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForVisibilityOfElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.expandPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.findElementAndScrollDown;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.splitBy;
 import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
@@ -45,6 +50,14 @@ public class CommonPages extends AppiumPageFactory {
 	@iOSFindBy(accessibility = "Categories")
 	public static MobileElement Categories;
 
+	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name='▷']")
+	public static List<MobileElement> right;
+
+	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name='▽']")
+	public static List<MobileElement> down;
+
+	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='▽'])[1]")
+	public static MobileElement viewed;
 	public void getCategory(Category category, String caseNumber) {
 
 		String categories = "";
@@ -130,10 +143,27 @@ public class CommonPages extends AppiumPageFactory {
 		expandPanel(panels);
 	}
 
+	public void getCollapsiblePanel(DBType dbType, String refCategory) {
+		List<String> category = executeQuery(dbType, refCategory);
+		try {
+			if (right.size() < category.size() && down.size() > 0) {
+		
+				for (int i = 0; i < category.size(); i++) {
+					waitForVisibilityOfElement(viewed, driver).click();
+				}
+			}
+		} catch (NoSuchElementException e) {
+			assertTrue(right.size() == category.size());
+
+		}
+	}
+
 	public static void selectAction(DBType dbType, String panel, String el_id) {
 
 		performPageLoad(driver);
-		findElementAndScrollDown(Locator.XPATH, containsElement(panel), DocumentList);
+		// findElementAndScrollDown(Locator.XPATH, containsElement(panel),
+		// DocumentList);
+		//getCollapsiblePanel();
 		try {
 			replace(panel);
 			getPanel(Panel.valueOf(panel));

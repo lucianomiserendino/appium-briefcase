@@ -27,7 +27,7 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 
 	String backBTN = "Back";
 
-	String event = "Event";
+	String event = "AO - chmSendRef";
 
 	String docketText = "Docket Text";
 
@@ -114,7 +114,7 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 		searchForACase(caseNum);
 		loadNDALinksInBriefcase(getDktentryid(caseNum, dbType));
 		verifyElementsAreDisplayed("DOCKET ENTRY", event, docketText);
-		//clickBack(4);
+		// clickBack(4);
 	}
 
 	/** Open a document in Briefcase from the NDA link */
@@ -135,7 +135,7 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 		loadNDALinksInBriefcase(getDocumentAndNoteID(caseNum, dbType, getDocID(ID.NOTE_ID, caseNum, dbType)));
 		verifyElementsAreDisplayed("NOTE", transactionNote, addANote);
 		clickBack(1);
-		
+
 	}
 
 	public void loadNDALinksInBriefcase(String ndaLink) {

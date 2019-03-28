@@ -13,7 +13,7 @@ Scenario:
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And  user selects a "CMKA" 
-	Then User selects a userCategory "Staff_Attorneys" and  name "Brown, Benjamin" 
+	Then User selects a userCategory "Staff_Attorneys" and  name "Tang" 
 	Given User verifies Data is displayed on the Dashboard, retrieves categories from "CMKA" 
 	
 	

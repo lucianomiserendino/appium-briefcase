@@ -2,6 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
@@ -50,10 +52,11 @@ public class Utility extends Base {
 		Boolean elementNotFound = true;
 		while (elementNotFound) {
 			try {
-				MobileElement elem = findElementBy(locator, element);
 
-				if (elem.isDisplayed()) {
+				List<MobileElement> elems = findElements(By.xpath(element));
+				if (elems.size() > 0) {
 					try {
+						MobileElement elem = findElementBy(locator, element);
 						elem.click();
 						break;
 					} catch (WebDriverException e) {
@@ -72,15 +75,18 @@ public class Utility extends Base {
 	}
 
 	public static void scrolldown(MobileElement el) {
+	
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		Map<String, Object> params = new HashMap<>();
 		params.put(DURATION, getProperty(DURATION));
+		
 		params.put(FROM_X, getProperty(FROM_X));
 		params.put(FROM_Y, getProperty(FROM_Y));
 		params.put(TO_X, getProperty(TO_X));
 		params.put(TO_Y, getProperty(TO_Y));
 		((MobileElement) el).getId();
 		js.executeScript("mobile: dragFromToForDuration", params);
+		
 	}
 
 	public static List<String> retrieveAllCases(List<MobileElement> elements, String split, int index) {
@@ -169,7 +175,7 @@ public class Utility extends Base {
 				uiResult = findElementBy(Locator.XPATH, xpath + "[contains(@name, '" + dbResult.get(i) + "')]");
 
 				if (uiResult.isDisplayed())
-				isDisplayed = true;
+					isDisplayed = true;
 			}
 		} catch (AssertionError e) {
 			isDisplayed = false;

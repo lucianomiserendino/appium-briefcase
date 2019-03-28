@@ -15,45 +15,39 @@ import static gov.uscourts.ao.mobileBriefcase.Pages.LoginPage.dashboard;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForVisibilityOfElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.expandPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.getNumOfDisplayedCases;
-import static java.lang.Integer.valueOf;
 import static java.util.Arrays.asList;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class ReferralCategoriesPage extends AppiumPageFactory {
-
-	//@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	CommonPages page = new CommonPages();
+	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "Pending Tasks")
 	public static MobileElement pendingTasks;
 
-	//@WithTimeout(time = 30, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 30, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'Total')]")
 	public static MobileElement total;
 
-	//@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='Categories']/XCUIElementTypeCell/XCUIElementTypeStaticText[2]")
-	public static List<MobileElement> referralCategories;
+	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
+	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
+	public static List<MobileElement> navIcons;
 
 	public String verifyIfPendingTasksAreDisplayed() {
 		if (pendingTasks.isDisplayed()) {
@@ -71,9 +65,9 @@ public class ReferralCategoriesPage extends AppiumPageFactory {
 	public void getPendingTasks(DBType dbtype, String query) {
 		List<String> DBPendingTasks = executeQuery(dbtype, query);
 		if (DBPendingTasks.size() > 0) {
-		List<String> UIPendingTasks = asList(verifyIfPendingTasksAreDisplayed());
+			List<String> UIPendingTasks = asList(verifyIfPendingTasksAreDisplayed());
 			assertEquals("-----RECORD COUNT MISMATCH-----", DBPendingTasks, UIPendingTasks);
-		
+
 		}
 	}
 
@@ -104,6 +98,7 @@ public class ReferralCategoriesPage extends AppiumPageFactory {
 						referrals.isDisplayed());
 
 			}
+
 		} catch (org.openqa.selenium.TimeoutException e) {
 
 			e.printStackTrace();
@@ -171,6 +166,7 @@ public class ReferralCategoriesPage extends AppiumPageFactory {
 		performPageLoad(driver);
 		MobileElement lbrrptCategory;
 		String peID = getPE_ID(dbType, PE_RT_CODE, judgeName);
+
 		List<String> cmr_cyv_code = executeQuery(dbType, getID(lbrrpt_CATEGORY, peID));
 		if (cmr_cyv_code.contains(cyvCategory)) {
 			String cyv_category = getAllColumns(dbType,
@@ -185,23 +181,31 @@ public class ReferralCategoriesPage extends AppiumPageFactory {
 	}
 
 	public boolean getDocuments(String peID, DBType dbType) {
+		String docCategory = getID(lbrrpt_DOCUMENT_CATEGORY, peID);
+		page.getCollapsiblePanel(dbType, docCategory);
+
+		MobileElement uiDocs = null;
 
 		boolean isDisplayed = false;
-		List<String> docCategory = executeQuery(dbType, getID(lbrrpt_DOCUMENT_CATEGORY, peID));
-		sort(docCategory);
+
+		List<String> dbDocCategory = executeQuery(dbType, docCategory);
+		sort(dbDocCategory);
 
 		try {
-			for (int i = 0; i < docCategory.size(); ++i) {
+			for (int i = 0; i < dbDocCategory.size(); ++i) {
+
+				uiDocs = findElementBy(Locator.XPATH, containsElement(dbDocCategory.get(i)));
+
+				if (uiDocs.isDisplayed())
+					isDisplayed = true;
+				uiDocs.click();
 
 				List<String> docDesc = executeQuery(dbType,
-						getID(replace(REFERRAL_DOCUMENTS, "CMD_DOC_CATEGORY", docCategory.get(i)), peID));
+						getID(replace(REFERRAL_DOCUMENTS, "CMD_DOC_CATEGORY", dbDocCategory.get(i)), peID));
 
 				for (int j = 0; j < docDesc.size(); j++) {
 
-					expandPanel(docCategory.get(i));
-
 					MobileElement uiResult = findElementBy(Locator.XPATH, containsElement(docDesc.get(j)));
-
 					if (uiResult.isDisplayed())
 						isDisplayed = true;
 				}
@@ -220,34 +224,46 @@ public class ReferralCategoriesPage extends AppiumPageFactory {
 
 	public void getNewReferralsCount() {
 
-		for (int i = 0; i < referralCategories.size(); i++) {
-			String newReferralCountOnTheDashboard = getNumberOfNewItems(referralCategories.get(i).getText(), 2,
-					"following").getText();
-			int newReferralCount = Integer.valueOf(newReferralCountOnTheDashboard.split("W")[0].split(" ")[0].trim());
+		int navCellSize = navIcons.size();
 
-			if (!(newReferralCount == 0)) {
+		List<Integer> nav = getCellCount(1, navCellSize - 1);
+		List<Integer> dash = getCellCount(3, navCellSize + 1);
 
-				int newReferralCountInNavigation = Integer.valueOf(
-						getNumberOfNewItems(referralCategories.get(i).getText(), 1, "preceding").getText());
-				assertEquals(
-						"*********" + referralCategories.get(i).getText().toUpperCase()
-								+ " COUNT IS OFF IN THE NAVIGATION*********",
-						newReferralCount, newReferralCountInNavigation);
-			} else {
+		for (int i = 0; i < navCellSize - 2; i++) {
+			try {
+				String dashNewReferralCount = dashNewRefCount(nav.get(i)).getText().split("W")[0].split(" ")[0].trim();
+				MobileElement navNewReferralCount = navNewRefCount(dash.get(i));
 
-				assertFalse(isDisplayed(Locator.XPATH,
-						findNewReferralsCount(referralCategories.get(i).getText(), 1, "preceding")));
+				if (dashNewReferralCount.equals("0")) {
+					assertTrue(!(navNewReferralCount.isDisplayed()));
+				} else {
+					assertEquals(dashNewReferralCount, navNewReferralCount.getText().trim());
+				}
+			} catch (org.openqa.selenium.TimeoutException e) {
+				e.getMessage();
 			}
 		}
 	}
 
-	public MobileElement getNumberOfNewItems(String category, int index, String sibling) {
-		return findElementBy(Locator.XPATH, findNewReferralsCount(category, index, sibling));
+	public List<Integer> getCellCount(int time, int navCellSize) {
+		List<Integer> cellSize = new ArrayList<>();
+		for (int i = time; i < navCellSize; i++) {
+			cellSize.add(i);
+		}
+		return cellSize;
 	}
 
-	public String findNewReferralsCount(String category, int index, String sibling) {
-		return "(//XCUIElementTypeStaticText[@name='" + category + "'])[" + index + "]/" + sibling
-				+ "-sibling::XCUIElementTypeStaticText[1]";
+	public MobileElement navNewRefCount(int index) {
+		return findElementBy(Locator.XPATH,
+				"//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther["
+						+ index
+						+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[3]/XCUIElementTypeStaticText");
+	}
+
+	public MobileElement dashNewRefCount(int index) {
+		return findElementBy(Locator.XPATH,
+				"(//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText)["
+						+ index + "]");
 	}
 
 }

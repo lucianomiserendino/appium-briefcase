@@ -44,9 +44,8 @@ public class ReferralCategories_StepDefinitions {
 		page.get_lbrrpt_CATEGORY(valueOf(dbType), lbrrpt, PE_RT_CODE, judgeName);
 	}
 
-	@Given("^Verify the number of new items that displays in the red badge in the navigation  match the number of new items listed on the Dashboard page\\.$")
-	public void verify_the_number_of_new_items_that_displays_in_the_red_badge_in_the_navigation_match_the_number_of_new_items_listed_on_the_Dashboard_page()
-			throws Throwable {
+	@Given("^Verify the number of new items that displays in the red badge in the navigation match the number of new items listed on the Dashboard page\\.$")
+	public void verify_the_number_of_new_items_that_displays_in_the_red_badge_in_the_navigation_match_the_number_of_new_items_listed_on_the_Dashboard_page() {
 		page = new ReferralCategoriesPage();
 		page.getNewReferralsCount();
 	}
