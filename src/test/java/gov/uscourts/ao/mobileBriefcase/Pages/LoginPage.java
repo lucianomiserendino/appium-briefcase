@@ -66,7 +66,7 @@ public class LoginPage extends Base {
 	public WebElement sendKeyButton;
 
 	// @WithTimeout(time = 300, unit = TimeUnit.SECONDS)
-	@iOSFindBy(accessibility = "Appellate DC Development - CMKA JOPC")
+	@iOSFindBy(accessibility = "Appellate DC Development - CMKA")
 	public MobileElement cmka;
 
 	@iOSFindBy(accessibility = "Appellate DC Development - CM1A")
