@@ -1,7 +1,7 @@
 Feature: Number of cases displayed for non-orally argued cases 
 
 
-@Smoke_ 
+@Smoke 
 @AMB-973 
 Scenario Outline: 
 	Tapping on a referral category that is not orally argued (chm_reftype_val.cdv_is_oral_arg='n'),

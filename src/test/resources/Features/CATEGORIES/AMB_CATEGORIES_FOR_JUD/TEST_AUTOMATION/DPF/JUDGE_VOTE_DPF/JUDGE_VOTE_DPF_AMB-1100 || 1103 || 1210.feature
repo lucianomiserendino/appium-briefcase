@@ -11,7 +11,7 @@ Background:
 	Then User selects "TEST_AUTOMATION" and "15-2594" 
 	Then User  selects action using dbType "CMKA" and  "3142"  and verifies the name of the action displays in the dark blue banner 
 	
-@Smoke_
+@Smoke
 @AMB-1100 
 Scenario: 
 	In the judgeVote DPF, when the user selects the View Votes button, a popup should display with each judge's vote and the day they voted.

@@ -2,7 +2,6 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
@@ -11,10 +10,12 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utility.findElementAndScrol
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.tapByCoordinate;
 import static org.openqa.selenium.support.PageFactory.initElements;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
 import io.appium.java_client.MobileElement;
@@ -214,10 +215,10 @@ public class LoginPage extends Base {
 
 	public static void selectUserCategory(String availableJudges, User user) {
 
-		boolean judgesList = isDisplayed(Locator.XPATH, "//XCUIElementTypeStaticText[@name='" + availableJudges
-				+ "']/preceding:: XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '▷')]");
-
-		if (judgesList == true) {
+		if (contains(availableJudges).isDisplayed() && Actions.findElement(By.xpath(
+				"(//XCUIElementTypeOther[@name='AvailableJudges']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '"
+						+ availableJudges + "')]/following:: XCUIElementTypeOther/XCUIElementTypeStaticText)[1]"))
+				.getText().contains("(")) {
 
 			switch (user) {
 			case Appellate_Judges:
