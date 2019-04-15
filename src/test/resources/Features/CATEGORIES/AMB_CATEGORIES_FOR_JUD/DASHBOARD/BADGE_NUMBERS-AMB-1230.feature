@@ -1,7 +1,7 @@
 Feature: Badge numbers in the navigation 
 
 
-@Smoke 
+@Smoke_
 @AMB-1230 
 Scenario: 
 	Verify Badge numbers in the navigation 
