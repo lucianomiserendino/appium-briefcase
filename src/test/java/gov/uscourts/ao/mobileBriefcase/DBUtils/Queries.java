@@ -66,7 +66,7 @@ public class Queries {
 	public static final String REFERRAL_NUMBERS = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = SMR_MRC_ID "
 			+ "and smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa')";
 
-	public static final String DOCUMENT_CATEGORIES = "SELECT distinct cmd_doc_category FROM chm_mobile_docs, stfaty_mobile_referral\n"
+	public static final String SAs_DOCUMENT_CATEGORIES = "SELECT distinct cmd_doc_category FROM chm_mobile_docs, stfaty_mobile_referral\n"
 			+ "WHERE smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa')  and\n"
 			+ "smr_mrc_id = SMR_MRC_ID  and\n" + "smr_id = cmd_smr_id ";
 
@@ -379,4 +379,6 @@ public class Queries {
 			+ "left join generation_val on gn_code = pr_gn_code --where cd_dktentryid = \n"
 			+ "where cmr_cs_caseid = CMR_CS_CASEID and cmr_ju_pe_id = CMR_JU_PE_ID and cmr_cyv_code = 'CMR_CYV_CODE'";
 
+	public static final String DOCUMENT_CATEGORIES = "select distinct (cmd_doc_category),cmd_sort from chm_mobile_docs join chm_mobile_referral on cmr_id = cmd_cmr_id where cmr_cyv_code = 'CMR_CYV_CODE' \n"
+			+ " and cmr_date_end is null and cmr_ju_pe_id ='CMR_JU_PE_ID'  and  cmr_cs_caseid='CMR_CS_CASEID'  order by cmd_sort";
 }

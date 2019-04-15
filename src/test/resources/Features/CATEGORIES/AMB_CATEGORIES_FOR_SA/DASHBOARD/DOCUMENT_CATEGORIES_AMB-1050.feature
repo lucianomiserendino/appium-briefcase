@@ -10,6 +10,8 @@ Background:
 	And  user selects a "CMKA" 
 	Then User selects a userCategory "Staff_Attorneys" and  name "Brown, Benjamin" 
 	
+	
+@Smoke 
 @AMB-1050 
 Scenario: 
 	If selecting a referral, the documents display on the referral detail page.  They are grouped by document category.

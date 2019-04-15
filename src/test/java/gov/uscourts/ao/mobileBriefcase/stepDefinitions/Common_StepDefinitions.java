@@ -32,7 +32,7 @@ public class Common_StepDefinitions {
 	@When("^User selects a  \"([^\"]*)\"$")
 	public void user_selects_a(String category) {
 		page = new CommonPages();
-		page.selectReferral(category, Categories);
+		page.selectReferral(category);
 	}
 
 	@Given("^On \"([^\"]*)\" user sets the si_value of the site var to \"([^\"]*)\"  and si_code \"([^\"]*)\"$")

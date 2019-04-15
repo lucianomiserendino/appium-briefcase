@@ -1,7 +1,7 @@
 Feature: Display Actions Panel and actions 
 
 
-@SMOKE
+@Smoke 
 @AMB-1038 
 Scenario: 
 
@@ -17,13 +17,13 @@ Scenario:
 	Then User selects "MOTIONS_PETITIONS" and "15-3314" 
 	And User verifies the correct "Actions" display for the selected referral ,using  "CMKA"  and "2310499" 
 	
-
-		#|Testing       |judgewilliams   |Testpass1! |Appellate DC Installation Testing - CM3A  |Motion/Petition   | 12-6627  |CM3A  | 364   |
-		
-		
-		
-		
-		
-		
-		
+	
+	#|Testing       |judgewilliams   |Testpass1! |Appellate DC Installation Testing - CM3A  |Motion/Petition   | 12-6627  |CM3A  | 364   |
+	
+	
+	
+	
+	
+	
+	
 		

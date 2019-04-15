@@ -5,6 +5,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.LoginPage;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.common.Page;
 import gov.uscourts.ao.mobileBriefcase.common.iOSCapabilities;
 
 public class Login_StepDefinitions extends Base implements iOSCapabilities {
@@ -21,6 +22,7 @@ public class Login_StepDefinitions extends Base implements iOSCapabilities {
 
 	@When("^User enters Credentials to Login \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_enters_Credentials_to_Login_and(String username, String password) {
+		Page.sleep(10000);
 		logPage.sendCredentials(username, password);
 	}
 

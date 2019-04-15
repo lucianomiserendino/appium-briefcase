@@ -9,26 +9,23 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utility.getParameter;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.concurrent.TimeUnit;
-
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class UIDocketingDPFPage extends AppiumPageFactory {
 
-	//@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTextView[1]")
 	public static MobileElement descriptionField;
 
-	public void verifyFieldsAreDisplayed(String descriptionText, String commentText, String submitText, DBType dbType,String dpfName,
-			String el_id) {
+	public void verifyFieldsAreDisplayed(String descriptionText, String commentText, String submitText, DBType dbType,
+			String dpfName, String el_id) {
 
 		verifyElementIsDisplayed(descriptionText);
-		getDefaulDescription(dbType,dpfName, el_id);
+		getDefaulDescription(dbType, dpfName, el_id);
 		verifyElementIsDisplayed(commentText);
 		verifyElementIsDisplayed(submitText);
 	}
@@ -42,16 +39,14 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 	public void getDefaulDescription(DBType dbType, String dpfName, String el_id) {
 		try {
 			if (getParameter(getAllColumns(dbType, getID(MBR_NOTE, el_id)), dpfName, 4).equals("SKIP")) {
-				 assertTrue(descriptionField.getText().equals("Transaction Note"));
+				assertTrue(descriptionField.getText().equals("Transaction Note"));
 
-		
-			
 			} else {
 				String dbParam = replaceWithEmptyString(
 						getParameter(getAllColumns(dbType, getID(MBR_NOTE, el_id)), dpfName, 4), "\\");
 				String uiParam = replaceWithEmptyString(descriptionField.getText(), "'");
-		
-				assertEquals("NOTE DESCRIPTION MISMATCH", dbParam, uiParam);
+
+				assertEquals("NOTE DESCRIPTION MISMATCH", dbParam.replace("'", ""), uiParam);
 
 			}
 		} catch (Exception e) {
@@ -70,7 +65,7 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 		return text.replace(charac, "").trim();
 
 	}
-	
-	
+
+
 
 }

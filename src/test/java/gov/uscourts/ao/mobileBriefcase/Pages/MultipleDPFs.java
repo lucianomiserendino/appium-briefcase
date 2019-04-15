@@ -36,32 +36,32 @@ public class MultipleDPFs extends AppiumPageFactory {
 		/******************
 		 * @AMB-1123 ****** STEP 1 --Select a staff member
 		 */
-		getElementNextToDropDown("Staff Member", "Please Select");
-		staffMember += getAvailableStaffMembers(dbType,dpfName, elId, cha_ju_pe_id);
-		String staffFName = splitBy(staffMember, 0);
-		String staffLName = splitBy(staffMember, 1);
-
-		/** STEP 2 --Select an assignment */
-		getElementNextToDropDown("Assignment", "Please Select");
-		getAssignmentType(dbType,dpfName, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code, staffFName, staffLName);
-
-		/** STEP 3 --Select an Assigned Date */
-		getElementNextToDropDown("Assigned", "Select Date");
-		selectADate(2);
-
-		/** STEP 4 --Select Assignment Due Date */
-		getElementNextToDropDown("Assignment Due", "Select Date");
-		selectADate(1);
-
-		String assignment = getChmAssign(chmAssign.ASSIGNMENT);
-
-		contains(apply).click();
-		/**
-		 * STEP 5 --If the user clicks the "Apply" button, the popup will close and the
-		 * new assignment will display on the chmAssign DPF screen
-		 */
-		assignmentNameAndType = getCreatedAssignmentNameAndAssignmentType(staffFName + " " + staffLName, assignment);
-		assignmentDate = getCreatedAssignmentType(staffMember, assignment);
+//		getElementNextToDropDown("Staff Member", "Please Select");
+//		staffMember += getAvailableStaffMembers(dbType,dpfName, elId, cha_ju_pe_id);
+//		String staffFName = splitBy(staffMember, 0);
+//		String staffLName = splitBy(staffMember, 1);
+//
+//		/** STEP 2 --Select an assignment */
+//		getElementNextToDropDown("Assignment", "Please Select");
+//		getAssignmentType(dbType,dpfName, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code, staffFName, staffLName);
+//
+//		/** STEP 3 --Select an Assigned Date */
+//		getElementNextToDropDown("Assigned", "Select Date");
+//		selectADate(2);
+//
+//		/** STEP 4 --Select Assignment Due Date */
+//		getElementNextToDropDown("Assignment Due", "Select Date");
+//		selectADate(1);
+//
+//		String assignment = getChmAssign(chmAssign.ASSIGNMENT);
+//
+//		contains(apply).click();
+//		/**
+//		 * STEP 5 --If the user clicks the "Apply" button, the popup will close and the
+//		 * new assignment will display on the chmAssign DPF screen
+//		 */
+//		assignmentNameAndType = getCreatedAssignmentNameAndAssignmentType(staffFName + " " + staffLName, assignment);
+//		assignmentDate = getCreatedAssignmentType(staffMember, assignment);
 
 	}
 

@@ -15,7 +15,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.NoSuchElementException;
 
@@ -23,7 +22,6 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class CalendarPage extends AppiumPageFactory {
@@ -35,29 +33,29 @@ public class CalendarPage extends AppiumPageFactory {
 	static String CTS_DATE_TO = "cts_date_to";
 	static String CMR_PANEL_MEMBERS = "cmr_panel_members";
 
-	//@WithTimeout(time = 300, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 300, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='SessionGroups']/XCUIElementTypeCell[2]/XCUIElementTypeStaticText[2]")
 	public MobileElement weeklySessions;
 
-	//@WithTimeout(time = 200, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "SessionGroups")
 	public MobileElement sessionGroups;
 
-	//@WithTimeout(time = 200, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "(//XCUIElementTypeTable[@name='DayGroups']/XCUIElementTypeCell/XCUIElementTypeStaticText[2])[1]")
 	public static MobileElement referral;
 
-	//@WithTimeout(time = 200, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "(//XCUIElementTypeTable[@name='DayGroups']/XCUIElementTypeCell/XCUIElementTypeStaticText[3])[1]")
 	public static MobileElement argDescription;
 
-	//@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='DayGroups']//XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
 	public static MobileElement hearingDate;
 
 	public void getWeeklySession(DBType dbType, String peID) {
 		performPageLoad(driver);
-		findElementAndGetText(Locator.XPATH, getText(weeklySessions), sessionGroups, dbType, peID);
+		findElementAndGetText(Locator.XPATH, getText(weeklySessions), dbType, peID);
 
 	}
 
@@ -65,8 +63,7 @@ public class CalendarPage extends AppiumPageFactory {
 		return value.get(getRandomInt(value.size())).getText();
 	}
 
-	public static void findElementAndGetText(Locator locator, String element, MobileElement el, DBType dbType,
-			String peId) {
+	public static void findElementAndGetText(Locator locator, String element, DBType dbType, String peId) {
 		String fromToDate = "";
 		String initials = "";
 
@@ -74,6 +71,7 @@ public class CalendarPage extends AppiumPageFactory {
 		while (elementNotFound) {
 			try {
 				MobileElement elem = findElementBy(locator, containsElement(element));
+				
 
 				if (elem.isDisplayed()) {
 					initials += elem.getText();
@@ -85,7 +83,7 @@ public class CalendarPage extends AppiumPageFactory {
 					break;
 				}
 			} catch (NoSuchElementException ex) {
-				scrolldown(el);
+				scrolldown();
 			}
 
 		}

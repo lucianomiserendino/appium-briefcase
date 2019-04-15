@@ -9,12 +9,10 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utility.findElementAndScrol
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class CaseQueryPage extends AppiumPageFactory {
@@ -31,8 +29,8 @@ public class CaseQueryPage extends AppiumPageFactory {
 	@iOSFindBy(accessibility = "ResultsList")
 	public static MobileElement category;
 
-	//@WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/child::*//*[contains(@name, '-')]")
+	// @WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
+	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[contains(@name, '-')]")
 	public static List<MobileElement> cases;
 
 	public void searchForACase() {
@@ -51,9 +49,10 @@ public class CaseQueryPage extends AppiumPageFactory {
 		sendKeys(searchTextField, caseN.substring(0, index) + "*");
 		searchBTN.click();
 		performPageLoad(driver);
-		findElementAndScrollDown(Locator.XPATH, containsElement(caseN), category);
+		findElementAndScrollDown(Locator.XPATH, containsElement(caseN));
 		performPageLoad(driver);
 		assertTrue("APP IS NOT RETURNING CASE LIST FOR SOME WILDCARD SEARCHES",
 				contains("Case #" + caseN).isDisplayed());
+		System.out.println(contains("Case #" + caseN).getText() + "************");
 	}
 }

@@ -77,6 +77,8 @@ public class Actions extends Base {
 
 	public static void sendKeys(WebElement element1, String text1, WebElement elemen2, String text2) {
 		element1.sendKeys(text1);
+		Page.sleep(10000);
+		elemen2.click();
 		elemen2.sendKeys(text2);
 	}
 
@@ -124,7 +126,7 @@ public class Actions extends Base {
 		try {
 			MobileElement el = findElementBy(locator, element);
 			if (el.isDisplayed())
-			isDisplayed = true;
+				isDisplayed = true;
 		} catch (WebDriverException e) {
 			isDisplayed = false;
 		}

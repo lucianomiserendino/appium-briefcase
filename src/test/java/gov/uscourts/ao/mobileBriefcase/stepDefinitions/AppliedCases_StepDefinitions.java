@@ -34,7 +34,7 @@ String caseN="";
 	public void user_goes_back_to_the_page_for_for_panel_and_verifies_the_link_is_there(String category, String date,
 			String panel) {
 		page1 = new CommonPages();
-		page1.selectReferral(category, Categories);
+		page1.selectReferral(category);
 		page = new AppliedCasesPage();
 		page.selectDate(date, panel);
 		page.verifyAppliedCaseLinkIsDisplayed(caseN);

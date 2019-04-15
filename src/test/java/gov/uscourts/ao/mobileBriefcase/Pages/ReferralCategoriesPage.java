@@ -265,5 +265,10 @@ public class ReferralCategoriesPage extends AppiumPageFactory {
 				"(//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText)["
 						+ index + "]");
 	}
+	
+	public static void main(String[] args) {
+		System.out.println(executeQuery(DBType.CMKA, "select cmd_doc_category, cmd_sort  from chm_mobile_docs join chm_mobile_referral on cmr_id = cmd_cmr_id where cmr_cyv_code = 'motpet' \n" + 
+				"and cmr_date_end is null and cmr_ju_pe_id =32 and  cmr_cs_caseid='82636' and cmd_cmr_id = 2309656 order by cmd_sort "));
+	}
 
 }

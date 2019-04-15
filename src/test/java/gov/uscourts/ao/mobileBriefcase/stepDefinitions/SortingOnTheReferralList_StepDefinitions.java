@@ -10,16 +10,16 @@ import java.util.List;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import gov.uscourts.ao.mobileBriefcase.Pages.SortingOnTheReferralListPage;
-import gov.uscourts.ao.mobileBriefcase.Pages.SortingOnTheReferralListPage.Sort;
+import gov.uscourts.ao.mobileBriefcase.Pages.SortingPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.SortingPage.Sort;
 
 public class SortingOnTheReferralList_StepDefinitions {
 
-	SortingOnTheReferralListPage page;
+	SortingPage page;
 
 	@When("^User selects the sort button, clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in descending order \\(newest first\\)\\. User clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order \\(oldest first\\)\\.$")
 	public void user_selects_the_sort_button_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first_User_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_ascending_order_oldest_first() {
-		page = new SortingOnTheReferralListPage();
+		page = new SortingPage();
 		page.selectSortBtn();
 
 		List<String> referralsSotedByDatesInDescendingOrder = page
@@ -55,4 +55,10 @@ public class SortingOnTheReferralList_StepDefinitions {
 
 	}
 
+	@Then("^User verifies  Document Categories are sorted on the referral detail page \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\)$")
+	public void user_verifies_Document_Categories_are_sorted_on_the_referral_detail_page(String dbType,
+			String cmr_cyv_code, String cmr_ju_pe_id, String cmr_cs_caseid) {
+		page = new SortingPage();
+		page.getDocumentCategories(dbType, cmr_cyv_code, cmr_ju_pe_id, cmr_cs_caseid);
+	}
 }

@@ -134,13 +134,18 @@ public abstract class Base implements iOSCapabilities {
 	 * "NATIVE_APP"
 	 */
 	public static void changeWindow(String type) {
-		performPageLoad(driver);
-		Set<String> windows = ((AppiumDriver<MobileElement>) driver).getContextHandles();
-		for (String window : windows) {
-			if (window.contains(type))
-				driver.context(window);
-			((AppiumDriver<MobileElement>) driver).getContextHandles();
+		try {
+			performPageLoad(driver);
+			Set<String> windows = ((IOSDriver<MobileElement>) driver).getContextHandles();
+			for (String window : windows) {
+				if (window.contains(type))
+					driver.context(window);
+				((AppiumDriver<MobileElement>) driver).getContextHandles();
+			}
+		} catch (WebDriverException e) {
+
 		}
+
 	}
 
 	public enum Driver {

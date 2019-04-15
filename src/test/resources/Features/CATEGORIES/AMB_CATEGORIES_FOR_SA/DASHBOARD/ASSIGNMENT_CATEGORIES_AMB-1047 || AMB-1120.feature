@@ -1,4 +1,4 @@
-Feature: Assignment categories display on the dashboard for Staff Attorneys
+Feature: Assignment categories display on the dashboard for Staff Attorneys 
 
 
 
@@ -13,12 +13,12 @@ Scenario:
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And  user selects a "CMKA" 
-	Then User selects a userCategory "Staff_Attorneys" and  name "Tang" 
+	Then User selects a userCategory "Staff_Attorneys" and  name "Brown, Benjamin" 
 	Given User verifies Data is displayed on the Dashboard, retrieves categories from "CMKA" 
 	
 	
 	
-@Smoke 
+	@Smoke 
 @AMB-1120 
 Scenario: 
 	Log in as a staff attorney and verify data is displayed.

@@ -58,6 +58,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='▽'])[1]")
 	public static MobileElement viewed;
+
 	public void getCategory(Category category, String caseNumber) {
 
 		String categories = "";
@@ -102,13 +103,13 @@ public class CommonPages extends AppiumPageFactory {
 		default:
 			break;
 		}
-		selectReferral(categories, Categories);
-		selectReferral(caseNumber, list);
+		selectReferral(categories);
+		selectReferral(caseNumber);
 	}
 
-	public static void selectReferral(String category, MobileElement element) {
+	public static void selectReferral(String category) {
 		performPageLoad(driver);
-		findElementAndScrollDown(Locator.XPATH, containsElement(category), element);
+		findElementAndScrollDown(Locator.XPATH, containsElement(category));
 	}
 
 	public void getCategoryWithCase(String category, String caseNumber) {
@@ -143,15 +144,15 @@ public class CommonPages extends AppiumPageFactory {
 		expandPanel(panels);
 	}
 
-	public void getCollapsiblePanel(DBType dbType, String refCategory) {
+	public  void getCollapsiblePanel(DBType dbType, String refCategory) {
 		List<String> category = executeQuery(dbType, refCategory);
 		try {
-			if (right.size() < category.size() && down.size() > 0) {
-		
-				for (int i = 0; i < category.size(); i++) {
-					waitForVisibilityOfElement(viewed, driver).click();
-				}
+			while (right.size() < category.size() && down.size() > 0) {
+
+				// for (int i = 0; i < category.size()-1; i++) {
+				waitForVisibilityOfElement(viewed, driver).click();
 			}
+			// }
 		} catch (NoSuchElementException e) {
 			assertTrue(right.size() == category.size());
 
@@ -161,12 +162,12 @@ public class CommonPages extends AppiumPageFactory {
 	public static void selectAction(DBType dbType, String panel, String el_id) {
 
 		performPageLoad(driver);
-		// findElementAndScrollDown(Locator.XPATH, containsElement(panel),
-		// DocumentList);
-		//getCollapsiblePanel();
+		hideCollapsiblePanels();
+		findElementAndScrollDown(Locator.XPATH, containsElement(panel));
+
 		try {
 			replace(panel);
-			getPanel(Panel.valueOf(panel));
+			// getPanel(Panel.valueOf(panel));
 
 		} catch (AssertionError e) {
 			e.getMessage();
@@ -176,7 +177,6 @@ public class CommonPages extends AppiumPageFactory {
 			if (actionName2.contains("'")) {
 				actionName1 += actionName2.split("'")[0];
 				getActionName(actionName1);
-
 			} else {
 				getActionName(actionName2);
 
@@ -188,8 +188,7 @@ public class CommonPages extends AppiumPageFactory {
 	public static void getActionName(String element) {
 		findElementAndScrollDown(Locator.XPATH,
 				"//XCUIElementTypeOther[@name='DocumentList']//XCUIElementTypeStaticText[contains(@name, '" + element
-						+ "')]",
-				DocumentList);
+						+ "')]");
 	}
 
 	public static String getCMRID(DBType dbType, String caseNum, String peId, String cmr_cyv_code) {
@@ -237,6 +236,18 @@ public class CommonPages extends AppiumPageFactory {
 		}
 		return getCaseNumber(uiCaseNumber, index);
 
+	}
+
+	public static void hideCollapsiblePanels() {
+
+		try {
+			while (down.size() > 0) {
+				waitForVisibilityOfElement(viewed, driver).click();
+			}
+		} catch (NoSuchElementException e) {
+			assertTrue(down.size() == 0);
+
+		}
 	}
 
 	public enum Case {

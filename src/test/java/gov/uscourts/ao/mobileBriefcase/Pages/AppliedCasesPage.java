@@ -7,23 +7,20 @@ import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static org.junit.Assert.assertTrue;
 
-import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.NoSuchElementException;
 
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class AppliedCasesPage extends AppiumPageFactory {
 
-	//@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[2]")
 	public MobileElement bookmarkBTN;
 
-	//@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Bookmarked'])[1]")
 	public MobileElement bookOnDashboard;
 
@@ -33,11 +30,11 @@ public class AppliedCasesPage extends AppiumPageFactory {
 			if (bookOnDashboard.isDisplayed()) {
 				tap(bookOnDashboard);
 
-				if (isDisplayed(Locator.XPATH, "//XCUIElementTypeTable[@name='ReferralsList']/child::*"
+				if (isDisplayed(Locator.XPATH, "//XCUIElementTypeOther[@name='ReferralsList']/child::*"
 						+ containsElement(caseNumber)) == true) {
 
-					findElementBy(Locator.XPATH,
-							containsElement(caseNumber) + "/following-sibling:: XCUIElementTypeStaticText[2]").click();
+					findElementBy(Locator.XPATH, containsElement(caseNumber)
+							+ "/following::XCUIElementTypeOther[3]//XCUIElementTypeStaticText").click();
 					tap(dashboard);
 				}
 			}
@@ -47,8 +44,8 @@ public class AppliedCasesPage extends AppiumPageFactory {
 	}
 
 	public void selectDate(String date, String panel) {
-		tap(Locator.XPATH,
-				containsElement(date + "')]/following-sibling::XCUIElementTypeStaticText[contains(@name, '" + panel));
+		tap(Locator.XPATH, "//XCUIElementTypeStaticText[@name='" + date
+				+ "']/following::XCUIElementTypeOther/XCUIElementTypeStaticText[@name='" + panel + "']");
 
 	}
 
@@ -62,6 +59,7 @@ public class AppliedCasesPage extends AppiumPageFactory {
 	public void verifyAppliedCaseLinkIsDisplayed(String caseNumber) {
 		assertTrue("******APPLIED CASES LINK ICON DISAPPEARS WHEN BOOKMARKING CASE/REFERRAL******",
 				isDisplayed(Locator.XPATH, containsElement(caseNumber)
-						+ "/following-sibling::XCUIElementTypeStaticText[contains(@name, 'linked')]"));
+						+ "/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText[@name='linked']"));
+		
 	}
 }

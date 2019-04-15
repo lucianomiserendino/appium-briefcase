@@ -7,7 +7,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.sleep;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.findElementAndScrollDown;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.tapByCoordinate;
 import static org.openqa.selenium.support.PageFactory.initElements;
@@ -53,13 +52,13 @@ public class LoginPage extends Base {
 	@iOSFindBy(accessibility = "Testing")
 	public MobileElement testing;
 
-	@FindBy(name = "usernameEntered")
+	@FindBy(xpath = "//XCUIElementTypeOther[@name='JENIE Single Sign On']/XCUIElementTypeOther[5]/XCUIElementTypeTextField")
 	public static WebElement userName;
 
-	@FindBy(name = "password")
+	@FindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther[6]/XCUIElementTypeSecureTextField")
 	public static WebElement password;
 
-	@FindBy(name = "SUBMIT2")
+	@FindBy(id = "SIGN ON")
 	public static WebElement submButton;
 
 	@FindBy(partialLinkText = "Send Key to Device")
@@ -124,7 +123,7 @@ public class LoginPage extends Base {
 			break;
 
 		default:
-			break;
+			throw new RuntimeException("Invalid Environment");
 		}
 	}
 
@@ -144,7 +143,7 @@ public class LoginPage extends Base {
 			break;
 
 		default:
-			break;
+			throw new RuntimeException("Invalid server");
 		}
 	}
 
@@ -154,7 +153,7 @@ public class LoginPage extends Base {
 			performPageLoad(driver);
 			getEnvironment(Environment.valueOf(environment));
 		} catch (Exception e) {
-			// tap(Locator.NAME, okButton);
+			tap(Locator.NAME, okButton);
 
 			getEnvironment(Environment.valueOf(environment));
 		}
@@ -163,15 +162,14 @@ public class LoginPage extends Base {
 	public void sendCredentials(String Username, String Password) {
 		sendKeys(userName, Username, password, Password);
 		submButton.click();
-		sleep(10000);
-		driver.navigate().back();
+
 	}
 
 	public void sedKeyButton() {
 		performPageLoad(driver);
+		tapByCoordinate("backX", "backY");
 		try {
 			sendKeyButton.click();
-			sleep(5000);
 			tapByCoordinate("x", "y");
 		} catch (WebDriverException e) {
 			tapByCoordinate("x", "y");
@@ -185,14 +183,13 @@ public class LoginPage extends Base {
 
 	public void getServer(String server) {
 		try {
-
 			performPageLoad(driver);
 			getServer(Server.valueOf(server));
-
 		} catch (Exception e) {
-			tap(Locator.NAME, okButton);
-			performPageLoad(driver);
-			getServer(Server.valueOf(server));
+			if (contains(okButton).isDisplayed()) {
+				tap(Locator.NAME, okButton);
+				getServer(Server.valueOf(server));
+			}
 		}
 		performPageLoad(driver);
 
@@ -204,7 +201,7 @@ public class LoginPage extends Base {
 			tap(settingsIcon);
 			tap(logout);
 			contains(okButton).click();
-			//contains(okButton).click();
+		//	contains(okButton).click();
 		} catch (WebDriverException e) {
 			e.getMessage();
 		}
@@ -226,36 +223,30 @@ public class LoginPage extends Base {
 			case Appellate_Judges:
 				tap(contains(appellateJudges));
 				break;
-
 			case Bankruptcy_Judges:
 				tap(contains(bankruptcyJudges));
 				break;
-
 			case Staff_Attorneys:
 				tap(contains(staffAttorneys));
 				break;
-
 			default:
-				break;
+				throw new RuntimeException("Invalid User type");
 			}
 		}
 	}
 
 	public static void getJudgesList(String availableJudges, String user, String userCategory) {
 
-		findElementAndScrollDown(Locator.XPATH, containsElement(availableJudges), AvailableJudges_Container);
+		findElementAndScrollDown(Locator.XPATH, containsElement(availableJudges));
 		try {
-
 			selectUserCategory(availableJudges, User.valueOf(userCategory));
 
 		} catch (AssertionError e) {
 			e.getMessage();
 		} finally {
 
-			findElementAndScrollDown(Locator.XPATH, containsElement(user), AvailableJudges_Container);
-
+			findElementAndScrollDown(Locator.XPATH, containsElement(user));
 		}
-
 	}
 
 	public static void searchForACase(String caseNum) {

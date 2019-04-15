@@ -14,14 +14,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 
@@ -47,7 +45,28 @@ public class Utility extends Base {
 
 	}
 
-	public static String findElementAndScrollDown(Locator locator, String element, MobileElement el) {
+	public static boolean findElementAndScroll(String element) {
+		boolean isDisplayed = false;
+		Boolean elementNotFound = true;
+		while (elementNotFound) {
+			try {
+				MobileElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, element), driver);
+				if (elem.isDisplayed()) {
+					isDisplayed = true;
+					break;
+				} else {
+					scrolldown();
+					performPageLoad(driver);
+				}
+			} catch (NoSuchElementException e) {
+				isDisplayed = false;
+				scrolldown();
+			}
+		}
+		return isDisplayed;
+	}
+
+	public static String findElementAndScrollDown(Locator locator, String element) {
 
 		Boolean elementNotFound = true;
 		while (elementNotFound) {
@@ -63,30 +82,33 @@ public class Utility extends Base {
 						e.getMessage();
 					}
 				} else {
-					scrolldown(el);
+					scrolldown();
 					performPageLoad(driver);
 				}
 			} catch (NoSuchElementException e) {
-				scrolldown(el);
+				scrolldown();
 			}
 		}
 		return element;
 
 	}
 
-	public static void scrolldown(MobileElement el) {
-	
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		Map<String, Object> params = new HashMap<>();
-		params.put(DURATION, getProperty(DURATION));
-		
-		params.put(FROM_X, getProperty(FROM_X));
-		params.put(FROM_Y, getProperty(FROM_Y));
-		params.put(TO_X, getProperty(TO_X));
-		params.put(TO_Y, getProperty(TO_Y));
-		((MobileElement) el).getId();
-		js.executeScript("mobile: dragFromToForDuration", params);
-		
+	public static synchronized void scrolldown() {
+		try {
+			int pressX = getWindowSize().width / 2;
+			/** 4/5 of the screen as the bottom finger-press point */
+			int bottomY = getWindowSize().height * 4 / 8;
+			/** just non zero point, as it didn't scroll to zero normally */
+			int topY = getWindowSize().height / 8;
+			new TouchAction(driver).longPress(PointOption.point(pressX, bottomY))
+					.moveTo(PointOption.point(pressX, topY)).release().perform();
+		} catch (WebDriverException e) {
+			e.getMessage();
+		}
+	}
+
+	public static Dimension getWindowSize() {
+		return driver.manage().window().getSize();
 	}
 
 	public static List<String> retrieveAllCases(List<MobileElement> elements, String split, int index) {
@@ -205,10 +227,28 @@ public class Utility extends Base {
 		return index - 1 - new Random().nextInt(index);
 	}
 
-	public static String getParameter(String value, String dpfName, int index) {
-		String[] parValue = value.substring(value.indexOf(dpfName + "(")).split(",");
-		// return parValue[index].split("'")[1];
-		return parValue[index];
+	public static String getParameter(String param, String dpfName, int index) {
+
+		String dpfParam = "";
+		String[] items = param.split(";");
+		int itemCount = items.length;
+		if (itemCount > 1) {
+			String[] charac = param.split(";");
+			for (int i = 0; i < charac.length; i++) {
+
+				if (charac[i].contains(dpfName)) {
+					String[] Value = charac[i].substring(charac[i].indexOf(dpfName + "(")).split(",");
+					dpfParam += Value[index].split("'")[1];
+				}
+			}
+		} else {
+
+			String[] charac = param.substring(param.indexOf(dpfName + "(")).split(",");
+			if (charac[index].contains("'")) {
+				dpfParam += charac[index].replaceAll("'", "").trim();
+			}
+		}
+		return dpfParam;
 	}
 
 	public static int getRandomNumberInRange(int min, int max) {

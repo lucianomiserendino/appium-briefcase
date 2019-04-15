@@ -4,13 +4,17 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 
 import cucumber.api.java.en.Then;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.JudgeVoteDPFPage;
+import gov.uscourts.ao.mobileBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.common.Base.Driver;
+import gov.uscourts.ao.mobileBriefcase.common.Page;
 
 public class JudgeVoteDPF_StepDefinitions {
 
-	JudgeVoteDPFPage page;
+	static JudgeVoteDPFPage page;
 
-	String vote = "";
+	static String vote = "";
 
 	@Then("^user selects the \"([^\"]*)\" button next to the relief\\. User verifies  a popup displays\\.  In the red banner, the relief they are voting , \"([^\"]*)\" , \"([^\"]*)\"$")
 	public void user_selects_the_button_next_to_the_relief_User_verifies_a_popup_displays_In_the_red_banner_the_relief_they_are_voting(
@@ -38,5 +42,6 @@ public class JudgeVoteDPF_StepDefinitions {
 		page = new JudgeVoteDPFPage();
 		page.verifyNoteText(valueOf(dbType), ccr_id, vote, page.getTodaysDate());
 	}
+
 
 }

@@ -2,10 +2,10 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_DESCRIPTION;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ID_OF_THE_REFERRAL_CATEGORY;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.REFERRAL_NUMBERS;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SAs_DOCUMENT_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SAs_REFERRAL_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
@@ -135,8 +135,8 @@ public class StaffAttorneyPage extends AppiumPageFactory {
 		return executeQuery(dbType, replace(ID_OF_THE_REFERRAL_CATEGORY, "MRC_NAME", referral));
 	}
 
-	public String getDocCategories(DBType dbType, String refID) {
-		return replace(DOCUMENT_CATEGORIES, "SMR_MRC_ID", toArray(getDocumentCategories(dbType, refID)));
+	public static String getDocCategories(DBType dbType, String refID) {
+		return replace(SAs_DOCUMENT_CATEGORIES, "SMR_MRC_ID", toArray(getDocumentCategories(dbType, refID)));
 	}
 
 	public void getCategories(DBType dbType, String refID) {
@@ -148,6 +148,7 @@ public class StaffAttorneyPage extends AppiumPageFactory {
 		boolean isDisplayed = false;
 		MobileElement uiDocs = null;
 		List<String> dbDocs = executeQuery(dbType, getDocCategories(dbType, refID));
+		System.out.println(dbDocs + "*************************");
 		sort(dbDocs);
 		try {
 			for (int i = 0; i < dbDocs.size(); ++i) {

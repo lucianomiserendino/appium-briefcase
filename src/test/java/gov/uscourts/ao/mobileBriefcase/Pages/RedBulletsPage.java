@@ -1,6 +1,5 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ReferralsList;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectReferral;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.split;
@@ -9,7 +8,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrolldown;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.NoSuchElementException;
 
@@ -17,19 +15,18 @@ import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class RedBulletsPage extends AppiumPageFactory {
-	//@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "Back")
 	public MobileElement back;
 
-	//@WithTimeout(time = 50, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'Total')]")
 	public MobileElement unViewed;
 
-	//@WithTimeout(time = 200, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/XCUIElementTypeCell/XCUIElementTypeStaticText[contains(@name, 'Viewed')]")
 	public List<MobileElement> unviewedReferrals;
 
@@ -46,18 +43,18 @@ public class RedBulletsPage extends AppiumPageFactory {
 	}
 
 	public int getViewedReferral() {
-		findElementAndScrollDown(Locator.XPATH, unviewedReferral, ReferralsList);
+		findElementAndScrollDown(Locator.XPATH, unviewedReferral);
 		tap(back);
 		return getSizeOfNewReferrals();
 	}
 
 	public int verifyRedBulletIsRemoved() {
-		selectReferral("Motions/Petitions", ReferralsList);
+		selectReferral("Motions/Petitions");
 		Page.performPageLoad(driver);
 		return getSizeOfNewReferrals();
 	}
 
-	public static String findElementAndScrollDown(Locator locator, String element, MobileElement el) {
+	public static String findElementAndScrollDown(Locator locator, String element) {
 		String text = "";
 		Boolean elementNotFound = true;
 		while (elementNotFound) {
@@ -68,10 +65,10 @@ public class RedBulletsPage extends AppiumPageFactory {
 					elem.click();
 					break;
 				} else {
-					scrolldown(el);
+					scrolldown();
 				}
 			} catch (NoSuchElementException e) {
-				scrolldown(el);
+				scrolldown();
 			}
 		}
 		return text;
