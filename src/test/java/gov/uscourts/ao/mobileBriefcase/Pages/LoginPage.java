@@ -201,7 +201,7 @@ public class LoginPage extends Base {
 			tap(settingsIcon);
 			tap(logout);
 			contains(okButton).click();
-		//	contains(okButton).click();
+			contains(okButton).click();
 		} catch (WebDriverException e) {
 			e.getMessage();
 		}
