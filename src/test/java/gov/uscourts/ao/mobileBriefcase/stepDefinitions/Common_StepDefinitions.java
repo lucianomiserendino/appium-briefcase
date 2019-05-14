@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
+
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.safariInstance;
 
@@ -9,7 +10,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
-import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
+import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.*;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 
 public class Common_StepDefinitions {
@@ -49,8 +50,7 @@ public class Common_StepDefinitions {
 
 	@Then("^User logs out of Briefcase$")
 	public void user_logs_out_of_Briefcase() {
-		JenieLoginPage l=new JenieLoginPage();
-		l.logout();
+		logout();
 		safariInstance();
 		Page.sleep(10000);
 	}

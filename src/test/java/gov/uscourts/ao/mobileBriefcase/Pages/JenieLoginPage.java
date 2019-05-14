@@ -18,12 +18,13 @@ import org.openqa.selenium.support.FindBy;
 import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class JenieLoginPage extends AppiumPageFactory {
+public class JenieLoginPage extends Base{
 
 	public JenieLoginPage() {
 		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
@@ -197,8 +198,7 @@ public class JenieLoginPage extends AppiumPageFactory {
 
 	}
 
-	public  void logout() {
-	
+	public static void logout() {
 			dashboard.click();
 			settingsIcon.click();
 			settingsIcon.click();
