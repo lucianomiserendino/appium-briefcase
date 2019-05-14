@@ -18,7 +18,6 @@ import org.openqa.selenium.support.FindBy;
 import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -200,15 +199,16 @@ public class JenieLoginPage extends AppiumPageFactory {
 
 	public static void logout() {
 		try {
-			tap(dashboard);
-			tap(settingsIcon);
-			tap(logout);
+			dashboard.click();
+			settingsIcon.click();
+			settingsIcon.click();
+			logout.click();
 
 			if (Actions.findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
 				contains(okButton).click();
 			} else {
 				Page.sleep(55000);
-				tap(logout);
+				logout.click();
 				contains(okButton).click();
 			}
 		} catch (WebDriverException e) {
@@ -275,12 +275,5 @@ public class JenieLoginPage extends AppiumPageFactory {
 	public enum Server {
 		CMKA, CM1A, CM5A, CM8A
 	}
-	
-	
-	
-	
-	
-	
-	
 
 }

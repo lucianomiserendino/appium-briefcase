@@ -11,7 +11,7 @@ Scenario Outline:
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And  user selects a "<server>" 
-	And User Observes the referral categories that display on "<dbType>" and on the dashboard using  "<judgeName>" and "<PE_RT_CODE>". 
+	#And User Observes the referral categories that display on "<dbType>" and on the dashboard using  "<judgeName>" and "<PE_RT_CODE>". 
 	
 	#NOTE:  The pending tasks category will not be included in this task.  
 	#This category is dynamically created if there are judge assignments. 
