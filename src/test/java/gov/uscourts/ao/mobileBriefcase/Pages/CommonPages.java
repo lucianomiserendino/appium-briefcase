@@ -9,6 +9,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CMR_CCR_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SET_SITE_TABLE_VARIABLE_VALUE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SITE_TABLE_VARIABLE_VALUE;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
@@ -25,13 +26,26 @@ import java.util.List;
 import org.openqa.selenium.By;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.common.Page;
 import gov.uscourts.ao.mobileBriefcase.common.Utility;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class CommonPages extends AppiumPageFactory {
+
+	static String okButton = "OK";
+	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
+	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
+	public static MobileElement dashboard;
+
+	@iOSFindBy(xpath = "//*[contains(@name, 'NavigationRenderer')]/XCUIElementTypeButton[2]")
+	public static MobileElement settingsIcon;
+
+	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name='Logout of Briefcase']")
+	public static MobileElement logout;
 
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "PendingTasksList")
@@ -240,6 +254,20 @@ public class CommonPages extends AppiumPageFactory {
 							.size() == 0) {
 				tap(Locator.XPATH, groupIcon + i + "]");
 			}
+		}
+	}
+
+	public  void logout() {
+		dashboard.click();
+		settingsIcon.click();
+		settingsIcon.click();
+		logout.click();
+		if (Actions.findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
+			contains(okButton).click();
+		} else {
+			Page.sleep(55000);
+			logout.click();
+			contains(okButton).click();
 		}
 	}
 
