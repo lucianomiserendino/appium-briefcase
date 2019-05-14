@@ -29,14 +29,14 @@ public class Page extends Base {
 	}
 
 	public static MobileElement waitForVisibilityOfElement(MobileElement element, WebDriver driver) {
-		return (MobileElement) new WebDriverWait(driver, 150).until(ExpectedConditions.visibilityOf(element));
+		return (MobileElement) new WebDriverWait(driver, 180).until(ExpectedConditions.visibilityOf(element));
 	}
 
 	public static void performPageLoad(WebDriver driver) {
 
 		synchronized (driver) {
 			try {
-				driver.wait(25000);
+				driver.wait(30000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

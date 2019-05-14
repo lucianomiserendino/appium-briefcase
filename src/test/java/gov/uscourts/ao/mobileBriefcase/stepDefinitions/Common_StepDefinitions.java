@@ -1,13 +1,16 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Categories;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Base.safariInstance;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
+import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
+import gov.uscourts.ao.mobileBriefcase.common.Page;
 
 public class Common_StepDefinitions {
 	CommonPages page;
@@ -16,11 +19,6 @@ public class Common_StepDefinitions {
 	public void user_selects_and(String category, String caseNumber) {
 		page = new CommonPages();
 		page.getCategoryWithCase(category, caseNumber);
-	}
-
-	@Then("^User verifies \"([^\"]*)\" panel is displayed and expands the  panel$")
-	public void user_verifies_panel_is_displayed_and_expands_the_panel(String panel) {
-		page.getPanel(Panel.valueOf(panel));
 	}
 
 	@Then("^User  selects action using dbType \"([^\"]*)\" and  \"([^\"]*)\"  and verifies the name of the action displays in the dark blue banner$")
@@ -32,13 +30,28 @@ public class Common_StepDefinitions {
 	@When("^User selects a  \"([^\"]*)\"$")
 	public void user_selects_a(String category) {
 		page = new CommonPages();
-		page.selectReferral(category);
+		page.selectReferral("//XCUIElementTypeOther[@name='Categories']" + containsElement(category));
 	}
 
-	@Given("^On \"([^\"]*)\" user sets the si_value of the site var to \"([^\"]*)\"  and si_code \"([^\"]*)\"$")
-	public void on_user_sets_the_si_value_of_the_site_var_to_and_si_code(String dbType, String si_value,
-			String si_code) {
+	@Given("^User sets the \"([^\"]*)\" site var to \"([^\"]*)\" on \"([^\"]*)\"$")
+	public void user_sets_the_site_var_to_on(String si_code, String si_value, String dbType) {
 		page = new CommonPages();
 		page.setValue(valueOf(dbType), si_value, si_code);
+
 	}
+
+	@Then("^User verifies \"([^\"]*)\" panel is displayed and expands the  panel$")
+	public void user_verifies_panel_is_displayed_and_expands_the_panel(String panel) {
+		page.getGroupIcons();
+		page.getPanel(Panel.valueOf(panel));
+
+	}
+
+	@Then("^User logs out of Briefcase$")
+	public void user_logs_out_of_Briefcase() {
+		JenieLoginPage.logout();
+		safariInstance();
+		Page.sleep(10000);
+	}
+
 }

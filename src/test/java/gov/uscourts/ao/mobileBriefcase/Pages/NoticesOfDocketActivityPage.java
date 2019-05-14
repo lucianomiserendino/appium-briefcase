@@ -7,9 +7,10 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CMD_DM_DLS_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DKT_ENTRY_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_DLS_ID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SI_VALUE;
-import static gov.uscourts.ao.mobileBriefcase.Pages.LoginPage.open;
-import static gov.uscourts.ao.mobileBriefcase.Pages.LoginPage.searchForACase;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getSiValue;
+import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.open;
+import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.searchForACase;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
@@ -38,6 +39,9 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 	String transactionNote = "Transaction Note";
 
 	String addANote = "Adding a note to display in briefcase";
+
+	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
+	public static MobileElement dashboard;
 
 	@iOSFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[1]")
 	public static MobileElement searchIcon;
@@ -93,47 +97,49 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 	 * this query
 	 */
 
-	public static String getSiValue(String dbType) {
-		return getAllColumns(valueOf(dbType), SI_VALUE);
-	}
-
 	/** Run the following URLS in the browser on the iPad */
 
-	public static String getDktentryid(String caseNum, String dbType) {
-		return getSiValue(dbType) + "queryecf?caseid=" + findACaseID(caseNum, dbType) + "&dktentryid=4352678";
+	public static String getDktentryid(String caseNum, String dbType, String value) {
+
+		return getSiValue(dbType, value) + "queryecf?caseid=" + findACaseID(caseNum, dbType) + "&dktentryid=4352678";
 		// + getDocID(ID.DOCKETENTRY_ID, caseNum, dbType);
 	}
 
-	public static String getDocumentAndNoteID(String caseNum, String dbType, String id) {
-		return getSiValue(dbType) + "viewdocument?dmdlsid=" + id + "&caseid=" + findACaseID(caseNum, dbType);
+	public static String getDocumentAndNoteID(String caseNum, String dbType, String id, String value) {
+
+		return getSiValue(dbType, value) + "viewdocument?dmdlsid=" + id + "&caseid=" + findACaseID(caseNum, dbType);
 	}
 
 	/** Open a Docket Entry in Briefcase from the NDA link */
 
-	public void openADktEntryInBriefcase(String caseNum, String dbType) {
+	public void openADktEntryInBriefcase(String caseNum, String dbType, String value) {
 		searchForACase(caseNum);
-		loadNDALinksInBriefcase(getDktentryid(caseNum, dbType));
-		verifyElementsAreDisplayed("DOCKET ENTRY", event, docketText);
-		// clickBack(4);
+		loadNDALinksInBriefcase(getDktentryid(caseNum, dbType, value));
+		verifyElementsAreDisplayed("DOCKET ENTRY", docketText);
+		clickBack(1);
 	}
 
 	/** Open a document in Briefcase from the NDA link */
 
-	public void openADocumentInBriefCase(String caseNum, String dbType) {
-		loadNDALinksInBriefcase(getDocumentAndNoteID(caseNum, dbType, "2832314"));
+	public void openADocumentInBriefCase(String caseNum, String dbType, String value) {
+		searchForACase(caseNum);
+		loadNDALinksInBriefcase(getDocumentAndNoteID(caseNum, dbType, "2832314", value));
 		select(BriefcaseCoordinates.DISMISS);
 		performPageLoad(driver);
-		assertTrue("********CAN'T OPEN A DOCUMENT IN BRIEFCASE FROM THE NDA LINK*********",
-				isDisplayed(Locator.ID, PDFPageView));
+
+		verifyElementsAreDisplayed("DOCUMENT", PDFPageView);
+
 		tap(Locator.NAME, close);
+		clickBack(1);
+
 	}
 
 	/** Open a note in Briefcase from the NDA link */
 
-	public void openANoteInBriefcase(String caseNum, String dbType) {
-
-		loadNDALinksInBriefcase(getDocumentAndNoteID(caseNum, dbType, getDocID(ID.NOTE_ID, caseNum, dbType)));
-		verifyElementsAreDisplayed("NOTE", transactionNote, addANote);
+	public void openANoteInBriefcase(String caseNum, String dbType, String value) {
+		searchForACase(caseNum);
+		loadNDALinksInBriefcase(getDocumentAndNoteID(caseNum, dbType, getDocID(ID.NOTE_ID, caseNum, dbType), value));
+		verifyElementsAreDisplayed("NOTE", addANote);
 		clickBack(1);
 
 	}
@@ -157,13 +163,13 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 				tap(Locator.ID, backBTN);
 			}
 		} catch (Exception e) {
-			tap(Locator.ID, backBTN);
+			e.getMessage();
 		}
 	}
 
-	public void verifyElementsAreDisplayed(String link, String el1, String el2) {
+	public void verifyElementsAreDisplayed(String link, String el2) {
 		assertTrue("*********CAN'T OPEN A " + link + " IN BRIEFCASE FROM THE NDA LINK*********",
-				isDisplayed(Locator.ID, el1) == true && isDisplayed(Locator.ID, el2) == true);
+				isDisplayed(Locator.XPATH, containsElement(el2)) == true);
 	}
 
 	public enum ID {

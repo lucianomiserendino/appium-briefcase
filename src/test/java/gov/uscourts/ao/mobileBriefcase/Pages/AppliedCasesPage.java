@@ -1,10 +1,11 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.Pages.LoginPage.dashboard;
+import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.dashboard;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.findElementAndScrollDown;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.NoSuchElementException;
@@ -44,7 +45,8 @@ public class AppliedCasesPage extends AppiumPageFactory {
 	}
 
 	public void selectDate(String date, String panel) {
-		tap(Locator.XPATH, "//XCUIElementTypeStaticText[@name='" + date
+
+		findElementAndScrollDown(Locator.XPATH, "//XCUIElementTypeStaticText[@name='" + date
 				+ "']/following::XCUIElementTypeOther/XCUIElementTypeStaticText[@name='" + panel + "']");
 
 	}
@@ -60,6 +62,6 @@ public class AppliedCasesPage extends AppiumPageFactory {
 		assertTrue("******APPLIED CASES LINK ICON DISAPPEARS WHEN BOOKMARKING CASE/REFERRAL******",
 				isDisplayed(Locator.XPATH, containsElement(caseNumber)
 						+ "/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText[@name='linked']"));
-		
+
 	}
 }

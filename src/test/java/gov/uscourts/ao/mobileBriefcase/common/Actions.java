@@ -87,7 +87,7 @@ public class Actions extends Base {
 	}
 
 	public static void tap(MobileElement element) {
-		element.click();
+		Page.waitForVisibilityOfElement(element, driver).click();
 	}
 
 	public static void tap(Locator identifier, String element) {

@@ -48,30 +48,31 @@ public class Queries {
 	 * Query the stfaty_mobile_referral, and stfaty_assign_val table to get valid
 	 * assignment categories for the logged in user
 	 */
-	public static final String SAs_ASSIGNMENT_CATEGORIES = "select distinct(sfa_display) from stfaty_mobile_referral, stfaty_ref_assign, "
-			+ "stfaty_assign_val where smr_ra_id = ra_id and ra_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, "
-			+ "stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa' ) and smr_sfa_code = sfa_code and smr_date_end is null";
+	public static final String SAs_ASSIGNMENT_CATEGORIES = "select distinct(sfa_display) from stfaty_mobile_referral, stfaty_ref_assign, stfaty_assign_val\n"
+			+ "where smr_ra_id = ra_id and\n" + "ra_pe_id = 'RA_PE_ID' and\n" + "smr_sfa_code = sfa_code and\n"
+			+ "smr_date_end is null";
 
 	/** Observe there are six referral categories listed */
 
-	public static final String SAs_REFERRAL_CATEGORIES = "SELECT distinct(mrc_name),mrc_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
-			+ " WHERE smr_mrc_id = mrc_id and smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
-			+ " WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa')  and smr_sfa_code = 'sstfa'  order by mrc_name";
+	public static final String SAs_REFERRAL_CATEGORIES =
+
+			"SELECT distinct ( mrc_name)  FROM stfaty_mobile_ref_cat, stfaty_mobile_referral\n"
+					+ "WHERE smr_mrc_id = mrc_id and\n" + "smr_assign_pe_id = 'SMR_ASSIGN_PE_ID'  and\n"
+					+ "smr_sfa_code = 'sstfa'  \n" + "order by mrc_name";
 
 	public static final String ID_OF_THE_REFERRAL_CATEGORY = "SELECT distinct(mrc_id),mrc_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
-			+ " WHERE smr_mrc_id = mrc_id and smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
-			+ " WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa') and  mrc_name='MRC_NAME'  and smr_sfa_code = 'sstfa'";
+			+ " WHERE smr_mrc_id = mrc_id and smr_assign_pe_id = 'SMR_ASSIGN_PE_ID' and  mrc_name='MRC_NAME'  and smr_sfa_code = 'sstfa'";
 
 	/** Query to to find the number of referrals in each categories */
 	public static final String REFERRAL_NUMBERS = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = SMR_MRC_ID "
-			+ "and smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa')";
+			+ "and smr_assign_pe_id = 'SMR_ASSIGN_PE_ID'";
 
 	public static final String SAs_DOCUMENT_CATEGORIES = "SELECT distinct cmd_doc_category FROM chm_mobile_docs, stfaty_mobile_referral\n"
-			+ "WHERE smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa')  and\n"
+			+ "WHERE smr_assign_pe_id ='SMR_ASSIGN_PE_ID'  and\n"
 			+ "smr_mrc_id = SMR_MRC_ID  and\n" + "smr_id = cmd_smr_id ";
 
 	public static final String DOCUMENT_DESCRIPTION = "SELECT distinct cmd_description FROM chm_mobile_docs, stfaty_mobile_referral\n"
-			+ "WHERE smr_assign_pe_id = (SELECT distinct smr_assign_pe_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and smr_sfa_code = 'sstfa')  and\n"
+			+ "WHERE smr_assign_pe_id = 'SMR_ASSIGN_PE_ID' and\n"
 			+ "smr_mrc_id = SMR_MRC_ID  and\n" + "smr_id = cmd_smr_id and cmd_doc_category = 'CMD_DOC_CATEGORY'";
 
 	public static final String CASE_ID = "SELECT cs_caseid FROM case WHERE cs_year = 'CS_YEAR' and cs_number = 'CS_NUMBER'";
@@ -84,7 +85,6 @@ public class Queries {
 	public static final String DM_DLS_ID = "SELECT dm_dls_id FROM document, case_dktentry where cd_caseid = ? and "
 			+ "dm_dktentryid = cd_dktentryid and dm_internal_type = 'noteTrans'";
 
-	public static final String SI_VALUE = "SELECT si_value FROM site WHERE si_code = 'briefcaseAppLinkRoot'";
 
 	public static final String MBR_EVENT = "select * from mbr_event";
 
@@ -298,7 +298,7 @@ public class Queries {
 
 	public static final String SET_SITE_TABLE_VARIABLE_VALUE = "UPDATE  site SET  si_value = 'SI_VALUE' where si_code ='SI_CODE'";
 
-	public static final String SITE_TABLE_VARIABLE_VALUE = "SELECT si_value FROM site WHERE si_code = 'SI_CODE";
+	public static final String SITE_TABLE_VARIABLE_VALUE = "SELECT si_value FROM site WHERE si_code = '?'";
 
 	public static final String RELIEF = "select distinct  rl_list_text from chambers_case_to_referral b join chambers_case_to_referral a on"
 			+ " b.ccr_cpr_id = a.ccr_cpr_id join dktpart on dp_dktpartid = b.ccr_dp_dktpartid join relief_list on rl_id = dp_rlid "
@@ -358,7 +358,7 @@ public class Queries {
 			+ "chm_assign_datetype_val,(Select max(chd_date) as maxnum, chd_cha_id from chambers_assign_date group by chd_cha_id) maxresults "
 			+ "WHERE ad.chd_cha_id =? and chd_cdv_code = cdv_code and ad.chd_cha_id=  maxresults.chd_cha_id and ad.chd_date = maxresults.maxnum";
 
-	public static final String CMR_CCR_ID = "SELECT first 1 CMR_CCR_ID FROM case, chm_mobile_referral WHERE cs_year = 'CS_YEAR' and cs_number = 'CS_NUMBER' and cs_caseid = cmr_cs_caseid "
+	public static final String CMR_CCR_ID = "SELECT first 1 ID FROM case, chm_mobile_referral WHERE cs_year = 'CS_YEAR' and cs_number = 'CS_NUMBER' and cs_caseid = cmr_cs_caseid "
 			+ "and cmr_cyv_code='CMR_CYV_CODE' and cmr_ju_pe_id ='CMR_JU_PE_ID'";
 
 	public static final String FILLERs_INFORMATION = "select  FIELD " + "from chm_mobile_referral\n"
@@ -381,4 +381,5 @@ public class Queries {
 
 	public static final String DOCUMENT_CATEGORIES = "select distinct (cmd_doc_category),cmd_sort from chm_mobile_docs join chm_mobile_referral on cmr_id = cmd_cmr_id where cmr_cyv_code = 'CMR_CYV_CODE' \n"
 			+ " and cmr_date_end is null and cmr_ju_pe_id ='CMR_JU_PE_ID'  and  cmr_cs_caseid='CMR_CS_CASEID'  order by cmd_sort";
+
 }

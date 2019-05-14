@@ -4,11 +4,7 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 
 import cucumber.api.java.en.Then;
-import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.JudgeVoteDPFPage;
-import gov.uscourts.ao.mobileBriefcase.common.Base;
-import gov.uscourts.ao.mobileBriefcase.common.Base.Driver;
-import gov.uscourts.ao.mobileBriefcase.common.Page;
 
 public class JudgeVoteDPF_StepDefinitions {
 
@@ -43,5 +39,10 @@ public class JudgeVoteDPF_StepDefinitions {
 		page.verifyNoteText(valueOf(dbType), ccr_id, vote, page.getTodaysDate());
 	}
 
+	@Then("^User verifies the court admin doesn't have access to select Actions in Briefcase$")
+	public void user_verifies_the_court_admin_doesn_t_have_access_to_select_Actions_in_Briefcase() {
+		page = new JudgeVoteDPFPage();
+		page.verifyCourtAdminAccess();
+	}
 
 }

@@ -1,7 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
-import static gov.uscourts.ao.mobileBriefcase.Pages.LoginPage.logout;
+import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.logout;
 import static gov.uscourts.ao.mobileBriefcase.common.Base.safariInstance;
 import static org.junit.Assert.assertEquals;
 

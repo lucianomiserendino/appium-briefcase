@@ -1,20 +1,21 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Categories;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.AppliedCasesPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 
 public class AppliedCases_StepDefinitions {
 	CommonPages page1;
-	AppliedCasesPage page;
-String caseN="";
+	static AppliedCasesPage page;
+	static String caseN = "";
+
 	@Then("^user checks if \"([^\"]*)\" is bookmarked$")
 	public void user_checks_if_is_bookmarked(String caseNumber) {
 		page = new AppliedCasesPage();
-		caseN+=caseNumber;
+		caseN += caseNumber;
 		page.getBookmarkedReferral(caseN);
 	}
 
@@ -34,7 +35,7 @@ String caseN="";
 	public void user_goes_back_to_the_page_for_for_panel_and_verifies_the_link_is_there(String category, String date,
 			String panel) {
 		page1 = new CommonPages();
-		page1.selectReferral(category);
+		page1.selectReferral("//XCUIElementTypeOther[@name='Categories']" + containsElement(category));
 		page = new AppliedCasesPage();
 		page.selectDate(date, panel);
 		page.verifyAppliedCaseLinkIsDisplayed(caseN);

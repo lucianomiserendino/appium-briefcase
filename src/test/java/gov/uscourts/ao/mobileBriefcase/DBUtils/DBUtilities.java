@@ -176,7 +176,6 @@ public class DBUtilities {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public static String getID(String query, String id) {

@@ -8,10 +8,6 @@ public interface iOSCapabilities {
 
 	public static final String PLATFORM_VERSION = "platformVersion";
 
-	public static final String LOCAL_UDID = "localUdid";
-	
-	public static final String REMOTE_UDID = "remoteUdid";
-
 	public static final String DEVICE_NAME = "deviceName";
 
 	public static final String DEVICE_NAME_w = "deviceName_w";

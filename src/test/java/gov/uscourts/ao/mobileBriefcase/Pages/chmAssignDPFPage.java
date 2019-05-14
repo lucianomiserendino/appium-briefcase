@@ -23,6 +23,7 @@ import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectAction;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectReferral;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.verifyElementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
@@ -92,13 +93,10 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		staffMember += getAvailableStaffMembers(dbType, dpfName, elId, cha_ju_pe_id);
 		String staffFName = splitBy(staffMember, 0);
 		String staffLName = splitBy(staffMember, 1);
-		System.out.println(staffFName + "*****************************staffFName");
-		System.out.println(staffLName + "*****************************staffLName");
 
 		/** STEP 2 --Select an assignment */
 		getElementNextToDropDown(5, "Assignment", "Please Select");
 		getAssignmentType(dbType, dpfName, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code, staffFName, staffLName);
-		System.out.println(getChmAssign(chmAssign.ASSIGNMENT) + "***************");
 
 		/** STEP 3 --Select an Assigned Date */
 		getElementNextToDropDown(7, "Assigned", "Select Date");
@@ -106,13 +104,14 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		performPageLoad(driver);
 		Utility.tapByCoordinate("assignedDateX", "assignedDateY");
 		performPageLoad(driver);
-		/** STEP 4 --Select Assignment Due Date */
 
+		/** STEP 4 --Select Assignment Due Date */
 		getElementNextToDropDown(9, "Assignment Due", "Select Date");
 		// selectADate(1);
 		performPageLoad(driver);
 		Utility.tapByCoordinate("assignedDueDateX", "assignedDueDateY");
 		performPageLoad(driver);
+
 		/** STEP 5 --Verify comment, apply and cancel display */
 		verifyElementIsDisplayed(comment);
 		verifyElementIsDisplayed(apply);
@@ -123,20 +122,18 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		 * // the // * new assignment will display on the chmAssign DPF screen //
 		 */
 		assignment += newUIAssignment(dbType, cha_ju_pe_id, elId, staffFName, staffLName, caseNumber);
-		//
-		// /******************
-		// * @AMB-1137
-		// */
-		// newDBAssignment(dbType, cha_ju_pe_id, elId, staffFName, staffLName,
-		// assignment);
-		//
-		// /******************
-		// * @AMB-1170, @AMB-1173
-		// */
-		// modifyExistingStaffAssignment(assignmentNameAndType, assignmentDate,
-		// dbType,dpfName, elId, cha_ju_pe_id, cmr_cs_caseid,
-		// cmr_cyv_code, staffFName, staffLName);
-		//
+
+		/******************
+		 * @AMB-1137
+		 */
+		newDBAssignment(dbType, cha_ju_pe_id, elId, staffFName, staffLName, assignment);
+
+		/******************
+		 * @AMB-1170, @AMB-1173
+		 */
+		modifyExistingStaffAssignment(assignmentNameAndType, assignmentDate, dbType, dpfName, elId, cha_ju_pe_id,
+				cmr_cs_caseid, cmr_cyv_code, staffFName, staffLName);
+
 	}
 
 	/**
@@ -220,8 +217,6 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 				sort(uiAssignmenType);
 			}
 
-			System.out.println(uiAssignmenType + "**************************uiAssignmenType");
-
 			String assignmentType = getParameter(getAllColumns(dbType, getID(MBR_NOTE, elId)), dpfName, 1);
 			if (assignmentType.equals("SKIP")) {
 				/** If the assignment type parameter is set to SKIP, use this query */
@@ -284,8 +279,6 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 		contains(apply).click();
 
-		//Utility.findElementAndScroll(element);
-		
 		assignmentNameAndType = getCreatedAssignmentNameAndAssignmentType(staffMembersFName + " " + staffMembersLName,
 				assignment);
 		assignmentDate = getCreatedAssignmentType(staffMember, assignment);
@@ -300,7 +293,12 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		performPageLoad(driver);
 		getPanel(Panel.Assignments);
 
-		assertTrue(getExistingAssignment(assignmentNameAndType, assignmentDate).isDisplayed());
+		// assertTrue(getExistingAssignment(assignmentNameAndType,
+		// assignmentDate).isDisplayed());
+
+		assertTrue(Utility.findElementAndScroll("//*[contains(@name, '" + assignmentNameAndType
+				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + assignmentDate + "')]") == true);
+
 		return assignment;
 
 	}
@@ -384,13 +382,20 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		String modAssignmentType = getChmAssign(chmAssign.ASSIGNMENT);
 
 		getElementNextToDropDown(7, "Assigned", uiAssignedDate);
-		selectADate(3);
+		// selectADate(3);
 		performPageLoad(driver);
+		Utility.tapByCoordinate("modifiedAssignedDateX", "modifiedAssignedDateX");
+		performPageLoad(driver);
+
 		String modAssignedDate = getChmAssign(chmAssign.ASSIGNED_DATE);
 
 		getElementNextToDropDown(9, "Assignment Due", dbAssignmentDueDate);
-		selectADate(3);
+		// selectADate(3);
+		// performPageLoad(driver);
 		performPageLoad(driver);
+		Utility.tapByCoordinate("modifiedAssignedDueDateX", "modifiedAssignedDueDateY");
+		performPageLoad(driver);
+
 		String modAssignmentDueDate = getChmAssign(chmAssign.ASSIGNMENT_DUE);
 
 		contains(apply).click();
@@ -489,8 +494,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	public static MobileElement getExistingAssignment(String assineeName, String AssignmentTypeAndDate) {
 		return findElement(By.xpath("//*[contains(@name, '" + assineeName
-				+ "')]/following-sibling:: XCUIElementTypeStaticText[contains(@name, '" + AssignmentTypeAndDate
-				+ "')]"));
+				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + AssignmentTypeAndDate + "')]"));
 	}
 
 	public static String getExistingAssignmentDateType(String assignDateType, int index) {
@@ -500,11 +504,14 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	public void clickOnExistingAssignment(String AssignName, String AssignType, DBType dbType, String elID) {
 		selectAction(dbType, "Actions", elID);
-		getExistingAssignment(AssignName, AssignType).click();
+		Utility.findElementAndScrollDown(Locator.XPATH, "//*[contains(@name, '" + AssignName
+				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + AssignType + "')]");
+		// getExistingAssignment(AssignName, AssignType).click();
 	}
 
 	public static void clickOn(String submit, String yes, String ok) {
-		contains(submit).click();
+
+		Utility.findElementAndScrollDown(Locator.XPATH, containsElement(submit));
 		contains(yes).click();
 		contains(ok).click();
 

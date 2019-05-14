@@ -4,13 +4,13 @@ import static gov.uscourts.ao.mobileBriefcase.common.Page.sleep;
 import static org.junit.Assert.assertEquals;
 
 import cucumber.api.java.en.Then;
-import gov.uscourts.ao.mobileBriefcase.Pages.LoginPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.RedBulletsPage;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
 
 public class RedBullets_StepDefintions extends Base {
 	RedBulletsPage page;
-	LoginPage page1;
+	JenieLoginPage page1;
 	int afterViewingReferral = 0;
 	int afterViewingReferral1 = 0;
 
@@ -35,7 +35,7 @@ public class RedBullets_StepDefintions extends Base {
 		assertEquals("WHEN CLOSING AND REOPENING THE APP ITEMS APPEAR AS NEW", afterViewingReferral,
 				afterViewingReferral1 += page.verifyRedBulletIsRemoved());
 		sleep(30000);
-		page1 = new LoginPage();
+		page1 = new JenieLoginPage();
 		page1.logout();
 		safariInstance();
 		driver.close();

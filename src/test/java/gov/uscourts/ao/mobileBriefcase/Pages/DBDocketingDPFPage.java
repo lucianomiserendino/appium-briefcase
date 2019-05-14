@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
@@ -16,40 +15,45 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_DESCRIPTION;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DU_PRID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.LOGED_IN_JUDGES_LAST_NAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.LOGED_IN_JUDGES_PR_PRID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PANEL_JUDGES_PR_PRID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PR_LAST_NAME;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCMRID;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectAction;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.*;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.getParameter;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.getStreamOfRandomInts;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollUp;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.toArray;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.models.ElListText;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.WithTimeout;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class DBDocketingDPFPage extends AppiumPageFactory {
 
-	//@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeTextView[1]")
+	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='DocketingDPFList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
 	public static MobileElement descriptionField;
 
-	//@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeTextView[2]")
+	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='DocketingDPFList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
 	public static MobileElement commentField;
 
-	//@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
 	public static MobileElement selectUser;
 
@@ -59,7 +63,7 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 	@iOSFindBy(id = "Yes")
 	public static MobileElement YESbtn;
 
-	//@WithTimeout(time = 100, unit = TimeUnit.SECONDS)
+	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSFindBy(id = "OK")
 	public static MobileElement OKbtn;
 
@@ -68,20 +72,21 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 	public void selectActioName(List<ElListText> table, int index, String dbType, String caseNum, String peID) {
 
 		list = table.get(index);
-		try {
 
-			selectAction(valueOf(dbType), "Actions", list.getElListText());
-			sendKeys(commentField, "Test-" + getStreamOfRandomInts());
-			sendKeys(descriptionField, "Test-" + getStreamOfRandomInts() + "-");
-			String description = getText(descriptionField);
+		scrollUp(By.id("DocumentList"));
+		selectAction(valueOf(dbType), "Actions", list.getElListText());
+		sendKeys(commentField, "Test-" + getStreamOfRandomInts());
+		sendKeys(descriptionField, "Test-" + getStreamOfRandomInts() + "-");
+		String description = getText(descriptionField);
+		try {
 			tap(submit);
 			tap(YESbtn);
 			tap(OKbtn);
-			getDataTable(table, index, valueOf(dbType), caseNum, peID);
-			assertEquals(description, getAllColumns(valueOf(dbType), DM_DESCRIPTION));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		getDataTable(table, index, valueOf(dbType), caseNum, peID);
+		assertEquals(description, getAllColumns(valueOf(dbType), DM_DESCRIPTION));
 
 	}
 
@@ -140,22 +145,27 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 			 */
 		} else if (getActionName(dbType, list.getElListText()).equals("note - panel judges chambers")) {
 			assertNull(docUserTable);
-			assertEquals(docGroupTable, getchambersGroupId(dbType, panelJudges));
+			assertEquals(docGroupTable, getchambersGroupId(dbType, panelJudges, caseNum, peId));
 
 		} else if (getActionName(dbType, list.getElListText()).equals("note - users chambers")) {
 			assertNull(docUserTable);
 			assertEquals(docGroupTable, loggedInJudgesChambersGroupID);
 
 		} else if (getActionName(dbType, list.getElListText()).equals("note - only groups and users")) {
+
+			List<String> defaultPersonIDs = getDefaultIds(dbType, list.getElListText(), 3);
+
+			List<String> defaultGroupIDs = getDefaultIds(dbType, list.getElListText(), 2);
+			assertEquals(defaultPersonIDs, docUserTable);
+			assertEquals(defaultGroupIDs, defaultGroupIDs);
+
 		}
 
 	}
 
-	/**
-	 * @return
-	 */
-	public static List<String> getchambersGroupId(DBType dbType, List<String> panelJudges) {
-
+	public static List<String> getchambersGroupId(DBType dbType, List<String> panelJudges, String caseNum,
+			String peId) {
+		String cmrId = getCMRID(dbType, "cmr_id", caseNum, peId, "autotst");
 		List<String> groupId = new ArrayList<>();
 		List<String> chambersGroupId = new ArrayList<>();
 		List<String> pr_prid = panelJudges;
@@ -163,7 +173,7 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 		for (int a = 0; a < pr_prid.size(); a++) {
 
 			List<String> prLastName = executeQuery(dbType,
-					replace(PR_LAST_NAME, "CMR_ID", "2315338", "PR_PRID", pr_prid.get(a)));
+					replace(PR_LAST_NAME, "CMR_ID", cmrId, "PR_PRID", pr_prid.get(a)));
 
 			for (int i = 0; i < prLastName.size(); i++) {
 
@@ -194,8 +204,8 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 	}
 
 	public static List<String> getIDs(DBType dbType, String caseNum, String peId, String query) {
-		// String cmrId = getCMRID(dbType, caseNum, peId, "=autotst");
-		return getDBResult(dbType, replace(query, "CMR_ID", "2315338"));
+		String cmrId = getCMRID(dbType, "cmr_id", caseNum, peId, "autotst");
+		return getDBResult(dbType, replace(query, "CMR_ID", cmrId));
 	}
 
 	/** query to find the panel judges */
@@ -242,6 +252,24 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 		return dbResult;
 	}
 
+	public static List<String> getDefaultIds(DBType dbType, String elId, int index) {
 
+		String[] ID = null;
+
+		String defaultID = getParameter(getAllColumns(dbType, getID(MBR_NOTE, elId)), "note", index).split("\\|")[1];
+
+		List<String> deIDs = new ArrayList<>();
+
+		if (defaultID.contains(":")) {
+			ID = defaultID.split(":");
+			for (int i = 0; i < ID.length; i++) {
+				deIDs.add(ID[i]);
+			}
+		} else {
+			deIDs.add(defaultID);
+		}
+		return deIDs;
+
+	}
 
 }

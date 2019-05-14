@@ -1,18 +1,17 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.insertData;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CMR_CCR_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SET_SITE_TABLE_VARIABLE_VALUE;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SITE_TABLE_VARIABLE_VALUE;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForVisibilityOfElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.expandPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.findElementAndScrollDown;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.replace;
@@ -25,6 +24,7 @@ import java.util.NoSuchElementException;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.common.Utility;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
@@ -46,18 +46,13 @@ public class CommonPages extends AppiumPageFactory {
 	@iOSFindBy(accessibility = "DocumentList")
 	public static MobileElement DocumentList;
 
-	// @WithTimeout(time = 20, unit = TimeUnit.SECONDS)
-	@iOSFindBy(accessibility = "Categories")
-	public static MobileElement Categories;
+	@iOSFindBy(accessibility = "GroupIcon")
+	public static List<MobileElement> GroupIcon;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name='▷']")
-	public static List<MobileElement> right;
-
-	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name='▽']")
-	public static List<MobileElement> down;
-
-	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='▽'])[1]")
-	public static MobileElement viewed;
+	@iOSFindBy(xpath = "//*[contains(@name, 'Judge:')]")
+	public static MobileElement judge;
+	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
+	public static List<MobileElement> Categories;
 
 	public void getCategory(Category category, String caseNumber) {
 
@@ -103,13 +98,14 @@ public class CommonPages extends AppiumPageFactory {
 		default:
 			break;
 		}
-		selectReferral(categories);
-		selectReferral(caseNumber);
+
+		selectReferral("//XCUIElementTypeOther[@name='Categories']" + containsElement(categories));
+		selectReferral(containsElement(caseNumber));
 	}
 
 	public static void selectReferral(String category) {
-		performPageLoad(driver);
-		findElementAndScrollDown(Locator.XPATH, containsElement(category));
+		findElementAndScrollDown(Locator.XPATH, category);
+
 	}
 
 	public void getCategoryWithCase(String category, String caseNumber) {
@@ -141,33 +137,18 @@ public class CommonPages extends AppiumPageFactory {
 		default:
 			break;
 		}
+		verifyElementIsDisplayed(panels);
 		expandPanel(panels);
-	}
-
-	public  void getCollapsiblePanel(DBType dbType, String refCategory) {
-		List<String> category = executeQuery(dbType, refCategory);
-		try {
-			while (right.size() < category.size() && down.size() > 0) {
-
-				// for (int i = 0; i < category.size()-1; i++) {
-				waitForVisibilityOfElement(viewed, driver).click();
-			}
-			// }
-		} catch (NoSuchElementException e) {
-			assertTrue(right.size() == category.size());
-
-		}
 	}
 
 	public static void selectAction(DBType dbType, String panel, String el_id) {
 
 		performPageLoad(driver);
-		hideCollapsiblePanels();
+		getGroupIcons();
 		findElementAndScrollDown(Locator.XPATH, containsElement(panel));
 
 		try {
 			replace(panel);
-			// getPanel(Panel.valueOf(panel));
 
 		} catch (AssertionError e) {
 			e.getMessage();
@@ -189,18 +170,23 @@ public class CommonPages extends AppiumPageFactory {
 		findElementAndScrollDown(Locator.XPATH,
 				"//XCUIElementTypeOther[@name='DocumentList']//XCUIElementTypeStaticText[contains(@name, '" + element
 						+ "')]");
+		// performPageLoad(driver);
+		// assertTrue("VERIFY THE NAME OF THE ACTION DISPLAYS IN THE DARK BLUE BANNER",
+		// isDisplayed(Locator.XPATH, containsElement(element)));
 	}
 
-	public static String getCMRID(DBType dbType, String caseNum, String peId, String cmr_cyv_code) {
+	public static String getCMRID(DBType dbType, String id, String caseNum, String peId, String cmr_cyv_code) {
 		String caseYear = splitBy(caseNum, 0);
 		String caseNumber = splitBy(caseNum, 1);
+
 		return getAllColumns(dbType,
-				replace(replace(CMR_CCR_ID, "CS_YEAR", caseYear, "CS_NUMBER", caseNumber, "CMR_JU_PE_ID", peId),
-						"CMR_CYV_CODE", cmr_cyv_code));
+				replace(replace(CMR_CCR_ID, "CS_YEAR", caseYear, "CS_NUMBER", caseNumber, "CMR_JU_PE_ID", peId), "ID",
+						id, "CMR_CYV_CODE", cmr_cyv_code));
 	}
 
 	public static void verifyElementIsDisplayed(String element) {
-		assertTrue(" PLEASE ENSURE THAT " + element.toUpperCase() + " IS DISPLAYED ", contains(element).isDisplayed());
+		assertTrue(" PLEASE ENSURE THAT " + element.toUpperCase() + " IS DISPLAYED ",
+				Utility.findElementAndScroll(containsElement(element)) == true);
 	}
 
 	public static String getCaseID(DBType dbType, MobileElement uiCaseNumber) {
@@ -213,13 +199,18 @@ public class CommonPages extends AppiumPageFactory {
 
 	}
 
+	public static String getSiValue(String dbType, String value) {
+		return getAllColumns(valueOf(dbType), getID(SITE_TABLE_VARIABLE_VALUE, value));
+	}
+
 	/**
 	 * This method changes the value of the site table variable
 	 * 
 	 */
 
-	public static void setValue(DBType dbType, String si_value, String si_code) {
-		insertData(dbType, replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE", si_value, "SI_CODE", si_code));
+	public void setValue(DBType dbType, String si_value, String SI_CODE) {
+		insertData(dbType, replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE", si_value, "si_code", SI_CODE));
+
 	}
 
 	public static String getCase(Case caseN, MobileElement uiCaseNumber) {
@@ -238,15 +229,15 @@ public class CommonPages extends AppiumPageFactory {
 
 	}
 
-	public static void hideCollapsiblePanels() {
-
-		try {
-			while (down.size() > 0) {
-				waitForVisibilityOfElement(viewed, driver).click();
+	public static void getGroupIcons() {
+		for (int i = 0; i < GroupIcon.size(); i++) {
+			try {
+				while (GroupIcon.get(i).getAttribute("value").equals("▽")) {
+					GroupIcon.get(i).click();
+				}
+			} catch (NoSuchElementException e) {
+				assertTrue(GroupIcon.get(i).getAttribute("value").equals("▷"));
 			}
-		} catch (NoSuchElementException e) {
-			assertTrue(down.size() == 0);
-
 		}
 	}
 

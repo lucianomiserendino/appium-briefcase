@@ -44,7 +44,7 @@ public class VoteInformation_StepDefinitions {
 	public void user_checks_each_judge_s_vote_and_the_date_displays_under_their_initials() {
 
 	}
-//*************************
+
 	@Given("^user selects the \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_selects_the_and(String category, String caseNum) {
 		page1 = new CommonPages();

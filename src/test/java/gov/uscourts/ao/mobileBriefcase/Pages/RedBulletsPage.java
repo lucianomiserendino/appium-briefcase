@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectReferral;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.split;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
@@ -49,7 +50,7 @@ public class RedBulletsPage extends AppiumPageFactory {
 	}
 
 	public int verifyRedBulletIsRemoved() {
-		selectReferral("Motions/Petitions");
+		selectReferral("//XCUIElementTypeOther[@name='Categories']" + containsElement("Motions/Petitions"));
 		Page.performPageLoad(driver);
 		return getSizeOfNewReferrals();
 	}

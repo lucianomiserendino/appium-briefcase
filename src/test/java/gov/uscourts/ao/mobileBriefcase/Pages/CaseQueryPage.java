@@ -53,6 +53,5 @@ public class CaseQueryPage extends AppiumPageFactory {
 		performPageLoad(driver);
 		assertTrue("APP IS NOT RETURNING CASE LIST FOR SOME WILDCARD SEARCHES",
 				contains("Case #" + caseN).isDisplayed());
-		System.out.println(contains("Case #" + caseN).getText() + "************");
 	}
 }

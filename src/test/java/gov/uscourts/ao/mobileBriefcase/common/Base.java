@@ -3,8 +3,13 @@ package gov.uscourts.ao.mobileBriefcase.common;
 import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
@@ -35,11 +40,7 @@ public abstract class Base implements iOSCapabilities {
 
 				SetCapabilitiy(PLATFORM_NAME);
 				SetCapabilitiy(PLATFORM_VERSION);
-				try {
-					SetCapabilitiy(LOCAL_UDID);
-				} catch (WebDriverException e) {
-					SetCapabilitiy(REMOTE_UDID);
-				}
+				capabilities.setCapability("udid", Utility.toArray(getUdid(getProperty(DEVICE_NAME))));
 				SetCapabilitiy(DEVICE_NAME);
 				SetCapabilitiy(BUNDLE_ID);
 				SetCapabilitiy(XCODE_ORG_ID);
@@ -145,6 +146,24 @@ public abstract class Base implements iOSCapabilities {
 		} catch (WebDriverException e) {
 
 		}
+
+	}
+
+	public static List<String> getUdid(String ipad) {
+		List<String> udid = new ArrayList<>();
+		try {
+			new BufferedReader(
+					new InputStreamReader(Runtime.getRuntime().exec("xcrun simctl list devices").getInputStream()))
+							.lines().forEach(s -> {
+								if (s.contains(ipad) && s.contains("Booted")) {
+									udid.add(s.substring(s.indexOf("ion)") + 6, s.indexOf("ion)") + 42));
+								}
+								;
+							});
+		} catch (IOException e) {
+			e.getMessage();
+		}
+		return udid;
 
 	}
 

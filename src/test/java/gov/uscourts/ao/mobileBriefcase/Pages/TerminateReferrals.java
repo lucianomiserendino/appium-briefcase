@@ -6,7 +6,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.insertData;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.UPDATE_CHAMBERS_CASE_TO_REFERRAL;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCMRID;
-import static gov.uscourts.ao.mobileBriefcase.Pages.LoginPage.dashboard;
+import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.dashboard;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
@@ -38,7 +38,7 @@ public class TerminateReferrals extends AppiumPageFactory {
 
 	/** find the ccr_id for the referral */
 	public static String getCMR_CCR_ID(String caseNum, String dbType, String peID, String cmr_cyv_code) {
-		return getCMRID(valueOf(dbType), caseNum, peID, cmr_cyv_code);
+		return getCMRID(valueOf(dbType),"cmr_id", caseNum, peID, cmr_cyv_code);
 	}
 
 	/**

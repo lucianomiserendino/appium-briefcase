@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -75,8 +76,9 @@ public class Utility extends Base {
 				List<MobileElement> elems = findElements(By.xpath(element));
 				if (elems.size() > 0) {
 					try {
-						MobileElement elem = findElementBy(locator, element);
-						elem.click();
+//						MobileElement elem = findElementBy(locator, element);
+//						elem.click();
+						elems.get(0).click();
 						break;
 					} catch (WebDriverException e) {
 						e.getMessage();
@@ -91,6 +93,15 @@ public class Utility extends Base {
 		}
 		return element;
 
+	}
+
+	public static void scrollUp(By by) {
+		MobileElement element = Page.waitForPresenceOfElementLocated(by, driver);
+		String elementID = element.getId();
+		HashMap<String, String> scrollObject = new HashMap<String, String>();
+		scrollObject.put("element", elementID);
+		scrollObject.put("direction", "up");
+		driver.executeScript("mobile:scroll", scrollObject);
 	}
 
 	public static synchronized void scrolldown() {
