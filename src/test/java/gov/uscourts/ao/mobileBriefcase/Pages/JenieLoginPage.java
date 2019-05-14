@@ -197,8 +197,8 @@ public class JenieLoginPage extends AppiumPageFactory {
 
 	}
 
-	public static void logout() {
-		try {
+	public  void logout() {
+	
 			dashboard.click();
 			settingsIcon.click();
 			settingsIcon.click();
@@ -211,9 +211,6 @@ public class JenieLoginPage extends AppiumPageFactory {
 				logout.click();
 				contains(okButton).click();
 			}
-		} catch (WebDriverException e) {
-			e.getMessage();
-		}
 	}
 
 	public static void selectUser(String availableJudges, String userName) {

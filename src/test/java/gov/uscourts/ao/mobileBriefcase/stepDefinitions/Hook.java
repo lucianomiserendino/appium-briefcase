@@ -1,7 +1,5 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.logout;
-
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriverException;
@@ -9,6 +7,7 @@ import org.openqa.selenium.WebDriverException;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
 
 public class Hook extends Base {
@@ -23,8 +22,8 @@ public class Hook extends Base {
 	@After
 
 	public void tearDown() {
-
-		logout();
+		JenieLoginPage l = new JenieLoginPage();
+		l.logout();
 		closeIOSDriver();
 
 	}
@@ -43,8 +42,5 @@ public class Hook extends Base {
 			}
 		}
 	}
-	
-	
-
 
 }
