@@ -22,8 +22,8 @@ public class Hook extends Base {
 
 	@After
 
-	public void tearDown() {
-		
+	public void tearDown(Scenario scenario) {
+
 		logout();
 		closeIOSDriver();
 
@@ -43,5 +43,8 @@ public class Hook extends Base {
 			}
 		}
 	}
+	
+	
+
 
 }
