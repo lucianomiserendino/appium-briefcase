@@ -10,7 +10,9 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CMR_CCR_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SET_SITE_TABLE_VARIABLE_VALUE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SITE_TABLE_VARIABLE_VALUE;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.expandPanel;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.findElementAndScrollDown;
@@ -19,7 +21,8 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utility.splitBy;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+
+import org.openqa.selenium.By;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
@@ -230,13 +233,12 @@ public class CommonPages extends AppiumPageFactory {
 	}
 
 	public static void getGroupIcons() {
-		for (int i = 0; i < GroupIcon.size(); i++) {
-			try {
-				while (GroupIcon.get(i).getAttribute("value").equals("▽")) {
-					GroupIcon.get(i).click();
-				}
-			} catch (NoSuchElementException e) {
-				assertTrue(GroupIcon.get(i).getAttribute("value").equals("▷"));
+		for (int i = 1; i < GroupIcon.size() + 1; i++) {
+			String groupIcon = "(//XCUIElementTypeStaticText[@name='GroupIcon'])[";
+			while (findElements(
+					By.xpath(groupIcon + i + "]/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText[1]"))
+							.size() == 0) {
+				tap(Locator.XPATH, groupIcon + i + "]");
 			}
 		}
 	}
