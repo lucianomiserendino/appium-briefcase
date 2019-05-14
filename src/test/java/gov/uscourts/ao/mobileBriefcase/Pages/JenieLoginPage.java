@@ -88,7 +88,7 @@ public class JenieLoginPage extends Base{
 	@iOSFindBy(xpath = "//*[contains(@name, 'NavigationRenderer')]/XCUIElementTypeButton[2]")
 	public static MobileElement settingsIcon;
 
-	@iOSFindBy(accessibility = "Logout of Briefcase")
+	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name='Logout of Briefcase']")
 	public static MobileElement logout;
 
 	@iOSFindBy(accessibility = "ReferralsList")
@@ -202,8 +202,8 @@ public class JenieLoginPage extends Base{
 			dashboard.click();
 			settingsIcon.click();
 			settingsIcon.click();
+			performPageLoad(driver);
 			logout.click();
-
 			if (Actions.findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
 				contains(okButton).click();
 			} else {
