@@ -22,12 +22,8 @@ public class Hook extends Base {
 
 	@After
 
-	public void tearDown(Scenario scenario) {
-		try {
-			embedScreenshot(scenario);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void tearDown() {
+		
 		logout();
 		closeIOSDriver();
 
