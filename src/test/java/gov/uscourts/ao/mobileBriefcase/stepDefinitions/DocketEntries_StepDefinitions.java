@@ -8,6 +8,7 @@ import static org.junit.Assert.assertEquals;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocketEntriesPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 
 public class DocketEntries_StepDefinitions {
 
@@ -18,7 +19,8 @@ public class DocketEntries_StepDefinitions {
 	public void user_gets_the_entries_of_the_judge_and_logs_out(String caseNum) {
 		page = new DocketEntriesPage();
 		judgesEntries += page.getDocketEntries(caseNum);
-		logout();
+		JenieLoginPage l=new JenieLoginPage();
+		l.logout();
 		safariInstance();
 	}
 
