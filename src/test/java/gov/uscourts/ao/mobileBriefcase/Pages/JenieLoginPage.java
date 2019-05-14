@@ -201,7 +201,6 @@ public class JenieLoginPage extends Base{
 	public static void logout() {
 			dashboard.click();
 			settingsIcon.click();
-			settingsIcon.click();
 			logout.click();
 			if (Actions.findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
 				contains(okButton).click();

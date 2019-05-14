@@ -257,19 +257,6 @@ public class CommonPages extends AppiumPageFactory {
 		}
 	}
 
-	public  void logout() {
-		dashboard.click();
-		settingsIcon.click();
-		settingsIcon.click();
-		logout.click();
-		if (Actions.findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
-			contains(okButton).click();
-		} else {
-			Page.sleep(55000);
-			logout.click();
-			contains(okButton).click();
-		}
-	}
 
 	public enum Case {
 		CASE_YEAR, CASE_NUMBER
