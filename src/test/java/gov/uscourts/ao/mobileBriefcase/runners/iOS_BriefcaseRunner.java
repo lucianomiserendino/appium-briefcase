@@ -9,7 +9,7 @@ import cucumber.api.junit.Cucumber;
 @CucumberOptions(plugin = { "pretty", "html:target/cucumber-html-report",
 		"json:target/cucumber.json" }, features = "./src/test/resources/Features", glue = {
 				"gov/uscourts/ao/mobileBriefcase/stepDefinitions" }, tags = {
-						"@AMB-956" }, dryRun = false)
+						"@Smoke" }, dryRun = false)
 
 public class iOS_BriefcaseRunner {
 }

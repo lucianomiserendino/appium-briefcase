@@ -86,10 +86,8 @@ public abstract class Base implements iOSCapabilities {
 			getDriver();
 
 		} catch (Exception e) {
-
 			e.printStackTrace();
 		}
-
 	}
 
 	public static void closeIOSDriver() {
