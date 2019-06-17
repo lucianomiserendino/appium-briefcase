@@ -17,21 +17,31 @@ public class SortingOnTheReferralList_StepDefinitions {
 
 	ReferralSortOrderPage page;
 
+	@When("^User verifies  the Date Down Arrow is selected by default and that the referrals are sorted by referred date in descending order \\(newest first\\)\\.$")
+	public void user_verifies_the_Date_Down_Arrow_is_selected_by_default_and_that_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first() {
+		page = new ReferralSortOrderPage();
+
+		List<String> referralsSotedByDatesInDefaultOrder = page.referralsSortedByDate();
+		page.selectSortBtn();
+		page.getSortPage(Sort.SORT_DATES_IN_DESCENDING_ORDER);
+		List<String> referralsSotedByDatesInDescendingOrder = page.referralsSortedByDate();
+
+		assertTrue("REFERRALS ARE NOT SORTED BY DEFAULT",
+				referralsSotedByDatesInDefaultOrder.equals(referralsSotedByDatesInDescendingOrder));
+	}
+
 	@When("^User selects the sort button, clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in descending order \\(newest first\\)\\. User clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order \\(oldest first\\)\\.$")
 	public void user_selects_the_sort_button_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first_User_clicks_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_ascending_order_oldest_first() {
-		page = new ReferralSortOrderPage();
-		page.selectSortBtn();
 
-		List<String> referralsSotedByDatesInDescendingOrder = page
-				.referralsSortedByDate(Sort.SORT_DATES_IN_DESCENDING_ORDER);
+		List<String> referralsSotedByDatesInDescendingOrder = page.referralsSortedByDate();
 		sort(referralsSotedByDatesInDescendingOrder);
 		reverse(referralsSotedByDatesInDescendingOrder);
 
-		List<String> referralsSotedByDateInAscendingOrder = page
-				.referralsSortedByDate(Sort.SORT_DATES_IN_ASCENDING_ORDER);
+		page.getSortPage(Sort.SORT_DATES_IN_ASCENDING_ORDER);
+		List<String> referralsSotedByDateInAscendingOrder = page.referralsSortedByDate();
 		reverse(referralsSotedByDateInAscendingOrder);
 
-		assertTrue("REFERRALS ARE NOT SORTED BY  DATE",
+		assertTrue("REFERRALS ARE NOT SORTED BY DATE",
 				referralsSotedByDatesInDescendingOrder.equals(referralsSotedByDateInAscendingOrder));
 
 	}

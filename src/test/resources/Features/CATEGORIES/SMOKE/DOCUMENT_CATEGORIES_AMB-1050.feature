@@ -1,3 +1,4 @@
+@AMB @Smoke @AMB-1050
 Feature: Verify Document Categories display for Staff Attorneys
 
 
@@ -10,9 +11,7 @@ Background:
 	And  user selects a "CMKA" 
 	Then User selects a userCategory "Staff_Attorneys" and  name "Brown, Benjamin" 
 	
-	
-@Smoke 
-@AMB-1050 
+ 
 Scenario: 
 	If selecting a referral, the documents display on the referral detail page.  They are grouped by document category.
 	   Each document category is a collapsible panel.  This task is to verify the correct document categories and number of docs in each

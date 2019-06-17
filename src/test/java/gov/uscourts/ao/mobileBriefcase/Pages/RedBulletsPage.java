@@ -1,18 +1,11 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectReferral;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.split;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrolldown;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.openqa.selenium.NoSuchElementException;
-
-import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
@@ -25,55 +18,24 @@ public class RedBulletsPage extends AppiumPageFactory {
 
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'Total')]")
-	public MobileElement unViewed;
+	public MobileElement totalNumOfNewReferrals;
 
-	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/XCUIElementTypeCell/XCUIElementTypeStaticText[contains(@name, 'Viewed')]")
-	public List<MobileElement> unviewedReferrals;
-
-	static String unviewedReferral = "(//XCUIElementTypeTable[@name='ReferralsList']/XCUIElementTypeCell/XCUIElementTypeStaticText[contains(@name, 'Viewed')])[1]/preceding-sibling::XCUIElementTypeStaticText[contains(@name, '-')]";
+	@iOSFindBy(xpath = "(//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, 'Viewed')])[1]/preceding::XCUIElementTypeStaticText[contains(@name, '-')]")
+	public List<MobileElement> unviewedReferral;
 
 	public int getUnviewedReferral() {
-		return getSizeOfNewReferrals();
-	}
+		MobileElement newRef = unviewedReferral.get(unviewedReferral.size() - 1);
 
-	public int getSizeOfNewReferrals() {
-		String newReferrals = split(unViewed.getText(), "N", 0).trim();
-		assertEquals((int) new Integer(newReferrals), unviewedReferrals.size());
-		return unviewedReferrals.size();
-	}
-
-	public int getViewedReferral() {
-		findElementAndScrollDown(Locator.XPATH, unviewedReferral);
-		tap(back);
-		return getSizeOfNewReferrals();
-	}
-
-	public int verifyRedBulletIsRemoved() {
-		selectReferral("//XCUIElementTypeOther[@name='Categories']" + containsElement("Motions/Petitions"));
+		int newReferrals = getTotalNumOfNewReferrals();
+		tap(newRef);
 		Page.performPageLoad(driver);
-		return getSizeOfNewReferrals();
+		driver.navigate().back();
+		assertEquals(newReferrals - 1, getTotalNumOfNewReferrals());
+		return getTotalNumOfNewReferrals();
 	}
 
-	public static String findElementAndScrollDown(Locator locator, String element) {
-		String text = "";
-		Boolean elementNotFound = true;
-		while (elementNotFound) {
-			try {
-				MobileElement elem = findElementBy(locator, element);
-				if (elem.isDisplayed()) {
-					text += elem.getText().split(" ")[0];
-					elem.click();
-					break;
-				} else {
-					scrolldown();
-				}
-			} catch (NoSuchElementException e) {
-				scrolldown();
-			}
-		}
-		return text;
-
+	public int getTotalNumOfNewReferrals() {
+		return new Integer(split(totalNumOfNewReferrals.getText(), "N", 0).trim());
 	}
 
 }

@@ -1,11 +1,7 @@
+@AMB @Regression @AMB-1123 @AMB-1137 @AMB-1170 @AMB-1173
 Feature: chmAssign 
 
 
-#@Regression 
-@AMB-1123 
-@AMB-1137 
-@AMB-1170 
-@AMB-1173 
 Scenario Outline: 
 	This task is to verify that a chambers user is able to create a new staff assignment,
 	to verify back-end updates when a new staff assignment is created,

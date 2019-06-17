@@ -1,9 +1,7 @@
+@AMB @Smoke @AMB-956 @AMB-1302
 Feature:  Referral Categories display on the dashboard for the judge
 
-
-@Smoke 
-@AMB-956 
-@AMB-1302 
+ 
 Scenario Outline: 
 	Referral categories display on the dashboard for the judge 
 	Given  User Navigates to  "<environment>" environment 
@@ -19,12 +17,11 @@ Scenario Outline:
 	
 	Examples: 
 		|environment |userName          |password  |judgeName  |dbType       |PE_RT_CODE|server|
-		|INTEGRATION |chambers courtney |Test2022! |Colloton   |CMKA         | jud      |CMKA  |
+		|INTEGRATION |chambers courtney |Test2023! |Colloton   |CMKA         | jud      |CMKA  |
 		#|INTEGRATION |JAHaenni          |Test2021! |Benton|    |CMKA         | jud      |CMKA  |  
 		
 		
-
-			
+	
 			
 			
 			

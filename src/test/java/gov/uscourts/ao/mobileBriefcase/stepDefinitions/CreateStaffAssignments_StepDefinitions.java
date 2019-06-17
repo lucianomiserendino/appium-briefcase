@@ -1,7 +1,10 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.isDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollDownIfNotDisplayed;
+import static org.junit.Assert.assertTrue;
 
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
@@ -18,10 +21,8 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 			String dbType, String dpfName, String actionElID, String cha_ju_pe_id, String cmr_cyv_code,
 			String cmr_cs_caseid, String caseNum) {
 		page = new CommonPages();
-		page.verifyElementIsDisplayed("Assignments");
-		page.verifyElementIsDisplayed("New Staff Assignment");
-		page.verifyElementIsDisplayed("Submit");
-		contains("New Staff Assignment").click();
+		assertTrue(isDisplayed(containsElement("Assignments")));
+		scrollDownIfNotDisplayed("(" + containsElement("NewStaffButton") + ")[1]");
 		page.verifyElementIsDisplayed("Create Assignment");
 		page1 = new chmAssignDPFPage();
 		page1.createNewStaffAssignment(valueOf(dbType), dpfName, actionElID, cha_ju_pe_id, cmr_cyv_code, cmr_cs_caseid,

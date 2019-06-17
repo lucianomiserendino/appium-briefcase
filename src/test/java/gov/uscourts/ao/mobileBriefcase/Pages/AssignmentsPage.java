@@ -1,249 +1,361 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNED_DATES;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_DATE;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_DATE_TYPE;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CAV_DESCRIPTION;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_NAME;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getPanel;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.AD_CHD_DATE;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_INFO;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CDV_DESCRIPTION;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHA_ID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_LAST_NAME;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCMRID;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.trim;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.changeDateFormat;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.retrieveAllCases;
-import static java.util.Collections.reverse;
-import static java.util.Collections.sort;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.getRandomNumberInRange;
+import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openqa.selenium.By;
-
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
-import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
+import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
-import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class AssignmentsPage extends AppiumPageFactory {
-	public static final String ASSIGNMENT_NOTE_DATE = "3/2/2018";
 
-	public static final String ASSIGNMENT_ASSIGNED_NOTE_DATE = "5/14/2018";
+	/** Find staff assignments associated with the referral */
+	public void getAssignmentsLinkedToReferral(DBType dbType, String caseId, String peID, String cmr_cyv_code) {
 
-	public static final String ASSIGNMENT_NOTE = "Assignment Note";
+		List<String> staffAssignments = new ArrayList<>();
+		List<String> staffAssignment = new ArrayList<>();
+		List<String> dbStaffFName = getAssignmentsFirstName(dbType, caseId, peID, cmr_cyv_code);
 
-	public static final String ASSIGNMENT_ASSIGNED_NOTE = "Assignment Assigned Note";
+		for (int i = 0; i < dbStaffFName.size(); i++) {
 
-	public static final String ASSIGNMENT_NOTE_TEXT = "This one has a note.";
+			List<String> dbStaffLName = getAssignmentsLastName(dbType,
+					STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_LAST_NAME, dbStaffFName.get(i), caseId, peID,
+					cmr_cyv_code);
 
-	public static final String ASSIGNMENT_ASSIGNED_NOTE_TEXT = "Assignment date type note.";
+			for (int j = 0; j < dbStaffLName.size(); j++) {
 
-	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
-	public static MobileElement selectUser;
+				List<String> dbassignmentType = getAssignmentsLastName(dbType, ASSIGNMENT_TYPE, dbStaffFName.get(i),
+						caseId, peID, cmr_cyv_code);
 
-	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='Assignments']/XCUIElementTypeCell[5]/XCUIElementTypeStaticText")
-	public static MobileElement assignmentNoteDate;
+				for (int l = 0; l < dbassignmentType.size(); l++) {
 
-	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='Assignments']/XCUIElementTypeCell[6]/XCUIElementTypeStaticText")
-	public static MobileElement assignmentAssignedNoteDate;
+					List<String> code = getAssignmentsLastName(dbType, CHA_ID, dbStaffFName.get(i), caseId, peID,
+							cmr_cyv_code);
 
-	@iOSFindBy(accessibility = "Assignment Note")
-	public static MobileElement assignmentNote;
+					for (int k = 0; k < code.size(); k++) {
 
-	@iOSFindBy(accessibility = "Assignment Assigned Note")
-	public static MobileElement assignmentAssignedNote;
+						List<String> dbAssignment = getAssignmentTypeAndDate(dbType, CDV_DESCRIPTION, code.get(k));
+						for (int m = 0; m < dbAssignment.size(); m++) {
 
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='Private Note - Assignment Note']/XCUIElementTypeOther/XCUIElementTypeStaticText[2]")
-	public static MobileElement assignmentNoteText;
+							List<String> assignmentDate = getAssignmentTypeAndDate(dbType, AD_CHD_DATE, code.get(k));
 
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='Private Note - Assignment Assigned Note']/XCUIElementTypeOther/XCUIElementTypeStaticText[2]")
-	public static MobileElement assignmentAssignedNoteText;
+							for (int n = 0; n < assignmentDate.size(); n++) {
 
-	// @WithTimeout(time = 5, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//*[contains(@name, 'Assignments')]")
-	public static MobileElement assignments;
-
-	@iOSFindBy(xpath = "//*[contains(@name, 'Assigned')]")
-	public static List<MobileElement> assignedDates;
-
-	public void verifyAssignmentIsDisplayed(String assignmentOnReferral) {
-		performPageLoad(driver);
-		assertTrue(assignments.isDisplayed());
-		assertTrue(split(assignments.getText(), " ", 1).equals(assignmentOnReferral));
-
-	}
-
-	public void selectAssignment(String assignment) {
-		getPanel(Panel.Assignments);
-		tap(Locator.XPATH, containsElement(assignment));
-
-	}
-
-	public void verifyAssignmentNotes(String assignmentNotes) {
-		assertTrue(findElementBy(Locator.XPATH, containsElement(assignmentNotes)).isDisplayed() == true);
-	}
-
-	public void verifyAssignmentDates() {
-		assertAssignmentNotes(" THE DATE OF THE ASSIGNMENT NOTE IS NOT DISPLAYED ", assignmentNoteDate,
-				ASSIGNMENT_NOTE_DATE, assignmentAssignedNoteDate, ASSIGNMENT_ASSIGNED_NOTE_DATE);
-	}
-
-	public void verifyNoteDescription() {
-
-		assertAssignmentNotes("NOTE DESCRIPTION IS NOT DISPLYED", assignmentNote, ASSIGNMENT_NOTE,
-				assignmentAssignedNote, ASSIGNMENT_ASSIGNED_NOTE);
-	}
-
-	public void verifyText() {
-		assertAssignmentNotes("TEXT IS NOT DISPLYED", assignmentNoteText, ASSIGNMENT_NOTE_TEXT,
-				assignmentAssignedNoteText, ASSIGNMENT_ASSIGNED_NOTE_TEXT);
-
-	}
-
-	public void getAssignmentLinkedtoTheReferral(String assignmentForKyle, String assignmentForEssley) {
-
-		List<String> dbReferralAssignments = executeQuery(DBType.CMKA, STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_NAME);
-		try {
-			if (assignments.isDisplayed())
-				;
-			getPanel(Panel.Assignments);
-
-			assertTrue("STAFF ASSIGNMENTS LINKED TO THE REFERRAL ARE NOT DISPLAYED",
-					dbReferralAssignments.containsAll(listOfAssignments(assignmentForKyle, assignmentForEssley)));
-
-			List<String> dbCaseAssignments = executeQuery(DBType.CMKA, ASSIGNED_DATES);
-			reverse(dbCaseAssignments);
-
-			assertEquals(" ASSIGNED DATES MISMATCH ", dbCaseAssignments, retrieveAllCases(assignedDates, " ", 1));
-			getPanel(Panel.Assignments);
-
-		} catch (Exception e) {
-			e.getMessage();
-
+								String a = "";
+								if (dbAssignment.get(m).contains("Date")) {
+									a = dbAssignment.get(m).replaceAll("Date", "");
+								} else {
+									a = dbAssignment.get(m) + " ";
+								}
+								staffAssignments.add(("//*[contains(@name, '" + dbStaffLName.get(j) + " "
+										+ dbStaffFName.get(i) + ", " + dbassignmentType.get(l)
+										+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + a
+										+ changeFormat(assignmentDate.get(n)) + "')]").replaceAll("Date", ""));
+								staffAssignment.add(dbStaffLName.get(j) + " " + dbStaffFName.get(i) + ", "
+										+ dbassignmentType.get(l));
+							}
+						}
+					}
+				}
+			}
 		}
 
-	}
-
-	public List<String> listOfAssignments(String assignmentForKyle, String assignmentForEssley) {
-		List<String> uiReferralAssignments = new ArrayList<>();
-		uiReferralAssignments.add(getStaffAssigments(assignmentForKyle));
-		uiReferralAssignments.add(getStaffAssigments(assignmentForEssley));
-		sort(uiReferralAssignments);
-		return uiReferralAssignments;
-	}
-
-	public String getStaffAssigments(String assignments) {
-		return split(assignments, " ", 0);
-
-	}
-
-	public String getAssignmentType(String assignments) {
-		return assignments.split(",")[1].trim();
-
-	}
-
-	public static void assertAssignmentNotes(String message, MobileElement el1, String assign1, MobileElement el2,
-			String assign2) {
-
-		try {
-			assertEquals(getText(el1), assign1);
-			assertEquals(getText(el2), assign2);
-		} catch (Exception e) {
-			e.printStackTrace();
+		for (int i = 0; i < staffAssignments.size(); i++) {
+			assertTrue(isDisplayed(Locator.XPATH, staffAssignments.get(i)));
 		}
+	}
+
+	public void getAssignmentInfo(DBType dbType, String caseNumber, String peId, String cmr_cyv_code) {
+
+		String cmr_id = getCMRID(dbType, "cmr_id", caseNumber, peId, cmr_cyv_code);
+		executeQuery(dbType, replace(ASSIGNMENT_INFO, "FIELD", "pr_first_name", "CMR_ID", cmr_id));
 
 	}
 
-	public void getAssignmentLinkedtoCase(String assignment, DBType dbtype, String cmr_cs_caseid, String cha_ju_pe_id,
-			String chd_cha_id) {
+	public List<String> getAssignmentsFirstName(DBType dbType, String caseId, String peID, String cmr_cyv_code) {
+		return executeQuery(dbType, replace(STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL, "CMR_CS_CASEID", caseId,
+				"CHA_JU_PE_ID", peID, "CMR_CYV_CODE", cmr_cyv_code));
+	}
 
-		try {
-			if (assignments.isDisplayed())
-				;
-			getPanel(Panel.Assignments);
+	public List<String> getAssignmentsLastName(DBType dbType, String query, String string, String caseId, String peID,
+			String cmr_cyv_code) {
+		return executeQuery(dbType, replace(replace(query, "PR_LAST_NAME", string), "CMR_CS_CASEID", caseId,
+				"CHA_JU_PE_ID", peID, "CMR_CYV_CODE", cmr_cyv_code));
+	}
 
-			compareDBwithUI(getStaffAssigments(assignment), dbtype,
-					getText(getID(STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE, cha_ju_pe_id), cmr_cs_caseid));
-
-			compareDBwithUI(getAssignmentType(assignment), dbtype,
-					getText(getID(CAV_DESCRIPTION, cha_ju_pe_id), cmr_cs_caseid));
-
-			compareDBwithUI(getAssignmentDateType(Panel.Assignments, assignment), dbtype,
-					getID(ASSIGNMENT_DATE_TYPE, chd_cha_id));
-
-			compareDBwithUI(getAssignmentDate(Panel.Assignments, assignment), dbtype,
-					getID(ASSIGNMENT_DATE, chd_cha_id));
-
-			getPanel(Panel.Assignments);
-
-		} catch (AssertionError e) {
-			e.printStackTrace();
-
-		}
+	public List<String> getAssignmentTypeAndDate(DBType dbType, String query, String string) {
+		return executeQuery(dbType, replace(query, "CHD_CHA_ID", string));
 
 	}
 
-	public static void compareDBwithUI(String assignment, DBType dbtype, String query) {
-		List<String> uiCaseAssignment = new ArrayList<>();
-		uiCaseAssignment.add(assignment);
-		List<String> dbCaseAssignment = executeQuery(dbtype, query);
-		assertTrue("RECORD COUNT MISMATCH ", dbCaseAssignment.containsAll(uiCaseAssignment));
+	public static List<String> getListOfAssignmentInfo(String cmr_id, List<String> asignements, int randomAssignment) {
 
-	}
+		if (randomAssignment == 0) {
+			return uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment),
+					getAssignmentInfo(cmr_id, randomAssignment + 1));
+		} else if (randomAssignment == asignements.size()) {
+			return uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment - 1),
+					getAssignmentInfo(cmr_id, randomAssignment - 2));
 
-	public static String getAssignmentDateType(Panel panel, String assignment) {
-		MobileElement dateType = getAssignment(assignment);
-
-		if (dateType.isDisplayed()) {
-			return getAssignmentDateType(assignment);
+		} else if (randomAssignment == asignements.size() - 1) {
+			return uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment),
+					getAssignmentInfo(cmr_id, randomAssignment - 1));
 
 		} else {
-			getPanel(panel);
-			return getAssignmentDateType(assignment);
+			List<String> aa = uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment),
+					getAssignmentInfo(cmr_id, randomAssignment + 1));
+
+			List<String> bb = uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment),
+					getAssignmentInfo(cmr_id, randomAssignment - 1));
+
+			return uniqueValues(cmr_id, aa, bb);
+
 		}
+
 	}
 
-	public static String getAssignmentDate(Panel action, String assignment) {
-		MobileElement date = getAssignment(assignment);
+	public static List<String> uniqueValues(String cmr_id, List<String> listOne, List<String> listTwo) {
+		if (listOne.get(0).equals(listTwo.get(0)) && listOne.get(1).equals(listTwo.get(1))
+				&& listOne.get(2).equals(listTwo.get(2))) {
 
-		if (date.isDisplayed()) {
-			return getAssignedDate(assignment);
+			List<String> commonElementsFromBothList = new ArrayList<>();
 
+			commonElementsFromBothList.addAll(listOne.stream().filter(str -> listTwo.contains(str)).collect(toList()));
+
+			commonElementsFromBothList.addAll(listOne.stream().filter(str -> !listTwo.contains(str)).collect(toList()));
+
+			commonElementsFromBothList.addAll(listTwo.stream().filter(str -> !listOne.contains(str)).collect(toList()));
+
+			return commonElementsFromBothList;
 		} else {
-			getPanel(action);
-			return getAssignedDate(assignment);
+
+			return listOne;
 		}
 	}
 
-	public static MobileElement getAssignment(String assignment) {
-		return findElement(By.xpath(containsElement(assignment) + "/following-sibling::XCUIElementTypeStaticText[1]"));
+	public void getLatestAssignDate() {
 
 	}
 
-	public static String getAssignmentDateType(String assignmentDateType) {
-		return getAssignment(assignmentDateType).getText()
-				.substring(0, getAssignment(assignmentDateType).getText().length() - 9).trim();
+	public static String changeFormat(String assignDate) {
+		String date = "";
+		try {
+			if (!(assignDate.length() == 0) && assignDate.contains(" ")) {
+				date += changeDateFormat(assignDate.split(" ")[0], "yyyy-MM-dd", "M/d/yyyy");
+			} else if (!(assignDate.length() == 0) && !assignDate.contains(" ")) {
+				date += changeDateFormat(assignDate, "yyyy-MM-dd", "M/d/yyyy");
+			} else {
+				date += null;
+			}
+		} catch (NullPointerException e) {
+			date += null;
+		}
+		return date;
 	}
 
-	public static String getAssignedDate(String assignmentDate) {
-		return changeDateFormat(getAssignment(assignmentDate).getText()
-				.substring(getAssignment(assignmentDate).getText().length() - 9).trim(), "MM/dd/yyyy", "yyyy-MM-dd");
+	public static List<String> getAssignmentInfo(String cmr_id, int index) {
+
+		List<String> assignInfo = new ArrayList<>();
+		String value = null;
+
+		for (int i = 2; i <= 11; i++) {
+			try {
+				value = execute(DBType.CMKA, replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), i).get(index);
+
+				if (!(value.length() == 0)) {
+					assignInfo.add(trim(value));
+				}
+			} catch (NullPointerException e) {
+
+			}
+		}
+		return assignInfo;
+
 	}
 
-	public static String split(String caseNum, String substr, int index) {
-		return (caseNum + " ").split(substr)[index].split(" ")[0].trim();
+	public String getAssignmentInfo(DBType dbType, String cmr_id, List<String> asignements, final int randomAssignment,
+			AssignmentInfo info) {
 
+		String assignmentInformation = "";
+		List<String> dbColumn = getListOfAssignmentInfo(cmr_id, asignements, randomAssignment);
+
+		String assignmentDueDate = getLatestAssignmentDate(dbColumn, "Assignment Due");
+		String assignedDate = getLatestAssignmentDate(dbColumn, "Assigned");
+
+		switch (info) {
+
+		case ASSIGNMENT_AND_ASSINMENT_TYPE:
+
+			assignmentInformation += containsElement(dbColumn.get(1) + " " + dbColumn.get(0) + ", " + dbColumn.get(2));
+			break;
+
+		case NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE:
+
+			String assignName = preceding() + dbColumn.get(1) + " " + dbColumn.get(0) + "')]";
+
+			if (!(assignmentDueDate.length() == 0)) {
+				assignmentInformation += containsElement(assignmentDueDate) + assignName;
+			} else {
+				assignmentInformation += containsElement(assignedDate) + assignName;
+			}
+
+			break;
+		case ASSIGNMENT_TYPE_AND_RELIEF:
+
+			String relief = execute(dbType, replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), 9).get(randomAssignment);
+			if (!(relief.length() == 0)) {
+				assignmentInformation += assignInfo(relief, dbColumn.get(2));
+			} else {
+				assignmentInformation += containsElement(dbColumn.get(2));
+			}
+			break;
+
+		case LATEST_ASSIGNED_ASSIGNMENT_DUE_DATES:
+
+			if (!(assignedDate.length() == 0) && assignmentDueDate.length() == 0) {
+				assignmentInformation += assignInfo(assignedDate, "Assigned");
+
+			} else if (assignedDate.length() == 0 && !(assignmentDueDate.length() == 0)) {
+				assignmentInformation += assignInfo(assignmentDueDate, "Assignment Due");
+			} else {
+				List<String> latestAsiignmentDates = new ArrayList<>();
+
+				String assignDate = assignInfo(assignedDate, "Assigned");
+				String assignDueDate = assignInfo(assignmentDueDate, "Assignment Due");
+
+				latestAsiignmentDates.add(assignDate);
+				latestAsiignmentDates.add(assignDueDate);
+				int d = getRandomNumberInRange(0, latestAsiignmentDates.size() - 1);
+				assignmentInformation += latestAsiignmentDates.get(d);
+			}
+
+			break;
+
+		case ASSIGNMENT_NOTE_DATE:
+			String can_dm_dls_id_AND_can_dm_dls_id = getAssignmentNotes(dbType, randomAssignment, cmr_id, 7, 8);
+			String cdn_dm_dls_id_AND_cdn_date_created = getAssignmentNotes(dbType, randomAssignment, cmr_id, 10, 11);
+
+			if (!(can_dm_dls_id_AND_can_dm_dls_id.length() == 0) && cdn_dm_dls_id_AND_cdn_date_created.length() == 0) {
+				assignmentInformation += can_dm_dls_id_AND_can_dm_dls_id;
+
+			} else if (can_dm_dls_id_AND_can_dm_dls_id.length() == 0
+					&& !(cdn_dm_dls_id_AND_cdn_date_created.length() == 0)) {
+				assignmentInformation += cdn_dm_dls_id_AND_cdn_date_created;
+
+			} else if (!(can_dm_dls_id_AND_can_dm_dls_id.length() == 0)
+					&& !(cdn_dm_dls_id_AND_cdn_date_created.length() == 0)) {
+				List<String> attachedNotes = new ArrayList<>();
+				attachedNotes.add(can_dm_dls_id_AND_can_dm_dls_id);
+				attachedNotes.add(cdn_dm_dls_id_AND_cdn_date_created);
+				int notes = getRandomNumberInRange(0, attachedNotes.size() - 1);
+				assignmentInformation += attachedNotes.get(notes);
+
+			} else {
+				assignmentInformation += "Assignment Notes";
+			}
+
+			break;
+
+		default:
+			break;
+		}
+
+		return assignmentInformation;
+
+	}
+
+	public static String assignInfo(String assignedDate, String assignmentType) {
+		return containsElement(assignedDate) + preceding() + assignmentType + "')]";
+
+	}
+
+	public static String preceding() {
+		return "/preceding::XCUIElementTypeStaticText[contains(@name, '";
+
+	}
+
+	public static String getAssignmentNotes(DBType dbType, int randomAssignment, String cmr_id, int column1,
+			int column2) {
+
+		String notes = "";
+		try {
+			String assignmentNote = execute(dbType, replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), column1)
+					.get(randomAssignment);
+			if (!(assignmentNote.length() == 0)) {
+
+				String assignmentNoteDate = execute(dbType, replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), column2)
+						.get(randomAssignment);
+
+				String assignNoteDesc = getAllColumns(dbType,
+						"select dm_description from document where dm_dls_id='" + assignmentNote + "'");
+
+				notes += "//XCUIElementTypeStaticText[@name='" + assignNoteDesc
+						+ "']/preceding::XCUIElementTypeStaticText[@name='" + changeFormat(assignmentNoteDate) + "']";
+
+			}
+		} catch (NullPointerException e) {
+		}
+		return notes;
+
+	}
+
+	public static String getLatestAssignmentDate(List<String> assignmentType, String assignmentDate) {
+		int k = 0;
+		if (assignmentType.contains(assignmentDate)) {
+			k += assignmentType.indexOf(assignmentDate);
+			String type = changeFormat(assignmentType.get(k + 1));
+			return type;
+		} else {
+			return "";
+		}
+	}
+
+	public void getAssignmentInformation(DBType dbType, String cmr_id, List<String> satffAssignments, int rnAssignment,
+			List<String> info) {
+		tap(Locator.XPATH, getAssignmentInfo(dbType, cmr_id, satffAssignments, rnAssignment,
+				AssignmentInfo.ASSIGNMENT_AND_ASSINMENT_TYPE));
+		for (int i = 0; i < info.size(); i++) {
+			try {
+
+				assertTrue(Actions.isDisplayed(Locator.XPATH, info.get(i)));
+			} catch (Exception e) {
+				assertEquals(e.getMessage(), "Assignment Notes", info.get(i));
+
+			}
+
+		}
+	}
+
+	public String getCMR_ID(DBType dbType, String caseId, String peId, String cmr_cyv_code) {
+		return getCMRID(dbType, "cmr_id", caseId, peId, cmr_cyv_code);
+
+	}
+
+	public enum AssignmentInfo {
+		ASSIGNMENT_AND_ASSINMENT_TYPE, NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE, ASSIGNMENT_TYPE_AND_RELIEF, LATEST_ASSIGNED_ASSIGNMENT_DUE_DATES, ASSIGNMENT_NOTE_DATE
 	}
 
 }

@@ -11,21 +11,13 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 
-public class DocketEntriesPage extends AppiumPageFactory {
+public class DocketEntryPage extends AppiumPageFactory {
 
 	public String getDocketEntries(String caseNum) {
 		searchForACase(caseNum);
 		contains(caseNum).click();
 		performPageLoad(driver);
 		return contains("Docket Entries - ").getText().split("-")[1].trim();
-	}
-
-	/**
-	 * This method changes the value of the site table variable
-	 * "briefcaseCtAdminDkt"
-	 */
-	public void changeValue(DBType dbType, String value) {
-		insertData(dbType, getID(SITE_TABLE_VARIABLE_VALUE, value));
 	}
 
 

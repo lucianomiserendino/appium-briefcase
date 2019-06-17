@@ -1,8 +1,7 @@
+@AMB @Smoke @AMB-1008
 Feature: Pending Tasks Category Displays on the Dashboard 
 
-
-@Smoke
-@AMB-1008 
+ 
 Scenario Outline: 
 	A category entitled "Pending Tasks" will display on the dashboard if the judge has 
 	any pending assignments and the site table variable briefcaseShowPendingTasks ='y'. 
@@ -16,7 +15,7 @@ Scenario Outline:
 	
 	Examples: 
 		|environment   |userName          |password  |server        |pe_id        |dbtype|PE_RT_CODE|
-		|INTEGRATION   |chambers courtney |Test2022! |CMKA          |Colloton     |CMKA  |jud       |
+		|INTEGRATION   |chambers courtney |Test2023! |CMKA          |Colloton     |CMKA  |jud       |
 		#|Testing       |judgewilliams   |Testpass1! |Appellate DC Installation Testing - CM3A  |2189563|CM3A  |
 		
 		

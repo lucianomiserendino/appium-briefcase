@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
@@ -18,8 +19,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.LOGED_IN_JUDGES_PR
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PANEL_JUDGES_PR_PRID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PR_LAST_NAME;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCMRID;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectAction;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.*;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;

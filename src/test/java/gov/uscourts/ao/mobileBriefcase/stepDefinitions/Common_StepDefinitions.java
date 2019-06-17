@@ -43,14 +43,15 @@ public class Common_StepDefinitions {
 
 	@Then("^User verifies \"([^\"]*)\" panel is displayed and expands the  panel$")
 	public void user_verifies_panel_is_displayed_and_expands_the_panel(String panel) {
-		page.getGroupIcons();
+		//page.getGroupIcons();
 		page.getPanel(Panel.valueOf(panel));
 
 	}
 
 	@Then("^User logs out of Briefcase$")
 	public void user_logs_out_of_Briefcase() {
-		logout();
+		page=new CommonPages();
+		page.logout();
 		safariInstance();
 		Page.sleep(10000);
 	}

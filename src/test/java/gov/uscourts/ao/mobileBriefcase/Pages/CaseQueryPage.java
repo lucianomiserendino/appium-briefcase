@@ -5,10 +5,8 @@ import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.findElementAndScrollDown;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollDownIfNotDisplayed;
 import static org.junit.Assert.assertTrue;
-
-import java.util.List;
 
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
@@ -29,27 +27,23 @@ public class CaseQueryPage extends AppiumPageFactory {
 	@iOSFindBy(accessibility = "ResultsList")
 	public static MobileElement category;
 
-	// @WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[contains(@name, '-')]")
-	public static List<MobileElement> cases;
-
 	public void searchForACase() {
 		String caseN = "";
 		for (int i = 0; i < 1; i++) {
-			caseN += cases.get(1).getText().split(" ")[0];
+			caseN += "15-2594".split(" ")[0];
 		}
 		searchIcon.click();
-		searchByCase(caseN, 5);
+		searchByCase(caseN, 6);
 		tap(Locator.XPATH, containsElement("Back"));
 		searchTextField.clear();
-		searchByCase(caseN, 6);
+		searchByCase(caseN, 7);
 	}
 
 	public void searchByCase(String caseN, int index) {
 		sendKeys(searchTextField, caseN.substring(0, index) + "*");
 		searchBTN.click();
 		performPageLoad(driver);
-		findElementAndScrollDown(Locator.XPATH, containsElement(caseN));
+		scrollDownIfNotDisplayed(containsElement(caseN));
 		performPageLoad(driver);
 		assertTrue("APP IS NOT RETURNING CASE LIST FOR SOME WILDCARD SEARCHES",
 				contains("Case #" + caseN).isDisplayed());

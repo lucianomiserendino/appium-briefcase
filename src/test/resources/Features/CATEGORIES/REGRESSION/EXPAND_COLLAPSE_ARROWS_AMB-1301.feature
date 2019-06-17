@@ -1,9 +1,9 @@
+@AMB @Regression @AMB-1301
 Feature: Verify data is displayed on the Dashboard after tapping the left-hand navigation expand/collapse arrows 
 
-@AMB-1301
 Scenario: 
 	Given  User Navigates to  "INTEGRATION" environment 
-	When  User enters Credentials to Login "chambers courtney" and "Test2022!" 
+	When  User enters Credentials to Login "chambers courtney" and "Test2023!" 
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And  user selects a "CMKA" 

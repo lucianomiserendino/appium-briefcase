@@ -7,36 +7,32 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.FILED_DATE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.FILERS_INOFRMATION;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.FILERS_MIDDLE_NAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGEs_INITIALS;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGEs_VOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.RELIEF;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.VOTE_DATE;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.changeDateFormat;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.By;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
-import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
-import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
+import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
 
 public class VoteInformationPage extends AppiumPageFactory {
 
-	/** Verify the Vote Information Panel displays */
-	public void getVoteInformationPanel(DBType dbType, String element) {
-		tap(Locator.XPATH, containsElement(element));
+	public static String dbFiledDate(DBType dbType, String pe_id, String caseId, String cyv_code) {
+		return getAllColumns(dbType, getCode(getText(getID(FILED_DATE, pe_id), caseId), cyv_code));
 
 	}
 
@@ -47,197 +43,19 @@ public class VoteInformationPage extends AppiumPageFactory {
 	 * heading. The SQL below returns the filer information for the referral in case
 	 * 15-3314:
 	 */
-	public static List<String> returnTheFillerInformation(DBType dbType, String field, String cmr_cs_caseid,
-			String cmr_ju_pe_id, String cmr_cyv_code) {
-		return executeQuery(dbType, replace(replace(Queries.FILLERs_INFORMATION, "FIELD", field), "CMR_CS_CASEID",
-				cmr_cs_caseid, "CMR_JU_PE_ID", cmr_ju_pe_id, "CMR_CYV_CODE", cmr_cyv_code));
-	}
 
-	/** Observers filer's information */
-
-	public void getFilersInformation(FILERs_INFO info, DBType dbType, String pe_id, String caseId, String cyv_code,
-			String ccr_id) {
-		switch (info) {
-		case VOTE_INFO_FILLRES_INFORMATION:
-
-			String voteInfoUifilerinformation = uiFilerInformation(FILERs_INFO.UI_FILER_INFORMATION, dbType, pe_id,
-					caseId, cyv_code);
-			String voteInfoDbFilerInformation = dbFilerInformation(FILERs_INFO.DB_FILER_INFORMATION, dbType, pe_id,
-					caseId, cyv_code);
-
-			assertEquals("FILER's INFO MISMATCH", voteInfoDbFilerInformation, voteInfoUifilerinformation);
-
-			String voteInfoUiFiledDate = uiFilerInformation(FILERs_INFO.UI_FILED_DATE, dbType, pe_id, caseId, cyv_code);
-			String voteInfoDbFiledDate = dbFiledDate(dbType, pe_id, caseId, cyv_code);
-
-			assertEquals("FILED DATE MISMATCH", voteInfoDbFiledDate, voteInfoUiFiledDate);
-
-			break;
-		case VOTE_INFO_RELIEF:
-
-			String voteInfoUiRelief = getVoteInf(Panel.Vote_Information, getAllColumns(dbType, getID(RELIEF, ccr_id)));
-			String voteInfoDBRelief = getAllColumns(dbType, getID(RELIEF, ccr_id));
-
-			assertEquals("RELIEF MISMATCH", voteInfoDBRelief, voteInfoUiRelief);
-
-			break;
-
-		case JUDGE_VOTE_FILLRES_INFORMATION:
-			String judgeVoteUifilerinformation = uiFilerInformatiONJudgeVotePage(FILERs_INFO.UI_FILER_INFORMATION,
-					dbType, pe_id, caseId, cyv_code);
-
-			String judgeVoteDbfilerinformation = dbFilerInformation(FILERs_INFO.DB_FILER_INFORMATION, dbType, pe_id,
-					caseId, cyv_code);
-			assertEquals("VOTE INFORMATION MISMATCH ON JUDGE VOTE DPF PAGE", judgeVoteDbfilerinformation,
-					judgeVoteUifilerinformation);
-
-			String judgeVoteUiFiledDate = uiFilerInformatiONJudgeVotePage(FILERs_INFO.UI_FILED_DATE, dbType, pe_id,
-					caseId, cyv_code);
-			String judgeVoteDbFiledDate = dbFiledDate(dbType, pe_id, caseId, cyv_code);
-
-			assertEquals("FILED DATE MISMATCH", judgeVoteDbFiledDate, judgeVoteUiFiledDate);
-
-			break;
-
-		case JUDGE_VOTE_RELIEF:
-
-			reliefsAreDisplayed(dbType, getID(RELIEF, ccr_id));
-
-			break;
-
-		default:
-			break;
-		}
-	}
-
-	public static void reliefsAreDisplayed(DBType dbtype, String query) {
-
-		List<String> dbResult = executeQuery(dbtype, query);
-		sort(dbResult);
-		try {
-			for (int i = 0; i < dbResult.size(); ++i) {
-
-				MobileElement uiResult = findElementBy(Locator.XPATH, "[contains(@name, '" + dbResult.get(i) + "')]");
-
-				if (uiResult.isDisplayed()) {
-
-					assertTrue(uiResult.isDisplayed());
-				}
-			}
-		} catch (Exception e) {
-			e.getMessage();
-		}
-	}
-
-	public String uiFilerInformation(FILERs_INFO info, DBType dbType, String pe_id, String caseId, String cyv_code) {
-		return filersInfo(info, getVoteInf(Panel.Vote_Information,
-				getAllColumns(dbType, getCode(getText(getID(FILERS_MIDDLE_NAME, pe_id), caseId), cyv_code))));
-
-	}
-
-	public String dbFilerInformation(FILERs_INFO info, DBType dbType, String pe_id, String caseId, String cyv_code) {
-		return filersInfo(info,
-				(getAllColumns(dbType, getCode(getText(getID(FILERS_INOFRMATION, pe_id), caseId), cyv_code))));
-
-	}
-
-	public String dbFiledDate(DBType dbType, String pe_id, String caseId, String cyv_code) {
-		return getAllColumns(dbType, getCode(getText(getID(FILED_DATE, pe_id), caseId), cyv_code));
-
-	}
-
-	public void getJudgeInitials(DBType dbType, String ccr_id) {
-		assertTrue(exist(dbType, getID(JUDGEs_INITIALS, ccr_id),
-				"//*[contains(@name, 'Vote Information')]/following:: XCUIElementTypeStaticText"));
-
-	}
-
-	public String filersInfo(FILERs_INFO info, String filersInfo) {
-
-		String information = "";
-		switch (info) {
-		case UI_FILER_INFORMATION:
-			information += filersInfo.replace("(", "").replace(")", "").replaceAll(",", "").split("Filed")[0]
-					.replaceAll(" ", "");
-			break;
-		case DB_FILER_INFORMATION:
-			information += filersInfo.replaceAll(" ", "");
-		default:
-			break;
-		case UI_FILED_DATE:
-			information += changeDateFormat(filersInfo.split("Filed:")[1].trim(), "MM/dd/yyyy", "yyyy-MM-dd");
-			break;
-		}
-		return information;
-
-	}
-
-	public static String getVoteInf(Panel panel, String voteInfo) {
-		String info = "";
-
-		if (voteInfoIsDisplayed(voteInfo) == true) {
-			info += getVoteInfoText(voteInfo);
-		} else {
-			try {
-				getPanel(panel);
-				info += getVoteInfoText(voteInfo);
-			} catch (NoSuchElementException e) {
-				e.printStackTrace();
-			}
-
-		}
-		return info;
-
-	}
-
-	public static String getVoteInfoText(String element) {
-		return findElementBy(Locator.XPATH,
-				"//*[contains(@name, 'Vote Information')]/following:: XCUIElementTypeStaticText[contains(@name, '"
-						+ element + "')]").getText();
-
-	}
-
-	public static boolean voteInfoIsDisplayed(String element) {
-		return isDisplayed(Locator.XPATH,
-				"//*[contains(@name, 'Vote Information')]/following:: XCUIElementTypeStaticText[contains(@name, '"
-						+ element + "')]");
-	}
-
-	/** verify it contains the judgeVote DPF */
-
-	public void verifyElementsAreDisplayed(String action, String enterVote, String label) {
-		// clickOnPanel(ACTIONS, action);
-		assertElementIsDisplayed(action);
-		assertElementIsDisplayed(enterVote);
-		assertElementIsDisplayed(label);
-		assertTrue(getLabel(label).isDisplayed() == true);
-
-	}
-
-	public void assertElementIsDisplayed(String element) {
-		assertTrue(isDisplayed(Locator.XPATH, element) == true);
-	}
-
-	public static MobileElement getLabel(String toggle) {
-		return findElementBy(Locator.XPATH, containsElement(toggle) + "//following-sibling::XCUIElementTypeSwitch");
-	}
-
-	public String uiFilerInformatiONJudgeVotePage(FILERs_INFO info, DBType dbType, String pe_id, String caseId,
-			String cyv_code) {
-		return filersInfo(info,
-				getAllColumns(dbType, getCode(getText(getID(FILERS_MIDDLE_NAME, pe_id), caseId), cyv_code)));
-
-	}
-
-	public static boolean exist(DBType dbtype, String query, String xpath) {
+	public boolean filersInfo(DBType dbtype, String peId, String caseId, String cyvCode, String ccr_id) {
 		boolean isDisplayed = false;
-		List<String> dbResult = executeQuery(dbtype, query);
-		sort(dbResult);
+		List<String> judgesInitials = executeQuery(dbtype, getID(JUDGEs_INITIALS, ccr_id));
+		sort(judgesInitials);
 		try {
-			for (int i = 0; i < dbResult.size(); ++i) {
+			for (int i = 0; i < judgesInitials.size(); ++i) {
+				String filerInfo = getFilerInfo(dbtype, peId, caseId, cyvCode);
 
 				MobileElement uiResult = findElementBy(Locator.XPATH,
-						xpath + "[contains(@name, '" + dbResult.get(i) + "')]");
+						"//*[contains(@name, 'Vote Information')]/following:: XCUIElementTypeStaticText[contains(@name, '"
+								+ filerInfo + "')]/following::XCUIElementTypeStaticText[contains(@name, '"
+								+ judgesInitials.get(i) + "')]");
 
 				if (uiResult.isDisplayed())
 					isDisplayed = true;
@@ -249,10 +67,82 @@ public class VoteInformationPage extends AppiumPageFactory {
 
 	}
 
-	public enum FILERs_INFO {
-		VOTE_INFO_FILLRES_INFORMATION, JUDGE_VOTE_FILLRES_INFORMATION, FILED_DATE, UI_FILER_INFORMATION, DB_FILER_INFORMATION, UI_FILED_DATE, VOTE_INFO_RELIEF, JUDGE_VOTE_RELIEF, JUDGE_INITIALS
-	}
-	
+	public static String getVoteInofrmation(String filersInfo, DBType dbType, String peId, String caseId,
+			String cyvCode) {
+		String string = "";
+		switch (filersInfo) {
+		case "FirstName":
+			string = "pr_first_name";
+			break;
+		case "LastName":
+			string = "pr_last_name";
+			break;
+		case "MiddleName":
+			string = "pr_middle_name";
+			break;
+		case "gn_display":
+			string = "gn_display";
+			break;
+		case "pt_display":
+			string = "pt_display";
+			break;
+		default:
+			break;
+		}
 
+		return getAllColumns(dbType,
+				getCode(getText(getID(replace(FILERS_INOFRMATION, "FIELD", string), peId), caseId), cyvCode));
+
+	}
+
+	public static String getFilerInfo(DBType dbType, String peId, String caseId, String cyvCode) {
+		String LastName = getVoteInofrmation("LastName", dbType, peId, caseId, cyvCode);
+		String FirstName = getVoteInofrmation("FirstName", dbType, peId, caseId, cyvCode);
+		String MiddleName = getVoteInofrmation("MiddleName", dbType, peId, caseId, cyvCode);
+		String pt_display = getVoteInofrmation("pt_display", dbType, peId, caseId, cyvCode);
+		String voteInfoDbFiledDate = dbFiledDate(dbType, peId, caseId, cyvCode);
+
+		return LastName + ", " + FirstName + " " + MiddleName + " (" + pt_display + ") " + "Filed: "
+				+ changeDateFormat(voteInfoDbFiledDate, "yyyy-MM-dd", "MM/dd/yyyy");
+
+	}
+
+	public void getJudesVote(DBType dbType, String ccr_id) {
+		List<String> cvv_display = new ArrayList<>();
+		String noVote = "";
+		String uiJudesVote = "";
+		String chv_date_created = "";
+		String relief = getAllColumns(dbType, getID(RELIEF, ccr_id));
+		List<String> inits = executeQuery(dbType, getID(JUDGEs_INITIALS, ccr_id));
+		for (int i = 0; i < inits.size(); i++) {
+
+			String date = getAllColumns(dbType, getID(replace(VOTE_DATE, "JU_INITIALS", inits.get(i)), ccr_id));
+			String vote = getAllColumns(dbType, getID(replace(JUDGEs_VOTE, "CHV_DATE_CREATED", date), ccr_id));
+
+			if (date.equals("")) {
+				noVote = date += "No Vote";
+				cvv_display.add(noVote);
+			} else {
+				chv_date_created = changeDateFormat(date.split(" ")[0], "yyyy-MM-dd", "M/dd/yyyy");
+				uiJudesVote += "//XCUIElementTypeStaticText[@name='" + relief
+						+ "']/following::XCUIElementTypeStaticText[@name='" + vote
+						+ "']/following::XCUIElementTypeStaticText[@name='" + chv_date_created + "']";
+			}
+		}
+		assertTrue("VERIFY THE VOTE DATE (CHV_DATE_CREATED) IS CORRECT",
+				findElementBy(Locator.XPATH, uiJudesVote).isDisplayed());
+
+		int uiNoVote = Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + relief
+				+ "']/following::XCUIElementTypeStaticText[@name='" + noVote + "']")).size();
+		int dbNoVote = cvv_display.size();
+		assertEquals(
+				"CVV_DISPLAY IS NULL FOR A JUDGE, BUT THE TEXT 'NO VOTE' DOEN'T DISPLAY UNDER THE JUDGE'S INITIALS",
+				dbNoVote, uiNoVote);
+
+	}
+
+	public enum FILERs_INFO {
+		VOTE_INFO_FILLRES_INFORMATION, JUDGE_VOTE_FILLRES_INFORMATION, FILED_DATE, UI_FILER_INFORMATION, DB_FILER_INFORMATION, UI_FILED_DATE, JUDGE_VOTE_RELIEF
+	}
 
 }

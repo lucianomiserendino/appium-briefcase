@@ -1,4 +1,4 @@
-@Regression @AMB-1204 
+@AMB @RegressioN @AMB-1204 
 Feature: Site Table variable to enable court admins to docket in Briefcase 
 
 
@@ -14,7 +14,6 @@ Scenario:
 	Then User selects "TEST_AUTOMATION" and "15-2594" 
 	Then User  selects action using dbType "CMKA" and  "3142"  and verifies the name of the action displays in the dark blue banner 
 	Then user selects a vote and adds notes to a vote. Use  db "CMKA" ,ccrID "35683" , elID  "3142" , and dpf "judgeVote" 
-	Then User selects "TEST_AUTOMATION" and "15-2594" 
 	And User verifies judge's vote is updated in Vote Information Panel. Use  db "CMKA" ,ccrID "35683" 
 	
 	

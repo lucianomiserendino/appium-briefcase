@@ -1,7 +1,6 @@
+@AMB @Smoke @AMB-1075 
 Feature: note DPF back-end updates 
 
-@Smoke
-@AMB-1075 
 Scenario: 
 	Adding a note back-end database updates.
             

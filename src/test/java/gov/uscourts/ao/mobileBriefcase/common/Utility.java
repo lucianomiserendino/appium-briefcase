@@ -46,7 +46,7 @@ public class Utility extends Base {
 
 	}
 
-	public static boolean findElementAndScroll(String element) {
+	public static boolean isDisplayed(String element) {
 		boolean isDisplayed = false;
 		Boolean elementNotFound = true;
 		while (elementNotFound) {
@@ -67,7 +67,7 @@ public class Utility extends Base {
 		return isDisplayed;
 	}
 
-	public static String findElementAndScrollDown(Locator locator, String element) {
+	public static String scrollDownIfNotDisplayed( String element) {
 
 		Boolean elementNotFound = true;
 		while (elementNotFound) {

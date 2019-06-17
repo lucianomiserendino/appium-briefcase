@@ -1,11 +1,12 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.dashboard;
+
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.findElementAndScrollDown;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollDownIfNotDisplayed;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.NoSuchElementException;
@@ -46,7 +47,7 @@ public class AppliedCasesPage extends AppiumPageFactory {
 
 	public void selectDate(String date, String panel) {
 
-		findElementAndScrollDown(Locator.XPATH, "//XCUIElementTypeStaticText[@name='" + date
+		scrollDownIfNotDisplayed("//XCUIElementTypeStaticText[@name='" + date
 				+ "']/following::XCUIElementTypeOther/XCUIElementTypeStaticText[@name='" + panel + "']");
 
 	}

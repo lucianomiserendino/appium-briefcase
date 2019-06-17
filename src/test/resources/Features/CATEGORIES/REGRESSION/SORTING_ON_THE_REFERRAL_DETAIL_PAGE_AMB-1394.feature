@@ -1,8 +1,7 @@
+@AMB @Regression @AMB-1394
 Feature: Sorting on the Referral Detail Page 
 
-
-@Regression
-@AMB-1394 
+ 
 Scenario Outline: 
 	There is a sort field in the chm_mobile_docs table that the courts can set for sorting Document categories.
 	  Briefcase should this field for sorting. Briefcase needs to be updated to sort document categories 

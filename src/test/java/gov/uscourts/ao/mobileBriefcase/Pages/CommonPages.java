@@ -15,22 +15,21 @@ import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.expandPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.findElementAndScrollDown;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.replace;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.isDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollDownIfNotDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.splitBy;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotVisibleException;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
-import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
-import gov.uscourts.ao.mobileBriefcase.common.Utility;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
@@ -121,7 +120,7 @@ public class CommonPages extends AppiumPageFactory {
 	}
 
 	public static void selectReferral(String category) {
-		findElementAndScrollDown(Locator.XPATH, category);
+		scrollDownIfNotDisplayed(category);
 
 	}
 
@@ -154,37 +153,26 @@ public class CommonPages extends AppiumPageFactory {
 		default:
 			break;
 		}
-		verifyElementIsDisplayed(panels);
-		expandPanel(panels);
+		getGroupIcons();
+		scrollDownIfNotDisplayed(containsElement(panels));
 	}
 
 	public static void selectAction(DBType dbType, String panel, String el_id) {
-
-		performPageLoad(driver);
 		getGroupIcons();
-		findElementAndScrollDown(Locator.XPATH, containsElement(panel));
-
-		try {
-			replace(panel);
-
-		} catch (AssertionError e) {
-			e.getMessage();
-		} finally {
-			String actionName1 = "";
-			String actionName2 = getAllColumns(dbType, getID(ACTION_NAME, el_id));
-			if (actionName2.contains("'")) {
-				actionName1 += actionName2.split("'")[0];
-				getActionName(actionName1);
-			} else {
-				getActionName(actionName2);
-
-			}
+		getPanel(Panel.valueOf(panel));
+		String actionName1 = "";
+		String actionName2 = getAllColumns(dbType, getID(ACTION_NAME, el_id));
+		if (actionName2.contains("'")) {
+			actionName1 += actionName2.split("'")[0];
+			getActionName(actionName1);
+		} else {
+			getActionName(actionName2);
 
 		}
 	}
 
 	public static void getActionName(String element) {
-		findElementAndScrollDown(Locator.XPATH,
+		scrollDownIfNotDisplayed(
 				"//XCUIElementTypeOther[@name='DocumentList']//XCUIElementTypeStaticText[contains(@name, '" + element
 						+ "')]");
 		// performPageLoad(driver);
@@ -203,7 +191,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	public static void verifyElementIsDisplayed(String element) {
 		assertTrue(" PLEASE ENSURE THAT " + element.toUpperCase() + " IS DISPLAYED ",
-				Utility.findElementAndScroll(containsElement(element)) == true);
+				isDisplayed(containsElement(element)) == true);
 	}
 
 	public static String getCaseID(DBType dbType, MobileElement uiCaseNumber) {
@@ -225,9 +213,10 @@ public class CommonPages extends AppiumPageFactory {
 	 * 
 	 */
 
-	public void setValue(DBType dbType, String si_value, String SI_CODE) {
-		insertData(dbType, replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE", si_value, "si_code", SI_CODE));
-
+	public static void setValue(DBType dbType, String si_value, String SI_CODE) {
+		insertData(dbType, replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE", si_value, "SI_CODE", SI_CODE));
+		String value = getAllColumns(dbType, replace(SITE_TABLE_VARIABLE_VALUE, "SI_CODE", SI_CODE));
+		assertEquals(si_value, value);
 	}
 
 	public static String getCase(Case caseN, MobileElement uiCaseNumber) {
@@ -257,6 +246,29 @@ public class CommonPages extends AppiumPageFactory {
 		}
 	}
 
+	public void logout() {
+		try {
+			dashboard.click();
+			settingsIcon.click();
+			logout.click();
+			if (findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
+				contains(okButton).click();
+			} else {
+				Page.sleep(55000);
+				logout.click();
+				contains(okButton).click();
+			}
+		} catch (ElementNotVisibleException e) {
+			e.getMessage();
+		}
+	}
+
+	public void deleteDocs() {
+		tap(dashboard);
+		tap(settingsIcon);
+		scrollDownIfNotDisplayed(containsElement("Delete all documents on device"));
+		tap(dashboard);
+	}
 
 	public enum Case {
 		CASE_YEAR, CASE_NUMBER

@@ -98,7 +98,6 @@ public abstract class Base implements iOSCapabilities {
 	}
 
 	public static void getDriver() {
-
 		try {
 			getHost(getProperty(LOCAL_HOST));
 		} catch (WebDriverException e) {

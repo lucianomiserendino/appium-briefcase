@@ -16,7 +16,7 @@ import io.appium.java_client.functions.ExpectedCondition;
 public class Page extends Base {
 
 	public static MobileElement waitForPresenceOfElementLocated(By element, WebDriver driver) {
-		return (MobileElement) new WebDriverWait(driver, 200)
+		return (MobileElement) new WebDriverWait(driver, 120)
 				.until(ExpectedConditions.presenceOfElementLocated((element)));
 	}
 
@@ -29,7 +29,7 @@ public class Page extends Base {
 	}
 
 	public static MobileElement waitForVisibilityOfElement(MobileElement element, WebDriver driver) {
-		return (MobileElement) new WebDriverWait(driver, 180).until(ExpectedConditions.visibilityOf(element));
+		return (MobileElement) new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(element));
 	}
 
 	public static void performPageLoad(WebDriver driver) {

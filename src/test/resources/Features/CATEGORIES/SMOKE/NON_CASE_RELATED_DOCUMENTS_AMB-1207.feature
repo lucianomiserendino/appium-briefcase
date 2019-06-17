@@ -1,3 +1,4 @@
+@AMB @Smoke	@AMB-1207
 Feature: Non case related docs - Suppress case number for 'lbrrpt' category 
 
 Background: 
@@ -9,9 +10,7 @@ Background:
 	And  user selects a "CMKA" 
 	Then User selects a userCategory "Appellate_Judges" and  name "Colloton" 
 	
-
-@Smoke	
-@AMB-1207 
+ 
 Scenario: 
 	User shouldn't see  case number when view documents that are not case related
   

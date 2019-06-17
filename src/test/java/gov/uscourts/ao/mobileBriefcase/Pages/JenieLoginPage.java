@@ -6,12 +6,11 @@ import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.findElementAndScrollDown;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollDownIfNotDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.tapByCoordinate;
 import static org.openqa.selenium.support.PageFactory.initElements;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -19,7 +18,6 @@ import org.openqa.selenium.support.FindBy;
 import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
-import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
@@ -198,23 +196,6 @@ public class JenieLoginPage extends Base {
 
 	}
 
-	public static void logout() {
-		try {
-			dashboard.click();
-			settingsIcon.click();
-			logout.click();
-			if (Actions.findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
-				contains(okButton).click();
-			} else {
-				Page.sleep(55000);
-				logout.click();
-				contains(okButton).click();
-			}
-		} catch (ElementNotVisibleException e) {
-			e.getMessage();
-		}
-	}
-
 	public static void selectUser(String availableJudges, String userName) {
 		contains(user).click();
 		getJudgesList(replace(availableJudges, "_", " "), userName, availableJudges);
@@ -245,14 +226,14 @@ public class JenieLoginPage extends Base {
 
 	public static void getJudgesList(String availableJudges, String user, String userCategory) {
 
-		findElementAndScrollDown(Locator.XPATH, containsElement(availableJudges));
+		scrollDownIfNotDisplayed(containsElement(availableJudges));
 		try {
 			selectUserCategory(availableJudges, User.valueOf(userCategory));
 		} catch (AssertionError e) {
 			e.getMessage();
 		} finally {
 
-			findElementAndScrollDown(Locator.XPATH, containsElement(user));
+			scrollDownIfNotDisplayed(containsElement(user));
 		}
 	}
 

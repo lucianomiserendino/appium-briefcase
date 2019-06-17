@@ -14,12 +14,13 @@ removes any terminated document and retrieves new document information after a s
 	And  user selects a "<server>" 
 	Then User selects "<refCategory>" and "<caseNum>" 
 	Then User  sets the chambers_case_to_referral.ccr_date_end date field to today's date  in "<dbType>" , using  "<peID>" and  "<cmr_cyv_code>", indicating the referral "<caseNum>" is terminated. 
-	Then User goes to the Dashboard page in Briefcase.User  executes MobileBriefcaseDataUpdater.Waits the number of minutes stored in the briefcaseAutoSyncMinutes site table variable 
+	
+	#Then User goes to the Dashboard page in Briefcase.User  executes MobileBriefcaseDataUpdater.Waits the number of minutes stored in the briefcaseAutoSyncMinutes site table variable 
 	
 	
 	Examples: 
 		|environment   |userName          |password  |server  |refCategory       | caseNum  |dbType|peID|cmr_cyv_code|
-		|INTEGRATION   |judge werner      |Test2019! |CMKA    |TEST_AUTOMATION   | 15-2594  |CMKA  |34  |autotst      |
+		|INTEGRATION   |judge werner      |Test2020! |CMKA    |TEST_AUTOMATION   | 15-2594  |CMKA  |34  |autotst      |
 		
 		
 			

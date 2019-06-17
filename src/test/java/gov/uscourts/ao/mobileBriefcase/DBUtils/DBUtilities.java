@@ -106,6 +106,42 @@ public class DBUtilities {
 
 	}
 
+	public static List<String> execute(DBType dbType, String query, int column) {
+		String a = null;
+		establishConnection(dbType);
+		List<String> result = new ArrayList<>();
+		try {
+			statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			resultSet = statement.executeQuery(query);
+			ResultSetMetaData rsMetada = resultSet.getMetaData();
+
+			int columnsCount = rsMetada.getColumnCount();
+			resultSet.last();
+			int recordCount = resultSet.getRow();
+
+			if (columnsCount == 0 || recordCount == 0) {
+				return null;
+			}
+
+			resultSet.beforeFirst();
+
+			while (resultSet.next()) {
+				for (int i = 1; i < column; i++) {
+					a = resultSet.getString(i);
+				}
+				
+				result.add(a);
+			}
+			closeConnections();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return result;
+
+	}
+
 	public static String getAllColumns(DBType dbType, String query) {
 		establishConnection(dbType);
 		ResultSetMetaData metaData;

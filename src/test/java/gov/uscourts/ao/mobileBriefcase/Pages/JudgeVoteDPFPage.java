@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
@@ -12,9 +11,8 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_VOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_VOTE_DATE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGE_VOTE_DPF_RELIEF;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.*;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectAction;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
@@ -29,6 +27,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utility.changeDateFormat;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.clickOnNumberInRange;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.getParameter;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.getStreamOfRandomInts;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollUp;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -42,6 +41,7 @@ import java.util.NoSuchElementException;
 import org.openqa.selenium.By;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
@@ -216,7 +216,8 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 		tap(Locator.XPATH, getIndexOfNoteIcon(reliefText));
 
 		addVote(dbType, dpfName, getID(MBR_NOTE, elId), reliefText, elId);
-		tap(dashboard);
+		tap(back);
+		scrollUp(By.id("DocumentList"));
 		return text;
 	}
 
@@ -233,15 +234,9 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	 * Information Panel
 	 */
 	public void verifyNoteText(DBType dbType, String ccr_id, String voteText, String noteText) {
-		performPageLoad(driver);
-		CommonPages.getGroupIcons();
-		contains("Vote Information").click();
-		performPageLoad(driver);
-		String relief = getRelief(dbType, ccr_id);
-		if (isDisplayed(Locator.XPATH, containsElement(relief)) == false) {
-			contains("Vote Information").click();
-		}
 
+		CommonPages.getPanel(Panel.valueOf("Vote_Information"));
+		String relief = getRelief(dbType, ccr_id);
 		getVote(relief).click();
 		performPageLoad(driver);
 		assertTrue(isDisplayed(Locator.XPATH, containsElement(getTodaysDate())));

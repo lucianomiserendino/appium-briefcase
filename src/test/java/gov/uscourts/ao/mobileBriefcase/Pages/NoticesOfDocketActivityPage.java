@@ -7,7 +7,9 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CMD_DM_DLS_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DKT_ENTRY_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_DLS_ID;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getSiValue;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.verifyElementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.open;
 import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.searchForACase;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
@@ -18,6 +20,9 @@ import static gov.uscourts.ao.mobileBriefcase.common.Coordinates.select;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static org.junit.Assert.assertTrue;
 
+import org.openqa.selenium.support.FindBy;
+
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Coordinates.BriefcaseCoordinates;
@@ -32,16 +37,16 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 
 	String docketText = "Docket Text";
 
-	String close = "Close";
+	static String close = "Close";
 
-	String PDFPageView = "PDF View";
+	static String PDFPageView = "PDF View";
 
 	String transactionNote = "Transaction Note";
 
 	String addANote = "Adding a note to display in briefcase";
 
 	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
-	public static MobileElement dashboard;
+	public  MobileElement dashboard;
 
 	@iOSFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[1]")
 	public static MobileElement searchIcon;
@@ -51,6 +56,9 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 
 	@iOSFindBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
 	public static MobileElement searchBTN;
+
+	@FindBy(xpath = "//XCUIElementTypeStaticText[@name='TestingAutosync']")
+	public static MobileElement pdf;
 
 	public static String getCase(String caseNum, String index) {
 		return caseNum.split("-")[Integer.valueOf(index)];
@@ -116,7 +124,8 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 		searchForACase(caseNum);
 		loadNDALinksInBriefcase(getDktentryid(caseNum, dbType, value));
 		verifyElementsAreDisplayed("DOCKET ENTRY", docketText);
-		clickBack(1);
+		// clickBack(1);
+		tap(dashboard);
 	}
 
 	/** Open a document in Briefcase from the NDA link */
@@ -130,7 +139,7 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 		verifyElementsAreDisplayed("DOCUMENT", PDFPageView);
 
 		tap(Locator.NAME, close);
-		clickBack(1);
+		tap(dashboard);
 
 	}
 
@@ -140,7 +149,7 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 		searchForACase(caseNum);
 		loadNDALinksInBriefcase(getDocumentAndNoteID(caseNum, dbType, getDocID(ID.NOTE_ID, caseNum, dbType), value));
 		verifyElementsAreDisplayed("NOTE", addANote);
-		clickBack(1);
+		tap(dashboard);
 
 	}
 
@@ -170,6 +179,16 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 	public void verifyElementsAreDisplayed(String link, String el2) {
 		assertTrue("*********CAN'T OPEN A " + link + " IN BRIEFCASE FROM THE NDA LINK*********",
 				isDisplayed(Locator.XPATH, containsElement(el2)) == true);
+	}
+
+	public void verifyPDFIsDownloaded() {
+		getPanel(Panel.Briefs);
+		tap(pdf);
+		performPageLoad(driver);
+		verifyElementIsDisplayed(PDFPageView);
+		tap(Locator.NAME, close);
+		tap(dashboard);
+
 	}
 
 	public enum ID {

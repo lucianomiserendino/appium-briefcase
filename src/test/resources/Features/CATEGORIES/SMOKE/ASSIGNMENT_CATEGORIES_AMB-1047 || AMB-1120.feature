@@ -1,9 +1,9 @@
+@AMB @Smoke   
 Feature: Assignment categories display on the dashboard for Staff Attorneys 
 
 
 
-@Smoke 
-@AMB-1047 
+@AMB-1047
 Scenario: 
 	Staff attorney assignments are court definable in the stfaty_assign_val table. 
   Staff attorney referrals are stored in the stfaty_mobile_referral table. There is a FK to the sftaty_assign_val table (smr_sfa_code). 
@@ -18,8 +18,8 @@ Scenario:
 	
 	
 	
-@Smoke 
-@AMB-1120 
+	
+@AMB-1120	
 Scenario: 
 	Log in as a staff attorney and verify data is displayed.
 	Staff attorney assignments are court definable in the stfaty_assign_val table. 

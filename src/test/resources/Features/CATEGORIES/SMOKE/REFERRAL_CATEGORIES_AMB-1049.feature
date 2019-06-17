@@ -1,3 +1,4 @@
+@AMB @Smoke @AMB-1049 
 Feature: Referral categories display on the dashboard for Staff Attorneys 
 
 
@@ -10,9 +11,7 @@ Background:
 	And  user selects a "CMKA" 
 	Then User selects a userCategory "Staff_Attorneys" and  name "Brown, Benjamin" 
 	
-	
-@Smoke 
-@AMB-1049 
+
 Scenario: 
 	Assignment categories are listed on the Dashboard page for staff attorneys.
 	Once an assignment category is selected, referrals are grouped based on

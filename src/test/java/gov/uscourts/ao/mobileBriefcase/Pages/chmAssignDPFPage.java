@@ -5,7 +5,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNEES_CHA_ID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_DUE_DATE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE_IS_SKIP;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CAV_CODE;
@@ -20,7 +19,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_MEMBERS_FIRST_NAME;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectAction;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectReferral;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.verifyElementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
@@ -33,7 +31,9 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utility.changeDateFormat;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.clickOnNumberInRange;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.clickOnRandomValue;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.getParameter;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollDownIfNotDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.splitBy;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.tapByCoordinate;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -46,6 +46,7 @@ import org.openqa.selenium.WebDriverException;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
+import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Utility;
@@ -66,73 +67,42 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	static String assignment = "";
 	static String assignmentNameAndType = "";
 	static String assignmentDate = "";
-
+	static String assignmentCompleted = "";
+	static String cha_id = "";
 	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='OptionList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static List<MobileElement> optionList;
 
-	public static void getElementNextToDropDown(int index, String element, String dropDowN) {
-		tap(Locator.XPATH, getDropDown(index, element, dropDowN));
-	}
+	public static void selectADate(chmAssign assign, String x, String y) {
+		getChmAssign(assign, "tap");
+		performPageLoad(driver);
+		tapByCoordinate(x, y);
+		performPageLoad(driver);
 
-	public static String getDropDown(int index, String listOfStaff, String dropDowName) {
-
-		return "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther["
-				+ index
-				+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '"
-				+ listOfStaff + "')]/following::XCUIElementTypeOther[2]/XCUIElementTypeButton[contains(@name, '"
-				+ dropDowName + "')]";
 	}
 
 	public void createNewStaffAssignment(DBType dbType, String dpfName, String elId, String cha_ju_pe_id,
 			String cmr_cyv_code, String cmr_cs_caseid, String caseNumber) {
 
 		/******************
-		 * @AMB-1123 ****** STEP 1 --Select a staff member
+		 * @AMB-1123 ***
 		 */
-		getElementNextToDropDown(3, "Staff Member", "Please Select");
+		/***
+		 * STEP 1 --Select a staff member
+		 */
+		getChmAssign(chmAssign.STAFF_MEMBER, "tap");
 		staffMember += getAvailableStaffMembers(dbType, dpfName, elId, cha_ju_pe_id);
 		String staffFName = splitBy(staffMember, 0);
 		String staffLName = splitBy(staffMember, 1);
 
-		/** STEP 2 --Select an assignment */
-		getElementNextToDropDown(5, "Assignment", "Please Select");
-		getAssignmentType(dbType, dpfName, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code, staffFName, staffLName);
+		verifyNewStaffAssignment(chmAssign.CREATE, dbType, dpfName, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code,
+				staffFName, staffLName, "assignedDateX", "assignedDateY", "assignedDueDateX", "assignedDueDateY");
 
-		/** STEP 3 --Select an Assigned Date */
-		getElementNextToDropDown(7, "Assigned", "Select Date");
-		// // selectADate(2);
-		performPageLoad(driver);
-		Utility.tapByCoordinate("assignedDateX", "assignedDateY");
-		performPageLoad(driver);
+		cha_id = getCreatedAssignment(dbType, ASSIGNEES_CHA_ID, cha_ju_pe_id, cmr_cs_caseid);
 
-		/** STEP 4 --Select Assignment Due Date */
-		getElementNextToDropDown(9, "Assignment Due", "Select Date");
-		// selectADate(1);
-		performPageLoad(driver);
-		Utility.tapByCoordinate("assignedDueDateX", "assignedDueDateY");
-		performPageLoad(driver);
-
-		/** STEP 5 --Verify comment, apply and cancel display */
-		verifyElementIsDisplayed(comment);
-		verifyElementIsDisplayed(apply);
-		verifyElementIsDisplayed(cancel);
-
-		/**
-		 * // * STEP 6 --If the user clicks the "Apply" button, the popup will close and
-		 * // the // * new assignment will display on the chmAssign DPF screen //
-		 */
-		assignment += newUIAssignment(dbType, cha_ju_pe_id, elId, staffFName, staffLName, caseNumber);
-
-		/******************
-		 * @AMB-1137
-		 */
-		newDBAssignment(dbType, cha_ju_pe_id, elId, staffFName, staffLName, assignment);
-
-		/******************
-		 * @AMB-1170, @AMB-1173
-		 */
-		modifyExistingStaffAssignment(assignmentNameAndType, assignmentDate, dbType, dpfName, elId, cha_ju_pe_id,
-				cmr_cs_caseid, cmr_cyv_code, staffFName, staffLName);
+		verifyNewStaffAssignment(chmAssign.MODIFY, dbType, dpfName, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code,
+				staffFName, staffLName, "modifiedAssignedDateX", "modifiedAssignedDateY", "modifiedAssignedDueDateX",
+				"modifiedAssignedDueDateY");
+		terminateStaffAssignment("modifiedAssignedDateX", "modifiedAssignedDateY", dbType);
 
 	}
 
@@ -173,7 +143,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 		getListOfAvailableStaffMembers(dbType, STAFF_MEMBERS_FIRST_NAME, peID, screenParam, 0);
 		performPageLoad(driver);
-		return getChmAssign(chmAssign.STAFF_MEMBER);
+		return getChmAssign(chmAssign.STAFF_MEMBER, "text");
 	}
 
 	/**
@@ -247,9 +217,9 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		sort(dbAssignmentType);
 		try {
 			/**
-			 * this line checks if a staff member exists with that assignment type, if yes
-			 * that assignment type won't be displayed after you tap the Please Select
-			 * button next to the Assignment
+			 * this line checks if a staff member exists with that assignment type, that
+			 * assignment type won't be displayed after you tap the Please Select button
+			 * next to the Assignment
 			 */
 			List<String> cavDescription = executeQuery(dbType,
 					replace(replace(getID(CAV_DESCRIPTION, cha_ju_pe_id), "CMR_CS_CASEID", cmr_cs_caseid),
@@ -272,35 +242,115 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		}
 	}
 
-	public static String newUIAssignment(DBType dbType, String peId, String elID, String staffMembersFName,
-			String staffMembersLName, String caseNumber) {
-
-		String assignment = getChmAssign(chmAssign.ASSIGNMENT);
-
-		contains(apply).click();
-
-		assignmentNameAndType = getCreatedAssignmentNameAndAssignmentType(staffMembersFName + " " + staffMembersLName,
-				assignment);
-		assignmentDate = getCreatedAssignmentType(staffMember, assignment);
-
+	public void submiTransaction() {
 		try {
 			clickOn(submit, yesBTN, okBTN);
 		} catch (WebDriverException e) {
 			e.getMessage();
 		}
-		contains(backBTN).click();
-		selectReferral(caseNumber);
-		performPageLoad(driver);
-		getPanel(Panel.Assignments);
+	}
 
-		// assertTrue(getExistingAssignment(assignmentNameAndType,
-		// assignmentDate).isDisplayed());
+	public void verifyNewStaffAssignment(chmAssign assign, DBType dbType, String dpfName, String elId,
+			String cha_ju_pe_id, String cmr_cs_caseid, String cmr_cyv_code, String staffFName, String staffLName,
+			String x1, String y1, String x2, String y2) {
+		/** STEP 2 --Select an assignment */
+		getChmAssign(chmAssign.ASSIGNMENT, "tap");
+		getAssignmentType(dbType, dpfName, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code, staffFName, staffLName);
 
-		assertTrue(Utility.findElementAndScroll("//*[contains(@name, '" + assignmentNameAndType
-				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + assignmentDate + "')]") == true);
+		/** STEP 3 --Select an Assigned Date */
+		selectADate(chmAssign.ASSIGNED_DATE, x1, y1);
 
+		/** STEP 4 --Select Assignment Due Date */
+		selectADate(chmAssign.ASSIGNMENT_DUE, x2, y2);
+
+		/** STEP 5 --Verify comment, apply and cancel display */
+		verifyElementIsDisplayed(comment);
+		verifyElementIsDisplayed(apply);
+		verifyElementIsDisplayed(cancel);
+		String assignment = getChmAssign(chmAssign.ASSIGNMENT, "text");
+		String assignedDate = getChmAssign(chmAssign.ASSIGNED_DATE, "text");
+		String assignmentDue = getChmAssign(chmAssign.ASSIGNMENT_DUE, "text");
+
+		switch (assign) {
+		case CREATE:
+			contains(apply).click();
+			getANewStaffAssignment(assignment, assignedDate, assignmentDue);
+
+			submiTransaction();
+		//	CommonPages.getGroupIcons();
+			getPanel(Panel.Assignments);
+
+			getANewStaffAssignment(assignment, assignedDate, assignmentDue);
+
+			/******************
+			 * @AMB-1137
+			 */
+
+			newDBAssignment(dbType, cha_ju_pe_id, elId, staffFName, staffLName, assignment);
+
+			clickOnExistingAssignment(staffMember + ", " + assignment, dbType, elId);
+
+			break;
+
+		case MODIFY:
+			contains(apply).click();
+			/** After the new assignment is created it clicks on it */
+			getANewStaffAssignment(assignment, assignedDate, assignmentDue);
+			submiTransaction();
+			clickOnExistingAssignment(staffMember + ", " + assignment, dbType, elId);
+
+			/*****
+			 * @AMB-1173
+			 * 
+			 * Back-end modify assignment updates
+			 */
+			getCreatedRecords(dbType, getAllColumns(dbType, getText(CAV_CODE, assignment)),
+					getID(CHA_CAV_CODE, cha_id));
+			try {
+
+				getCreatedRecords(dbType, changeFormat(assignedDate), getID(CHD_DATE, cha_id));
+			} catch (AssertionError e) {
+				getCreatedRecords(dbType, changeFormat(assignmentDue), getID(CHD_DATE, cha_id));
+			}
+			break;
+		default:
+			break;
+		}
+
+	}
+
+	public void terminateStaffAssignment(String x1, String y1, DBType dbType) {
+		selectADate(chmAssign.ASSIGNMENT_COMPLETED, "selectDateX", "selectDateY");
+		assignmentCompleted = getChmAssign(chmAssign.ASSIGNMENT_COMPLETED, "text");
+		contains(apply).click();
+		submiTransaction();
+		getCreatedRecords(dbType, changeFormat(assignmentCompleted), getID(CHC_DATE_END, cha_id));
+
+	}
+
+	public String changeFormat(String date) {
+		return changeDateFormat(date, "M/d/yyyy", "yyyy-MM-dd");
+	}
+
+	public String getANewStaffAssignment(String assignment, String assignedDate, String assignmentDue) {
+		try {
+			MobileElement modifiedAssignedDate = getExistingAssignment(staffMember + ", " + assignment,
+					"Assigned " + assignedDate);
+			assertTrue(modifiedAssignedDate.isDisplayed());
+			
+//			assertTrue(Utility.isDisplayed("//*[contains(@name, '" + staffMember + ", " + assignment
+//				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + "Assigned " + assignedDate + "')]"));
+//			
+		} catch (Exception e) {
+			
+//			assertTrue(Utility.isDisplayed("//*[contains(@name, '" + staffMember + ", " + assignment
+//					+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + "Assignment Due " + assignedDate + "')]"));
+				
+			MobileElement modifiedAssignmentDueDate = getExistingAssignment(staffMember + ", " + assignment,
+					"Assignment Due " + assignmentDue);
+			 assertTrue(modifiedAssignmentDueDate.isDisplayed());
+		}
 		return assignment;
-
 	}
 
 	/** check the back-end updates when a new staff assignment is created */
@@ -335,137 +385,16 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	}
 
-	public void modifyExistingStaffAssignment(String assgnNameAndType, String assgnDate, DBType dbType, String dpfName,
-			String elId, String cha_ju_pe_id, String cmr_cs_caseid, String cmr_cyv_code, String pr_first_name,
-			String pr_last_name) {
-
-		/** After the new assignment is created it clicks on it */
-		clickOnExistingAssignment(assgnNameAndType, assgnDate, dbType, elId);
-
-		modifyExistingStaffAssignment(dbType, dpfName, cha_ju_pe_id, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code,
-				pr_first_name, pr_last_name);
-	}
-
-	/**
-	 * verify the new assignment is displayed on the chmassign dpf screen and modify
-	 */
-	public static void modifyExistingStaffAssignment(DBType dbType, String dpfName, String peID, String elId,
-			String cha_ju_pe_id, String cmr_cs_caseid, String cmr_cyv_code, String pr_first_name, String pr_last_name) {
-
-		String uiAssignedDate = getChmAssign(chmAssign.ASSIGNED_DATE);
-
-		String uiAssignmentType = getChmAssign(chmAssign.ASSIGNMENT);
-
-		String uiAssignmentDueDate = getChmAssign(chmAssign.ASSIGNMENT_DUE);
-		//
-		String dbAssignmentDueDate = changeDateFormat(
-				getAllColumns(dbType,
-						getID(ASSIGNMENT_DUE_DATE,
-								getCreatedAssignment(dbType, ASSIGNEES_CHA_ID, peID, cmr_cs_caseid))),
-
-				"yyyy-MM-dd", "M/d/yyyy");
-
-		assertEquals("******PLEASE MAKE SURE ASSIGNMENT DUE DATE IS CORRECT*******", dbAssignmentDueDate,
-				uiAssignmentDueDate);
-
-		String cha_id = getCreatedAssignment(dbType, ASSIGNEES_CHA_ID, peID, cmr_cs_caseid);
-
-		contains(uiAssignmentType).click();
-
-		/**
-		 * * @AMB-1170 Modifying existing assignment
-		 */
-
-		getAssignmentType(dbType, dpfName, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code, pr_first_name,
-				pr_last_name);
-		performPageLoad(driver);
-		String modAssignmentType = getChmAssign(chmAssign.ASSIGNMENT);
-
-		getElementNextToDropDown(7, "Assigned", uiAssignedDate);
-		// selectADate(3);
-		performPageLoad(driver);
-		Utility.tapByCoordinate("modifiedAssignedDateX", "modifiedAssignedDateX");
-		performPageLoad(driver);
-
-		String modAssignedDate = getChmAssign(chmAssign.ASSIGNED_DATE);
-
-		getElementNextToDropDown(9, "Assignment Due", dbAssignmentDueDate);
-		// selectADate(3);
-		// performPageLoad(driver);
-		performPageLoad(driver);
-		Utility.tapByCoordinate("modifiedAssignedDueDateX", "modifiedAssignedDueDateY");
-		performPageLoad(driver);
-
-		String modAssignmentDueDate = getChmAssign(chmAssign.ASSIGNMENT_DUE);
-
-		contains(apply).click();
-
-		try {
-
-			MobileElement modifiedAssignedDate = getExistingAssignment(staffMember + ", " + modAssignmentType,
-					"Assigned " + modAssignedDate);
-			assertTrue(modifiedAssignedDate.isDisplayed());
-			tap(modifiedAssignedDate);
-
-		} catch (Exception e) {
-			MobileElement modifiedAssignmentDueDate = getExistingAssignment(staffMember + ", " + modAssignmentType,
-					"Assignment Due " + modAssignedDate);
-			assertTrue(modifiedAssignmentDueDate.isDisplayed());
-			tap(modifiedAssignmentDueDate);
-
-		}
-
-		/** Terminating existing assignment */
-		getElementNextToDropDown(11, "Assignment Completed", "Select Date");
-		selectADate(1);
-		performPageLoad(driver);
-		String modAssignmCompletedDate = getChmAssign(chmAssign.ASSIGNMENT_COMPLETED);
-
-		contains("Apply").click();
-		try {
-			clickOn(submit, yesBTN, okBTN);
-		} catch (WebDriverException e) {
-			e.getMessage();
-		}
-
-		/*****
-		 * @AMB-1173
-		 * 
-		 * Back-end modify assignment updates
-		 */
-		String uiAssignmenType = getAllColumns(dbType, getText(CAV_CODE, modAssignmentType));
-		String dbAssignmenType = getAllColumns(dbType, getID(CHA_CAV_CODE, cha_id));
-		assertEquals("******ASSIGNMENT TYPE ISN'T MODIFIED CORRECTLY*****", dbAssignmenType, uiAssignmenType);
-
-		String dbAssignmentDue = changeDateFormat(getAllColumns(dbType, getID(CHD_DATE, cha_id)), "yyyy-MM-dd",
-				"M/d/yyyy");
-
-		assertEquals("*****ASSIGNMENT DUE DATE ERROR******", dbAssignmentDue, modAssignmentDueDate);
-
-		String dbAssignmentCompletedDate = changeDateFormat(getAllColumns(dbType, getID(CHC_DATE_END, cha_id)),
-				"yyyy-MM-dd", "M/d/yyyy");
-		assertEquals("******ASSIGNMENT COMPLETED DATE ERROR*****", dbAssignmentCompletedDate, modAssignmCompletedDate);
-
-	}
-
-	public static void selectADate(int index) {
-		performPageLoad(driver);
-		List<MobileElement> date = driver.findElements(By.xpath(
-				"//XCUIElementTypeApplication[@name='Briefcase [Test]']/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther"));
-		date.get(date.size() - index).click();
-
-	}
-
 	public static String getSelectedAssignment(String assignment, int index) {
-
 		return "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther["
 				+ index
 				+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '"
 				+ assignment + "')]/following::XCUIElementTypeOther[2]/XCUIElementTypeButton";
 	}
 
-	public static String getCreatedAssignmentNameAndAssignmentType(String staffMember, String assignmnetType) {
-		return getText(Locator.XPATH, "//*[contains(@name, '" + staffMember + ", " + assignmnetType + "')]");
+	public static MobileElement getCreatedAssignmentNameAndAssignmentType(String staffMember, String assignmnetType) {
+		return Actions.findElementBy(Locator.XPATH,
+				"//*[contains(@name, '" + staffMember + ", " + assignmnetType + "')]");
 
 	}
 
@@ -480,7 +409,6 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		String CMECF_TABLES = getAllColumns(dbType, actual);
 		assertEquals("********PLEASE VERIFY THAT RECORDS IN CMECF ARE CREATED CORRECTLY!!!********", expected,
 				CMECF_TABLES);
-
 	}
 
 	public static String getCreatedAssignment(DBType dbType, String query, String peId, String caseId) {
@@ -488,36 +416,24 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	}
 
-	public static String getSelectedText(String xpath) {
-		return getText(Locator.XPATH, "//*[contains(@name, 'Staff Member')]" + xpath);
-	}
-
 	public static MobileElement getExistingAssignment(String assineeName, String AssignmentTypeAndDate) {
 		return findElement(By.xpath("//*[contains(@name, '" + assineeName
 				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + AssignmentTypeAndDate + "')]"));
 	}
 
-	public static String getExistingAssignmentDateType(String assignDateType, int index) {
-		return findElement(By.xpath("(//*[contains(@name, '" + assignDateType
-				+ "')]/preceding-sibling:: XCUIElementTypeStaticText)[" + index + "]")).getText().trim();
-	}
-
-	public void clickOnExistingAssignment(String AssignName, String AssignType, DBType dbType, String elID) {
+	public static void clickOnExistingAssignment(String staffMember, DBType dbType, String elID) {
 		selectAction(dbType, "Actions", elID);
-		Utility.findElementAndScrollDown(Locator.XPATH, "//*[contains(@name, '" + AssignName
-				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + AssignType + "')]");
-		// getExistingAssignment(AssignName, AssignType).click();
+		scrollDownIfNotDisplayed(containsElement(staffMember));
 	}
 
 	public static void clickOn(String submit, String yes, String ok) {
-
-		Utility.findElementAndScrollDown(Locator.XPATH, containsElement(submit));
-		contains(yes).click();
-		contains(ok).click();
+		scrollDownIfNotDisplayed(containsElement(submit));
+		tap(Locator.XPATH, containsElement(yes));
+		tap(Locator.XPATH, containsElement(ok));
 
 	}
 
-	public static String getChmAssign(chmAssign asmnt) {
+	public static String getChmAssign(chmAssign asmnt, String action) {
 		String assignment = "";
 		int index = 0;
 		switch (asmnt) {
@@ -550,11 +466,20 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		default:
 			break;
 		}
-		return findElement(By.xpath(getSelectedAssignment(assignment, index))).getText();
+		String act = "";
+		if (action.equals("tap")) {
+			tap(Locator.XPATH,
+					"//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther["
+							+ index
+							+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '"
+							+ assignment + "')]/following::XCUIElementTypeOther[2]/XCUIElementTypeButton");
+		} else {
+			act = findElement(By.xpath(getSelectedAssignment(assignment, index))).getText();
+		}
+		return act;
 	}
 
 	public enum chmAssign {
-		STAFF_MEMBER, ASSIGNMENT, ASSIGNED_DATE, ASSIGNMENT_DUE, ASSIGNMENT_COMPLETED
+		STAFF_MEMBER, ASSIGNMENT, ASSIGNED_DATE, ASSIGNMENT_DUE, ASSIGNMENT_COMPLETED, CREATE, MODIFY, TERMINATE
 	}
-
 }

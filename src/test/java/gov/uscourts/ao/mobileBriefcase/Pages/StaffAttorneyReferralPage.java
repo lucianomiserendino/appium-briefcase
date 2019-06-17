@@ -157,7 +157,7 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 		sort(dbDocs);
 		try {
 			for (int i = 0; i < dbDocs.size(); ++i) {
-				Utility.findElementAndScrollDown(Locator.XPATH,
+				Utility.scrollDownIfNotDisplayed(
 						"//XCUIElementTypeStaticText[contains(@name, '" + dbDocs.get(i) + "')]");
 
 				List<String> docDesc = executeQuery(dbType,

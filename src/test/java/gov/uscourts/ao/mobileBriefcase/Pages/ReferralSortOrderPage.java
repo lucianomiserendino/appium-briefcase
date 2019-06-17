@@ -1,10 +1,9 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.*;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.retrieveAllCases;
@@ -22,9 +21,9 @@ import io.appium.java_client.pagefactory.iOSFindBy;
 public class ReferralSortOrderPage extends AppiumPageFactory {
 
 	// @WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/child::*//*[contains(@name, 'Date')]")
+	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, 'Date')]")
 	public static List<MobileElement> dates;
-
+	
 	// @WithTimeout(time = 60, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "//*[contains(@name, 'Sort')]")
 	public static MobileElement sortArrowBtn;
@@ -39,7 +38,7 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	public static MobileElement caseDownArrowBtn;
 
 	// @WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='ReferralsList']/child::*//*[contains(@name, '-')]")
+	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<MobileElement> cases;
 
 	@iOSFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Case')])[2]")
@@ -57,8 +56,8 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 		waitToBeClickable(sortArrowBtn, driver);
 	}
 
-	public List<String> referralsSortedByDate(Sort sort) {
-		getSortPage(sort);
+
+	public List<String> referralsSortedByDate() {
 		return retrieveAllCases(dates, "Date: ", 1);
 	}
 
@@ -95,13 +94,14 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 		getGroupIcons();
 		Page.performPageLoad(driver);
 		List<String> uiDoCategories = new ArrayList<>();
-		Page.performPageLoad(driver);
+
 		for (int i = 0; i < docCategories.size(); i++) {
 			uiDoCategories.add(docCategories.get(i).getText());
 		}
 
 		List<String> dbDoCategories = executeQuery(valueOf(dbType), Actions.replace(DOCUMENT_CATEGORIES, "CMR_CYV_CODE",
 				cmr_cyv_code, "CMR_JU_PE_ID", cmr_ju_pe_id, "CMR_CS_CASEID", cmr_cs_caseid));
+
 		assertEquals(" DOCUMENT CATEGORIES ARE NOT SORTED ON THE REFERRAL DETAIL PAGE ", dbDoCategories,
 				uiDoCategories);
 

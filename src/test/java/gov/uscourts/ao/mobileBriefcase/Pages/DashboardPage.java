@@ -96,7 +96,6 @@ public class DashboardPage extends AppiumPageFactory {
 				assertTrue(
 						"*****" + dbReferralCategories.get(i).toUpperCase() + " IS NOT DISPLAYED ON THE DASHBOARD*****",
 						referrals.isDisplayed());
-
 			}
 
 		} catch (org.openqa.selenium.TimeoutException e) {
@@ -181,7 +180,7 @@ public class DashboardPage extends AppiumPageFactory {
 	}
 
 	public boolean getDocuments(String peID, DBType dbType) {
-	
+
 		page.getGroupIcons();
 		MobileElement uiDocs = null;
 
@@ -263,6 +262,8 @@ public class DashboardPage extends AppiumPageFactory {
 		return findElementBy(Locator.XPATH,
 				"(//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText)["
 						+ index + "]");
-	}
+	
 
+
+	}
 }

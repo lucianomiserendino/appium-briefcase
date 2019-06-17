@@ -9,7 +9,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.getRandomInt;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrolldown;
 import static org.junit.Assert.assertEquals;
 
@@ -34,33 +33,31 @@ public class CalendarPage extends AppiumPageFactory {
 	static String CMR_PANEL_MEMBERS = "cmr_panel_members";
 
 	// @WithTimeout(time = 300, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='SessionGroups']/XCUIElementTypeCell[2]/XCUIElementTypeStaticText[2]")
-	public MobileElement weeklySessions;
+
+	// @WithTimeout(time = 300, unit = TimeUnit.SECONDS)
+	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='SessionGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[4]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
+	public static MobileElement weeklySessions;
 
 	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "SessionGroups")
 	public MobileElement sessionGroups;
 
 	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "(//XCUIElementTypeTable[@name='DayGroups']/XCUIElementTypeCell/XCUIElementTypeStaticText[2])[1]")
+	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[1]")
 	public static MobileElement referral;
 
 	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "(//XCUIElementTypeTable[@name='DayGroups']/XCUIElementTypeCell/XCUIElementTypeStaticText[3])[1]")
+	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText[1]")
 	public static MobileElement argDescription;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeTable[@name='DayGroups']//XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
+	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static MobileElement hearingDate;
 
 	public void getWeeklySession(DBType dbType, String peID) {
 		performPageLoad(driver);
 		findElementAndGetText(Locator.XPATH, getText(weeklySessions), dbType, peID);
 
-	}
-
-	public String getRandomSession(List<MobileElement> value) {
-		return value.get(getRandomInt(value.size())).getText();
 	}
 
 	public static void findElementAndGetText(Locator locator, String element, DBType dbType, String peId) {
@@ -70,15 +67,13 @@ public class CalendarPage extends AppiumPageFactory {
 		Boolean elementNotFound = true;
 		while (elementNotFound) {
 			try {
-				MobileElement elem = findElementBy(locator, containsElement(element));
-				
 
-				if (elem.isDisplayed()) {
-					initials += elem.getText();
+				if (weeklySessions.isDisplayed()) {
+					initials += weeklySessions.getText();
 					fromToDate += findElementBy(Locator.XPATH,
-							containsElement(elem.getText()) + "/preceding-sibling::XCUIElementTypeStaticText")
+							containsElement(weeklySessions.getText()) + "/preceding::XCUIElementTypeStaticText[1]")
 									.getText();
-					tap(elem);
+					tap(weeklySessions);
 					performPageLoad(driver);
 					break;
 				}
@@ -114,6 +109,7 @@ public class CalendarPage extends AppiumPageFactory {
 	}
 
 	public static void assertEQ(String courtSessionFiel, List<String> list, List<String> list2) {
+
 		assertEquals("PLEASE MAKE SURE " + courtSessionFiel.toUpperCase() + " IS CORRECT", list, list2);
 	}
 
