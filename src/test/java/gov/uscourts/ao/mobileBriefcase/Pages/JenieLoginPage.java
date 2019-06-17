@@ -2,6 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
@@ -11,6 +12,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utility.tapByCoordinate;
 import static org.openqa.selenium.support.PageFactory.initElements;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -18,6 +20,7 @@ import org.openqa.selenium.support.FindBy;
 import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
@@ -242,6 +245,23 @@ public class JenieLoginPage extends Base {
 		sendKeys(searchTextField, caseNum);
 		tap(searchBTN);
 
+	}
+	
+	public static void logout() {
+		try {
+			dashboard.click();
+			settingsIcon.click();
+			logout.click();
+			if (findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
+				contains(okButton).click();
+			} else {
+				Page.sleep(55000);
+				logout.click();
+				contains(okButton).click();
+			}
+		} catch (ElementNotVisibleException e) {
+			e.getMessage();
+		}
 	}
 
 	public enum User {

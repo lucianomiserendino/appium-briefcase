@@ -38,13 +38,13 @@ public class CommonPages extends AppiumPageFactory {
 	static String okButton = "OK";
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
-	public static MobileElement dashboard;
+	public  MobileElement dashboard;
 
 	@iOSFindBy(xpath = "//*[contains(@name, 'NavigationRenderer')]/XCUIElementTypeButton[2]")
-	public static MobileElement settingsIcon;
+	public  MobileElement settingsIcon;
 
 	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name='Logout of Briefcase']")
-	public static MobileElement logout;
+	public  MobileElement logout;
 
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "PendingTasksList")
@@ -52,7 +52,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "ReferralsList")
-	public static MobileElement ReferralsList;
+	public  MobileElement ReferralsList;
 
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "SessionGroups")
@@ -60,7 +60,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "DocumentList")
-	public static MobileElement DocumentList;
+	public  MobileElement DocumentList;
 
 	@iOSFindBy(accessibility = "GroupIcon")
 	public static List<MobileElement> GroupIcon;
@@ -68,7 +68,7 @@ public class CommonPages extends AppiumPageFactory {
 	@iOSFindBy(xpath = "//*[contains(@name, 'Judge:')]")
 	public static MobileElement judge;
 	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
-	public static List<MobileElement> Categories;
+	public  List<MobileElement> Categories;
 
 	public void getCategory(Category category, String caseNumber) {
 
