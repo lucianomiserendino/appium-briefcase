@@ -42,6 +42,7 @@ import org.openqa.selenium.By;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
+import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
@@ -93,6 +94,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 	/** verify relief is displayed on the popup page */
 	public String selectViewVotes(DBType dbType, String ccr_id, String viewVotes) {
+	
 
 		String relief = getRelief(dbType, ccr_id);
 		tap(Locator.XPATH, "(//XCUIElementTypeStaticText[@name='" + relief

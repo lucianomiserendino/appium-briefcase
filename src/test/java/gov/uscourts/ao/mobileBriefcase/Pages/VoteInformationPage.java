@@ -101,8 +101,8 @@ public class VoteInformationPage extends AppiumPageFactory {
 		String MiddleName = getVoteInofrmation("MiddleName", dbType, peId, caseId, cyvCode);
 		String pt_display = getVoteInofrmation("pt_display", dbType, peId, caseId, cyvCode);
 		String voteInfoDbFiledDate = dbFiledDate(dbType, peId, caseId, cyvCode);
-
-		return LastName + ", " + FirstName + " " + MiddleName + " (" + pt_display + ") " + "Filed: "
+		String gn_display = getVoteInofrmation("gn_display", dbType, peId, caseId, cyvCode);
+		return LastName + ", " + FirstName + " " + MiddleName + " " + gn_display + "(" + pt_display + ") " + "Filed: "
 				+ changeDateFormat(voteInfoDbFiledDate, "yyyy-MM-dd", "MM/dd/yyyy");
 
 	}
@@ -143,6 +143,7 @@ public class VoteInformationPage extends AppiumPageFactory {
 
 	public enum FILERs_INFO {
 		VOTE_INFO_FILLRES_INFORMATION, JUDGE_VOTE_FILLRES_INFORMATION, FILED_DATE, UI_FILER_INFORMATION, DB_FILER_INFORMATION, UI_FILED_DATE, JUDGE_VOTE_RELIEF
+
 	}
 
 }

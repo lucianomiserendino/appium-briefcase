@@ -5,13 +5,10 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.insertData;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.UPDATE_CHAMBERS_CASE_TO_REFERRAL;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.sleep;
-import static org.junit.Assert.assertTrue;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,7 +16,8 @@ import java.util.Date;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
+import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSFindBy;
@@ -50,7 +48,8 @@ public class TerminateReferrals extends AppiumPageFactory {
 	 */
 	public static void terminateReferral(ReferralTermination term, String caseNum, String dbType, String peID,
 			String cmr_cyv_code) {
-		assertTrue("REFERRAL IS TERMINATED", isDisplayed(Locator.XPATH, containsElement(caseNum)));
+		// assertTrue("REFERRAL IS TERMINATED", isDisplayed(Locator.XPATH,
+		// containsElement(caseNum)));
 
 		String ccr_date_end = "";
 		switch (term) {
@@ -66,9 +65,9 @@ public class TerminateReferrals extends AppiumPageFactory {
 		}
 		updateChambersCaseToReferralEndDate(dbType, caseNum, peID, ccr_date_end, cmr_cyv_code);
 
-		tap(dashboard);
-
-		runDataUpdater(getProperty("dataUpdater"));
+		// tap(dashboard);
+		//
+		// runDataUpdater(getProperty("dataUpdater"));
 
 	}
 
@@ -77,17 +76,19 @@ public class TerminateReferrals extends AppiumPageFactory {
 		safariInstance();
 
 		driver.get(ndaLink);
-		performPageLoad(driver);
+		
 		// Actions c=new Actions();
 		changeWindow("WEBVIEW");
-		userName.sendKeys("s haenni");
-		// c.sendKeys(userName, "s haenni", password, "Test2021!");
-		submButton.click();
-
-		sleep(20000);
-		changeWindow("NATIVE");
-
+		//userName.sendKeys("s haenni");
 		performPageLoad(driver);
+		 //Actions.sendKeys(userName, "s haenni", password, "Test2021!");
+		System.out.println(driver.getPageSource());
+//		userName.sendKeys("s haenni");
+//		password.sendKeys("Test2021!");
+//		sleep(20000);
+//		changeWindow("NATIVE");
+//
+//		performPageLoad(driver);
 
 	}
 
@@ -95,24 +96,38 @@ public class TerminateReferrals extends AppiumPageFactory {
 			String ccr_date_end, String cmr_cyv_code) {
 		insertData(valueOf(dbType), getID(getText(UPDATE_CHAMBERS_CASE_TO_REFERRAL, ccr_date_end),
 				getCMR_CCR_ID(caseNum, dbType, peID, cmr_cyv_code)));
+//		System.out
+//				.println(
+//						DBUtilities.executeQuery(valueOf(dbType),
+//								getID("select ccr_date_end from  chambers_case_to_referral  where ccr_id =?",
+//										getCMR_CCR_ID(caseNum, dbType, peID, cmr_cyv_code)))
+//								+ "**********************");
 
 	}
+	public void sendCredentials(String Username, String Password) {
+		sendKeys(userName, Username, password, Password);
+		submButton.click();
 
+	}
 	public enum ReferralTermination {
 		TERMINATE, UN_TERMINATE
 	}
 
 	public static void main(String[] args) {
 		// System.out.println(getCMR_CCR_ID("15-2594", "CMKA", "32", "autotst"));
-		// DBUtilities.executeQuery(DBType.CMKA, "select ccr_date_end from
-		// chambers_case_to_referral where ccr_id ='35683'");
+//		 System.out.println( DBUtilities.executeQuery(DBType.CMKA, "select
+//		 ccr_date_end from chambers_case_to_referral where ccr_id ='35683'"));
 
-		// terminateReferral(ReferralTermination.UN_TERMINATE, "15-2594", "CMKA", "32",
-		// "autotst");
-		// System.out.println(DBUtilities.executeQuery(DBType.CMKA, "select ccr_date_end
-		// from chambers_case_to_referral where ccr_id ='35683'"));
-		// runDataUpdater(getProperty("dataUpdater"));
-		// Instantiate PDFTextStripper class
+		//terminateReferral(ReferralTermination.UN_TERMINATE, "15-2594", "CMKA", "32", "autotst");
+//		System.out.println(DBUtilities.executeQuery(DBType.CMKA,
+//				"select ccr_date_end from chambers_case_to_referral where ccr_id ='35683'"));
+		
+		
+		
+		
+		runDataUpdater(getProperty("dataUpdater"));
+
+	
 
 	}
 }

@@ -22,9 +22,9 @@ public class Hook extends Base {
 	}
 
 	@After
-
 	public void tearDown() {
-		logout();
+		CommonPages p=new CommonPages();
+		p.logout();
 		closeIOSDriver();
 
 	}

@@ -2,19 +2,27 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
+import static org.junit.Assert.assertTrue;
 
 import cucumber.api.java.en.Then;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.JudgeVoteDPFPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.VoteInformationPage;
+import gov.uscourts.ao.mobileBriefcase.common.Actions;
+import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 
 public class JudgeVoteDPF_StepDefinitions {
 
 	static JudgeVoteDPFPage page;
-
+	VoteInformationPage votePage = new VoteInformationPage();
 	static String vote = "";
 
 	@Then("^user selects the \"([^\"]*)\" button next to the relief\\. User verifies  a popup displays\\.  In the red banner, the relief they are voting , \"([^\"]*)\" , \"([^\"]*)\"$")
 	public void user_selects_the_button_next_to_the_relief_User_verifies_a_popup_displays_In_the_red_banner_the_relief_they_are_voting(
 			String viewVotes, String dbType, String ccrId) {
+		votePage = new VoteInformationPage();
+		assertTrue(Actions.isDisplayed(Locator.XPATH, "//XCUIElementTypeStaticText[contains(@name, '"
+				+ votePage.getFilerInfo(DBType.valueOf(dbType), "34", "81452", "rhr") + "')]"));
 		page = new JudgeVoteDPFPage();
 		page.selectViewVotes(valueOf(dbType), ccrId, viewVotes);
 	}
