@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.insertData;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
@@ -21,6 +20,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollDownIfNotDisp
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.splitBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.openqa.selenium.support.PageFactory.initElements;
 
 import java.util.List;
 
@@ -29,14 +29,16 @@ import org.openqa.selenium.ElementNotVisibleException;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
 public class CommonPages extends Base {
-
+	public CommonPages() {
+		initElements(new AppiumFieldDecorator(driver), this);
+	}
 	static String okButton = "OK";
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
