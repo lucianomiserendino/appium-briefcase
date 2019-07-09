@@ -231,9 +231,15 @@ public class Queries {
 			+ "	FROM chm_assign_type_val \n" + "	WHERE cav_chm_role in ('staff', 'all')\n"
 			+ "	and cav_date_end is null\n" + "	and cav_code in (TEXT)\n" + "	ORDER BY cav_display";
 	// " cmr_cyv_code='prhr'/
+
 	public static final String CAV_DESCRIPTION = "SELECT distinct cav_description FROM chm_mobile_referral, chambers_case_to_referral, chm_assign_to_case, chambers_assignment, "
 			+ "person, personrole, chm_assign_type_val WHERE cmr_cs_caseid = CMR_CS_CASEID  and cmr_ccr_id = ccr_id and  chc_cs_caseid = cmr_cs_caseid and "
-			+ "chc_cha_id = cha_id and cha_ju_pe_id = ?  and chc_date_end is null and cha_chm_pe_id = pe_id and pe_pr_prid = pr_prid and"
+			+ "chc_cha_id = cha_id and cha_ju_pe_id = ?  and chc_date_end is  null and cha_chm_pe_id = pe_id and pe_pr_prid = pr_prid and"
+			+ " cmr_cyv_code='CMR_CYV_CODE' and  cha_cav_code = cav_code and pr_first_name='PR_FIRST_NAME' and pr_last_name='PR_LAST_NAME' ";
+
+	public static final String TERTMINATED_DATE = "SELECT  distinct chc_date_end FROM chm_mobile_referral, chambers_case_to_referral, chm_assign_to_case, chambers_assignment, "
+			+ "person, personrole, chm_assign_type_val WHERE cmr_cs_caseid = CMR_CS_CASEID  and cmr_ccr_id = ccr_id and  chc_cs_caseid = cmr_cs_caseid and "
+			+ "chc_cha_id = cha_id and cha_ju_pe_id = ?  and cav_description='CAV_DESCRIPTION' and chc_date_end is null and chc_date_end is not null  and cha_chm_pe_id = pe_id and pe_pr_prid = pr_prid and"
 			+ " cmr_cyv_code='CMR_CYV_CODE' and  cha_cav_code = cav_code and pr_first_name='PR_FIRST_NAME' and pr_last_name='PR_LAST_NAME' ";
 
 	public static final String CHAMBERS_ASSIGNMENT = "select first 1 cha_id,cha_date_created  from chambers_assignment where cha_ju_pe_id = ? and cha_assigner_ju_pe_id =? order by cha_date_created desc";
@@ -392,21 +398,6 @@ public class Queries {
 			+ "  and chc_date_end is null and cha_chm_pe_id"
 			+ " = pe_id and pe_pr_prid = pr_prid and cmr_cyv_code='CMR_CYV_CODE' and pr_last_name='PR_LAST_NAME' and cha_cav_code = cav_code";
 
-	public static final String STAFF_ASSIGNMENTS_LINKED_TO_THE_CASE = "SELECT distinct pr_first_name "
-			+ "FROM chm_mobile_referral, chambers_case_to_referral, chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val\n"
-			+ "WHERE\n" + "cmr_cs_caseid = '82226' and\n" + "cmr_ccr_id = ccr_id and\n"
-			+ "--ccr_cpr_id = chc_cpr_id and\n" + "chc_cs_caseid = cmr_cs_caseid and\n" + "chc_cpr_id = '1' and\n"
-			+ "chc_cha_id = cha_id and\n" + "cha_ju_pe_id =32 and\n" + "chc_date_end is null and\n"
-			+ "cha_chm_pe_id = pe_id and\n" + "pe_pr_prid = pr_prid and\n" + "cha_cav_code = cav_code";
-
-	public static final String ASSIGNMENT_DATE_TYPE = "SELECT cdv_display FROM chambers_assign_date ad, "
-			+ "chm_assign_datetype_val,(Select max(chd_date) as maxnum, chd_cha_id from chambers_assign_date group by chd_cha_id) maxresults "
-			+ "WHERE ad.chd_cha_id =? and chd_cdv_code = cdv_code and ad.chd_cha_id=  maxresults.chd_cha_id and ad.chd_date = maxresults.maxnum";
-
-	public static final String ASSIGNMENT_DATE = "SELECT  ad.chd_date FROM chambers_assign_date ad, "
-			+ "chm_assign_datetype_val,(Select max(chd_date) as maxnum, chd_cha_id from chambers_assign_date group by chd_cha_id) maxresults "
-			+ "WHERE ad.chd_cha_id =? and chd_cdv_code = cdv_code and ad.chd_cha_id=  maxresults.chd_cha_id and ad.chd_date = maxresults.maxnum";
-
 	public static final String CMR_CCR_ID = "SELECT first 1 ID FROM case, chm_mobile_referral WHERE cs_year = 'CS_YEAR' and cs_number = 'CS_NUMBER' and cs_caseid = cmr_cs_caseid "
 			+ "and cmr_cyv_code='CMR_CYV_CODE' and cmr_ju_pe_id ='CMR_JU_PE_ID'";
 
@@ -431,7 +422,7 @@ public class Queries {
 	public static final String DOCUMENT_CATEGORIES = "select distinct (cmd_doc_category),cmd_sort from chm_mobile_docs join chm_mobile_referral on cmr_id = cmd_cmr_id where cmr_cyv_code = 'CMR_CYV_CODE' \n"
 			+ " and cmr_date_end is null and cmr_ju_pe_id ='CMR_JU_PE_ID'  and  cmr_cs_caseid='CMR_CS_CASEID'  order by cmd_sort";
 
-	public static final String ASSIGNMENT_INFO = "select pr_last_name, pr_first_name,  cav_display, cdv_display, chd_date, can_dm_dls_id, can_date_created, rl_list_text, cdn_dm_dls_id, cdn_date_created from chm_assign_to_case join chambers_assignment on cha_id = chc_cha_id join chm_assign_type_val on cha_cav_code = cav_code "
+	public static final String ASSIGNMENT_INFO = "select  pr_last_name, pr_first_name,  cav_display, cdv_display, chd_date, can_dm_dls_id, can_date_created, rl_list_text, cdn_dm_dls_id, cdn_date_created from chm_assign_to_case join chambers_assignment on cha_id = chc_cha_id join chm_assign_type_val on cha_cav_code = cav_code "
 
 			+ "join chambers_assign_date on chd_cha_id = cha_id join chm_assign_datetype_val on cdv_code = chd_cdv_code "
 
@@ -480,5 +471,71 @@ public class Queries {
 			+ "where chc_cpr_id = 1 and chc_cs_caseid in (select cmr_cs_caseid from chm_mobile_referral where cmr_id = CMR_ID) "
 
 			+ "and cha_ju_pe_id in (select cmr_ju_pe_id from chm_mobile_referral where cmr_id = CMR_ID)  and  chc_date_end is null";
+
+	public static final String EXISTING_STAFF_ASSIGNMENTS = "select  distinct cav_display from chm_assign_to_case join chambers_assignment on cha_id = chc_cha_id join chm_assign_type_val on cha_cav_code = cav_code "
+
+			+ "join chambers_assign_date on chd_cha_id = cha_id join chm_assign_datetype_val on cdv_code = chd_cdv_code "
+
+			+ "join personrole on cha_chm_pe_id = pe_id join person on pr_prid = pe_pr_prid "
+
+			+ "left join chm_assign_to_note on cha_id = can_cha_id left join chambers_case_to_referral on ccr_cpr_id = chc_cpr_id left join chm_assign_date_to_note on cha_id = cdn_chd_cha_id "
+
+			+ "join dktpart on dp_dktpartid = ccr_dp_dktpartid join relief_list on rl_id = dp_rlid "
+
+			+ "where chc_cpr_id in (select ccr_cpr_id from chambers_case_to_referral where ccr_id in "
+
+			+ "(select cmr_ccr_id from chm_mobile_referral where cmr_id = CMR_ID)) and (cha_chm_pe_id in (select cmr_ju_pe_id from chm_mobile_referral "
+
+			+ "where cmr_id = CMR_ID) or cha_chm_pe_id = cha_ju_pe_id)  and pr_last_name='PR_LAST_NAME' and  pr_first_name='PR_FIRST_NAME' and   chc_date_end is null "
+
+			+ "union "
+
+			+ "select distinct cav_display from chm_assign_to_case join chambers_assignment on cha_id = chc_cha_id join chm_assign_type_val on cha_cav_code = cav_code "
+
+			+ "join chambers_assign_date on chd_cha_id = cha_id join chm_assign_datetype_val on cdv_code = chd_cdv_code "
+
+			+ "join personrole on cha_chm_pe_id = pe_id join person on pr_prid = pe_pr_prid "
+
+			+ "left join chm_assign_to_note on cha_id = can_cha_id left join chambers_case_to_referral on ccr_cpr_id = chc_cpr_id left join chm_assign_date_to_note on cha_id = cdn_chd_cha_id "
+
+			+ "join dktpart on dp_dktpartid = ccr_dp_dktpartid join relief_list on rl_id = dp_rlid "
+
+			+ "where chc_cpr_id in (select ccr_cpr_id from chambers_case_to_referral where ccr_id in "
+
+			+ "(select cmr_ccr_id from chm_mobile_referral where cmr_id = CMR_ID)) and cha_chm_pe_id not in (select cmr_ju_pe_id from chm_mobile_referral "
+
+			+ "where cmr_id = CMR_ID) and cha_ju_pe_id in (select cmr_ju_pe_id from chm_mobile_referral where cmr_id = CMR_ID) and  pr_last_name='PR_LAST_NAME' and  pr_first_name='PR_FIRST_NAME' and   chc_date_end is null "
+
+			+ "union "
+
+			+ "select distinct cav_display  from chm_assign_to_case join chambers_assignment on cha_id = chc_cha_id join chm_assign_type_val on cha_cav_code = cav_code "
+
+			+ "join chambers_assign_date on chd_cha_id = cha_id join chm_assign_datetype_val on cdv_code = chd_cdv_code "
+
+			+ "join personrole on cha_chm_pe_id = pe_id join person on pr_prid = pe_pr_prid "
+
+			+ "left join chm_assign_to_note on cha_id = can_cha_id left join chambers_case_to_referral on ccr_cpr_id = chc_cpr_id left join chm_assign_date_to_note on cha_id = cdn_chd_cha_id "
+
+			+ "join dktpart on dp_dktpartid = ccr_dp_dktpartid join relief_list on rl_id = dp_rlid "
+
+			+ "where chc_cpr_id = 1 and chc_cs_caseid in (select cmr_cs_caseid from chm_mobile_referral where cmr_id = CMR_ID) "
+
+			+ "and cha_ju_pe_id in (select cmr_ju_pe_id from chm_mobile_referral where cmr_id = CMR_ID)  and pr_last_name='PR_LAST_NAME' and  pr_first_name='PR_FIRST_NAME' and    chc_date_end is null";
+
+	public static final String ASSIGNMENT_DATE_TYPE = "select   cav_display,cdv_display,chd_date from chm_assign_to_case join chambers_assignment on cha_id = chc_cha_id join chm_assign_type_val on cha_cav_code = cav_code "
+
+			+ "	 join chambers_assign_date on chd_cha_id = cha_id join chm_assign_datetype_val on cdv_code = chd_cdv_code "
+
+			+ "	 join personrole on cha_chm_pe_id = pe_id join person on pr_prid = pe_pr_prid "
+
+			+ "	 left join chm_assign_to_note on cha_id = can_cha_id left join chambers_case_to_referral on ccr_cpr_id = chc_cpr_id left join chm_assign_date_to_note on cha_id = cdn_chd_cha_id "
+
+			+ "	 join dktpart on dp_dktpartid = ccr_dp_dktpartid join relief_list on rl_id = dp_rlid "
+
+			+ "	 where chc_cpr_id in (select ccr_cpr_id from chambers_case_to_referral where ccr_id in "
+
+			+ "	 (select cmr_ccr_id from chm_mobile_referral where cmr_id = 'CMR_ID')) and (cha_chm_pe_id in (select cmr_ju_pe_id from chm_mobile_referral "
+
+			+ "  where cmr_id = 'CMR_ID') or cha_chm_pe_id = cha_ju_pe_id) and pr_last_name='PR_LAST_NAME' and pr_first_name='PR_FIRST_NAME' and chc_date_end is null";
 
 }

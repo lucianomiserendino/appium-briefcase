@@ -8,7 +8,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNEES_CHA_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE_IS_SKIP;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CAV_CODE;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CAV_DESCRIPTION;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHAMBERS_ASSIGNMENT;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHAMBERS_ASSIGN_DATE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHA_CAV_CODE;
@@ -45,11 +44,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.common.Utility;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
@@ -94,12 +93,12 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		String staffFName = splitBy(staffMember, 0);
 		String staffLName = splitBy(staffMember, 1);
 
-		verifyNewStaffAssignment(chmAssign.CREATE, dbType, dpfName, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code,
+		verifyNewStaffAssignment(chmAssign.CREATE, dbType, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
 				staffFName, staffLName, "assignedDateX", "assignedDateY", "assignedDueDateX", "assignedDueDateY");
 
 		cha_id = getCreatedAssignment(dbType, ASSIGNEES_CHA_ID, cha_ju_pe_id, cmr_cs_caseid);
 
-		verifyNewStaffAssignment(chmAssign.MODIFY, dbType, dpfName, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code,
+		verifyNewStaffAssignment(chmAssign.MODIFY, dbType, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
 				staffFName, staffLName, "modifiedAssignedDateX", "modifiedAssignedDateY", "modifiedAssignedDueDateX",
 				"modifiedAssignedDueDateY");
 		terminateStaffAssignment("modifiedAssignedDateX", "modifiedAssignedDateY", dbType);
@@ -155,20 +154,18 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 		List<String> dbStafMembers = executeQuery(dbtype, getText(getID(staffMember, peID), screenTypeParam));
 		sort(dbStafMembers);
-		try {
-			List<String> uiStaffMembers = new ArrayList<>();
 
-			List<MobileElement> allStaffMembers = optionList;
-			for (MobileElement staffMembers : allStaffMembers) {
-				uiStaffMembers.add(staffMembers.getText().split(" ")[index]);
-				sort(uiStaffMembers);
-			}
-			assertEquals("********STAFF MEMBERS VALIDATION ERROR!!!********", dbStafMembers, uiStaffMembers);
-			clickOnRandomValue(allStaffMembers);
+		List<String> uiStaffMembers = new ArrayList<>();
 
-		} catch (AssertionError e) {
-			e.getMessage();
+		List<MobileElement> allStaffMembers = optionList;
+		for (MobileElement staffMembers : allStaffMembers) {
+			uiStaffMembers.add(staffMembers.getText().split(" ")[index]);
+			sort(uiStaffMembers);
 		}
+
+		assertEquals("********STAFF MEMBERS VALIDATION ERROR!!!********", dbStafMembers, uiStaffMembers);
+		clickOnRandomValue(allStaffMembers);
+
 	}
 
 	/**
@@ -176,7 +173,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	 * label, a pop-up displays with valid assignment types
 	 */
 	public static void getAssignmentType(DBType dbType, String dpfName, String elId, String cha_ju_pe_id,
-			String cmr_cs_caseid, String cmr_cyv_code, String pr_first_name, String pr_last_name) {
+			String caseNumber, String cmr_cyv_code, String pr_first_name, String pr_last_name) {
 
 		List<String> uiAssignmenType = new ArrayList<>();
 		try {
@@ -190,7 +187,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			String assignmentType = getParameter(getAllColumns(dbType, getID(MBR_NOTE, elId)), dpfName, 1);
 			if (assignmentType.equals("SKIP")) {
 				/** If the assignment type parameter is set to SKIP, use this query */
-				getValidAssignmentTypes(dbType, ASSIGNMENT_TYPE_IS_SKIP, uiAssignmenType, cha_ju_pe_id, cmr_cs_caseid,
+				getValidAssignmentTypes(dbType, ASSIGNMENT_TYPE_IS_SKIP, uiAssignmenType, cha_ju_pe_id, caseNumber,
 						cmr_cyv_code, pr_first_name, pr_last_name);
 			} else {
 				/**
@@ -200,7 +197,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 				getValidAssignmentTypes(dbType,
 						getText(ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST,
 								"'" + assignmentType.replaceAll(":", "','") + "'"),
-						uiAssignmenType, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code, pr_first_name, pr_last_name);
+						uiAssignmenType, cha_ju_pe_id, caseNumber, cmr_cyv_code, pr_first_name, pr_last_name);
 			}
 			clickOnNumberInRange(allAssignmenTypes);
 
@@ -211,35 +208,37 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	/** verify assignment types based on assignment types parameter */
 	public static void getValidAssignmentTypes(DBType dbType, String query, List<String> uiAssignmenType,
-			String cha_ju_pe_id, String cmr_cs_caseid, String cmr_cyv_code, String pr_first_name, String pr_last_name) {
+			String cha_ju_pe_id, String caseNumber, String cmr_cyv_code, String pr_first_name, String pr_last_name) {
 
 		List<String> dbAssignmentType = executeQuery(dbType, query);
 		sort(dbAssignmentType);
+
+		if (dbAssignmentType.contains("(Please Select)"))
+			dbAssignmentType.remove("(Please Select)");
+
+		String cmr_id = AssignmentsPage.getCMR_ID(dbType, caseNumber, cha_ju_pe_id, cmr_cyv_code);
+
 		try {
 			/**
 			 * this line checks if a staff member exists with that assignment type, that
 			 * assignment type won't be displayed after you tap the Please Select button
 			 * next to the Assignment
 			 */
-			List<String> cavDescription = executeQuery(dbType,
-					replace(replace(getID(CAV_DESCRIPTION, cha_ju_pe_id), "CMR_CS_CASEID", cmr_cs_caseid),
-							"CMR_CYV_CODE", cmr_cyv_code, "PR_FIRST_NAME", pr_first_name, "PR_LAST_NAME",
-							pr_last_name));
+			List<String> cavDescription = executeQuery(DBType.CMKA, replace(Queries.EXISTING_STAFF_ASSIGNMENTS,
+					"CMR_ID", cmr_id, "PR_FIRST_NAME", pr_first_name, "PR_LAST_NAME", pr_last_name));
 			for (int i = 0; i < cavDescription.size(); i++) {
 				if (cavDescription.size() > 0 && dbAssignmentType.contains(cavDescription.get(i))) {
 					dbAssignmentType.remove(cavDescription.get(i));
+
 				}
 			}
+			assertEquals("********ASSIGNMENT TYPE VALIDATION ERROR!!!********", dbAssignmentType, uiAssignmenType);
+
 		} catch (NullPointerException e) {
-			e.getMessage();
-		} finally {
-			try {
-				assertEquals("*********ASSIGNMENT TYPE VALIDATION ERROR!!!*********", dbAssignmentType,
-						uiAssignmenType);
-			} catch (AssertionError e) {
-				e.getMessage();
-			}
+
+			assertEquals("********ASSIGNMENT TYPE VALIDATION ERROR!!!********", dbAssignmentType, uiAssignmenType);
 		}
+
 	}
 
 	public void submiTransaction() {
@@ -251,11 +250,11 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	}
 
 	public void verifyNewStaffAssignment(chmAssign assign, DBType dbType, String dpfName, String elId,
-			String cha_ju_pe_id, String cmr_cs_caseid, String cmr_cyv_code, String staffFName, String staffLName,
+			String cha_ju_pe_id, String caseNumber, String cmr_cyv_code, String staffFName, String staffLName,
 			String x1, String y1, String x2, String y2) {
 		/** STEP 2 --Select an assignment */
 		getChmAssign(chmAssign.ASSIGNMENT, "tap");
-		getAssignmentType(dbType, dpfName, elId, cha_ju_pe_id, cmr_cs_caseid, cmr_cyv_code, staffFName, staffLName);
+		getAssignmentType(dbType, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code, staffFName, staffLName);
 
 		/** STEP 3 --Select an Assigned Date */
 		selectADate(chmAssign.ASSIGNED_DATE, x1, y1);
@@ -277,7 +276,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			getANewStaffAssignment(assignment, assignedDate, assignmentDue);
 
 			submiTransaction();
-		//	CommonPages.getGroupIcons();
+
 			getPanel(Panel.Assignments);
 
 			getANewStaffAssignment(assignment, assignedDate, assignmentDue);
@@ -337,18 +336,22 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			MobileElement modifiedAssignedDate = getExistingAssignment(staffMember + ", " + assignment,
 					"Assigned " + assignedDate);
 			assertTrue(modifiedAssignedDate.isDisplayed());
-			
-//			assertTrue(Utility.isDisplayed("//*[contains(@name, '" + staffMember + ", " + assignment
-//				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + "Assigned " + assignedDate + "')]"));
-//			
+
+			// assertTrue(Utility.isDisplayed("//*[contains(@name, '" + staffMember + ", " +
+			// assignment
+			// + "')]/following::XCUIElementTypeStaticText[contains(@name, '" + "Assigned "
+			// + assignedDate + "')]"));
+			//
 		} catch (Exception e) {
-			
-//			assertTrue(Utility.isDisplayed("//*[contains(@name, '" + staffMember + ", " + assignment
-//					+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + "Assignment Due " + assignedDate + "')]"));
-				
+
+			// assertTrue(Utility.isDisplayed("//*[contains(@name, '" + staffMember + ", " +
+			// assignment
+			// + "')]/following::XCUIElementTypeStaticText[contains(@name, '" + "Assignment
+			// Due " + assignedDate + "')]"));
+
 			MobileElement modifiedAssignmentDueDate = getExistingAssignment(staffMember + ", " + assignment,
 					"Assignment Due " + assignmentDue);
-			 assertTrue(modifiedAssignmentDueDate.isDisplayed());
+			assertTrue(modifiedAssignmentDueDate.isDisplayed());
 		}
 		return assignment;
 	}
@@ -455,7 +458,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 		case ASSIGNMENT_COMPLETED:
 			assignment += "Assignment Completed";
-			index += 11;
+			index += 13;
 			break;
 
 		case ASSIGNED_DATE:
@@ -482,4 +485,5 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	public enum chmAssign {
 		STAFF_MEMBER, ASSIGNMENT, ASSIGNED_DATE, ASSIGNMENT_DUE, ASSIGNMENT_COMPLETED, CREATE, MODIFY, TERMINATE
 	}
+
 }

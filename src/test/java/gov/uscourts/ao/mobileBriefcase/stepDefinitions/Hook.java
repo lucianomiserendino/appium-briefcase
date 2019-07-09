@@ -8,14 +8,14 @@ import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
-import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.common.Base;
 
-public class Hook extends AppiumPageFactory {
+public class Hook extends Base {
 
 	@Before
 	public void setUp() {
 		safariInstance();
-		driver.close();
+		//driver.close();
 
 	}
 

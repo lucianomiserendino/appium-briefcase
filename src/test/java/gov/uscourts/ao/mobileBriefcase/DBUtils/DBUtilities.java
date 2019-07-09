@@ -127,9 +127,9 @@ public class DBUtilities {
 
 			while (resultSet.next()) {
 				for (int i = 1; i < column; i++) {
-					a = resultSet.getString(i);
+					a = resultSet.getString(i).trim();
 				}
-				
+
 				result.add(a);
 			}
 			closeConnections();

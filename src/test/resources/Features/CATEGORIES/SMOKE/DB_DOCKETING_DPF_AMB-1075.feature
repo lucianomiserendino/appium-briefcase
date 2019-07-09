@@ -1,4 +1,4 @@
-@AMB @Smoke @AMB-1075 
+@AMB @AMB-1075 
 Feature: note DPF back-end updates 
 
 Scenario: 

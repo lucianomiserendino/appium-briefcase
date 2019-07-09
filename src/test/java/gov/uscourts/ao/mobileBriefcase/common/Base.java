@@ -84,7 +84,7 @@ public abstract class Base implements iOSCapabilities {
 			SetCapabilitiy(ENSURING_CLEAN_SESSION);
 			SetCapabilitiy(DEVICE_TYPE);
 			getDriver();
-
+			driver.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

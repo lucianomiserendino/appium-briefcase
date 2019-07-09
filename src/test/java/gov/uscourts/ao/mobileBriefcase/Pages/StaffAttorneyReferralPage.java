@@ -38,15 +38,6 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
 	public static MobileElement selectUser;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name='▷']")
-	public static List<MobileElement> right;
-
-	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name='▽']")
-	public static List<MobileElement> down;
-
-	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='▽'])[1]")
-	public static MobileElement viewed;
-
 	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public static List<MobileElement> refCategories;
 

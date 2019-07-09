@@ -36,7 +36,7 @@ public class RedBullets_StepDefintions extends Base {
 		commonPages = new CommonPages();
 		commonPages.logout();
 		safariInstance();
-		driver.close();
+		//driver.close();
 	}
 
 	@Then("^User goes back to the \"([^\"]*)\" that contains the referral that was just viewed and verify the bullet does not display$")

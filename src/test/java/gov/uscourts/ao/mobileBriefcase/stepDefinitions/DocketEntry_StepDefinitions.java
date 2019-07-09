@@ -20,7 +20,7 @@ public class DocketEntry_StepDefinitions extends Base {
 		pages = new CommonPages();
 		pages.logout();
 		safariInstance();
-		driver.close();
+		//driver.close();
 	}
 
 	@Then("^user verifies a JA or law clerk can see the same entries as their judge  \\( \"([^\"]*)\" \\)$")

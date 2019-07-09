@@ -22,11 +22,8 @@ public class ActionsListViewPage extends AppiumPageFactory {
 		performPageLoad(driver);
 		getGroupIcons();
 		scrollDownIfNotDisplayed(containsElement(panel));
-		try {
-			actionIsDisplayed(dbType, cmr_id);
-		} catch (AssertionError e) {
-			e.getMessage();
-		}
+		actionIsDisplayed(dbType, cmr_id);
+
 	}
 
 	public static void actionIsDisplayed(String dbtype, String cmr_id) {
@@ -49,5 +46,4 @@ public class ActionsListViewPage extends AppiumPageFactory {
 				isDisplayed("//XCUIElementTypeOther[@name='DocumentList']//XCUIElementTypeStaticText[contains(@name, '"
 						+ actionName + "')]"));
 	}
-
 }

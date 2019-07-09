@@ -19,5 +19,5 @@ Scenario Outline:
 	
 	
 	Examples: 
-		|dbType |actionElID   |cha_ju_pe_id|cmr_cs_caseid|dbType|cmr_cyv_code|caseNum|refCat                 |caseNum|dpfName  |
-		|CMKA   |3155         |32          |82226        |CMKA  |prhr        |15-3314|PETITIONS_FOR_REHEARING|15-3314|chmAssign|
+		|dbType |actionElID   |cha_ju_pe_id|cmr_cs_caseid|dbType|cmr_cyv_code|caseNum|refCat                 |dpfName  |
+		|CMKA   |3155         |32          |82226        |CMKA  |prhr        |15-3314|PETITIONS_FOR_REHEARING|chmAssign|

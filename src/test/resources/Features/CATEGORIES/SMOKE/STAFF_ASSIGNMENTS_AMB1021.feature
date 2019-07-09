@@ -1,4 +1,3 @@
-@Smoke 
 Feature: Staff Assignments 
 
 

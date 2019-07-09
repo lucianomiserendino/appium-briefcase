@@ -67,4 +67,13 @@ public class Assignment_StepDefinitions {
 
 	}
 
+	@Then("^User verifies each assignment display the most recent date type by using following info: dbType \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
+	public void user_verifies_each_assignment_display_the_most_recent_date_type_by_using_following_info_dbType(
+			String dbType, String caseNumber, String peId, String cmr_cyv_code, String pr_last_name,
+			String pr_first_name) {
+		assig = new AssignmentsPage();
+		assig.getRecentAssignmentDate(DBType.valueOf(dbType), caseNumber, peId, cmr_cyv_code, pr_last_name,
+				pr_first_name);
+	}
+
 }

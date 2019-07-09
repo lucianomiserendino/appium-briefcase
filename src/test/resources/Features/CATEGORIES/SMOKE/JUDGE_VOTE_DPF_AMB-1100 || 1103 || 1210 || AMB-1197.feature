@@ -16,6 +16,7 @@ Scenario:
 	In the judgeVote DPF, when the user selects the View Votes button, a popup should display with each judge's vote and the day they voted.
 	Then User selects "TEST_AUTOMATION" and "15-2594" 
 	Then User  selects action using dbType "CMKA" and  "3142"  and verifies the name of the action displays in the dark blue banner 
+	
 	Then user selects the "View Votes" button next to the relief. User verifies  a popup displays.  In the red banner, the relief they are voting , "CMKA" , "35683" 
 	And User verifies each judges' initials to whom the referral was sent , as well as their vote and date they voted. Use "CMKA" , "35683" 
 	#|Testing       |judgewilliams   |Testpass1! |Appellate DC Installation Testing - CM3A  |Rehearing Petition      |11-1012      |CM3A   |2973    | 4255|
@@ -33,7 +34,7 @@ Scenario:
 	And User verifies judge's vote is updated in Vote Information Panel. Use  db "CMKA" ,ccrID "35683" 
 	
 	
-@AMB-1197 
+@AMB-1097 
 Scenario Outline: 
 #has to be changed to PETITIONS_FOR_REHEARING, 3124
 	Then User selects "<refCategory>" and "<caseNum>" 

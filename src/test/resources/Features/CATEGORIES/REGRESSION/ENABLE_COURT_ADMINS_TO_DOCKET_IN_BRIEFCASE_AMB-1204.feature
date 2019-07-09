@@ -29,4 +29,4 @@ Scenario:
 	Then User selects a userCategory "Appellate_Judges" and  name "Colloton" 
 	Then User selects "TEST_AUTOMATION" and "15-2594" 
 	Then User verifies the court admin doesn't have access to select Actions in Briefcase 
-	
+	Given User sets the "briefcaseCtAdminDkt" site var to "y" on "CMKA" 

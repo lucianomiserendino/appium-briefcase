@@ -17,7 +17,6 @@ Scenario Outline:
 	Then User verifies "<panel>" panel is displayed and expands the  panel 
 	Then user observes all reliefs display under Vote Information, use DBType "<server>" , "<coulumName>" , "<caseNum>" , "<pe_id>" , "<cmr_cyv_code>" 
 	
-	
 	Examples: 
 	
 		|environment |server      | si_code            |si_val  |userName     |password | category         |caseNum   |panel            |coulumName|pe_id|cmr_cyv_code|
