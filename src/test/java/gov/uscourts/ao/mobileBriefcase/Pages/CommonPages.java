@@ -30,11 +30,12 @@ import org.openqa.selenium.ElementNotVisibleException;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSFindBy;
 
-public class CommonPages extends AppiumPageFactory {
+public class CommonPages extends Base {
 
 	static String okButton = "OK";
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
