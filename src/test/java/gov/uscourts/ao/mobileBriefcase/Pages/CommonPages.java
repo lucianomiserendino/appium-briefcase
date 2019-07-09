@@ -42,13 +42,13 @@ public class CommonPages extends Base {
 	static String okButton = "OK";
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
-	public  MobileElement dashboard;
+	public static  MobileElement dashboard;
 
 	@iOSFindBy(xpath = "//*[contains(@name, 'NavigationRenderer')]/XCUIElementTypeButton[2]")
-	public  MobileElement settingsIcon;
+	public static  MobileElement settingsIcon;
 
 	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name='Logout of Briefcase']")
-	public  MobileElement logout;
+	public static  MobileElement logout;
 
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSFindBy(accessibility = "PendingTasksList")
@@ -250,22 +250,6 @@ public class CommonPages extends Base {
 		}
 	}
 
-	public void logout() {
-		try {
-			dashboard.click();
-			settingsIcon.click();
-			logout.click();
-			if (findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
-				contains(okButton).click();
-			} else {
-				Page.sleep(55000);
-				logout.click();
-				contains(okButton).click();
-			}
-		} catch (ElementNotVisibleException e) {
-			e.getMessage();
-		}
-	}
 
 	public void deleteDocs() {
 		tap(dashboard);
