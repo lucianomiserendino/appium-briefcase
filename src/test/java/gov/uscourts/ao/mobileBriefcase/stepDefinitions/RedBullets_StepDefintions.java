@@ -33,8 +33,8 @@ public class RedBullets_StepDefintions extends Base {
 		page = new RedBulletsPage();
 		assertEquals("WHEN CLOSING AND REOPENING THE APP ITEMS APPEAR AS NEW", afterViewingReferral,
 				page.getTotalNumOfNewReferrals());
-		commonPages = new CommonPages();
-		commonPages.logout();
+		//commonPages = new CommonPages();
+		JenieLoginPage.logout();
 		safariInstance();
 		//driver.close();
 	}

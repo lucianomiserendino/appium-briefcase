@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocketEntryPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
 
 public class DocketEntry_StepDefinitions extends Base {
@@ -17,8 +18,7 @@ public class DocketEntry_StepDefinitions extends Base {
 	public void user_gets_the_entries_of_the_judge_and_logs_out(String caseNum) {
 		page = new DocketEntryPage();
 		judgesEntries += page.getDocketEntries(caseNum);
-		pages = new CommonPages();
-		pages.logout();
+		JenieLoginPage.logout();
 		safariInstance();
 		//driver.close();
 	}

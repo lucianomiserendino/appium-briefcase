@@ -10,6 +10,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
+import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
+
 import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.*;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 
@@ -50,8 +52,9 @@ public class Common_StepDefinitions {
 
 	@Then("^User logs out of Briefcase$")
 	public void user_logs_out_of_Briefcase() {
-		page=new CommonPages();
-		page.logout();
+//		page=new CommonPages();
+//		page.logout();
+		JenieLoginPage.logout();
 		safariInstance();
 		Page.sleep(10000);
 	}
