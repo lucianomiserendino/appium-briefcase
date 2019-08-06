@@ -8,7 +8,7 @@ Scenario Outline:
 	Staff members can be assigned to referrals and/or just cases. 
 	 This task is to verify that staff assignments are displaying on the referral list page
 	Given  User Navigates to  "INTEGRATION" environment 
-	When  User enters Credentials to Login "s haenni" and "Test2021!" 
+	When  User enters Credentials to Login "s haenni" and "Test2022!" 
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And  user selects a "CMKA" 

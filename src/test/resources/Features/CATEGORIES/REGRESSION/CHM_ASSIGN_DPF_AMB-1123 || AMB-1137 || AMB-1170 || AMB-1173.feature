@@ -7,7 +7,7 @@ Scenario Outline:
 	to verify back-end updates when a new staff assignment is created,
 	edit existing staff assignments and verify Back-end after modifying assignment 
 	Given  User Navigates to  "INTEGRATION" environment 
-	When  User enters Credentials to Login "s haenni" and "Test2021!" 
+	When  User enters Credentials to Login "s haenni" and "Test2022!" 
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And  user selects a "CMKA" 

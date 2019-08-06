@@ -37,7 +37,6 @@ public class StaffAttorney_StepDefinitions {
 	}
 
 
-
 	@Then("^After selecting \"([^\"]*)\" , user verifies the document categories and the number of docs displayed for each category matches the number of docs in the DB \"([^\"]*)\"\\. smr_assign_pe_id: \"([^\"]*)\"$")
 	public void after_selecting_user_verifies_the_document_categories_and_the_number_of_docs_displayed_for_each_category_matches_the_number_of_docs_in_the_DB_smr_assign_pe_id(
 			String category, String dbType, String smr_assign_pe_id)  {

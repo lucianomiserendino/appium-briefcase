@@ -81,7 +81,7 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 		try {
 			tap(submit);
 			tap(YESbtn);
-			tap(OKbtn);
+		//	tap(OKbtn);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

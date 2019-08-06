@@ -181,7 +181,7 @@ public class DashboardPage extends AppiumPageFactory {
 
 	public boolean getDocuments(String peID, DBType dbType) {
 
-		page.getGroupIcons();
+		//page.getGroupIcons();
 		MobileElement uiDocs = null;
 
 		boolean isDisplayed = false;
@@ -265,5 +265,20 @@ public class DashboardPage extends AppiumPageFactory {
 	
 
 
+	}
+	
+	
+	public static void main(String[] args) {
+		List<String> dbDocCategory = executeQuery(DBType.CMKA, getID(lbrrpt_DOCUMENT_CATEGORY, "32"));
+		sort(dbDocCategory);;
+		System.out.println(dbDocCategory.size());
+		
+		for (int i = 0; i < dbDocCategory.size(); ++i) {
+
+		
+			List<String> docDesc = executeQuery(DBType.CMKA,
+					getID(replace(REFERRAL_DOCUMENTS, "CMD_DOC_CATEGORY", dbDocCategory.get(i)), "32"));
+			System.out.println(docDesc);
+		}
 	}
 }

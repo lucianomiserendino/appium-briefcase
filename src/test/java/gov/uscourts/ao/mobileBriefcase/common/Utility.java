@@ -53,6 +53,7 @@ public class Utility extends Base {
 			try {
 				MobileElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, element), driver);
 				if (elem.isDisplayed()) {
+					System.out.println(elem.getText()+"*************************");
 					isDisplayed = true;
 					break;
 				} else {

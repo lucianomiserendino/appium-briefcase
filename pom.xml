@@ -7,10 +7,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<dependencies>
-	<dependency>
-    <groupId>io.appium</groupId>
-    <artifactId>java-client</artifactId>
-    <version>7.0.0</version>
+<dependency>
+  <groupId>io.appium</groupId>
+  <artifactId>java-client</artifactId>
+  <version>7.0.0</version>
 </dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium.grid</groupId>

@@ -269,5 +269,14 @@ public class CommonPages extends Base {
 	public enum Category {
 		PENDING_TASKS, PETITIONS_FOR_REHEARING, CASES_ON_CALENDAR, MOTIONS_PETITIONS, SCREENING_PANELS, REFERENCE_DOCUMENTS, TEST_AUTOMATION
 	}
+	
+	
+	public static void main(String[] args) {
+			//insertData(dbType, replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE", si_value, "SI_CODE", SI_CODE));
+			String value = getAllColumns(DBType.CMKA, replace(SITE_TABLE_VARIABLE_VALUE, "SI_CODE", "briefcaseCtAdminDkt"));
+			
+			System.out.println(value+"**********");//assertEquals(si_value, value);
+		
+	}
 
 }

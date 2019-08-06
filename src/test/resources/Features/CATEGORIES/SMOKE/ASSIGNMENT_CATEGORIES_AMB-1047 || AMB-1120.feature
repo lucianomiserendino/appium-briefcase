@@ -9,7 +9,7 @@ Scenario:
   Staff attorney referrals are stored in the stfaty_mobile_referral table. There is a FK to the sftaty_assign_val table (smr_sfa_code). 
    This is how the assignment category is obtained. 
 	Given  User Navigates to  "INTEGRATION" environment 
-	When  User enters Credentials to Login "s haenni" and "Test2021!" 
+	When  User enters Credentials to Login "s haenni" and "Test2022!" 
 	And User clicks on Send Key to Device 
 	Then User navigates to MobileBrifcase App 
 	And  user selects a "CMKA" 
