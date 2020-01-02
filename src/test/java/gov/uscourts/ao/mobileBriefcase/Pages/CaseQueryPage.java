@@ -11,20 +11,20 @@ import static org.junit.Assert.assertTrue;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSFindBy;
+import io.appium.java_client.pagefactory.iOSBy;
 
 public class CaseQueryPage extends AppiumPageFactory {
 
-	@iOSFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[1]")
+	@iOSBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[1]")
 	public static MobileElement searchIcon;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeTextField")
+	@iOSBy(xpath = "//XCUIElementTypeTextField")
 	public static MobileElement searchTextField;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
+	@iOSBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
 	public static MobileElement searchBTN;
 
-	@iOSFindBy(accessibility = "ResultsList")
+	@iOSBy(accessibility = "ResultsList")
 	public static MobileElement category;
 
 	public void searchForACase() {

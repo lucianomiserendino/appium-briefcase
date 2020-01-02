@@ -46,10 +46,13 @@ public class Assignment_StepDefinitions {
 
 		asignements = execute(DBType.valueOf(dbType), replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), 2);
 
-		rnAssignment = getRandomNumberInRange(0, asignements.size() - 1);
+		rnAssignment = getRandomNumberInRange(1, asignements.size() - 1);
 
 		db = DBType.valueOf(dbType);
 		assig = new AssignmentsPage();
+		
+	
+		
 		info = Arrays.asList(
 				assig.getAssignmentInfo(db, cmr_id, asignements, rnAssignment,
 						AssignmentInfo.NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE),

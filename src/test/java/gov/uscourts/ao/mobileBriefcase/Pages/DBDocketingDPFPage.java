@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
@@ -19,7 +18,8 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.LOGED_IN_JUDGES_PR
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PANEL_JUDGES_PR_PRID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PR_LAST_NAME;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.*;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCMRID;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectAction;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
@@ -41,30 +41,30 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.models.ElListText;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSFindBy;
+import io.appium.java_client.pagefactory.iOSBy;
 
 public class DBDocketingDPFPage extends AppiumPageFactory {
 
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='DocketingDPFList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name='DocketingDPFList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
 	public static MobileElement descriptionField;
 
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='DocketingDPFList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name='DocketingDPFList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
 	public static MobileElement commentField;
 
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
+	@iOSBy(xpath = "//*[contains(@name, 'User')]")
 	public static MobileElement selectUser;
 
-	@iOSFindBy(id = "Submit")
+	@iOSBy(id = "Submit")
 	public static MobileElement submit;
 
-	@iOSFindBy(id = "Yes")
+	@iOSBy(id = "Yes")
 	public static MobileElement YESbtn;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSFindBy(id = "OK")
+	@iOSBy(id = "OK")
 	public static MobileElement OKbtn;
 
 	ElListText list;
@@ -81,7 +81,7 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 		try {
 			tap(submit);
 			tap(YESbtn);
-		//	tap(OKbtn);
+			// tap(OKbtn);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -156,8 +156,9 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 			List<String> defaultPersonIDs = getDefaultIds(dbType, list.getElListText(), 3);
 
 			List<String> defaultGroupIDs = getDefaultIds(dbType, list.getElListText(), 2);
+
 			assertEquals(defaultPersonIDs, docUserTable);
-			assertEquals(defaultGroupIDs, defaultGroupIDs);
+			assertEquals(defaultGroupIDs, docGroupTable);
 
 		}
 

@@ -7,11 +7,9 @@ Feature: Staff Assignments
 Scenario Outline: 
 	Staff members can be assigned to referrals and/or just cases. 
 	 This task is to verify that staff assignments are displaying on the referral list page
-	Given  User Navigates to  "INTEGRATION" environment 
-	When  User enters Credentials to Login "s haenni" and "Test2022!" 
-	And User clicks on Send Key to Device 
-	Then User navigates to MobileBrifcase App 
-	And  user selects a "CMKA" 
+	Given user is logged into Briefcase 
+		|environment|userName|password |server|
+		|INTEGRATION|s haenni|Test2022!|CMKA  |
 	Then User selects a userCategory "Appellate_Judges" and  name "Colloton" 
 	Then  User selects "<refCat>" and "<caseNum>" 
 	Then User observes a collapsible panel entitled "Assignments" displays 
@@ -22,7 +20,7 @@ Scenario Outline:
 		
 		
 		
-		@AMB-1030,AMB-1033 
+		@AMB-1030 @AMB-1033 
 		Scenario Outline: 
 			If a judge or staff assignment is selected, a new screen displays with the following information:
 			1.  Name of the assignee
@@ -32,11 +30,9 @@ Scenario Outline:
 5.  Assignment types and dates
 6.  Assignment notes
 			Given User gets judge's/staff assignment's info from DataBase  by using "<dbType>" , "<caseNum>" , "<cha_ju_pe_id>" , "<cmr_cyv_code>" 
-			Given  User Navigates to  "INTEGRATION" environment 
-			When  User enters Credentials to Login "s haenni" and "Test2021!" 
-			And User clicks on Send Key to Device 
-			Then User navigates to MobileBrifcase App 
-			And  user selects a "CMKA" 
+			Given user is logged into Briefcase 
+				|environment|userName|password |server|
+				|INTEGRATION|s haenni|Test2022!|CMKA  |
 			Then User selects a userCategory "Appellate_Judges" and  name "Colloton" 
 			Then  User selects "<refCat>" and "<caseNum>" 
 			Then User observes a collapsible panel entitled "Assignments" displays 

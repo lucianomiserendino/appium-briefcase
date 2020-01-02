@@ -33,10 +33,8 @@ public class RedBullets_StepDefintions extends Base {
 		page = new RedBulletsPage();
 		assertEquals("WHEN CLOSING AND REOPENING THE APP ITEMS APPEAR AS NEW", afterViewingReferral,
 				page.getTotalNumOfNewReferrals());
-		//commonPages = new CommonPages();
 		JenieLoginPage.logout();
 		safariInstance();
-		//driver.close();
 	}
 
 	@Then("^User goes back to the \"([^\"]*)\" that contains the referral that was just viewed and verify the bullet does not display$")

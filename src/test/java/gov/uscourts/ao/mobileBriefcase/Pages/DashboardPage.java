@@ -33,20 +33,20 @@ import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSFindBy;
+import io.appium.java_client.pagefactory.iOSBy;
 
 public class DashboardPage extends AppiumPageFactory {
 	CommonPages page = new CommonPages();
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
-	@iOSFindBy(accessibility = "Pending Tasks")
+	@iOSBy(accessibility = "Pending Tasks")
 	public static MobileElement pendingTasks;
 
 	// @WithTimeout(time = 30, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//*[contains(@name, 'Total')]")
+	@iOSBy(xpath = "//*[contains(@name, 'Total')]")
 	public static MobileElement total;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public static List<MobileElement> navIcons;
 
 	public String verifyIfPendingTasksAreDisplayed() {
@@ -181,7 +181,7 @@ public class DashboardPage extends AppiumPageFactory {
 
 	public boolean getDocuments(String peID, DBType dbType) {
 
-		//page.getGroupIcons();
+		// page.getGroupIcons();
 		MobileElement uiDocs = null;
 
 		boolean isDisplayed = false;
@@ -262,23 +262,8 @@ public class DashboardPage extends AppiumPageFactory {
 		return findElementBy(Locator.XPATH,
 				"(//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText)["
 						+ index + "]");
-	
-
 
 	}
-	
-	
-	public static void main(String[] args) {
-		List<String> dbDocCategory = executeQuery(DBType.CMKA, getID(lbrrpt_DOCUMENT_CATEGORY, "32"));
-		sort(dbDocCategory);;
-		System.out.println(dbDocCategory.size());
-		
-		for (int i = 0; i < dbDocCategory.size(); ++i) {
 
-		
-			List<String> docDesc = executeQuery(DBType.CMKA,
-					getID(replace(REFERRAL_DOCUMENTS, "CMD_DOC_CATEGORY", dbDocCategory.get(i)), "32"));
-			System.out.println(docDesc);
-		}
-	}
+	
 }

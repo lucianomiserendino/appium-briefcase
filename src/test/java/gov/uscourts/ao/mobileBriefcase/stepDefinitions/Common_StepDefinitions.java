@@ -52,8 +52,7 @@ public class Common_StepDefinitions {
 
 	@Then("^User logs out of Briefcase$")
 	public void user_logs_out_of_Briefcase() {
-//		page=new CommonPages();
-//		page.logout();
+
 		JenieLoginPage.logout();
 		safariInstance();
 		Page.sleep(10000);

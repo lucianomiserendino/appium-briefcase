@@ -6,11 +6,9 @@ Scenario Outline:
 	This task is to verify that a chambers user is able to create a new staff assignment,
 	to verify back-end updates when a new staff assignment is created,
 	edit existing staff assignments and verify Back-end after modifying assignment 
-	Given  User Navigates to  "INTEGRATION" environment 
-	When  User enters Credentials to Login "s haenni" and "Test2022!" 
-	And User clicks on Send Key to Device 
-	Then User navigates to MobileBrifcase App 
-	And  user selects a "CMKA" 
+		Given user is logged into Briefcase 
+		|environment|userName|password |server|
+		|INTEGRATION|s haenni|Test2022!|CMKA  |
 	Then User selects a userCategory "Appellate_Judges" and  name "Colloton" 
 	Then  User selects "<refCat>" and "<caseNum>" 
 	Then User  selects action using dbType "<dbType>" and  "<actionElID>"  and verifies the name of the action displays in the dark blue banner 

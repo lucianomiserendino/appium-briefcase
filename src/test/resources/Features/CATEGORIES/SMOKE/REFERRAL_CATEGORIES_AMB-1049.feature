@@ -4,14 +4,11 @@ Feature: Referral categories display on the dashboard for Staff Attorneys
 
 Background: 
 
-	Given  User Navigates to  "INTEGRATION" environment 
-	When  User enters Credentials to Login "s haenni" and "Test2022!" 
-	And User clicks on Send Key to Device 
-	Then User navigates to MobileBrifcase App 
-	And  user selects a "CMKA" 
+	Given user is logged into Briefcase 
+		|environment|userName|password |server|
+		|INTEGRATION|s haenni|Test2022!|CMKA  |
 	Then User selects a userCategory "Staff_Attorneys" and  name "Brown, Benjamin" 
 	
-
 Scenario: 
 	Assignment categories are listed on the Dashboard page for staff attorneys.
 	Once an assignment category is selected, referrals are grouped based on

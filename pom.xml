@@ -7,10 +7,15 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<dependencies>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
 <dependency>
-  <groupId>io.appium</groupId>
-  <artifactId>java-client</artifactId>
-  <version>7.0.0</version>
+	<groupId>io.appium</groupId>
+	<artifactId>java-client</artifactId>
+	<version>7.2.0</version>
 </dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium.grid</groupId>
@@ -54,11 +59,11 @@
 			<version>1.2.5</version>
 		</dependency>
 
-	<dependency>
-    <groupId>org.seleniumhq.selenium</groupId>
-    <artifactId>selenium-java</artifactId>
-    <version>3.141.59</version>
-</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>3.141.59</version>
+		</dependency>
 
 	</dependencies>
 

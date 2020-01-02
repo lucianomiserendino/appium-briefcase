@@ -26,19 +26,19 @@ import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Utility;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSFindBy;
+import io.appium.java_client.pagefactory.iOSBy;
 
 public class StaffAttorneyReferralPage extends AppiumPageFactory {
 	CommonPages page = new CommonPages();
 	// @WithTimeout(time = 15, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//*[contains(@name, 'Senior Staff Attorney')]")
+	@iOSBy(xpath = "//*[contains(@name, 'Senior Staff Attorney')]")
 	public static MobileElement staffAttorney;
 
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
+	@iOSBy(xpath = "//*[contains(@name, 'User')]")
 	public static MobileElement selectUser;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public static List<MobileElement> refCategories;
 
 	/** Observe the assignment categories that display on the dashboard for SAs */

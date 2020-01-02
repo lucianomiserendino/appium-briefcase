@@ -7,20 +7,17 @@ Scenario Outline:
 The default is by date referred in descending order (newest first). 
 	
 
-	Given  User Navigates to  "<environment>" environment 
-	When  User enters Credentials to Login "<userName>" and "<password>" 
-	And User clicks on Send Key to Device 
-	Then User navigates to MobileBrifcase App 
-	And  user selects a "<server>" 
+		Given user is logged into Briefcase 
+		|environment|userName         |password |server|
+		|INTEGRATION|chambers courtney|Test2023!|CMKA  |
 	When User selects a  "<refCategory>" 
 	And User verifies  the Date Down Arrow is selected by default and that the referrals are sorted by referred date in descending order (newest first).
 	When User selects the sort button, clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in descending order (newest first). User clicks the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order (oldest first). 
 	Then User clicks the Case Down Arrow button and  verifies the referrals are sorted by case number in descending order . User clicks the Case Up Arrow button, verifies the referrals are sorted by case number in ascending order. 
 	
 	Examples: 
-		|environment   |userName          |password  |server         |refCategory       |
-		|INTEGRATION   |chambers courtney |Test2023! |CMKA           |Test Automation   |
-		#|Testing       |judgewilliams   |Testpass1! |CM3A           |Motion/Petition   | 
+		 |server         |refCategory       |
+		 |CMKA           |Test Automation   |
 		
 		
 		

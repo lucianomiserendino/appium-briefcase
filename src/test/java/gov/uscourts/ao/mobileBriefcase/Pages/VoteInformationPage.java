@@ -15,16 +15,12 @@ import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.changeDateFormat;
 import static java.util.Collections.sort;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openqa.selenium.By;
-
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
-import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
@@ -132,12 +128,9 @@ public class VoteInformationPage extends AppiumPageFactory {
 		assertTrue("VERIFY THE VOTE DATE (CHV_DATE_CREATED) IS CORRECT",
 				findElementBy(Locator.XPATH, uiJudesVote).isDisplayed());
 
-		int uiNoVote = Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + relief
-				+ "']/following::XCUIElementTypeStaticText[@name='" + noVote + "']")).size();
-		int dbNoVote = cvv_display.size();
-		assertEquals(
-				"CVV_DISPLAY IS NULL FOR A JUDGE, BUT THE TEXT 'NO VOTE' DOEN'T DISPLAY UNDER THE JUDGE'S INITIALS",
-				dbNoVote, uiNoVote);
+		assertTrue("CVV_DISPLAY IS NULL FOR A JUDGE, BUT THE TEXT 'NO VOTE' DOEN'T DISPLAY UNDER THE JUDGE'S INITIALS",
+				findElementBy(Locator.XPATH, "//XCUIElementTypeStaticText[@name='" + relief
+						+ "']/following::XCUIElementTypeStaticText[@name='" + noVote + "']").isDisplayed());
 
 	}
 

@@ -46,4 +46,5 @@ public class ActionsListViewPage extends AppiumPageFactory {
 				isDisplayed("//XCUIElementTypeOther[@name='DocumentList']//XCUIElementTypeStaticText[contains(@name, '"
 						+ actionName + "')]"));
 	}
+
 }

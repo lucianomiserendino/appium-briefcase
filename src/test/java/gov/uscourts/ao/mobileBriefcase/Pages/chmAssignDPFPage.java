@@ -4,7 +4,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNEES_CHA_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE_IS_SKIP;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CAV_CODE;
@@ -50,7 +49,7 @@ import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSFindBy;
+import io.appium.java_client.pagefactory.iOSBy;
 
 public class chmAssignDPFPage extends AppiumPageFactory {
 
@@ -68,7 +67,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	static String assignmentDate = "";
 	static String assignmentCompleted = "";
 	static String cha_id = "";
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='OptionList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name='OptionList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static List<MobileElement> optionList;
 
 	public static void selectADate(chmAssign assign, String x, String y) {
@@ -96,12 +95,16 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		verifyNewStaffAssignment(chmAssign.CREATE, dbType, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
 				staffFName, staffLName, "assignedDateX", "assignedDateY", "assignedDueDateX", "assignedDueDateY");
 
-		cha_id = getCreatedAssignment(dbType, ASSIGNEES_CHA_ID, cha_ju_pe_id, cmr_cs_caseid);
-
-		verifyNewStaffAssignment(chmAssign.MODIFY, dbType, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
-				staffFName, staffLName, "modifiedAssignedDateX", "modifiedAssignedDateY", "modifiedAssignedDueDateX",
-				"modifiedAssignedDueDateY");
-		terminateStaffAssignment("modifiedAssignedDateX", "modifiedAssignedDateY", dbType);
+		// cha_id = getCreatedAssignment(dbType, ASSIGNEES_CHA_ID, cha_ju_pe_id,
+		// cmr_cs_caseid);
+		//
+		// verifyNewStaffAssignment(chmAssign.MODIFY, dbType, dpfName, elId,
+		// cha_ju_pe_id, caseNumber, cmr_cyv_code,
+		// staffFName, staffLName, "modifiedAssignedDateX", "modifiedAssignedDateY",
+		// "modifiedAssignedDueDateX",
+		// "modifiedAssignedDueDateY");
+		// terminateStaffAssignment("modifiedAssignedDateX", "modifiedAssignedDateY",
+		// dbType);
 
 	}
 
@@ -232,6 +235,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 				}
 			}
+
 			assertEquals("********ASSIGNMENT TYPE VALIDATION ERROR!!!********", dbAssignmentType, uiAssignmenType);
 
 		} catch (NullPointerException e) {
@@ -337,17 +341,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 					"Assigned " + assignedDate);
 			assertTrue(modifiedAssignedDate.isDisplayed());
 
-			// assertTrue(Utility.isDisplayed("//*[contains(@name, '" + staffMember + ", " +
-			// assignment
-			// + "')]/following::XCUIElementTypeStaticText[contains(@name, '" + "Assigned "
-			// + assignedDate + "')]"));
-			//
 		} catch (Exception e) {
 
-			// assertTrue(Utility.isDisplayed("//*[contains(@name, '" + staffMember + ", " +
-			// assignment
-			// + "')]/following::XCUIElementTypeStaticText[contains(@name, '" + "Assignment
-			// Due " + assignedDate + "')]"));
 
 			MobileElement modifiedAssignmentDueDate = getExistingAssignment(staffMember + ", " + assignment,
 					"Assignment Due " + assignmentDue);

@@ -1,14 +1,12 @@
-@AMB @AMB-1241 
+@AMB @AMB-1241 @Regression
 Feature: Applied Cases link 
 
 
 Scenario: 
 	Display Applied Cases link  when bookmarking case/referral
-	Given  User Navigates to  "INTEGRATION" environment 
-	When  User enters Credentials to Login "s haenni" and "Test2021!" 
-	And User clicks on Send Key to Device 
-	Then User navigates to MobileBrifcase App 
-	And  user selects a "CMKA" 
+	Given user is logged into Briefcase 
+		|environment|userName|password |courtId|
+		|INTEGRATION|s haenni|Test2022!|CMKA  |
 	Then User selects a userCategory "Appellate_Judges" and  name "Colloton" 
 	Then user checks if "15-2622" is bookmarked 
 	When User selects a  "Cases on Calendar" 

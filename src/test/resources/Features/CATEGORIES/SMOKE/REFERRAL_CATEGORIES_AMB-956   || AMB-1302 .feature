@@ -4,11 +4,9 @@ Feature:  Referral Categories display on the dashboard for the judge
  
 Scenario Outline: 
 	Referral categories display on the dashboard for the judge 
-	Given  User Navigates to  "<environment>" environment 
-	When  User enters Credentials to Login "<userName>" and "<password>" 
-	And User clicks on Send Key to Device 
-	Then User navigates to MobileBrifcase App 
-	And  user selects a "<server>" 
+	Given user is logged into Briefcase 
+		|environment|userName         |password |server|
+		|INTEGRATION|chambers courtney|Test2023!|CMKA  |
 	And User Observes the referral categories that display on "<dbType>" and on the dashboard using  "<judgeName>" and "<PE_RT_CODE>". 
 	
 	#NOTE:  The pending tasks category will not be included in this task.  
@@ -16,8 +14,8 @@ Scenario Outline:
 	# The bookmarked category is also not included in this task.
 	
 	Examples: 
-		|environment |userName          |password  |judgeName  |dbType       |PE_RT_CODE|server|
-		|INTEGRATION |chambers courtney |Test2023! |Colloton   |CMKA         | jud      |CMKA  |
+		 |judgeName  |dbType       |PE_RT_CODE|server|
+		 |Colloton   |CMKA         | jud      |CMKA  |
 		#|INTEGRATION |JAHaenni          |Test2021! |Benton|    |CMKA         | jud      |CMKA  |  
 		
 		

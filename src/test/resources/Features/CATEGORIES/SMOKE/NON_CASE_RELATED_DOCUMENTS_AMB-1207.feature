@@ -1,16 +1,14 @@
-@AMB @Smoke	@AMB-1207
+@AMB @Smoke @AMB-1207 
 Feature: Non case related docs - Suppress case number for 'lbrrpt' category 
 
 Background: 
 
-	Given  User Navigates to  "INTEGRATION" environment 
-	When  User enters Credentials to Login "s haenni" and "Test2022!" 
-	And User clicks on Send Key to Device 
-	Then User navigates to MobileBrifcase App 
-	And  user selects a "CMKA" 
+	Given user is logged into Briefcase 
+		|environment|userName|password |server|
+		|INTEGRATION|s haenni|Test2022!|CMKA  |
 	Then User selects a userCategory "Appellate_Judges" and  name "Colloton" 
 	
- 
+	
 Scenario: 
 	User shouldn't see  case number when view documents that are not case related
   

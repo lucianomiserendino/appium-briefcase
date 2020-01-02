@@ -5,7 +5,6 @@ import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.NoticesOfDocketActivityPage;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
-import gov.uscourts.ao.mobileBriefcase.common.Page;
 
 public class NoticesOfDocketActivity_StepDefinitions extends Base {
 	NoticesOfDocketActivityPage page;
@@ -28,7 +27,6 @@ public class NoticesOfDocketActivity_StepDefinitions extends Base {
 	public void user_verifies_the_note_opens_in_Briefcase_by_using_the_same_and_Open_a_note_in_Briefcase_from_the_NDA_link(
 			String caseNum, String dbType) {
 		page.openANoteInBriefcase(caseNum, dbType, "briefcaseAppLinkRoot");
-		// select(BriefcaseCoordinates.DISMISS) ;
 
 	}
 
@@ -43,7 +41,5 @@ public class NoticesOfDocketActivity_StepDefinitions extends Base {
 		page = new NoticesOfDocketActivityPage();
 		page.verifyPDFIsDownloaded();
 	}
-	
-
 
 }

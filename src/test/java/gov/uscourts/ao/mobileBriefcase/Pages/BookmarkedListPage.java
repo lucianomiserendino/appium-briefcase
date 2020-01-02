@@ -14,19 +14,19 @@ import org.openqa.selenium.NoSuchElementException;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSFindBy;
+import io.appium.java_client.pagefactory.iOSBy;
 
 public class BookmarkedListPage extends AppiumPageFactory {
-	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
+	@iOSBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
 	public static MobileElement dashboard;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name='Bookmarked']")
+	@iOSBy(xpath = "//XCUIElementTypeStaticText[@name='Bookmarked']")
 	public static List<MobileElement> bookOnDashboard;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name='Bookmark']")
+	@iOSBy(xpath = "//XCUIElementTypeStaticText[@name='Bookmark']")
 	public static List<MobileElement> BookmarkedReferrals;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<MobileElement> cases;
 
 	public void getBookmarkedReferrals() {

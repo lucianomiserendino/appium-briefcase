@@ -84,8 +84,7 @@ public class AssignmentsPage extends AppiumPageFactory {
 		}
 
 		for (int i = 0; i < staffAssignments.size(); i++) {
-			System.out.println(staffAssignments.get(i) + "*********************8");
-			// assertTrue(isDisplayed(Locator.XPATH, staffAssignments.get(i)));
+			 assertTrue(Actions.isDisplayed(Locator.XPATH, staffAssignments.get(i)));
 		}
 	}
 
@@ -389,5 +388,7 @@ public class AssignmentsPage extends AppiumPageFactory {
 	public enum AssignmentInfo {
 		ASSINMENT_TYPE, ASSIGNMENT_DATE, NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE, ASSIGNMENT_TYPE_AND_RELIEF, LATEST_ASSIGNED_ASSIGNMENT_DUE_DATES, ASSIGNMENT_NOTE_DATE
 	}
+	
+	
 
 }

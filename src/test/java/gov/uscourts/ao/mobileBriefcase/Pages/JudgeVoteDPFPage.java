@@ -42,59 +42,57 @@ import org.openqa.selenium.By;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
-import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSFindBy;
+import io.appium.java_client.pagefactory.iOSBy;
 
 public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 	String select = "Please Select";
 
-	@iOSFindBy(id = "Close")
+	@iOSBy(id = "Close")
 	public static MobileElement close;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='NoteList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name='NoteList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
 	public static MobileElement commentField;
 
-	@iOSFindBy(id = "Apply")
+	@iOSBy(id = "Apply")
 	public static MobileElement applyBtn;
 
-	@iOSFindBy(id = "Select All")
+	@iOSBy(id = "Select All")
 	public static MobileElement selectAll;
 
-	@iOSFindBy(id = "Cut")
+	@iOSBy(id = "Cut")
 	public static MobileElement cut;
 
-	@iOSFindBy(id = "Back")
+	@iOSBy(id = "Back")
 	public static MobileElement back;
 
-	@iOSFindBy(id = "Cancel")
+	@iOSBy(id = "Cancel")
 	public static MobileElement cancel;
 
-	@iOSFindBy(id = "Submit")
+	@iOSBy(id = "Submit")
 	public static MobileElement submit;
 
 	// @WithTimeout(time = 60, unit = TimeUnit.SECONDS)
-	@iOSFindBy(id = "Yes")
+	@iOSBy(id = "Yes")
 	public static MobileElement yesBtn;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSFindBy(id = "OK")
+	@iOSBy(id = "OK")
 	public static MobileElement okBtn;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
+	@iOSBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
 	public static MobileElement dashboard;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='VoteOptions']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name='VoteOptions']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static List<MobileElement> judgeVotes;
 
 	/** verify relief is displayed on the popup page */
 	public String selectViewVotes(DBType dbType, String ccr_id, String viewVotes) {
-	
 
 		String relief = getRelief(dbType, ccr_id);
 		tap(Locator.XPATH, "(//XCUIElementTypeStaticText[@name='" + relief
@@ -163,7 +161,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 										+ "')]/following::XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '"
 										+ votedDate + "')]"),
 								driver);
-
+						System.out.println(uiResult.getText() + "******************");
 						assertTrue(uiResult.isDisplayed());
 					}
 				}

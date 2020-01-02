@@ -4,13 +4,10 @@ Feature: JudgeVote DPF UI
 
 Background: 
 
-	Given  User Navigates to  "INTEGRATION" environment 
-	When  User enters Credentials to Login "judge werner" and "Test2020!" 
-	And User clicks on Send Key to Device 
-	Then User navigates to MobileBrifcase App 
-	And  user selects a "CMKA" 
-	
-@Smoke 	
+	Given user is logged into Briefcase 
+		|environment|userName    |password |server|
+		|INTEGRATION|judge werner|Test2020!|CMKA  |
+@Smoke 
 @AMB-1100 
 Scenario: 
 	In the judgeVote DPF, when the user selects the View Votes button, a popup should display with each judge's vote and the day they voted.
@@ -21,7 +18,7 @@ Scenario:
 	And User verifies each judges' initials to whom the referral was sent , as well as their vote and date they voted. Use "CMKA" , "35683" 
 	#|Testing       |judgewilliams   |Testpass1! |Appellate DC Installation Testing - CM3A  |Rehearing Petition      |11-1012      |CM3A   |2973    | 4255|
 	
-@Smoke 	
+@Smoke 
 @AMB-1103 
 @AMB-1210 
 Scenario: 

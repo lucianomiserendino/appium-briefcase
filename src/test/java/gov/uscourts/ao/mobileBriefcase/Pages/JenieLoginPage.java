@@ -11,6 +11,8 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollDownIfNotDisp
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.tapByCoordinate;
 import static org.openqa.selenium.support.PageFactory.initElements;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebDriverException;
@@ -21,9 +23,11 @@ import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
+import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.models.UserInputData;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import io.appium.java_client.pagefactory.iOSFindBy;
+import io.appium.java_client.pagefactory.iOSBy;
 
 public class JenieLoginPage extends Base {
 
@@ -43,86 +47,86 @@ public class JenieLoginPage extends Base {
 
 	static String staffAttorneys = "Staff Attorneys";
 
-	@iOSFindBy(accessibility = "Production")
+	@iOSBy(accessibility = "Production")
 	public MobileElement production;
 
 	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
-	@iOSFindBy(accessibility = "Integration")
+	@iOSBy(accessibility = "Integration")
 	public MobileElement integration;
 
-	@iOSFindBy(accessibility = "Staging")
+	@iOSBy(accessibility = "Staging")
 	public MobileElement staging;
 
-	@iOSFindBy(accessibility = "Testing")
+	@iOSBy(accessibility = "Testing")
 	public MobileElement testing;
 
-	@FindBy(xpath = "//XCUIElementTypeOther[@name='JENIE Single Sign On']/XCUIElementTypeOther[5]/XCUIElementTypeTextField")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name='JENIE Single Sign On']/XCUIElementTypeOther[5]/XCUIElementTypeTextField")
 	public static WebElement userName;
 
-	@FindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther[6]/XCUIElementTypeSecureTextField")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther[6]/XCUIElementTypeSecureTextField")
 	public static WebElement password;
 
-	@FindBy(id = "SIGN ON")
+	@iOSBy(id = "SIGN ON")
 	public static WebElement submButton;
 
 	@FindBy(partialLinkText = "Send Key to Device")
 	public WebElement sendKeyButton;
 
 	// @WithTimeout(time = 300, unit = TimeUnit.SECONDS)
-	@iOSFindBy(accessibility = "Appellate DC Development - CMKA")
+	@iOSBy(accessibility = "Appellate DC Development - CMKA")
 	public MobileElement cmka;
 
-	@iOSFindBy(accessibility = "Appellate DC Development - CM1A")
+	@iOSBy(accessibility = "Appellate DC Development - CM1A")
 	public MobileElement cm1a;
 
-	@iOSFindBy(accessibility = "Appellate DC Development - CM5A")
+	@iOSBy(accessibility = "Appellate DC Development - CM5A")
 	public MobileElement cm5a;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
+	@iOSBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
 	public static MobileElement dashboard;
 
 	// @WithTimeout(time = 15, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//*[contains(@name, 'User')]")
+	@iOSBy(xpath = "//*[contains(@name, 'User')]")
 	public MobileElement selectUser;
 
-	@iOSFindBy(xpath = "//*[contains(@name, 'NavigationRenderer')]/XCUIElementTypeButton[2]")
+	@iOSBy(xpath = "//*[contains(@name, 'NavigationRenderer')]/XCUIElementTypeButton[2]")
 	public static MobileElement settingsIcon;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeStaticText[@name='Logout of Briefcase']")
+	@iOSBy(xpath = "//XCUIElementTypeStaticText[@name='Logout of Briefcase']")
 	public static MobileElement logout;
 
-	@iOSFindBy(accessibility = "ReferralsList")
+	@iOSBy(accessibility = "ReferralsList")
 	public static MobileElement referralsList;
 
-	@iOSFindBy(accessibility = "AvailableJudges")
+	@iOSBy(accessibility = "AvailableJudges")
 	public static MobileElement AvailableJudges_Container;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[1]")
+	@iOSBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[1]")
 	public static MobileElement searchIcon;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
+	@iOSBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
 	public static MobileElement searchBTN;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeTextField")
+	@iOSBy(xpath = "//XCUIElementTypeTextField")
 	public static MobileElement searchTextField;
 
 	public void getEnvironment(Environment environment) {
 		switch (environment) {
 
-		case PRODUCTION:
+		case Production:
 			tap(production);
 			break;
 
-		case INTEGRATION:
+		case Integration:
 			tap(integration);
 			break;
 
-		case STAGING:
+		case Staging:
 			tap(staging);
 			break;
 
-		case TESTING:
+		case Testing:
 			tap(testing);
 			break;
 
@@ -131,25 +135,6 @@ public class JenieLoginPage extends Base {
 		}
 	}
 
-	public void getServer(Server server) {
-
-		switch (server) {
-		case CMKA:
-			tap(cmka);
-			break;
-
-		case CM1A:
-			tap(cm1a);
-			break;
-
-		case CM5A:
-			tap(cm5a);
-			break;
-
-		default:
-			throw new RuntimeException("Invalid server");
-		}
-	}
 
 	public void selectEnvironment(String environment) {
 
@@ -158,7 +143,6 @@ public class JenieLoginPage extends Base {
 			getEnvironment(Environment.valueOf(environment));
 		} catch (Exception e) {
 			tap(Locator.NAME, okButton);
-
 			getEnvironment(Environment.valueOf(environment));
 		}
 	}
@@ -188,11 +172,12 @@ public class JenieLoginPage extends Base {
 	public void getServer(String server) {
 		try {
 			performPageLoad(driver);
-			getServer(Server.valueOf(server));
+			contains("Appellate DC Development - "+server).click();
+	
 		} catch (Exception e) {
 			if (contains(okButton).isDisplayed()) {
 				tap(Locator.NAME, okButton);
-				getServer(Server.valueOf(server));
+				contains("Appellate DC Development - "+server).click();
 			}
 		}
 		performPageLoad(driver);
@@ -246,7 +231,7 @@ public class JenieLoginPage extends Base {
 		tap(searchBTN);
 
 	}
-	
+
 	public static void logout() {
 		try {
 			dashboard.click();
@@ -264,16 +249,30 @@ public class JenieLoginPage extends Base {
 		}
 	}
 
+	public void login(List<UserInputData> userInputData) {
+		String court = SystemPropertySetup.getCourtId(userInputData);
+		String env = SystemPropertySetup.getEnvironment(userInputData);
+		String user = SystemPropertySetup.getUserName(userInputData);
+		String pwd = SystemPropertySetup.getPassword(userInputData);
+
+		selectEnvironment(env);
+		changeWindow("WEBVIEW");
+		sendCredentials(user, pwd);
+		sedKeyButton();
+		changeWindow("NATIVE");
+		open();
+		getServer(court);
+
+	}
+
 	public enum User {
 		Appellate_Judges, Bankruptcy_Judges, Staff_Attorneys
 	}
 
 	public enum Environment {
-		INTEGRATION, STAGING, PRODUCTION, TESTING
+		Integration, Staging, Testing, Production
 	}
 
-	public enum Server {
-		CMKA, CM1A, CM5A, CM8A
-	}
+	
 
 }

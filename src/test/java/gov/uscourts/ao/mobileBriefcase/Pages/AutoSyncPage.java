@@ -15,7 +15,7 @@ import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSFindBy;
+import io.appium.java_client.pagefactory.iOSBy;
 
 public class AutoSyncPage extends AppiumPageFactory {
 
@@ -36,7 +36,7 @@ public class AutoSyncPage extends AppiumPageFactory {
 	private static String filer = "(//*[text()='Filer']/following::div/table[@role='grid']/tbody/tr/td)[1]";
 	private static String continueUploadPage = "//*[text()='Continue']";
 
-	@iOSFindBy(xpath = "//*[contains(@name, 'Available for download')]")
+	@iOSBy(xpath = "//*[contains(@name, 'Available for download')]")
 	public static MobileElement docsAvailableForDownload;
 
 	/** Get number of new documents from the counter on the sync button */

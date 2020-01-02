@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
@@ -14,12 +13,12 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSFindBy;
+import io.appium.java_client.pagefactory.iOSBy;
 
 public class UIDocketingDPFPage extends AppiumPageFactory {
 
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeTextView[1]")
+	@iOSBy(xpath = "//XCUIElementTypeTextView[1]")
 	public static MobileElement descriptionField;
 
 	public void verifyFieldsAreDisplayed(String descriptionText, String commentText, String submitText, DBType dbType,
@@ -66,7 +65,5 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 		return text.replace(charac, "").trim();
 
 	}
-
-
 
 }

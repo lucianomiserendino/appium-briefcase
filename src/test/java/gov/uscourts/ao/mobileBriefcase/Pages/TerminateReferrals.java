@@ -6,38 +6,41 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.insertData;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.UPDATE_CHAMBERS_CASE_TO_REFERRAL;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.split;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.sleep;
-import static org.junit.Assert.assertTrue;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSFindBy;
+import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.pagefactory.iOSBy;
 
 public class TerminateReferrals extends AppiumPageFactory {
 
-	@FindBy(xpath = "//XCUIElementTypeOther[@name='JENIE Single Sign On']/XCUIElementTypeOther[5]/XCUIElementTypeTextField")
+	@FindBy(name = "usernameEntered")
 	public static WebElement userName;
 
-	@FindBy(xpath = "//XCUIElementTypeOther[@name='JENIE Single Sign On']/XCUIElementTypeOther[6]/XCUIElementTypeSecureTextField")
+	@FindBy(name = "password")
 	public static WebElement password;
 
-	@FindBy(id = "SIGN ON")
+	@FindBy(id = "SUBMIT2")
 	public static WebElement submButton;
 
+	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
+	@iOSBy(xpath = "//*[contains(@name, 'Total')]")
+	public static MobileElement totalNumOfNewReferrals;
+
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
+	@iOSBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
 	public static MobileElement dashboard;
 
 	/** find the ccr_id for the referral */
@@ -49,11 +52,10 @@ public class TerminateReferrals extends AppiumPageFactory {
 	 * set case_to_referral.ccr_date_end date field to terminate/un-terminate the
 	 * referral
 	 */
-	public static void terminateReferral(ReferralTermination term, String caseNum, String dbType, String peID,
+	public void terminateReferral(ReferralTermination term, String caseNum, String dbType, String peID,
 			String cmr_cyv_code) {
-		 assertTrue("REFERRAL IS TERMINATED", isDisplayed(Locator.XPATH,
-		 containsElement(caseNum)));
 
+		tap(dashboard);
 		String ccr_date_end = "";
 		switch (term) {
 		case TERMINATE:
@@ -66,33 +68,35 @@ public class TerminateReferrals extends AppiumPageFactory {
 		default:
 			break;
 		}
-		updateChambersCaseToReferralEndDate(dbType, caseNum, peID, ccr_date_end, cmr_cyv_code);
 
-		 tap(dashboard);
-		
-		 runDataUpdater(getProperty("dataUpdater"));
+		updateChambersCaseToReferralEndDate(dbType, caseNum, peID, ccr_date_end, cmr_cyv_code);
+	}
+
+	public void runDataUpdater() {
+		Base.getInstance(Driver.WEBRIVER);
+		webDriver.get("https://cms-ecf-cmka.isso.dcn/cmecf/servlet/MobileBriefcaseDataUpdater");
+		webDriver.findElement(By.xpath("//input[@name='usernameEntered']")).sendKeys("s haenni");
+		webDriver.findElement(By.xpath("//input[@name='password']")).sendKeys("Test2022!");
+		webDriver.findElement(By.xpath("//input[@type='submit']")).click();
+
+		Page.sleep(10000);
+		webDriver.quit();
+		Base.getInstance(Driver.IOS);
+
+		CommonPages page = new CommonPages();
+		page.selectReferral("//XCUIElementTypeOther[@name='Categories']" + containsElement("Test Automation"));
+
+		// page.selectReferral("Test Automation");
 
 	}
 
-	public static void runDataUpdater(String ndaLink) {
-		// try {
-		safariInstance();
+	public int getTotalNumOfReferrals() {
+		return new Integer(split(totalNumOfNewReferrals.getText(), "T", 0).split(",")[1].trim());
+	}
 
-		driver.get(ndaLink);
-		
-		// Actions c=new Actions();
-		changeWindow("WEBVIEW");
-		//userName.sendKeys("s haenni");
-		performPageLoad(driver);
-		 //Actions.sendKeys(userName, "s haenni", password, "Test2021!");
-		System.out.println(driver.getPageSource());
-		userName.sendKeys("s haenni");
-		password.sendKeys("Test2021!");
-		sleep(20000);
-		changeWindow("NATIVE");
-
-		performPageLoad(driver);
-
+	public IOSDriver<MobileElement> tapp() {
+		tap(dashboard);
+		return driver;
 	}
 
 	public static void updateChambersCaseToReferralEndDate(String dbType, String caseNum, String peID,
@@ -101,14 +105,16 @@ public class TerminateReferrals extends AppiumPageFactory {
 				getCMR_CCR_ID(caseNum, dbType, peID, cmr_cyv_code)));
 
 	}
+
 	public void sendCredentials(String Username, String Password) {
 		sendKeys(userName, Username, password, Password);
 		submButton.click();
 
 	}
+
 	public enum ReferralTermination {
 		TERMINATE, UN_TERMINATE
 	}
 
-
+	
 }

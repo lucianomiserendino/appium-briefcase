@@ -8,11 +8,9 @@ Scenario Outline:
 	  based on the chm_mobile_doc.cmd_sort field
 	
 
-	Given  User Navigates to  "<environment>" environment 
-	When  User enters Credentials to Login "<userName>" and "<password>" 
-	And User clicks on Send Key to Device 
-	Then User navigates to MobileBrifcase App 
-	And  user selects a "<server>" 
+		Given user is logged into Briefcase 
+		|environment|userName|password |server|
+		|INTEGRATION|s haenni|Test2022!|CMKA  |
 	Then User selects a userCategory "<userCategory>" and  name "<judgeName>" 
 	Then  User selects "<refCat>" and "<caseNum>" 
 	Then User verifies  Document Categories are sorted on the referral detail page ("<server>", "<cmr_cyv_code>", "<cmr_ju_pe_id>", "<cmr_cs_caseid>") 
@@ -21,8 +19,8 @@ Scenario Outline:
 	
 	
 	Examples: 
-		|environment   |userName       |password  |server         |refCat            |caseNum|userCategory    |judgeName|cmr_cyv_code| cmr_ju_pe_id| cmr_cs_caseid|
-		|INTEGRATION   |s haenni       |Test2021!|CMKA           |TEST_AUTOMATION   |15-2594|Appellate_Judges|Colloton |autotst     |32           |  81452      |
+		|environment   |userName       |password  |server    |refCat            |caseNum|userCategory    |judgeName|cmr_cyv_code| cmr_ju_pe_id| cmr_cs_caseid|
+		|INTEGRATION   |s haenni       |Test2021!|CMKA       |TEST_AUTOMATION   |15-2594|Appellate_Judges|Colloton |autotst     |32           |  81452      |
 		#|Testing       |judgewilliams   |Testpass1! |CM3A           |Motion/Petition   | 
 		
 		

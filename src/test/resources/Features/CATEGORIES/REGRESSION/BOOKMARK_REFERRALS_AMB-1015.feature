@@ -4,11 +4,9 @@ Feature: Bookmark functionality
 Scenario: 
 	There is functionality in Briefcase that enables users to bookmark referrals.  
 	The following scenarios need to be automated:
-	Given  User Navigates to  "INTEGRATION" environment 
-	When  User enters Credentials to Login "chambers courtney" and "Test2023!" 
-	And User clicks on Send Key to Device 
-	Then User navigates to MobileBrifcase App 
-	And  user selects a "CMKA" 
+		Given user is logged into Briefcase 
+		|environment|userName         |password |server|
+		|INTEGRATION|chambers courtney|Test2023!|CMKA  |
 	Then User verifies there's no bookmark icon displays in the navigation and on the dashboard 
 	When User selects a  "Test Automation" 
 	Then user  taps on the bookmark icon next to a case  and verifies the bookmark icon displays in the navigation and on the dashboard page. 

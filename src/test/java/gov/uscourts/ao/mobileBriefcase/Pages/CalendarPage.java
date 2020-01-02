@@ -21,7 +21,7 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSFindBy;
+import io.appium.java_client.pagefactory.iOSBy;
 
 public class CalendarPage extends AppiumPageFactory {
 
@@ -35,23 +35,23 @@ public class CalendarPage extends AppiumPageFactory {
 	// @WithTimeout(time = 300, unit = TimeUnit.SECONDS)
 
 	// @WithTimeout(time = 300, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='SessionGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[4]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name='SessionGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[4]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
 	public static MobileElement weeklySessions;
 
 	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
-	@iOSFindBy(accessibility = "SessionGroups")
+	@iOSBy(accessibility = "SessionGroups")
 	public MobileElement sessionGroups;
 
 	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[1]")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[1]")
 	public static MobileElement referral;
 
 	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText[1]")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText[1]")
 	public static MobileElement argDescription;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeStaticText")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static MobileElement hearingDate;
 
 	public void getWeeklySession(DBType dbType, String peID) {

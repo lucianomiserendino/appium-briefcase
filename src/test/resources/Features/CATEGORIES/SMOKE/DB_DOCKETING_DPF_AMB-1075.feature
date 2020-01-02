@@ -1,14 +1,12 @@
 @AMB @AMB-1075 
 Feature: note DPF back-end updates 
-
+TEST
 Scenario: 
 	Adding a note back-end database updates.
             
-	Given  User Navigates to  "INTEGRATION" environment 
-	When  User enters Credentials to Login "s haenni" and "Test2022!" 
-	And User clicks on Send Key to Device 
-	Then User navigates to MobileBrifcase App 
-	And  user selects a "CMKA" 
+	Given user is logged into Briefcase 
+		|environment|userName|password |server|
+		|INTEGRATION|s haenni|Test2022!|CMKA  |
 	Then User selects a userCategory "Appellate_Judges" and  name "Colloton" 
 	Then User selects "TEST_AUTOMATION" and "15-2594" 
 	Then User selecs action, enters a comment in the editable field, submits and verifies Db "CMKA" is updated correctly, ( use "15-2594"  and "32" ) 

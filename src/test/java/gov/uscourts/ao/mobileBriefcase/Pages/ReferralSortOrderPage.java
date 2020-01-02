@@ -16,35 +16,35 @@ import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSFindBy;
+import io.appium.java_client.pagefactory.iOSBy;
 
 public class ReferralSortOrderPage extends AppiumPageFactory {
 
 	// @WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, 'Date')]")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, 'Date')]")
 	public static List<MobileElement> dates;
-	
+
 	// @WithTimeout(time = 60, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//*[contains(@name, 'Sort')]")
+	@iOSBy(xpath = "//*[contains(@name, 'Sort')]")
 	public static MobileElement sortArrowBtn;
 
-	@iOSFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Date')])[1]")
+	@iOSBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Date')])[1]")
 	public static MobileElement dateArrowDownBtn;
 
-	@iOSFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Date')])[2]")
+	@iOSBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Date')])[2]")
 	public static MobileElement dateArrowUpBtn;
 
-	@iOSFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Case')])[1]")
+	@iOSBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Case')])[1]")
 	public static MobileElement caseDownArrowBtn;
 
 	// @WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<MobileElement> cases;
 
-	@iOSFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Case')])[2]")
+	@iOSBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Case')])[2]")
 	public static MobileElement caseUpArrowBtn;
 
-	@iOSFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, 'Actions')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
+	@iOSBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, 'Actions')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
 	public static List<MobileElement> docCategories;
 
 	/**
@@ -55,7 +55,6 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	public void selectSortBtn() {
 		waitToBeClickable(sortArrowBtn, driver);
 	}
-
 
 	public List<String> referralsSortedByDate() {
 		return retrieveAllCases(dates, "Date: ", 1);

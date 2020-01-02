@@ -9,18 +9,18 @@ import java.util.List;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSFindBy;
+import io.appium.java_client.pagefactory.iOSBy;
 
 public class RedBulletsPage extends AppiumPageFactory {
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
-	@iOSFindBy(accessibility = "Back")
+	@iOSBy(accessibility = "Back")
 	public MobileElement back;
 
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
-	@iOSFindBy(xpath = "//*[contains(@name, 'Total')]")
+	@iOSBy(xpath = "//*[contains(@name, 'Total')]")
 	public MobileElement totalNumOfNewReferrals;
 
-	@iOSFindBy(xpath = "(//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, 'Viewed')])[1]/preceding::XCUIElementTypeStaticText[contains(@name, '-')]")
+	@iOSBy(xpath = "(//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, 'Viewed')])[1]/preceding::XCUIElementTypeStaticText[contains(@name, '-')]")
 	public List<MobileElement> unviewedReferral;
 
 	public int getUnviewedReferral() {

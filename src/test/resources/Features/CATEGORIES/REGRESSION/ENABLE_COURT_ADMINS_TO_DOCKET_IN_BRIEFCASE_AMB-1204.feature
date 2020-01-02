@@ -1,15 +1,13 @@
-@AMB @RegressioN @AMB-1204 
+@AMB @Regression @AMB-1204 
 Feature: Site Table variable to enable court admins to docket in Briefcase 
 
 
 
 Scenario: 
 	Given User sets the "briefcaseCtAdminDkt" site var to "y" on "CMKA" 
-	Given  User Navigates to  "INTEGRATION" environment 
-	When  User enters Credentials to Login "s haenni" and "Test2021!" 
-	And User clicks on Send Key to Device 
-	Then User navigates to MobileBrifcase App 
-	And  user selects a "CMKA" 
+	Given user is logged into Briefcase 
+		|environment|userName|password |server|
+		|INTEGRATION|s haenni|Test2022!|CMKA  |
 	Then User selects a userCategory "Appellate_Judges" and  name "Colloton" 
 	Then User selects "TEST_AUTOMATION" and "15-2594" 
 	Then User  selects action using dbType "CMKA" and  "3142"  and verifies the name of the action displays in the dark blue banner 
@@ -21,11 +19,9 @@ Scenario:
 	
 Scenario: 
 	Given User sets the "briefcaseCtAdminDkt" site var to "n" on "CMKA" 
-	Given  User Navigates to  "INTEGRATION" environment 
-	When  User enters Credentials to Login "s haenni" and "Test2021!" 
-	And User clicks on Send Key to Device 
-	Then User navigates to MobileBrifcase App 
-	And  user selects a "CMKA" 
+	Given user is logged into Briefcase 
+		|environment|userName|password |server|
+		|INTEGRATION|s haenni|Test2022!|CMKA  |
 	Then User selects a userCategory "Appellate_Judges" and  name "Colloton" 
 	Then User selects "TEST_AUTOMATION" and "15-2594" 
 	Then User verifies the court admin doesn't have access to select Actions in Briefcase 
