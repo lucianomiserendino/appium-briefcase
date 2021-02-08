@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+Test set: gov.uscourts.ao.mobileBriefcase.runners.iOS_BriefcaseRunner
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 2, Skipped: 3, Time elapsed: 2.084 s <<< FAILURE! - in gov.uscourts.ao.mobileBriefcase.runners.iOS_BriefcaseRunner
+Given user is logged into Briefcase(Scenario: )  Time elapsed: 0.005 s  <<< ERROR!
+java.lang.IllegalArgumentException: Can not set io.appium.java_client.MobileElement field gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.production to org.openqa.selenium.remote.RemoteWebElement$$EnhancerByCGLIB$$d27c0df4
+
+Scenario:   Time elapsed: 0.006 s  <<< ERROR!
+java.lang.IllegalArgumentException: Can not set io.appium.java_client.MobileElement field gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.production to org.openqa.selenium.remote.RemoteWebElement$$EnhancerByCGLIB$$d27c0df4
+
