@@ -17,7 +17,7 @@ public class SystemPropertySetup {
 	public static final String environment = "environment";
 	public static final String caseNumber = "caseNumber";
 	public static final String referral_Category = "referral_Category";
-	public static final String db_dbservername = "db.dbservername";
+	public static final String db_servername = "db.servername";
 	public static final String db_port = "db.port";
 	public static final String db_Schema = "db.schema";
 	public static final String db_username = "db.username";
@@ -34,6 +34,11 @@ public class SystemPropertySetup {
 		switch (variable) {
 		case COURTID:
 			var = courtId;
+
+			break;
+			
+		case ROLE:
+			var = role;
 
 			break;
 
@@ -53,8 +58,8 @@ public class SystemPropertySetup {
 			var = db_password;
 			break;
 
-		case DB_DBSERVERNAME:
-			var = db_dbservername;
+		case DB_SERVERNAME:
+			var = db_servername;
 			break;
 
 		case DB_PORT:
@@ -149,10 +154,10 @@ public class SystemPropertySetup {
 	}
 
 	public static final String getServer_name() {
-		log.info("server_name from Property File " + System.getProperty(db_dbservername));
+		log.info("server_name from Property File " + System.getProperty(db_servername));
 
-		if (System.getProperty(db_dbservername) != null)
-			return System.getProperty(db_dbservername);
+		if (System.getProperty(db_servername) != null)
+			return System.getProperty(db_servername);
 		return null;
 	}
 
@@ -207,7 +212,7 @@ public class SystemPropertySetup {
 	}
 
 	public enum Variables {
-		CASE_NUMBER, COURTID, HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DBSERVERNAME, DB_PORT, DB_SCHEMA, USERNAME, PASSWORD
+		CASE_NUMBER, COURTID,ROLE, HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_SERVERNAME, DB_PORT, DB_SCHEMA, USERNAME, PASSWORD
 	}
 
 }

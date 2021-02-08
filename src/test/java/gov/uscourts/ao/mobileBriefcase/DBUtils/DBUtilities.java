@@ -364,7 +364,7 @@ public class DBUtilities {
 
 		cds.setIfxIFXHOST(SystemPropertySetup.getVariable(Variables.HOSTNAME, pacerInputData));
 
-		cds.setServerName(SystemPropertySetup.getVariable(Variables.DB_DBSERVERNAME, pacerInputData));
+		cds.setServerName(SystemPropertySetup.getVariable(Variables.DB_SERVERNAME, pacerInputData));
 
 		cds.setPortNumber(Integer.parseInt(SystemPropertySetup.getVariable(Variables.DB_PORT, pacerInputData)));
 
@@ -374,7 +374,7 @@ public class DBUtilities {
 
 		cds.setDatabaseName(SystemPropertySetup.getVariable(Variables.DB_SCHEMA, pacerInputData));
 
-		if (SystemPropertySetup.getVariable(Variables.DB_DBSERVERNAME, pacerInputData).split("_")[1].equals("ssl")) {
+		if (SystemPropertySetup.getVariable(Variables.DB_SERVERNAME, pacerInputData).split("_")[1].equals("ssl")) {
 			cds.setIfxSSLCONNECTION("true");
 			System.out.println(" JDBC Driver Version .: " + IfxDriver.getJDBCVersion());
 		}

@@ -8,7 +8,7 @@ public class UserInputData {
 	private String environment;
 	private String caseNumber;
 	private String referral_Category;
-	private String db_dbservername;
+	private String db_servername;
 	private String db_port;
 	private String db_Schema;
 	private String role;
@@ -33,7 +33,7 @@ public class UserInputData {
 			var = db_password;
 			break;
 		case "db_dbservername":
-			var = db_dbservername;
+			var = db_servername;
 			break;
 		case "db_port":
 			var = db_port;
@@ -47,6 +47,10 @@ public class UserInputData {
 		case "password":
 			var = password;
 			break;
+		case "role":
+			var = role;
+			break;
+
 		default:
 			break;
 		}
@@ -110,11 +114,11 @@ public class UserInputData {
 	}
 
 	public String getServer_name() {
-		return db_dbservername;
+		return db_servername;
 	}
 
 	public void setServer_name(String server_name) {
-		this.db_dbservername = server_name;
+		this.db_servername = server_name;
 	}
 
 	public String getDb_port() {
