@@ -26,6 +26,7 @@ import org.openqa.selenium.WebDriverException;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.offset.PointOption;
@@ -76,8 +77,6 @@ public class Utility extends Base {
 				List<MobileElement> elems = findElements(By.xpath(element));
 				if (elems.size() > 0) {
 					try {
-//						MobileElement elem = findElementBy(locator, element);
-//						elem.click();
 						elems.get(0).click();
 						break;
 					} catch (WebDriverException e) {
@@ -128,7 +127,7 @@ public class Utility extends Base {
 		List<MobileElement> el = elements;
 		performPageLoad(driver);
 		Iterator<MobileElement> itr = el.iterator();
-		while (itr.hasNext()) {
+				while (itr.hasNext()) {
 			dest = itr.next().getText().split(split);
 			if (index == 0) {
 				referrals.add(dest[index].trim());
@@ -136,6 +135,7 @@ public class Utility extends Base {
 				referrals.add(changeDateFormat(dest[index].trim(), "MM/dd/yyyy", "yyyy/MM/dd"));
 			}
 		}
+
 		return referrals;
 
 	}
@@ -143,7 +143,7 @@ public class Utility extends Base {
 	public static String changeDateFormat(String element, String actualFormat, String modiffiedFormat) {
 		format1 = new SimpleDateFormat(actualFormat);
 		format2 = new SimpleDateFormat(modiffiedFormat);
-		java.util.Date date = null;
+		java.util.Date date = new Date();
 		try {
 			date = format1.parse(element);
 		} catch (ParseException e) {
@@ -197,16 +197,16 @@ public class Utility extends Base {
 
 	}
 
-	public static boolean elementIsDisplayed(DBType dbtype, String query, String xpath) {
+	public static boolean elementIsDisplayed( String query, String xpath, List<UserInputData> userInputData) {
 		boolean isDisplayed = false;
 		MobileElement uiResult = null;
-		List<String> dbResult = executeQuery(dbtype, query);
+		List<String> dbResult = executeQuery( query, userInputData);
 		sort(dbResult);
 		try {
 			for (int i = 0; i < dbResult.size(); ++i) {
 
 				uiResult = findElementBy(Locator.XPATH, xpath + "[contains(@name, '" + dbResult.get(i) + "')]");
-
+				System.out.println(uiResult.getText()+"******************");
 				if (uiResult.isDisplayed())
 					isDisplayed = true;
 			}
@@ -236,9 +236,11 @@ public class Utility extends Base {
 
 	public static int getRandomInt(int index) {
 		return index - 1 - new Random().nextInt(index);
+		
 	}
 
 	public static String getParameter(String param, String dpfName, int index) {
+		System.out.println(param+"*********************");
 
 		String dpfParam = "";
 		String[] items = param.split(";");
@@ -249,14 +251,14 @@ public class Utility extends Base {
 
 				if (charac[i].contains(dpfName)) {
 					String[] Value = charac[i].substring(charac[i].indexOf(dpfName + "(")).split(",");
-					dpfParam += Value[index].split("'")[1];
+					dpfParam = Value[index].split("'")[1];
 				}
 			}
 		} else {
-
 			String[] charac = param.substring(param.indexOf(dpfName + "(")).split(",");
 			if (charac[index].contains("'")) {
-				dpfParam += charac[index].replaceAll("'", "").trim();
+				//dpfParam += charac[index].replaceAll("'", "").trim();
+				dpfParam = charac[index].replaceAll("'", "").split("\\(")[1].trim();
 			}
 		}
 		return dpfParam;
@@ -268,6 +270,16 @@ public class Utility extends Base {
 		}
 		return new Random().nextInt((max - min) + 1) + min;
 	}
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
 
 	public static String clickOnNumberInRange(List<MobileElement> value) {
 		String text = "";
@@ -302,5 +314,7 @@ public class Utility extends Base {
 			id += obj;
 		return id;
 	}
+	
+
 
 }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -35,12 +36,13 @@ public abstract class Base implements iOSCapabilities {
 
 		try {
 			capabilities = new DesiredCapabilities();
+
 			switch (drivers) {
 			case IOS:
 
 				SetCapabilitiy(PLATFORM_NAME);
 				SetCapabilitiy(PLATFORM_VERSION);
-				capabilities.setCapability("udid", Utility.toArray(getUdid(getProperty(DEVICE_NAME))));
+				SetCapabilitiy(AUTOMATION_NAME);
 				SetCapabilitiy(DEVICE_NAME);
 				SetCapabilitiy(BUNDLE_ID);
 				SetCapabilitiy(XCODE_ORG_ID);
@@ -48,11 +50,14 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(AUTO_ACCEPT_ALERTS);
 				SetCapabilitiy(TAKES_SCREENSHOT);
 				SetCapabilitiy(DEVICE_TYPE);
+				SetCapabilitiy(FULL_RESET);
+				SetCapabilitiy(NO_RESET);
+				SetCapabilitiy(START_IWDP);
+				SetCapabilitiy(SAFARI_INITIAL_URL);
 				getDriver();
 				break;
-
+				
 			case WINDOWS:
-
 				capabilities = new DesiredCapabilities();
 				SetCapabilitiy(PLATFORM_NAME_w);
 				SetCapabilitiy(DEVICE_NAME_w);
@@ -72,23 +77,26 @@ public abstract class Base implements iOSCapabilities {
 		return driver;
 	}
 
-	public static void safariInstance() {
+	public static WebDriver safariInstance() {
 		capabilities = new DesiredCapabilities();
-
 		try {
-			SetCapabilitiy(PLATFORM_NAME);
 			SetCapabilitiy(PLATFORM_VERSION);
+			SetCapabilitiy(PLATFORM_NAME);
+			SetCapabilitiy(AUTOMATION_NAME);
 			SetCapabilitiy(DEVICE_NAME);
 			SetCapabilitiy(BROWSER_NAME);
-			SetCapabilitiy(AUTO_ACCEPT_ALERTS);
-			SetCapabilitiy(ENSURING_CLEAN_SESSION);
-			SetCapabilitiy(DEVICE_TYPE);
-			getDriver();
-			driver.close();
+			getDriver();		
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return driver;
 	}
+	
+	
+
+	
+	
 
 	public static void closeIOSDriver() {
 		if (driver != null) {
@@ -100,6 +108,7 @@ public abstract class Base implements iOSCapabilities {
 	public static void getDriver() {
 		try {
 			getHost(getProperty(LOCAL_HOST));
+			
 		} catch (WebDriverException e) {
 			getHost(System.getProperty("remotewebdriver.url"));
 		}
@@ -108,7 +117,8 @@ public abstract class Base implements iOSCapabilities {
 
 	public static void getHost(String host) {
 		try {
-			driver = new IOSDriver<MobileElement>(new URL(host), capabilities);
+	     driver = new IOSDriver<MobileElement>(new URL(host), capabilities);
+
 		} catch (MalformedURLException v) {
 			v.printStackTrace();
 		}
@@ -168,4 +178,10 @@ public abstract class Base implements iOSCapabilities {
 		IOS, WINDOWS, WEBRIVER
 	}
 
+	public static void main(String[] args) {
+		Base.getInstance(Driver.IOS);
+		
+		//safariInstance();
+		
+	}
 }

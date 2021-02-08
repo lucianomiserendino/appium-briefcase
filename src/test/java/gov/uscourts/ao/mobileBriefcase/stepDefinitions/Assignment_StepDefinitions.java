@@ -15,6 +15,7 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.AssignmentsPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.AssignmentsPage.AssignmentInfo;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class Assignment_StepDefinitions {
 	AssignmentsPage assig;
@@ -38,35 +39,42 @@ public class Assignment_StepDefinitions {
 
 	}
 
-	@Given("^User gets judge's/staff assignment's info from DataBase  by using \"([^\"]*)\" , \"([^\"]*)\" , \"([^\"]*)\" , \"([^\"]*)\"$")
-	public void user_gets_judge_s_staff_assignment_s_info_from_DataBase_by_using(String dbType, String caseId,
-			String peId, String cmr_cyv_code) {
+	@Given("^User gets judge's/staff assignment's info from DataBase  by using  \"([^\"]*)\" , \"([^\"]*)\" , \"([^\"]*)\"$")
+	public void user_gets_judge_s_staff_assignment_s_info_from_DataBase_by_using(String caseId, String peId,
+			String cmr_cyv_code, List<UserInputData> table) {
+
 		assig = new AssignmentsPage();
-		cmr_id = assig.getCMR_ID(DBType.valueOf(dbType), caseId, peId, cmr_cyv_code);
+		List<UserInputData> userInputData = null;
 
-		asignements = execute(DBType.valueOf(dbType), replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), 2);
-
+		cmr_id = assig.getCMR_ID(caseId, peId, cmr_cyv_code, userInputData);
+		
+		asignements = execute(replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), 2, userInputData);
+		
 		rnAssignment = getRandomNumberInRange(1, asignements.size() - 1);
 
-		db = DBType.valueOf(dbType);
 		assig = new AssignmentsPage();
-		
-	
-		
+
 		info = Arrays.asList(
-				assig.getAssignmentInfo(db, cmr_id, asignements, rnAssignment,
-						AssignmentInfo.NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE),
-				assig.getAssignmentInfo(db, cmr_id, asignements, rnAssignment,
-						AssignmentInfo.ASSIGNMENT_TYPE_AND_RELIEF),
-				assig.getAssignmentInfo(db, cmr_id, asignements, rnAssignment,
-						AssignmentInfo.LATEST_ASSIGNED_ASSIGNMENT_DUE_DATES),
-				assig.getAssignmentInfo(db, cmr_id, asignements, rnAssignment, AssignmentInfo.ASSIGNMENT_NOTE_DATE));
+				assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
+						AssignmentInfo.NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE, userInputData),
+
+				assig.getAssignmentInfo(cmr_id, asignements, rnAssignment, AssignmentInfo.ASSIGNMENT_TYPE_AND_RELIEF,
+						userInputData),
+
+				assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
+						AssignmentInfo.LATEST_ASSIGNED_ASSIGNMENT_DUE_DATES, userInputData),
+
+				assig.getAssignmentInfo(cmr_id, asignements, rnAssignment, AssignmentInfo.ASSIGNMENT_NOTE_DATE,
+						userInputData));
+
 	}
 
 	@Then("^User selects a judge or staff assignment  and verifies the information and notes that display on the page$")
 	public void user_selects_a_judge_or_staff_assignment_and_verifies_the_information_and_notes_that_display_on_the_page() {
 		assig = new AssignmentsPage();
-		assig.getAssignmentInformation(db, cmr_id, asignements, rnAssignment, info);
+		List<UserInputData> userInputData = null;
+
+		assig.getAssignmentInformation(cmr_id, asignements, rnAssignment, info, userInputData);
 
 	}
 

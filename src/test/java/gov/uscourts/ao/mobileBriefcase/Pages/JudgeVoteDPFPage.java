@@ -40,61 +40,61 @@ import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
 
-import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSBy;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 	String select = "Please Select";
 
-	@iOSBy(id = "Close")
+	@iOSXCUITFindBy(id = "Close")
 	public static MobileElement close;
 
-	@iOSBy(xpath = "//XCUIElementTypeOther[@name='NoteList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='NoteList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
 	public static MobileElement commentField;
 
-	@iOSBy(id = "Apply")
+	@iOSXCUITFindBy(id = "Apply")
 	public static MobileElement applyBtn;
 
-	@iOSBy(id = "Select All")
+	@iOSXCUITFindBy(id = "Select All")
 	public static MobileElement selectAll;
 
-	@iOSBy(id = "Cut")
+	@iOSXCUITFindBy(id = "Cut")
 	public static MobileElement cut;
 
-	@iOSBy(id = "Back")
+	@iOSXCUITFindBy(id = "Back")
 	public static MobileElement back;
 
-	@iOSBy(id = "Cancel")
+	@iOSXCUITFindBy(id = "Cancel")
 	public static MobileElement cancel;
 
-	@iOSBy(id = "Submit")
+	@iOSXCUITFindBy(id = "Submit")
 	public static MobileElement submit;
 
 	// @WithTimeout(time = 60, unit = TimeUnit.SECONDS)
-	@iOSBy(id = "Yes")
+	@iOSXCUITFindBy(id = "Yes")
 	public static MobileElement yesBtn;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSBy(id = "OK")
+	@iOSXCUITFindBy(id = "OK")
 	public static MobileElement okBtn;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
 	public static MobileElement dashboard;
 
-	@iOSBy(xpath = "//XCUIElementTypeOther[@name='VoteOptions']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='VoteOptions']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static List<MobileElement> judgeVotes;
 
 	/** verify relief is displayed on the popup page */
-	public String selectViewVotes(DBType dbType, String ccr_id, String viewVotes) {
+	public String selectViewVotes(String ccr_id, String viewVotes, List<UserInputData> userInputData) {
 
-		String relief = getRelief(dbType, ccr_id);
+		String relief = getRelief(ccr_id, userInputData);
 		tap(Locator.XPATH, "(//XCUIElementTypeStaticText[@name='" + relief
 				+ "']/following::XCUIElementTypeOther/XCUIElementTypeButton[@name='" + viewVotes + "'])[1]");
 		return relief;
@@ -102,22 +102,24 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	}
 
 	/** verify each judge's vote and the day they voted on the popup page */
-	public void verifyJudgesVote(DBType dbType, String ccr_id) {
+	public void verifyJudgesVote(String ccr_id, List<UserInputData> userInputData) {
 		performPageLoad(driver);
-		getJudgesInitials(dbType, ccr_id, JUDGES_INITIALS, JUDGES_INITIAL, JUDGES_VOTE, JUDGES_VOTE_DATE);
+		getJudgesInitials(ccr_id, JUDGES_INITIALS, JUDGES_INITIAL, JUDGES_VOTE, JUDGES_VOTE_DATE, userInputData);
 
 	}
 
-	public static void getJudgesInitials(DBType dbtype, String ccr_id, String initials, String initial, String votes,
-			String voteDates) {
-		String reliefText = getRelief(dbtype, ccr_id);
+	public static void getJudgesInitials(String ccr_id, String initials, String initial, String votes, String voteDates,
+			List<UserInputData> userInputData) {
+		String reliefText = getRelief(ccr_id, userInputData);
 
-		List<String> dbInitials = executeQuery(dbtype, replace(getID(initials, ccr_id), "RL_LIST_TEXT", reliefText));
+		List<String> dbInitials = executeQuery(replace(getID(initials, ccr_id), "RL_LIST_TEXT", reliefText),
+				userInputData);
 		sort(dbInitials);
 
 		/** get judge's initials */
 
-		List<String> dbInitial = executeQuery(dbtype, replace(getID(initial, ccr_id), "RL_LIST_TEXT", reliefText));
+		List<String> dbInitial = executeQuery(replace(getID(initial, ccr_id), "RL_LIST_TEXT", reliefText),
+				userInputData);
 		sort(dbInitial);
 		try {
 			/** verify all initials are displayed */
@@ -135,17 +137,18 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 				/** get judge's current vote */
 
-				List<String> dbVote = executeQuery(dbtype,
+				List<String> dbVote = executeQuery(
 
-						replace(getID(votes, ccr_id), "RL_LIST_TEXT", reliefText, "JU_INITIALS", dbInitial.get(init)));
+						replace(getID(votes, ccr_id), "RL_LIST_TEXT", reliefText, "JU_INITIALS", dbInitial.get(init)),
+						userInputData);
 				sort(dbVote);
 
 				for (int vote = 0; vote < dbVote.size(); ++vote) {
 
 					/** get vote date */
 
-					List<String> dbVoteDate = executeQuery(dbtype, replace(getID(voteDates, ccr_id), "RL_LIST_TEXT",
-							reliefText, "JU_INITIALS", dbInitial.get(init)));
+					List<String> dbVoteDate = executeQuery(replace(getID(voteDates, ccr_id), "RL_LIST_TEXT", reliefText,
+							"JU_INITIALS", dbInitial.get(init)), userInputData);
 
 					sort(dbVoteDate);
 					for (int uiVoteDate = 0; uiVoteDate < dbVoteDate.size(); ++uiVoteDate) {
@@ -161,7 +164,6 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 										+ "')]/following::XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '"
 										+ votedDate + "')]"),
 								driver);
-						System.out.println(uiResult.getText() + "******************");
 						assertTrue(uiResult.isDisplayed());
 					}
 				}
@@ -175,16 +177,16 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	}
 
 	@SuppressWarnings("unlikely-arg-type")
-	public String getVoteSelection(DBType dbType, String dpfName, String ccr_id, String elId) {
+	public String getVoteSelection(String dpfName, String ccr_id, String elId, List<UserInputData> userInputData) {
 		String voteText = "";
 		String text = "";
-		String reliefText = getRelief(dbType, ccr_id);
+		String reliefText = getRelief(ccr_id, userInputData);
 
 		if (isDisplayed(Locator.XPATH, getIndexOfVoteButton(reliefText, 1)) == true) {
 			tap(Locator.XPATH, getIndexOfVoteButton(reliefText, 1));
 		} else {
 			tap(back);
-			CommonPages.getActionName(getAllColumns(dbType, getID(ACTION_NAME, elId)));
+			CommonPages.getActionName(getAllColumns(getID(ACTION_NAME, elId), userInputData));
 			tap(Locator.XPATH, getIndexOfVoteButton(reliefText, 1));
 		}
 		Page.sleep(4000);
@@ -215,7 +217,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 		tap(Locator.XPATH, getIndexOfNoteIcon(reliefText));
 
-		addVote(dbType, dpfName, getID(MBR_NOTE, elId), reliefText, elId);
+		addVote(dpfName, getID(MBR_NOTE, elId), reliefText, elId, userInputData);
 		tap(back);
 		scrollUp(By.id("DocumentList"));
 		return text;
@@ -233,22 +235,22 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	 * After adding vote to a note, this will verify judge's vote is updated in Vote
 	 * Information Panel
 	 */
-	public void verifyNoteText(DBType dbType, String ccr_id, String voteText, String noteText) {
+	public void verifyNoteText(String ccr_id, String voteText, String noteText, List<UserInputData> userInputData) {
 
 		CommonPages.getPanel(Panel.valueOf("Vote_Information"));
-		String relief = getRelief(dbType, ccr_id);
+		String relief = getRelief(ccr_id, userInputData);
 		getVote(relief).click();
 		performPageLoad(driver);
 		assertTrue(isDisplayed(Locator.XPATH, containsElement(getTodaysDate())));
-		String title = getAllColumns(dbType, DM_DESCRIPTION);
+		String title = getAllColumns(DM_DESCRIPTION, userInputData);
 		assertTrue(isDisplayed(Locator.XPATH, containsElement(title)));
 		tap(close);
 
 	}
 
-	public void addVote(DBType dbType, String dpfName, String query, String relief, String el_id) {
+	public void addVote(String dpfName, String query, String relief, String el_id, List<UserInputData> userInputData) {
 		String text = "";
-		if (getParameter(getAllColumns(dbType, query), dpfName, 4).equals("SKIP")) {
+		if (getParameter(getAllColumns(query, userInputData), dpfName, 4).equals("SKIP")) {
 			assertNull(" THE \"NOTE HISTORY PARAMETER\" IS NOT SET TO \"SKIP\" ", commentField.getText());
 			tap(cancel);
 		} else {
@@ -269,7 +271,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 					tap(okBtn);
 				} catch (Exception e) {
 
-					selectAction(dbType, "Actions", el_id);
+					selectAction("Actions", el_id, userInputData);
 					performPageLoad(driver);
 					tap(Locator.XPATH, getIndexOfNoteIcon(relief));
 					assertEquals(
@@ -287,10 +289,9 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	public static MobileElement getVote(String relief) {
 
 		return findElement(By.xpath(
-				"(//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther"
-						+ "/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/ XCUIElementTypeStaticText[contains(@name, 'Vote Information')]"
-						+ "/following:: XCUIElementTypeStaticText[contains(@name, '" + relief
-						+ "')]/following:: XCUIElementTypeOther[contains(@name, 'NoteIcon')])[1]"));
+
+				"(//XCUIElementTypeStaticText[@name='" + relief
+						+ "']/following ::XCUIElementTypeOther[1]/XCUIElementTypeOther[contains(@name, 'NoteIcon')])[1]"));
 	}
 
 	public static String sendANote() {
@@ -304,8 +305,8 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 		return "TEST-" + changeDateFormat(getStreamOfRandomInts().split(" ")[0], "yyyy/MM/dd", "MM/dd/yyyy");
 	}
 
-	public static String getRelief(DBType dbType, String ccr_id) {
-		return getAllColumns(dbType, getID(JUDGE_VOTE_DPF_RELIEF, ccr_id));
+	public static String getRelief(String ccr_id, List<UserInputData> userInputData) {
+		return getAllColumns(getID(JUDGE_VOTE_DPF_RELIEF, ccr_id), userInputData);
 
 	}
 

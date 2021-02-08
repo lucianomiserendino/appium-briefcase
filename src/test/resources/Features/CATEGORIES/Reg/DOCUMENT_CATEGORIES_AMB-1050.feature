@@ -1,13 +1,16 @@
-@AMB @Smoke @AMB-1050
+@Smoke @AMB-1050
 Feature: Verify Document Categories display for Staff Attorneys
 
 
 Background: 
 
-	Given user is logged into Briefcase 
-		|environment|userName|password |server|
-		|INTEGRATION|s haenni|Test2022!|CMKA  |
-	Then User selects a userCategory "Staff_Attorneys" and  name "Brown, Benjamin" 
+	Given I am logged into Briefcase 
+		|environment    |userName| password |courtId|
+		|Integration    |s haenni| Test2024!|test   |
+		
+	Then I select a user
+	|role              |briefcaseUser       |
+	|Staff Attorneys   |Brown, Benjamin     |
 	
  
 Scenario: 

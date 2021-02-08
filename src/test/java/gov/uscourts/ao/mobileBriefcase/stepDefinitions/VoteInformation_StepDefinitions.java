@@ -1,5 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static org.junit.Assert.assertTrue;
 
 import cucumber.api.java.en.Given;
@@ -17,6 +18,7 @@ public class VoteInformation_StepDefinitions {
 	public void user_observes_the_panel_displays_This_should_only_display_if_the_referral_requires_voting(String dbType,
 			String voteInfo) {
 		page = new VoteInformationPage();
+		getGroupIcons();
 		page1.getPanel(Panel.valueOf(voteInfo));
 	}
 

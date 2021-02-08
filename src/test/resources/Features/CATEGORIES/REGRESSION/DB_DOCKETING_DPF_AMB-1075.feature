@@ -1,13 +1,17 @@
 @AMB @AMB-1075 
 Feature: note DPF back-end updates 
-TEST
+
 Scenario: 
 	Adding a note back-end database updates.
             
-	Given user is logged into Briefcase 
-		|environment|userName|password |server|
-		|INTEGRATION|s haenni|Test2022!|CMKA  |
-	Then User selects a userCategory "Appellate_Judges" and  name "Colloton" 
+	Given I am logged into Briefcase 
+		|environment    |userName| password |courtId|
+		|Integration    |JAHaenni| Test2024!|test   |
+		
+	Then I select a user
+	|role              |briefcaseUser|
+	|Appellate Judges  |Colloton     |
+	
 	Then User selects "TEST_AUTOMATION" and "15-2594" 
 	Then User selecs action, enters a comment in the editable field, submits and verifies Db "CMKA" is updated correctly, ( use "15-2594"  and "32" ) 
 	

@@ -47,9 +47,10 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSBy;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class chmAssignDPFPage extends AppiumPageFactory {
 
@@ -67,7 +68,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	static String assignmentDate = "";
 	static String assignmentCompleted = "";
 	static String cha_id = "";
-	@iOSBy(xpath = "//XCUIElementTypeOther[@name='OptionList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='OptionList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static List<MobileElement> optionList;
 
 	public static void selectADate(chmAssign assign, String x, String y) {
@@ -78,8 +79,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	}
 
-	public void createNewStaffAssignment(DBType dbType, String dpfName, String elId, String cha_ju_pe_id,
-			String cmr_cyv_code, String cmr_cs_caseid, String caseNumber) {
+	public void createNewStaffAssignment( String dpfName, String elId, String cha_ju_pe_id,
+			String cmr_cyv_code, String cmr_cs_caseid, String caseNumber,List<UserInputData> userInputData) {
 
 		/******************
 		 * @AMB-1123 ***
@@ -88,37 +89,38 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		 * STEP 1 --Select a staff member
 		 */
 		getChmAssign(chmAssign.STAFF_MEMBER, "tap");
-		staffMember += getAvailableStaffMembers(dbType, dpfName, elId, cha_ju_pe_id);
+		staffMember += getAvailableStaffMembers(dpfName, elId, cha_ju_pe_id,userInputData);
 		String staffFName = splitBy(staffMember, 0);
 		String staffLName = splitBy(staffMember, 1);
 
-		verifyNewStaffAssignment(chmAssign.CREATE, dbType, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
-				staffFName, staffLName, "assignedDateX", "assignedDateY", "assignedDueDateX", "assignedDueDateY");
+		verifyNewStaffAssignment(chmAssign.CREATE, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
+				staffFName, staffLName, "assignedDateX", "assignedDateY", "assignedDueDateX", "assignedDueDateY",userInputData);
 
-		// cha_id = getCreatedAssignment(dbType, ASSIGNEES_CHA_ID, cha_ju_pe_id,
-		// cmr_cs_caseid);
-		//
-		// verifyNewStaffAssignment(chmAssign.MODIFY, dbType, dpfName, elId,
-		// cha_ju_pe_id, caseNumber, cmr_cyv_code,
-		// staffFName, staffLName, "modifiedAssignedDateX", "modifiedAssignedDateY",
-		// "modifiedAssignedDueDateX",
-		// "modifiedAssignedDueDateY");
-		// terminateStaffAssignment("modifiedAssignedDateX", "modifiedAssignedDateY",
-		// dbType);
+		cha_id = getCreatedAssignment( Queries.ASSIGNEES_CHA_ID, cha_ju_pe_id,
+		 cmr_cs_caseid,userInputData);
+		
+		 verifyNewStaffAssignment(chmAssign.MODIFY,  dpfName, elId,
+		 cha_ju_pe_id, caseNumber, cmr_cyv_code,
+		 
+		 staffFName, staffLName, "modifiedAssignedDateX", "modifiedAssignedDateY",
+		 "modifiedAssignedDueDateX",
+		 "modifiedAssignedDueDateY",userInputData);
+		 
+		 terminateStaffAssignment("modifiedAssignedDateX", "modifiedAssignedDateY",userInputData);
 
 	}
 
 	/**
 	 * When tapping the drop-down a popup displays a list of staff based on the
-	 * screen parameter in the DPF: -----Screen param = ja - only list JAs in the
-	 * judge's chambers -----Screen param = lwclk - only list law clerks in the
-	 * judge's chambers -----Screen param = lwclk:ja - list both JAs and law clerks
-	 * in the judge's chambers -----Screen param = staff - list all staff members in
-	 * the judge's chambers
+	 * screen parameter in the DPF: 
+	 * -----Screen param = ja - only list JAs in the judge's chambers 
+	 * -----Screen param = lwclk - only list law clerks in the judge's chambers
+	 * -----Screen param = lwclk:ja - list both JAs and law clerks in the judge's chambers 
+	 * -----Screen param = staff - list all staff members inthe judge's chambers
 	 */
-	public static String getAvailableStaffMembers(DBType dbType, String dpfName, String elId, String peID) {
+	public static String getAvailableStaffMembers( String dpfName, String elId, String peID,List<UserInputData> userInputData) {
 
-		String screenTypeParam = getParameter(getAllColumns(dbType, getID(MBR_NOTE, elId)), dpfName, 0);
+		String screenTypeParam = getParameter(getAllColumns( getID(MBR_NOTE, elId),userInputData), dpfName, 0);
 
 		String screenParam = "";
 
@@ -143,7 +145,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			break;
 		}
 
-		getListOfAvailableStaffMembers(dbType, STAFF_MEMBERS_FIRST_NAME, peID, screenParam, 0);
+		getListOfAvailableStaffMembers( STAFF_MEMBERS_FIRST_NAME, peID, screenParam, 0,userInputData);
 		performPageLoad(driver);
 		return getChmAssign(chmAssign.STAFF_MEMBER, "text");
 	}
@@ -152,10 +154,10 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	 * gets a list of staff based on the screen parameter in the DPF, compares staff
 	 * members that are displayed on the ui with db and selects one
 	 */
-	public static void getListOfAvailableStaffMembers(DBType dbtype, String staffMember, String peID,
-			String screenTypeParam, int index) {
+	public static void getListOfAvailableStaffMembers( String staffMember, String peID,
+			String screenTypeParam, int index,List<UserInputData> userInputData) {
 
-		List<String> dbStafMembers = executeQuery(dbtype, getText(getID(staffMember, peID), screenTypeParam));
+		List<String> dbStafMembers = executeQuery(getText(getID(staffMember, peID), screenTypeParam),userInputData);
 		sort(dbStafMembers);
 
 		List<String> uiStaffMembers = new ArrayList<>();
@@ -175,8 +177,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	 * Verify that when you tap the Please Select button next to the Assignment
 	 * label, a pop-up displays with valid assignment types
 	 */
-	public static void getAssignmentType(DBType dbType, String dpfName, String elId, String cha_ju_pe_id,
-			String caseNumber, String cmr_cyv_code, String pr_first_name, String pr_last_name) {
+	public static void getAssignmentType( String dpfName, String elId, String cha_ju_pe_id,
+			String caseNumber, String cmr_cyv_code, String pr_first_name, String pr_last_name,List<UserInputData> userInputData) {
 
 		List<String> uiAssignmenType = new ArrayList<>();
 		try {
@@ -186,21 +188,21 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 				uiAssignmenType.add(type.getText().trim());
 				sort(uiAssignmenType);
 			}
-
-			String assignmentType = getParameter(getAllColumns(dbType, getID(MBR_NOTE, elId)), dpfName, 1);
+			
+			String assignmentType = getParameter(getAllColumns( getID(MBR_NOTE, elId),userInputData), dpfName, 1);
 			if (assignmentType.equals("SKIP")) {
 				/** If the assignment type parameter is set to SKIP, use this query */
-				getValidAssignmentTypes(dbType, ASSIGNMENT_TYPE_IS_SKIP, uiAssignmenType, cha_ju_pe_id, caseNumber,
-						cmr_cyv_code, pr_first_name, pr_last_name);
+				getValidAssignmentTypes(ASSIGNMENT_TYPE_IS_SKIP, uiAssignmenType, cha_ju_pe_id, caseNumber,
+						cmr_cyv_code, pr_first_name, pr_last_name,userInputData);
 			} else {
 				/**
 				 * If the assignment type parameter contains a colon delimited list, use this
 				 * query
 				 */
-				getValidAssignmentTypes(dbType,
+				getValidAssignmentTypes(
 						getText(ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST,
 								"'" + assignmentType.replaceAll(":", "','") + "'"),
-						uiAssignmenType, cha_ju_pe_id, caseNumber, cmr_cyv_code, pr_first_name, pr_last_name);
+						uiAssignmenType, cha_ju_pe_id, caseNumber, cmr_cyv_code, pr_first_name, pr_last_name,userInputData);
 			}
 			clickOnNumberInRange(allAssignmenTypes);
 
@@ -210,16 +212,16 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	}
 
 	/** verify assignment types based on assignment types parameter */
-	public static void getValidAssignmentTypes(DBType dbType, String query, List<String> uiAssignmenType,
-			String cha_ju_pe_id, String caseNumber, String cmr_cyv_code, String pr_first_name, String pr_last_name) {
+	public static void getValidAssignmentTypes( String query, List<String> uiAssignmenType,
+			String cha_ju_pe_id, String caseNumber, String cmr_cyv_code, String pr_first_name, String pr_last_name,List<UserInputData> userInputData) {
 
-		List<String> dbAssignmentType = executeQuery(dbType, query);
+		List<String> dbAssignmentType = executeQuery( query,userInputData);
 		sort(dbAssignmentType);
 
 		if (dbAssignmentType.contains("(Please Select)"))
 			dbAssignmentType.remove("(Please Select)");
 
-		String cmr_id = AssignmentsPage.getCMR_ID(dbType, caseNumber, cha_ju_pe_id, cmr_cyv_code);
+		String cmr_id = AssignmentsPage.getCMR_ID( caseNumber, cha_ju_pe_id, cmr_cyv_code,userInputData);
 
 		try {
 			/**
@@ -253,12 +255,12 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		}
 	}
 
-	public void verifyNewStaffAssignment(chmAssign assign, DBType dbType, String dpfName, String elId,
+	public void verifyNewStaffAssignment(chmAssign assign, String dpfName, String elId,
 			String cha_ju_pe_id, String caseNumber, String cmr_cyv_code, String staffFName, String staffLName,
-			String x1, String y1, String x2, String y2) {
+			String x1, String y1, String x2, String y2,List<UserInputData> userInputData) {
 		/** STEP 2 --Select an assignment */
 		getChmAssign(chmAssign.ASSIGNMENT, "tap");
-		getAssignmentType(dbType, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code, staffFName, staffLName);
+		getAssignmentType( dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code, staffFName, staffLName, userInputData);
 
 		/** STEP 3 --Select an Assigned Date */
 		selectADate(chmAssign.ASSIGNED_DATE, x1, y1);
@@ -289,9 +291,9 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			 * @AMB-1137
 			 */
 
-			newDBAssignment(dbType, cha_ju_pe_id, elId, staffFName, staffLName, assignment);
+			newDBAssignment(cha_ju_pe_id, elId, staffFName, staffLName, assignment,userInputData);
 
-			clickOnExistingAssignment(staffMember + ", " + assignment, dbType, elId);
+			clickOnExistingAssignment(staffMember + ", " + assignment, elId, userInputData);
 
 			break;
 
@@ -300,20 +302,20 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			/** After the new assignment is created it clicks on it */
 			getANewStaffAssignment(assignment, assignedDate, assignmentDue);
 			submiTransaction();
-			clickOnExistingAssignment(staffMember + ", " + assignment, dbType, elId);
+			clickOnExistingAssignment(staffMember + ", " + assignment,  elId,userInputData);
 
 			/*****
 			 * @AMB-1173
 			 * 
 			 * Back-end modify assignment updates
 			 */
-			getCreatedRecords(dbType, getAllColumns(dbType, getText(CAV_CODE, assignment)),
-					getID(CHA_CAV_CODE, cha_id));
+			getCreatedRecords(getAllColumns(getText(CAV_CODE, assignment),userInputData),
+					getID(CHA_CAV_CODE, cha_id),userInputData);
 			try {
 
-				getCreatedRecords(dbType, changeFormat(assignedDate), getID(CHD_DATE, cha_id));
+				getCreatedRecords(changeFormat(assignedDate), getID(CHD_DATE, cha_id),userInputData);
 			} catch (AssertionError e) {
-				getCreatedRecords(dbType, changeFormat(assignmentDue), getID(CHD_DATE, cha_id));
+				getCreatedRecords(changeFormat(assignmentDue), getID(CHD_DATE, cha_id),userInputData);
 			}
 			break;
 		default:
@@ -322,12 +324,12 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	}
 
-	public void terminateStaffAssignment(String x1, String y1, DBType dbType) {
+	public void terminateStaffAssignment(String x1, String y1, List<UserInputData> userInputData) {
 		selectADate(chmAssign.ASSIGNMENT_COMPLETED, "selectDateX", "selectDateY");
 		assignmentCompleted = getChmAssign(chmAssign.ASSIGNMENT_COMPLETED, "text");
 		contains(apply).click();
 		submiTransaction();
-		getCreatedRecords(dbType, changeFormat(assignmentCompleted), getID(CHC_DATE_END, cha_id));
+		getCreatedRecords(changeFormat(assignmentCompleted), getID(CHC_DATE_END, cha_id),userInputData);
 
 	}
 
@@ -352,10 +354,10 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	}
 
 	/** check the back-end updates when a new staff assignment is created */
-	public static void newDBAssignment(DBType dbType, String peId, String elID, String staffMembersFName,
-			String staffMembersLName, String assignment) {
+	public static void newDBAssignment( String peId, String elID, String staffMembersFName,
+			String staffMembersLName, String assignment,List<UserInputData> userInputData) {
 
-		String peID = getAllColumns(dbType, getID("SELECT first 1 pe_id\n"
+		String peID = getAllColumns( getID("SELECT first 1 pe_id\n"
 				+ "FROM group inner join member on gp_id = mb_gp_id_parent \n"
 				+ "join personrole on pe_pr_prid = mb_ur_pr_prid \n" + "join person on pe_pr_prid = pr_prid \n"
 				+ "join user on ur_pr_prid = pr_prid \n" + "where  pr_first_name='" + staffMembersFName
@@ -363,23 +365,23 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 				+ "' and   gp_id in (select gp_id from group inner join member on gp_id = mb_gp_id_parent join person on pr_prid = mb_ur_pr_prid \n"
 				+ "join personrole on pe_pr_prid = pr_prid where pe_id = '?' and gp_name like '%Chambers%') and pe_date_end is null and pr_prid <> \n"
 				+ "(select pr_prid from personrole join person on pe_pr_prid = pr_prid where pe_id = '?' and ur_date_disabled is null ) order by pe_date_created desc",
-				peId));
+				peId),userInputData);
 
-		String dbAssignmentType = getAllColumns(dbType, "SELECT cav_code  FROM chm_assign_type_val WHERE cav_display='"
-				+ assignment + "' and cav_chm_role in ('staff', 'all') and cav_date_end is null ORDER BY cav_display");
+		String dbAssignmentType = getAllColumns("SELECT cav_code  FROM chm_assign_type_val WHERE cav_display='"
+				+ assignment + "' and cav_chm_role in ('staff', 'all') and cav_date_end is null ORDER BY cav_display",userInputData);
 
-		String dbChambersAssignment = getAllColumns(dbType, getID(
+		String dbChambersAssignment = getAllColumns( getID(
 				"select first 1 cha_id,cha_date_created from chambers_assignment where cha_ju_pe_id = ? and cha_assigner_ju_pe_id = ?  and "
 						+ "cha_chm_pe_id = '" + peID + "' and cha_cav_code = '" + dbAssignmentType
 						+ "' order by cha_date_created desc",
-				peId));
+				peId),userInputData);
 		/***
 		 * After creating a new assignment it will verify the following records are
 		 * created in cmecf
 		 */
-		getCreatedRecords(dbType, dbChambersAssignment, getID(CHAMBERS_ASSIGNMENT, peId));
-		getCreatedRecords(dbType, dbChambersAssignment, CHM_ASSIGN_TO_CASE);
-		getCreatedRecords(dbType, dbChambersAssignment, CHAMBERS_ASSIGN_DATE);
+		getCreatedRecords( dbChambersAssignment, getID(CHAMBERS_ASSIGNMENT, peId),userInputData);
+		getCreatedRecords( dbChambersAssignment, CHM_ASSIGN_TO_CASE,userInputData);
+		getCreatedRecords( dbChambersAssignment, CHAMBERS_ASSIGN_DATE,userInputData);
 
 	}
 
@@ -403,14 +405,17 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	}
 
 	/** Verify the records are created in CM/ECF */
-	public static void getCreatedRecords(DBType dbType, String expected, String actual) {
-		String CMECF_TABLES = getAllColumns(dbType, actual);
+	public static void getCreatedRecords( String expected, String actual,List<UserInputData> userInputData) {
+		String CMECF_TABLES = getAllColumns(actual, userInputData);
+		System.out.println(CMECF_TABLES+"*******************");
+		System.out.println(expected+"*******************");
+
 		assertEquals("********PLEASE VERIFY THAT RECORDS IN CMECF ARE CREATED CORRECTLY!!!********", expected,
 				CMECF_TABLES);
 	}
 
-	public static String getCreatedAssignment(DBType dbType, String query, String peId, String caseId) {
-		return getAllColumns(dbType, replace(getID(query, peId), "CMR_CS_CASEID", caseId));
+	public static String getCreatedAssignment( String query, String peId, String caseId,List<UserInputData> userInputData) {
+		return getAllColumns( replace(getID(query, peId), "CMR_CS_CASEID", caseId),userInputData);
 
 	}
 
@@ -419,8 +424,9 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + AssignmentTypeAndDate + "')]"));
 	}
 
-	public static void clickOnExistingAssignment(String staffMember, DBType dbType, String elID) {
-		selectAction(dbType, "Actions", elID);
+	public static void clickOnExistingAssignment(String staffMember, String elID,List<UserInputData> userInputData) {
+		//selectAction(dbType, "Actions", elID);
+		selectAction("Actions", elID, userInputData);
 		scrollDownIfNotDisplayed(containsElement(staffMember));
 	}
 
@@ -480,5 +486,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	public enum chmAssign {
 		STAFF_MEMBER, ASSIGNMENT, ASSIGNED_DATE, ASSIGNMENT_DUE, ASSIGNMENT_COMPLETED, CREATE, MODIFY, TERMINATE
 	}
+	
+
 
 }

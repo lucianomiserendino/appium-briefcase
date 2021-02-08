@@ -14,6 +14,12 @@ public interface iOSCapabilities {
 
 	public static final String DEVICE_TYPE = "deviceType";
 
+	public static final String FULL_RESET = "fullReset";
+	
+	public static final String START_IWDP="startIWDP";
+	
+	public static final String AUTOMATION_NAME = "automationName";
+
 	public static final String BUNDLE_ID = "bundleId";
 
 	public static final String BROWSER_NAME = "browserName";
@@ -25,9 +31,11 @@ public interface iOSCapabilities {
 	public static final String AUTO_ACCEPT_ALERTS = "autoAcceptAlerts";
 
 	public static final String TAKES_SCREENSHOT = "takes_screehshot";
-	
+
 	public static final String NO_RESET = "noReset";
 	
+	public static final String SAFARI_INITIAL_URL="safariInitialUrl";
+
 	public static final String LOCAL_HOST = "host";
 
 	public static final String REMOTE_HOST = "remoteHost";
@@ -69,7 +77,5 @@ public interface iOSCapabilities {
 	public static final String TO_X = "toX";
 
 	public static final String TO_Y = "toY";
-	
-	
 
 }

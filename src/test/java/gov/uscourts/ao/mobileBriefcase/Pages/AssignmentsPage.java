@@ -18,7 +18,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Actions.trim;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.changeDateFormat;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.getRandomNumberInRange;
 import static java.util.stream.Collectors.toList;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -29,11 +28,12 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class AssignmentsPage extends AppiumPageFactory {
 
 	/** Find staff assignments associated with the referral */
-	public static void getAssignmentsLinkedToReferral(DBType dbType, String caseId, String peID, String cmr_cyv_code) {
+	public void getAssignmentsLinkedToReferral(DBType dbType, String caseId, String peID, String cmr_cyv_code) {
 
 		List<String> staffAssignments = new ArrayList<>();
 		List<String> staffAssignment = new ArrayList<>();
@@ -70,10 +70,20 @@ public class AssignmentsPage extends AppiumPageFactory {
 								} else {
 									a = dbAssignment.get(m) + " ";
 								}
+
+								System.out.println(a + "***********************AAAAAAAAAAAAAAAAA");
+								System.out.println(dbStaffLName.get(j) + "***********************dbStaffLName.get(j)");
+
+								System.out.println(dbStaffFName.get(i) + "***********************dbStaffFName.get(i)");
+
+								System.out.println(
+										dbassignmentType.get(l) + "***********************dbassignmentType.get(l)");
+
 								staffAssignments.add(("//*[contains(@name, '" + dbStaffLName.get(j) + " "
 										+ dbStaffFName.get(i) + ", " + dbassignmentType.get(l)
 										+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + a
 										+ changeFormat(assignmentDate.get(n)) + "')]").replaceAll("Date", ""));
+
 								staffAssignment.add(dbStaffLName.get(j) + " " + dbStaffFName.get(i) + ", "
 										+ dbassignmentType.get(l));
 							}
@@ -84,7 +94,9 @@ public class AssignmentsPage extends AppiumPageFactory {
 		}
 
 		for (int i = 0; i < staffAssignments.size(); i++) {
-			 assertTrue(Actions.isDisplayed(Locator.XPATH, staffAssignments.get(i)));
+			System.out.println(staffAssignments.get(i) + "***********************2222222222222");
+
+			assertTrue(Actions.isDisplayed(Locator.XPATH, staffAssignments.get(i)));
 		}
 	}
 
@@ -104,25 +116,27 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 	}
 
-	public static List<String> getListOfAssignmentInfo(String cmr_id, List<String> asignements, int randomAssignment) {
+	public static List<String> getListOfAssignmentInfo(String cmr_id, List<String> asignements, int randomAssignment,
+			List<UserInputData> userInputData) {
 
 		if (randomAssignment == 0) {
-			return uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment),
-					getAssignmentInfo(cmr_id, randomAssignment + 1));
+			return uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment, userInputData),
+					getAssignmentInfo(cmr_id, randomAssignment + 1, userInputData));
+
 		} else if (randomAssignment == asignements.size()) {
-			return uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment - 1),
-					getAssignmentInfo(cmr_id, randomAssignment - 2));
+			return uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment - 1, userInputData),
+					getAssignmentInfo(cmr_id, randomAssignment - 2, userInputData));
 
 		} else if (randomAssignment == asignements.size() - 1) {
-			return uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment),
-					getAssignmentInfo(cmr_id, randomAssignment - 1));
+			return uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment, userInputData),
+					getAssignmentInfo(cmr_id, randomAssignment - 1, userInputData));
 
 		} else {
-			List<String> aa = uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment),
-					getAssignmentInfo(cmr_id, randomAssignment + 1));
+			List<String> aa = uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment, userInputData),
+					getAssignmentInfo(cmr_id, randomAssignment + 1, userInputData));
 
-			List<String> bb = uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment),
-					getAssignmentInfo(cmr_id, randomAssignment - 1));
+			List<String> bb = uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment, userInputData),
+					getAssignmentInfo(cmr_id, randomAssignment - 1, userInputData));
 
 			return uniqueValues(cmr_id, aa, bb);
 
@@ -169,31 +183,26 @@ public class AssignmentsPage extends AppiumPageFactory {
 		return date;
 	}
 
-	public static List<String> getAssignmentInfo(String cmr_id, int index) {
+	public static List<String> getAssignmentInfo(String cmr_id, int index, List<UserInputData> userInputData) {
 
 		List<String> assignInfo = new ArrayList<>();
 		String value = null;
 
 		for (int i = 2; i <= 11; i++) {
-			try {
-				value = execute(DBType.CMKA, replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), i).get(index);
+			value = execute(replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), i, userInputData).get(index);
 
-				if (!(value.length() == 0)) {
-					assignInfo.add(trim(value));
-				}
-			} catch (NullPointerException e) {
-
-			}
+			assignInfo.add(trim(value));
 		}
+
 		return assignInfo;
 
 	}
 
-	public String getAssignmentInfo(DBType dbType, String cmr_id, List<String> asignements, final int randomAssignment,
-			AssignmentInfo info) {
+	public String getAssignmentInfo(String cmr_id, List<String> asignements, final int randomAssignment,
+			AssignmentInfo info, List<UserInputData> userInputData) {
 
 		String assignmentInformation = "";
-		List<String> dbColumn = getListOfAssignmentInfo(cmr_id, asignements, randomAssignment);
+		List<String> dbColumn = getListOfAssignmentInfo(cmr_id, asignements, randomAssignment, userInputData);
 
 		String assignmentDueDate = getLatestAssignmentDate(dbColumn, "Assignment Due");
 		String assignedDate = getLatestAssignmentDate(dbColumn, "Assigned");
@@ -202,7 +211,7 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 		case ASSINMENT_TYPE:
 
-			assignmentInformation += containsElement(dbColumn.get(1) + " " + dbColumn.get(0) + ", " + dbColumn.get(2));
+			assignmentInformation = containsElement(dbColumn.get(1) + " " + dbColumn.get(0) + ", " + dbColumn.get(2));
 			break;
 
 		case NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE:
@@ -210,29 +219,29 @@ public class AssignmentsPage extends AppiumPageFactory {
 			String assignName = preceding() + dbColumn.get(1) + " " + dbColumn.get(0) + "')]";
 
 			if (!(assignmentDueDate.length() == 0)) {
-				assignmentInformation += containsElement(assignmentDueDate) + assignName;
+				assignmentInformation = containsElement(assignmentDueDate) + assignName;
 			} else {
-				assignmentInformation += containsElement(assignedDate) + assignName;
+				assignmentInformation = containsElement(assignedDate) + assignName;
 			}
 
 			break;
 		case ASSIGNMENT_TYPE_AND_RELIEF:
 
-			String relief = execute(dbType, replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), 9).get(randomAssignment);
+			String relief = execute(replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), 9, userInputData).get(randomAssignment);
 			if (!(relief.length() == 0)) {
-				assignmentInformation += assignInfo(relief, dbColumn.get(2));
+				assignmentInformation = assignInfo(relief, dbColumn.get(2));
 			} else {
-				assignmentInformation += containsElement(dbColumn.get(2));
+				assignmentInformation = containsElement(dbColumn.get(2));
 			}
 			break;
 
 		case LATEST_ASSIGNED_ASSIGNMENT_DUE_DATES:
 
 			if (!(assignedDate.length() == 0) && assignmentDueDate.length() == 0) {
-				assignmentInformation += assignInfo(assignedDate, "Assigned");
+				assignmentInformation = assignInfo(assignedDate, "Assigned");
 
 			} else if (assignedDate.length() == 0 && !(assignmentDueDate.length() == 0)) {
-				assignmentInformation += assignInfo(assignmentDueDate, "Assignment Due");
+				assignmentInformation = assignInfo(assignmentDueDate, "Assignment Due");
 			} else {
 				List<String> latestAsiignmentDates = new ArrayList<>();
 
@@ -242,21 +251,22 @@ public class AssignmentsPage extends AppiumPageFactory {
 				latestAsiignmentDates.add(assignDate);
 				latestAsiignmentDates.add(assignDueDate);
 				int d = getRandomNumberInRange(0, latestAsiignmentDates.size() - 1);
-				assignmentInformation += latestAsiignmentDates.get(d);
+				assignmentInformation = latestAsiignmentDates.get(d);
 			}
 
 			break;
 
 		case ASSIGNMENT_NOTE_DATE:
-			String can_dm_dls_id_AND_can_dm_dls_id = getAssignmentNotes(dbType, randomAssignment, cmr_id, 7, 8);
-			String cdn_dm_dls_id_AND_cdn_date_created = getAssignmentNotes(dbType, randomAssignment, cmr_id, 10, 11);
+			String can_dm_dls_id_AND_can_dm_dls_id = getAssignmentNotes(randomAssignment, cmr_id, 7, 8, userInputData);
+			String cdn_dm_dls_id_AND_cdn_date_created = getAssignmentNotes(randomAssignment, cmr_id, 10, 11,
+					userInputData);
 
 			if (!(can_dm_dls_id_AND_can_dm_dls_id.length() == 0) && cdn_dm_dls_id_AND_cdn_date_created.length() == 0) {
-				assignmentInformation += can_dm_dls_id_AND_can_dm_dls_id;
+				assignmentInformation = can_dm_dls_id_AND_can_dm_dls_id;
 
 			} else if (can_dm_dls_id_AND_can_dm_dls_id.length() == 0
 					&& !(cdn_dm_dls_id_AND_cdn_date_created.length() == 0)) {
-				assignmentInformation += cdn_dm_dls_id_AND_cdn_date_created;
+				assignmentInformation = cdn_dm_dls_id_AND_cdn_date_created;
 
 			} else if (!(can_dm_dls_id_AND_can_dm_dls_id.length() == 0)
 					&& !(cdn_dm_dls_id_AND_cdn_date_created.length() == 0)) {
@@ -264,10 +274,10 @@ public class AssignmentsPage extends AppiumPageFactory {
 				attachedNotes.add(can_dm_dls_id_AND_can_dm_dls_id);
 				attachedNotes.add(cdn_dm_dls_id_AND_cdn_date_created);
 				int notes = getRandomNumberInRange(0, attachedNotes.size() - 1);
-				assignmentInformation += attachedNotes.get(notes);
+				assignmentInformation = attachedNotes.get(notes);
 
 			} else {
-				assignmentInformation += "Assignment Notes";
+				assignmentInformation = "Assignment Notes";
 			}
 
 			break;
@@ -282,7 +292,6 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 	public static String assignInfo(String assignedDate, String assignmentType) {
 		return containsElement(assignedDate) + preceding() + assignmentType + "')]";
-
 	}
 
 	public static String preceding() {
@@ -290,24 +299,23 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 	}
 
-	public static String getAssignmentNotes(DBType dbType, int randomAssignment, String cmr_id, int column1,
-			int column2) {
+	public static String getAssignmentNotes(int randomAssignment, String cmr_id, int column1, int column2,
+			List<UserInputData> userInputData) {
 
 		String notes = "";
 		try {
-			String assignmentNote = execute(dbType, replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), column1)
+			String assignmentNote = execute(replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), column1, userInputData)
 					.get(randomAssignment);
 			if (!(assignmentNote.length() == 0)) {
 
-				String assignmentNoteDate = execute(dbType, replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), column2)
+				String assignmentNoteDate = execute(replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), column2, userInputData)
 						.get(randomAssignment);
 
-				String assignNoteDesc = getAllColumns(dbType,
-						"select dm_description from document where dm_dls_id='" + assignmentNote + "'");
+				String assignNoteDesc = getAllColumns(
+						"select dm_description from document where dm_dls_id='" + assignmentNote + "'", userInputData);
 
 				notes += "//XCUIElementTypeStaticText[@name='" + assignNoteDesc
 						+ "']/preceding::XCUIElementTypeStaticText[@name='" + changeFormat(assignmentNoteDate) + "']";
-
 			}
 		} catch (NullPointerException e) {
 		}
@@ -326,24 +334,23 @@ public class AssignmentsPage extends AppiumPageFactory {
 		}
 	}
 
-	public void getAssignmentInformation(DBType dbType, String cmr_id, List<String> satffAssignments, int rnAssignment,
-			List<String> info) {
-		tap(Locator.XPATH,
-				getAssignmentInfo(dbType, cmr_id, satffAssignments, rnAssignment, AssignmentInfo.ASSINMENT_TYPE));
+	public void getAssignmentInformation(String cmr_id, List<String> satffAssignments, int rnAssignment,
+			List<String> info, List<UserInputData> userInputData) {
+		tap(Locator.XPATH, getAssignmentInfo(cmr_id, satffAssignments, rnAssignment, AssignmentInfo.ASSINMENT_TYPE,
+				userInputData));
 		for (int i = 0; i < info.size(); i++) {
-			try {
-
+			if (!info.get(i).equals("Assignment Notes"))
 				assertTrue(Actions.isDisplayed(Locator.XPATH, info.get(i)));
-			} catch (Exception e) {
-				assertEquals(e.getMessage(), "Assignment Notes", info.get(i));
-
-			}
 		}
+
 	}
 
 	public static String getCMR_ID(DBType dbType, String caseId, String peId, String cmr_cyv_code) {
 		return getCMRID(dbType, "cmr_id", caseId, peId, cmr_cyv_code);
+	}
 
+	public static String getCMR_ID(String caseId, String peId, String cmr_cyv_code, List<UserInputData> userInputData) {
+		return getCMRID("cmr_id", caseId, peId, cmr_cyv_code, userInputData);
 	}
 
 	public String getAssignmentDateType(DBType dbType, String cmrId, String pr_last_name, String pr_first_name,
@@ -388,7 +395,21 @@ public class AssignmentsPage extends AppiumPageFactory {
 	public enum AssignmentInfo {
 		ASSINMENT_TYPE, ASSIGNMENT_DATE, NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE, ASSIGNMENT_TYPE_AND_RELIEF, LATEST_ASSIGNED_ASSIGNMENT_DUE_DATES, ASSIGNMENT_NOTE_DATE
 	}
-	
-	
 
+	// public static void main(String[] args) {
+	//
+	// List<String> assignInfo = new ArrayList<>();
+	// String value = null;
+	// // try {
+	// for (int i = 2; i <= 11; i++) {
+	// value = execute(DBType.CMKA, replace(ASSIGNMENT_INFO, "CMR_ID", "2310499"),
+	// i).get(2);
+	//
+	// assignInfo.add(trim(value));
+	// }
+	// // } catch (NullPointerException e) {
+	// // }
+	//
+	// System.out.println(assignInfo);
+	// }
 }

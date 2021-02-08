@@ -1,4 +1,4 @@
-@AMB @Regression @AMB-1394
+@AMB @Regression @AMB-1394 @a
 Feature: Sorting on the Referral Detail Page 
 
  
@@ -8,19 +8,23 @@ Scenario Outline:
 	  based on the chm_mobile_doc.cmd_sort field
 	
 
-		Given user is logged into Briefcase 
-		|environment|userName|password |server|
-		|INTEGRATION|s haenni|Test2022!|CMKA  |
-	Then User selects a userCategory "<userCategory>" and  name "<judgeName>" 
-	Then  User selects "<refCat>" and "<caseNum>" 
+	Given I am logged into Briefcase 
+		|environment    |userName| password |courtId|
+		|Integration    |s haenni| Test2023!|test   |
+		
+	Then I select a user
+	|role              |briefcaseUser|
+	|Appellate Judges  |Colloton     |
+	
+	Then  User selects "<refCat>" and "15-2594" 
 	Then User verifies  Document Categories are sorted on the referral detail page ("<server>", "<cmr_cyv_code>", "<cmr_ju_pe_id>", "<cmr_cs_caseid>") 
 	
 	
 	
 	
 	Examples: 
-		|environment   |userName       |password  |server    |refCat            |caseNum|userCategory    |judgeName|cmr_cyv_code| cmr_ju_pe_id| cmr_cs_caseid|
-		|INTEGRATION   |s haenni       |Test2021!|CMKA       |TEST_AUTOMATION   |15-2594|Appellate_Judges|Colloton |autotst     |32           |  81452      |
+		|environment   |userName       |password  |server    |refCat           |userCategory    |judgeName|cmr_cyv_code| cmr_ju_pe_id| cmr_cs_caseid|
+		|INTEGRATION   |s haenni       |Test2021!|CMKA       |TEST_AUTOMATION  |Appellate_Judges|Colloton |autotst     |32           |  81452      |
 		#|Testing       |judgewilliams   |Testpass1! |CM3A           |Motion/Petition   | 
 		
 		

@@ -26,6 +26,7 @@ import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Coordinates.BriefcaseCoordinates;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSBy;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 
@@ -43,19 +44,19 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 
 	String addANote = "Adding a note to display in briefcase";
 
-	@iOSBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
 	public MobileElement dashboard;
 
-	@iOSBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[1]")
 	public static MobileElement searchIcon;
 
-	@iOSBy(xpath = "//XCUIElementTypeTextField")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextField")
 	public static MobileElement searchTextField;
 
-	@iOSBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
 	public static MobileElement searchBTN;
 
-	@iOSBy(xpath = "//XCUIElementTypeStaticText[@name='TestingAutosync']")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='TestingAutosync']")
 	public static MobileElement pdf;
 
 	public static String getCase(String caseNum, String index) {

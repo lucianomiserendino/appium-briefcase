@@ -13,16 +13,14 @@ import org.openqa.selenium.NoSuchElementException;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSBy;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class AppliedCasesPage extends AppiumPageFactory {
 
-	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[2]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[2]")
 	public MobileElement bookmarkBTN;
 
-	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
-	@iOSBy(xpath = "(//XCUIElementTypeStaticText[@name='Bookmarked'])[1]")
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Bookmarked'])[2]")
 	public MobileElement bookOnDashboard;
 
 	public void getBookmarkedReferral(String caseNumber) {
@@ -62,6 +60,7 @@ public class AppliedCasesPage extends AppiumPageFactory {
 		assertTrue("******APPLIED CASES LINK ICON DISAPPEARS WHEN BOOKMARKING CASE/REFERRAL******",
 				isDisplayed(Locator.XPATH, containsElement(caseNumber)
 						+ "/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText[@name='linked']"));
+		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 
 	}
 }

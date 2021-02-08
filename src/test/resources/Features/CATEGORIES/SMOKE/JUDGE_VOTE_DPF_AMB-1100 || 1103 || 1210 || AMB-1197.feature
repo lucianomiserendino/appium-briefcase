@@ -1,12 +1,7 @@
-#@AMB 
+#@AMB  @a
 Feature: JudgeVote DPF UI 
 
 
-Background: 
-
-	Given user is logged into Briefcase 
-		|environment|userName    |password |server|
-		|INTEGRATION|judge werner|Test2020!|CMKA  |
 @Smoke 
 @AMB-1100 
 Scenario: 
@@ -31,7 +26,7 @@ Scenario:
 	And User verifies judge's vote is updated in Vote Information Panel. Use  db "CMKA" ,ccrID "35683" 
 	
 	
-@AMB-1097 
+#@AMB-1097 
 Scenario Outline: 
 #has to be changed to PETITIONS_FOR_REHEARING, 3124
 	Then User selects "<refCategory>" and "<caseNum>" 

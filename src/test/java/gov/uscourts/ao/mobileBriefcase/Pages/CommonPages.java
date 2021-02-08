@@ -26,51 +26,55 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 
+import cucumber.api.DataTable;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import io.appium.java_client.pagefactory.iOSBy;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CommonPages extends Base {
 	public CommonPages() {
+		
 		initElements(new AppiumFieldDecorator(driver), this);
+		
 	}
 
 	static String okButton = "OK";
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
 	public static MobileElement dashboard;
 
-	@iOSBy(xpath = "//*[contains(@name, 'NavigationRenderer')]/XCUIElementTypeButton[2]")
+	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'NavigationRenderer')]/XCUIElementTypeButton[2]")
 	public static MobileElement settingsIcon;
 
-	@iOSBy(xpath = "//XCUIElementTypeStaticText[@name='Logout of Briefcase']")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Logout of Briefcase']")
 	public static MobileElement logout;
 
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
-	@iOSBy(accessibility = "PendingTasksList")
+	@iOSXCUITFindBy(accessibility = "PendingTasksList")
 	public MobileElement PendingTasksList;
 
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
-	@iOSBy(accessibility = "ReferralsList")
+	@iOSXCUITFindBy(accessibility = "ReferralsList")
 	public MobileElement ReferralsList;
 
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
-	@iOSBy(accessibility = "SessionGroups")
+	@iOSXCUITFindBy(accessibility = "SessionGroups")
 	public MobileElement SessionGroups;
 
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
-	@iOSBy(accessibility = "DocumentList")
+	@iOSXCUITFindBy(accessibility = "DocumentList")
 	public MobileElement DocumentList;
 
-	@iOSBy(accessibility = "GroupIcon")
+	@iOSXCUITFindBy(accessibility = "GroupIcon")
 	public static List<MobileElement> GroupIcon;
 
-	@iOSBy(xpath = "//*[contains(@name, 'Judge:')]")
+	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Judge:')]")
 	public static MobileElement judge;
-	@iOSBy(xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public List<MobileElement> Categories;
 
 	public void getCategory(Category category, String caseNumber) {
@@ -79,32 +83,32 @@ public class CommonPages extends Base {
 		MobileElement list = null;
 
 		switch (category) {
-		case PENDING_TASKS:
+		case PENDIN:
 			categories = "Pending Tasks";
 			list = PendingTasksList;
 			break;
 
-		case PETITIONS_FOR_REHEARING:
+		case PETITION:
 			categories = "Petitions for Rehearing";
 			list = ReferralsList;
 			break;
 
-		case CASES_ON_CALENDAR:
+		case CASES_ON:
 			categories = "Cases on Calendar";
 			list = SessionGroups;
 			break;
 
-		case MOTIONS_PETITIONS:
-			categories = "Motions/Petitions";
+		case MOTION:
+			categories = "Motion";
 			list = ReferralsList;
 			break;
 
-		case SCREENING_PANELS:
-			categories = "Screening Panels";
+		case SCREENING:
+			categories = "Screening";
 			list = ReferralsList;
 			break;
 
-		case REFERENCE_DOCUMENTS:
+		case REFERENCE:
 			categories = "Reference Documents";
 			list = DocumentList;
 			break;
@@ -127,9 +131,15 @@ public class CommonPages extends Base {
 
 	}
 
+	public static String getDataTable(DataTable data, int index1, int index2) {
+		List<List<String>> table = data.raw();
+		return table.get(index1).get(index2);
+	}
+
 	public void getCategoryWithCase(String category, String caseNumber) {
 		performPageLoad(driver);
 		getCategory(Category.valueOf(category), caseNumber);
+		performPageLoad(driver);
 	}
 
 	public static void getPanel(Panel panel) {
@@ -160,11 +170,11 @@ public class CommonPages extends Base {
 		scrollDownIfNotDisplayed(containsElement(panels));
 	}
 
-	public static void selectAction(DBType dbType, String panel, String el_id) {
+	public static void selectAction(String panel, String el_id,List<UserInputData> userInputData) {
 		getGroupIcons();
 		getPanel(Panel.valueOf(panel));
 		String actionName1 = "";
-		String actionName2 = getAllColumns(dbType, getID(ACTION_NAME, el_id));
+		String actionName2 = getAllColumns( getID(ACTION_NAME, el_id),userInputData);
 		if (actionName2.contains("'")) {
 			actionName1 += actionName2.split("'")[0];
 			getActionName(actionName1);
@@ -192,19 +202,34 @@ public class CommonPages extends Base {
 						id, "CMR_CYV_CODE", cmr_cyv_code));
 	}
 
+	public static String getCMRID(String id, String caseNum, String peId, String cmr_cyv_code,
+			List<UserInputData> userInputData) {
+		String caseYear = splitBy(caseNum, 0);
+		String caseNumber = splitBy(caseNum, 1);
+
+		return getAllColumns(
+				replace(replace(CMR_CCR_ID, "CS_YEAR", caseYear, "CS_NUMBER", caseNumber, "CMR_JU_PE_ID", peId), "ID",
+						id, "CMR_CYV_CODE", cmr_cyv_code),
+				userInputData);
+	}
+
 	public static void verifyElementIsDisplayed(String element) {
 		assertTrue(" PLEASE ENSURE THAT " + element.toUpperCase() + " IS DISPLAYED ",
 				isDisplayed(containsElement(element)) == true);
 	}
 
-	public static String getCaseID(DBType dbType, MobileElement uiCaseNumber) {
-		return getAllColumns(dbType, replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, uiCaseNumber), "CS_NUMBER",
-				getCase(Case.CASE_NUMBER, uiCaseNumber)));
+	public static String getCaseID( MobileElement uiCaseNumber,List<UserInputData> table) {
+		return getAllColumns( replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, uiCaseNumber), "CS_NUMBER",
+				getCase(Case.CASE_NUMBER, uiCaseNumber)),table);
 	}
 
 	public static String getCaseNumber(MobileElement caseNumber, int index) {
 		return caseNumber.getText().split(" ")[0].split("-")[index];
 
+	}
+
+	public static String getSiValue(String value, List<UserInputData> pacerInputData) {
+		return getAllColumns(getID(SITE_TABLE_VARIABLE_VALUE, value), pacerInputData);
 	}
 
 	public static String getSiValue(String dbType, String value) {
@@ -216,9 +241,13 @@ public class CommonPages extends Base {
 	 * 
 	 */
 
-	public static void setValue(DBType dbType, String si_value, String SI_CODE) {
-		insertData(dbType, replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE", si_value, "SI_CODE", SI_CODE));
-		String value = getAllColumns(dbType, replace(SITE_TABLE_VARIABLE_VALUE, "SI_CODE", SI_CODE));
+	public static void setValue(String si_value, String SI_CODE,List<UserInputData> userInputData) {
+		//insertData(dbType, replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE", si_value, "SI_CODE", SI_CODE));
+		insertData(replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE", si_value, "SI_CODE", SI_CODE), userInputData) ;
+		String value = getAllColumns(replace(SITE_TABLE_VARIABLE_VALUE, "SI_CODE", SI_CODE),userInputData);
+		System.out.println(si_value+"******************");
+		System.out.println(value+"******************");
+
 		assertEquals(si_value, value);
 	}
 
@@ -252,7 +281,8 @@ public class CommonPages extends Base {
 	public void deleteDocs() {
 		tap(dashboard);
 		tap(settingsIcon);
-		scrollDownIfNotDisplayed(containsElement("Delete all documents on device"));
+		tap(Locator.XPATH, "//XCUIElementTypeStaticText[@name='Delete all Briefcase Documents']");
+		performPageLoad(driver);
 		tap(dashboard);
 	}
 
@@ -265,9 +295,7 @@ public class CommonPages extends Base {
 	}
 
 	public enum Category {
-		PENDING_TASKS, PETITIONS_FOR_REHEARING, CASES_ON_CALENDAR, MOTIONS_PETITIONS, SCREENING_PANELS, REFERENCE_DOCUMENTS, TEST_AUTOMATION
+		PENDIN, PETITION, CASES_ON, MOTION, SCREENING, REFERENCE, TEST_AUTOMATION
 	}
-
-
 
 }

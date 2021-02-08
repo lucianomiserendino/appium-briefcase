@@ -17,11 +17,11 @@ import java.util.List;
 
 import org.openqa.selenium.NoSuchElementException;
 
-import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSBy;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CalendarPage extends AppiumPageFactory {
 
@@ -35,32 +35,32 @@ public class CalendarPage extends AppiumPageFactory {
 	// @WithTimeout(time = 300, unit = TimeUnit.SECONDS)
 
 	// @WithTimeout(time = 300, unit = TimeUnit.SECONDS)
-	@iOSBy(xpath = "//XCUIElementTypeOther[@name='SessionGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[4]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='SessionGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
 	public static MobileElement weeklySessions;
 
 	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
-	@iOSBy(accessibility = "SessionGroups")
+	@iOSXCUITFindBy(accessibility = "SessionGroups")
 	public MobileElement sessionGroups;
 
 	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
-	@iOSBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[1]")
 	public static MobileElement referral;
 
 	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
-	@iOSBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText[1]")
 	public static MobileElement argDescription;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeStaticText")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static MobileElement hearingDate;
 
-	public void getWeeklySession(DBType dbType, String peID) {
+	public void getWeeklySession(String peID, List<UserInputData> table) {
 		performPageLoad(driver);
-		findElementAndGetText(Locator.XPATH, getText(weeklySessions), dbType, peID);
+		findElementAndGetText(Locator.XPATH, getText(weeklySessions), peID, table);
 
 	}
 
-	public static void findElementAndGetText(Locator locator, String element, DBType dbType, String peId) {
+	public static void findElementAndGetText(Locator locator, String element, String peId, List<UserInputData> table) {
 		String fromToDate = "";
 		String initials = "";
 
@@ -92,24 +92,25 @@ public class CalendarPage extends AppiumPageFactory {
 		 * session, query the court_session table where cts_id = clu_cts_id.
 		 * 
 		 */
-		assertEQ(CLU_DATE_HEARING, getCourtSessionFields(CourtSession.CLU_DATE_HEARING, dbType, peId),
+		assertEQ(CLU_DATE_HEARING, getCourtSessionFields(CourtSession.CLU_DATE_HEARING, peId, table),
 				getUiToFromDates(getCluDateHearing(hearingDate.getText())));
 
-		assertEQ(ARG_DISPLAY, getCourtSessionFields(CourtSession.ARG_DISPLAY, dbType, peId),
+		assertEQ(ARG_DISPLAY, getCourtSessionFields(CourtSession.ARG_DISPLAY, peId, table),
 				add(splitBy(argDescription.getText(), "Time:", 1).trim()));
 
-		assertEQ(CTS_DATE_FROM, getCourtSessionFields(CourtSession.CTS_DATE_FROM, dbType, peId),
-				getUiToFromDates(split(fromToDate, 0)));
+		// assertEQ(CTS_DATE_FROM, getCourtSessionFields(CourtSession.CTS_DATE_FROM,
+		// dbType, peId),
+		// getUiToFromDates(split(fromToDate, 0)));
+		//
+		// assertEQ(CTS_DATE_TO, getCourtSessionFields(CourtSession.CTS_DATE_TO, dbType,
+		// peId),
+		// getUiToFromDates(split(fromToDate, 1)));
 
-		assertEQ(CTS_DATE_TO, getCourtSessionFields(CourtSession.CTS_DATE_TO, dbType, peId),
-				getUiToFromDates(split(fromToDate, 1)));
-
-		assertEQ(CMR_PANEL_MEMBERS, getCourtSessionFields(CourtSession.CMR_PANEL_MEMBERS, dbType, peId), add(initials));
+		assertEQ(CMR_PANEL_MEMBERS, getCourtSessionFields(CourtSession.CMR_PANEL_MEMBERS, peId, table), add(initials));
 
 	}
 
 	public static void assertEQ(String courtSessionFiel, List<String> list, List<String> list2) {
-
 		assertEquals("PLEASE MAKE SURE " + courtSessionFiel.toUpperCase() + " IS CORRECT", list, list2);
 	}
 
@@ -154,7 +155,7 @@ public class CalendarPage extends AppiumPageFactory {
 		return splitBy(weeklySession, "-", index);
 	}
 
-	public static List<String> getCourtSessionFields(CourtSession session, DBType dbType, String peId) {
+	public static List<String> getCourtSessionFields(CourtSession session, String peId, List<UserInputData> table) {
 		String courtSession = "";
 		switch (session) {
 		case CLU_DATE_HEARING:
@@ -166,12 +167,12 @@ public class CalendarPage extends AppiumPageFactory {
 		case ARG_DISPLAY:
 			courtSession += ARG_DISPLAY;
 			break;
-		case CTS_DATE_FROM:
-			courtSession += CTS_DATE_FROM;
-			break;
-		case CTS_DATE_TO:
-			courtSession += CTS_DATE_TO;
-			break;
+		// case CTS_DATE_FROM:
+		// courtSession += CTS_DATE_FROM;
+		// break;
+		// case CTS_DATE_TO:
+		// courtSession += CTS_DATE_TO;
+		// break;
 		case CMR_PANEL_MEMBERS:
 			courtSession += CMR_PANEL_MEMBERS;
 			break;
@@ -179,12 +180,14 @@ public class CalendarPage extends AppiumPageFactory {
 		default:
 			break;
 		}
-		return getCourtSessionTable(dbType, courtSession, peId, getCaseID(dbType, referral));
+		return getCourtSessionTable(courtSession, peId, getCaseID(referral, table), table);
 	}
 
-	public static List<String> getCourtSessionTable(DBType dbType, String value, String peID, String caseID) {
-		return executeQuery(dbType,
-				replace(CASES_ON_CALENDAR_SESSIONS, "VALUE", value, "CMR_JU_PE_ID", peID, "CMR_CS_CASEID", caseID));
+	public static List<String> getCourtSessionTable(String value, String peID, String caseID,
+			List<UserInputData> table) {
+		return executeQuery(
+				replace(CASES_ON_CALENDAR_SESSIONS, "VALUE", value, "CMR_JU_PE_ID", peID, "CMR_CS_CASEID", caseID),
+				table);
 	}
 
 	public static String getMonth(String month) {

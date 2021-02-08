@@ -1,12 +1,15 @@
-@AMB @Smoke @AMB-1207 
+@AMB @Smoke @AMB-1207 @a
 Feature: Non case related docs - Suppress case number for 'lbrrpt' category 
 
 Background: 
 
-	Given user is logged into Briefcase 
-		|environment|userName|password |server|
-		|INTEGRATION|s haenni|Test2022!|CMKA  |
-	Then User selects a userCategory "Appellate_Judges" and  name "Colloton" 
+	Given I am logged into Briefcase 
+		|environment    |userName| password |courtId|
+		|Integration    |s haenni| Test2023!|test   |
+		
+	Then I select a user 
+		|role              |briefcaseUser|
+		|Appellate Judges  |Colloton     |
 	
 	
 Scenario: 

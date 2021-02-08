@@ -26,35 +26,37 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
+import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSBy;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class DashboardPage extends AppiumPageFactory {
 	CommonPages page = new CommonPages();
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
-	@iOSBy(accessibility = "Pending Tasks")
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name=\"Pending Tasks\"])[2]/following::XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
 	public static MobileElement pendingTasks;
 
 	// @WithTimeout(time = 30, unit = TimeUnit.SECONDS)
-	@iOSBy(xpath = "//*[contains(@name, 'Total')]")
+	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Total')]")
 	public static MobileElement total;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSBy(xpath = "//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public static List<MobileElement> navIcons;
 
 	public String verifyIfPendingTasksAreDisplayed() {
-		if (pendingTasks.isDisplayed()) {
-			tap(pendingTasks);
-		}
+
 		performPageLoad(driver);
-		return getNumOfDisplayedCases(total);
+
+		return getText(waitForVisibilityOfElement(pendingTasks, driver)).split("OF")[1].split("T")[0].trim();
 	}
 
 	/**
@@ -62,8 +64,8 @@ public class DashboardPage extends AppiumPageFactory {
 	 * judge has any pending assignments and the site table variable
 	 * briefcaseShowPendingTasks = 'y'.
 	 */
-	public void getPendingTasks(DBType dbtype, String query) {
-		List<String> DBPendingTasks = executeQuery(dbtype, query);
+	public void getPendingTasks(String query, List<UserInputData> userInputData) {
+		List<String> DBPendingTasks = executeQuery(query, userInputData);
 		if (DBPendingTasks.size() > 0) {
 			List<String> UIPendingTasks = asList(verifyIfPendingTasksAreDisplayed());
 			assertEquals("-----RECORD COUNT MISMATCH-----", DBPendingTasks, UIPendingTasks);
@@ -78,33 +80,26 @@ public class DashboardPage extends AppiumPageFactory {
 	 * Referrals are stored in the chm_mobile_referral table. There is a FK to the
 	 * chm_reftype_val table (cmr_cyv_code). This is how the category is obtained.
 	 */
-	public void getReferralCategories(DBType dbtype, String query) {
-		categories(dbtype, query);
-	}
 
-	public static List<String> categories(DBType dbtype, String query) {
-		List<String> categories = new ArrayList<>();
-		List<String> dbReferralCategories = executeQuery(dbtype, query);
+	public void categories(List<UserInputData> userInputData) {
+
+		String name = SystemPropertySetup.getUser(userInputData);
+
+		String query = getID(Queries.DB_LIST_OF_CATEGORIES, getPE_ID("jud", name, userInputData));
+
+		List<String> dbReferralCategories = executeQuery(query, userInputData);
 		sort(dbReferralCategories);
-		try {
-			for (int i = 0; i < dbReferralCategories.size(); ++i) {
-				performPageLoad(driver);
-				MobileElement referrals = waitForVisibilityOfElement(
-						findElementBy(Locator.XPATH, "//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '"
-								+ dbReferralCategories.get(i) + "')]"),
-						driver);
-				assertTrue(
-						"*****" + dbReferralCategories.get(i).toUpperCase() + " IS NOT DISPLAYED ON THE DASHBOARD*****",
-						referrals.isDisplayed());
-			}
 
-		} catch (org.openqa.selenium.TimeoutException e) {
+		for (int i = 0; i < dbReferralCategories.size(); i++) {
+			performPageLoad(driver);
+			MobileElement referrals = waitForVisibilityOfElement(findElementBy(Locator.XPATH,
 
-			e.printStackTrace();
+					"(//XCUIElementTypeStaticText[@name='" + dbReferralCategories.get(i) + "'])[2]"),
+
+					driver);
+			System.out.println(referrals.getText()+"&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+			assertTrue(referrals.isDisplayed());
 		}
-		categories.addAll(dbReferralCategories);
-		sort(categories);
-		return dbReferralCategories;
 	}
 
 	/**
@@ -113,39 +108,45 @@ public class DashboardPage extends AppiumPageFactory {
 	 * the judge for that category. This method verifies the correct number of
 	 * referrals are being displayed.
 	 */
-	public void verifyNonOrallyArgCases(DBType dbtype, String cyvCategory, String pe_id) {
-		getReffCategories(dbtype, cyvCategory, pe_id);
+	public void verifyNonOrallyArgCases(String cyvCategory, String pe_id, List<UserInputData> userInputData) {
+		getReffCategories(cyvCategory, pe_id, userInputData);
 
 	}
 
-	public static List<String> getReffCategories(DBType dbtype, String cyvCategory, String pe_id) {
+	public static List<String> getReffCategories(String cyvCategory, String pe_id, List<UserInputData> userInputData) {
 
-		List<String> referralCategories = executeQuery(dbtype,
-				getID(replace(NON_ORALLY_ARGUED_CASES, "CMR_CYV_CODE", cyvCategory), pe_id));
-
+		List<String> referralCategories = executeQuery(
+				getID(replace(NON_ORALLY_ARGUED_CASES, "CMR_CYV_CODE", cyvCategory), pe_id), userInputData);
 		sort(referralCategories);
 		try {
 
 			for (int i = 0; i < referralCategories.size(); ++i) {
 				performPageLoad(driver);
 				MobileElement referrals = waitForVisibilityOfElement(
-						findElementBy(Locator.XPATH, "//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '"
-								+ referralCategories.get(i) + "')]"),
+						findElementBy(Locator.XPATH, "(//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '"
+								+ referralCategories.get(i) + "')])[2]"),
 						driver);
 				performPageLoad(driver);
 				String dbNonOrgCases = getText(referrals);
 				referrals.click();
-				List<String> briefcaseTargReferral_y = executeQuery(dbtype,
-						replace(getID(BRIEFCASE_TARGET_ONLY_Y, pe_id), "CYV_CATEGORY", dbNonOrgCases));
+				List<String> briefcaseTargReferral_y = executeQuery(
+						replace(getID(BRIEFCASE_TARGET_ONLY_Y, pe_id), "CYV_CATEGORY", dbNonOrgCases), userInputData);
 
-				List<String> briefcaseTargReferral_n = executeQuery(dbtype,
-						replace(getID(BRIEFCASE_TARGET_ONLY_N, pe_id), "CYV_CATEGORY", dbNonOrgCases));
+				List<String> briefcaseTargReferral_n = executeQuery(
+						replace(getID(BRIEFCASE_TARGET_ONLY_N, pe_id), "CYV_CATEGORY", dbNonOrgCases), userInputData);
 
 				List<String> UInonOrallyarguedCases = asList(
 						(getNumOfDisplayedCases(Page.waitForVisibilityOfElement(total, driver))));
 
-				assertTrue("-----RECORD COUNT MISMATCH-----", briefcaseTargReferral_n.equals(UInonOrallyarguedCases)
-						|| briefcaseTargReferral_y.equals(UInonOrallyarguedCases));
+				String si_value = CommonPages.getSiValue("briefcaseTargetOnly", userInputData);
+
+				if (si_value.equals("y")) {
+					assertTrue("-----RECORD COUNT MISMATCH-----",
+							briefcaseTargReferral_y.equals(UInonOrallyarguedCases));
+
+				} else
+					assertTrue("-----RECORD COUNT MISMATCH-----",
+							briefcaseTargReferral_n.equals(UInonOrallyarguedCases));
 
 				tap(dashboard);
 			}
@@ -161,56 +162,62 @@ public class DashboardPage extends AppiumPageFactory {
 	 * If the chm_mobile_referral.cmr_cyv_code = 'lbrrpt', verify  cyv_category 
 	 * displays on the Dashboard page. 
 	 */
-	public void get_lbrrpt_CATEGORY(DBType dbType, String cyvCategory, String PE_RT_CODE, String judgeName) {
+	public void get_lbrrpt_CATEGORY(String cyvCategory, String PE_RT_CODE, String judgeName,
+			List<UserInputData> userInputData) {
 		performPageLoad(driver);
 		MobileElement lbrrptCategory;
-		String peID = getPE_ID(dbType, PE_RT_CODE, judgeName);
+		String peID = getPE_ID(PE_RT_CODE, judgeName, userInputData);
 
-		List<String> cmr_cyv_code = executeQuery(dbType, getID(lbrrpt_CATEGORY, peID));
+		List<String> cmr_cyv_code = executeQuery(getID(lbrrpt_CATEGORY, peID), userInputData);
 		if (cmr_cyv_code.contains(cyvCategory)) {
-			String cyv_category = getAllColumns(dbType,
-					getID(replace(lbrrpt_CYV_CATEGORY, "CMR_CYV_CODE", cyvCategory), peID));
-			lbrrptCategory = waitForVisibilityOfElement(findElementBy(Locator.ID, cyv_category), driver);
+			String cyv_category = getAllColumns(getID(replace(lbrrpt_CYV_CATEGORY, "CMR_CYV_CODE", cyvCategory), peID),
+					userInputData);
+			lbrrptCategory = waitForVisibilityOfElement(findElementBy(Locator.XPATH,
+					"//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '" + cyv_category.trim() + "')]"),
+					driver);
+
 			assertTrue(lbrrptCategory.isDisplayed());
 			lbrrptCategory.click();
+
 			assertTrue("*****PLEASE VERIFY ONLY DOCUMENTS DISPLAY ON THE REFERRAL DETAIL PAGE*****",
-					getDocuments(peID, dbType));
+					getDocuments(peID, userInputData));
 		}
 
 	}
 
-	public boolean getDocuments(String peID, DBType dbType) {
+	public boolean getDocuments(String peID, List<UserInputData> userInputData) {
 
-		// page.getGroupIcons();
+		CommonPages.getGroupIcons();
 		MobileElement uiDocs = null;
 
 		boolean isDisplayed = false;
 
-		List<String> dbDocCategory = executeQuery(dbType, getID(lbrrpt_DOCUMENT_CATEGORY, peID));
+		List<String> dbDocCategory = executeQuery(getID(lbrrpt_DOCUMENT_CATEGORY, peID), userInputData);
 		sort(dbDocCategory);
 
-		try {
-			for (int i = 0; i < dbDocCategory.size(); ++i) {
+		// try {
+		for (int i = 0; i < dbDocCategory.size(); ++i) {
 
-				uiDocs = findElementBy(Locator.XPATH, containsElement(dbDocCategory.get(i)));
+			uiDocs = findElementBy(Locator.XPATH, containsElement(dbDocCategory.get(i)));
 
-				if (uiDocs.isDisplayed())
+			if (uiDocs.isDisplayed())
+				isDisplayed = true;
+			uiDocs.click();
+
+			List<String> docDesc = executeQuery(
+					getID(replace(REFERRAL_DOCUMENTS, "CMD_DOC_CATEGORY", dbDocCategory.get(i)), peID), userInputData);
+
+			for (int j = 0; j < docDesc.size(); j++) {
+
+				MobileElement uiResult = findElementBy(Locator.XPATH, containsElement(docDesc.get(j)));
+				if (uiResult.isDisplayed())
+
 					isDisplayed = true;
-				uiDocs.click();
-
-				List<String> docDesc = executeQuery(dbType,
-						getID(replace(REFERRAL_DOCUMENTS, "CMD_DOC_CATEGORY", dbDocCategory.get(i)), peID));
-
-				for (int j = 0; j < docDesc.size(); j++) {
-
-					MobileElement uiResult = findElementBy(Locator.XPATH, containsElement(docDesc.get(j)));
-					if (uiResult.isDisplayed())
-						isDisplayed = true;
-				}
 			}
-		} catch (Exception e) {
-			isDisplayed = false;
 		}
+		// } catch (Exception e) {
+		// isDisplayed = false;
+		// }
 		return isDisplayed;
 
 	}
@@ -223,24 +230,66 @@ public class DashboardPage extends AppiumPageFactory {
 	public void getNewReferralsCount() {
 
 		int navCellSize = navIcons.size();
+		
+		List<Integer> dash = getCellCount(1, navCellSize - 1);
+		List<Integer> nav = getCellCount(3, navCellSize + 1);
+		
 
-		List<Integer> nav = getCellCount(1, navCellSize - 1);
-		List<Integer> dash = getCellCount(3, navCellSize + 1);
-
-		for (int i = 0; i < navCellSize - 2; i++) {
+		//List<String> dashNum = new ArrayList<>();
+//	
+//		if (dashCategories(2).getText().contains("Pending")) 
+//			
+//			for (int i = 0; i < navCellSize - 2; i++) {
+//				String dashNewReferralCount = dashNewRefCount(dash.get(i)).getText().split("W")[0].split(" ")[0].trim();
+//				dashNum.add(dashNewReferralCount);
+//			
+//			Collections.swap(dashNum, 0, 1);
+//		}
+//		
+	
+		for (int i = 0; i < navCellSize-2; i++) {
 			try {
-				String dashNewReferralCount = dashNewRefCount(nav.get(i)).getText().split("W")[0].split(" ")[0].trim();
-				MobileElement navNewReferralCount = navNewRefCount(dash.get(i));
+				MobileElement navNewReferralCount = navNewRefCount(nav.get(i));
+				String dashNewReferralCount = dashNewRefCount(dash.get(i)).getText().split("W")[0].split(" ")[0].trim();
+				
+				System.out.println(navNewReferralCount + "********3*************");
 
 				if (dashNewReferralCount.equals("0")) {
 					assertTrue(!(navNewReferralCount.isDisplayed()));
+
 				} else {
+					
 					assertEquals(dashNewReferralCount, navNewReferralCount.getText().trim());
+					System.out.println(dashNewReferralCount+ "**********dashboard*************");
+					System.out.println(navNewReferralCount.getText().trim() + "**********nav*************");
+					System.out.println("     ");
 				}
+
 			} catch (org.openqa.selenium.TimeoutException e) {
 				e.getMessage();
 			}
 		}
+	}
+
+	public MobileElement dashCategories(int index) {
+		return findElementBy(Locator.XPATH,
+				"//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther"
+						+ "/XCUIElementTypeOther[" + index
+						+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther"
+						+ "/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText");
+	}
+
+	public MobileElement dashNewRefCount(int index) {
+		return findElementBy(Locator.XPATH,
+				"(//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText)["
+						+ index + "]");
+	}
+
+	public MobileElement navNewRefCount(int index) {
+		return findElementBy(Locator.XPATH,
+				"//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther["
+						+ index
+						+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[3]/XCUIElementTypeStaticText");
 	}
 
 	public List<Integer> getCellCount(int time, int navCellSize) {
@@ -251,19 +300,26 @@ public class DashboardPage extends AppiumPageFactory {
 		return cellSize;
 	}
 
-	public MobileElement navNewRefCount(int index) {
-		return findElementBy(Locator.XPATH,
-				"//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther["
-						+ index
-						+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[3]/XCUIElementTypeStaticText");
+	public MobileElement navNewRefCount(String navName) {
+
+		// return findElementBy(Locator.XPATH,
+		// "//XCUIElementTypeOther[@name=\"nav\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]"
+		// + "/XCUIElementTypeOther[" + navName
+		// + "]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther" + "["
+		// + navCount
+		// + "]/XCUIElementTypeStaticText");
+		return findElementBy(Locator.XPATH, "(//XCUIElementTypeStaticText[@name='" + navName + "'])[1]"
+				+ "/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText");
+
 	}
 
-	public MobileElement dashNewRefCount(int index) {
+	public MobileElement dashNewRefCount(int dashName, int dashCount) {
 		return findElementBy(Locator.XPATH,
-				"(//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText)["
-						+ index + "]");
+				"//XCUIElementTypeOther[@name=\"Categories\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]"
+						+ "/XCUIElementTypeOther[" + dashName
+						+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther"
+						+ "/XCUIElementTypeOther[2]/XCUIElementTypeOther[" + dashCount + "]/XCUIElementTypeStaticText");
 
 	}
 
-	
 }

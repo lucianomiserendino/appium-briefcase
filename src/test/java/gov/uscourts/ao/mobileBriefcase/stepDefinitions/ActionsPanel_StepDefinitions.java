@@ -1,16 +1,22 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
+import java.util.List;
+
+import cucumber.api.DataTable;
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.ActionsListViewPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class ActionsPanel_StepDefinitions {
 	ActionsListViewPage page;
 
-	@Then("^User verifies the correct \"([^\"]*)\" display for the selected referral ,using  \"([^\"]*)\"  and \"([^\"]*)\"$")
-	public void user_verifies_the_correct_display_for_the_selected_referral_using_and(String actions, String dbType,
-			String cmr_id) {
+	@Then("^User verifies the correct \"([^\"]*)\" display for the selected referral$")
+	public void user_verifies_the_correct_display_for_the_selected_referral(String actions, DataTable data) {
 		page = new ActionsListViewPage();
-		page.getApplicableActions(dbType, actions, cmr_id);
+		List<UserInputData> userInputData = null;
+
+		page.getApplicableActions(actions, CommonPages.getDataTable(data, 1, 1), userInputData);
 	}
 
 }

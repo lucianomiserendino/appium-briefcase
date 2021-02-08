@@ -76,11 +76,16 @@ public class Actions extends Base {
 	}
 
 	public static String trim(String string) {
+		if(!(string==null))
 		return string.trim();
+		else {
+			return string;	
+		}
 
 	}
 
 	public static void sendKeys(WebElement element1, String text1, WebElement elemen2, String text2) {
+		element1.click();
 		element1.sendKeys(text1);
 		Page.sleep(10000);
 		elemen2.click();

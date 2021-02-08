@@ -9,23 +9,26 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utility.getParameter;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSBy;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class UIDocketingDPFPage extends AppiumPageFactory {
 
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
-	@iOSBy(xpath = "//XCUIElementTypeTextView[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextView[1]")
 	public static MobileElement descriptionField;
 
-	public void verifyFieldsAreDisplayed(String descriptionText, String commentText, String submitText, DBType dbType,
-			String dpfName, String el_id) {
+	public void verifyFieldsAreDisplayed(String descriptionText, String commentText, String submitText, 
+			String dpfName, String el_id,	List<UserInputData> userInputData) {
 
 		verifyElementIsDisplayed(descriptionText);
-		getDefaulDescription(dbType, dpfName, el_id);
+		getDefaulDescription(dpfName, el_id,userInputData);
 		verifyElementIsDisplayed(commentText);
 		verifyElementIsDisplayed(submitText);
 	}
@@ -36,22 +39,26 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 	 * be in the 5th position in the note DPF. If the value is 'SKIP', the note
 	 * description should default to 'Transaction Note'
 	 */
-	public void getDefaulDescription(DBType dbType, String dpfName, String el_id) {
-		try {
-			if (getParameter(getAllColumns(dbType, getID(MBR_NOTE, el_id)), dpfName, 4).equals("SKIP")) {
-				assertTrue(descriptionField.getText().equals("Transaction Note"));
+	public void getDefaulDescription(String dpfName, String el_id,	List<UserInputData> userInputData ) {
+		// try {
+		if (getParameter(getAllColumns(getID(MBR_NOTE, el_id),userInputData), dpfName, 4).equals("SKIP")) {
+			assertTrue(descriptionField.getText().equals("Transaction Note"));
 
-			} else {
-				String dbParam = replaceWithEmptyString(
-						getParameter(getAllColumns(dbType, getID(MBR_NOTE, el_id)), dpfName, 4), "\\");
-				String uiParam = replaceWithEmptyString(descriptionField.getText(), "'");
-
-				assertEquals("NOTE DESCRIPTION MISMATCH", dbParam.replace("'", ""), uiParam);
-
+		} else {
+			String dbParam = replaceWithEmptyString(
+					getParameter(getAllColumns(getID(MBR_NOTE, el_id),userInputData), dpfName, 4), "\\");
+			String ui = descriptionField.getText();
+			String uiParam = "";
+			if (ui.contains("'")) {
+				uiParam = ui.split("'")[0];
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+
+			assertEquals("NOTE DESCRIPTION MISMATCH", dbParam.replace("'", ""), uiParam);
+
 		}
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
 	}
 
 	public void verifyElementIsDisplayed(String text) {

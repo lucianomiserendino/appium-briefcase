@@ -29,5 +29,23 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="/Users/saltanakasabolotova/.m2/repository/info/cukes/cucumber-java/1.2.5/cucumber-java-1.2.5.jar" sourcepath="/Users/saltanakasabolotova/.m2/repository/info/cukes/cucumber-java/1.2.5/cucumber-java-1.2.5-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="info.cukes"/>
+			<attribute name="maven.artifactId" value="cucumber-java"/>
+			<attribute name="maven.version" value="1.2.5"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/saltanakasabolotova/.m2/repository/io/appium/java-client/6.1.0/java-client-6.1.0.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="io.appium"/>
+			<attribute name="maven.artifactId" value="java-client"/>
+			<attribute name="maven.version" value="6.1.0"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

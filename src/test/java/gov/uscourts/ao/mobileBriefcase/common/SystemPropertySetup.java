@@ -2,24 +2,87 @@ package gov.uscourts.ao.mobileBriefcase.common;
 
 import java.util.List;
 
+
 import org.apache.log4j.Logger;
 
-import gov.uscourts.ao.mobileBriefcase.models.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class SystemPropertySetup {
 	private static Logger log = Logger.getLogger(SystemPropertySetup.class);
+
 	// this controls the runtime configuration that is passed by maven -D parameter
 	public static final String courtId = "courtId";
-	public static final String host_name = "hostname";
-	public static final String userName = "userName";
-	public static final String password = "password";
+	public static final String hostname = "hostname";
+
 	public static final String environment = "environment";
-	public static final String roleType = "roleType";
 	public static final String caseNumber = "caseNumber";
 	public static final String referral_Category = "referral_Category";
-	public static final String server_name = "db.dbservername";
+	public static final String db_dbservername = "db.dbservername";
 	public static final String db_port = "db.port";
 	public static final String db_Schema = "db.schema";
+	public static final String db_username = "db.username";
+	public static final String db_password = "db.password";
+	public static final String role = "role";
+	public static final String briefcaseUser = "briefcaseUser";
+
+	public static final String userName = "userName";
+	public static final String password = "password";
+
+	public static final String getVariable(Variables variable, List<UserInputData> pacerInputData) {
+		String var = "";
+
+		switch (variable) {
+		case COURTID:
+			var = courtId;
+
+			break;
+
+		case HOSTNAME:
+			var = hostname;
+			break;
+
+		case CASE_NUMBER:
+			var = caseNumber;
+			break;
+
+		case DB_USERNAME:
+			var = db_username;
+			break;
+
+		case DB_PASSWORD:
+			var = db_password;
+			break;
+
+		case DB_DBSERVERNAME:
+			var = db_dbservername;
+			break;
+
+		case DB_PORT:
+			var = db_port;
+			break;
+
+		case DB_SCHEMA:
+			var = db_Schema;
+			break;
+
+		case USERNAME:
+			var = userName;
+			break;
+
+		case PASSWORD:
+			var = password;
+			break;
+
+		default:
+			break;
+		}
+
+		if (System.getProperty(var) != null)
+			return System.getProperty(var);
+		log.info(var + " from Input File " + pacerInputData.get(0).getPacerInputData(var));
+		return pacerInputData.get(0).getPacerInputData(var);
+
+	}
 
 	public static final String getCourtId(List<UserInputData> userInputData) {
 
@@ -32,11 +95,20 @@ public class SystemPropertySetup {
 
 	public static final String getRoleType(List<UserInputData> userInputData) {
 
-		if (System.getProperty(roleType) != null)
-			return System.getProperty(roleType);
-		log.info("Role type from Property File " + System.getProperty(roleType));
+		if (System.getProperty(role) != null)
+			return System.getProperty(role);
+		log.info("Role type from Property File " + System.getProperty(role));
 		log.info("Role type from Input File " + userInputData.get(0).getRoleType());
 		return userInputData.get(0).getRoleType();
+	}
+
+	public static final String getUser(List<UserInputData> userInputData) {
+
+		if (System.getProperty(briefcaseUser) != null)
+			return System.getProperty(briefcaseUser);
+		log.info("Role type from Property File " + System.getProperty(briefcaseUser));
+		log.info("Role type from Input File " + userInputData.get(0).getBriefcaseUser());
+		return userInputData.get(0).getBriefcaseUser();
 	}
 
 	public static final String getEnvironment(List<UserInputData> userInputData) {
@@ -44,29 +116,43 @@ public class SystemPropertySetup {
 		if (System.getProperty(environment) != null)
 			return System.getProperty(environment);
 
-		log.info("Environment from Property File " + System.getProperty(courtId));
+		log.info("Environment from Property File " + System.getProperty(environment));
 		log.info("Environment from Input File " + userInputData.get(0).getEnvironment());
 		return userInputData.get(0).getEnvironment();
 	}
 
-	public static final String getEnvironment() {
-		return System.getProperty(courtId);
+	public static final String db_username() {
+		if (System.getProperty(db_username) != null) {
+			log.info("host Name from Property File " + System.getProperty(db_username));
+			return System.getProperty(db_username);
+		}
+		return null;
+
+	}
+
+	public static final String db_password() {
+		if (System.getProperty(db_password) != null) {
+			log.info("host Name from Property File " + System.getProperty(db_password));
+			return System.getProperty(db_password);
+		}
+		return null;
+
 	}
 
 	public static final String getHost_name() {
-		if (System.getProperty(host_name) != null) {
-			log.info("host Name from Property File " + System.getProperty(host_name));
-			return System.getProperty(host_name);
+		if (System.getProperty(hostname) != null) {
+			log.info("host Name from Property File " + System.getProperty(hostname));
+			return System.getProperty(hostname);
 		}
 		return null;
 
 	}
 
 	public static final String getServer_name() {
-		log.info("server_name from Property File " + System.getProperty(server_name));
+		log.info("server_name from Property File " + System.getProperty(db_dbservername));
 
-		if (System.getProperty(server_name) != null)
-			return System.getProperty(server_name);
+		if (System.getProperty(db_dbservername) != null)
+			return System.getProperty(db_dbservername);
 		return null;
 	}
 
@@ -98,8 +184,8 @@ public class SystemPropertySetup {
 		if (System.getProperty(password) != null)
 			return System.getProperty(password);
 		log.info("Password from Property File " + System.getProperty(password));
-		log.info("Password from Input File " + userInputData.get(0).getPasswd());
-		return userInputData.get(0).getPasswd();
+		log.info("Password from Input File " + userInputData.get(0).getPassword());
+		return userInputData.get(0).getPassword();
 	}
 
 	public static final String getCaseNumber(List<UserInputData> userInputData) {
@@ -116,8 +202,12 @@ public class SystemPropertySetup {
 		if (System.getProperty(referral_Category) != null)
 			return System.getProperty(referral_Category);
 		log.info("Court Id from Property File " + System.getProperty(referral_Category));
-		log.info("Court Id from Input File " + userInputData.get(0).getReferralCategory());
-		return userInputData.get(0).getReferralCategory();
+		log.info("Court Id from Input File " + userInputData.get(0).getReferral_Category());
+		return userInputData.get(0).getReferral_Category();
+	}
+
+	public enum Variables {
+		CASE_NUMBER, COURTID, HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DBSERVERNAME, DB_PORT, DB_SCHEMA, USERNAME, PASSWORD
 	}
 
 }

@@ -1,12 +1,9 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_DESCRIPTION;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ID_OF_THE_REFERRAL_CATEGORY;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.REFERRAL_NUMBERS;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SAs_DOCUMENT_CATEGORIES;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SAs_REFERRAL_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
@@ -21,31 +18,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSBy;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class StaffAttorneyReferralPage extends AppiumPageFactory {
 	CommonPages page = new CommonPages();
 	// @WithTimeout(time = 15, unit = TimeUnit.SECONDS)
-	@iOSBy(xpath = "//*[contains(@name, 'Senior Staff Attorney')]")
+	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Senior Staff Attorney')]")
 	public static MobileElement staffAttorney;
 
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
-	@iOSBy(xpath = "//*[contains(@name, 'User')]")
+	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'User')]")
 	public static MobileElement selectUser;
 
-	@iOSBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public static List<MobileElement> refCategories;
 
 	/** Observe the assignment categories that display on the dashboard for SAs */
 
-	public void verifyDataOnTheDashboard(String dbType, String query, String ra_pe_id) {
-		assertTrue(elementIsDisplayed(valueOf(dbType), Actions.replace(query, "RA_PE_ID", ra_pe_id),
-				"//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText"));
+	public void verifyDataOnTheDashboard( String query, String ra_pe_id, List<UserInputData> userInputData) {
+
+		assertTrue(elementIsDisplayed( Actions.replace(query, "RA_PE_ID", ra_pe_id),
+				"//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText",userInputData));
 	}
 
 	public void selectAssignmentType(String assignmenType) {
@@ -59,56 +59,54 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 	 * Observe there are six referral categories listed .Verify the number of
 	 * referrals in each categories, matches the number of referrals in the DB
 	 */
-	public void osberveReferralCategories(DBType dbType, String smr_assign_pe_id) {
+	public void osberveReferralCategories(String smr_assign_pe_id, List<UserInputData> table) {
 		page.getGroupIcons();
-		getReferralCategories(dbType, smr_assign_pe_id);
+		getReferralCategories(smr_assign_pe_id, table);
 	}
 
-	public static void getReferralCategories(DBType dbType, String smr_assign_pe_id) {
+	public static void getReferralCategories(String smr_assign_pe_id, List<UserInputData> table) {
 		List<String> uiRefCategories = new ArrayList<>();
 		List<String> dbRefCategories = new ArrayList<>();
-		try {
-			List<String> category = executeQuery(dbType,
-					replace(SAs_REFERRAL_CATEGORIES, "SMR_ASSIGN_PE_ID", smr_assign_pe_id));
-			sort(category);
 
-			for (int i = 1; i < category.size() + 1; ++i) {
-				MobileElement categoryName = getRefCategory(i, 2);
-				MobileElement numOfREfCat = getRefCategory(i, 3);
+		List<String> category = executeQuery(
+				replace(Queries.SAs_REFERRAL_CATEGORIES, "SMR_ASSIGN_PE_ID", smr_assign_pe_id), table);
+		sort(category);
 
-				uiRefCategories.add(categoryName.getText().trim() + " " + numOfREfCat.getText().trim());
-				sort(uiRefCategories);
-			}
+		for (int i = 1; i < category.size() + 1; ++i) {
+			MobileElement categoryName = getRefCategory(i, 2);
+			MobileElement numOfREfCat = getRefCategory(i, 3);
 
-			for (int i = 0; i < category.size(); ++i) {
+			uiRefCategories.add(categoryName.getText().trim() + " " + numOfREfCat.getText().trim());
+			sort(uiRefCategories);
+		}
+		for (int i = 0; i < category.size(); ++i) {
 
-				List<String> refCatId = executeQuery(dbType, replace(ID_OF_THE_REFERRAL_CATEGORY, "SMR_ASSIGN_PE_ID",
-						smr_assign_pe_id, "MRC_NAME", category.get(i)));
+			List<String> refCatId = executeQuery(replace(ID_OF_THE_REFERRAL_CATEGORY, "SMR_ASSIGN_PE_ID",
+					smr_assign_pe_id, "MRC_NAME", category.get(i)), table);
 
-				for (int j = 0; j < refCatId.size(); j++) {
+			for (int j = 0; j < refCatId.size(); j++) {
 
-					List<String> refNumbers = executeQuery(dbType, replace(REFERRAL_NUMBERS, "SMR_ASSIGN_PE_ID",
-							smr_assign_pe_id, "SMR_MRC_ID", refCatId.get(j)));
-					for (int k = 0; k < refNumbers.size(); k++) {
+				List<String> refNumbers = executeQuery(replace(Queries.REFERRAL_NUMBERS, "SMR_ASSIGN_PE_ID",
+						smr_assign_pe_id, "SMR_MRC_ID", refCatId.get(j)), table);
+				for (int k = 0; k < refNumbers.size(); k++) {
 
-						dbRefCategories.add(category.get(i) + " (" + refNumbers.get(k) + ")");
-					}
+					dbRefCategories.add(category.get(i) + " (" + refNumbers.get(k) + ")");
 				}
 			}
-
-			assertEquals("NUMBER OF REFERRALS IN EACH CATEGORIES, DOESN'T MATCH THE NUMBER OF REFERRALS IN THE DB",
-					dbRefCategories, uiRefCategories);
-
-		} catch (Exception e) {
-			e.getMessage();
 		}
+		System.out.println(uiRefCategories + "************************************");
+		System.out.println(dbRefCategories + "************************************");
+
+		assertEquals("NUMBER OF REFERRALS IN EACH CATEGORIES, DOESN'T MATCH THE NUMBER OF REFERRALS IN THE DB",
+				dbRefCategories, uiRefCategories);
 
 	}
 
 	public static MobileElement getRefCategory(int i, int numOfRef) {
+
 		return findElementBy(Locator.XPATH,
-				"//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther["
-						+ i + "]/XCUIElementTypeOther[1]/XCUIElementTypeOther[" + numOfRef
+				"//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther["
+						+ i + "]/XCUIElementTypeOther[2]/XCUIElementTypeOther[" + numOfRef
 						+ "]/XCUIElementTypeStaticText");
 
 	}
@@ -117,7 +115,6 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 		page.getGroupIcons();
 		findElementBy(Locator.XPATH, containsElement(category)).click();
 		findElementBy(Locator.XPATH, containsElement(caseNumber)).click();
-
 	}
 
 	/**
@@ -155,6 +152,7 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 						replace(DOCUMENT_DESCRIPTION, "SMR_ASSIGN_PE_ID", smr_assign_pe_id, "CMD_DOC_CATEGORY",
 								dbDocs.get(i), "SMR_MRC_ID",
 								toArray(getDocumentCategories(dbType, smr_assign_pe_id, refID))));
+
 				for (int j = 0; j < docDesc.size(); j++) {
 
 					MobileElement uiResult = findElementBy(Locator.XPATH, containsElement(dbDocs.get(i)

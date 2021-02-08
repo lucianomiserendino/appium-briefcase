@@ -14,25 +14,25 @@ import org.openqa.selenium.NoSuchElementException;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSBy;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class BookmarkedListPage extends AppiumPageFactory {
-	@iOSBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
 	public static MobileElement dashboard;
 
-	@iOSBy(xpath = "//XCUIElementTypeStaticText[@name='Bookmarked']")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Bookmarked']")
 	public static List<MobileElement> bookOnDashboard;
 
-	@iOSBy(xpath = "//XCUIElementTypeStaticText[@name='Bookmark']")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Bookmark']")
 	public static List<MobileElement> BookmarkedReferrals;
 
-	@iOSBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<MobileElement> cases;
 
 	public void getBookmarkedReferrals() {
 		try {
 			if (bookOnDashboard.size() > 0) {
-				tap(bookOnDashboard.get(0));
+				tap(bookOnDashboard.get(bookOnDashboard.size() - 1));
 				getBookmarkIcons();
 			} else {
 				assertEquals(0, bookOnDashboard.size());

@@ -1,14 +1,16 @@
-@AMB @Smoke @AMB-1049 
+@AMB @Smoke @AMB-1049 @a
 Feature: Referral categories display on the dashboard for Staff Attorneys 
 
 
 Background: 
 
-	Given user is logged into Briefcase 
-		|environment|userName|password |server|
-		|INTEGRATION|s haenni|Test2022!|CMKA  |
-	Then User selects a userCategory "Staff_Attorneys" and  name "Brown, Benjamin" 
-	
+	Given I am logged into Briefcase 
+		|environment    |userName| password |courtId|
+		|Integration    |s haenni| Test2023!|test   |
+		
+	Then I select a user
+	|role              |briefcaseUser       |
+	|Staff Attorneys   |Brown, Benjamin     |
 Scenario: 
 	Assignment categories are listed on the Dashboard page for staff attorneys.
 	Once an assignment category is selected, referrals are grouped based on
@@ -17,4 +19,6 @@ Scenario:
 	number of referrals is correct for each category 
 	
 	Given  User selects assignment type "Senior Staff Attorney" 
-	When  User observes there are six referral categories listed on UI and DB "CMKA", smr_assign_pe_id: "434"
+	When  User observes there are six referral categories listed on UI and DB, use smr_assign_pe_id: "434"
+    |courtId|
+	|test   |

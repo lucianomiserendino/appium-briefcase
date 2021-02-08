@@ -12,25 +12,27 @@ import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSBy;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CaseQueryPage extends AppiumPageFactory {
 
-	@iOSBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[1]")
 	public static MobileElement searchIcon;
 
-	@iOSBy(xpath = "//XCUIElementTypeTextField")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextField")
 	public static MobileElement searchTextField;
 
-	@iOSBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
 	public static MobileElement searchBTN;
 
-	@iOSBy(accessibility = "ResultsList")
+	@iOSXCUITFindBy(accessibility = "ResultsList")
 	public static MobileElement category;
 
-	public void searchForACase() {
+
+	public void searchForACase(String caseNum) {
 		String caseN = "";
 		for (int i = 0; i < 1; i++) {
-			caseN += "15-2594".split(" ")[0];
+			caseN = caseNum.split(" ")[0];
 		}
 		searchIcon.click();
 		searchByCase(caseN, 6);

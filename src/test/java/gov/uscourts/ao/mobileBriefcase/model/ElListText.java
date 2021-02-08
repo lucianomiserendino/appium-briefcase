@@ -1,4 +1,4 @@
-package gov.uscourts.ao.mobileBriefcase.models;
+package gov.uscourts.ao.mobileBriefcase.model;
 
 public class ElListText {
 

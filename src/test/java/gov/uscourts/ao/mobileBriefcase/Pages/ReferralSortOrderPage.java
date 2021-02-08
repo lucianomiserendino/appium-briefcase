@@ -1,51 +1,85 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.waitToBeClickable;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.retrieveAllCases;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.common.Actions;
+import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
+import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSBy;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class ReferralSortOrderPage extends AppiumPageFactory {
 
 	// @WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
-	@iOSBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, 'Date')]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, 'Date')]")
 	public static List<MobileElement> dates;
 
 	// @WithTimeout(time = 60, unit = TimeUnit.SECONDS)
-	@iOSBy(xpath = "//*[contains(@name, 'Sort')]")
+	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Sort ↓')]")
 	public static MobileElement sortArrowBtn;
 
-	@iOSBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Date')])[1]")
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Date')])[1]")
 	public static MobileElement dateArrowDownBtn;
 
-	@iOSBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Date')])[2]")
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Date')])[2]")
 	public static MobileElement dateArrowUpBtn;
 
-	@iOSBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Case')])[1]")
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Case')])[1]")
 	public static MobileElement caseDownArrowBtn;
 
 	// @WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
-	@iOSBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<MobileElement> cases;
 
-	@iOSBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Case')])[2]")
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Case')])[2]")
 	public static MobileElement caseUpArrowBtn;
 
-	@iOSBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, 'Actions')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, 'Actions')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
 	public static List<MobileElement> docCategories;
+
+	public void selectReferralCategory(List<UserInputData> userInputData) {
+
+		String name = SystemPropertySetup.getUser(userInputData);
+
+		String query = getID(Queries.DB_LIST_OF_CATEGORIES, getPE_ID("jud", name, userInputData));
+
+		List<String> dbReferralCategories = executeQuery(query, userInputData);
+
+		if (dbReferralCategories.contains("Reference Documents")
+				|| dbReferralCategories.contains("Cases on Calendar")) {
+			dbReferralCategories.remove("Reference Documents");
+			dbReferralCategories.remove("Cases on Calendar");
+		}
+
+		int randomAttorneyIndex = dbReferralCategories.size() - 1;
+		randomAttorneyIndex = generateRandomNumber(randomAttorneyIndex);
+		if (randomAttorneyIndex == 0)
+			randomAttorneyIndex = randomAttorneyIndex + 1;
+
+		tap(Locator.XPATH, "//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '"
+				+ dbReferralCategories.get(randomAttorneyIndex) + "')]");
+
+	}
+
+	public static int generateRandomNumber(int bound) {
+		return new Random().nextInt(bound);
+	}
 
 	/**
 	 * There is a sorting feature on the referral list page that enables users to
@@ -53,10 +87,14 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	 * referred in descending order (newest first).
 	 */
 	public void selectSortBtn() {
-		waitToBeClickable(sortArrowBtn, driver);
+		tap(sortArrowBtn);
+		if (Actions.isDisplayed(Locator.XPATH, "//*[contains(@name, 'Sort ↓')]") == true) {
+			tap(sortArrowBtn);
+		}
 	}
 
 	public List<String> referralsSortedByDate() {
+
 		return retrieveAllCases(dates, "Date: ", 1);
 	}
 
@@ -66,6 +104,7 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	}
 
 	public void getSortPage(Sort sort) {
+
 		switch (sort) {
 		case SORT_DATES_IN_DESCENDING_ORDER:
 			tap(dateArrowDownBtn);
