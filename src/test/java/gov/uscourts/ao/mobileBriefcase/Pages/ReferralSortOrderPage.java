@@ -17,10 +17,10 @@ import java.util.Random;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -52,6 +52,9 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, 'Actions')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
 	public static List<MobileElement> docCategories;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
+	public static List<MobileElement> navIcons;
 
 	public void selectReferralCategory(List<UserInputData> userInputData) {
 
@@ -143,6 +146,22 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 		assertEquals(" DOCUMENT CATEGORIES ARE NOT SORTED ON THE REFERRAL DETAIL PAGE ", dbDoCategories,
 				uiDoCategories);
 
+	}
+
+	public void sortPendingFolders() {
+
+		int navCellSize = navIcons.size();
+		
+		List<Integer> dash = getCellCount(1, navCellSize - 1);
+		List<Integer> nav = getCellCount(3, navCellSize + 1);
+	}
+	
+	public List<Integer> getCellCount(int time, int navCellSize) {
+		List<Integer> cellSize = new ArrayList<>();
+		for (int i = time; i < navCellSize; i++) {
+			cellSize.add(i);
+		}
+		return cellSize;
 	}
 
 	public enum Sort {

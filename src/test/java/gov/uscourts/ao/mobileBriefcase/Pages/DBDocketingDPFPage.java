@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.model.ElListText;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -83,13 +84,19 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 		// }
 		getDataTable(table, index, caseNum, peID, userInputData);
 
-		assertEquals(description, DM_DESCRIPTION, userInputData);
+		assertEquals(description,getAllColumns( DM_DESCRIPTION, userInputData));
 
 	}
 
 	public void getDataTable(List<ElListText> table, int index, String caseNum, String peID,
 			List<UserInputData> userInputData) {
 		list = table.get(index);
+		
+		
+		System.out.println(getAllColumns( Queries.DM_ACC_CRT,userInputData)+"***************");
+		System.out.println(getAllColumns( Queries.DM_ACC_CTLINK,userInputData)+"***************");
+		System.out.println(getAllColumns( Queries.DM_ACC_SPEC,userInputData)+"***************");
+		
 		// assertEquals(getAllColumns(dbType, DM_ACC_CRT), list.getDm_acc_crt());
 
 		// assertEquals(getAllColumns(dbType, DM_ACC_CTLINK), list.getDm_acc_ctlink());

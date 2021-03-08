@@ -1,8 +1,9 @@
+@Smoke @AMB-1033 @AMB_1030
 Feature: Display of Staff Assignments 
 
 
 	
-	@AMB-1033 @AMB_1030
+
 		Scenario Outline: 
 			If a judge or staff assignment is selected, a new screen displays with the following information:
 			1.  Name of the assignee

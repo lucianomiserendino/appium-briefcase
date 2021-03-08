@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -56,7 +55,7 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(SAFARI_INITIAL_URL);
 				getDriver();
 				break;
-				
+
 			case WINDOWS:
 				capabilities = new DesiredCapabilities();
 				SetCapabilitiy(PLATFORM_NAME_w);
@@ -85,18 +84,13 @@ public abstract class Base implements iOSCapabilities {
 			SetCapabilitiy(AUTOMATION_NAME);
 			SetCapabilitiy(DEVICE_NAME);
 			SetCapabilitiy(BROWSER_NAME);
-			getDriver();		
-			
+			getDriver();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return driver;
 	}
-	
-	
-
-	
-	
 
 	public static void closeIOSDriver() {
 		if (driver != null) {
@@ -108,7 +102,7 @@ public abstract class Base implements iOSCapabilities {
 	public static void getDriver() {
 		try {
 			getHost(getProperty(LOCAL_HOST));
-			
+
 		} catch (WebDriverException e) {
 			getHost(System.getProperty("remotewebdriver.url"));
 		}
@@ -117,16 +111,25 @@ public abstract class Base implements iOSCapabilities {
 
 	public static void getHost(String host) {
 		try {
-	     driver = new IOSDriver<MobileElement>(new URL(host), capabilities);
+			driver = new IOSDriver<MobileElement>(new URL(host), capabilities);
 
 		} catch (MalformedURLException v) {
 			v.printStackTrace();
 		}
 	}
 
-	public static void getUrl(String url) {
-		getInstance(Driver.WEBRIVER);
-		webDriver.get(getProperty(url));
+	public static void getUrl(String courtId, String env) {
+		capabilities = new DesiredCapabilities();
+
+		SetCapabilitiy(PLATFORM_VERSION);
+		SetCapabilitiy(PLATFORM_NAME);
+		SetCapabilitiy(AUTOMATION_NAME);
+		SetCapabilitiy(DEVICE_NAME);
+		SetCapabilitiy(BROWSER_NAME);
+		String singleTabEditor=getProperty("singleTableEditor").replace("courtId", courtId).replace("env", env);
+		driver.get(singleTabEditor);
+		Page.sleep(20000);
+	
 	}
 
 	/**
@@ -180,8 +183,8 @@ public abstract class Base implements iOSCapabilities {
 
 	public static void main(String[] args) {
 		Base.getInstance(Driver.IOS);
-		
-		//safariInstance();
-		
+
+		// safariInstance();
+
 	}
 }

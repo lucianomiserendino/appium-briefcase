@@ -1,4 +1,4 @@
-@AMB @Smoke @AMB-1010  @a
+@Smoke @AMB-1010
 Feature: Sorting on the Referral List Page 
 
 
@@ -9,7 +9,7 @@ The default is by date referred in descending order (newest first).
 	
 	Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2023!|test   |
+		|Integration    |s haenni| Test2024!|test   |
 	Then I select a user
 	|role              |briefcaseUser|
 	|Appellate Judges  |Colloton     |

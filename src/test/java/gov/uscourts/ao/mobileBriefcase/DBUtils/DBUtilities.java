@@ -127,7 +127,7 @@ public class DBUtilities {
 			}
 			List<String[]> queryResult = runSQLQuery(query);
 
-			if (!result.equals(null)) {
+			if (!(queryResult==null)) {
 				queryResult.forEach(record -> result.add(record[0].trim()));
 			} else {
 				return null;

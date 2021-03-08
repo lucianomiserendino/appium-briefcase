@@ -1,4 +1,4 @@
-@sysadmin @AMB @Smoke @AMB-956 @smoke  @a
+@Smoke @AMB-956
 Feature: Referral Categories display on the dashboard for the judge 
 
 
@@ -7,7 +7,7 @@ Scenario:
 
 	Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2023!|test   |
+		|Integration    |s haenni| Test2024!|test   |
 	Then I select a user 
 	|role              |briefcaseUser|
     |Appellate Judges  |Colloton     |

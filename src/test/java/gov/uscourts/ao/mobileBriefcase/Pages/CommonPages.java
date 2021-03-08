@@ -13,6 +13,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.isDisplayed;
@@ -25,14 +26,19 @@ import static org.openqa.selenium.support.PageFactory.initElements;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import cucumber.api.DataTable;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.common.Page;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.iOSBy;
+import io.appium.java_client.pagefactory.iOSFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CommonPages extends Base {
@@ -41,7 +47,14 @@ public class CommonPages extends Base {
 		initElements(new AppiumFieldDecorator(driver), this);
 		
 	}
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther[5]/XCUIElementTypeTextField")
+	public static WebElement userName;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther[6]/XCUIElementTypeSecureTextField")
+	public static WebElement password;
+
+	@iOSXCUITFindBy(id = "SIGN ON")
+	public static WebElement submButton;
 	static String okButton = "OK";
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
@@ -277,6 +290,37 @@ public class CommonPages extends Base {
 			}
 		}
 	}
+	public  void sendCredentials(String Username, String Password) {
+		Page.sleep(10000);
+		Actions.findElementBy(Locator.NAME, "usernameEntered").sendKeys(Username);
+		Actions.findElementBy(Locator.NAME, "password").sendKeys(Password);
+		Actions.findElementBy(Locator.NAME, "SUBMIT2").click();
+		Page.sleep(20000);
+	}
+	
+	
+	public  void updateSi_value(String si_code, String si_value) {
+
+		
+		List<MobileElement>el=Actions.findElements(By.xpath("//select[@name='table']/option"));
+		for (int i = 0; i < el.size(); i++) {
+			if (el.get(i).getText().equals("site")){
+				el.get(i).click();
+				
+			}
+		}
+		Actions.findElementBy(Locator.XPATH, "//input[@name='submitButton']").click();
+		Page.sleep(10000);
+		Actions.findElementBy(Locator.XPATH, "//input[@name='si_code']").sendKeys(si_code);
+		Actions.findElementBy(Locator.XPATH, "(//input[@name='searchButton'])[2]").click();
+		Actions.findElementBy(Locator.XPATH, "//textarea[@name='si_value__________1']").clear();
+		Actions.findElementBy(Locator.XPATH, "//textarea[@name='si_value__________1']").sendKeys(si_value);
+		Actions.findElementBy(Locator.XPATH, "(//input[@name='updateAllB'])[2]").click();
+
+	}
+	
+	
+	
 
 	public void deleteDocs() {
 		tap(dashboard);

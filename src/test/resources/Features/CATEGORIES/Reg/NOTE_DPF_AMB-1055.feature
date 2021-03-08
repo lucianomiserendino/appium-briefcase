@@ -1,4 +1,4 @@
-@AMB @Smoke @AMB-1055 @a
+@Smoke @AMB-1055 @S
 Feature: note DPF UI 
 
 
@@ -9,7 +9,7 @@ Scenario Outline:
 
 	Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2023!|test   |
+		|Integration    |s haenni| Test2024!|test   |
 		
 	Then I select a user
 	|role              |briefcaseUser|

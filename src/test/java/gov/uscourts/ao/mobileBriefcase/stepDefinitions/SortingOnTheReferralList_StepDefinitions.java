@@ -36,9 +36,9 @@ public class SortingOnTheReferralList_StepDefinitions {
 
 		page.getSortPage(Sort.SORT_DATES_IN_ASCENDING_ORDER);
 		List<String> sortedByAscOrd = page.referralsSortedByDate();
-
+		
 		assertTrue("REFERRALS ARE NOT SORTED BY DATE", sortedByDescOrd.equals(sortedByAscOrd));
-
+		
 	}
 
 	@Then("^User clicks the Case Down Arrow button and  verifies the referrals are sorted by case number in descending order \\. User clicks the Case Up Arrow button, verifies the referrals are sorted by case number in ascending order\\.$")
@@ -58,7 +58,6 @@ public class SortingOnTheReferralList_StepDefinitions {
 
 		assertTrue("REFERRALS ARE NOT SORTED BY CASE NUMBER IN ASCENDING ORDER",
 				referralsSortedByDescOrd.equals(referralsSortedByAscOrd));
-
 	}
 
 	@Then("^User verifies  Document Categories are sorted on the referral detail page \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\)$")

@@ -97,7 +97,6 @@ public class DashboardPage extends AppiumPageFactory {
 					"(//XCUIElementTypeStaticText[@name='" + dbReferralCategories.get(i) + "'])[2]"),
 
 					driver);
-			System.out.println(referrals.getText()+"&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 			assertTrue(referrals.isDisplayed());
 		}
 	}

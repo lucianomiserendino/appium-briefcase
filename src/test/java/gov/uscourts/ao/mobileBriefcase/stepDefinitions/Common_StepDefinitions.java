@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Base.safariInstance;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -13,7 +12,9 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
+import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
+import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class Common_StepDefinitions {
@@ -21,7 +22,7 @@ public class Common_StepDefinitions {
 
 	@Then("^User selects \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_selects_and(String category, String caseNumber) {
-		//JenieLoginPage logPage = new JenieLoginPage();
+		// JenieLoginPage logPage = new JenieLoginPage();
 		page = new CommonPages();
 		page.getCategoryWithCase(category, caseNumber);
 	}
@@ -50,7 +51,26 @@ public class Common_StepDefinitions {
 
 	@Given("^User sets the \"([^\"]*)\" site var to \"([^\"]*)\"$")
 	public void user_sets_the_site_var_to(String si_code, String si_value, List<UserInputData> userInputData) {
-		page.setValue(si_value, si_code, userInputData);
+		// page.setValue(si_value, si_code, userInputData);
+		String environment = SystemPropertySetup.getEnvironment(userInputData);
+		String court = SystemPropertySetup.getCourtId(userInputData);
+		String user = SystemPropertySetup.getUserName(userInputData);
+		String pwd = SystemPropertySetup.getPassword(userInputData);
+		Base.safariInstance();
+		String env="";
+		if (environment.equals("Integration")) {
+			env="isso";
+		}else if (environment.equals("Testing")) {
+			env="tsso";
+		}else {
+			env="ssso";
+		}
+		Base.getUrl(court.toLowerCase(),env);
+		page = new CommonPages();
+		page.sendCredentials(user, pwd);
+		page.updateSi_value(si_code, si_value);
+		Base.safariInstance();
+		Base.closeIOSDriver();
 	}
 
 	@Then("^User verifies \"([^\"]*)\" panel is displayed and expands the  panel$")
@@ -64,7 +84,7 @@ public class Common_StepDefinitions {
 	public void user_logs_out_of_Briefcase() {
 
 		JenieLoginPage.logout();
-		safariInstance();
+		Base.safariInstance();
 		Page.sleep(10000);
 	}
 

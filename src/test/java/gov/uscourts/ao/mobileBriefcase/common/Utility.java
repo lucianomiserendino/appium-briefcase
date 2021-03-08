@@ -206,7 +206,6 @@ public class Utility extends Base {
 			for (int i = 0; i < dbResult.size(); ++i) {
 
 				uiResult = findElementBy(Locator.XPATH, xpath + "[contains(@name, '" + dbResult.get(i) + "')]");
-				System.out.println(uiResult.getText()+"******************");
 				if (uiResult.isDisplayed())
 					isDisplayed = true;
 			}

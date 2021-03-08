@@ -1,4 +1,4 @@
-@AMB @Regression @AMB-1006 @a
+@Smoke @AMB-1006
 Feature: Verify a PDF document can be downloaded and opened in Briefcase 
 
 
@@ -7,7 +7,7 @@ Scenario Outline:
 
 	Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2023!|test   |
+		|Integration    |s haenni| Test2024!|test   |
 		
 	Then I select a user
 	|role              |briefcaseUser|

@@ -1,4 +1,4 @@
-@AMB @Smoke @AMB-1036 
+@AMB @AMB-1036 
 Feature: Display Vote Information Panel, filer info and judge's initials 
 	Display Actions Panel and actions
 

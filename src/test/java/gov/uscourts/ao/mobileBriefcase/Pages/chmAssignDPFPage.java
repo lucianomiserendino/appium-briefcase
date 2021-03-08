@@ -407,8 +407,6 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	/** Verify the records are created in CM/ECF */
 	public static void getCreatedRecords( String expected, String actual,List<UserInputData> userInputData) {
 		String CMECF_TABLES = getAllColumns(actual, userInputData);
-		System.out.println(CMECF_TABLES+"*******************");
-		System.out.println(expected+"*******************");
 
 		assertEquals("********PLEASE VERIFY THAT RECORDS IN CMECF ARE CREATED CORRECTLY!!!********", expected,
 				CMECF_TABLES);

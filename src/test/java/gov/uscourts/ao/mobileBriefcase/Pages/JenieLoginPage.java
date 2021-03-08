@@ -120,7 +120,7 @@ public class JenieLoginPage extends Base {
 		tap(Integration);
 	}
 
-	public void sendCredentials(String Username, String Password) {
+	public  void sendCredentials(String Username, String Password) {
 		sendKeys(userName, Username, password, Password);
 		submButton.click();
 
@@ -140,7 +140,6 @@ public class JenieLoginPage extends Base {
 	public void selectUser(List<UserInputData> userInputData) {
 		String role = SystemPropertySetup.getRoleType(userInputData);
 		String name = SystemPropertySetup.getUser(userInputData);
-
 		contains(user).click();
 		selectJudge(role, name);
 

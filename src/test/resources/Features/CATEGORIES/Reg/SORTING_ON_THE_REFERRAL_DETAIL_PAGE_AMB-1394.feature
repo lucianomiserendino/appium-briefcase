@@ -1,4 +1,4 @@
-@AMB @Regression @AMB-1394 @a
+@Smoke @AMB-1394
 Feature: Sorting on the Referral Detail Page 
 
  
@@ -10,7 +10,7 @@ Scenario Outline:
 
 	Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2023!|test   |
+		|Integration    |s haenni| Test2024!|test   |
 		
 	Then I select a user
 	|role              |briefcaseUser|
