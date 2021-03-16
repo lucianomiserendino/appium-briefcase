@@ -162,8 +162,12 @@ public class Queries {
 
 	public static final String DM_ACC_SPEC = "select first 1 dm_acc_spec from  document order by dm_date_created desc";
 
-	public static final String DM_DATE_CREATED = "select first 1 dm_date_created from  document order by dm_date_created desc";
+	public static final String DU_DATE_CREATED = "select   first 1  du_date_created  from  doc_user  order by  du_date_created desc";
+	//public static final String DM_DATE_CREATED = "select first 1 dm_date_created from  document order by dm_date_created desc";
 
+	public static final String DCG_DATE_CREATED = "select  first 1 dcg_date_created from  doc_group  order by  dcg_date_created desc";
+
+	
 	public static final String DM_DESCRIPTION = "select first 1 dm_description from  document order by  dm_date_created desc";
 
 	public static final String DU_PRID = "select  du_prid  from  doc_user where  du_date_created='DU_DATE_CREATED'";

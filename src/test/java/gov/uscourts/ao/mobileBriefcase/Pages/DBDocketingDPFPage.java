@@ -6,7 +6,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHAMBERS_GROUP_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DCG_GROUP;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_DATE_CREATED;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DM_DESCRIPTION;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DU_PRID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.LOGED_IN_JUDGES_LAST_NAME;
@@ -34,6 +33,7 @@ import org.openqa.selenium.By;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.common.Page;
 import gov.uscourts.ao.mobileBriefcase.model.ElListText;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
@@ -82,21 +82,21 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 		// } catch (Exception e) {
 		// e.printStackTrace();
 		// }
+		Page.sleep(2000);
 		getDataTable(table, index, caseNum, peID, userInputData);
 
-		assertEquals(description,getAllColumns( DM_DESCRIPTION, userInputData));
+		assertEquals(description, getAllColumns(DM_DESCRIPTION, userInputData));
 
 	}
 
 	public void getDataTable(List<ElListText> table, int index, String caseNum, String peID,
 			List<UserInputData> userInputData) {
 		list = table.get(index);
-		
-		
-		System.out.println(getAllColumns( Queries.DM_ACC_CRT,userInputData)+"***************");
-		System.out.println(getAllColumns( Queries.DM_ACC_CTLINK,userInputData)+"***************");
-		System.out.println(getAllColumns( Queries.DM_ACC_SPEC,userInputData)+"***************");
-		
+
+		System.out.println(getAllColumns(Queries.DM_ACC_CRT, userInputData) + "***************");
+		System.out.println(getAllColumns(Queries.DM_ACC_CTLINK, userInputData) + "***************");
+		System.out.println(getAllColumns(Queries.DM_ACC_SPEC, userInputData) + "***************");
+
 		// assertEquals(getAllColumns(dbType, DM_ACC_CRT), list.getDm_acc_crt());
 
 		// assertEquals(getAllColumns(dbType, DM_ACC_CTLINK), list.getDm_acc_ctlink());
@@ -235,17 +235,24 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 		return chambersGroupId;
 	}
 
-	public static String getDM_DATE_CREATED(List<UserInputData> userInputData) {
-		return getAllColumns(DM_DATE_CREATED, userInputData);
+	public static String getDM_DATE_CREATED(String query, List<UserInputData> userInputData) {
+		return getAllColumns(query, userInputData);
 	}
 
-	public static List<String> getDocUserTable(List<UserInputData> userInputData) {
-		return getDBResult(replace(DU_PRID, "DU_DATE_CREATED", getDM_DATE_CREATED(userInputData)), userInputData);
+	// public static String getDM_DATE_CREATED(List<UserInputData> userInputData) {
+	// return getAllColumns(DM_DATE_CREATED, userInputData);
+	// }
 
+	public static List<String> getDocUserTable(List<UserInputData> userInputData) {
+		return getDBResult(
+				replace(DU_PRID, "DU_DATE_CREATED", getDM_DATE_CREATED(Queries.DU_DATE_CREATED, userInputData)),
+				userInputData);
 	}
 
 	public static List<String> getDocGroupTable(List<UserInputData> userInputData) {
-		return getDBResult(replace(DCG_GROUP, "DCG_DATE_CREATED", getDM_DATE_CREATED(userInputData)), userInputData);
+		return getDBResult(
+				replace(DCG_GROUP, "DCG_DATE_CREATED", getDM_DATE_CREATED(Queries.DCG_DATE_CREATED, userInputData)),
+				userInputData);
 	}
 
 	public static List<String> getIDs(String caseNum, String peId, String query, List<UserInputData> userInputData) {

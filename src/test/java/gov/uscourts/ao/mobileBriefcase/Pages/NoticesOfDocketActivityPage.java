@@ -25,7 +25,6 @@ import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Coordinates.BriefcaseCoordinates;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class NoticesOfDocketActivityPage extends AppiumPageFactory {

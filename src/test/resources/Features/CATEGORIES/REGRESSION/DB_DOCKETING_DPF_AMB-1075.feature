@@ -18,8 +18,8 @@ Scenario:
 		|el_list_text  | dm_acc_crt | dm_acc_ctlink  | dm_acc_spec |
 		#|3060         |     y      |      n         |      n      |
 		#|3070         |     n      |      y         |      n      |
-		#|3128         |     n      |      n         |      y      |
-		|3118         |     n      |      n         |      y      |
+		|3128         |     n      |      n         |      y      |
+		#|3118         |     n      |      n         |      y      |
 		#|3074         |     n      |      n         |      y      |
 		#|3127         |     n      |      n         |      y      |
 		#|3072         |     n      |      n         |      y      |
