@@ -94,8 +94,7 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 				}
 			}
 		}
-		System.out.println(uiRefCategories + "************************************");
-		System.out.println(dbRefCategories + "************************************");
+
 
 		assertEquals("NUMBER OF REFERRALS IN EACH CATEGORIES, DOESN'T MATCH THE NUMBER OF REFERRALS IN THE DB",
 				dbRefCategories, uiRefCategories);

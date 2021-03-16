@@ -251,7 +251,6 @@ public class DashboardPage extends AppiumPageFactory {
 				MobileElement navNewReferralCount = navNewRefCount(nav.get(i));
 				String dashNewReferralCount = dashNewRefCount(dash.get(i)).getText().split("W")[0].split(" ")[0].trim();
 				
-				System.out.println(navNewReferralCount + "********3*************");
 
 				if (dashNewReferralCount.equals("0")) {
 					assertTrue(!(navNewReferralCount.isDisplayed()));
@@ -259,9 +258,7 @@ public class DashboardPage extends AppiumPageFactory {
 				} else {
 					
 					assertEquals(dashNewReferralCount, navNewReferralCount.getText().trim());
-					System.out.println(dashNewReferralCount+ "**********dashboard*************");
-					System.out.println(navNewReferralCount.getText().trim() + "**********nav*************");
-					System.out.println("     ");
+	
 				}
 
 			} catch (org.openqa.selenium.TimeoutException e) {

@@ -13,7 +13,6 @@ import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.isDisplayed;
@@ -37,16 +36,15 @@ import gov.uscourts.ao.mobileBriefcase.common.Page;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import io.appium.java_client.pagefactory.iOSBy;
-import io.appium.java_client.pagefactory.iOSFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CommonPages extends Base {
 	public CommonPages() {
-		
+
 		initElements(new AppiumFieldDecorator(driver), this);
-		
+
 	}
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther[5]/XCUIElementTypeTextField")
 	public static WebElement userName;
 
@@ -183,11 +181,11 @@ public class CommonPages extends Base {
 		scrollDownIfNotDisplayed(containsElement(panels));
 	}
 
-	public static void selectAction(String panel, String el_id,List<UserInputData> userInputData) {
+	public static void selectAction(String panel, String el_id, List<UserInputData> userInputData) {
 		getGroupIcons();
 		getPanel(Panel.valueOf(panel));
 		String actionName1 = "";
-		String actionName2 = getAllColumns( getID(ACTION_NAME, el_id),userInputData);
+		String actionName2 = getAllColumns(getID(ACTION_NAME, el_id), userInputData);
 		if (actionName2.contains("'")) {
 			actionName1 += actionName2.split("'")[0];
 			getActionName(actionName1);
@@ -231,9 +229,9 @@ public class CommonPages extends Base {
 				isDisplayed(containsElement(element)) == true);
 	}
 
-	public static String getCaseID( MobileElement uiCaseNumber,List<UserInputData> table) {
-		return getAllColumns( replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, uiCaseNumber), "CS_NUMBER",
-				getCase(Case.CASE_NUMBER, uiCaseNumber)),table);
+	public static String getCaseID(MobileElement uiCaseNumber, List<UserInputData> table) {
+		return getAllColumns(replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, uiCaseNumber), "CS_NUMBER",
+				getCase(Case.CASE_NUMBER, uiCaseNumber)), table);
 	}
 
 	public static String getCaseNumber(MobileElement caseNumber, int index) {
@@ -254,12 +252,12 @@ public class CommonPages extends Base {
 	 * 
 	 */
 
-	public static void setValue(String si_value, String SI_CODE,List<UserInputData> userInputData) {
-		//insertData(dbType, replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE", si_value, "SI_CODE", SI_CODE));
-		insertData(replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE", si_value, "SI_CODE", SI_CODE), userInputData) ;
-		String value = getAllColumns(replace(SITE_TABLE_VARIABLE_VALUE, "SI_CODE", SI_CODE),userInputData);
-		System.out.println(si_value+"******************");
-		System.out.println(value+"******************");
+	public static void setValue(String si_value, String SI_CODE, List<UserInputData> userInputData) {
+		// insertData(dbType, replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE",
+		// si_value, "SI_CODE", SI_CODE));
+		insertData(replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE", si_value, "SI_CODE", SI_CODE), userInputData);
+		String value = getAllColumns(replace(SITE_TABLE_VARIABLE_VALUE, "SI_CODE", SI_CODE), userInputData);
+
 
 		assertEquals(si_value, value);
 	}
@@ -290,23 +288,22 @@ public class CommonPages extends Base {
 			}
 		}
 	}
-	public  void sendCredentials(String Username, String Password) {
+
+	public void sendCredentials(String Username, String Password) {
 		Page.sleep(10000);
 		Actions.findElementBy(Locator.NAME, "usernameEntered").sendKeys(Username);
 		Actions.findElementBy(Locator.NAME, "password").sendKeys(Password);
 		Actions.findElementBy(Locator.NAME, "SUBMIT2").click();
 		Page.sleep(20000);
 	}
-	
-	
-	public  void updateSi_value(String si_code, String si_value) {
 
-		
-		List<MobileElement>el=Actions.findElements(By.xpath("//select[@name='table']/option"));
+	public void updateSi_value(String si_code, String si_value) {
+
+		List<MobileElement> el = Actions.findElements(By.xpath("//select[@name='table']/option"));
 		for (int i = 0; i < el.size(); i++) {
-			if (el.get(i).getText().equals("site")){
+			if (el.get(i).getText().equals("site")) {
 				el.get(i).click();
-				
+
 			}
 		}
 		Actions.findElementBy(Locator.XPATH, "//input[@name='submitButton']").click();
@@ -318,9 +315,6 @@ public class CommonPages extends Base {
 		Actions.findElementBy(Locator.XPATH, "(//input[@name='updateAllB'])[2]").click();
 
 	}
-	
-	
-	
 
 	public void deleteDocs() {
 		tap(dashboard);

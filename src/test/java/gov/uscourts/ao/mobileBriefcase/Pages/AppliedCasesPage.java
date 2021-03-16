@@ -60,7 +60,6 @@ public class AppliedCasesPage extends AppiumPageFactory {
 		assertTrue("******APPLIED CASES LINK ICON DISAPPEARS WHEN BOOKMARKING CASE/REFERRAL******",
 				isDisplayed(Locator.XPATH, containsElement(caseNumber)
 						+ "/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText[@name='linked']"));
-		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 
 	}
 }

@@ -71,13 +71,7 @@ public class AssignmentsPage extends AppiumPageFactory {
 									a = dbAssignment.get(m) + " ";
 								}
 
-								System.out.println(a + "***********************AAAAAAAAAAAAAAAAA");
-								System.out.println(dbStaffLName.get(j) + "***********************dbStaffLName.get(j)");
-
-								System.out.println(dbStaffFName.get(i) + "***********************dbStaffFName.get(i)");
-
-								System.out.println(
-										dbassignmentType.get(l) + "***********************dbassignmentType.get(l)");
+					
 
 								staffAssignments.add(("//*[contains(@name, '" + dbStaffLName.get(j) + " "
 										+ dbStaffFName.get(i) + ", " + dbassignmentType.get(l)
@@ -94,7 +88,6 @@ public class AssignmentsPage extends AppiumPageFactory {
 		}
 
 		for (int i = 0; i < staffAssignments.size(); i++) {
-			System.out.println(staffAssignments.get(i) + "***********************2222222222222");
 
 			assertTrue(Actions.isDisplayed(Locator.XPATH, staffAssignments.get(i)));
 		}
@@ -396,20 +389,4 @@ public class AssignmentsPage extends AppiumPageFactory {
 		ASSINMENT_TYPE, ASSIGNMENT_DATE, NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE, ASSIGNMENT_TYPE_AND_RELIEF, LATEST_ASSIGNED_ASSIGNMENT_DUE_DATES, ASSIGNMENT_NOTE_DATE
 	}
 
-	// public static void main(String[] args) {
-	//
-	// List<String> assignInfo = new ArrayList<>();
-	// String value = null;
-	// // try {
-	// for (int i = 2; i <= 11; i++) {
-	// value = execute(DBType.CMKA, replace(ASSIGNMENT_INFO, "CMR_ID", "2310499"),
-	// i).get(2);
-	//
-	// assignInfo.add(trim(value));
-	// }
-	// // } catch (NullPointerException e) {
-	// // }
-	//
-	// System.out.println(assignInfo);
-	// }
 }
