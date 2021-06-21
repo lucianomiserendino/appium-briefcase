@@ -25,8 +25,11 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollUp;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.toArray;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -70,40 +73,61 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 
 		list = table.get(index);
 
+		String record = getLatestRecord();
 		scrollUp(By.id("DocumentList"));
+		Page.sleep(10000);
 		selectAction("Actions", list.getElListText(), userInputData);
 		sendKeys(commentField, "Test-" + getStreamOfRandomInts());
 		sendKeys(descriptionField, "Test-" + getStreamOfRandomInts() + "-");
 		String description = getText(descriptionField);
 		// try {
+
 		tap(submit);
+		Page.sleep(10000);
 		// tap(YESbtn);
 		// tap(OKbtn);
 		// } catch (Exception e) {
 		// e.printStackTrace();
 		// }
-		Page.sleep(2000);
-		getDataTable(table, index, caseNum, peID, userInputData);
+
+		getDataTable(table, index, caseNum, peID, userInputData, record);
 
 		assertEquals(description, getAllColumns(DM_DESCRIPTION, userInputData));
 
 	}
 
 	public void getDataTable(List<ElListText> table, int index, String caseNum, String peID,
+			List<UserInputData> userInputData, String record) {
+
+		getNotePermissions(table, index, "DM_ACC_CRT", record, userInputData);
+		getNotePermissions(table, index, "DM_ACC_CTLINK", record, userInputData);
+		getNotePermissions(table, index, "DM_ACC_SPEC", record, userInputData);
+
+		getDocUserRecord(table, index, caseNum, peID, userInputData, record);
+
+	}
+
+	public void getNotePermissions(List<ElListText> table, int index, String perm, String record,
 			List<UserInputData> userInputData) {
 		list = table.get(index);
 
-		System.out.println(getAllColumns(Queries.DM_ACC_CRT, userInputData) + "***************");
-		System.out.println(getAllColumns(Queries.DM_ACC_CTLINK, userInputData) + "***************");
-		System.out.println(getAllColumns(Queries.DM_ACC_SPEC, userInputData) + "***************");
+		String set;
+		String l = "";
 
-		// assertEquals(getAllColumns(dbType, DM_ACC_CRT), list.getDm_acc_crt());
+		if (perm.equals("DM_ACC_CRT")) {
+			set = Queries.DM_ACC_CRT;
+			l = list.getDm_acc_crt();
 
-		// assertEquals(getAllColumns(dbType, DM_ACC_CTLINK), list.getDm_acc_ctlink());
+		} else if (perm.equals("DM_ACC_CTLINK")) {
+			set = Queries.DM_ACC_CTLINK;
+			l = list.getDm_acc_ctlink();
 
-		// assertEquals(getAllColumns(dbType, DM_ACC_SPEC), list.getDm_acc_spec());
+		} else {
+			set = Queries.DM_ACC_SPEC;
+			l = list.getDm_acc_spec();
+		}
+		assertEquals(getAllColumns(replace(set, "DM_DATE_CREATED", record), userInputData), l);
 
-		getDocUserRecord(table, index, caseNum, peID, userInputData);
 	}
 
 	public static String getActionName(String el_id, List<UserInputData> userInputData) {
@@ -111,32 +135,27 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 	}
 
 	public void getDocUserRecord(List<ElListText> table, int index, String caseNum, String peId,
-			List<UserInputData> userInputData) {
+			List<UserInputData> userInputData, String record) {
 		list = table.get(index);
-		List<String> docUserTable = getDocUserTable(userInputData);
-		List<String> docGroupTable = getDocGroupTable(userInputData);
+
+		List<String> docUserTable = getDocUserTable(userInputData, record);
+		List<String> docGroupTable = getDocGroupTable(userInputData, record);
 		List<String> panelJudges = getPanelJudgesPRID(caseNum, peId, userInputData);
 		List<String> loggedInJudgesChambersGroupID = getLogedInJudgesChambersGroupID(caseNum, peId, userInputData);
 
 		String actionName = getActionName(list.getElListText(), userInputData).trim();
-		System.out.println(actionName + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 
 		/** No doc_group or doc_user records will be created */
 		if (actionName.equals("note - court users")) {
 
-			System.out.println(docUserTable + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			System.out.println(docGroupTable + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-
-			// assertNull(docUserTable);
-			// assertNull(docGroupTable);
+			assertNull(docUserTable);
+			assertNull(docGroupTable);
 
 			/** No doc_group or doc_user records will be created */
 		} else if (actionName.equals("note - court users linked to case")) {
-			System.out.println(docUserTable + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			System.out.println(docGroupTable + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 
-			// assertNull(docUserTable);
-			// assertNull(docGroupTable);
+			assertNull(docUserTable);
+			assertNull(docGroupTable);
 
 			/**
 			 * A doc_user record will be created for each judge on the panel.No doc_group
@@ -144,12 +163,8 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 			 */
 		} else if (actionName.equals("note - panel judges only")) {
 
-			System.out.println(docUserTable + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			System.out.println(panelJudges + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			System.out.println(docGroupTable + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-
-			// assertEquals(docUserTable, panelJudges);
-			// assertNull(docGroupTable);
+			assertEquals(docUserTable, panelJudges);
+			assertNull(docGroupTable);
 
 			/**
 			 * A doc_user record will be created for each judge on the panel. A doc_group
@@ -157,13 +172,8 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 			 */
 		} else if (actionName.equals("note - panel judges and users chambers")) {
 
-			System.out.println(docUserTable + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			System.out.println(panelJudges + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			System.out.println(docGroupTable + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			System.out.println(loggedInJudgesChambersGroupID + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-
-			// assertEquals(docUserTable, panelJudges);
-			// assertEquals(docGroupTable, loggedInJudgesChambersGroupID);
+			assertEquals(docUserTable, panelJudges);
+			assertEquals(docGroupTable, loggedInJudgesChambersGroupID);
 
 			/**
 			 * A doc_user record will not be created. A doc_group record will be created for
@@ -171,40 +181,33 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 			 */
 		} else if (actionName.equals("note - panel judges chambers")) {
 
-			System.out.println(docUserTable + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			System.out.println(docGroupTable + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			System.out.println(getchambersGroupId(panelJudges, caseNum, peId, userInputData)
-					+ "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+			assertNull(docUserTable);
+			assertEquals(docGroupTable, getchambersGroupId(panelJudges, caseNum, peId, userInputData));
 
-			// assertNull(docUserTable);
-			// assertEquals(docGroupTable, getchambersGroupId(dbType, panelJudges, caseNum,
-			// peId));
-
+			/**
+			 * A doc_user record will not be created. A doc_group record will be created for
+			 * the logged in judge's chambers only.
+			 */
 		} else if (actionName.equals("note - users chambers")) {
 
-			System.out.println(docUserTable + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			System.out.println(docGroupTable + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			System.out.println(loggedInJudgesChambersGroupID + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+			assertNull(docUserTable);
+			assertEquals(docGroupTable, loggedInJudgesChambersGroupID);
 
-			// assertNull(docUserTable);
-			// assertEquals(docGroupTable, loggedInJudgesChambersGroupID);
-
+			/**
+			 * A doc_user record will not be created for the pr_prids following the pipe in
+			 * the Note Available personroles | Default person IDs. A doc_group record will
+			 * be created for the groups ids following the pipe in the Note Available |
+			 * Default Group IDs.
+			 */
 		} else if (actionName.equals("note - only groups and users")) {
 
 			List<String> defaultPersonIDs = getDefaultIds(list.getElListText(), 3, userInputData);
 
 			List<String> defaultGroupIDs = getDefaultIds(list.getElListText(), 2, userInputData);
 
-			System.out.println(defaultPersonIDs + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			System.out.println(docUserTable + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			System.out.println(defaultGroupIDs + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			System.out.println(docGroupTable + "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-
-			// assertEquals(defaultPersonIDs, docUserTable);
-			// assertEquals(defaultGroupIDs, docGroupTable);
-
+			assertEquals(defaultPersonIDs, docUserTable);
+			assertEquals(defaultGroupIDs, docGroupTable);
 		}
-
 	}
 
 	public static List<String> getchambersGroupId(List<String> panelJudges, String caseNum, String peId,
@@ -239,20 +242,13 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 		return getAllColumns(query, userInputData);
 	}
 
-	// public static String getDM_DATE_CREATED(List<UserInputData> userInputData) {
-	// return getAllColumns(DM_DATE_CREATED, userInputData);
-	// }
-
-	public static List<String> getDocUserTable(List<UserInputData> userInputData) {
-		return getDBResult(
-				replace(DU_PRID, "DU_DATE_CREATED", getDM_DATE_CREATED(Queries.DU_DATE_CREATED, userInputData)),
-				userInputData);
+	public static List<String> getDocUserTable(List<UserInputData> userInputData, String record) {
+		return getDBResult(replace(DU_PRID, "DU_DATE_CREATED", record), userInputData);
 	}
 
-	public static List<String> getDocGroupTable(List<UserInputData> userInputData) {
-		return getDBResult(
-				replace(DCG_GROUP, "DCG_DATE_CREATED", getDM_DATE_CREATED(Queries.DCG_DATE_CREATED, userInputData)),
-				userInputData);
+
+	public static List<String> getDocGroupTable(List<UserInputData> userInputData, String record) {
+		return getDBResult(replace(DCG_GROUP, "DCG_DATE_CREATED", record), userInputData);
 	}
 
 	public static List<String> getIDs(String caseNum, String peId, String query, List<UserInputData> userInputData) {
@@ -329,4 +325,8 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 
 	}
 
+	public static String getLatestRecord() {
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+	}
 }

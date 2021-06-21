@@ -19,8 +19,8 @@ public class RedBulletsPage extends AppiumPageFactory {
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Total')]")
 	public MobileElement totalNumOfNewReferrals;
-
-	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, 'Viewed')])[1]/preceding::XCUIElementTypeStaticText[contains(@name, '-')]")
+//(//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, 'Viewed')])[1]/preceding::XCUIElementTypeStaticText[contains(@name, '-')]
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]/preceding::XCUIElementTypeStaticText[contains(@name, 'Viewed')])[1]")
 	public List<MobileElement> unviewedReferral;
 
 	public int getUnviewedReferral() {

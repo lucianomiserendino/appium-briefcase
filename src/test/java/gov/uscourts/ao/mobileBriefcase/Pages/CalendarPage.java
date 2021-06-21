@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASES_ON_CALENDAR_SESSIONS;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCaseID;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
@@ -13,14 +12,9 @@ import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrolldown;
 import static org.junit.Assert.assertEquals;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import org.openqa.selenium.NoSuchElementException;
 
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
@@ -230,7 +224,5 @@ public class CalendarPage extends AppiumPageFactory {
 		CLU_DATE_HEARING, CTS_TERM, ARG_DISPLAY, CTS_DATE_FROM, CTS_DATE_TO, CMR_PANEL_MEMBERS
 
 	}
-	
-	
 
 }

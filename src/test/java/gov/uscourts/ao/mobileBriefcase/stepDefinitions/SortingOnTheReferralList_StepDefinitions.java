@@ -1,63 +1,58 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static java.util.Collections.reverse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage.Sort;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
-import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.common.Utility;
 
 public class SortingOnTheReferralList_StepDefinitions {
 
 	ReferralSortOrderPage page;
 
-	@When("^User verifies  the Date Down Arrow is selected by default and that the referrals are sorted by referred date in descending order \\(newest first\\)\\.$")
-	public void user_verifies_the_Date_Down_Arrow_is_selected_by_default_and_that_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first(
-			List<UserInputData> userInputData) {
-
+	@Then("^User verify the Date Down Arrow is selected by default and that the referrals are sorted by referred date in descending order \\(newest first\\)\\.$")
+	public void user_verify_the_Date_Down_Arrow_is_selected_by_default_and_that_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first() {
 		page = new ReferralSortOrderPage();
 		Page.sleep(20000);
-		// page.selectReferralCategory(userInputData);
-		List<String> defaultOrder = page.referralsSortedByDate();
+		 List<String> defaultOrder = page.referralsSortedByDate(); //(default isn't
+		// working, filed AMB-2493)
+		 assertTrue(Utility.checkDatesForDescOrder(defaultOrder));
+		// remove line 21 - 23 once the AMB-2493 is resolved
 
 		page.selectSortBtn();
+		//page.getSortPage(Sort.REFERRAL_DATE_ASCENDING);// remove this line once the AMB-2493 is resolved
 
-		page.getSortPage(Sort.SORT_DATES_IN_DESCENDING_ORDER);
-		List<String> sortedByDescOrd = page.referralsSortedByDate();
-
-		assertTrue("REFERRALS ARE NOT SORTED BY DEFAULT", defaultOrder.equals(sortedByDescOrd));
-
-		reverse(sortedByDescOrd);
-
-		page.getSortPage(Sort.SORT_DATES_IN_ASCENDING_ORDER);
-		List<String> sortedByAscOrd = page.referralsSortedByDate();
-		
-		assertTrue("REFERRALS ARE NOT SORTED BY DATE", sortedByDescOrd.equals(sortedByAscOrd));
-		
+		page.getSortPage(Sort.REFERRAL_DATE_DESCENDING);
+		List<String> descOrder = page.referralsSortedByDate();
+		assertTrue(Utility.checkDatesForDescOrder(descOrder));
 	}
 
-	@Then("^User clicks the Case Down Arrow button and  verifies the referrals are sorted by case number in descending order \\. User clicks the Case Up Arrow button, verifies the referrals are sorted by case number in ascending order\\.$")
-	public void user_clicks_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_descending_order_User_clicks_the_Case_Up_Arrow_button_verifies_the_referrals_are_sorted_by_case_number_in_ascending_order() {
+	@Then("^User clicks on the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order \\(oldest first\\)\\.$")
+	public void user_clicks_on_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_ascending_order_oldest_first() {
+		page.getSortPage(Sort.REFERRAL_DATE_ASCENDING);
+		List<String> ascendingOrder = page.referralsSortedByDate();
+		assertTrue(Utility.checkDatesForAscOrder(ascendingOrder));
 
-		List<String> referralsSortedByDescOrd = page.referralsSortedByCase(Sort.SORT_CASES_IN_DESCENDING_ORDER);
+	}
 
-		List<String> referralsSortedByAscOrd = page.referralsSortedByCase(Sort.SORT_CASES_IN_ASCENDING_ORDER);
+	@Then("^User clicks on the Case Down Arrow button and verifies the referrals are sorted by case number in descending order$")
+	public void user_clicks_on_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_descending_order() {
+		page.getSortPage(Sort.CASE_NUMBER_DESCENDING);
+		List<String> referralsSortedByDescOrd = page.referralsSortedByCase();
+		Utility.isSorted("Desc", referralsSortedByDescOrd, referralsSortedByDescOrd);
 
-		reverse(referralsSortedByAscOrd);
+	}
 
-		assertTrue("REFERRALS ARE NOT SORTED BY CASE NUMBER IN DESCENDING ORDER",
-				referralsSortedByDescOrd.equals(referralsSortedByAscOrd));
+	@Then("^User clicks on the Case Down Arrow button and verifies the referrals are sorted by case number in ascending order\\.$")
+	public void user_clicks_on_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_ascending_order() {
 
-		reverse(referralsSortedByAscOrd);
-		reverse(referralsSortedByDescOrd);
-
-		assertTrue("REFERRALS ARE NOT SORTED BY CASE NUMBER IN ASCENDING ORDER",
-				referralsSortedByDescOrd.equals(referralsSortedByAscOrd));
+		page.getSortPage(Sort.CASE_NUMBER_ASCENDING);
+		List<String> referralsSortedByAscOrd = page.referralsSortedByCase();
+		Utility.isSorted("Asc", referralsSortedByAscOrd, referralsSortedByAscOrd);
 	}
 
 	@Then("^User verifies  Document Categories are sorted on the referral detail page \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\)$")

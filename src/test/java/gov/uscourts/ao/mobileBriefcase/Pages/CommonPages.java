@@ -42,7 +42,6 @@ public class CommonPages extends Base {
 	public CommonPages() {
 
 		initElements(new AppiumFieldDecorator(driver), this);
-
 	}
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther[5]/XCUIElementTypeTextField")
@@ -126,6 +125,11 @@ public class CommonPages extends Base {
 
 		case TEST_AUTOMATION:
 			categories = "Test Automation";
+			list = ReferralsList;
+			break;
+			
+		case APPLICATION_FOR_COA:
+			categories = "Application";
 			list = ReferralsList;
 			break;
 
@@ -257,8 +261,6 @@ public class CommonPages extends Base {
 		// si_value, "SI_CODE", SI_CODE));
 		insertData(replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE", si_value, "SI_CODE", SI_CODE), userInputData);
 		String value = getAllColumns(replace(SITE_TABLE_VARIABLE_VALUE, "SI_CODE", SI_CODE), userInputData);
-
-
 		assertEquals(si_value, value);
 	}
 
@@ -298,7 +300,6 @@ public class CommonPages extends Base {
 	}
 
 	public void updateSi_value(String si_code, String si_value) {
-
 		List<MobileElement> el = Actions.findElements(By.xpath("//select[@name='table']/option"));
 		for (int i = 0; i < el.size(); i++) {
 			if (el.get(i).getText().equals("site")) {
@@ -321,6 +322,7 @@ public class CommonPages extends Base {
 		tap(settingsIcon);
 		tap(Locator.XPATH, "//XCUIElementTypeStaticText[@name='Delete all Briefcase Documents']");
 		performPageLoad(driver);
+		driver.navigate().back();
 		tap(dashboard);
 	}
 
@@ -333,7 +335,7 @@ public class CommonPages extends Base {
 	}
 
 	public enum Category {
-		PENDIN, PETITION, CASES_ON, MOTION, SCREENING, REFERENCE, TEST_AUTOMATION
+		PENDIN, PETITION, CASES_ON, MOTION, SCREENING, REFERENCE, TEST_AUTOMATION, APPLICATION_FOR_COA
 	}
 
 }

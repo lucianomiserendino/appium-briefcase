@@ -27,7 +27,7 @@ public class NoticesOfDocketActivity_StepDefinitions extends Base {
 	public void user_verifies_the_note_opens_in_Briefcase_by_using_the_same_and_Open_a_note_in_Briefcase_from_the_NDA_link(
 			String caseNum, String dbType) {
 		page.openANoteInBriefcase(caseNum, dbType, "briefcaseAppLinkRoot");
-
+          
 	}
 
 	@Then("^User deletes all docs from the device$")

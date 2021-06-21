@@ -24,11 +24,11 @@ public class AppliedCasesPage extends AppiumPageFactory {
 	public MobileElement bookOnDashboard;
 
 	public void getBookmarkedReferral(String caseNumber) {
-
+		
 		try {
 			if (bookOnDashboard.isDisplayed()) {
+				
 				tap(bookOnDashboard);
-
 				if (isDisplayed(Locator.XPATH, "//XCUIElementTypeOther[@name='ReferralsList']/child::*"
 						+ containsElement(caseNumber)) == true) {
 
@@ -46,7 +46,6 @@ public class AppliedCasesPage extends AppiumPageFactory {
 
 		scrollDownIfNotDisplayed("//XCUIElementTypeStaticText[@name='" + date
 				+ "']/following::XCUIElementTypeOther/XCUIElementTypeStaticText[@name='" + panel + "']");
-
 	}
 
 	public void getAppliedCaseLink(String caseNumber) {

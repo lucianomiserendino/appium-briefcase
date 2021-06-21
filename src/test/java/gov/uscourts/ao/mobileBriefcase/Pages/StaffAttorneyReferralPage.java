@@ -95,10 +95,8 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 			}
 		}
 
-
 		assertEquals("NUMBER OF REFERRALS IN EACH CATEGORIES, DOESN'T MATCH THE NUMBER OF REFERRALS IN THE DB",
 				dbRefCategories, uiRefCategories);
-
 	}
 
 	public static MobileElement getRefCategory(int i, int numOfRef) {

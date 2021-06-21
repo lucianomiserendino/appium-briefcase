@@ -1,4 +1,4 @@
-@Smoke @AMB-956
+@AMB-956 @Smoke
 Feature: Referral Categories display on the dashboard for the judge 
 
 

@@ -9,10 +9,12 @@ import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForVisibilityOfElement;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.sort;
+import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,7 +26,6 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 
-import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
@@ -68,20 +69,25 @@ public class Utility extends Base {
 		return isDisplayed;
 	}
 
-	public static String scrollDownIfNotDisplayed( String element) {
+	public static String scrollDownIfNotDisplayed(String element) {
 
 		Boolean elementNotFound = true;
 		while (elementNotFound) {
 			try {
 
 				List<MobileElement> elems = findElements(By.xpath(element));
-				if (elems.size() > 0) {
+				if (elems.size() == 1) {
+
 					try {
 						elems.get(0).click();
 						break;
 					} catch (WebDriverException e) {
 						e.getMessage();
 					}
+
+				} else if (elems.size() > 1) {
+					elems.get(elems.size() - 1).click();
+					break;
 				} else {
 					scrolldown();
 					performPageLoad(driver);
@@ -127,13 +133,9 @@ public class Utility extends Base {
 		List<MobileElement> el = elements;
 		performPageLoad(driver);
 		Iterator<MobileElement> itr = el.iterator();
-				while (itr.hasNext()) {
+		while (itr.hasNext()) {
 			dest = itr.next().getText().split(split);
-			if (index == 0) {
-				referrals.add(dest[index].trim());
-			} else {
-				referrals.add(changeDateFormat(dest[index].trim(), "MM/dd/yyyy", "yyyy/MM/dd"));
-			}
+			referrals.add(dest[index].trim());
 		}
 
 		return referrals;
@@ -197,10 +199,10 @@ public class Utility extends Base {
 
 	}
 
-	public static boolean elementIsDisplayed( String query, String xpath, List<UserInputData> userInputData) {
+	public static boolean elementIsDisplayed(String query, String xpath, List<UserInputData> userInputData) {
 		boolean isDisplayed = false;
 		MobileElement uiResult = null;
-		List<String> dbResult = executeQuery( query, userInputData);
+		List<String> dbResult = executeQuery(query, userInputData);
 		sort(dbResult);
 		try {
 			for (int i = 0; i < dbResult.size(); ++i) {
@@ -235,11 +237,10 @@ public class Utility extends Base {
 
 	public static int getRandomInt(int index) {
 		return index - 1 - new Random().nextInt(index);
-		
+
 	}
 
 	public static String getParameter(String param, String dpfName, int index) {
-		System.out.println(param+"*********************");
 
 		String dpfParam = "";
 		String[] items = param.split(";");
@@ -256,7 +257,7 @@ public class Utility extends Base {
 		} else {
 			String[] charac = param.substring(param.indexOf(dpfName + "(")).split(",");
 			if (charac[index].contains("'")) {
-				//dpfParam += charac[index].replaceAll("'", "").trim();
+				// dpfParam += charac[index].replaceAll("'", "").trim();
 				dpfParam = charac[index].replaceAll("'", "").split("\\(")[1].trim();
 			}
 		}
@@ -269,16 +270,6 @@ public class Utility extends Base {
 		}
 		return new Random().nextInt((max - min) + 1) + min;
 	}
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
 
 	public static String clickOnNumberInRange(List<MobileElement> value) {
 		String text = "";
@@ -313,7 +304,114 @@ public class Utility extends Base {
 			id += obj;
 		return id;
 	}
-	
 
+	public static boolean isSorted(String sort, List<String> listOfStrings) {
+		return isSortedinDescOrder(listOfStrings, listOfStrings.size());
 
+	}
+
+	public static boolean isSortedinDescOrder(List<String> listOfStrings, int index) {
+		if (index < 2) {
+			return true;
+		} else if (listOfStrings.get(index - 1).compareTo(listOfStrings.get(index - 2)) > 0) {
+			// asc oredr } else if (listOfStrings.get(index -
+			// 2).compareTo(listOfStrings.get(index - 1)) > 0) {
+			return false;
+		} else {
+			return isSortedinDescOrder(listOfStrings, index - 1);
+		}
+	}
+
+	public static boolean checkDatesForDescOrder(List<String> date) {
+
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M/d/yyyy");
+
+		boolean decendingOrder = true;
+
+		for (int index = 0; index < date.size() - 1; index++) {
+			try {
+				long d = simpleDateFormat.parse(date.get(index)).getTime();
+				long d1 = simpleDateFormat.parse(date.get(index + 1)).getTime();
+
+				if (d < d1) {
+					decendingOrder = false;
+					break;
+				}
+
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+
+		if (decendingOrder) {
+
+			return decendingOrder;
+		} else {
+			System.out.println("The dates are not sorted in descending order:---------> " + date);
+			return false;
+		}
+
+	}
+
+	public static boolean checkDatesForAscOrder(List<String> date) {
+
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M/d/yyyy");
+
+		boolean decendingOrder = true;
+
+		for (int index = 0; index < date.size() - 1; index++) {
+			try {
+				long d = simpleDateFormat.parse(date.get(index)).getTime();
+				long d1 = simpleDateFormat.parse(date.get(index + 1)).getTime();
+
+				if (d > d1) {
+					decendingOrder = false;
+					break;
+				}
+
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+
+		if (decendingOrder) {
+
+			return decendingOrder;
+		} else {
+			System.out.println("The dates are not sorted in ascending order:---------> " + date);
+			return false;
+		}
+
+	}
+
+	public static void isSorted(String sort, List<String> list, List<String> listTwo) {
+
+		Comparator<String> primaryComparator = (a, b) -> Integer.valueOf(a.split("-")[0])
+				.compareTo(Integer.valueOf(b.split("-")[0]));
+
+		Comparator<String> secondaryComparator = (a, b) -> Integer.valueOf(a.split("-")[1])
+				.compareTo(Integer.valueOf(b.split("-")[1]));
+
+		if (sort.equals("Asc")) {
+
+			listTwo.sort(primaryComparator.thenComparing(secondaryComparator));
+
+			assertEquals("The referrals are not sorted by case number in ascending order: " + list, list, listTwo);
+
+		} else {
+
+			listTwo.sort(primaryComparator.thenComparing(secondaryComparator).reversed());
+
+			assertEquals("The referrals are not sorted by case number in descending order: " + list, list, listTwo);
+
+		}
+	}
+
+	public static List<Integer> getCellCount(int time, int navCellSize) {
+		List<Integer> cellSize = new ArrayList<>();
+		for (int i = time; i < navCellSize; i++) {
+			cellSize.add(i);
+		}
+		return cellSize;
+	}
 }

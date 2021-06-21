@@ -1,4 +1,4 @@
-@Smoke @AMB-1038 @S
+@AMB-1038 @S
 Feature: Display Actions Panel and actions 
 
 Scenario: 
@@ -20,6 +20,7 @@ Scenario:
 		|courtId|cmr_id |
 		|test   |2310499|
 		
+
 
 
 	

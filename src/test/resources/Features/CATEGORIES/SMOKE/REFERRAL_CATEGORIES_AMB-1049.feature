@@ -22,3 +22,5 @@ Scenario:
 	When  User observes there are six referral categories listed on UI and DB, use smr_assign_pe_id: "434"
     |courtId|
 	|test   |
+	
+	

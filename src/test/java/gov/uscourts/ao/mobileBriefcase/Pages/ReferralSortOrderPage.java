@@ -52,7 +52,7 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, 'Actions')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
 	public static List<MobileElement> docCategories;
-	
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public static List<MobileElement> navIcons;
 
@@ -63,7 +63,6 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 		String query = getID(Queries.DB_LIST_OF_CATEGORIES, getPE_ID("jud", name, userInputData));
 
 		List<String> dbReferralCategories = executeQuery(query, userInputData);
-
 		if (dbReferralCategories.contains("Reference Documents")
 				|| dbReferralCategories.contains("Cases on Calendar")) {
 			dbReferralCategories.remove("Reference Documents");
@@ -77,7 +76,6 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 
 		tap(Locator.XPATH, "//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '"
 				+ dbReferralCategories.get(randomAttorneyIndex) + "')]");
-
 	}
 
 	public static int generateRandomNumber(int bound) {
@@ -90,45 +88,42 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	 * referred in descending order (newest first).
 	 */
 	public void selectSortBtn() {
-		tap(sortArrowBtn);
+
 		if (Actions.isDisplayed(Locator.XPATH, "//*[contains(@name, 'Sort ↓')]") == true) {
 			tap(sortArrowBtn);
 		}
 	}
 
 	public List<String> referralsSortedByDate() {
-
 		return retrieveAllCases(dates, "Date: ", 1);
 	}
 
-	public List<String> referralsSortedByCase(Sort sort) {
-		getSortPage(sort);
+	public List<String> referralsSortedByCase() {
 		return retrieveAllCases(cases, " ", 0);
 	}
 
-	public void getSortPage(Sort sort) {
+	public  void getSortPage(Sort sort) {
 
 		switch (sort) {
-		case SORT_DATES_IN_DESCENDING_ORDER:
+		case REFERRAL_DATE_DESCENDING:
 			tap(dateArrowDownBtn);
 			break;
 
-		case SORT_DATES_IN_ASCENDING_ORDER:
+		case REFERRAL_DATE_ASCENDING:
 			tap(dateArrowUpBtn);
 			break;
 
-		case SORT_CASES_IN_DESCENDING_ORDER:
+		case CASE_NUMBER_DESCENDING:
 			tap(caseDownArrowBtn);
 			break;
 
-		case SORT_CASES_IN_ASCENDING_ORDER:
+		case CASE_NUMBER_ASCENDING:
 			tap(caseUpArrowBtn);
 			break;
 
 		default:
 			break;
 		}
-
 	}
 
 	public void getDocumentCategories(String dbType, String cmr_cyv_code, String cmr_ju_pe_id, String cmr_cs_caseid) {
@@ -145,17 +140,8 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 
 		assertEquals(" DOCUMENT CATEGORIES ARE NOT SORTED ON THE REFERRAL DETAIL PAGE ", dbDoCategories,
 				uiDoCategories);
-
 	}
 
-	public void sortPendingFolders() {
-
-		int navCellSize = navIcons.size();
-		
-		List<Integer> dash = getCellCount(1, navCellSize - 1);
-		List<Integer> nav = getCellCount(3, navCellSize + 1);
-	}
-	
 	public List<Integer> getCellCount(int time, int navCellSize) {
 		List<Integer> cellSize = new ArrayList<>();
 		for (int i = time; i < navCellSize; i++) {
@@ -165,7 +151,7 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	}
 
 	public enum Sort {
-		SORT_DATES_IN_DESCENDING_ORDER, SORT_DATES_IN_ASCENDING_ORDER, SORT_CASES_IN_DESCENDING_ORDER, SORT_CASES_IN_ASCENDING_ORDER
+		REFERRAL_DATE_DESCENDING, REFERRAL_DATE_ASCENDING, CASE_NUMBER_DESCENDING, CASE_NUMBER_ASCENDING
 	}
 
 }

@@ -11,7 +11,6 @@ import static org.junit.Assert.assertTrue;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.iOSBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CaseQueryPage extends AppiumPageFactory {
@@ -28,17 +27,19 @@ public class CaseQueryPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(accessibility = "ResultsList")
 	public static MobileElement category;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='CM/ECF']")
+	public static MobileElement cmecf;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='On Device']")
+	public static MobileElement on_device;
 
 	public void searchForACase(String caseNum) {
-		String caseN = "";
-		for (int i = 0; i < 1; i++) {
-			caseN = caseNum.split(" ")[0];
-		}
+
 		searchIcon.click();
-		searchByCase(caseN, 6);
+		searchByCase(caseNum, 6);
 		tap(Locator.XPATH, containsElement("Back"));
 		searchTextField.clear();
-		searchByCase(caseN, 7);
+		searchByCase(caseNum, 7);
 	}
 
 	public void searchByCase(String caseN, int index) {
@@ -50,4 +51,27 @@ public class CaseQueryPage extends AppiumPageFactory {
 		assertTrue("APP IS NOT RETURNING CASE LIST FOR SOME WILDCARD SEARCHES",
 				contains("Case #" + caseN).isDisplayed());
 	}
+
+	public void viewInfo(String caseNum, MobileElement el, String text) {
+
+		searchIcon.click();
+		sendKeys(searchTextField, caseNum);
+		searchBTN.click();
+		performPageLoad(driver);
+		el.click();
+		performPageLoad(driver);
+		contains(caseNum).click();
+		assertTrue(contains(text).isDisplayed());
+
+	}
+
+	public void viewTheInformationInCMECF(String caseNum) {
+		viewInfo(caseNum, cmecf, "Docket Entries");
+	}
+
+	public void viewTheInformationOnTheDevice(String caseNum) {
+		viewInfo(caseNum, on_device, "Case Information");
+
+	}
+
 }

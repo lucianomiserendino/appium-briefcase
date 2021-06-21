@@ -5,10 +5,10 @@ Scenario:
 	There is functionality in Briefcase that enables users to bookmark referrals.  
 	The following scenarios need to be automated:
 	
-	Given I am logged into Briefcase 
+
+		Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2024!|test   |
-		
+		|Integration    |s haenni| Test2024!|test   |	
 	Then I select a user 
 		|role              |briefcaseUser|
 		|Appellate Judges  |Colloton     |

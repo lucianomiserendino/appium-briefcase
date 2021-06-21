@@ -1,18 +1,18 @@
+@AMB-1189 
 Feature: Links in NDA open in Briefcase 
 
 
 
 Background: 
-	#Given I am logged into Briefcase 
-		#|environment    |userName| password |courtId|
-		#|Integration    |JAHaenni| Test2024!|test   |
+	Given I am logged into Briefcase 
+		|environment    |userName| password |courtId|
+		|Integration    |s haenni| Test2024!|test   |
 		
-	Then I select a user
-	|role              |briefcaseUser|
-	|Appellate Judges  |Colloton     |
+	Then I select a user 
+		|role              |briefcaseUser|
+		|Appellate Judges  |Colloton     |
 	
-#@Regression 	
-@AMB-1189 
+ 	
 Scenario Outline: 
 
 	Users can set preferences for the Notices of Docket Activity (NDA) they receive to include links to open documents, 
@@ -27,3 +27,9 @@ Scenario Outline:
 	
 		|case    | dbType |
 		|18-92018| CMKA   |
+		
+		
+		
+		
+		
+	

@@ -11,7 +11,6 @@ import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getSiValue;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.verifyElementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.open;
-import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.searchForACase;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
@@ -24,6 +23,7 @@ import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Coordinates.BriefcaseCoordinates;
+import gov.uscourts.ao.mobileBriefcase.common.Page;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -112,42 +112,46 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 	}
 
 	public static String getDocumentAndNoteID(String caseNum, String dbType, String id, String value) {
-
 		return getSiValue(dbType, value) + "viewdocument?dmdlsid=" + id + "&caseid=" + findACaseID(caseNum, dbType);
 	}
 
 	/** Open a Docket Entry in Briefcase from the NDA link */
 
 	public void openADktEntryInBriefcase(String caseNum, String dbType, String value) {
-		searchForACase(caseNum);
+		// searchForACase(caseNum);
 		loadNDALinksInBriefcase(getDktentryid(caseNum, dbType, value));
 		verifyElementsAreDisplayed("DOCKET ENTRY", docketText);
-		// clickBack(1);
-		tap(dashboard);
+
+		// for (int i = 0; i < 3; i++) {
+		// driver.navigate().back();
+		// }
+		driver.navigate().back();
 	}
 
 	/** Open a document in Briefcase from the NDA link */
 
 	public void openADocumentInBriefCase(String caseNum, String dbType, String value) {
-		searchForACase(caseNum);
+		// searchForACase(caseNum);
 		loadNDALinksInBriefcase(getDocumentAndNoteID(caseNum, dbType, "2832314", value));
+		Page.sleep(30000);
 		select(BriefcaseCoordinates.DISMISS);
-		performPageLoad(driver);
 
 		verifyElementsAreDisplayed("DOCUMENT", PDFPageView);
 
 		tap(Locator.NAME, close);
-		tap(dashboard);
-
+		// for (int i = 0; i < 3; i++) {
+		// driver.navigate().back();
+		// }
+		driver.navigate().back();
 	}
 
 	/** Open a note in Briefcase from the NDA link */
 
 	public void openANoteInBriefcase(String caseNum, String dbType, String value) {
-		searchForACase(caseNum);
+		// searchForACase(caseNum);
 		loadNDALinksInBriefcase(getDocumentAndNoteID(caseNum, dbType, getDocID(ID.NOTE_ID, caseNum, dbType), value));
 		verifyElementsAreDisplayed("NOTE", addANote);
-		tap(dashboard);
+		// driver.navigate().back();
 
 	}
 

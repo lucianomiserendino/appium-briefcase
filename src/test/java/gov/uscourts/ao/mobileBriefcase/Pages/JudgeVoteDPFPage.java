@@ -100,7 +100,8 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 		return relief;
 
 	}
-
+	
+	
 	/** verify each judge's vote and the day they voted on the popup page */
 	public void verifyJudgesVote(String ccr_id, List<UserInputData> userInputData) {
 		performPageLoad(driver);
@@ -241,7 +242,8 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 		String relief = getRelief(ccr_id, userInputData);
 		getVote(relief).click();
 		performPageLoad(driver);
-		assertTrue(isDisplayed(Locator.XPATH, containsElement(getTodaysDate())));
+		// containsElement(getTodaysDate()))
+		assertTrue(isDisplayed(Locator.XPATH, containsElement("$$")));
 		String title = getAllColumns(DM_DESCRIPTION, userInputData);
 		assertTrue(isDisplayed(Locator.XPATH, containsElement(title)));
 		tap(close);
@@ -254,48 +256,59 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 			assertNull(" THE \"NOTE HISTORY PARAMETER\" IS NOT SET TO \"SKIP\" ", commentField.getText());
 			tap(cancel);
 		} else {
-			try {
-				if (getText(commentField).isEmpty()) {
-					sendANote();
-					tap(commentField);
-				}
-				tap(commentField);
-				tap(commentField);
-				tap(selectAll);
-				tap(cut);
-				text += sendANote();
-				tap(applyBtn);
-				tap(submit);
-				try {
-					tap(yesBtn);
-					tap(okBtn);
-				} catch (Exception e) {
+			Page.sleep(3000);
+			// try {
+			// if (getText(commentField).isEmpty()) {
+			// sendANote();
+			// //tap(commentField);
+			// }
+			// tap(commentField);
+			// tap(commentField);
+			// tap(selectAll);
+			// tap(cut);
+			commentField.click();
+			commentField.clear();
 
-					selectAction("Actions", el_id, userInputData);
-					performPageLoad(driver);
-					tap(Locator.XPATH, getIndexOfNoteIcon(relief));
-					assertEquals(
-							" THE \"NOTE HISTORY PARAMETER\" IS SET TO \"Y\", HOWEVER THE TEXT OF THE PREVIOUS VOTE NOTE IS NOT DISPLYED CORRECTLY! ",
-							text, getText(commentField));
-					tap(cancel);
-				}
-			} catch (NoSuchElementException e) {
-				e.printStackTrace();
-			}
+			text = sendANote();
+			tap(applyBtn);
+			tap(submit);
+			// try {
+			// tap(yesBtn);
+			// tap(okBtn);
+			// } catch (Exception e) {
+			performPageLoad(driver);
+			scrollUp(By.id("DocumentList"));
+			getGroupIcons();
+			selectAction("Actions", el_id, userInputData);
+			performPageLoad(driver);
+			tap(Locator.XPATH, getIndexOfNoteIcon(relief));
+			assertEquals(
+					" THE \"NOTE HISTORY PARAMETER\" IS SET TO \"Y\", HOWEVER THE TEXT OF THE PREVIOUS VOTE NOTE IS NOT DISPLYED CORRECTLY! ",
+					text, getText(commentField));
+			tap(cancel);
+			// }
+			// } catch (NoSuchElementException e) {
+			// e.printStackTrace();
+			// }
 		}
 
 	}
 
 	public static MobileElement getVote(String relief) {
 
-		return findElement(By.xpath(
+		return findElement(By.xpath("(//XCUIElementTypeStaticText[@name='" + relief
+				+ "']/following::XCUIElementTypeOther[@name='NoteIcon'])[1]"));
 
-				"(//XCUIElementTypeStaticText[@name='" + relief
-						+ "']/following ::XCUIElementTypeOther[1]/XCUIElementTypeOther[contains(@name, 'NoteIcon')])[1]"));
+		// "(//XCUIElementTypeStaticText[@name='" + relief
+		// + "']/following
+		// ::XCUIElementTypeOther[1]/XCUIElementTypeOther[contains(@name,
+		// 'NoteIcon')])[1]"));
+
 	}
 
 	public static String sendANote() {
-		String note = getTodaysDate();
+		// String note = getTodaysDate()+"$$";
+		String note = "$$";
 		sendKeys(commentField, note);
 		return note;
 

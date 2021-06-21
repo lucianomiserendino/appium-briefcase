@@ -7,11 +7,13 @@ public class CaseQuery_StepDefinitions {
 
 	CaseQueryPage page;
 
-
 	@Then("^User taps on magnifying glass icon and searches for \"([^\"]*)\" and  verifies the app returns a result$")
-	public void user_taps_on_magnifying_glass_icon_and_searches_for_and_verifies_the_app_returns_a_result(String caseNum) throws Throwable {
+	public void user_taps_on_magnifying_glass_icon_and_searches_for_and_verifies_the_app_returns_a_result(
+			String caseNum) throws Throwable {
 		page = new CaseQueryPage();
 		page.searchForACase(caseNum);
+		//page.viewTheInformationInCMECF("15-3314");
+		//page.viewTheInformationOnTheDevice("15-3314");
 	}
 
 }

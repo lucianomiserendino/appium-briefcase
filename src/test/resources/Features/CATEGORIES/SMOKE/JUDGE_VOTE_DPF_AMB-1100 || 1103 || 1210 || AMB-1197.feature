@@ -1,14 +1,17 @@
-@Smoke @AMB-1100
+@Smoke 
 Feature: JudgeVote DPF UI 
-
+#related to AMB-1097 as well
 Background: 
+
 	Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
 		|Integration    |s haenni| Test2024!|test   |
+		
 	Then I select a user 
 		|role              |briefcaseUser|
 		|Appellate Judges  |Benton       |
 		
+@AMB-1100		
 Scenario: 
 	In the judgeVote DPF, when the user selects the View Votes button, a popup should display with each judge's vote and the day they voted.
 	Then User selects "TEST_AUTOMATION" and "15-2594" 
@@ -33,20 +36,4 @@ Scenario:
 	Then user selects a vote and adds notes to a vote. Use  db "CMKA" ,ccrID "35683" , elID  "3142" , and dpf "judgeVote" 
 	And User verifies judge's vote is updated in Vote Information Panel. Use  db "CMKA" ,ccrID "35683" 
 	
-	
-@AMB-1097 
-Scenario Outline: 
-#has to be changed to PETITIONS_FOR_REHEARING, 3124
-	Then User selects "<refCategory>" and "<caseNum>" 
-	
-	Then User  selects action using "<el_id>"  and verifies the name of the action displays in the dark blue banner 
-		|courtId|
-		|test   |
-	Then   for each referral, observes the filer's name  first initial of pr_middle_name gn_display  party type and date filed displays in a light blue heading. Use "<dbType>", "<cmr_ju_pe_id>" , "<cmr_cs_caseid>" ,"<cmr_cyv_code>" , "<ccr_id>" . 
-	Then  User checks each judge's vote  and the date  displays under their initials, "<dbType>" using  "<ccr_id>" 
-	Examples: 
-		|el_id | refCategory             | caseNum |dbType| cmr_cs_caseid |cmr_ju_pe_id|cmr_cyv_code|ccr_id|
-		|3142  | TEST_AUTOMATION         | 15-2594  |CMKA | 81452         |34          |autotst     |35683 |
-		
-		
 	

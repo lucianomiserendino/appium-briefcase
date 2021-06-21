@@ -1,4 +1,4 @@
-@Smoke @AMB-1123 @AMB-1137 @AMB-1170 @AMB-1173 @S
+@AMB-1123 @AMB-1137 @AMB-1170 @AMB-1173 @AMB-1466 @S
 Feature: chmAssign 
 
 
@@ -19,7 +19,7 @@ Scenario Outline:
 		|courtId|
 		|test   |
 	Then user creates a new assignment, checks the back-end, edits existing assignment and checks the db  by using "<dbType>", "<dpfName>" , "<el_id>", "<cha_ju_pe_id>", "<cmr_cyv_code>", "<cmr_cs_caseid>", "<caseNum>"); 
-	#follow steps in @AMB-1123,@AMB-1137,@AMB-1170,@AMB-1173)
+	#follow steps in @AMB-1123,@AMB-1137,@AMB-1170,@AMB-1173, AMB-1466)
 	
 	
 	Examples: 

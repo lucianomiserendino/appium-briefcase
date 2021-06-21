@@ -1,4 +1,4 @@
-@Smoke @AMB-1241
+@Smoke @AMB-1241 
 Feature: Applied Cases link 
 
 

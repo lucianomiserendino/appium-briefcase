@@ -9,18 +9,19 @@ Scenario Outline:
 
 	Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
-		|Integration    |JAHaenni| Test2024!|test   |
-
-	Then I select a user 
-		|role              |briefcaseUser|
-		|Appellate Judges  |Colloton     |
+		|Integration    |s haenni| Test2024!|test   |
 		
-	Then  User selects "<refCat>" and "<caseNum>" 
+	Then I select a user
+	|role              |briefcaseUser|
+	|Appellate Judges  |Colloton     |
+		
+	Then User selects "MOTION" and "15-3314" 
 	Then User observes a collapsible panel entitled "Assignments" displays 
 	And User verifies the staff assignments associated with the referral by using "<dbType>" , "<cmr_cs_caseid>" , "<cha_ju_pe_id>" , "<cmr_cyv_code>" , 
+	
 	Examples: 
-		|dbType |cha_ju_pe_id|cmr_cs_caseid|dbType|cmr_cyv_code|caseNum|refCat  |
-		|CMKA   |32          |82226        |CMKA  |motpet      |15-3314|MOTION  |
+		|dbType |cha_ju_pe_id|cmr_cs_caseid|cmr_cyv_code|refCat  |
+		|CMKA   |32          |82226        |motpet      |MOTION  |
 		
 		
 		

@@ -1,8 +1,8 @@
-@AMB @Regression @AMB-1204 
+@AMB @Regression  
 Feature: Site Table variable to enable court admins to docket in Briefcase 
 
 
-
+@AMB-1204
 Scenario: 
 		Given User sets the "briefcaseCtAdminDkt" site var to "y"
 	|courtId|userName    | password |environment|

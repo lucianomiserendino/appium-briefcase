@@ -40,15 +40,6 @@ public class Common_StepDefinitions {
 		page.selectReferral("//XCUIElementTypeOther[@name='Categories']" + containsElement(category));
 	}
 
-	// @Given("^User sets the \"([^\"]*)\" site var to \"([^\"]*)\" on
-	// \"([^\"]*)\"$")
-	// public void user_sets_the_site_var_to_on(String si_code, String si_value,
-	// List<UserInputData> userInputData) {
-	// // page = new CommonPages();
-	// page.setValue( si_value, si_code,userInputData);
-	//
-	// }
-
 	@Given("^User sets the \"([^\"]*)\" site var to \"([^\"]*)\"$")
 	public void user_sets_the_site_var_to(String si_code, String si_value, List<UserInputData> userInputData) {
 		// page.setValue(si_value, si_code, userInputData);
@@ -58,10 +49,13 @@ public class Common_StepDefinitions {
 		String pwd = SystemPropertySetup.getPassword(userInputData);
 		Base.safariInstance();
 		String env="";
+		
 		if (environment.equals("Integration")) {
 			env="isso";
+			
 		}else if (environment.equals("Testing")) {
 			env="tsso";
+			
 		}else {
 			env="ssso";
 		}
@@ -77,7 +71,6 @@ public class Common_StepDefinitions {
 	public void user_verifies_panel_is_displayed_and_expands_the_panel(String panel) {
 		// page.getGroupIcons();
 		page.getPanel(Panel.valueOf(panel));
-
 	}
 
 	@Then("^User logs out of Briefcase$")

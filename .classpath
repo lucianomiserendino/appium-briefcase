@@ -47,5 +47,6 @@
 			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/Users/saltanakasabolotova/Desktop/certs/pdfbox-2.0.20.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
@@ -20,13 +21,13 @@ import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForVisibilityOfElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.getNumOfDisplayedCases;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.getCellCount;
 import static java.util.Arrays.asList;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
@@ -34,6 +35,7 @@ import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -128,6 +130,7 @@ public class DashboardPage extends AppiumPageFactory {
 				performPageLoad(driver);
 				String dbNonOrgCases = getText(referrals);
 				referrals.click();
+				
 				List<String> briefcaseTargReferral_y = executeQuery(
 						replace(getID(BRIEFCASE_TARGET_ONLY_Y, pe_id), "CYV_CATEGORY", dbNonOrgCases), userInputData);
 
@@ -229,50 +232,24 @@ public class DashboardPage extends AppiumPageFactory {
 	public void getNewReferralsCount() {
 
 		int navCellSize = navIcons.size();
-		
+
 		List<Integer> dash = getCellCount(1, navCellSize - 1);
 		List<Integer> nav = getCellCount(3, navCellSize + 1);
-		
 
-		//List<String> dashNum = new ArrayList<>();
-//	
-//		if (dashCategories(2).getText().contains("Pending")) 
-//			
-//			for (int i = 0; i < navCellSize - 2; i++) {
-//				String dashNewReferralCount = dashNewRefCount(dash.get(i)).getText().split("W")[0].split(" ")[0].trim();
-//				dashNum.add(dashNewReferralCount);
-//			
-//			Collections.swap(dashNum, 0, 1);
-//		}
-//		
-	
-		for (int i = 0; i < navCellSize-2; i++) {
+		for (int i = 0; i < navCellSize - 2; i++) {
 			try {
 				MobileElement navNewReferralCount = navNewRefCount(nav.get(i));
 				String dashNewReferralCount = dashNewRefCount(dash.get(i)).getText().split("W")[0].split(" ")[0].trim();
-				
 
 				if (dashNewReferralCount.equals("0")) {
 					assertTrue(!(navNewReferralCount.isDisplayed()));
-
 				} else {
-					
 					assertEquals(dashNewReferralCount, navNewReferralCount.getText().trim());
-	
 				}
-
 			} catch (org.openqa.selenium.TimeoutException e) {
 				e.getMessage();
 			}
 		}
-	}
-
-	public MobileElement dashCategories(int index) {
-		return findElementBy(Locator.XPATH,
-				"//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther"
-						+ "/XCUIElementTypeOther[" + index
-						+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther"
-						+ "/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText");
 	}
 
 	public MobileElement dashNewRefCount(int index) {
@@ -288,34 +265,6 @@ public class DashboardPage extends AppiumPageFactory {
 						+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[3]/XCUIElementTypeStaticText");
 	}
 
-	public List<Integer> getCellCount(int time, int navCellSize) {
-		List<Integer> cellSize = new ArrayList<>();
-		for (int i = time; i < navCellSize; i++) {
-			cellSize.add(i);
-		}
-		return cellSize;
-	}
 
-	public MobileElement navNewRefCount(String navName) {
-
-		// return findElementBy(Locator.XPATH,
-		// "//XCUIElementTypeOther[@name=\"nav\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]"
-		// + "/XCUIElementTypeOther[" + navName
-		// + "]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther" + "["
-		// + navCount
-		// + "]/XCUIElementTypeStaticText");
-		return findElementBy(Locator.XPATH, "(//XCUIElementTypeStaticText[@name='" + navName + "'])[1]"
-				+ "/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText");
-
-	}
-
-	public MobileElement dashNewRefCount(int dashName, int dashCount) {
-		return findElementBy(Locator.XPATH,
-				"//XCUIElementTypeOther[@name=\"Categories\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]"
-						+ "/XCUIElementTypeOther[" + dashName
-						+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther"
-						+ "/XCUIElementTypeOther[2]/XCUIElementTypeOther[" + dashCount + "]/XCUIElementTypeStaticText");
-
-	}
 
 }

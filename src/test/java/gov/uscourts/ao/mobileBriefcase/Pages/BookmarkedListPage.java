@@ -52,7 +52,7 @@ public class BookmarkedListPage extends AppiumPageFactory {
 
 	public String getReferrals() {
 		String bookmark = getText(cases.get(0)).split(" ")[0];
-		bookmarkReferral(bookmark, 2);
+		bookmarkReferral(bookmark, 1);
 		return bookmark;
 
 	}

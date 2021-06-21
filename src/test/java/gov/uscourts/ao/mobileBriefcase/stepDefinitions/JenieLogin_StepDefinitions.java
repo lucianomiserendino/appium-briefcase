@@ -24,11 +24,17 @@ public class JenieLogin_StepDefinitions extends Base implements iOSCapabilities 
 		logPage.getServer(server);
 	}
 
-	
 	@Then("^I select a user$")
-	public void i_select_a_user(List<UserInputData> table)  {
+	public void i_select_a_user(List<UserInputData> table) {
 		logPage = new JenieLoginPage();
 		logPage.selectUser(table);
 	}
-	
+
+	@Then("^User logs out from the Briefcase$")
+	public void user_logs_out_from_the_Briefcase() throws Throwable {
+		logPage = new JenieLoginPage();
+		logPage.logout();
+		safariInstance();
+	}
+
 }

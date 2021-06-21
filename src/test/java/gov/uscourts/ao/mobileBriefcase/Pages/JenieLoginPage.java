@@ -179,12 +179,12 @@ public class JenieLoginPage extends Base {
 	}
 
 	public static void logout() {
-		try {
+		//try {
 			if
 
 			(contains("Dashboard").isDisplayed()) {
 				contains("Dashboard").click();
-				Page.sleep(3000);
+				Page.sleep(5000);
 				
 				settingsIcon.click();
 				logout.click();
@@ -197,9 +197,9 @@ public class JenieLoginPage extends Base {
 					contains(okButton).click();
 				}
 			}
-		} catch (ElementNotVisibleException e) {
-			e.getMessage();
-		}
+//		} catch (ElementNotVisibleException e) {
+//			e.getMessage();
+//		}
 	}
 
 	public void login(List<UserInputData> userInputData) {

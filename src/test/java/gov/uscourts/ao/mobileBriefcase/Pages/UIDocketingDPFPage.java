@@ -11,10 +11,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -24,13 +23,14 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextView[1]")
 	public static MobileElement descriptionField;
 
-	public void verifyFieldsAreDisplayed(String descriptionText, String commentText, String submitText, 
-			String dpfName, String el_id,	List<UserInputData> userInputData) {
+	public void verifyFieldsAreDisplayed(String descriptionText, String commentText, String submitText, String dpfName,
+			String el_id, List<UserInputData> userInputData) {
 
 		verifyElementIsDisplayed(descriptionText);
-		getDefaulDescription(dpfName, el_id,userInputData);
+		getDefaulDescription(dpfName, el_id, userInputData);
 		verifyElementIsDisplayed(commentText);
 		verifyElementIsDisplayed(submitText);
+	
 	}
 
 	/**
@@ -39,14 +39,14 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 	 * be in the 5th position in the note DPF. If the value is 'SKIP', the note
 	 * description should default to 'Transaction Note'
 	 */
-	public void getDefaulDescription(String dpfName, String el_id,	List<UserInputData> userInputData ) {
+	public void getDefaulDescription(String dpfName, String el_id, List<UserInputData> userInputData) {
 		// try {
-		if (getParameter(getAllColumns(getID(MBR_NOTE, el_id),userInputData), dpfName, 4).equals("SKIP")) {
+		if (getParameter(getAllColumns(getID(MBR_NOTE, el_id), userInputData), dpfName, 4).equals("SKIP")) {
 			assertTrue(descriptionField.getText().equals("Transaction Note"));
 
 		} else {
 			String dbParam = replaceWithEmptyString(
-					getParameter(getAllColumns(getID(MBR_NOTE, el_id),userInputData), dpfName, 4), "\\");
+					getParameter(getAllColumns(getID(MBR_NOTE, el_id), userInputData), dpfName, 4), "\\");
 			String ui = descriptionField.getText();
 			String uiParam = "";
 			if (ui.contains("'")) {

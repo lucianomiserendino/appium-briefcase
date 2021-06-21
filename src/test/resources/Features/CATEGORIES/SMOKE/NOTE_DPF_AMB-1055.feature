@@ -1,8 +1,5 @@
-@Smoke @AMB-1055 @S
+@AMB-1055 @S
 Feature: note DPF UI 
-
-
-
 
 Scenario Outline: 
 	Verify when an action is selected that contains the note DPF, the note DPF UI displays.
@@ -15,7 +12,6 @@ Scenario Outline:
 	|role              |briefcaseUser|
 	|Appellate Judges  |Colloton     |
 	
-	
 	Then User selects "<category>" and "<caseNum>" 
 	Then User  selects action using "<el_id>"  and verifies the name of the action displays in the dark blue banner 
 		|courtId|
@@ -27,7 +23,6 @@ Scenario Outline:
 	Examples: 
 		|category| caseNum |dbType| el_id| dpfName|
 		|MOTION  | 15-3703 |CMKA  |3153  |note    |
-		
-		
-		
+			
+
     

@@ -71,8 +71,6 @@ public class AssignmentsPage extends AppiumPageFactory {
 									a = dbAssignment.get(m) + " ";
 								}
 
-					
-
 								staffAssignments.add(("//*[contains(@name, '" + dbStaffLName.get(j) + " "
 										+ dbStaffFName.get(i) + ", " + dbassignmentType.get(l)
 										+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + a
@@ -80,11 +78,7 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 								staffAssignment.add(dbStaffLName.get(j) + " " + dbStaffFName.get(i) + ", "
 										+ dbassignmentType.get(l));
-							}
-						}
-					}
-				}
-			}
+			}}	}}}
 		}
 
 		for (int i = 0; i < staffAssignments.size(); i++) {
@@ -130,11 +124,9 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 			List<String> bb = uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment, userInputData),
 					getAssignmentInfo(cmr_id, randomAssignment - 1, userInputData));
-
+			
 			return uniqueValues(cmr_id, aa, bb);
-
 		}
-
 	}
 
 	public static List<String> uniqueValues(String cmr_id, List<String> listOne, List<String> listTwo) {
@@ -150,15 +142,13 @@ public class AssignmentsPage extends AppiumPageFactory {
 			commonElementsFromBothList.addAll(listTwo.stream().filter(str -> !listOne.contains(str)).collect(toList()));
 
 			return commonElementsFromBothList;
+			
 		} else {
 
 			return listOne;
 		}
 	}
 
-	public void getLatestAssignDate() {
-
-	}
 
 	public static String changeFormat(String assignDate) {
 		String date = "";
@@ -188,7 +178,6 @@ public class AssignmentsPage extends AppiumPageFactory {
 		}
 
 		return assignInfo;
-
 	}
 
 	public String getAssignmentInfo(String cmr_id, List<String> asignements, final int randomAssignment,
@@ -216,8 +205,8 @@ public class AssignmentsPage extends AppiumPageFactory {
 			} else {
 				assignmentInformation = containsElement(assignedDate) + assignName;
 			}
-
 			break;
+			
 		case ASSIGNMENT_TYPE_AND_RELIEF:
 
 			String relief = execute(replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), 9, userInputData).get(randomAssignment);
@@ -256,11 +245,11 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 			if (!(can_dm_dls_id_AND_can_dm_dls_id.length() == 0) && cdn_dm_dls_id_AND_cdn_date_created.length() == 0) {
 				assignmentInformation = can_dm_dls_id_AND_can_dm_dls_id;
-
+		
 			} else if (can_dm_dls_id_AND_can_dm_dls_id.length() == 0
 					&& !(cdn_dm_dls_id_AND_cdn_date_created.length() == 0)) {
 				assignmentInformation = cdn_dm_dls_id_AND_cdn_date_created;
-
+			
 			} else if (!(can_dm_dls_id_AND_can_dm_dls_id.length() == 0)
 					&& !(cdn_dm_dls_id_AND_cdn_date_created.length() == 0)) {
 				List<String> attachedNotes = new ArrayList<>();
@@ -268,17 +257,16 @@ public class AssignmentsPage extends AppiumPageFactory {
 				attachedNotes.add(cdn_dm_dls_id_AND_cdn_date_created);
 				int notes = getRandomNumberInRange(0, attachedNotes.size() - 1);
 				assignmentInformation = attachedNotes.get(notes);
-
+	
 			} else {
 				assignmentInformation = "Assignment Notes";
+	
 			}
-
-			break;
-
+			
 		default:
 			break;
 		}
-
+		
 		return assignmentInformation;
 
 	}
@@ -312,6 +300,7 @@ public class AssignmentsPage extends AppiumPageFactory {
 			}
 		} catch (NullPointerException e) {
 		}
+		
 		return notes;
 
 	}
@@ -372,10 +361,11 @@ public class AssignmentsPage extends AppiumPageFactory {
 			}
 		} catch (NullPointerException e) {
 			e.getMessage();
-
 		}
-
 	}
+	
+	
+	
 
 	public static String getassignmentDate(String cdv_display, String chd_date, String caseNumber, String cav_display) {
 		return "//XCUIElementTypeStaticText[contains(@name, '" + cdv_display + ": "
