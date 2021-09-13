@@ -102,7 +102,6 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 	 * Find the value of the site table variable "briefcaseAppLinkRoot" by executing
 	 * this query
 	 */
-
 	/** Run the following URLS in the browser on the iPad */
 
 	public static String getDktentryid(String caseNum, String dbType, String value) {

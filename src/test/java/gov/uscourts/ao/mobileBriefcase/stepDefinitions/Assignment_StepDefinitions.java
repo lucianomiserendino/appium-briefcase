@@ -47,34 +47,26 @@ public class Assignment_StepDefinitions {
 		List<UserInputData> userInputData = null;
 
 		cmr_id = assig.getCMR_ID(caseId, peId, cmr_cyv_code, userInputData);
-		System.out.println(cmr_id + "****************************");
 
 		asignements = execute(replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), 2, userInputData);
-		System.out.println(asignements + "****************************");
 
 		rnAssignment = getRandomNumberInRange(1, asignements.size() - 1);
-		System.out.println(rnAssignment + "****************************");
 
 		assig = new AssignmentsPage();
 
 		String assignee = assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
 				AssignmentInfo.NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE, userInputData);
-		System.out.println(assignee + "**assignee***************************");
 
 		String assignment_type = assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
 				AssignmentInfo.ASSIGNMENT_TYPE_AND_RELIEF, userInputData);
-		System.out.println(assignment_type + "**assignment_type***************************");
 
 		String assignment_due_date = assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
 				AssignmentInfo.LATEST_ASSIGNED_ASSIGNMENT_DUE_DATES, userInputData);
-		System.out.println(assignment_due_date + "**assignment_due_date***************************");
 
 		String assignment_note_date = assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
 				AssignmentInfo.ASSIGNMENT_NOTE_DATE, userInputData);
-		System.out.println(assignment_note_date + "**assignment_note_date***************************");
 
 		info = Arrays.asList(assignee, assignment_type, assignment_due_date, assignment_note_date);
-		System.out.println(info + "*****************************");
 		// info = Arrays.asList(
 		// assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
 		// AssignmentInfo.NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE,

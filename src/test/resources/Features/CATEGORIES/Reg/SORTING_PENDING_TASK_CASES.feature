@@ -1,0 +1,95 @@
+@Regression @AMB-2482 @AMB-2483 @AMB-2381 
+Feature: Sorting on the Pending Tasks Page 
+
+
+@AMB-2380 
+Scenario Outline: 
+	As a judge when I view the Pending Clerk's cases I can sort them by case number or by date in decending order.
+	
+	Given I am logged into Briefcase 
+		|environment    |userName| password |courtId|
+		|Integration    |s haenni| Test2025!|test   |
+		
+	Then I select a user 
+		|role              |briefcaseUser|
+		|Appellate Judges  |Benton       |
+		
+	When User selects a  "Pending Tasks" 
+	And  Verify the "<folder>" cases are sorted by date descending order 
+	Examples: 
+		|folder             |
+		|PendingClerkOffice |
+		|MyAssignments      |
+		|ReferralsAwaiting  |
+		#AMB-2247	
+		
+		
+		@AMB-2317 @AMB-2318 @AMB-2319 
+		Scenario Outline: 
+			Pending Tasks - Sorting of the categories in My Assignments, Pending Clerk's Filing and Referrals Awaiting Action folders
+	The referral categories displayed in the various pending tasks folders should be sorted in the same way as they are in the left-hand navigation. 
+	
+	Given I am logged into Briefcase 
+		|environment    |userName| password |courtId|
+		|Integration    |s haenni| Test2025!|test   |
+				
+			Then I select a user 
+				|role              |briefcaseUser|
+				|Appellate Judges  |Benton       |
+			When User selects a  "Pending Tasks" 
+			Then User taps on "<folder>" and verify the referral categories are sorted in the same order as the left-hand navigation 
+			Examples: 
+				|folder             |
+				|MyAssignments      |
+				|PendingClerkOffice |
+				|ReferralsAwaiting  |
+				
+				
+				
+				
+				
+				
+@cm3a
+Scenario Outline: 
+	As a judge when I view the Pending Clerk's cases I can sort them by case number or by date in decending order.
+	
+       
+	Given I am logged into Briefcase 
+		|environment    |userName| password |courtId|
+		|Testing        |Dina Ide| Test2038!|test   |
+		
+	Then I select a user 
+		|role              |briefcaseUser|
+		|Appellate Judges  |Williams     |
+		
+	When User selects a  "Pending" 
+	And  Verify the "<folder>" cases are sorted by date descending order 
+	Examples: 
+		|folder             |
+		|PendingClerkOffice |
+		|MyAssignments     |
+		|ReferralsAwaiting |
+		#AMB-2247	
+		
+		
+@cm3a 
+		Scenario Outline: 
+			Pending Tasks - Sorting of the categories in My Assignments, Pending Clerk's Filing and Referrals Awaiting Action folders
+	The referral categories displayed in the various pending tasks folders should be sorted in the same way as they are in the left-hand navigation. 
+	
+       
+	Given I am logged into Briefcase 
+		|environment    |userName       | password |courtId|
+		|Testing        |sysadmin haenni| Test2022!|test   |
+		
+	Then I select a user 
+		|role              |briefcaseUser|
+		|Appellate Judges  |Williams     |
+		
+			When User selects a  "Pending" 
+			Then User taps on "<folder>" and verify the referral categories are sorted in the same order as the left-hand navigation 
+			Examples: 
+				|folder           |
+				|MyAssignments    |
+			    |PendingClerkOffice |
+				|ReferralsAwaiting|				

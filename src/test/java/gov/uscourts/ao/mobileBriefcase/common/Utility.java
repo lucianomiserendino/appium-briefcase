@@ -109,6 +109,16 @@ public class Utility extends Base {
 		driver.executeScript("mobile:scroll", scrollObject);
 	}
 
+	
+
+	public static void scrollDown(By by) {
+		MobileElement element = Page.waitForPresenceOfElementLocated(by, driver);
+		String elementID = element.getId();
+		HashMap<String, String> scrollObject = new HashMap<String, String>();
+		scrollObject.put("element", elementID);
+		scrollObject.put("direction", "down");
+		driver.executeScript("mobile:scroll", scrollObject);
+	}
 	public static synchronized void scrolldown() {
 		try {
 			int pressX = getWindowSize().width / 2;

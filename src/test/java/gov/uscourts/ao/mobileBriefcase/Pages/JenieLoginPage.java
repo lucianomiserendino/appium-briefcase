@@ -11,16 +11,16 @@ import static org.openqa.selenium.support.PageFactory.initElements;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotVisibleException;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -120,7 +120,7 @@ public class JenieLoginPage extends Base {
 		tap(Integration);
 	}
 
-	public  void sendCredentials(String Username, String Password) {
+	public void sendCredentials(String Username, String Password) {
 		sendKeys(userName, Username, password, Password);
 		submButton.click();
 
@@ -179,16 +179,16 @@ public class JenieLoginPage extends Base {
 	}
 
 	public static void logout() {
-		//try {
-			if
+		// try {
+		if
 
-			(contains("Dashboard").isDisplayed()) {
-				contains("Dashboard").click();
-				Page.sleep(5000);
-				
-				settingsIcon.click();
-				logout.click();
+		(contains("Dashboard").isDisplayed()) {
+			contains("Dashboard").click();
+			Page.sleep(5000);
 
+			settingsIcon.click();
+			logout.click();
+			try {
 				if (findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
 					contains(okButton).click();
 				} else {
@@ -196,10 +196,13 @@ public class JenieLoginPage extends Base {
 					logout.click();
 					contains(okButton).click();
 				}
+			} catch (NoSuchElementException e) {
+				e.getMessage();
 			}
-//		} catch (ElementNotVisibleException e) {
-//			e.getMessage();
-//		}
+		}
+		// } catch (ElementNotVisibleException e) {
+		// e.getMessage();
+		// }
 	}
 
 	public void login(List<UserInputData> userInputData) {
@@ -220,6 +223,20 @@ public class JenieLoginPage extends Base {
 		changeWindow("NATIVE");
 		// open();
 		getServer(court);
+
+	}
+
+	public void login(String environment, String userName, String password, String courtId) {
+
+		Actions.tap(contains(environment));
+		changeWindow("WEBVIEW");
+
+		sendCredentials(userName, password);
+		performPageLoad(driver);
+		sendKeyButton.click();
+		changeWindow("NATIVE");
+		// open();
+		getServer(courtId);
 
 	}
 

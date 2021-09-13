@@ -55,6 +55,8 @@ public class DBUtilities {
 				getIFXProperty(SSL_STORE, SSL_LOC, KEYPASS, PASS, CM3A_DBURL, CM3A_SERVERNAME, CM3A_DBUSERNAME,
 						CM3A_DBPWD, CM3A_DATABASE_NAME, PORT_NUMBER);
 				break;
+				
+			
 
 			default:
 				throw new RuntimeException("Invalid Database type");

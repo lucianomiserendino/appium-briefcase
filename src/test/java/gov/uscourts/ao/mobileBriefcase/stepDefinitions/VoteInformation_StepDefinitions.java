@@ -21,7 +21,7 @@ public class VoteInformation_StepDefinitions {
 	public void user_observes_the_panel_displays_This_should_only_display_if_the_referral_requires_voting(String dbType,
 			String voteInfo) {
 		page = new VoteInformationPage();
-		getGroupIcons();
+		//getGroupIcons();
 		page1.getPanel(Panel.valueOf(voteInfo));
 	}
 
@@ -59,5 +59,13 @@ public class VoteInformation_StepDefinitions {
 		page.getJudesVote(FILERs_INFO.JUDGE_VOTE_DPF_FILLRES_INFORMATION, ccr_id, userInputData);
 
 	}
+
+	
+	@Then("^User verifies that the judges' initials in the \"([^\"]*)\" are sorted based on panel_to_judge\\.pj_judge_order or by judge\\.ju_seniority_sort, \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\",$")
+	public void user_verifies_that_the_judges_initials_in_the_are_sorted_based_on_panel_to_judge_pj_judge_order_or_by_judge_ju_seniority_sort(String panel,	String caseNum, String pe_id, String cmr_cyv_code, List<UserInputData> userInputData)  {
+		page = new VoteInformationPage();
+		page.getJudgeInitials(panel,caseNum, pe_id, cmr_cyv_code, userInputData);
+	}
+
 
 }

@@ -10,22 +10,31 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.FILERS_INOFRMATION
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGEs_INITIALS;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.RELIEF;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.VOTE_DATE;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCMRID;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.changeDateFormat;
 import static java.util.Collections.sort;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
+import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class VoteInformationPage extends AppiumPageFactory {
+
+	@iOSXCUITFindBy(id = "Close")
+	public static MobileElement close;
 
 	public static String dbFiledDate(String pe_id, String caseId, String cyv_code, List<UserInputData> userInputData) {
 		return getAllColumns(getCode(getText(getID(FILED_DATE, pe_id), caseId), cyv_code), userInputData);
@@ -39,13 +48,12 @@ public class VoteInformationPage extends AppiumPageFactory {
 	 * 15-3314:
 	 */
 
-
 	public boolean filersInfo(FILERs_INFO info, String peId, String caseId, String cyvCode, String ccr_id,
 			List<UserInputData> userInputData) {
 		boolean isDisplayed = false;
 		List<String> judgesInitials = executeQuery(getID(JUDGEs_INITIALS, ccr_id), userInputData);
 		sort(judgesInitials);
-		
+
 		MobileElement uiResult = null;
 		String filerInfo = getFilerInfo(peId, caseId, cyvCode, userInputData);
 
@@ -111,9 +119,8 @@ public class VoteInformationPage extends AppiumPageFactory {
 		String pt_display = getVoteInofrmation("pt_display", peId, caseId, cyvCode, userInputData).trim();
 		String voteInfoDbFiledDate = dbFiledDate(peId, caseId, cyvCode, userInputData).trim();
 		String gn_display = getVoteInofrmation("gn_display", peId, caseId, cyvCode, userInputData).trim();
-
 		return LastName + ", " + FirstName + " " + MiddleName + " " + gn_display + "(" + pt_display + ") " + "Filed: "
-				+ changeDateFormat(voteInfoDbFiledDate, "yyyy-MM-dd", "MM/d/yyyy");
+				+ changeDateFormat(voteInfoDbFiledDate, "yyyy-MM-dd", "M/d/yyyy");
 
 	}
 
@@ -149,19 +156,19 @@ public class VoteInformationPage extends AppiumPageFactory {
 								+ "')]/preceding::XCUIElementTypeStaticText" + "[contains(@name, '" + relief + "')]";
 			}
 		}
-		
-		switch (info ) {
+
+		switch (info) {
 		case VOTE_INFO_FILLRES_INFORMATION:
-			
+
 			assertTrue("VERIFY THE VOTE DATE (CHV_DATE_CREATED) IS CORRECT",
 					findElementBy(Locator.XPATH, uiJudesVote).isDisplayed());
 
-			assertTrue("CVV_DISPLAY IS NULL FOR A JUDGE, BUT THE TEXT 'NO VOTE' DOEN'T DISPLAY UNDER THE JUDGE'S INITIALS",
+			assertTrue(
+					"CVV_DISPLAY IS NULL FOR A JUDGE, BUT THE TEXT 'NO VOTE' DOEN'T DISPLAY UNDER THE JUDGE'S INITIALS",
 					findElementBy(Locator.XPATH, "//XCUIElementTypeStaticText[@name='" + relief
 							+ "']/following::XCUIElementTypeStaticText[@name='" + noVote + "']").isDisplayed());
-		break;
-		
-		
+			break;
+
 		case JUDGE_VOTE_DPF_FILLRES_INFORMATION:
 			assertTrue("VERIFY THE VOTE DATE (CHV_DATE_CREATED) IS CORRECT",
 					findElementBy(Locator.XPATH, uiJudesVote).isDisplayed());
@@ -170,13 +177,67 @@ public class VoteInformationPage extends AppiumPageFactory {
 			break;
 		}
 	}
-	
 
-	
-	
-	
-	
-	
+	public void getJudgeInitials(String panel, String caseNum, String peId, String cmr_cyv_code,
+			List<UserInputData> userInputData) {
+		String cmr_ccr_id = getCMRID("cmr_ccr_id", caseNum, peId, cmr_cyv_code, userInputData);
+		MobileElement uiInits = null;
+
+		String judgeInitials = getPANEL_MEMBERS(cmr_ccr_id, userInputData);
+
+		ArrayList<String> dbInitials = new ArrayList<>(Arrays.asList(judgeInitials.split(", ")));
+		int k = 0;
+
+		ArrayList<String> uiJudgeInitials = new ArrayList<>();
+
+		if (panel.equals("VoteInfo")) {
+			k += 2;
+		} else {
+			k += 1;
+		}
+
+		for (int i = k; i < dbInitials.size() + k; ++i) {
+			uiInits = findElementBy(Locator.XPATH, initials(panel, i));
+			uiJudgeInitials.add(uiInits.getText().trim());
+
+		}
+
+		assertEquals("JUDGES NOT LISTED IN SENIORITY ORDER", dbInitials, uiJudgeInitials);
+		if (panel.equals("viewVotes")) {
+			tap(close);
+
+		}
+	}
+
+	public String initials(String panel, int index) {
+		if (panel.equals("VoteInfo")) {
+			return "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[5]"
+					+ "/XCUIElementTypeOther[2]/XCUIElementTypeOther[" + index + "]/XCUIElementTypeStaticText";
+		} else {
+			return "//XCUIElementTypeOther[@name='JudgesVotesList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]"
+					+ "/XCUIElementTypeOther[" + index
+					+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeStaticText";
+		}
+	}
+
+	public String getPANEL_MEMBERS(String cmr_ccr_id, List<UserInputData> userInputData) {
+		String pj_judge_order = Queries.by_PJ_JUDGE_ORDER;
+		String ju_seniority_sort = Queries.by_JU_SENIORITY_SORT;
+
+		String cmr_panel_members = getCMR_PANEL_MEMBERS(pj_judge_order, cmr_ccr_id, userInputData);
+		if (!cmr_panel_members.equals("null")) {
+
+			return cmr_panel_members;
+
+		} else {
+
+			return getCMR_PANEL_MEMBERS(ju_seniority_sort, cmr_ccr_id, userInputData);
+		}
+	}
+
+	public String getCMR_PANEL_MEMBERS(String field, String cmr_ccr_id, List<UserInputData> userInputData) {
+		return getAllColumns(Actions.replace(field, "CMR_CCR_ID", cmr_ccr_id), userInputData);
+	}
 
 	public enum FILERs_INFO {
 		VOTE_INFO_FILLRES_INFORMATION, JUDGE_VOTE_DPF_FILLRES_INFORMATION, FILED_DATE, UI_FILER_INFORMATION, DB_FILER_INFORMATION, UI_FILED_DATE, JUDGE_VOTE_RELIEF

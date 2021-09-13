@@ -5,16 +5,16 @@ Scenario:
 
 		Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2024!|test   |
+		|Integration    |s haenni| Test2025!|test   |
 	Then I select a user 
 		|role              |briefcaseUser|
 		|Appellate Judges  |Benton       |
-	Then user gets the entries of the judge ( "15-2594" ) and logs out 
+	Then user gets the entries of the judge ( "21-3877" ) and logs out 
 	
 		Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
 		|Integration    |JAHaenni| Test2025!|test   |
 		
-	Then user verifies a JA or law clerk can see the same entries as their judge  ( "15-2594" ) 
+	Then user verifies a JA or law clerk can see the same entries as their judge  ( "21-3877" ) 
 	
 	

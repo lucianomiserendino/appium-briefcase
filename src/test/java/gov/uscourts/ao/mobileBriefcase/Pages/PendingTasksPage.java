@@ -35,6 +35,9 @@ public class PendingTasksPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(accessibility = "Pending Clerk's Filing")
 	public static MobileElement PendingClerk;
 
+	@iOSXCUITFindBy(accessibility = "Pending Clerk's Office")
+	public static MobileElement PendingClerkOffice;
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText/following:: XCUIElementTypeStaticText[contains(@name, '(')]")
 	public static List<MobileElement> categoryCount;
 
@@ -48,13 +51,13 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 		getPendingSubFolder(folder);
 		getGroupIcons();
-		getAssignmentCategories() ;
+		getAssignmentCategories();
 		//
 		if (folder.equals("MyAssignments") | folder.equals("ReferralsAwaiting")) {
-		tapGroupIcons();
-		getAssignmentCategories() ;
+			tapGroupIcons();
+			getAssignmentCategories();
 		}
-		
+
 		ArrayList<String> filedDates = new ArrayList<String>();
 		List<MobileElement> date = Actions.findElements(By.xpath(Actions.containsElement(": ")));
 
@@ -65,8 +68,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 		assertTrue("------->" + folder, Utility.checkDatesForDescOrder(filedDates));
 	}
-	
-	
+
 	public void getAssignmentCategories() {
 		List<Integer> categories = new ArrayList<>();
 
@@ -77,22 +79,18 @@ public class PendingTasksPage extends AppiumPageFactory {
 		Actions.tap(Locator.XPATH, Actions.containsElement("(" + max.toString() + ")"));
 
 	}
-	
-	
-	
-	
-	
 
 	public static void tapGroupIcons() {
-		if (GroupIcon.size()>1) {
-		for (int i = 2; i < GroupIcon.size() + 1; i++) {
-			String groupIcon = "(//XCUIElementTypeStaticText[@name='GroupIcon'])[";
-			while (findElements(
-					By.xpath(groupIcon + i + "]/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText[1]"))
-							.size() == 0) {
-				tap(Locator.XPATH, groupIcon + i + "]");
+		if (GroupIcon.size() > 1) {
+			for (int i = 2; i < GroupIcon.size() + 1; i++) {
+				String groupIcon = "(//XCUIElementTypeStaticText[@name='GroupIcon'])[";
+				while (findElements(
+						By.xpath(groupIcon + i + "]/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText[1]"))
+								.size() == 0) {
+					tap(Locator.XPATH, groupIcon + i + "]");
+				}
 			}
-		}}
+		}
 	}
 
 	public static void getPendingSubFolder(String folder) {
@@ -105,10 +103,12 @@ public class PendingTasksPage extends AppiumPageFactory {
 		} else if (folder.equals("MyAssignments")) {
 			el = MyAssignments;
 
-		} else {
+		} else if (folder.equals("ReferralsAwaiting")) {
 			el = ReferralsAwaiting;
 
-		}
+		} else
+			el = PendingClerkOffice;
+
 		Actions.tap(el);
 	}
 

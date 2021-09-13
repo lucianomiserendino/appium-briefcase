@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
@@ -15,20 +14,24 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.lbrrpt_DOCUMENT_CA
 import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.dashboard;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
+import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForVisibilityOfElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.getNumOfDisplayedCases;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.getCellCount;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.getNumOfDisplayedCases;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollUp;
 import static java.util.Arrays.asList;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
@@ -87,20 +90,53 @@ public class DashboardPage extends AppiumPageFactory {
 
 		String name = SystemPropertySetup.getUser(userInputData);
 
-		String query = getID(Queries.DB_LIST_OF_CATEGORIES, getPE_ID("jud", name, userInputData));
+		List<String> dbReferralCategories = executeQuery(
+				getID(Queries.DB_LIST_OF_CATEGORIES, getPE_ID("jud", name, userInputData)), userInputData);
 
-		List<String> dbReferralCategories = executeQuery(query, userInputData);
 		sort(dbReferralCategories);
 
 		for (int i = 0; i < dbReferralCategories.size(); i++) {
 			performPageLoad(driver);
-			MobileElement referrals = waitForVisibilityOfElement(findElementBy(Locator.XPATH,
 
-					"(//XCUIElementTypeStaticText[@name='" + dbReferralCategories.get(i) + "'])[2]"),
+			scrollToAction(dbReferralCategories.get(i));
+			scrollUp(By.id("Categories"));
 
-					driver);
-			assertTrue(referrals.isDisplayed());
 		}
+	}
+
+	public static void scrollToAction(String element) {
+		String elem = "//XCUIElementTypeStaticText[@name='" + element + "']";
+		String el2 = "(" + elem + ")[2]";
+		assertTrue(isDisplayed(elem, el2));
+	}
+
+	public static boolean isDisplayed(String el1, String element) {
+		boolean isDisplayed = false;
+
+		Boolean elementNotFound = true;
+		while (elementNotFound) {
+
+			List<MobileElement> elems = findElements(By.xpath(el1));
+
+			if (elems.size() > 1) {
+
+				try {
+					MobileElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, element), driver);
+					if (elem.isDisplayed()) {
+						isDisplayed = true;
+					}
+				} catch (WebDriverException e) {
+					e.getMessage();
+				}
+				break;
+
+			} else {
+				Utility.scrollDown(By.id("Categories"));
+				performPageLoad(driver);
+			}
+		}
+		return isDisplayed;
+
 	}
 
 	/**
@@ -115,22 +151,19 @@ public class DashboardPage extends AppiumPageFactory {
 	}
 
 	public static List<String> getReffCategories(String cyvCategory, String pe_id, List<UserInputData> userInputData) {
-
 		List<String> referralCategories = executeQuery(
 				getID(replace(NON_ORALLY_ARGUED_CASES, "CMR_CYV_CODE", cyvCategory), pe_id), userInputData);
 		sort(referralCategories);
+
 		try {
 
 			for (int i = 0; i < referralCategories.size(); ++i) {
 				performPageLoad(driver);
-				MobileElement referrals = waitForVisibilityOfElement(
-						findElementBy(Locator.XPATH, "(//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '"
-								+ referralCategories.get(i) + "')])[2]"),
-						driver);
-				performPageLoad(driver);
-				String dbNonOrgCases = getText(referrals);
-				referrals.click();
-				
+				Utility.scrollDownIfNotDisplayed("(//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '"
+						+ referralCategories.get(i) + "')])[2]");
+
+				String dbNonOrgCases = referralCategories.get(i);
+
 				List<String> briefcaseTargReferral_y = executeQuery(
 						replace(getID(BRIEFCASE_TARGET_ONLY_Y, pe_id), "CYV_CATEGORY", dbNonOrgCases), userInputData);
 
@@ -143,14 +176,18 @@ public class DashboardPage extends AppiumPageFactory {
 				String si_value = CommonPages.getSiValue("briefcaseTargetOnly", userInputData);
 
 				if (si_value.equals("y")) {
-					assertTrue("-----RECORD COUNT MISMATCH-----",
-							briefcaseTargReferral_y.equals(UInonOrallyarguedCases));
 
-				} else
-					assertTrue("-----RECORD COUNT MISMATCH-----",
-							briefcaseTargReferral_n.equals(UInonOrallyarguedCases));
+					assertEquals(dbNonOrgCases + ":-----RECORD COUNT MISMATCH-----", briefcaseTargReferral_y,
+							UInonOrallyarguedCases);
 
+				} else {
+
+					assertEquals(dbNonOrgCases + "-----RECORD COUNT MISMATCH-----", briefcaseTargReferral_n,
+							UInonOrallyarguedCases);
+				}
 				tap(dashboard);
+				scrollUp(By.id("Categories"));
+
 			}
 		} catch (org.openqa.selenium.TimeoutException e) {
 
@@ -242,8 +279,11 @@ public class DashboardPage extends AppiumPageFactory {
 				String dashNewReferralCount = dashNewRefCount(dash.get(i)).getText().split("W")[0].split(" ")[0].trim();
 
 				if (dashNewReferralCount.equals("0")) {
+
 					assertTrue(!(navNewReferralCount.isDisplayed()));
+
 				} else {
+
 					assertEquals(dashNewReferralCount, navNewReferralCount.getText().trim());
 				}
 			} catch (org.openqa.selenium.TimeoutException e) {
@@ -264,7 +304,5 @@ public class DashboardPage extends AppiumPageFactory {
 						+ index
 						+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[3]/XCUIElementTypeStaticText");
 	}
-
-
 
 }

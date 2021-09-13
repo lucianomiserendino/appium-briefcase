@@ -1,4 +1,4 @@
-@Smoke @AMB-1008
+@AMB-1008
 Feature: Pending Tasks Category Displays on the Dashboard 
 
  #dependent on AMB-2300
@@ -9,7 +9,7 @@ Scenario Outline:
 	
 	Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2024!|test   |
+		|Integration    |s haenni| Test2025!|test   |
 	Then I select a user
 	|role              |briefcaseUser|
 	|Appellate Judges  |Colloton     |

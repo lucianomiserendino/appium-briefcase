@@ -5,11 +5,14 @@ import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollDownIfNotDisplayed;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.NoSuchElementException;
 
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
+import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
@@ -24,10 +27,10 @@ public class AppliedCasesPage extends AppiumPageFactory {
 	public MobileElement bookOnDashboard;
 
 	public void getBookmarkedReferral(String caseNumber) {
-		
+
 		try {
 			if (bookOnDashboard.isDisplayed()) {
-				
+
 				tap(bookOnDashboard);
 				if (isDisplayed(Locator.XPATH, "//XCUIElementTypeOther[@name='ReferralsList']/child::*"
 						+ containsElement(caseNumber)) == true) {
@@ -60,5 +63,15 @@ public class AppliedCasesPage extends AppiumPageFactory {
 				isDisplayed(Locator.XPATH, containsElement(caseNumber)
 						+ "/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText[@name='linked']"));
 
+	}
+
+	public void getAdditionalCaseInfoScreen(String caseNum) {
+		performPageLoad(driver);
+		CommonPages.getPanel(Panel.valueOf("Applied_Referrals"));
+		CommonPages.selectReferral(containsElement(caseNum));
+		performPageLoad(driver);
+		Actions.isDisplayed(Locator.XPATH, containsElement("Case Caption"));
+		Actions.isDisplayed(Locator.XPATH, containsElement("Docket Entries"));
+		Actions.isDisplayed(Locator.XPATH, containsElement("Associated Cases"));
 	}
 }

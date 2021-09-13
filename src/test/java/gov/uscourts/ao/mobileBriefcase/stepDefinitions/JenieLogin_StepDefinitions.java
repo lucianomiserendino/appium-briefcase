@@ -18,6 +18,13 @@ public class JenieLogin_StepDefinitions extends Base implements iOSCapabilities 
 		logPage = new JenieLoginPage();
 		logPage.login(table);
 	}
+	
+	@Given("^User is logged into Briefcase,   \"([^\"]*)\",  \"([^\"]*)\",  \"([^\"]*)\",  \"([^\"]*)\"$")
+	public void user_is_logged_into_Briefcase(String environment, String userName, String password, String courtId){
+		logPage = new JenieLoginPage();
+		logPage.login(environment,userName,password,courtId);
+	}
+
 
 	@Given("^user selects a \"([^\"]*)\"$")
 	public void user_selects_a(String server) {

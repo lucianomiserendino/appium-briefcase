@@ -49,10 +49,14 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 					getParameter(getAllColumns(getID(MBR_NOTE, el_id), userInputData), dpfName, 4), "\\");
 			String ui = descriptionField.getText();
 			String uiParam = "";
+			
 			if (ui.contains("'")) {
 				uiParam = ui.split("'")[0];
+			}else {
+				uiParam+=ui;
 			}
-
+			
+           
 			assertEquals("NOTE DESCRIPTION MISMATCH", dbParam.replace("'", ""), uiParam);
 
 		}

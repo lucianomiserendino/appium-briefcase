@@ -22,7 +22,7 @@ public class Common_StepDefinitions {
 
 	@Then("^User selects \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_selects_and(String category, String caseNumber) {
-		// JenieLoginPage logPage = new JenieLoginPage();
+		JenieLoginPage logPage = new JenieLoginPage();
 		page = new CommonPages();
 		page.getCategoryWithCase(category, caseNumber);
 	}

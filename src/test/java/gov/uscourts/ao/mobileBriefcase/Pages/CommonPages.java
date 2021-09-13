@@ -93,8 +93,8 @@ public class CommonPages extends Base {
 		MobileElement list = null;
 
 		switch (category) {
-		case PENDIN:
-			categories = "Pending Tasks";
+		case PENDING:
+			categories = "Pending";
 			list = PendingTasksList;
 			break;
 
@@ -127,12 +127,13 @@ public class CommonPages extends Base {
 			categories = "Test Automation";
 			list = ReferralsList;
 			break;
-			
+
 		case APPLICATION_FOR_COA:
 			categories = "Application";
 			list = ReferralsList;
 			break;
 
+			
 		default:
 			break;
 		}
@@ -172,6 +173,10 @@ public class CommonPages extends Base {
 
 		case Vote_Information:
 			panels += "Vote Information";
+			break;
+
+		case Applied_Referrals:
+			panels += "Applied Referrals";
 			break;
 
 		case Briefs:
@@ -331,11 +336,11 @@ public class CommonPages extends Base {
 	}
 
 	public enum Panel {
-		Assignments, Vote_Information, Actions, Judgment_Filed, Petition_Filed, Briefs
+		Assignments, Vote_Information, Actions, Judgment_Filed, Petition_Filed, Briefs, Applied_Referrals
 	}
 
 	public enum Category {
-		PENDIN, PETITION, CASES_ON, MOTION, SCREENING, REFERENCE, TEST_AUTOMATION, APPLICATION_FOR_COA
+		PENDING, PETITION, CASES_ON, MOTION, SCREENING, REFERENCE, TEST_AUTOMATION, APPLICATION_FOR_COA
 	}
 
 }

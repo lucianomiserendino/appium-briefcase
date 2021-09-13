@@ -6,7 +6,7 @@ Scenario:
 	Display Applied Cases link  when bookmarking case/referral
 	Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2024!|test   |
+		|Integration    |s haenni| Test2025!|test   |
 		
 	Then I select a user
 	|role              |briefcaseUser|
@@ -18,4 +18,4 @@ Scenario:
 	Then User verifies there is a link icon next to case "15-2622" . Selects that case and bookmark the case on the referral document page 
 	Then User  goes back to the "Cases on Calendar" page for "Feb 09, 2016 - Feb 10, 2016" for panel "LRS*, SMC, RRE" and verifies the link is there. 
 
-	 
+	#make sure the site table variable briefcaseTargetOnly ='y'

@@ -41,4 +41,11 @@ public class AppliedCases_StepDefinitions {
 		page.verifyAppliedCaseLinkIsDisplayed(caseN);
 	}
 
+	@When("^User selects an applied case \"([^\"]*)\" in the Applied cases panel, the additional case information screen displays$")
+	public void user_selects_an_applied_case_in_the_Applied_cases_panel_the_additional_case_information_screen_displays(
+			String caseNum) {
+		page = new AppliedCasesPage();
+		page.getAdditionalCaseInfoScreen(caseNum);
+	}
+
 }

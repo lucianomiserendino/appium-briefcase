@@ -82,7 +82,6 @@ public class AssignmentsPage extends AppiumPageFactory {
 		}
 
 		for (int i = 0; i < staffAssignments.size(); i++) {
-
 			assertTrue(Actions.isDisplayed(Locator.XPATH, staffAssignments.get(i)));
 		}
 	}

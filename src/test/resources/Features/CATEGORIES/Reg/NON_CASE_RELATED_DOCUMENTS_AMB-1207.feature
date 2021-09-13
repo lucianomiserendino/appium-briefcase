@@ -1,0 +1,36 @@
+Feature: Non case related docs - Suppress case number for 'lbrrpt' category 
+
+@AMB-1207 @S
+Scenario Outline: 
+	User shouldn't see  case number when view documents that are not case related
+  	Given I am logged into Briefcase 
+		|environment    |userName| password |courtId|
+		|Integration    |s haenni| Test2025!|test   |
+		
+	Then I select a user 
+		|role              |briefcaseUser|
+		|Appellate Judges  |Colloton     |
+	Given  In "<dbType>" , If the chm_mobile_referral.cmr_cyv_code = "lbrrpt" , verify  cyv_category  displays on the Dashboard page. Verify case number don't display for  referrals where the chm_mobile_referral.cmr_cyv_code = 'lbrrpt', Verify only  documents display the referral detail page. Verify any actions, assignment, or additional case information don't  display.Use PE_RT_CODE "jud" and judge "<judge>"
+	
+		Examples: 
+		|dbType |judge   |
+		|CMKA   |Colloton|
+		
+		
+	
+	
+@cm3a	
+Scenario Outline:
+	User shouldn't see  case number when view documents that are not case related
+	Given I am logged into Briefcase 
+		|environment    |userName       | password |courtId|
+		|Testing        |sysadmin haenni| Test2022!|test   |
+	Then I select a user 
+		|role              |briefcaseUser|
+		|Appellate Judges  |Williams     |
+	Given  In "<dbType>" , If the chm_mobile_referral.cmr_cyv_code = "lbrrpt" , verify  cyv_category  displays on the Dashboard page. Verify case number don't display for  referrals where the chm_mobile_referral.cmr_cyv_code = 'lbrrpt', Verify only  documents display the referral detail page. Verify any actions, assignment, or additional case information don't  display.Use PE_RT_CODE "jud" and judge "<judge>"
+	
+		Examples: 
+		|dbType |judge   |
+		|CMKA   |Williams|
+		

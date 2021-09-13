@@ -468,8 +468,11 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	public static void getCreatedRecords(String expected, String actual, List<UserInputData> userInputData) {
 		String CMECF_TABLES = getAllColumns(actual, userInputData);
 
-		assertEquals("********PLEASE VERIFY THAT RECORDS IN CMECF ARE CREATED CORRECTLY!!!********", expected,
-				CMECF_TABLES);
+		
+		String exp = Actions.split(expected, ":", 0);
+		String act = Actions.split(CMECF_TABLES, ":", 0);
+
+		assertEquals("********PLEASE VERIFY THAT RECORDS IN CMECF ARE CREATED CORRECTLY!!!********", exp, act);
 	}
 
 	public static String getCreatedAssignment(String query, String peId, String caseId,
