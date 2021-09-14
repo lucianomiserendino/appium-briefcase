@@ -21,7 +21,7 @@ Scenario:
 		|test   |2310499|
 		
 
-#@cm3a
+
 Scenario: 
 
 	If there are records defined in the mbr_event table, 
