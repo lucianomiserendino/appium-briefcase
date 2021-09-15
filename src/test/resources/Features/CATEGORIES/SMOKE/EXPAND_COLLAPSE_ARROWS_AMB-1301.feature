@@ -19,28 +19,3 @@ Scenario:
 	And User observes the referral categories that display on the dashboard. Query the chm_mobile_referral, and chm_reftype_val table to get valid categories for the logged in user. 
 		|briefcaseUser|courtId       |
 		|Colloton     |test          |	
-		
-		
-	@cm3a 
-Scenario: 
-
-	Given I am logged into Briefcase 
-		|environment    |userName       | password |courtId|
-		|Testing        |sysadmin haenni| Test2022!|test   |
-		
-	Then I select a user 
-		|role              |briefcaseUser|
-		|Appellate Judges  |Williams     |
-		
-	Then user taps on left-hand navigation "Expand" arrows 
-	And User observes the referral categories that display on the dashboard. Query the chm_mobile_referral, and chm_reftype_val table to get valid categories for the logged in user. 
-		|briefcaseUser|courtId       |
-		|Williams     |test          |
-	Then user taps on left-hand navigation "Expand" arrows 
-	And User observes the referral categories that display on the dashboard. Query the chm_mobile_referral, and chm_reftype_val table to get valid categories for the logged in user. 
-		|briefcaseUser|courtId       |
-		|Williams     |test          |	
-		
-		
-		
-		

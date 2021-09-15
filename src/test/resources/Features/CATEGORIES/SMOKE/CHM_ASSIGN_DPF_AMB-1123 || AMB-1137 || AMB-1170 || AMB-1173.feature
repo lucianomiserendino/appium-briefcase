@@ -1,6 +1,6 @@
 Feature: chmAssign 
 
-@AMB-1123 @AMB-1137 @AMB-1170 @AMB-1173 @AMB-1466 @S 
+@AMB-1123 @AMB-1137 @AMB-1170 @AMB-1173 @AMB-1466 @S @Smoke
 Scenario Outline: 
 	This task is to verify that a chambers user is able to create a new staff assignment,
 	to verify back-end updates when a new staff assignment is created,
@@ -25,29 +25,5 @@ Scenario Outline:
 		|dbType |el_id     |cha_ju_pe_id|cmr_cs_caseid|cmr_cyv_code|caseNum |refCat   |dpfName  |
 		|CMKA   |3116      |32          |83393        |prhr        |20-72320|PETITION |chmAssign|
 		#	|CMKA   |3116      |32          |82226        |CMKA  |prhr        |15-3314|PETITION |chmAssign|
-		
-		
-		
-	
-Scenario Outline: 
-	#Given I am logged into Briefcase 
-		#|environment    |userName       | password |courtId|
-		#|Testing        |sysadmin haenni| Test2022!|test   |
-	Then I select a user 
-		|role              |briefcaseUser|
-		|Appellate Judges  |Williams     |
-	Then  User selects "<refCat>" and "<caseNum>" 
-	
-	Then User  selects action using "<el_id>"  and verifies the name of the action displays in the dark blue banner 
-		|courtId|
-		|test   |
-	Then user creates a new assignment, checks the back-end, edits existing assignment and checks the db  by using "<dbType>", "<dpfName>" , "<el_id>", "<cha_ju_pe_id>", "<cmr_cyv_code>", "<cmr_cs_caseid>", "<caseNum>"); 
-	#follow steps in @AMB-1123,@AMB-1137,@AMB-1170,@AMB-1173, AMB-1466)
-	
-	
-	Examples: 
-		|dbType |el_id     |cha_ju_pe_id|cmr_cs_caseid|cmr_cyv_code|caseNum |refCat   |dpfName  |
-		|CM3A   |4286      |2189563     |69318        | rhr        |20-42000|PETITION |chmAssign|
-		
 		
 		
