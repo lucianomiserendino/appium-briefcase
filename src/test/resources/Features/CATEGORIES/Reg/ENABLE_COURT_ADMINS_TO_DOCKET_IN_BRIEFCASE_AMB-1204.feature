@@ -1,16 +1,16 @@
-@AMB @Regression  
+@AMB-1204 @Regression  
 Feature: Site Table variable to enable court admins to docket in Briefcase 
 
 
-@AMB-1204
+
 Scenario: 
 		Given User sets the "briefcaseCtAdminDkt" site var to "y"
 	|courtId|userName    | password |environment|
-	|test   |s haenni    | Test2024!|Integration|
+	|test   |s haenni    | Test2025!|Integration|
 	
 	Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2024!|test   |
+		|Integration    |s haenni| Test2025!|test   |
 	Then I select a user 
 		|role              |briefcaseUser|
 		|Appellate Judges  |Colloton     |
@@ -28,11 +28,11 @@ Scenario:
 Scenario: 
 		Given User sets the "briefcaseCtAdminDkt" site var to "n"
 	|courtId|userName    | password |environment|
-	|test   |s haenni    | Test2024!|Integration|
+	|test   |s haenni    | Test2025!|Integration|
 	
 	Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2024!|test   |
+		|Integration    |s haenni| Test2025!|test   |
 	Then I select a user 
 		|role              |briefcaseUser|
 		|Appellate Judges  |Colloton     |

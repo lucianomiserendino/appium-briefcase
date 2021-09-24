@@ -1,6 +1,6 @@
 Feature: Chambers users are able to download/view annotated documents 
 
-@Smoke @AMB-2607 
+@Regression @AMB-2607 
 Scenario Outline:
 Verify the chambers users are able to view/open Judges' annotated documents 
 

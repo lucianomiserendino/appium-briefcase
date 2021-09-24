@@ -1,3 +1,4 @@
+@Smoke 
 Feature: JudgeVote DPF UI 
 #related to AMB-1097 as well
 Background: 
@@ -9,7 +10,7 @@ Background:
 	Then I select a user 
 		|role              |briefcaseUser|
 		|Appellate Judges  |Benton       |
-@Smoke 		
+		
 @AMB-1100		
 Scenario: 
 	In the judgeVote DPF, when the user selects the View Votes button, a popup should display with each judge's vote and the day they voted.
@@ -21,7 +22,7 @@ Scenario:
 	Then user selects the "View Votes" button next to the relief. User verifies  a popup displays.  In the red banner, the relief they are voting , "CMKA" , "37407" 
 	And User verifies each judges' initials to whom the referral was sent , as well as their vote and date they voted. Use "CMKA" , "37407" 
 	
-@Smoke 
+
 @AMB-1103 
 @AMB-1210 
 Scenario: 

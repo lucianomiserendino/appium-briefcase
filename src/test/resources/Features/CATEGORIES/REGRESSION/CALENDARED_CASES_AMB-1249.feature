@@ -1,4 +1,4 @@
-@Smoke @AMB-1249
+@Regression @AMB-1249
 Feature: Display correct days for calendared cases 
 
 Scenario: 

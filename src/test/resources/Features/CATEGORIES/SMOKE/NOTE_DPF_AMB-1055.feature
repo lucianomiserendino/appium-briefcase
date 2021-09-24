@@ -1,6 +1,7 @@
+@Smoke
 Feature: note DPF UI 
 
-@AMB-1055 @S @Smoke
+@AMB-1055 @S 
 Scenario Outline: 
 	Verify when an action is selected that contains the note DPF, the note DPF UI displays.
 

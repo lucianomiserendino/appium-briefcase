@@ -1,6 +1,7 @@
+@Smoke
 Feature: Non case related docs - Suppress case number for 'lbrrpt' category 
 
-@AMB-1207 @S @Smoke
+@AMB-1207 @S 
 Scenario Outline: 
 	User shouldn't see  case number when view documents that are not case related
   	Given I am logged into Briefcase 

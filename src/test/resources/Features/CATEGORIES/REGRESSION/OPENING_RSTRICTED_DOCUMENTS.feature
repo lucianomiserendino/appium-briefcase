@@ -1,6 +1,6 @@
 Feature: View restricted documents when pdfShowRstrcDocToSysAdmin = N 
 
-@Smoke @AMB-2607 
+@Regression @AMB-2607 
 Scenario Outline: 
 	If an admin user attempts to download and view restricted documents while pdfShowRstrcDocToSysAdmin = N, 
 the user should be presented with the message: "For administrators, the most likely cause for this error is the judge annotated the original and you do not have access to the annotated version.". 

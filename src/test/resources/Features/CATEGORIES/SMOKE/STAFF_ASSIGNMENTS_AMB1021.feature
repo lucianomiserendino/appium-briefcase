@@ -1,7 +1,7 @@
+ @Smoke @AMB-1021
 Feature: Staff Assignments 
 
 
- @Smoke @AMB-1021
 Scenario Outline: 
 	Staff members can be assigned to referrals and/or just cases. 
 	 This task is to verify that staff assignments are displaying on the referral list page

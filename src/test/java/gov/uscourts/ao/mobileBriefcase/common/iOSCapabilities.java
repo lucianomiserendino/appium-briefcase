@@ -68,14 +68,6 @@ public interface iOSCapabilities {
 
 	public static final String ATTORNEY_LAST_NAME = "attorneyLastName";
 
-	public static final String DURATION = "duration";
 
-	public static final String FROM_X = "fromX";
-
-	public static final String FROM_Y = "fromY";
-
-	public static final String TO_X = "toX";
-
-	public static final String TO_Y = "toY";
 
 }

@@ -2,7 +2,7 @@ Feature: Display Vote Information Panel, filer info and judge's initials
 	Display Actions Panel and actions
 
 	#dependent on AMB-2257
-@AMB @Smoke @AMB-1036 
+@Regression  @AMB-1036 
 Scenario Outline: 
 	If a referral requires voting, a collapsible Vote Information panel displays.  When expanded, it displays the following information:
 1.  The name and party type of the person who filed the motion/petition
@@ -32,7 +32,7 @@ Scenario Outline:
 		
 		
 		
-		@AMB-1097 
+	@Smoke	@AMB-1097 
 		Scenario Outline: 
 			Given I am logged into Briefcase 
 				|environment    |userName| password |courtId|

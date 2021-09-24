@@ -1,6 +1,6 @@
+@AMB-973 @S @Smoke
 Feature: Number of cases displayed for non-orally argued cases 
 
-@AMB-973 @S @Smoke
 Scenario Outline: 
 	Tapping on a referral category that is not orally argued (chm_reftype_val.cdv_is_oral_arg='n'),
     a list of cases should dipslay for the judge for that category.
@@ -13,7 +13,7 @@ Scenario Outline:
 		
 	Then I select a user 
 		|role              |briefcaseUser|
-		|Appellate Judges  |Benton       |
+		|Appellate Judges  |Colloton     |
 		
 	Then User  Observes the categories on db and on the dashboard page ( "<cmr_cyv_code>" ) with judgeName "<judgeName>" and "<PE_RT_CODE>" 
 		|courtId |

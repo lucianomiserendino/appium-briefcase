@@ -92,7 +92,7 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 
 		getDataTable(table, index, caseNum, peID, userInputData, record);
 
-		assertEquals(description, getAllColumns(DM_DESCRIPTION, userInputData));
+		assertEquals(list.getElListText().toUpperCase()+" --------> ",description, getAllColumns(DM_DESCRIPTION, userInputData));
 
 	}
 

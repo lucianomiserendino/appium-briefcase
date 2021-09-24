@@ -8,9 +8,9 @@ Scenario Outline:
 	 Once the user taps on the referral, the red bullet icon is removed, indicating the referral has been viewed. 
 	  This task is to automate the display of the red bullet icon.
 
-	#Given I am logged into Briefcase 
-	#|environment    |userName| password |courtId|
-		#|Integration    |s haenni| Test2024!|test   |
+	Given I am logged into Briefcase 
+	|environment    |userName| password |courtId|
+	|Integration    |s haenni| Test2025!|test   |
 
 	Then I select a user
 	|role              |briefcaseUser|
@@ -24,7 +24,7 @@ Scenario Outline:
 	
 	Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2024!|test   |
+		|Integration    |s haenni| Test2025!|test   |
 		
 	Then I select a user
 	|role              |briefcaseUser|

@@ -209,7 +209,7 @@ public class CommonPages extends Base {
 				"//XCUIElementTypeOther[@name='DocumentList']//XCUIElementTypeStaticText[contains(@name, '" + element
 						+ "')]");
 		performPageLoad(driver);
-		assertTrue("VERIFY THE NAME OF THE ACTION DISPLAYS IN THE DARK BLUE BANNER",
+		assertTrue("VERIFY THE NAME OF THE ACTION DISPLAYS IN THE DARK BLUE BANNER: ",
 				isDisplayed(Locator.XPATH, containsElement(element)));
 	}
 
