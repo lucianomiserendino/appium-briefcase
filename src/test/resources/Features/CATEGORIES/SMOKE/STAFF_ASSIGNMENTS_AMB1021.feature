@@ -10,9 +10,9 @@ Scenario Outline:
 		|environment    |userName| password |courtId|
 		|Integration    |s haenni| Test2025!|test   |
 		
-	Then I select a user
-	|role              |briefcaseUser|
-	|Appellate Judges  |Colloton     |
+	Then I select a user 
+		|userType   |personrole        |jud          |
+		|judge      |Appellate Judges  |Colloton     |
 		
 	Then User selects "MOTION" and "15-3314" 
 	Then User observes a collapsible panel entitled "Assignments" displays 

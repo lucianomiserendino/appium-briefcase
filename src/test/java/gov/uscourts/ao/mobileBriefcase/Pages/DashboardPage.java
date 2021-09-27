@@ -86,12 +86,12 @@ public class DashboardPage extends AppiumPageFactory {
 	 * chm_reftype_val table (cmr_cyv_code). This is how the category is obtained.
 	 */
 
-	public void categories(List<UserInputData> userInputData) {
+	public void getRefCategories(List<UserInputData> userInputData) {
 
-		String name = SystemPropertySetup.getUser(userInputData);
+		String name = SystemPropertySetup.getJudge(userInputData);
 
 		List<String> dbReferralCategories = executeQuery(
-				getID(Queries.DB_LIST_OF_CATEGORIES, getPE_ID("jud", name, userInputData)), userInputData);
+				getID(Queries.REFERRAL_CATEGORIES, getPE_ID("jud", name, userInputData)), userInputData);
 
 		sort(dbReferralCategories);
 
@@ -204,19 +204,24 @@ public class DashboardPage extends AppiumPageFactory {
 	public void get_lbrrpt_CATEGORY(String cyvCategory, String PE_RT_CODE, String judgeName,
 			List<UserInputData> userInputData) {
 		performPageLoad(driver);
-		MobileElement lbrrptCategory;
+		// MobileElement lbrrptCategory;
 		String peID = getPE_ID(PE_RT_CODE, judgeName, userInputData);
 
 		List<String> cmr_cyv_code = executeQuery(getID(lbrrpt_CATEGORY, peID), userInputData);
 		if (cmr_cyv_code.contains(cyvCategory)) {
 			String cyv_category = getAllColumns(getID(replace(lbrrpt_CYV_CATEGORY, "CMR_CYV_CODE", cyvCategory), peID),
 					userInputData);
-			lbrrptCategory = waitForVisibilityOfElement(findElementBy(Locator.XPATH,
-					"//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '" + cyv_category.trim() + "')]"),
-					driver);
+			//
+			// lbrrptCategory = waitForVisibilityOfElement(findElementBy(Locator.XPATH,
+			// "//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '" +
+			// cyv_category.trim() + "')]"),
+			// driver);
+			//
+			// assertTrue(lbrrptCategory.isDisplayed());
+			// lbrrptCategory.click();
 
-			assertTrue(lbrrptCategory.isDisplayed());
-			lbrrptCategory.click();
+			Utility.scrollDownIfNotDisplayed(
+					"//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '" + cyv_category.trim() + "')]");
 
 			assertTrue("*****PLEASE VERIFY ONLY DOCUMENTS DISPLAY ON THE REFERRAL DETAIL PAGE*****",
 					getDocuments(peID, userInputData));

@@ -15,6 +15,7 @@ import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class Common_StepDefinitions {
@@ -24,6 +25,15 @@ public class Common_StepDefinitions {
 	public void user_selects_and(String category, String caseNumber) {
 		JenieLoginPage logPage = new JenieLoginPage();
 		page = new CommonPages();
+		page.getCategoryWithCase(category, caseNumber);
+	}
+
+	@Then("^User selects$")
+	public void user_selects(List<UserInputData> userInputData) {
+		JenieLoginPage logPage = new JenieLoginPage();
+		page = new CommonPages();
+		String category = SystemPropertySetup.getVariable(Variables.REF_CATEGORY, userInputData);
+		String caseNumber = SystemPropertySetup.getVariable(Variables.CASE_NUMBER, userInputData);
 		page.getCategoryWithCase(category, caseNumber);
 	}
 
@@ -48,18 +58,18 @@ public class Common_StepDefinitions {
 		String user = SystemPropertySetup.getUserName(userInputData);
 		String pwd = SystemPropertySetup.getPassword(userInputData);
 		Base.safariInstance();
-		String env="";
-		
+		String env = "";
+
 		if (environment.equals("Integration")) {
-			env="isso";
-			
-		}else if (environment.equals("Testing")) {
-			env="tsso";
-			
-		}else {
-			env="ssso";
+			env = "isso";
+
+		} else if (environment.equals("Testing")) {
+			env = "tsso";
+
+		} else {
+			env = "ssso";
 		}
-		Base.getUrl(court.toLowerCase(),env);
+		Base.getUrl(court.toLowerCase(), env);
 		page = new CommonPages();
 		page.sendCredentials(user, pwd);
 		page.updateSi_value(si_code, si_value);

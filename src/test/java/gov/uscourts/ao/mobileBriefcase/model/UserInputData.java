@@ -7,19 +7,26 @@ public class UserInputData {
 	private String password;
 	private String environment;
 	private String caseNumber;
-	private String referral_Category;
+	private String refCategory;
 	private String db_servername;
 	private String db_port;
 	private String db_Schema;
-	private String role;
-	private String briefcaseUser;
+	private String personrole;
+	private String jud;
 	private String db_username;
 	private String db_password;
-
+	private String stf;
+	private String userType;
+	
 	public String getPacerInputData(String inputData) {
 		String var = "";
 
 		switch (inputData) {
+		
+		case "jud":
+			var = jud;
+			break;
+			
 		case "courtId":
 			var = courtId;
 			break;
@@ -47,8 +54,8 @@ public class UserInputData {
 		case "password":
 			var = password;
 			break;
-		case "role":
-			var = role;
+		case "personrole":
+			var = personrole;
 			break;
 
 		default:
@@ -106,11 +113,11 @@ public class UserInputData {
 	}
 
 	public String getReferral_Category() {
-		return referral_Category;
+		return refCategory;
 	}
 
-	public void setReferral_Category(String referral_Category) {
-		this.referral_Category = referral_Category;
+	public void setReferral_Category(String refCategory) {
+		this.refCategory = refCategory;
 	}
 
 	public String getServer_name() {
@@ -137,20 +144,36 @@ public class UserInputData {
 		this.db_Schema = db_Schema;
 	}
 
-	public String getRoleType() {
-		return role;
+	public String getPersonrole() {
+		return personrole;
 	}
 
-	public void setRoleType(String role) {
-		this.role = role;
+	public void setPersonrole(String personrole) {
+		this.personrole = personrole;
 	}
 
-	public String getBriefcaseUser() {
-		return briefcaseUser;
+	public String getJud() {
+		return jud;
 	}
 
-	public void setBriefcaseUser(String briefcaseUser) {
-		this.briefcaseUser = briefcaseUser;
+	public void setJud(String jud) {
+		this.jud = jud;
+	}
+
+	public String getStf() {
+		return stf;
+	}
+
+	public void setStf(String stf) {
+		this.stf = stf;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 
 }

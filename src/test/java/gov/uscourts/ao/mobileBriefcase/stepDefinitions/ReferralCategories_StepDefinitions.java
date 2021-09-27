@@ -5,13 +5,13 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PENDING_TASK_ASSIGNMENTS;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.DashboardPage;
+import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class ReferralCategories_StepDefinitions {
@@ -26,7 +26,7 @@ public class ReferralCategories_StepDefinitions {
 	public void user_observes_the_referral_categories_that_display_on_the_dashboard_Query_the_chm_mobile_referral_and_chm_reftype_val_table_to_get_valid_categories_for_the_logged_in_user(
 			List<UserInputData> table) {
 		page = new DashboardPage();
-		page.categories(table);
+		page.getRefCategories(table);
 
 	}
 
@@ -34,26 +34,27 @@ public class ReferralCategories_StepDefinitions {
 	public void if_The_judge_has_any_pending_assignments_it_will_validate_the_total_num_of_pending_task_on_UI_with_DB_Use_judge_s_and_to_retrieve_pending_tasks_from_db(
 			String pe_id, String PE_RT_CODE, List<UserInputData> userInputData) {
 		page = new DashboardPage();
-
 		page.getPendingTasks(getID(PENDING_TASK_ASSIGNMENTS, getPE_ID(PE_RT_CODE, pe_id, userInputData)),
 				userInputData);
 
 	}
 
-	@Then("^User  Observes the categories on db and on the dashboard page \\( \"([^\"]*)\" \\) with judgeName \"([^\"]*)\" and \"([^\"]*)\"$")
-	public void user_Observes_the_categories_on_db_and_on_the_dashboard_page_with_judgeName_and(String cmr_cyv_code,
-			String judge, String PE_RT_CODE, List<UserInputData> userInputData) {
+	@Then("^I find the valid non-orally argued categories for the judge$")
+	public void i_find_the_valid_non_orally_argued_categories_for_the_judge(List<UserInputData> userInputData) {
 		page = new DashboardPage();
-		page.verifyNonOrallyArgCases(cmr_cyv_code, getPE_ID(PE_RT_CODE, judge, userInputData), userInputData);
+		String judge = SystemPropertySetup.getJudge(userInputData);
+		page.verifyNonOrallyArgCases("lbrrpt", getPE_ID("jud", judge, userInputData), userInputData);
 	}
 
-	@Given("^In \"([^\"]*)\" , If the chm_mobile_referral\\.cmr_cyv_code = \"([^\"]*)\" , verify  cyv_category  displays on the Dashboard page\\. Verify case number don't display for  referrals where the chm_mobile_referral\\.cmr_cyv_code = 'lbrrpt', Verify only  documents display the referral detail page\\. Verify any actions, assignment, or additional case information don't  display\\.Use PE_RT_CODE \"([^\"]*)\" and judge \"([^\"]*)\"$")
-	public void in_If_the_chm_mobile_referral_cmr_cyv_code_verify_cyv_category_displays_on_the_Dashboard_page_Verify_case_number_don_t_display_for_referrals_where_the_chm_mobile_referral_cmr_cyv_code_lbrrpt_Verify_only_documents_display_the_referral_detail_page_Verify_any_actions_assignment_or_additional_case_information_don_t_display_Use_PE_RT_CODE_and_judge(
-			String dbType, String lbrrpt, String PE_RT_CODE, String judgeName) {
+
+	
+	@Then("^I verify that the referral detail page only displays documents if chm_mobile_referral\\.cmr_cyv_code = lbrrpt$")
+	public void i_verify_that_the_referral_detail_page_only_displays_documents_if_chm_mobile_referral_cmr_cyv_code_lbrrpt(List<UserInputData> userInputData)  {
 		page = new DashboardPage();
-		List<UserInputData> userInputData = null;
-		page.get_lbrrpt_CATEGORY(lbrrpt, PE_RT_CODE, judgeName, userInputData);
+		String judge = SystemPropertySetup.getJudge(userInputData);
+		page.get_lbrrpt_CATEGORY("lbrrpt", "jud", judge, userInputData);
 	}
+
 
 	@Given("^Verify the number of new items that displays in the red badge in the navigation match the number of new items listed on the Dashboard page\\.$")
 	public void verify_the_number_of_new_items_that_displays_in_the_red_badge_in_the_navigation_match_the_number_of_new_items_listed_on_the_Dashboard_page() {

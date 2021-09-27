@@ -6,12 +6,3 @@ Scenario: Verify Connection To Informix
 		|test        |test           |test          |test   |test     |test          |test       |
 		
 		
-@login 
-Scenario: Login 
-	Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |JAHaenni| Test2024!|test   |
-		
-	Then I select a user 
-		|role              |briefcaseUser|
-		|Appellate Judges  |Colloton     |

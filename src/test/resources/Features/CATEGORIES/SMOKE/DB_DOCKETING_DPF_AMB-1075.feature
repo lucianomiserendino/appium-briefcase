@@ -1,4 +1,4 @@
-@Smoke @AMB-1075
+@Regression @AMB-1075
 Feature: note DPF back-end updates 
 
 Scenario: 
@@ -8,9 +8,9 @@ Scenario:
 		|environment    |userName| password |courtId|
 		|Integration    |s haenni| Test2025!|test   |
 		
-	Then I select a user
-	|role              |briefcaseUser|
-	|Appellate Judges  |Colloton     |
+	Then I select a user 
+		|userType   |personrole        |jud          |
+		|judge      |Appellate Judges  |Colloton     |
 	
 	Then User selects "TEST_AUTOMATION" and "21-3877" 
 	Then User selecs action, enters a comment in the editable field, submits and verifies Db "CMKA" is updated correctly, ( use "21-3877"  and "32" ) 

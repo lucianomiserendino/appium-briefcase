@@ -9,9 +9,9 @@ Scenario Outline:
 		|environment    |userName| password |courtId|
 		|Integration    |s haenni| Test2025!|test   |
 		
-	Then I select a user
-	|role              |briefcaseUser|
-	|Appellate Judges  |Colloton     |
+	Then I select a user 
+		|userType   |personrole        |jud          |
+		|judge      |Appellate Judges  |Colloton     |
 	Then User deletes all docs from the device
 	Then User selects "<refCategory>" and "<caseNum>" 
     Then User taps document pdf doc in cmecf and verify that it is downloaded from the server and opens in Briefcase

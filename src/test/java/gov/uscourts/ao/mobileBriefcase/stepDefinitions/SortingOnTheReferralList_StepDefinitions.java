@@ -18,13 +18,10 @@ public class SortingOnTheReferralList_StepDefinitions {
 	public void user_verify_the_Date_Down_Arrow_is_selected_by_default_and_that_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first() {
 		page = new ReferralSortOrderPage();
 		Page.sleep(20000);
-		 List<String> defaultOrder = page.referralsSortedByDate(); //(default isn't
-		// working, filed AMB-2493)
+		 List<String> defaultOrder = page.referralsSortedByDate(); 
 		 assertTrue(Utility.checkDatesForDescOrder(defaultOrder));
-		// remove line 21 - 23 once the AMB-2493 is resolved
 
 		page.selectSortBtn();
-		//page.getSortPage(Sort.REFERRAL_DATE_ASCENDING);// remove this line once the AMB-2493 is resolved
 
 		page.getSortPage(Sort.REFERRAL_DATE_DESCENDING);
 		List<String> descOrder = page.referralsSortedByDate();
@@ -52,7 +49,9 @@ public class SortingOnTheReferralList_StepDefinitions {
 
 		page.getSortPage(Sort.CASE_NUMBER_ASCENDING);
 		List<String> referralsSortedByAscOrd = page.referralsSortedByCase();
-		Utility.isSorted("Asc", referralsSortedByAscOrd, referralsSortedByAscOrd);
+		Utility.isSorted("Asc", referralsSortedByAscOrd, referralsSortedByAscOrd);	
+		page.getSortPage(Sort.REFERRAL_DATE_DESCENDING);
+		page.selectSortBtn();
 	}
 
 	@Then("^User verifies  Document Categories are sorted on the referral detail page \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\)$")

@@ -8,9 +8,9 @@ Scenario Outline:
 	Verify when an action is selected that contains the note DPF, the note DPF UI displays.
 	
 	Given User sets the "<si_code>" site var to "<si_val>" on "<server>" 
-	#Given I am logged into Briefcase 
-	#|environment    |userName    | password |courtId|
-	#|Integration    |Judge Werner| Test2025!|test   |
+	Given I am logged into Briefcase 
+	|environment    |userName    | password |courtId|
+	|Integration    |Judge Werner| Test2025!|test   |
 	
 	Then I select a user 
 		|role              |briefcaseUser|

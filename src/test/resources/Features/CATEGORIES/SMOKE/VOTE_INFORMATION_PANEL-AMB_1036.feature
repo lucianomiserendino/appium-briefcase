@@ -2,7 +2,7 @@ Feature: Display Vote Information Panel, filer info and judge's initials
 	Display Actions Panel and actions
 
 	#dependent on AMB-2257
-@Regression  @AMB-1036 
+@Regression @AMB-1036 
 Scenario Outline: 
 	If a referral requires voting, a collapsible Vote Information panel displays.  When expanded, it displays the following information:
 1.  The name and party type of the person who filed the motion/petition
@@ -14,8 +14,8 @@ Scenario Outline:
 		|environment    |userName| password |courtId|
 		|Integration    |s haenni| Test2025!|test   |
 	Then I select a user 
-		|role              |briefcaseUser|
-		|Appellate Judges  |Colloton     |
+		|userType   |personrole        |jud          |
+		|judge      |Appellate Judges  |Colloton     |
 		
 	Then User selects "<refCategory>" and "<caseNum>" 
 	Given User observes ( "<dbType>" ) the "Vote_Information" panel displays.   This should only display if the referral requires voting 
@@ -32,14 +32,14 @@ Scenario Outline:
 		
 		
 		
-	@Smoke	@AMB-1097 
+		@Smoke @AMB-1097 
 		Scenario Outline: 
 			Given I am logged into Briefcase 
 				|environment    |userName| password |courtId|
 				|Integration    |s haenni| Test2025!|test   |
 			Then I select a user 
-				|role              |briefcaseUser|
-				|Appellate Judges  |Colloton     |
+				|userType   |personrole        |jud          |
+				|judge      |Appellate Judges  |Colloton     |
 			Then User selects "<refCategory>" and "<caseNum>" 
 			
 			Then User  selects action using "<el_id>"  and verifies the name of the action displays in the dark blue banner 
@@ -63,8 +63,8 @@ Scenario Outline:
 						|environment    |userName| password |courtId|
 						|Integration    |s haenni| Test2025!|test   |
 					Then I select a user 
-						|role              |briefcaseUser|
-						|Appellate Judges  |Colloton     |
+						|userType   |personrole        |jud          |
+						|judge      |Appellate Judges  |Colloton     |
 						
 					Then User selects "<refCategory>" and "<caseNum>" 
 					Given User observes ( "<dbType>" ) the "Vote_Information" panel displays.   This should only display if the referral requires voting 
@@ -85,8 +85,8 @@ Scenario Outline:
 								|environment    |userName| password |courtId|
 								|Integration    |s haenni| Test2025!|test   |
 							Then I select a user 
-								|role              |briefcaseUser|
-								|Appellate Judges  |Colloton     |
+								|userType   |personrole        |jud          |
+								|judge      |Appellate Judges  |Colloton     |
 								
 							Then User selects "<refCategory>" and "<caseNum>" 
 							Then User  selects action using "3155"  and verifies the name of the action displays in the dark blue banner 

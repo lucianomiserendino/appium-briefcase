@@ -42,10 +42,11 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 
 	/** Observe the assignment categories that display on the dashboard for SAs */
 
-	public void verifyDataOnTheDashboard( String query, String ra_pe_id, List<UserInputData> userInputData) {
+	public void verifyDataOnTheDashboard(String query, String ra_pe_id, List<UserInputData> userInputData) {
 
-		assertTrue(elementIsDisplayed( Actions.replace(query, "RA_PE_ID", ra_pe_id),
-				"//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText",userInputData));
+		assertTrue(elementIsDisplayed(Actions.replace(query, "RA_PE_ID", ra_pe_id),
+				"//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText",
+				userInputData));
 	}
 
 	public void selectAssignmentType(String assignmenType) {

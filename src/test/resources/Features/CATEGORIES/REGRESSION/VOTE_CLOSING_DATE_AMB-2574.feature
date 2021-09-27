@@ -1,9 +1,9 @@
-@AMB 
+@AMB @AMB-2574
 Feature: As a chamber's user, I should be able to see the vote closing date for a referral so 
 	that I know how long until my vote is requested. 
 
 	#dependent on AMB-2257
-@AMB-2574 
+ 
 Scenario Outline: 
 	This task is to verify if there is a vote closing date for a referral, Briefcase displays "Vote Closing:" and the
  vote closing date in bold font under the filed date

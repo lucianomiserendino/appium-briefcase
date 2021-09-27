@@ -2,7 +2,6 @@ package gov.uscourts.ao.mobileBriefcase.common;
 
 import java.util.List;
 
-
 import org.apache.log4j.Logger;
 
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -16,15 +15,16 @@ public class SystemPropertySetup {
 
 	public static final String environment = "environment";
 	public static final String caseNumber = "caseNumber";
-	public static final String referral_Category = "referral_Category";
+	public static final String refCategory = "refCategory";
 	public static final String db_servername = "db.servername";
 	public static final String db_port = "db.port";
 	public static final String db_Schema = "db.schema";
 	public static final String db_username = "db.username";
 	public static final String db_password = "db.password";
-	public static final String role = "role";
-	public static final String briefcaseUser = "briefcaseUser";
-
+	public static final String personrole = "personrole";
+	public static final String userType = "userType";
+	public static final String jud = "jud";
+	public static final String stf = "stf";
 	public static final String userName = "userName";
 	public static final String password = "password";
 
@@ -32,14 +32,20 @@ public class SystemPropertySetup {
 		String var = "";
 
 		switch (variable) {
-		case COURTID:
-			var = courtId;
-
+		case REF_CATEGORY:
+			var = refCategory;
 			break;
 			
-		case ROLE:
-			var = role;
+		case JUD:
+			var = jud;
+			break;
 
+		case STF:
+			var = stf;
+			break;
+
+		case PERSONROLE:
+			var = personrole;
 			break;
 
 		case HOSTNAME:
@@ -98,22 +104,40 @@ public class SystemPropertySetup {
 		return userInputData.get(0).getCourtId();
 	}
 
-	public static final String getRoleType(List<UserInputData> userInputData) {
+	public static final String getPersonrole(List<UserInputData> userInputData) {
 
-		if (System.getProperty(role) != null)
-			return System.getProperty(role);
-		log.info("Role type from Property File " + System.getProperty(role));
-		log.info("Role type from Input File " + userInputData.get(0).getRoleType());
-		return userInputData.get(0).getRoleType();
+		if (System.getProperty(personrole) != null)
+			return System.getProperty(personrole);
+		log.info("Role type from Property File " + System.getProperty(personrole));
+		log.info("Role type from Input File " + userInputData.get(0).getPersonrole());
+		return userInputData.get(0).getPersonrole();
 	}
 
-	public static final String getUser(List<UserInputData> userInputData) {
+	public static final String getUserType(List<UserInputData> userInputData) {
 
-		if (System.getProperty(briefcaseUser) != null)
-			return System.getProperty(briefcaseUser);
-		log.info("Role type from Property File " + System.getProperty(briefcaseUser));
-		log.info("Role type from Input File " + userInputData.get(0).getBriefcaseUser());
-		return userInputData.get(0).getBriefcaseUser();
+		if (System.getProperty(userType) != null)
+			return System.getProperty(userType);
+		log.info("Role type from Property File " + System.getProperty(userType));
+		log.info("Role type from Input File " + userInputData.get(0).getUserType());
+		return userInputData.get(0).getUserType();
+	}
+
+	public static final String getJudge(List<UserInputData> userInputData) {
+
+		if (System.getProperty(jud) != null)
+			return System.getProperty(jud);
+		log.info("Role type from Property File " + System.getProperty(jud));
+		log.info("Role type from Input File " + userInputData.get(0).getJud());
+		return userInputData.get(0).getJud();
+	}
+
+	public static final String getStf(List<UserInputData> userInputData) {
+
+		if (System.getProperty(stf) != null)
+			return System.getProperty(stf);
+		log.info("Role type from Property File " + System.getProperty(stf));
+		log.info("Role type from Input File " + userInputData.get(0).getStf());
+		return userInputData.get(0).getStf();
 	}
 
 	public static final String getEnvironment(List<UserInputData> userInputData) {
@@ -204,15 +228,15 @@ public class SystemPropertySetup {
 
 	public static final String getReferralCategory(List<UserInputData> userInputData) {
 
-		if (System.getProperty(referral_Category) != null)
-			return System.getProperty(referral_Category);
-		log.info("Court Id from Property File " + System.getProperty(referral_Category));
+		if (System.getProperty(refCategory) != null)
+			return System.getProperty(refCategory);
+		log.info("Court Id from Property File " + System.getProperty(refCategory));
 		log.info("Court Id from Input File " + userInputData.get(0).getReferral_Category());
 		return userInputData.get(0).getReferral_Category();
 	}
 
 	public enum Variables {
-		CASE_NUMBER, COURTID,ROLE, HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_SERVERNAME, DB_PORT, DB_SCHEMA, USERNAME, PASSWORD
+		JUD, STF, CASE_NUMBER, REF_CATEGORY, COURTID, PERSONROLE, HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_SERVERNAME, DB_PORT, DB_SCHEMA, USERNAME, PASSWORD
 	}
 
 }

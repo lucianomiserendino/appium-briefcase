@@ -31,8 +31,10 @@ import cucumber.api.DataTable;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
+import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -137,7 +139,8 @@ public class CommonPages extends Base {
 		default:
 			break;
 		}
-
+		
+		
 		selectReferral("//XCUIElementTypeOther[@name='Categories']" + containsElement(categories));
 		selectReferral(containsElement(caseNumber));
 	}
@@ -155,6 +158,8 @@ public class CommonPages extends Base {
 	public void getCategoryWithCase(String category, String caseNumber) {
 		performPageLoad(driver);
 		getCategory(Category.valueOf(category), caseNumber);
+		
+		
 		performPageLoad(driver);
 	}
 

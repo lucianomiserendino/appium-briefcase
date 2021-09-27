@@ -138,10 +138,22 @@ public class JenieLoginPage extends Base {
 	}
 
 	public void selectUser(List<UserInputData> userInputData) {
-		String role = SystemPropertySetup.getRoleType(userInputData);
-		String name = SystemPropertySetup.getUser(userInputData);
+		String userType = SystemPropertySetup.getUserType(userInputData);
+
+		String personrole = SystemPropertySetup.getPersonrole(userInputData);
+
 		contains(user).click();
-		selectJudge(role, name);
+
+		String name = "";
+
+		if (userType.equals("judge")) {
+			name = SystemPropertySetup.getJudge(userInputData);
+
+		} else if (userType.equals("stf")) {
+			name = SystemPropertySetup.getStf(userInputData);
+		}
+
+		selectJudge(personrole, name);
 
 	}
 

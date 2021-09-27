@@ -8,9 +8,9 @@ Background:
 		|environment    |userName| password |courtId|
 		|Integration    |s haenni| Test2025!|test   |
 		
-	Then I select a user
-	|role              |briefcaseUser       |
-	|Staff Attorneys   |Brown, Benjamin     |
+		Then I select a user 
+		|userType   |personrole        |stf             |
+		|stf        |Staff Attorneys   |Brown, Benjamin |
 	
  
 Scenario: 

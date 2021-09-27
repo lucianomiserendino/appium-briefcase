@@ -1,25 +1,29 @@
+@Smoke @AMB-1038
  Feature: Display Actions Panel and actions 
 
-@S @Smoke @AMB-1038
+
 Scenario: 
 
 	If there are records defined in the mbr_event table, 
        a collapsible panel entitled "Actions" should display, when expanded all the applicable actions should display.
        
 	Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
 		
 	Then I select a user 
-		|role              |briefcaseUser|
-		|Appellate Judges  |Colloton     |
-		
-	Then User selects "MOTION" and "15-3314" 
+		|userType   |personrole  |jud         |
+		|test       |test        |test        |
+			
+	Then User selects
+	|refCategory|caseNumber|
+	|test       |test      |
+	
 	And User verifies the correct "Actions" display for the selected referral 
 	
-		|courtId|cmr_id |
-		|test   |2310499|
-		
+		|courtId|caseNumber|jud     |
+		|test   |test      |test    |
+				
 		
 
 	

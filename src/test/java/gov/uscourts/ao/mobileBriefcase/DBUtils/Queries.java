@@ -7,7 +7,7 @@ public class Queries {
 			+ "pe_pr_prid=pr_prid and pe_rt_code='PE_RT_CODE' and pr_last_name='PR_LAST_NAME')";
 
 	/** Query to get valid categories for the logged in user */
-	public static final String DB_LIST_OF_CATEGORIES = "select distinct (cyv_category) from "
+	public static final String REFERRAL_CATEGORIES = "select distinct (cyv_category) from "
 			+ "chm_mobile_referral, chm_reftype_val where  cmr_ju_pe_id = ? and cmr_date_end is null  and cmr_cyv_code = cyv_code and cyv_is_briefcase = 'y'";
 
 	/**

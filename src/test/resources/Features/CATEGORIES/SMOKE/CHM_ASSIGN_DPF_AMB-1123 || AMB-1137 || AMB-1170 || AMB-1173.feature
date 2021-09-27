@@ -10,8 +10,8 @@ Scenario Outline:
 		|Integration    |s haenni| Test2025!|test   |
 		
 	Then I select a user 
-		|role              |briefcaseUser|
-		|Appellate Judges  |Colloton     |
+		|userType   |personrole        |jud          |
+		|judge      |Appellate Judges  |Colloton     |
 	Then  User selects "<refCat>" and "<caseNum>" 
 	
 	Then User  selects action using "<el_id>"  and verifies the name of the action displays in the dark blue banner 

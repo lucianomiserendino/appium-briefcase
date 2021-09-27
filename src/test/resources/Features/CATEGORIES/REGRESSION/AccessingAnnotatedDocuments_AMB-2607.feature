@@ -12,7 +12,7 @@ Verify the chambers users are able to view/open Judges' annotated documents
 Examples:
 		|environment    |userName    | password |courtId|
 		|Integration    |Judge Werner| Test2026!|CMKA   |
-		|Integration    |JAHaenni    | Test2025!|CMKA   |
+		|Integration    |JAHaenni    | Test2026!|CMKA   |
 		
 		
 		

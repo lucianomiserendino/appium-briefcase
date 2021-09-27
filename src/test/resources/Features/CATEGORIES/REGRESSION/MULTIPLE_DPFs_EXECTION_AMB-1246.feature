@@ -5,9 +5,9 @@ Feature: Execute multiple DPFs in the same action
 @AMB-1246 
 Scenario Outline: 
 	This task is to verify the Data is saving when executing multiple DPFs in the same action
-		#Given I am logged into Briefcase 
-		#|environment    |userName| password |courtId|
-		#|Integration    |s haenni| Test2024!|test   |
+		Given I am logged into Briefcase 
+		|environment    |userName| password |courtId|
+		|Integration    |s haenni| Test2024!|test   |
 		
 		Then I select a user 
 		|role              |briefcaseUser|

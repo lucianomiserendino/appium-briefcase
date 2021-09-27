@@ -7,11 +7,11 @@ Scenario Outline:
 
 	Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
-			|Integration    |s haenni| Test2025!|test   |
+		|Integration    |s haenni| Test2025!|test   |
 		
-	Then I select a user
-	|role              |briefcaseUser|
-	|Appellate Judges  |Colloton     |
+	Then I select a user 
+		|userType   |personrole        |jud          |
+		|judge      |Appellate Judges  |Colloton     |
 	
 	Then User selects "<category>" and "<caseNum>" 
 	Then User  selects action using "<el_id>"  and verifies the name of the action displays in the dark blue banner 

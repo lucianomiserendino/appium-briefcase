@@ -13,7 +13,7 @@ Scenario:
 	
 		Given I am logged into Briefcase 
 		|environment    |userName| password |courtId|
-		|Integration    |JAHaenni| Test2025!|test   |
+		|Integration    |JAHaenni| Test2026!|test   |
 		
 	Then user verifies a JA or law clerk can see the same entries as their judge  ( "21-3877" ) 
 	
