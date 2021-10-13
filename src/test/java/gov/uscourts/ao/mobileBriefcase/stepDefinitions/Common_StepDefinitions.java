@@ -23,17 +23,18 @@ public class Common_StepDefinitions {
 
 	@Then("^User selects \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_selects_and(String category, String caseNumber) {
-		JenieLoginPage logPage = new JenieLoginPage();
+		// JenieLoginPage logPage = new JenieLoginPage();
 		page = new CommonPages();
 		page.getCategoryWithCase(category, caseNumber);
 	}
 
 	@Then("^User selects$")
 	public void user_selects(List<UserInputData> userInputData) {
-		JenieLoginPage logPage = new JenieLoginPage();
+		// JenieLoginPage logPage = new JenieLoginPage();
 		page = new CommonPages();
 		String category = SystemPropertySetup.getVariable(Variables.REF_CATEGORY, userInputData);
 		String caseNumber = SystemPropertySetup.getVariable(Variables.CASE_NUMBER, userInputData);
+
 		page.getCategoryWithCase(category, caseNumber);
 	}
 
@@ -42,6 +43,13 @@ public class Common_StepDefinitions {
 			String elID, List<UserInputData> userInputData) {
 		page = new CommonPages();
 		page.selectAction("Actions", elID, userInputData);
+	}
+
+	@Then("^User  selects an action and verifies the name of the action displays in the dark blue banner$")
+	public void user_selects_an_action_and_verifies_the_name_of_the_action_displays_in_the_dark_blue_banner(
+			List<UserInputData> userInputData) {
+		page = new CommonPages();
+		page.selectAction("Actions", userInputData);
 	}
 
 	@When("^User selects a  \"([^\"]*)\"$")

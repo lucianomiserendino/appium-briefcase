@@ -86,10 +86,7 @@ public class CopyDeleteCasePage extends Base {
 		findElementAndclick(By.name("SUBMIT2"));
 	}
 
-	// public static void getURLandLogin(String URL) {
-	// getUrl(URL);
-	// login(USERNAME, PASSWORD);
-	// }
+
 
 	public static void confirm(String title, String expected, String action) {
 		String actual = findWebElement(By.xpath(title)).getText();

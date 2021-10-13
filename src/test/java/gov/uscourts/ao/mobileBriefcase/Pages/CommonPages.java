@@ -28,13 +28,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import cucumber.api.DataTable;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.common.Page;
 import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -89,6 +91,7 @@ public class CommonPages extends Base {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public List<MobileElement> Categories;
 
+
 	public void getCategory(Category category, String caseNumber) {
 
 		String categories = "";
@@ -135,12 +138,10 @@ public class CommonPages extends Base {
 			list = ReferralsList;
 			break;
 
-			
 		default:
 			break;
 		}
-		
-		
+
 		selectReferral("//XCUIElementTypeOther[@name='Categories']" + containsElement(categories));
 		selectReferral(containsElement(caseNumber));
 	}
@@ -158,8 +159,7 @@ public class CommonPages extends Base {
 	public void getCategoryWithCase(String category, String caseNumber) {
 		performPageLoad(driver);
 		getCategory(Category.valueOf(category), caseNumber);
-		
-		
+
 		performPageLoad(driver);
 	}
 
@@ -209,6 +209,14 @@ public class CommonPages extends Base {
 		}
 	}
 
+	public static void selectAction(String panel, List<UserInputData> userInputData) {
+		getGroupIcons();
+		getPanel(Panel.valueOf(panel));
+		getActionName("Auto Test");
+
+
+	}
+
 	public static void getActionName(String element) {
 		scrollDownIfNotDisplayed(
 				"//XCUIElementTypeOther[@name='DocumentList']//XCUIElementTypeStaticText[contains(@name, '" + element
@@ -237,6 +245,30 @@ public class CommonPages extends Base {
 						id, "CMR_CYV_CODE", cmr_cyv_code),
 				userInputData);
 	}
+	
+	
+	public static String getCMRID(List<UserInputData> userInputData) {
+
+		String name = SystemPropertySetup.getJudge(userInputData);
+		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
+
+		String caseId = CommonPages.getCaseID(userInputData);
+
+		return getAllColumns(replace(Queries.CMR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id),
+				userInputData);
+	}
+	
+
+	public static String getCCRID(List<UserInputData> userInputData) {
+
+		String name = SystemPropertySetup.getJudge(userInputData);
+		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
+
+		String caseId = CommonPages.getCaseID(userInputData);
+
+		return getAllColumns(replace(Queries.CCR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id),
+				userInputData);
+	}
 
 	public static void verifyElementIsDisplayed(String element) {
 		assertTrue(" PLEASE ENSURE THAT " + element.toUpperCase() + " IS DISPLAYED ",
@@ -244,12 +276,18 @@ public class CommonPages extends Base {
 	}
 
 	public static String getCaseID(MobileElement uiCaseNumber, List<UserInputData> table) {
-		return getAllColumns(replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, uiCaseNumber), "CS_NUMBER",
-				getCase(Case.CASE_NUMBER, uiCaseNumber)), table);
+		return getAllColumns(replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, uiCaseNumber.getText()), "CS_NUMBER",
+				getCase(Case.CASE_NUMBER, uiCaseNumber.getText())), table);
 	}
 
-	public static String getCaseNumber(MobileElement caseNumber, int index) {
-		return caseNumber.getText().split(" ")[0].split("-")[index];
+	public static String getCaseID(List<UserInputData> table) {
+		String caseNumber = SystemPropertySetup.getVariable(Variables.CASE_NUMBER, table);
+		return getAllColumns(replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, caseNumber), "CS_NUMBER",
+				getCase(Case.CASE_NUMBER, caseNumber)), table);
+	}
+
+	public static String getCaseNumber(String caseNumber, int index) {
+		return caseNumber.split(" ")[0].split("-")[index];
 
 	}
 
@@ -267,14 +305,13 @@ public class CommonPages extends Base {
 	 */
 
 	public static void setValue(String si_value, String SI_CODE, List<UserInputData> userInputData) {
-		// insertData(dbType, replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE",
-		// si_value, "SI_CODE", SI_CODE));
+	
 		insertData(replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE", si_value, "SI_CODE", SI_CODE), userInputData);
 		String value = getAllColumns(replace(SITE_TABLE_VARIABLE_VALUE, "SI_CODE", SI_CODE), userInputData);
 		assertEquals(si_value, value);
 	}
 
-	public static String getCase(Case caseN, MobileElement uiCaseNumber) {
+	public static String getCase(Case caseN, String uiCaseNumber) {
 		int index = 0;
 		switch (caseN) {
 		case CASE_YEAR:

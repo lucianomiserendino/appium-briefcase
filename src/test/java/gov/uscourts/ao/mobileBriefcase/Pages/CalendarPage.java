@@ -98,13 +98,6 @@ public class CalendarPage extends AppiumPageFactory {
 		assertEQ(ARG_DISPLAY, getCourtSessionFields(CourtSession.ARG_DISPLAY, peId, table),
 				add(splitBy(argDescription.getText(), "Time:", 1).trim()));
 
-		// assertEQ(CTS_DATE_FROM, getCourtSessionFields(CourtSession.CTS_DATE_FROM,
-		// dbType, peId),
-		// getUiToFromDates(split(fromToDate, 0)));
-		//
-		// assertEQ(CTS_DATE_TO, getCourtSessionFields(CourtSession.CTS_DATE_TO, dbType,
-		// peId),
-		// getUiToFromDates(split(fromToDate, 1)));
 
 		assertEQ(CMR_PANEL_MEMBERS, getCourtSessionFields(CourtSession.CMR_PANEL_MEMBERS, peId, table), add(initials));
 
@@ -167,12 +160,7 @@ public class CalendarPage extends AppiumPageFactory {
 		case ARG_DISPLAY:
 			courtSession += ARG_DISPLAY;
 			break;
-		// case CTS_DATE_FROM:
-		// courtSession += CTS_DATE_FROM;
-		// break;
-		// case CTS_DATE_TO:
-		// courtSession += CTS_DATE_TO;
-		// break;
+
 		case CMR_PANEL_MEMBERS:
 			courtSession += CMR_PANEL_MEMBERS;
 			break;

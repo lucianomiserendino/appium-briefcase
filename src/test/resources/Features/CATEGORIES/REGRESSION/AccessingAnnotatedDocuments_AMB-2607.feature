@@ -1,6 +1,7 @@
+@Regression @AMB-2607
 Feature: Chambers users are able to download/view annotated documents 
 
-@Regression @AMB-2607 
+ 
 Scenario Outline:
 Verify the chambers users are able to view/open Judges' annotated documents 
 

@@ -9,12 +9,12 @@ Scenario Outline:
 	  This task is to automate the display of the red bullet icon.
 
 	Given I am logged into Briefcase 
-	|environment    |userName| password |courtId|
-	|Integration    |s haenni| Test2025!|test   |
-
-	Then I select a user
-	|role              |briefcaseUser|
-	|Appellate Judges  |Colloton     |
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
+		
+	Then I select a user 
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |test    |
 	
 	When User selects a  "<refCategory>" 
 	Then User selects a category that has unviewed referrals and verifies that the red bullet icon displays next to any unviewed referrals, taps on a referral and then gets back to the referral list page 
@@ -23,12 +23,12 @@ Scenario Outline:
 	And User logs out from the Briefcase
 	
 	Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
 		
-	Then I select a user
-	|role              |briefcaseUser|
-	|Appellate Judges  |Colloton     |
+	Then I select a user 
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |test    |
 	
 	Then User goes back to the "<refCategory>" that contains the referral that was just viewed and verify the bullet does not display 
 	

@@ -2,28 +2,30 @@
 Feature: note DPF UI 
 
 @AMB-1055 @S 
-Scenario Outline: 
+Scenario: 
 	Verify when an action is selected that contains the note DPF, the note DPF UI displays.
 
 	Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
 		
 	Then I select a user 
-		|userType   |personrole        |jud          |
-		|judge      |Appellate Judges  |Colloton     |
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |test    |
+		
+	Then User selects
+	|refCategory|caseNumber|
+	|test       |test      |
 	
-	Then User selects "<category>" and "<caseNum>" 
-	Then User  selects action using "<el_id>"  and verifies the name of the action displays in the dark blue banner 
+	Then User  selects an action and verifies the name of the action displays in the dark blue banner 
+	
 		|courtId|
 		|test   |
 		
 	Then User verifies the text "Add New Note" displays in the light blue banner. 
-	And user verifies an editable "Description" , "Comment" , "Submit" fields are  displayed.  The default description is defined in the Default description parameter of the note DPF ("<dbType>" , "<dpfName>", "<el_id>") 
-	
-	Examples: 
-		|category| caseNum |dbType| el_id| dpfName|
-		|MOTION  | 15-3703 |CMKA  |3153  |note    |
+	And user verifies an editable "Description" , "Comment" , "Submit" fields are  displayed.  The default description is defined in the Default description parameter of the note DPF 
+		|courtId|
+		|test   |
 			
 
     

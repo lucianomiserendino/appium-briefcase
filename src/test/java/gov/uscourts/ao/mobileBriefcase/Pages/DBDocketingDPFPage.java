@@ -80,15 +80,11 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 		sendKeys(commentField, "Test-" + getStreamOfRandomInts());
 		sendKeys(descriptionField, "Test-" + getStreamOfRandomInts() + "-");
 		String description = getText(descriptionField);
-		// try {
+
 
 		tap(submit);
 		Page.sleep(10000);
-		// tap(YESbtn);
-		// tap(OKbtn);
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
+
 
 		getDataTable(table, index, caseNum, peID, userInputData, record);
 

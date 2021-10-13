@@ -1,4 +1,4 @@
-@t @Regression @AMB-2482 @AMB-2483 @AMB-2381 
+@Regression @AMB-2482 @AMB-2483 @AMB-2381 
 Feature: Sorting on the Pending Tasks Page 
 
 

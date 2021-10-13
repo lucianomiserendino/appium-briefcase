@@ -5,11 +5,12 @@ Feature: Applied Cases link
 Scenario: 
 	Display Applied Cases link  when bookmarking case/referral
 	Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
 		
-	Then I select a user
-	|role              |briefcaseUser|
+	Then I select a user 
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |test    |
 	|Appellate Judges  |Colloton     |
 	
 	Then user checks if "15-2622" is bookmarked 

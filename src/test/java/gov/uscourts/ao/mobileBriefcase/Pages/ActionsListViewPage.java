@@ -2,9 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.APPLICABLE_ACTIONS;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCMRID;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
@@ -16,20 +14,17 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class ActionsListViewPage extends AppiumPageFactory {
 
-	public void getApplicableActions(String panel, String caseNum, List<UserInputData> userInputData) {
+	public void getApplicableActions(String panel, List<UserInputData> userInputData) {
 		performPageLoad(driver);
 		getGroupIcons();
 		scrollDownIfNotDisplayed(containsElement(panel));
-		
-		String name = SystemPropertySetup.getJudge(userInputData);
-		
-		String cmr_id=getCMRID("cmr_id",  caseNum, getPE_ID("jud", name, userInputData), "motpet",userInputData) ;
-		
+
+		String cmr_id = CommonPages.getCMRID(userInputData);
+
 		actionIsDisplayed(cmr_id, userInputData);
 
 	}

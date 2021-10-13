@@ -14,10 +14,10 @@ public class Hook extends Base {
 
 	}
 
-	@After
-	public void tearDown() {
-		JenieLoginPage.logout();
-		closeIOSDriver();
-	}
+//	@After
+//	public void tearDown() {
+//		JenieLoginPage.logout();
+//		closeIOSDriver();
+//	}
 
 }

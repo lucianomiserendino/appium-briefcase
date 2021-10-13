@@ -8,15 +8,13 @@ Scenario Outline:
 	  based on the chm_mobile_doc.cmd_sort field
 	
 
-
 	Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
 		
-		
-	Then I select a user
-	|role              |briefcaseUser|
-	|Appellate Judges  |Colloton     |
+	Then I select a user 
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |test    |
 	
 	Then  User selects "<refCat>" and "21-3877" 
 	Then User verifies  Document Categories are sorted on the referral detail page ("<server>", "<cmr_cyv_code>", "<cmr_ju_pe_id>", "<cmr_cs_caseid>") 

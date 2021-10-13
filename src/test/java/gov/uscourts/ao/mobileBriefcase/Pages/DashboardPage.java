@@ -204,21 +204,13 @@ public class DashboardPage extends AppiumPageFactory {
 	public void get_lbrrpt_CATEGORY(String cyvCategory, String PE_RT_CODE, String judgeName,
 			List<UserInputData> userInputData) {
 		performPageLoad(driver);
-		// MobileElement lbrrptCategory;
 		String peID = getPE_ID(PE_RT_CODE, judgeName, userInputData);
 
 		List<String> cmr_cyv_code = executeQuery(getID(lbrrpt_CATEGORY, peID), userInputData);
 		if (cmr_cyv_code.contains(cyvCategory)) {
 			String cyv_category = getAllColumns(getID(replace(lbrrpt_CYV_CATEGORY, "CMR_CYV_CODE", cyvCategory), peID),
 					userInputData);
-			//
-			// lbrrptCategory = waitForVisibilityOfElement(findElementBy(Locator.XPATH,
-			// "//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '" +
-			// cyv_category.trim() + "')]"),
-			// driver);
-			//
-			// assertTrue(lbrrptCategory.isDisplayed());
-			// lbrrptCategory.click();
+	
 
 			Utility.scrollDownIfNotDisplayed(
 					"//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '" + cyv_category.trim() + "')]");
@@ -239,7 +231,7 @@ public class DashboardPage extends AppiumPageFactory {
 		List<String> dbDocCategory = executeQuery(getID(lbrrpt_DOCUMENT_CATEGORY, peID), userInputData);
 		sort(dbDocCategory);
 
-		// try {
+
 		for (int i = 0; i < dbDocCategory.size(); ++i) {
 
 			uiDocs = findElementBy(Locator.XPATH, containsElement(dbDocCategory.get(i)));
@@ -259,9 +251,6 @@ public class DashboardPage extends AppiumPageFactory {
 					isDisplayed = true;
 			}
 		}
-		// } catch (Exception e) {
-		// isDisplayed = false;
-		// }
 		return isDisplayed;
 
 	}

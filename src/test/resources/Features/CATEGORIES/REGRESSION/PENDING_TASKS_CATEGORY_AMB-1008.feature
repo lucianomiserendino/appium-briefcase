@@ -8,11 +8,12 @@ Scenario Outline:
 	
 	
 	Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |
-	Then I select a user
-	|role              |briefcaseUser|
-	|Appellate Judges  |Colloton     |
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
+		
+	Then I select a user 
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |test    |
 	Given If The judge has any pending assignments it will validate the total num of pending task on UI with DB. Use  judge's "<pe_id>" and  "<PE_RT_CODE>" to retrieve pending tasks from db 
     |courtId|
 	|test   |

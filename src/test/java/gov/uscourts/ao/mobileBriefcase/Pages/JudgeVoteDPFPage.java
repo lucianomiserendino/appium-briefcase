@@ -27,6 +27,7 @@ import static gov.uscourts.ao.mobileBriefcase.common.Utility.changeDateFormat;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.clickOnNumberInRange;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.getParameter;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.getStreamOfRandomInts;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollDownIfNotDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollUp;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
@@ -40,6 +41,7 @@ import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
@@ -92,25 +94,28 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	public static List<MobileElement> judgeVotes;
 
 	/** verify relief is displayed on the popup page */
-	public String selectViewVotes(String ccr_id, String viewVotes, List<UserInputData> userInputData) {
+	public String selectViewVotes(List<UserInputData> userInputData) {
 
+		String ccr_id = CommonPages.getCCRID(userInputData);
 		String relief = getRelief(ccr_id, userInputData);
 		tap(Locator.XPATH, "(//XCUIElementTypeStaticText[@name='" + relief
-				+ "']/following::XCUIElementTypeOther/XCUIElementTypeButton[@name='" + viewVotes + "'])[1]");
+				+ "']/following::XCUIElementTypeOther/XCUIElementTypeButton[@name='View Votes'])[1]");
 		return relief;
 
 	}
-	
-	
+
 	/** verify each judge's vote and the day they voted on the popup page */
-	public void verifyJudgesVote(String ccr_id, List<UserInputData> userInputData) {
+	public void verifyJudgesVote(List<UserInputData> userInputData) {
 		performPageLoad(driver);
-		getJudgesInitials(ccr_id, JUDGES_INITIALS, JUDGES_INITIAL, JUDGES_VOTE, JUDGES_VOTE_DATE, userInputData);
+		getJudgesInitials(JUDGES_INITIALS, JUDGES_INITIAL, JUDGES_VOTE, JUDGES_VOTE_DATE, userInputData);
 
 	}
 
-	public static void getJudgesInitials(String ccr_id, String initials, String initial, String votes, String voteDates,
+	public static void getJudgesInitials(String initials, String initial, String votes, String voteDates,
 			List<UserInputData> userInputData) {
+
+		String ccr_id = CommonPages.getCCRID(userInputData);
+
 		String reliefText = getRelief(ccr_id, userInputData);
 
 		List<String> dbInitials = executeQuery(replace(getID(initials, ccr_id), "RL_LIST_TEXT", reliefText),
@@ -122,7 +127,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 		List<String> dbInitial = executeQuery(replace(getID(initial, ccr_id), "RL_LIST_TEXT", reliefText),
 				userInputData);
 		sort(dbInitial);
-		try {
+
 			/** verify all initials are displayed */
 
 			for (int inits = 0; inits < dbInitials.size(); ++inits) {
@@ -131,6 +136,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 						"//XCUIElementTypeOther[@name='JudgesVotesList']/child::*//*[contains(@name, '"
 								+ dbInitials.get(inits) + "')]"),
 						driver);
+
 				assertTrue(uiJudgeInits.isDisplayed());
 			}
 
@@ -152,6 +158,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 							"JU_INITIALS", dbInitial.get(init)), userInputData);
 
 					sort(dbVoteDate);
+
 					for (int uiVoteDate = 0; uiVoteDate < dbVoteDate.size(); ++uiVoteDate) {
 
 						String votedDate = changeDateFormat(dbVoteDate.get(uiVoteDate).split(" ")[0], "yyyy-MM-dd",
@@ -169,16 +176,18 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 					}
 				}
 			}
-		} catch (org.openqa.selenium.TimeoutException e) {
-			e.printStackTrace();
-		} finally {
-			tap(close);
-		}
 
-	}
+			tap(close);
+}
+
+
 
 	@SuppressWarnings("unlikely-arg-type")
-	public String getVoteSelection(String dpfName, String ccr_id, String elId, List<UserInputData> userInputData) {
+	public String getVoteSelection(String dpfName, List<UserInputData> userInputData) {
+
+		String elId = getAllColumns(getID(Queries.EL_ID, "Auto Test"), userInputData);
+		String ccr_id = CommonPages.getCCRID(userInputData);
+
 		String voteText = "";
 		String text = "";
 		String reliefText = getRelief(ccr_id, userInputData);
@@ -236,13 +245,13 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	 * After adding vote to a note, this will verify judge's vote is updated in Vote
 	 * Information Panel
 	 */
-	public void verifyNoteText(String ccr_id, String voteText, String noteText, List<UserInputData> userInputData) {
+	public void verifyNoteText(String voteText, String noteText, List<UserInputData> userInputData) {
+		String ccr_id = CommonPages.getCCRID(userInputData);
 
 		CommonPages.getPanel(Panel.valueOf("Vote_Information"));
 		String relief = getRelief(ccr_id, userInputData);
 		getVote(relief).click();
 		performPageLoad(driver);
-		// containsElement(getTodaysDate()))
 		assertTrue(isDisplayed(Locator.XPATH, containsElement("$$")));
 		String title = getAllColumns(DM_DESCRIPTION, userInputData);
 		assertTrue(isDisplayed(Locator.XPATH, containsElement(title)));
@@ -257,25 +266,15 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 			tap(cancel);
 		} else {
 			Page.sleep(3000);
-			// try {
-			// if (getText(commentField).isEmpty()) {
-			// sendANote();
-			// //tap(commentField);
-			// }
-			// tap(commentField);
-			// tap(commentField);
-			// tap(selectAll);
-			// tap(cut);
+	
 			commentField.click();
 			commentField.clear();
 
 			text = sendANote();
 			tap(applyBtn);
-			tap(submit);
-			// try {
-			// tap(yesBtn);
-			// tap(okBtn);
-			// } catch (Exception e) {
+
+			scrollDownIfNotDisplayed("//XCUIElementTypeButton[@name='Submit']");
+	
 			performPageLoad(driver);
 			scrollUp(By.id("DocumentList"));
 			getGroupIcons();
@@ -286,10 +285,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 					" THE \"NOTE HISTORY PARAMETER\" IS SET TO \"Y\", HOWEVER THE TEXT OF THE PREVIOUS VOTE NOTE IS NOT DISPLYED CORRECTLY! ",
 					text, getText(commentField));
 			tap(cancel);
-			// }
-			// } catch (NoSuchElementException e) {
-			// e.printStackTrace();
-			// }
+
 		}
 
 	}
@@ -297,17 +293,12 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	public static MobileElement getVote(String relief) {
 
 		return findElement(By.xpath("(//XCUIElementTypeStaticText[@name='" + relief
-				+ "']/following::XCUIElementTypeOther[@name='NoteIcon'])[1]"));
+				+ "']/following::XCUIElementTypeOther[contains(@name, 'NoteIcon')])[1]"));
 
-		// "(//XCUIElementTypeStaticText[@name='" + relief
-		// + "']/following
-		// ::XCUIElementTypeOther[1]/XCUIElementTypeOther[contains(@name,
-		// 'NoteIcon')])[1]"));
 
 	}
 
 	public static String sendANote() {
-		// String note = getTodaysDate()+"$$";
 		String note = "$$";
 		sendKeys(commentField, note);
 		return note;

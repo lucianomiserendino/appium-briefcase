@@ -98,6 +98,8 @@ public class Queries {
 
 	public static final String ACTION_NAME = "select el_list_text FROM event_list where el_id=?";
 
+	public static final String EL_ID = "select  el_id FROM event_list where  el_list_text ='?'";
+
 	public static final String JUDGE_VOTE_DPF_RELIEF = "select first 1 distinct  rl_list_text from chambers_case_to_referral b join chambers_case_to_referral a on"
 			+ " b.ccr_cpr_id = a.ccr_cpr_id join dktpart on dp_dktpartid = b.ccr_dp_dktpartid join relief_list on rl_id = dp_rlid "
 			+ "join chambers_caseref_to_judge on b.ccr_id = crj_ccr_id join judge on crj_ju_pe_id = ju_pe_id join chambers_referral on b.ccr_cpr_id = cpr_id "
@@ -235,7 +237,7 @@ public class Queries {
 			+ "ad.chd_date = maxresults.maxnum";
 
 	// Query to find Staff Members
-	public static final String STAFF_MEMBERS_FIRST_NAME = "SELECT pr_first_name FROM group inner join member on gp_id = mb_gp_id_parent "
+	public static final String STAFF_MEMBERS_FIRST_NAME = "SELECT distinct pr_first_name, pr_last_name FROM group inner join member on gp_id = mb_gp_id_parent "
 			+ " join personrole on pe_pr_prid = mb_ur_pr_prid join person on pe_pr_prid = pr_prid join user on ur_pr_prid = pr_prid where pe_rt_code TEXT and  "
 			+ " gp_id in (select gp_id from group inner join member on gp_id = mb_gp_id_parent join person on pr_prid = mb_ur_pr_prid join personrole on pe_pr_prid = pr_prid  where pe_id = '?'"
 			+ " and gp_name like '%Chambers%') and pe_date_end is null and pr_prid <> (select pr_prid from personrole join person on pe_pr_prid = pr_prid where pe_id = '?' and ur_date_disabled is null )";
@@ -245,7 +247,7 @@ public class Queries {
 
 	public static final String ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST = "SELECT cav_display \n"
 			+ "	FROM chm_assign_type_val \n" + "	WHERE cav_chm_role in ('staff', 'all')\n"
-			+ "	and cav_date_end is null\n" + "	and cav_code in (TEXT)\n" + "	ORDER BY cav_display";
+			+ "	and cav_date_end is null\n" + "	and cav_code in (TEXT)\n" + " and 	ORDER BY cav_display";
 	// " cmr_cyv_code='prhr'/
 
 	public static final String CAV_DESCRIPTION = "SELECT distinct cav_description FROM chm_mobile_referral, chambers_case_to_referral, chm_assign_to_case, chambers_assignment, "
@@ -286,7 +288,7 @@ public class Queries {
 	public static final String ASSIGNEES_CHA_ID = "select first 1 cha_id FROM chm_mobile_referral, "
 			+ "chambers_case_to_referral, chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val WHERE cmr_cs_caseid = 'CMR_CS_CASEID'  and"
 			+ " cmr_ccr_id = ccr_id and chc_cs_caseid = cmr_cs_caseid and chc_cha_id = cha_id and cha_ju_pe_id = '?'  and chc_date_end is null and"
-			+ " cha_chm_pe_id = pe_id and pe_pr_prid = pr_prid  and cmr_cyv_code ='prhr' and cha_cav_code = cav_code order by cha_id desc";
+			+ " cha_chm_pe_id = pe_id and pe_pr_prid = pr_prid and cha_cav_code = cav_code order by cha_id desc";
 
 	public static final String ASSIGNMENT_DUE_DATE = "SELECT chd_date FROM\n"
 			+ "chambers_assign_date ad, chm_assign_datetype_val,\n"
@@ -441,6 +443,15 @@ public class Queries {
 	public static final String CMR_CCR_ID = "SELECT first 1 ID FROM case, chm_mobile_referral WHERE cs_year = 'CS_YEAR' and cs_number = 'CS_NUMBER' and cs_caseid = cmr_cs_caseid "
 			+ "and cmr_cyv_code='CMR_CYV_CODE' and cmr_ju_pe_id ='CMR_JU_PE_ID'";
 
+	public static final String CCR_ID = "SELECT  first 1 ccr_id  FROM chm_mobile_referral, chambers_case_to_referral, chambers_referral WHERE cpr_vote_req = 'y'"
+			+ " and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = 'CMR_CS_CASEID' and cmr_ju_pe_id = 'CMR_JU_PE_ID'";
+
+	
+	public static final String CMR_ID = "SELECT  first 1 cmr_id  FROM chm_mobile_referral, chambers_case_to_referral, chambers_referral WHERE cpr_vote_req = 'y'"
+			+ " and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = 'CMR_CS_CASEID' and cmr_ju_pe_id = 'CMR_JU_PE_ID'";
+
+	
+	
 	public static final String FILLERs_INFORMATION = "select  FIELD " + "from chm_mobile_referral\n"
 			+ "join chambers_case_to_referral on cmr_ccr_id = ccr_id\n"
 			+ "join relate_dktpart on ccr_dp_dktpartid = rd_rel_dktpartid \n"
@@ -597,12 +608,9 @@ public class Queries {
 			+ "join chambers_referral on b.ccr_cpr_id = cpr_id " + "join chambers_case on b.ccr_ccs_id = ccs_id "
 			+ "join chm_reftype_val on cpr_cyv_code = cyv_code " + "join case_dktentry on cd_id = dp_cd_id "
 			+ "join dktentry on cd_dktentryid = de_dktentryid " + "left join doctype_val on dp_doc_type = dty_code "
-			+ "join event_list on el_id = de_elid "
-			+ "left join chambers_vote left join (chm_vote_to_note inner join "
-			+ "document on cvn_dm_dls_id = dm_dls_id "
-			+ "and dm_internal_type = 'notevote'  ) on chv_id = cvn_chv_id "
-			+ "on chv_crj_id = crj_id and chv_date_end is null "
-			+ "left join chm_vote_val on chv_cvv_code = cvv_code "
+			+ "join event_list on el_id = de_elid " + "left join chambers_vote left join (chm_vote_to_note inner join "
+			+ "document on cvn_dm_dls_id = dm_dls_id " + "and dm_internal_type = 'notevote'  ) on chv_id = cvn_chv_id "
+			+ "on chv_crj_id = crj_id and chv_date_end is null " + "left join chm_vote_val on chv_cvv_code = cvv_code "
 			+ "left join panel_case on a.ccr_ph_id = ph_id  left join panel_to_judge on ph_pn_id = pj_pn_id and pj_ju_ao_code = ju_ao_code "
 			+ "left join panel_involvement on pni_ph_id = ph_id and pni_ju_ao_code = ju_ao_code "
 			+ "left join inv_codes_val on pni_ic_code = inv_codes_val.ic_code and ic_chm_judge_panrole = 'l' "

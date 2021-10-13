@@ -107,7 +107,6 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 	public static String getDktentryid(String caseNum, String dbType, String value) {
 
 		return getSiValue(dbType, value) + "queryecf?caseid=" + findACaseID(caseNum, dbType) + "&dktentryid=4352678";
-		// + getDocID(ID.DOCKETENTRY_ID, caseNum, dbType);
 	}
 
 	public static String getDocumentAndNoteID(String caseNum, String dbType, String id, String value) {
@@ -117,20 +116,15 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 	/** Open a Docket Entry in Briefcase from the NDA link */
 
 	public void openADktEntryInBriefcase(String caseNum, String dbType, String value) {
-		// searchForACase(caseNum);
 		loadNDALinksInBriefcase(getDktentryid(caseNum, dbType, value));
 		verifyElementsAreDisplayed("DOCKET ENTRY", docketText);
 
-		// for (int i = 0; i < 3; i++) {
-		// driver.navigate().back();
-		// }
 		driver.navigate().back();
 	}
 
 	/** Open a document in Briefcase from the NDA link */
 
 	public void openADocumentInBriefCase(String caseNum, String dbType, String value) {
-		// searchForACase(caseNum);
 		loadNDALinksInBriefcase(getDocumentAndNoteID(caseNum, dbType, "2832314", value));
 		Page.sleep(30000);
 		select(BriefcaseCoordinates.DISMISS);
@@ -138,19 +132,15 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 		verifyElementsAreDisplayed("DOCUMENT", PDFPageView);
 
 		tap(Locator.NAME, close);
-		// for (int i = 0; i < 3; i++) {
-		// driver.navigate().back();
-		// }
+
 		driver.navigate().back();
 	}
 
 	/** Open a note in Briefcase from the NDA link */
 
 	public void openANoteInBriefcase(String caseNum, String dbType, String value) {
-		// searchForACase(caseNum);
 		loadNDALinksInBriefcase(getDocumentAndNoteID(caseNum, dbType, getDocID(ID.NOTE_ID, caseNum, dbType), value));
 		verifyElementsAreDisplayed("NOTE", addANote);
-		// driver.navigate().back();
 
 	}
 
@@ -178,7 +168,7 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 	}
 
 	public void verifyElementsAreDisplayed(String link, String el2) {
-		assertTrue("*********CAN'T OPEN A " + link + " IN BRIEFCASE FROM THE NDA LINK*********",
+		assertTrue("*********CAN'T OPEN THE " + link + " IN BRIEFCASE FROM THE NDA LINK*********",
 				isDisplayed(Locator.XPATH, containsElement(el2)) == true);
 	}
 

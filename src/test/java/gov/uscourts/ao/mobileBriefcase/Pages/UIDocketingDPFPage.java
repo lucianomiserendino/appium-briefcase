@@ -5,14 +5,16 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.getParameter;
+import static gov.uscourts.ao.mobileBriefcase.common.Utility.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -23,14 +25,17 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextView[1]")
 	public static MobileElement descriptionField;
 
-	public void verifyFieldsAreDisplayed(String descriptionText, String commentText, String submitText, String dpfName,
-			String el_id, List<UserInputData> userInputData) {
+	public void verifyFieldsAreDisplayed(String descriptionText, String commentText, String submitText,
+			List<UserInputData> userInputData) {
+
+		String elId = getAllColumns(getID(Queries.EL_ID, "Auto Test"), userInputData);
 
 		verifyElementIsDisplayed(descriptionText);
-		getDefaulDescription(dpfName, el_id, userInputData);
+		getDefaulDescription("note", elId, userInputData);
 		verifyElementIsDisplayed(commentText);
-		verifyElementIsDisplayed(submitText);
-	
+		scrollDownIfNotDisplayed("//XCUIElementTypeButton[@name='" + submitText + "']");
+
+
 	}
 
 	/**
@@ -40,29 +45,27 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 	 * description should default to 'Transaction Note'
 	 */
 	public void getDefaulDescription(String dpfName, String el_id, List<UserInputData> userInputData) {
-		// try {
-		if (getParameter(getAllColumns(getID(MBR_NOTE, el_id), userInputData), dpfName, 4).equals("SKIP")) {
+	
+
+		if (Utility.getSingleDpf(getAllColumns(getID(MBR_NOTE, el_id), userInputData), dpfName, 4).equals("SKIP")) {
 			assertTrue(descriptionField.getText().equals("Transaction Note"));
 
 		} else {
 			String dbParam = replaceWithEmptyString(
-					getParameter(getAllColumns(getID(MBR_NOTE, el_id), userInputData), dpfName, 4), "\\");
+					Utility.getSingleDpf(getAllColumns(getID(MBR_NOTE, el_id), userInputData), dpfName, 4), "\\");
 			String ui = descriptionField.getText();
 			String uiParam = "";
-			
+
 			if (ui.contains("'")) {
 				uiParam = ui.split("'")[0];
-			}else {
-				uiParam+=ui;
+			} else {
+				uiParam += ui;
 			}
-			
-           
+
 			assertEquals("NOTE DESCRIPTION MISMATCH", dbParam.replace("'", ""), uiParam);
 
 		}
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
+
 	}
 
 	public void verifyElementIsDisplayed(String text) {
@@ -76,5 +79,7 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 		return text.replace(charac, "").trim();
 
 	}
+
+
 
 }

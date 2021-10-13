@@ -13,14 +13,13 @@ Scenario Outline:
 5.  Assignment types and dates
 6.  Assignment notes
 
-
-		Given I am logged into Briefcase 
-	|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2024!|test   |	
+	#Given I am logged into Briefcase 
+	#	|environment|userName| password |courtId|
+	#	|test       |test    | test     |test   |
 		
 	Then I select a user 
-		|role              |briefcaseUser|
-		|Appellate Judges  |Colloton     |
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |test    |
 	Then  User selects "<refCat>" and "<caseNum>" 
 	
 	Then User observes a collapsible panel entitled "Assignments" displays 

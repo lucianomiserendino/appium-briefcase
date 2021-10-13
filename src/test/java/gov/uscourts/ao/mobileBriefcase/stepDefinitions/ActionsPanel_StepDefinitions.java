@@ -5,7 +5,6 @@ import java.util.List;
 import cucumber.api.DataTable;
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.ActionsListViewPage;
-import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class ActionsPanel_StepDefinitions {
@@ -16,7 +15,7 @@ public class ActionsPanel_StepDefinitions {
 		page = new ActionsListViewPage();
 		List<UserInputData> userInputData = null;
 
-		page.getApplicableActions(actions, CommonPages.getDataTable(data, 1, 1), userInputData);
+		page.getApplicableActions(actions, userInputData);
 	}
 
 }

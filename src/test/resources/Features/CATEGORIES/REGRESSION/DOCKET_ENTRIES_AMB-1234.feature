@@ -3,12 +3,13 @@ Feature: Docket Entries for Chambers Users
 
 Scenario: 
 
-		Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |
+	Given I am logged into Briefcase 
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
+		
 	Then I select a user 
-		|role              |briefcaseUser|
-		|Appellate Judges  |Benton       |
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |Benton  |
 	Then user gets the entries of the judge ( "21-3877" ) and logs out 
 	
 		Given I am logged into Briefcase 

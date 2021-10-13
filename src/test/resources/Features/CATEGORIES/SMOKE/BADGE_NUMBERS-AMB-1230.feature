@@ -1,4 +1,4 @@
-@t @Smoke @AMB @AMB-1230
+@Smoke @AMB @AMB-1230
 Feature: Badge numbers in the navigation 
 
 

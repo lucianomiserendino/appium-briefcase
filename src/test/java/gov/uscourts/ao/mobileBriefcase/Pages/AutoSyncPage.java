@@ -97,7 +97,6 @@ public class AutoSyncPage extends AppiumPageFactory {
 	public static void enterDescriptionAndselectPDFDoc() {
 		sendKeys(By.xpath(descriptionField), "Attorney Documnet");
 		click(By.xpath(browseBTN));
-		// have to complete this step
 		click(By.xpath(filer));
 		click(By.xpath(continueUploadPage));
 		click(By.xpath(continueUploadPage));

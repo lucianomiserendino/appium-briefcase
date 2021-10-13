@@ -42,12 +42,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -85,9 +88,17 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		performPageLoad(driver);
 	}
 
-	public void createNewStaffAssignment(String dpfName, String elId, String cha_ju_pe_id, String cmr_cyv_code,
-			String cmr_cs_caseid, String caseNumber, List<UserInputData> userInputData) {
+	public void createNewStaffAssignment( List<UserInputData> userInputData) {
+		String caseNumber = SystemPropertySetup.getVariable(Variables.CASE_NUMBER, userInputData);
 
+		String dpfName = "chmAssign";
+		String elId = getAllColumns(getID(Queries.EL_ID, "Auto Test"), userInputData);
+		String name = SystemPropertySetup.getJudge(userInputData);
+		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
+		String cmr_cs_caseid = CommonPages.getCaseID(userInputData);
+		String cmr_cyv_code = "prhr";
+			
+		
 		/******************
 		 * @AMB-1123 ***
 		 */
@@ -263,8 +274,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			 * assignment type won't be displayed after you tap the Please Select button
 			 * next to the Assignment
 			 */
-			List<String> cavDescription = executeQuery(DBType.CMKA, replace(Queries.EXISTING_STAFF_ASSIGNMENTS,
-					"CMR_ID", cmr_id, "PR_FIRST_NAME", pr_first_name, "PR_LAST_NAME", pr_last_name));
+			List<String> cavDescription = executeQuery(replace(Queries.EXISTING_STAFF_ASSIGNMENTS,
+					"CMR_ID", cmr_id, "PR_FIRST_NAME", pr_first_name, "PR_LAST_NAME", pr_last_name),userInputData);
 			for (int i = 0; i < cavDescription.size(); i++) {
 				if (cavDescription.size() > 0 && dbAssignmentType.contains(cavDescription.get(i))) {
 					dbAssignmentType.remove(cavDescription.get(i));

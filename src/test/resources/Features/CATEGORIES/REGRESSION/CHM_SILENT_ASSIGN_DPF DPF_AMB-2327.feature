@@ -4,12 +4,12 @@ Feature: chmSilentAssign DPF
 Scenario Outline: chmSilentAssign DPF - Multiple assignments in a single transaction
 	
 	Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
 		
 	Then I select a user 
-		|role              |briefcaseUser|
-		|Appellate Judges  |Benton       |
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |Benton   |
 	Then  User selects "<refCat>" and "<caseNum>" 
 	Then User  selects action using "<el_id>"  and verifies the name of the action displays in the dark blue banner 
 		|courtId|

@@ -1,4 +1,4 @@
-@t @Smoke @AMB-1010
+@Smoke @AMB-1010
 Feature: Sorting on the Referral List Page 
 
 

@@ -13,6 +13,8 @@ Scenario:
 		|judge      |Appellate Judges  |Colloton     |
 	
 	Then User selects "TEST_AUTOMATION" and "21-3877" 
+	
+	
 	Then User selecs action, enters a comment in the editable field, submits and verifies Db "CMKA" is updated correctly, ( use "21-3877"  and "32" ) 
 	
 		|el_list_text  | dm_acc_crt | dm_acc_ctlink  | dm_acc_spec |

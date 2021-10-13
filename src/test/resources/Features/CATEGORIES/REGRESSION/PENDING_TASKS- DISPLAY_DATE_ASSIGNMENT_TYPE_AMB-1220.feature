@@ -7,13 +7,14 @@ Scenario Outline:
 
 		
 
-	Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2024!|test   |
+	#Given I am logged into Briefcase 
+	#	|environment|userName| password |courtId|
+	#	|test       |test    | test     |test   |
 		
-	Then I select a user
-	|role              |briefcaseUser|
-	|Appellate Judges  |Colloton     |
+		
+	Then I select a user 
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |test    |
 		
 	When User selects a  "Pending Tasks" 
 	Then User verifies each assignment display the most recent date type by using following info: dbType "<dbType>", "<caseNumber>", "<peId>", "<cmr_cyv_code>", "<pr_last_name>", "pr_first_name" 

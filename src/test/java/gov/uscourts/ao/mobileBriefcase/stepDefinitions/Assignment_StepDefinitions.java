@@ -67,21 +67,21 @@ public class Assignment_StepDefinitions {
 				AssignmentInfo.ASSIGNMENT_NOTE_DATE, userInputData);
 
 		info = Arrays.asList(assignee, assignment_type, assignment_due_date, assignment_note_date);
-		// info = Arrays.asList(
-		// assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
-		// AssignmentInfo.NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE,
-		// userInputData),
-		//
-		// assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
-		// AssignmentInfo.ASSIGNMENT_TYPE_AND_RELIEF,
-		// userInputData),
-		//
-		// assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
-		// AssignmentInfo.LATEST_ASSIGNED_ASSIGNMENT_DUE_DATES, userInputData),
-		//
-		// assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
-		// AssignmentInfo.ASSIGNMENT_NOTE_DATE,
-		// userInputData));
+		 info = Arrays.asList(
+		 assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
+		 AssignmentInfo.NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE,
+		 userInputData),
+		
+		 assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
+		 AssignmentInfo.ASSIGNMENT_TYPE_AND_RELIEF,
+		 userInputData),
+		
+		 assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
+		 AssignmentInfo.LATEST_ASSIGNED_ASSIGNMENT_DUE_DATES, userInputData),
+		
+		 assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
+		 AssignmentInfo.ASSIGNMENT_NOTE_DATE,
+		 userInputData));
 		
 	}
 

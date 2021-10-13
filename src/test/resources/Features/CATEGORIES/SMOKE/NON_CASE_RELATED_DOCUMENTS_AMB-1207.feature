@@ -1,4 +1,4 @@
-@t @Smoke @AMB-1207
+@Smoke @AMB-1207
 Feature: Non case related docs - Suppress case number for 'lbrrpt' category 
 
 

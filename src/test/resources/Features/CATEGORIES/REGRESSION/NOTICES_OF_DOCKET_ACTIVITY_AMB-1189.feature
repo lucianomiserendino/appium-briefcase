@@ -1,16 +1,16 @@
-@AMB-1189 
+@Regression @AMB-1189 
 Feature: Links in NDA open in Briefcase 
 
 
 
 Background: 
 	Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
 		
 	Then I select a user 
-		|role              |briefcaseUser|
-		|Appellate Judges  |Colloton     |
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |test    |
 	
  	
 Scenario Outline: 

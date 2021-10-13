@@ -143,7 +143,6 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 		List<String> commonElementsFromBothList = new ArrayList<>();
 
-		// Duplicate/Common elements from both lists
 		commonElementsFromBothList
 				.addAll(listOne.stream().filter(str -> listTwo.contains(str)).collect(Collectors.toList()));
 

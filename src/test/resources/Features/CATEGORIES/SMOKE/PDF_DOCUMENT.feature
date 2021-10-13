@@ -6,14 +6,19 @@ Scenario Outline:
 	Verify that PDF documents can be downloaded from the server to Briefcase and viewed within Briefcase.
 
 	Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
 		
 	Then I select a user 
-		|userType   |personrole        |jud          |
-		|judge      |Appellate Judges  |Colloton     |
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |test    |
+		
 	Then User deletes all docs from the device
-	Then User selects "<refCategory>" and "<caseNum>" 
+	
+	Then User selects
+	|refCategory|caseNumber|
+	|test       |test      |
+	
     Then User taps document pdf doc in cmecf and verify that it is downloaded from the server and opens in Briefcase
 	
 	Examples: 

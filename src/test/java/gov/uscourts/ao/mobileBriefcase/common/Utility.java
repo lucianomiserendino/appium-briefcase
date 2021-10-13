@@ -109,8 +109,6 @@ public class Utility extends Base {
 		driver.executeScript("mobile:scroll", scrollObject);
 	}
 
-	
-
 	public static void scrollDown(By by) {
 		MobileElement element = Page.waitForPresenceOfElementLocated(by, driver);
 		String elementID = element.getId();
@@ -119,6 +117,7 @@ public class Utility extends Base {
 		scrollObject.put("direction", "down");
 		driver.executeScript("mobile:scroll", scrollObject);
 	}
+
 	public static synchronized void scrolldown() {
 		try {
 			int pressX = getWindowSize().width / 2;
@@ -248,30 +247,6 @@ public class Utility extends Base {
 	public static int getRandomInt(int index) {
 		return index - 1 - new Random().nextInt(index);
 
-	}
-
-	public static String getParameter(String param, String dpfName, int index) {
-
-		String dpfParam = "";
-		String[] items = param.split(";");
-		int itemCount = items.length;
-		if (itemCount > 1) {
-			String[] charac = param.split(";");
-			for (int i = 0; i < charac.length; i++) {
-
-				if (charac[i].contains(dpfName)) {
-					String[] Value = charac[i].substring(charac[i].indexOf(dpfName + "(")).split(",");
-					dpfParam = Value[index].split("'")[1];
-				}
-			}
-		} else {
-			String[] charac = param.substring(param.indexOf(dpfName + "(")).split(",");
-			if (charac[index].contains("'")) {
-				// dpfParam += charac[index].replaceAll("'", "").trim();
-				dpfParam = charac[index].replaceAll("'", "").split("\\(")[1].trim();
-			}
-		}
-		return dpfParam;
 	}
 
 	public static int getRandomNumberInRange(int min, int max) {
@@ -424,4 +399,35 @@ public class Utility extends Base {
 		}
 		return cellSize;
 	}
+
+	public static String getParameter(String param, String dpfName, int index) {
+
+		String dpfParam = "";
+		String[] items = param.split(";");
+		int itemCount = items.length;
+		if (itemCount > 1) {
+			String[] charac = param.split(";");
+			for (int i = 0; i < charac.length; i++) {
+
+				if (charac[i].contains(dpfName)) {
+					String[] Value = charac[i].substring(charac[i].indexOf(dpfName + "(")).split("',");
+					dpfParam = Value[index].split("'")[1];
+				}
+			}
+		} else {
+			String[] charac = param.substring(param.indexOf(dpfName + "(")).split(",");
+			if (charac[index].contains("'")) {
+				// dpfParam += charac[index].replaceAll("'", "").trim();
+				dpfParam = charac[index].replaceAll("'", "").split("\\(")[1].trim();
+			}
+		}
+		return dpfParam;
+	}
+
+	public static String getSingleDpf(String value, String dpfName, int index) {
+		String[] parValue = value.substring(value.indexOf(dpfName + "(")).split("',");
+		return parValue[index].split("'")[1];
+
+	}
+
 }

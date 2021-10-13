@@ -1,4 +1,4 @@
-@AMB-1015
+@Regression @AMB-1015
 Feature: Bookmark functionality 
 
 Scenario: 
@@ -6,11 +6,13 @@ Scenario:
 	The following scenarios need to be automated:
 	
 
-		Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |	
+	Given I am logged into Briefcase 
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
+		
 	Then I select a user 
-		|role              |briefcaseUser|
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |test    |
 		|Appellate Judges  |Colloton     |
 	Then User verifies there's no bookmark icon displays in the navigation and on the dashboard 
 	When User selects a  "Test Automation" 

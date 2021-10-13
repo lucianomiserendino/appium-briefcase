@@ -19,20 +19,21 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 	static chmAssignDPFPage page1;
 	String staffMember = "";
 
-	@Then("^user creates a new assignment, checks the back-end, edits existing assignment and checks the db  by using \"([^\"]*)\", \"([^\"]*)\" , \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\);$")
-	public void user_creates_a_new_assignment_checks_the_back_end_edits_existing_assignment_and_checks_the_db_by_using(
-			String dbType, String dpfName, String actionElID, String cha_ju_pe_id, String cmr_cyv_code,
-			String cmr_cs_caseid, String caseNum) {
 
-		page = new CommonPages();
-		List<UserInputData> userInputData = null;
-		assertTrue(isDisplayed(containsElement("Assignments")));
-		scrollDownIfNotDisplayed("(" + containsElement("NewStaffButton") + ")[1]");
-		page.verifyElementIsDisplayed("Create Assignment");
-		page1 = new chmAssignDPFPage();
-		page1.createNewStaffAssignment(dpfName, actionElID, cha_ju_pe_id, cmr_cyv_code, cmr_cs_caseid, caseNum,
-				userInputData);
-	}
+
+@Then("^user creates a new assignment, checks the back-end, edits existing assignment and verifies db is updated properly$")
+public void user_creates_a_new_assignment_checks_the_back_end_edits_existing_assignment_and_verifies_db_is_updated_properly() {
+	page = new CommonPages();
+	List<UserInputData> userInputData = null;
+	assertTrue(isDisplayed(containsElement("Assignments")));
+	scrollDownIfNotDisplayed("(" + containsElement("NewStaffButton") + ")[1]");
+	page.verifyElementIsDisplayed("Create Assignment");
+	page1 = new chmAssignDPFPage();
+	page1.createNewStaffAssignment(
+			userInputData);
+}
+
+	
 
 	@Then("^User clicks on create New Staff Assignment$")
 	public void user_clicks_on_create_New_Staff_Assignment() {

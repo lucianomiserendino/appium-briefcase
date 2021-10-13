@@ -1,4 +1,4 @@
-@t @Smoke @AMB-1047
+@Smoke @AMB-1047
 Feature: Assignment categories display on the dashboard for Staff Attorneys
 
 
@@ -11,11 +11,10 @@ Scenario:
 	Given I am logged into Briefcase 
 		|environment|userName| password |courtId|
 		|test       |test    | test     |test   |
-	
-	
+		
 		Then I select a user 
-		|userType   |personrole        |stf             |
-		|stf        |Staff Attorneys   |Brown, Benjamin |
+		|userType   |personrole        |stf  |
+		|stf        |Staff Attorneys   |test |
 		
 	Given User verifies Data is displayed on the Dashboard, retrieves categories from db ,'RA_PE_ID' : "434" 
 	|courtId|

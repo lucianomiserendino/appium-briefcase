@@ -218,17 +218,13 @@ public class DBUtilities {
 			resultSet.beforeFirst();
 
 			while (resultSet.next()) {
-				//try {
 					for (int i = 1; i < column; i++) {
 						a = resultSet.getString(i);
 						if(!(a==null)){
 							a.trim();
 						}
 					}
-//				} catch (NullPointerException e) {
-//					// TODO: handle exception
-//
-//				}
+
 
 				result.add(a);
 			}

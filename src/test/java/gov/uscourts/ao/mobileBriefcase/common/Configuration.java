@@ -6,11 +6,14 @@ import java.util.Properties;
 public class Configuration {
 
 	private static Properties configFile;
+	static String path = "";
 
 	static {
 
 		try {
-			String path = "./src/test/resources/test-properties/test.properties";
+
+			path = "./src/test/resources/test-properties/amb.properties";
+
 			FileInputStream input = new FileInputStream(path);
 
 			configFile = new Properties();
@@ -23,9 +26,8 @@ public class Configuration {
 		}
 	}
 
-
 	public static String getProperty(String keyName) {
 		return configFile.getProperty(keyName);
 	}
-	
+
 }

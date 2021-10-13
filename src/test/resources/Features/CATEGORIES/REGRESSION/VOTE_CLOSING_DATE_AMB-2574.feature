@@ -2,19 +2,18 @@
 Feature: As a chamber's user, I should be able to see the vote closing date for a referral so 
 	that I know how long until my vote is requested. 
 
-	#dependent on AMB-2257
  
 Scenario Outline: 
 	This task is to verify if there is a vote closing date for a referral, Briefcase displays "Vote Closing:" and the
  vote closing date in bold font under the filed date
 
 	Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
 		
 	Then I select a user 
-		|role              |briefcaseUser|
-		|Appellate Judges  |Colloton     |
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |test    |
 		
 	Then User selects "<refCategory>" and "<caseNum>" 
 	Given User observes ( "<dbType>" ) the "Vote_Information" panel displays.   This should only display if the referral requires voting 

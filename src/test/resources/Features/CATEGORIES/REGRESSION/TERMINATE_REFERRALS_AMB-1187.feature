@@ -8,9 +8,13 @@ removes any terminated document and retrieves new document information after a s
 
 
 
-		Given user is logged into Briefcase 
-		|environment|userName     |password |server|
-		|INTEGRATION|judge werner |Test2020!|CMKA  |
+	Given I am logged into Briefcase 
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
+		
+	Then I select a user 
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |test    |
 	
 	When User selects a  "<refCategory>" 
 	Then User selects a  referral.  Makes note of the case number and referral type 

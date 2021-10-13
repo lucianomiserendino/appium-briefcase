@@ -34,7 +34,6 @@ public class ReferralTermination_StepDefinitions {
 	public void user_navigates_to_the_referral_category_and_verify_the_referral_does_not_display_anymore_because_it_was_terminated() {
 
 		page = new TerminateReferrals();
-		page = new TerminateReferrals();
 		
 		
 

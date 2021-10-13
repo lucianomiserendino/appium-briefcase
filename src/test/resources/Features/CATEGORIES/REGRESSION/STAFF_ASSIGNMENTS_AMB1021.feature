@@ -1,4 +1,4 @@
- @Smoke @AMB-1021
+@Smoke @AMB-1021 
 Feature: Staff Assignments 
 
 
@@ -6,15 +6,20 @@ Scenario Outline:
 	Staff members can be assigned to referrals and/or just cases. 
 	 This task is to verify that staff assignments are displaying on the referral list page
 
-	Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |
+
+	#Given I am logged into Briefcase 
+	#	|environment|userName| password |courtId|
+	#	|test       |test    | test     |test   |
 		
 	Then I select a user 
-		|userType   |personrole        |jud          |
-		|judge      |Appellate Judges  |Colloton     |
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |test    |
 		
 	Then User selects "MOTION" and "15-3314" 
+	#Then User selects
+	#|refCategory|caseNumber|
+	#|test       |test      |
+	
 	Then User observes a collapsible panel entitled "Assignments" displays 
 	And User verifies the staff assignments associated with the referral by using "<dbType>" , "<cmr_cs_caseid>" , "<cha_ju_pe_id>" , "<cmr_cyv_code>" , 
 	

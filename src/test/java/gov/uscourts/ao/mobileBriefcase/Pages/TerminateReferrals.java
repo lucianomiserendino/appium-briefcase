@@ -86,8 +86,6 @@ public class TerminateReferrals extends AppiumPageFactory {
 		CommonPages page = new CommonPages();
 		page.selectReferral("//XCUIElementTypeOther[@name='Categories']" + containsElement("Test Automation"));
 
-		// page.selectReferral("Test Automation");
-
 	}
 
 	public int getTotalNumOfReferrals() {

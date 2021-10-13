@@ -131,7 +131,6 @@ public class JenieLoginPage extends Base {
 	}
 
 	public void getServer(String server) {
-		// contains("Appellate Installation Testing - "+server).click();
 		contains(server).click();
 		performPageLoad(driver);
 
@@ -150,6 +149,7 @@ public class JenieLoginPage extends Base {
 			name = SystemPropertySetup.getJudge(userInputData);
 
 		} else if (userType.equals("stf")) {
+
 			name = SystemPropertySetup.getStf(userInputData);
 		}
 
@@ -191,7 +191,6 @@ public class JenieLoginPage extends Base {
 	}
 
 	public static void logout() {
-		// try {
 		if
 
 		(contains("Dashboard").isDisplayed()) {
@@ -212,9 +211,7 @@ public class JenieLoginPage extends Base {
 				e.getMessage();
 			}
 		}
-		// } catch (ElementNotVisibleException e) {
-		// e.getMessage();
-		// }
+
 	}
 
 	public void login(List<UserInputData> userInputData) {
