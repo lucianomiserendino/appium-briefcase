@@ -78,7 +78,7 @@ $(document).ready(function() {
     <tr class="info">
       <td>com.MobileBriefcaseTests</td>
               <td>1</td>
-            <td>06 Jan 2020, 11:10</td>
+            <td>02 Mar 2022, 11:01</td>
     </tr>
   </tbody>
 </table>
@@ -118,21 +118,24 @@ $(document).ready(function() {
 <div class="element">
       <div class="indention">
       <b>Feature:</b>
-      <a href="report-feature_CATEGORIES-SMOKE-ACTIONS_PANEL_AMB-1038-feature.html">Display Actions Panel and actions</a>
+      <a href="report-feature_CATEGORIES-REGRESSION-PENDING_TASKS--DISPLAY_DATE_ASSIGNMENT_TYPE_AMB-1220-feature.html">Pending Tasks --Display date assignment type</a>
     </div>
   
   
 <div class="tags indention">
-  </div>
+      <b>Tags:</b>
+           <a href="report-tag_Regression.html">@Regression</a>
+           <a href="report-tag_AMB-1220.html">@AMB-1220</a>
+      </div>
 
   
-  <span class="lead-duration duration">0.837</span>
+  <span class="lead-duration duration">55.789</span>
 
 
     <span data-toggle="collapse" class=" collapsable-control" data-target="#element-1">
     
 <div class="brief failed">
-  <span class="keyword indention">Scenario</span>
+  <span class="keyword indention">Scenario Outline</span>
   <span class="name"></span>
   
 
@@ -140,9 +143,7 @@ $(document).ready(function() {
   </div>
 
   </span>
-  <div class="description indention">
-If there are records defined in the mbr_event table, 
-     a collapsible panel entitled &quot;Actions&quot; should display,when expanded all the applicable actions should display.</div>
+  <div class="description indention"></div>
 
   <div id="element-1" class="collapse collapsable-details  in ">
     
@@ -165,7 +166,7 @@ If there are records defined in the mbr_event table,
             <span class="keyword indention">Before</span>
                           <span class="location name">Hook.setUp()</span>
                         
-  <span class="lead-duration duration">0.831</span>
+  <span class="lead-duration duration">59.544</span>
 
           </div>
 
@@ -199,10 +200,10 @@ If there are records defined in the mbr_event table,
           <div class="step">
         
 <div class="brief failed">
-  <span class="keyword indention">Given</span>
-  <span class="name">user is logged into Briefcase</span>
+  <span class="keyword indention">Then</span>
+  <span class="name">I select a user</span>
   
-  <span class="lead-duration duration">0.837</span>
+  <span class="lead-duration duration">55.789</span>
 
   </div>
 
@@ -221,9 +222,9 @@ If there are records defined in the mbr_event table,
 	at java.lang.reflect.Field.set(Field.java:764)
 	at org.openqa.selenium.support.PageFactory.proxyFields(PageFactory.java:117)
 	at org.openqa.selenium.support.PageFactory.initElements(PageFactory.java:105)
-	at gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.&lt;init&gt;(JenieLoginPage.java:35)
-	at gov.uscourts.ao.mobileBriefcase.stepDefinitions.JenieLogin_StepDefinitions.user_is_logged_into_Briefcase(JenieLogin_StepDefinitions.java:18)
-	at &#10045;.Given user is logged into Briefcase(CATEGORIES/SMOKE/ACTIONS_PANEL_AMB-1038.feature:11)
+	at gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.&lt;init&gt;(JenieLoginPage.java:33)
+	at gov.uscourts.ao.mobileBriefcase.stepDefinitions.JenieLogin_StepDefinitions.i_select_a_user(JenieLogin_StepDefinitions.java:36)
+	at &#10045;.Then I select a user(CATEGORIES/REGRESSION/PENDING_TASKS- DISPLAY_DATE_ASSIGNMENT_TYPE_AMB-1220.feature:15)
 </pre>
       </div>
     </div>
@@ -232,16 +233,14 @@ If there are records defined in the mbr_event table,
 
                   <table class="step-arguments">
                           <tr>
-                                  <td>environment</td>
-                                  <td>userName</td>
-                                  <td>password</td>
-                                  <td>courtId</td>
+                                  <td>userType</td>
+                                  <td>personrole</td>
+                                  <td>jud</td>
                               </tr>
                           <tr>
-                                  <td>Integration</td>
-                                  <td>s haenni</td>
-                                  <td>Test2022!</td>
-                                  <td>CMKA</td>
+                                  <td>judge</td>
+                                  <td>Appellate Judges</td>
+                                  <td>test</td>
                               </tr>
                       </table>
         
@@ -255,8 +254,8 @@ If there are records defined in the mbr_event table,
           <div class="step">
         
 <div class="brief skipped">
-  <span class="keyword indention">Then</span>
-  <span class="name">User selects a userCategory &quot;Appellate_Judges&quot; and  name &quot;Colloton&quot;</span>
+  <span class="keyword indention">When</span>
+  <span class="name">User selects a  &quot;Pending Tasks&quot;</span>
   
   <span class="lead-duration duration">0.000</span>
 
@@ -277,28 +276,7 @@ If there are records defined in the mbr_event table,
         
 <div class="brief skipped">
   <span class="keyword indention">Then</span>
-  <span class="name">User selects &quot;MOTIONS_PETITIONS&quot; and &quot;15-3314&quot;</span>
-  
-  <span class="lead-duration duration">0.000</span>
-
-  </div>
-
-        
-
-
-        
-        
-
-        
-
-        
-  
-      </div>
-          <div class="step">
-        
-<div class="brief skipped">
-  <span class="keyword indention">And</span>
-  <span class="name">User verifies the correct &quot;Actions&quot; display for the selected referral ,using  &quot;CMKA&quot;  and &quot;2310499&quot;</span>
+  <span class="name">User verifies each assignment display the most recent date type by using following info: dbType &quot;&lt;dbType&gt;&quot;, &quot;14-2283&quot;, &quot;32&quot;, &quot;noargcs&quot;, &quot;Colloton&quot;, &quot;pr_first_name&quot;</span>
   
   <span class="lead-duration duration">0.000</span>
 
@@ -321,9 +299,9 @@ If there are records defined in the mbr_event table,
 
     
   <div class="inner-level hooks-after">
-        <div data-toggle="collapse" class=" collapsed  collapsable-control" data-target="#after-5">
+        <div data-toggle="collapse" class=" collapsable-control" data-target="#after-5">
       
-<div class="brief passed">
+<div class="brief failed">
   <span class="keyword indention">Hooks</span>
   <span class="name"></span>
   
@@ -333,17 +311,93 @@ If there are records defined in the mbr_event table,
 
     </div>
 
-    <div id="after-5" class="inner-level collapse collapsable-details ">
+    <div id="after-5" class="inner-level collapse collapsable-details  in ">
               <div class="hook">
-          <div class="brief passed">
+          <div class="brief failed">
             <span class="keyword indention">After</span>
                           <span class="location name">Hook.tearDown()</span>
                         
-  <span class="lead-duration duration">0.000</span>
+  <span class="lead-duration duration">0.018</span>
 
           </div>
 
                       
+
+  <div class="inner-level">
+    <div class="message indention">
+      <div data-toggle="collapse" class=" collapsable-control" data-target="#msg-6">
+          <a>Error message</a>
+      </div>
+      <div id="msg-6" class="collapse collapsable-details  in ">
+        <pre>java.lang.NullPointerException
+	at java.util.Objects.requireNonNull(Objects.java:203)
+	at org.openqa.selenium.support.ui.FluentWait.&lt;init&gt;(FluentWait.java:106)
+	at org.openqa.selenium.support.ui.WebDriverWait.&lt;init&gt;(WebDriverWait.java:85)
+	at org.openqa.selenium.support.ui.WebDriverWait.&lt;init&gt;(WebDriverWait.java:45)
+	at gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElementLocated(Page.java:16)
+	at gov.uscourts.ao.mobileBriefcase.common.Actions.contains(Actions.java:67)
+	at gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.logout(JenieLoginPage.java:196)
+	at gov.uscourts.ao.mobileBriefcase.stepDefinitions.Hook.tearDown(Hook.java:19)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at cucumber.runtime.Utils$1.call(Utils.java:40)
+	at cucumber.runtime.Timeout.timeout(Timeout.java:16)
+	at cucumber.runtime.Utils.invoke(Utils.java:34)
+	at cucumber.runtime.java.JavaHookDefinition.execute(JavaHookDefinition.java:60)
+	at cucumber.runtime.Runtime.runHookIfTagsMatch(Runtime.java:224)
+	at cucumber.runtime.Runtime.runHooks(Runtime.java:212)
+	at cucumber.runtime.Runtime.runAfterHooks(Runtime.java:206)
+	at cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:46)
+	at cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:27)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at cucumber.runtime.junit.ExamplesRunner.run(ExamplesRunner.java:59)
+	at org.junit.runners.Suite.runChild(Suite.java:128)
+	at org.junit.runners.Suite.runChild(Suite.java:27)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at cucumber.runtime.junit.ScenarioOutlineRunner.run(ScenarioOutlineRunner.java:53)
+	at cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)
+	at cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)
+	at cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)
+	at cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at cucumber.api.junit.Cucumber.run(Cucumber.java:100)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:365)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:272)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:236)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:159)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:386)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:323)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:143)
+</pre>
+      </div>
+    </div>
+  </div>
 
           
                     

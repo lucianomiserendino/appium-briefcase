@@ -35,6 +35,7 @@ public class AutoSyncPage extends AppiumPageFactory {
 	private static String browseBTN = "//span[@role='button']";
 	private static String filer = "(//*[text()='Filer']/following::div/table[@role='grid']/tbody/tr/td)[1]";
 	private static String continueUploadPage = "//*[text()='Continue']";
+	private static String syncAllDocs = "//*[text()='Sync all documents for case']";
 
 	@iOSBy(xpath = "//*[contains(@name, 'Available for download')]")
 	public static MobileElement docsAvailableForDownload;
@@ -116,5 +117,24 @@ public class AutoSyncPage extends AppiumPageFactory {
 		return findWebElement(By.xpath(containsElement("//*[contains(@name, '" + name + "')]")));
 	}
 
+	public boolean getReferralSync() {
+		boolean isDisplayed = false;
+
+		click(By.xpath(syncAllDocs));
+		try {
+			Page.performPageLoad(driver);
+			MobileElement element = (MobileElement) driver
+					.findElementByXPath("//XCUIElementTypeStaticText[@name='DownloadIcon']");
+			
+			if (element.isDisplayed()& element.getText().equals("Downloaded"));
+
+				isDisplayed = true;
+
+		} catch (Exception e) {
+			isDisplayed = false;
+		}
+		return isDisplayed;
+
+	}
 
 }

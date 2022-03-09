@@ -1,46 +1,51 @@
 [
   {
-    "line": 1,
+    "line": 2,
     "elements": [
       {
-        "before": [
-          {
-            "result": {
-              "duration": 9768185078,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 24,
-        "name": "",
-        "description": "",
-        "id": "pending-tasks---display-date-assignment-type;;;2",
+        "line": 5,
+        "name": "Verify the individual case referrals have a Sync link in the Case Information panel that downloads",
+        "description": "the documents in that particular case.",
+        "id": "sync-documents-for-a-specific-referral;verify-the-individual-case-referrals-have-a-sync-link-in-the-case-information-panel-that-downloads",
         "type": "scenario",
-        "keyword": "Scenario Outline",
+        "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "duration": 22285215042,
-              "status": "passed"
+              "status": "skipped"
             },
-            "comments": [
+            "line": 8,
+            "name": "I am logged into Briefcase",
+            "match": {
+              "location": "JenieLogin_StepDefinitions.i_am_logged_into_Briefcase(UserInputData\u003e)"
+            },
+            "rows": [
               {
-                "line": 10,
-                "value": "#Given I am logged into Briefcase"
+                "cells": [
+                  "environment",
+                  "userName",
+                  "password",
+                  "courtId"
+                ],
+                "line": 9
               },
               {
-                "line": 11,
-                "value": "#\t|environment|userName| password |courtId|"
-              },
-              {
-                "line": 12,
-                "value": "#\t|test       |test    | test     |test   |"
+                "cells": [
+                  "test",
+                  "test",
+                  "test",
+                  "test"
+                ],
+                "line": 10
               }
             ],
-            "line": 15,
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 12,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -52,7 +57,7 @@
                   "personrole",
                   "jud"
                 ],
-                "line": 16
+                "line": 13
               },
               {
                 "cells": [
@@ -60,91 +65,64 @@
                   "Appellate Judges",
                   "test"
                 ],
-                "line": 17
+                "line": 14
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 2942550518,
-              "status": "passed"
+              "status": "skipped"
             },
-            "line": 19,
-            "name": "User selects a  \"Pending Tasks\"",
+            "line": 16,
+            "name": "User selects",
             "match": {
-              "arguments": [
-                {
-                  "val": "Pending Tasks",
-                  "offset": 17
-                }
-              ],
-              "location": "Common_StepDefinitions.user_selects_a(String)"
+              "location": "Common_StepDefinitions.user_selects(UserInputData\u003e)"
             },
-            "keyword": "When "
+            "rows": [
+              {
+                "cells": [
+                  "refCategory",
+                  "caseNumber"
+                ],
+                "line": 17
+              },
+              {
+                "cells": [
+                  "test",
+                  "test"
+                ],
+                "line": 18
+              }
+            ],
+            "keyword": "Then "
           },
           {
             "result": {
-              "duration": 10073404,
-              "error_message": "java.lang.IllegalArgumentException: No enum constant gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType.\u003cdbType\u003e\n\tat java.lang.Enum.valueOf(Enum.java:238)\n\tat gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities$DBType.valueOf(DBUtilities.java:1)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Assignment_StepDefinitions.user_verifies_each_assignment_display_the_most_recent_date_type_by_using_following_info_dbType(Assignment_StepDefinitions.java:102)\n\tat ✽.Then User verifies each assignment display the most recent date type by using following info: dbType \"\u003cdbType\u003e\", \"14-2283\", \"32\", \"noargcs\", \"Colloton\", \"pr_first_name\"(CATEGORIES/REGRESSION/PENDING_TASKS- DISPLAY_DATE_ASSIGNMENT_TYPE_AMB-1220.feature:20)\n",
-              "status": "failed"
+              "status": "undefined"
             },
             "line": 20,
-            "name": "User verifies each assignment display the most recent date type by using following info: dbType \"\u003cdbType\u003e\", \"14-2283\", \"32\", \"noargcs\", \"Colloton\", \"pr_first_name\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "\u003cdbType\u003e",
-                  "offset": 97
-                },
-                {
-                  "val": "14-2283",
-                  "offset": 109
-                },
-                {
-                  "val": "32",
-                  "offset": 120
-                },
-                {
-                  "val": "noargcs",
-                  "offset": 126
-                },
-                {
-                  "val": "Colloton",
-                  "offset": 137
-                },
-                {
-                  "val": "pr_first_name",
-                  "offset": 149
-                }
-              ],
-              "location": "Assignment_StepDefinitions.user_verifies_each_assignment_display_the_most_recent_date_type_by_using_following_info_dbType(String,String,String,String,String,String)"
-            },
-            "matchedColumns": [
-              1,
-              2,
-              3,
-              4
-            ],
-            "keyword": "Then "
-          }
-        ],
-        "tags": [
-          {
-            "line": 4,
-            "name": "@Regression"
-          },
-          {
-            "line": 5,
-            "name": "@AMB-1220"
+            "name": "Verify the individual case referrals have a Sync link in the Case Information panel that downloads the documents in that particular case.",
+            "match": {},
+            "keyword": "And "
           }
         ]
       }
     ],
-    "name": "Pending Tasks --Display date assignment type",
+    "name": "Sync documents for a specific Referral",
     "description": "",
-    "id": "pending-tasks---display-date-assignment-type",
+    "id": "sync-documents-for-a-specific-referral",
     "keyword": "Feature",
-    "uri": "CATEGORIES/REGRESSION/PENDING_TASKS- DISPLAY_DATE_ASSIGNMENT_TYPE_AMB-1220.feature"
+    "uri": "CATEGORIES/REGRESSION/REFERRAL_CTEGORY_SYNC_AMB-2700.feature",
+    "tags": [
+      {
+        "line": 1,
+        "name": "@Smoke"
+      },
+      {
+        "line": 1,
+        "name": "@AMB-2700"
+      }
+    ]
   }
 ]

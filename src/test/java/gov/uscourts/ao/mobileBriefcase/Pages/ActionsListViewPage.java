@@ -22,11 +22,9 @@ public class ActionsListViewPage extends AppiumPageFactory {
 		performPageLoad(driver);
 		getGroupIcons();
 		scrollDownIfNotDisplayed(containsElement(panel));
-
 		String cmr_id = CommonPages.getCMRID(userInputData);
-
 		actionIsDisplayed(cmr_id, userInputData);
-
+		
 	}
 
 	public static void actionIsDisplayed(String cmr_id, List<UserInputData> userInputData) {

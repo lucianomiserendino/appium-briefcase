@@ -25,8 +25,6 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='-']/following::XCUIElementTypeStaticText[@name='Brief for 2441 REPLACED']/following::XCUIElementTypeStaticText[contains(@name, 'Annotated')]")
 	public static MobileElement annotatedDoc;
 	
-
-
 	static String close = "Close";
 
 	static String PDFPageView = "PDF View";
