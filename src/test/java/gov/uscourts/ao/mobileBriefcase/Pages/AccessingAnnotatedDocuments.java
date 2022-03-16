@@ -1,12 +1,11 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.verifyElementIsDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.*;
 
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
-import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -45,7 +44,7 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 		CommonPages.getPanel(Panel.Briefs);
 		tap(plusIcon);
 		tap(el);
-		performPageLoad(driver);
+		Page.performPageLoad(driver);
 		verifyElementIsDisplayed(PDFPageView);
 		tap(Locator.NAME, close);
 		tap(minIcon);

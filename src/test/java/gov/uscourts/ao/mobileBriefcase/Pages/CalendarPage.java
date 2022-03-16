@@ -1,15 +1,16 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASES_ON_CALENDAR_SESSIONS;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCaseID;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrolldown;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrolldown;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -17,9 +18,9 @@ import java.util.List;
 
 import org.openqa.selenium.NoSuchElementException;
 
-import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 

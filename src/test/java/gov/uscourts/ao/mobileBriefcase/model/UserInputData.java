@@ -17,19 +17,40 @@ public class UserInputData {
 	private String db_password;
 	private String stf;
 	private String userType;
-	
+
 	public String getPacerInputData(String inputData) {
 		String var = "";
 
 		switch (inputData) {
-		
-		case "jud":
-			var = jud;
-			break;
-			
+
 		case "courtId":
 			var = courtId;
 			break;
+
+		case "environment":
+			var = environment;
+			break;
+
+		case "userName":
+			var = userName;
+			break;
+
+		case "userType":
+			var = userType;
+			break;
+
+		case "password":
+			var = password;
+			break;
+
+		case "jud":
+			var = jud;
+			break;
+
+		case "stf":
+			var = stf;
+			break;
+
 		case "hostname":
 			var = hostname;
 			break;
@@ -48,12 +69,7 @@ public class UserInputData {
 		case "db_Schema":
 			var = db_Schema;
 			break;
-		case "userName":
-			var = userName;
-			break;
-		case "password":
-			var = password;
-			break;
+
 		case "personrole":
 			var = personrole;
 			break;

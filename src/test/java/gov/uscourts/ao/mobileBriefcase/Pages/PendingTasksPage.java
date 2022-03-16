@@ -1,11 +1,11 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElements;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.getCellCount;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getCellCount;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 
-import gov.uscourts.ao.mobileBriefcase.common.Actions;
-import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 

@@ -1,6 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -10,32 +10,28 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
-import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
-import gov.uscourts.ao.mobileBriefcase.common.Base;
-import gov.uscourts.ao.mobileBriefcase.common.Page;
-import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
-import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup.Variables;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.Base;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 
 public class Common_StepDefinitions {
 	CommonPages page;
 
-	@Then("^User selects \"([^\"]*)\" and \"([^\"]*)\"$")
-	public void user_selects_and(String category, String caseNumber) {
-		// JenieLoginPage logPage = new JenieLoginPage();
-		page = new CommonPages();
-		page.getCategoryWithCase(category, caseNumber);
-	}
+//	@Then("^User selects \"([^\"]*)\" and \"([^\"]*)\"$")
+//	public void user_selects_and(String category, String caseNumber) {
+//		// JenieLoginPage logPage = new JenieLoginPage();
+//		page = new CommonPages();
+//		page.getCategoryWithCase(category, caseNumber);
+//	}
 
 	@Then("^User selects$")
 	public void user_selects(List<UserInputData> userInputData) {
 		// JenieLoginPage logPage = new JenieLoginPage();
 		page = new CommonPages();
-		String category = SystemPropertySetup.getVariable(Variables.REF_CATEGORY, userInputData);
-		String caseNumber = SystemPropertySetup.getVariable(Variables.CASE_NUMBER, userInputData);
-
-		page.getCategoryWithCase(category, caseNumber);
+		page.getCategoryWithCase(userInputData);
 	}
 
 	@Then("^User  selects action using \"([^\"]*)\"  and verifies the name of the action displays in the dark blue banner$")
@@ -104,5 +100,9 @@ public class Common_StepDefinitions {
 		assertTrue("Connection Using The New Connection Pool Failed", DBUtilities.getDBConnection(userInputData));
 
 	}
+	
+	
+	
+	
 
 }

@@ -1,4 +1,4 @@
-package gov.uscourts.ao.mobileBriefcase.common;
+package gov.uscourts.ao.mobileBriefcase.page.common;
 
 import java.util.List;
 
@@ -27,25 +27,47 @@ public class SystemPropertySetup {
 	public static final String stf = "stf";
 	public static final String userName = "userName";
 	public static final String password = "password";
+	
 
 	public static final String getVariable(Variables variable, List<UserInputData> pacerInputData) {
 		String var = "";
 
 		switch (variable) {
+
+		case COURTID:
+			var = courtId;
+			break;
+
+		case ENVIRONMENT:
+			var = environment;
+			break;
+
+		case USERNAME:
+			var = userName;
+			break;
+
+		case PASSWORD:
+			var = password;
+			break;
+			
+		case PERSONROLE:
+			var = personrole;
+			break;
+
+		case USER_TYPE:
+			var = userType;
+			break;
+
 		case REF_CATEGORY:
 			var = refCategory;
 			break;
-			
+
 		case JUD:
 			var = jud;
 			break;
 
 		case STF:
 			var = stf;
-			break;
-
-		case PERSONROLE:
-			var = personrole;
 			break;
 
 		case HOSTNAME:
@@ -74,14 +96,6 @@ public class SystemPropertySetup {
 
 		case DB_SCHEMA:
 			var = db_Schema;
-			break;
-
-		case USERNAME:
-			var = userName;
-			break;
-
-		case PASSWORD:
-			var = password;
 			break;
 
 		default:
@@ -236,7 +250,8 @@ public class SystemPropertySetup {
 	}
 
 	public enum Variables {
-		JUD, STF, CASE_NUMBER, REF_CATEGORY, COURTID, PERSONROLE, HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_SERVERNAME, DB_PORT, DB_SCHEMA, USERNAME, PASSWORD
+		ENVIRONMENT, JUD, STF, CASE_NUMBER, REF_CATEGORY, COURTID, PERSONROLE, HOSTNAME, DB_USERNAME, DB_PASSWORD,
+		DB_SERVERNAME, DB_PORT, DB_SCHEMA, USERNAME, PASSWORD, USER_TYPE
 	}
 
 }

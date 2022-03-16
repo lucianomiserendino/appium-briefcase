@@ -6,7 +6,7 @@ import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocketEntryPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
-import gov.uscourts.ao.mobileBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 
 public class DocketEntry_StepDefinitions extends Base {
 

@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DATABASE_NAME;
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DBPWD;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DBURL;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DBUSERNAME;
@@ -16,8 +17,8 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.PORT_NUMBER;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.SSL_LOC;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.SSL_STORE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PE_ID;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
-import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getProperty;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.Connection;
@@ -32,9 +33,9 @@ import java.util.List;
 import com.informix.jdbc.IfxDriver;
 import com.informix.jdbcx.IfxConnectionPoolDataSource;
 
-import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
-import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 
 public class DBUtilities {
 	private IfxConnectionPoolDataSource cds;

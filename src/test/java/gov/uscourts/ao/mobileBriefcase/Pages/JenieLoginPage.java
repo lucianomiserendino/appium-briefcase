@@ -1,11 +1,11 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElements;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static org.openqa.selenium.support.PageFactory.initElements;
 
 import java.util.List;
@@ -14,13 +14,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
-import gov.uscourts.ao.mobileBriefcase.common.Actions;
-import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.common.Base;
-import gov.uscourts.ao.mobileBriefcase.common.Page;
-import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
-import gov.uscourts.ao.mobileBriefcase.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
+import gov.uscourts.ao.mobileBriefcase.page.common.Base;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -41,6 +42,9 @@ public class JenieLoginPage extends Base {
 
 	@iOSBy(accessibility = "Production")
 	public MobileElement production;
+
+	@iOSBy(accessibility = "env")
+	public MobileElement env;
 
 	@iOSBy(accessibility = "Integration")
 	public MobileElement Integration;
@@ -116,10 +120,6 @@ public class JenieLoginPage extends Base {
 		}
 	}
 
-	public void g() {
-		tap(Integration);
-	}
-
 	public void sendCredentials(String Username, String Password) {
 		sendKeys(userName, Username, password, Password);
 		submButton.click();
@@ -136,26 +136,29 @@ public class JenieLoginPage extends Base {
 
 	}
 
+	
 	public void selectUser(List<UserInputData> userInputData) {
-		String userType = SystemPropertySetup.getUserType(userInputData);
 
-		String personrole = SystemPropertySetup.getPersonrole(userInputData);
+		String userType = SystemPropertySetup.getVariable(Variables.USER_TYPE, userInputData);
+		String personrole = SystemPropertySetup.getVariable(Variables.PERSONROLE, userInputData);
 
 		contains(user).click();
 
-		String name = "";
+		String name = "" ;
 
 		if (userType.equals("judge")) {
-			name = SystemPropertySetup.getJudge(userInputData);
+			name= SystemPropertySetup.getVariable(Variables.JUD, userInputData);
 
 		} else if (userType.equals("stf")) {
 
-			name = SystemPropertySetup.getStf(userInputData);
+			name = SystemPropertySetup.getVariable(Variables.STF, userInputData);
 		}
-
+		
 		selectJudge(personrole, name);
 
 	}
+	
+	
 
 	public static void selectJudge(String availableJudges, String user) {
 
@@ -214,32 +217,15 @@ public class JenieLoginPage extends Base {
 
 	}
 
+
 	public void login(List<UserInputData> userInputData) {
-
-		String court = SystemPropertySetup.getCourtId(userInputData);
-
-		String env = SystemPropertySetup.getEnvironment(userInputData);
-
-		String user = SystemPropertySetup.getUserName(userInputData);
-		String pwd = SystemPropertySetup.getPassword(userInputData);
+		String env = SystemPropertySetup.getVariable(Variables.ENVIRONMENT, userInputData);
+		String courtId = SystemPropertySetup.getVariable(Variables.COURTID, userInputData);
+		String userName = SystemPropertySetup.getVariable(Variables.USERNAME, userInputData);
+		String password = SystemPropertySetup.getVariable(Variables.PASSWORD, userInputData);
 
 		Actions.tap(contains(env));
 		changeWindow("WEBVIEW");
-
-		sendCredentials(user, pwd);
-		performPageLoad(driver);
-		sendKeyButton.click();
-		changeWindow("NATIVE");
-		// open();
-		getServer(court);
-
-	}
-
-	public void login(String environment, String userName, String password, String courtId) {
-
-		Actions.tap(contains(environment));
-		changeWindow("WEBVIEW");
-
 		sendCredentials(userName, password);
 		performPageLoad(driver);
 		sendKeyButton.click();
@@ -248,7 +234,6 @@ public class JenieLoginPage extends Base {
 		getServer(courtId);
 
 	}
-
 	public enum Environment {
 		Integration, Staging, Testing, Production
 	}

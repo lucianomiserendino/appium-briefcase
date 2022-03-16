@@ -1,6 +1,6 @@
-package gov.uscourts.ao.mobileBriefcase.common;
+package gov.uscourts.ao.mobileBriefcase.page.common;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForPresenceOfElementLocated;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForPresenceOfElementLocated;
 
 import java.util.List;
 

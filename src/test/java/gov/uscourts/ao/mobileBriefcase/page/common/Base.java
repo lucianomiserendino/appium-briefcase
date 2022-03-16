@@ -1,7 +1,7 @@
-package gov.uscourts.ao.mobileBriefcase.common;
+package gov.uscourts.ao.mobileBriefcase.page.common;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getProperty;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -181,10 +181,5 @@ public abstract class Base implements iOSCapabilities {
 		IOS, WINDOWS, WEBRIVER
 	}
 
-	public static void main(String[] args) {
-		Base.getInstance(Driver.IOS);
 
-		// safariInstance();
-
-	}
 }

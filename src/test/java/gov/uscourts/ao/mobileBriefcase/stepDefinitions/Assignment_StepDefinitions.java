@@ -3,8 +3,8 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_INFO;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getPanel;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.getRandomNumberInRange;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getRandomNumberInRange;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,8 +1,8 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.isDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollDownIfNotDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.isDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -11,8 +11,8 @@ import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.Assignment;
-import gov.uscourts.ao.mobileBriefcase.common.Base;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 
 public class CreateStaffAssignments_StepDefinitions extends Base {
 	static CommonPages page;

@@ -7,8 +7,8 @@ import java.util.List;
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage.Sort;
-import gov.uscourts.ao.mobileBriefcase.common.Page;
-import gov.uscourts.ao.mobileBriefcase.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 
 public class SortingOnTheReferralList_StepDefinitions {
 

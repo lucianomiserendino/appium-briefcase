@@ -6,8 +6,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.retrieveAllCases;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -15,12 +14,13 @@ import java.util.List;
 import java.util.Random;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
-import gov.uscourts.ao.mobileBriefcase.common.Actions;
-import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.common.Page;
-import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -95,14 +95,14 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	}
 
 	public List<String> referralsSortedByDate() {
-		return retrieveAllCases(dates, "Date: ", 1);
+		return Utility.retrieveAllReferrals(dates, "Date: ", 1);
 	}
 
 	public List<String> referralsSortedByCase() {
-		return retrieveAllCases(cases, " ", 0);
+		return Utility.retrieveAllReferrals(cases, " ", 0);
 	}
 
-	public  void getSortPage(Sort sort) {
+	public void getSortPage(Sort sort) {
 
 		switch (sort) {
 		case REFERRAL_DATE_DESCENDING:

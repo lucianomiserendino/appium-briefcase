@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.insertData;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
@@ -9,15 +10,14 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CMR_CCR_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SET_SITE_TABLE_VARIABLE_VALUE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SITE_TABLE_VARIABLE_VALUE;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElements;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.isDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.isDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollDownIfNotDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.splitBy;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.isDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.splitBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.support.PageFactory.initElements;
@@ -31,13 +31,13 @@ import cucumber.api.DataTable;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
-import gov.uscourts.ao.mobileBriefcase.common.Actions;
-import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.common.Base;
-import gov.uscourts.ao.mobileBriefcase.common.Page;
-import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
-import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
+import gov.uscourts.ao.mobileBriefcase.page.common.Base;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -88,6 +88,7 @@ public class CommonPages extends Base {
 
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Judge:')]")
 	public static MobileElement judge;
+	
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public List<MobileElement> Categories;
 
@@ -156,10 +157,11 @@ public class CommonPages extends Base {
 		return table.get(index1).get(index2);
 	}
 
-	public void getCategoryWithCase(String category, String caseNumber) {
+	public void getCategoryWithCase(List<UserInputData> userInputData) {
+		String category = SystemPropertySetup.getVariable(Variables.REF_CATEGORY, userInputData);
+		String caseNumber = SystemPropertySetup.getVariable(Variables.CASE_NUMBER, userInputData);
 		performPageLoad(driver);
 		getCategory(Category.valueOf(category), caseNumber);
-
 		performPageLoad(driver);
 	}
 
@@ -223,7 +225,7 @@ public class CommonPages extends Base {
 						+ "')]");
 		performPageLoad(driver);
 		assertTrue("VERIFY THE NAME OF THE ACTION DISPLAYS IN THE DARK BLUE BANNER: ",
-				isDisplayed(Locator.XPATH, containsElement(element)));
+				Actions.isDisplayed(Locator.XPATH, containsElement(element)));
 	}
 
 	public static String getCMRID(DBType dbType, String id, String caseNum, String peId, String cmr_cyv_code) {

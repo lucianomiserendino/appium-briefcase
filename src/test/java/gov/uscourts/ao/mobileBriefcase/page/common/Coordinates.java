@@ -1,4 +1,4 @@
-package gov.uscourts.ao.mobileBriefcase.common;
+package gov.uscourts.ao.mobileBriefcase.page.common;
 
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.offset.PointOption;

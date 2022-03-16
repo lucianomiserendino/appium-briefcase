@@ -1,6 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getProperty;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,7 +9,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import gov.uscourts.ao.mobileBriefcase.common.Base;
+import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 
 public class CopyDeleteCasePage extends Base {
 

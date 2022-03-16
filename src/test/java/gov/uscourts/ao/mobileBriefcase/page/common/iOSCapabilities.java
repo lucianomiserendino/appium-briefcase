@@ -1,4 +1,4 @@
-package gov.uscourts.ao.mobileBriefcase.common;
+package gov.uscourts.ao.mobileBriefcase.page.common;
 
 public interface iOSCapabilities {
 

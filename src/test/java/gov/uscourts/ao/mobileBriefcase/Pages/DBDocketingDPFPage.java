@@ -15,14 +15,14 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PANEL_JUDGES_PR_PR
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PR_LAST_NAME;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCMRID;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectAction;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.sendKeys;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.getParameter;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.getStreamOfRandomInts;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollUp;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.toArray;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getParameter;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getStreamOfRandomInts;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollUp;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.toArray;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -35,10 +35,10 @@ import java.util.List;
 import org.openqa.selenium.By;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
-import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.common.Page;
 import gov.uscourts.ao.mobileBriefcase.model.ElListText;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 

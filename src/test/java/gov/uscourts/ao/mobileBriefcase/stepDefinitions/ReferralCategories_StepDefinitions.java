@@ -3,16 +3,16 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PENDING_TASK_ASSIGNMENTS;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.contains;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 
 import java.util.List;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.DashboardPage;
-import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 
 public class ReferralCategories_StepDefinitions {
 	static DashboardPage page;
@@ -46,15 +46,13 @@ public class ReferralCategories_StepDefinitions {
 		page.verifyNonOrallyArgCases("lbrrpt", getPE_ID("jud", judge, userInputData), userInputData);
 	}
 
-
-	
 	@Then("^I verify that the referral detail page only displays documents if chm_mobile_referral\\.cmr_cyv_code = lbrrpt$")
-	public void i_verify_that_the_referral_detail_page_only_displays_documents_if_chm_mobile_referral_cmr_cyv_code_lbrrpt(List<UserInputData> userInputData)  {
+	public void i_verify_that_the_referral_detail_page_only_displays_documents_if_chm_mobile_referral_cmr_cyv_code_lbrrpt(
+			List<UserInputData> userInputData) {
 		page = new DashboardPage();
 		String judge = SystemPropertySetup.getJudge(userInputData);
 		page.get_lbrrpt_CATEGORY("lbrrpt", "jud", judge, userInputData);
 	}
-
 
 	@Given("^Verify the number of new items that displays in the red badge in the navigation match the number of new items listed on the Dashboard page\\.$")
 	public void verify_the_number_of_new_items_that_displays_in_the_red_badge_in_the_navigation_match_the_number_of_new_items_listed_on_the_Dashboard_page() {

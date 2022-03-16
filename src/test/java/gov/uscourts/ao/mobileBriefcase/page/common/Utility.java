@@ -1,12 +1,12 @@
-package gov.uscourts.ao.mobileBriefcase.common;
+package gov.uscourts.ao.mobileBriefcase.page.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElements;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
-import static gov.uscourts.ao.mobileBriefcase.common.Configuration.getProperty;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForVisibilityOfElement;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getProperty;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForVisibilityOfElement;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
@@ -26,8 +26,8 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 
-import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.offset.PointOption;
@@ -136,7 +136,7 @@ public class Utility extends Base {
 		return driver.manage().window().getSize();
 	}
 
-	public static List<String> retrieveAllCases(List<MobileElement> elements, String split, int index) {
+	public static List<String> retrieveAllReferrals(List<MobileElement> elements, String split, int index) {
 		String[] dest;
 		List<String> referrals = new ArrayList<>();
 		List<MobileElement> el = elements;
@@ -219,6 +219,7 @@ public class Utility extends Base {
 				uiResult = findElementBy(Locator.XPATH, xpath + "[contains(@name, '" + dbResult.get(i) + "')]");
 				if (uiResult.isDisplayed())
 					isDisplayed = true;
+
 			}
 		} catch (AssertionError e) {
 			isDisplayed = false;
@@ -429,5 +430,6 @@ public class Utility extends Base {
 		return parValue[index].split("'")[1];
 
 	}
+
 
 }

@@ -5,9 +5,9 @@ Feature: Log in as a staff attorney and verify data is displayed.
 
 Scenario: Log in as a staff attorney and verify data is displayed.
 
-	Given I am logged into Briefcase 
-		|environment|userName| password |courtId|
-		|test       |test    | test     |test   |
+	#Given I am logged into Briefcase 
+	#	|environment|userName| password |courtId|
+		#|test       |test    | test     |test   |
 		
 		Then I select a user 
 		|userType   |personrole        |stf  |

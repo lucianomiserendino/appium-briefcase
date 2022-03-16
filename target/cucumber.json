@@ -1,51 +1,32 @@
 [
   {
-    "line": 2,
+    "line": 1,
     "elements": [
       {
-        "line": 5,
-        "name": "Verify the individual case referrals have a Sync link in the Case Information panel that downloads",
-        "description": "the documents in that particular case.",
-        "id": "sync-documents-for-a-specific-referral;verify-the-individual-case-referrals-have-a-sync-link-in-the-case-information-panel-that-downloads",
+        "before": [
+          {
+            "result": {
+              "duration": 11279089875,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 50,
+        "name": "Random case selection",
+        "description": "",
+        "id": "common;random-case-selection",
         "type": "scenario",
         "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "status": "skipped"
+              "duration": 14951534938,
+              "status": "passed"
             },
-            "line": 8,
-            "name": "I am logged into Briefcase",
-            "match": {
-              "location": "JenieLogin_StepDefinitions.i_am_logged_into_Briefcase(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "environment",
-                  "userName",
-                  "password",
-                  "courtId"
-                ],
-                "line": 9
-              },
-              {
-                "cells": [
-                  "test",
-                  "test",
-                  "test",
-                  "test"
-                ],
-                "line": 10
-              }
-            ],
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 12,
+            "line": 51,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -57,7 +38,7 @@
                   "personrole",
                   "jud"
                 ],
-                "line": 13
+                "line": 52
               },
               {
                 "cells": [
@@ -65,64 +46,76 @@
                   "Appellate Judges",
                   "test"
                 ],
-                "line": 14
+                "line": 53
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 5832753610,
+              "status": "passed"
             },
-            "line": 16,
-            "name": "User selects",
+            "line": 55,
+            "name": "User selects random judge category",
             "match": {
-              "location": "Common_StepDefinitions.user_selects(UserInputData\u003e)"
+              "location": "commonStepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
             },
             "rows": [
               {
                 "cells": [
-                  "refCategory",
-                  "caseNumber"
+                  "courtId"
                 ],
-                "line": 17
+                "line": 56
               },
               {
                 "cells": [
-                  "test",
                   "test"
                 ],
-                "line": 18
+                "line": 57
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "status": "undefined"
+              "duration": 34354190325,
+              "status": "passed"
             },
-            "line": 20,
-            "name": "Verify the individual case referrals have a Sync link in the Case Information panel that downloads the documents in that particular case.",
-            "match": {},
-            "keyword": "And "
+            "line": 59,
+            "name": "User selects random case number",
+            "match": {
+              "location": "commonStepDefinitions.user_selects_random_case_number(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 60
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 61
+              }
+            ],
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 49,
+            "name": "@selectRandomCase"
           }
         ]
       }
     ],
-    "name": "Sync documents for a specific Referral",
+    "name": "Common",
     "description": "",
-    "id": "sync-documents-for-a-specific-referral",
+    "id": "common",
     "keyword": "Feature",
-    "uri": "CATEGORIES/REGRESSION/REFERRAL_CTEGORY_SYNC_AMB-2700.feature",
-    "tags": [
-      {
-        "line": 1,
-        "name": "@Smoke"
-      },
-      {
-        "line": 1,
-        "name": "@AMB-2700"
-      }
-    ]
+    "uri": "CATEGORIES/Common.feature"
   }
 ]

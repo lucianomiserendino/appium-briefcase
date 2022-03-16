@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
@@ -12,17 +13,17 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.lbrrpt_CATEGORY;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.lbrrpt_CYV_CATEGORY;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.lbrrpt_DOCUMENT_CATEGORY;
 import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.dashboard;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.containsElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElementBy;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.findElements;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.getText;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.replace;
-import static gov.uscourts.ao.mobileBriefcase.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.common.Page.waitForVisibilityOfElement;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.getCellCount;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.getNumOfDisplayedCases;
-import static gov.uscourts.ao.mobileBriefcase.common.Utility.scrollUp;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForVisibilityOfElement;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getCellCount;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getNumOfDisplayedCases;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollUp;
 import static java.util.Arrays.asList;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
@@ -34,12 +35,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
-import gov.uscourts.ao.mobileBriefcase.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.common.Page;
-import gov.uscourts.ao.mobileBriefcase.common.SystemPropertySetup;
-import gov.uscourts.ao.mobileBriefcase.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -106,8 +107,8 @@ public class DashboardPage extends AppiumPageFactory {
 
 	public static void scrollToAction(String element) {
 		String elem = "//XCUIElementTypeStaticText[@name='" + element + "']";
-		String el2 = "(" + elem + ")[2]";
-		assertTrue(isDisplayed(elem, el2));
+		// String el2 = "(" + elem + ")[2]";
+		assertTrue(isDisplayed(elem, "(" + elem + ")[2]"));
 	}
 
 	public static boolean isDisplayed(String el1, String element) {
@@ -210,7 +211,6 @@ public class DashboardPage extends AppiumPageFactory {
 		if (cmr_cyv_code.contains(cyvCategory)) {
 			String cyv_category = getAllColumns(getID(replace(lbrrpt_CYV_CATEGORY, "CMR_CYV_CODE", cyvCategory), peID),
 					userInputData);
-	
 
 			Utility.scrollDownIfNotDisplayed(
 					"//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '" + cyv_category.trim() + "')]");
@@ -230,7 +230,6 @@ public class DashboardPage extends AppiumPageFactory {
 
 		List<String> dbDocCategory = executeQuery(getID(lbrrpt_DOCUMENT_CATEGORY, peID), userInputData);
 		sort(dbDocCategory);
-
 
 		for (int i = 0; i < dbDocCategory.size(); ++i) {
 
@@ -273,7 +272,6 @@ public class DashboardPage extends AppiumPageFactory {
 				String dashNewReferralCount = dashNewRefCount(dash.get(i)).getText().split("W")[0].split(" ")[0].trim();
 
 				if (dashNewReferralCount.equals("0")) {
-
 					assertTrue(!(navNewReferralCount.isDisplayed()));
 
 				} else {
