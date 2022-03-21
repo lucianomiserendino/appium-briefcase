@@ -14,5 +14,9 @@ public class AutoSync_stepDefinitions {
 		page= new AutoSyncPage ();
 		assertTrue(page.getReferralSync());
 	}
+	
+	
+	
+
 
 }

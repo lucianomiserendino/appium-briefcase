@@ -144,6 +144,11 @@ public class Actions extends Base {
 
 	}
 
+	
+	
+	
+	
+	
 	public enum Locator {
 		ID, XPATH, NAME, LINK_TEXT, PARTIAL_LINK_TEXT, CLASS_NAME, CSS_SELECTOR, TAG_NAME
 	}

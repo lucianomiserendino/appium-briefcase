@@ -61,4 +61,10 @@ Scenario: Category and case selection
 		|test   |
 	
 	
+			
+		@reopenTheApp
+	Scenario: Closing and reopening Briefcase
+
+		Then User closes and reopens the app
+
 		

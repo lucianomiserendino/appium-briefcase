@@ -4,9 +4,9 @@ Feature: Verify Document Categories display for Staff Attorneys
 
 Background: 
 
-	Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |
+	#Given I am logged into Briefcase 
+	#	|environment    |userName| password |courtId|
+	#	|Integration    |s haenni| Test2025!|test   |
 		
 		Then I select a user 
 		|userType   |personrole        |stf             |
@@ -21,5 +21,6 @@ Scenario:
 	Given  User selects assignment type "Senior Staff Attorney" 
 	Then User selects category "Anders Cases" and "15-3015" ,SMR_ASSIGN_PE_ID : "434"
 	And After selecting "Anders Cases" , user verifies the document categories and the number of docs displayed for each category matches the number of docs in the DB "CMKA". smr_assign_pe_id: "434" 
+	Then Verify that swiping over a document in either direction deletes the document
 	
 		

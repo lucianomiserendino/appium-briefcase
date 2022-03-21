@@ -39,6 +39,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -143,13 +144,16 @@ public class CommonPages extends Base {
 			break;
 		}
 
-		selectReferral("//XCUIElementTypeOther[@name='Categories']" + containsElement(categories));
+		selectReferralCategory( categories);
 		selectReferral(containsElement(caseNumber));
 	}
 
 	public static void selectReferral(String category) {
 		scrollDownIfNotDisplayed(category);
 
+	}
+	public static void selectReferralCategory(String category){
+		selectReferral("//XCUIElementTypeOther[@name='Categories']" + containsElement(category));
 	}
 
 	public static String getDataTable(DataTable data, int index1, int index2) {
@@ -330,6 +334,7 @@ public class CommonPages extends Base {
 	}
 
 	public static void getGroupIcons() {
+	
 		for (int i = 1; i < GroupIcon.size() + 1; i++) {
 			String groupIcon = "(//XCUIElementTypeStaticText[@name='GroupIcon'])[";
 			while (findElements(

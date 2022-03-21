@@ -1,4 +1,4 @@
-@Smoke @AMB-2700
+@Smoke 
 Feature: Sync documents for a specific Referral
 
 

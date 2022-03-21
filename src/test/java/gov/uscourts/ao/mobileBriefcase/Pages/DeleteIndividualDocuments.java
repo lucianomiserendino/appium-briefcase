@@ -1,47 +1,76 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.remote.RemoteWebElement;
-
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.TouchAction;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
+import io.appium.java_client.touch.offset.PointOption;
 
 public class DeleteIndividualDocuments extends AppiumPageFactory {
 
-	/**
-	 * Performs element scroll by predicate string
-	 *
-	 * @param el
-	 *            the element to scroll
-	 * @param pre
-	 *            the predicate string
-	 * @version java-client: 7.3.0
-	 **/
-	public void mobileScrollToElementIOS(MobileElement el) {
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Viewed'])[1]")
+	public static MobileElement viewed;
 
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		Map<String, Object> params = new HashMap<>();
-		params.put("direction", "right");
-		params.put("velocity", 2500);
-		params.put("element", ((RemoteWebElement) el).getId());
-		js.executeScript("mobile: swipe", params);
-	}
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Downloaded'])[1]")
+	public static MobileElement Downloaded;
 
-	public void deleteDoc() {
-		MobileElement el = (MobileElement) driver.findElement(By.id("Forum Topics"));
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeAlert[@name='Delete Document?']")
+	public static MobileElement alert;
 
-		mobileScrollToElementIOS(el);
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='OK']")
+	public static MobileElement okBtn;
+
+	public static void deleteIndividualDoc() {
 
 		Page.performPageLoad(driver);
-		MobileElement element = (MobileElement) driver
-				.findElementByXPath("//XCUIElementTypeStaticText[@name='Downloaded']");
-		element.click();
+		Actions.tap(Locator.XPATH, Actions.containsElement("Sync all documents"));
+		swipeByCoordinates();
+		
+		if (Utility.isDisplayed("//XCUIElementTypeAlert[@name='Delete Document?']"))
+			;
+		Actions.tap(okBtn);
 
 	}
 
+	public static void swipeByCoordinates() {
+
+		Page.sleep(3000);
+		int x1 = getCoordinates(Coordinate.X, viewed);
+		int y1 = getCoordinates(Coordinate.Y, viewed);
+		int x2 = getCoordinates(Coordinate.X, Downloaded);
+		int y2 = getCoordinates(Coordinate.Y, Downloaded);
+
+		new TouchAction(driver).longPress(PointOption.point(x1, y1)).moveTo(PointOption.point(x2, y2)).release()
+				.perform();
+
+	}
+
+	public static int getCoordinates(Coordinate dir, MobileElement element) {
+
+		org.openqa.selenium.Point point = element.getLocation();
+
+		int cord = 0;
+
+		switch (dir) {
+		case X:
+			cord = point.getX();
+			break;
+
+		case Y:
+			cord = point.getY();
+			break;
+
+		default:
+			break;
+		}
+		return cord;
+	}
+
+	public enum Coordinate {
+		X, Y
+	}
 }

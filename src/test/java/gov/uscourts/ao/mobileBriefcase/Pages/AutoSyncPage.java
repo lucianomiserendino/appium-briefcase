@@ -2,20 +2,30 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCasePage.findWebElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getProperty;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.sleep;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.util.List;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSBy;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class AutoSyncPage extends AppiumPageFactory {
 
@@ -36,6 +46,10 @@ public class AutoSyncPage extends AppiumPageFactory {
 	private static String filer = "(//*[text()='Filer']/following::div/table[@role='grid']/tbody/tr/td)[1]";
 	private static String continueUploadPage = "//*[text()='Continue']";
 	private static String syncAllDocs = "//*[text()='Sync all documents for case']";
+	private static String downloaded = "//XCUIElementTypeStaticText[@name='Downloaded]";
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Brief for 2441 REPLACED']/preceding::XCUIElementTypeStaticText[@name='+']")
+	public static MobileElement plusIcon;
 
 	@iOSBy(xpath = "//*[contains(@name, 'Available for download')]")
 	public static MobileElement docsAvailableForDownload;
@@ -119,12 +133,14 @@ public class AutoSyncPage extends AppiumPageFactory {
 
 	public boolean getReferralSync() {
 		boolean isDisplayed = false;
+		Actions.tap(Locator.XPATH, "Sync all documents for case");
 
-		click(By.xpath(syncAllDocs));
+		assertTrue(isDisplayed);
+		
 		try {
 			Page.performPageLoad(driver);
 			MobileElement element = (MobileElement) driver
-					.findElementByXPath("//XCUIElementTypeStaticText[@name='DownloadIcon']");
+					.findElementByIosNsPredicate("label == \"\"");
 			
 			if (element.isDisplayed()& element.getText().equals("Downloaded"));
 
@@ -135,6 +151,32 @@ public class AutoSyncPage extends AppiumPageFactory {
 		}
 		return isDisplayed;
 
+	}
+	
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public boolean isFileDownloaded(String downloadPath, String fileName) {
+		boolean flag = false;
+	    File dir = new File(downloadPath);
+	    File[] dir_contents = dir.listFiles();
+	  	    
+	    for (int i = 0; i < dir_contents.length; i++) {
+	        if (dir_contents[i].getName().equals(fileName))
+	            return flag=true;
+	            }
+
+	    return flag;
 	}
 
 }

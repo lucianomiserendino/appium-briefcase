@@ -16,11 +16,13 @@ import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.page.common.Base.Driver;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.MobileElement;
@@ -233,6 +235,18 @@ public class JenieLoginPage extends Base {
 		// open();
 		getServer(courtId);
 
+	}
+	
+	
+	
+	public void reopenTheApp() {
+		closeIOSDriver();
+		getInstance(Driver.IOS);
+		Page.performPageLoad(driver);
+		if(contains("Dashboard").isDisplayed()) {
+			contains("Dashboard").click();
+			Page.sleep(5000);
+		}
 	}
 	public enum Environment {
 		Integration, Staging, Testing, Production

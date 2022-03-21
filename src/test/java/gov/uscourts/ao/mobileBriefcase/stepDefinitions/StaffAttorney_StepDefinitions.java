@@ -48,10 +48,10 @@ public class StaffAttorney_StepDefinitions {
 	
 	
 
-@Given("^I tap on referral category, the categories can be found using 'RA_PE_ID' : \"([^\"]*)\"$")
-public void i_tap_on_referral_category_the_categories_can_be_found_using_RA_PE_ID(String ra_pe_id,List<UserInputData> table) {
-	page = new StaffAttorneyReferralPage();
-//page.selectRandomCase(ra_pe_id,table);
-	
-}
+//@Given("^I tap on referral category, the categories can be found using 'RA_PE_ID' : \"([^\"]*)\"$")
+//public void i_tap_on_referral_category_the_categories_can_be_found_using_RA_PE_ID(String ra_pe_id,List<UserInputData> table) {
+//	page = new StaffAttorneyReferralPage();
+////page.selectRandomCase(ra_pe_id,table);
+//	
+//}
 }

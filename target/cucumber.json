@@ -1,12 +1,12 @@
 [
   {
-    "line": 1,
+    "line": 2,
     "elements": [
       {
         "before": [
           {
             "result": {
-              "duration": 11279089875,
+              "duration": 9225718262,
               "status": "passed"
             },
             "match": {
@@ -14,19 +14,33 @@
             }
           }
         ],
-        "line": 50,
-        "name": "Random case selection",
-        "description": "",
-        "id": "common;random-case-selection",
+        "line": 6,
+        "name": "",
+        "description": "A red bullet icon displays next to referrals which the user has not viewed yet. \nOnce the user taps on the referral, the red bullet icon is removed, indicating the referral has been viewed. \n This task is to automate the display of the red bullet icon.",
+        "id": "red-bullet-displays-for-new-referrals-and-does-not-display-for-viewed-referrals;",
         "type": "scenario",
         "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "duration": 14951534938,
+              "duration": 14624893513,
               "status": "passed"
             },
-            "line": 51,
+            "comments": [
+              {
+                "line": 11,
+                "value": "#Given I am logged into Briefcase"
+              },
+              {
+                "line": 12,
+                "value": "#\t|environment|userName| password |courtId|"
+              },
+              {
+                "line": 13,
+                "value": "#|test       |test    | test     |test   |"
+              }
+            ],
+            "line": 15,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -38,7 +52,7 @@
                   "personrole",
                   "jud"
                 ],
-                "line": 52
+                "line": 16
               },
               {
                 "cells": [
@@ -46,76 +60,103 @@
                   "Appellate Judges",
                   "test"
                 ],
-                "line": 53
+                "line": 17
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 5832753610,
+              "duration": 4781049745,
               "status": "passed"
             },
-            "line": 55,
+            "line": 19,
             "name": "User selects random judge category",
             "match": {
-              "location": "commonStepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
+              "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
             },
             "rows": [
               {
                 "cells": [
                   "courtId"
                 ],
-                "line": 56
+                "line": 20
               },
               {
                 "cells": [
                   "test"
                 ],
-                "line": 57
+                "line": 21
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 34354190325,
+              "duration": 22271747716,
               "status": "passed"
             },
-            "line": 59,
-            "name": "User selects random case number",
-            "match": {
-              "location": "commonStepDefinitions.user_selects_random_case_number(UserInputData\u003e)"
-            },
-            "rows": [
+            "comments": [
               {
-                "cells": [
-                  "courtId"
-                ],
-                "line": 60
-              },
-              {
-                "cells": [
-                  "test"
-                ],
-                "line": 61
+                "line": 23,
+                "value": "# Verifies the red bullet is removed indicating the referral has been viewed"
               }
             ],
+            "line": 24,
+            "name": "User selects a category that has unviewed referrals and verifies that the red bullet icon displays next to any unviewed referrals, taps on a referral and then gets back to the referral list page",
+            "match": {
+              "location": "RedBullets_StepDefintions.user_selects_a_category_that_has_unviewed_referrals_and_verifies_that_the_red_bullet_icon_displays_next_to_any_unviewed_referrals_taps_on_a_referral_and_then_gets_back_to_the_referral_list_page()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 18156041730,
+              "status": "passed"
+            },
+            "line": 25,
+            "name": "User closes and reopens the app",
+            "match": {
+              "location": "JenieLogin_StepDefinitions.user_closes_and_reopens_the_app()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 15123020202,
+              "error_message": "org.openqa.selenium.NoSuchElementException: Can\u0027t locate an element by this strategy: By.chained({By.xpath: //*[contains(@name, \u0027Total\u0027)]})\n\tat io.appium.java_client.pagefactory.AppiumElementLocator.findElement(AppiumElementLocator.java:126)\n\tat io.appium.java_client.pagefactory.interceptors.InterceptorOfASingleElement.intercept(InterceptorOfASingleElement.java:59)\n\tat io.appium.java_client.ios.IOSElement$$EnhancerByCGLIB$$d311658.getText(\u003cgenerated\u003e)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.RedBulletsPage.getTotalNumOfNewReferrals(RedBulletsPage.java:48)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.RedBulletsPage.getCountAfterReopeningTheApp(RedBulletsPage.java:44)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.RedBullets_StepDefintions.user_closes_the_app_reopens_and_goes_back_to_the_category_that_contains_the_referral_that_was_just_viewed(RedBullets_StepDefintions.java:29)\n\tat ✽.Then User closes the app, reopens and goes back to the category that contains the referral that was just viewed(CATEGORIES/REGRESSION/RED_BULLETS_FOR_REFERRALS_AMB-1152.feature:26)\nCaused by: org.openqa.selenium.TimeoutException: Expected condition failed: waiting for io.appium.java_client.pagefactory.AppiumElementLocator$WaitingFunction@35d3ab60 (tried for 1 second(s) with 500 milliseconds interval)\n\tat org.openqa.selenium.support.ui.FluentWait.timeoutException(FluentWait.java:304)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:272)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator.waitFor(AppiumElementLocator.java:99)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator.findElement(AppiumElementLocator.java:119)\n\tat io.appium.java_client.pagefactory.interceptors.InterceptorOfASingleElement.intercept(InterceptorOfASingleElement.java:59)\n\tat io.appium.java_client.ios.IOSElement$$EnhancerByCGLIB$$d311658.getText(\u003cgenerated\u003e)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.RedBulletsPage.getTotalNumOfNewReferrals(RedBulletsPage.java:48)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.RedBulletsPage.getCountAfterReopeningTheApp(RedBulletsPage.java:44)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.RedBullets_StepDefintions.user_closes_the_app_reopens_and_goes_back_to_the_category_that_contains_the_referral_that_was_just_viewed(RedBullets_StepDefintions.java:29)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat cucumber.runtime.Utils$1.call(Utils.java:40)\n\tat cucumber.runtime.Timeout.timeout(Timeout.java:16)\n\tat cucumber.runtime.Utils.invoke(Utils.java:34)\n\tat cucumber.runtime.java.JavaStepDefinition.execute(JavaStepDefinition.java:38)\n\tat cucumber.runtime.StepDefinitionMatch.runStep(StepDefinitionMatch.java:37)\n\tat cucumber.runtime.Runtime.runStep(Runtime.java:300)\n\tat cucumber.runtime.model.StepContainer.runStep(StepContainer.java:44)\n\tat cucumber.runtime.model.StepContainer.runSteps(StepContainer.java:39)\n\tat cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:44)\n\tat cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat cucumber.api.junit.Cucumber.run(Cucumber.java:100)\n\tat org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:93)\n\tat org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:529)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:756)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:452)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)\nCaused by: org.openqa.selenium.NoSuchElementException: Cannot locate an element using By.chained({By.xpath: //*[contains(@name, \u0027Total\u0027)]})\nFor documentation on this error, please visit: https://www.seleniumhq.org/exceptions/no_such_element.html\nBuild info: version: \u00273.141.59\u0027, revision: \u0027e82be7d358\u0027, time: \u00272018-11-14T08:17:03\u0027\nSystem info: host: \u0027Saltanat-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:b3:8bb3:55e0:11de%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.16\u0027, java.version: \u00271.8.0_211\u0027\nDriver info: driver.version: IOSDriver\n\tat io.appium.java_client.pagefactory.bys.builder.ByChained.findElement(ByChained.java:74)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:315)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElement(DefaultGenericMobileDriver.java:57)\n\tat io.appium.java_client.AppiumDriver.findElement(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElement(IOSDriver.java:1)\n\tat io.appium.java_client.pagefactory.bys.ContentMappedBy.findElement(ContentMappedBy.java:50)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:315)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElement(DefaultGenericMobileDriver.java:57)\n\tat io.appium.java_client.AppiumDriver.findElement(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElement(IOSDriver.java:1)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator.lambda$0(AppiumElementLocator.java:120)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator$WaitingFunction.apply(AppiumElementLocator.java:172)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator$WaitingFunction.apply(AppiumElementLocator.java:1)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:249)\n\t... 47 more\n",
+              "status": "failed"
+            },
+            "line": 26,
+            "name": "User closes the app, reopens and goes back to the category that contains the referral that was just viewed",
+            "match": {
+              "location": "RedBullets_StepDefintions.user_closes_the_app_reopens_and_goes_back_to_the_category_that_contains_the_referral_that_was_just_viewed()"
+            },
             "keyword": "Then "
           }
         ],
         "tags": [
           {
-            "line": 49,
-            "name": "@selectRandomCase"
+            "line": 5,
+            "name": "@AMB-1152"
           }
         ]
       }
     ],
-    "name": "Common",
+    "name": "Red bullet displays for new referrals and does not display for viewed referrals",
     "description": "",
-    "id": "common",
+    "id": "red-bullet-displays-for-new-referrals-and-does-not-display-for-viewed-referrals",
     "keyword": "Feature",
-    "uri": "CATEGORIES/Common.feature"
+    "uri": "CATEGORIES/REGRESSION/RED_BULLETS_FOR_REFERRALS_AMB-1152.feature",
+    "tags": [
+      {
+        "line": 1,
+        "name": "@AMB"
+      },
+      {
+        "line": 1,
+        "name": "@Regression"
+      }
+    ]
   }
 ]
