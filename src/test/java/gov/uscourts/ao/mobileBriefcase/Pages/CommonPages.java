@@ -138,6 +138,10 @@ public class CommonPages extends Base {
 		case APPLICATION_FOR_COA:
 			categories = "Application";
 			list = ReferralsList;
+			
+		case JURISDICTIONAL:
+			categories = "Jurisdictional";
+			list = ReferralsList;
 			break;
 
 		default:
@@ -389,7 +393,7 @@ public class CommonPages extends Base {
 	}
 
 	public enum Category {
-		PENDING, PETITION, CASES_ON, MOTION, SCREENING, REFERENCE, TEST_AUTOMATION, APPLICATION_FOR_COA
+		PENDING, PETITION, CASES_ON, MOTION, SCREENING, REFERENCE, TEST_AUTOMATION, APPLICATION_FOR_COA, JURISDICTIONAL
 	}
 
 }

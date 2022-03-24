@@ -62,12 +62,15 @@ public class DocumentPage extends AppiumPageFactory {
 
 	}
 
-	public void selectRandomCaseNumber(List<UserInputData> userInputData) {
+	public static String selectRandomCaseNumber(List<UserInputData> userInputData) {
+		String referral="";
 		Page.sleep(20000);
 		List<String> list = Utility.retrieveAllReferrals(caseNum, " ", 0);
 		MobileElement uiResult = findElementBy(Locator.XPATH, "//XCUIElementTypeStaticText[contains(@name, '"
 				+ list.get(Utility.getRandomInt(list.size() - 1)) + "')]");
+		referral=uiResult.getText();
 		uiResult.click();
+		return referral;
 
 	}
 

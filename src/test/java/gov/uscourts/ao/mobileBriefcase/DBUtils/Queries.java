@@ -617,5 +617,7 @@ public class Queries {
 			+ "where a.ccr_id = 'CCR_ID' {IF TARGET ONLY ADD THIS and a.ccr_ccs_id = b.ccr_ccs_id} and b.ccr_date_end is null and NVL(cpr_vote_complete,'') <> 'y' and NVL(cpr_vote_req,'') <> 'n' "
 			+ "and crj_date_remove is null "
 			+ "order by cpr_date_ref, de_date_filed, cd_case_ext, ccs_id, pj_judge_order, cvn_date_created desc";
+	
+	public static final String me_code="select me_cyv_code from mbr_event where me_el_id = '?'";
 
 }

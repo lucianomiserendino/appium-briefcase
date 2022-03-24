@@ -1,7 +1,6 @@
+Feature: Display Actions Panel and actions 
+
 @Smoke @AMB-1038
- Feature: Display Actions Panel and actions 
-
-
 Scenario: 
 
 	If there are records defined in the mbr_event table, 
@@ -26,7 +25,24 @@ Scenario:
 				
 		
 
+@AMB-2785	
+Scenario: The mbr docWP action should be displayed when the me_cav_code is set to 'judgement'     
+  
+	Given I am logged into Briefcase 
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
+		
+	Then I select a user 
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |test    |
+			
+ Then User selects
+	|refCategory|caseNumber|
+	|test       |test      |
 	
+	Then User verifies that Action displays if the assignment type specified in mbr_event record is = judge only
+
+				
 		
 		
 		

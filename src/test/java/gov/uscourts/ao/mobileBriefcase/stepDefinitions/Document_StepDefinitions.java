@@ -9,7 +9,7 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 public class Document_StepDefinitions {
 	DocumentPage page;
 	public static String categroy;
-
+	public static String referral;
 	@Then("^User selects random stf Aty category$")
 	public void user_selects_random_stf_Aty_category(List<UserInputData> userInputData) {
 		DocumentPage.selectRandomSTFCategory(userInputData);
@@ -23,7 +23,7 @@ public class Document_StepDefinitions {
 	@Then("^User selects random case number$")
 	public void user_selects_random_case_number(List<UserInputData> userInputData) {
 		page = new DocumentPage();
-		page.selectRandomCaseNumber(userInputData);
+		referral=DocumentPage.selectRandomCaseNumber(userInputData);
 	}
 	
 	

@@ -14,8 +14,10 @@ The default is by date referred in descending order (newest first).
 	Then I select a user 
 		|userType   |personrole        |jud          |
 		|judge      |Appellate Judges  |test         |
+	Then User selects random judge category
+		|courtId|
+		|test   |
 		
-	When User selects a  "Application" 
 	Then User verify the Date Down Arrow is selected by default and that the referrals are sorted by referred date in descending order (newest first). 
 	Then User clicks on the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order (oldest first). 
 	And User clicks on the Case Down Arrow button and verifies the referrals are sorted by case number in descending order 

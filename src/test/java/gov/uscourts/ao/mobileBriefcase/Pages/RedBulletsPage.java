@@ -7,7 +7,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -45,7 +44,7 @@ public class RedBulletsPage extends AppiumPageFactory {
 	}
 
 	public int getTotalNumOfNewReferrals() {
-		return new Integer(split(totalNumOfNewReferrals.getText(), "N", 0).trim());
+		return new Integer(split(Page.waitForVisibilityOfElement(totalNumOfNewReferrals, driver).getText(), "N", 0).trim());
 	}
 
 }

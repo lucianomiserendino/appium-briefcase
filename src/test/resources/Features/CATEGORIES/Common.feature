@@ -64,7 +64,9 @@ Scenario: Category and case selection
 			
 		@reopenTheApp
 	Scenario: Closing and reopening Briefcase
-
+		Then I select a user 
+		|userType   |personrole        |jud      |
+		|judge      |Appellate Judges  |test     |
 		Then User closes and reopens the app
 
 		
