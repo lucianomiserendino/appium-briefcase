@@ -13,8 +13,8 @@ import org.openqa.selenium.NoSuchElementException;
 
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
-import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 

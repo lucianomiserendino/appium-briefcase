@@ -1,10 +1,10 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
-import gov.uscourts.ao.mobileBriefcase.Pages.NoticesOfDocketActivityPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.NoticesOfDocketActivityPage;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
+import io.cucumber.java.en.Then;
 
 public class NoticesOfDocketActivity_StepDefinitions extends Base {
 	NoticesOfDocketActivityPage page;

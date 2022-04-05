@@ -2,27 +2,21 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCasePage.findWebElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getProperty;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.sleep;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
-import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.page.common.Page;
-import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -153,30 +147,5 @@ public class AutoSyncPage extends AppiumPageFactory {
 
 	}
 	
-	
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public boolean isFileDownloaded(String downloadPath, String fileName) {
-		boolean flag = false;
-	    File dir = new File(downloadPath);
-	    File[] dir_contents = dir.listFiles();
-	  	    
-	    for (int i = 0; i < dir_contents.length; i++) {
-	        if (dir_contents[i].getName().equals(fileName))
-	            return flag=true;
-	            }
-
-	    return flag;
-	}
 
 }

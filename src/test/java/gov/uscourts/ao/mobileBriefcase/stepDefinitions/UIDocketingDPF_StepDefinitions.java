@@ -2,9 +2,9 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import java.util.List;
 
-import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.UIDocketingDPFPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import io.cucumber.java.en.Then;
 
 public class UIDocketingDPF_StepDefinitions {
 	UIDocketingDPFPage page;
@@ -19,6 +19,12 @@ public class UIDocketingDPF_StepDefinitions {
 	public void user_verifies_an_editable_fields_are_displayed_The_default_description_is_defined_in_the_Default_description_parameter_of_the_note_DPF(
 			String description, String comment, String submit, List<UserInputData> userInputData) {
 		page.verifyFieldsAreDisplayed(description, comment, submit, userInputData);
+	}
+
+	@Then("User selects one of the proposed orders, enters a description, submits the transaction, verify name is saved to the DB.")
+	public void user_selects_one_of_the_proposed_orders_enters_a_description_submits_the_transaction_verify_name_is_saved_to_the_db() {
+		page = new UIDocketingDPFPage();
+		page.selectProposedOrder();
 	}
 
 }

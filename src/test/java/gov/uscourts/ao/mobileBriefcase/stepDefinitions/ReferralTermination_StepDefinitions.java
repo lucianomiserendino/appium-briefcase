@@ -1,8 +1,8 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.TerminateReferrals;
 import gov.uscourts.ao.mobileBriefcase.Pages.TerminateReferrals.ReferralTermination;
+import io.cucumber.java.en.Then;
 
 public class ReferralTermination_StepDefinitions {
 	TerminateReferrals page;
@@ -34,8 +34,6 @@ public class ReferralTermination_StepDefinitions {
 	public void user_navigates_to_the_referral_category_and_verify_the_referral_does_not_display_anymore_because_it_was_terminated() {
 
 		page = new TerminateReferrals();
-		
-		
 
 	}
 

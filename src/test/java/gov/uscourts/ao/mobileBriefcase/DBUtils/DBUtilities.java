@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DATABASE_NAME;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DBPWD;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DBURL;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DBUSERNAME;

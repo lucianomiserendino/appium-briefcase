@@ -11,7 +11,7 @@ Scenario:
 	Then I select a user 
 		|userType   |personrole        |jud     |
 		|judge      |Appellate Judges  |test    |
-	|Appellate Judges  |Colloton     |
+	 
 	
 	Then user checks if "15-2622" is bookmarked 
 	When User selects a  "Cases on Calendar" 

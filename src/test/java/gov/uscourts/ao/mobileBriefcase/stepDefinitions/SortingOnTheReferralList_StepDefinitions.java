@@ -4,11 +4,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage.Sort;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import io.cucumber.java.en.Then;
 
 public class SortingOnTheReferralList_StepDefinitions {
 
@@ -18,8 +18,8 @@ public class SortingOnTheReferralList_StepDefinitions {
 	public void user_verify_the_Date_Down_Arrow_is_selected_by_default_and_that_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first() {
 		page = new ReferralSortOrderPage();
 		Page.sleep(20000);
-		 List<String> defaultOrder = page.referralsSortedByDate(); 
-		 assertTrue(Utility.checkDatesForDescOrder(defaultOrder));
+		List<String> defaultOrder = page.referralsSortedByDate();
+		assertTrue(Utility.checkDatesForDescOrder(defaultOrder));
 
 		page.selectSortBtn();
 
@@ -49,7 +49,7 @@ public class SortingOnTheReferralList_StepDefinitions {
 
 		page.getSortPage(Sort.CASE_NUMBER_ASCENDING);
 		List<String> referralsSortedByAscOrd = page.referralsSortedByCase();
-		Utility.isSorted("Asc", referralsSortedByAscOrd, referralsSortedByAscOrd);	
+		Utility.isSorted("Asc", referralsSortedByAscOrd, referralsSortedByAscOrd);
 		page.getSortPage(Sort.REFERRAL_DATE_DESCENDING);
 		page.selectSortBtn();
 	}

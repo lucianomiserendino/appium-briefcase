@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASES_ON_CALENDAR_SESSIONS;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCaseID;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
@@ -19,8 +18,8 @@ import java.util.List;
 import org.openqa.selenium.NoSuchElementException;
 
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
-import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 

@@ -1,8 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import cucumber.api.DataTable;
-import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.AccessingAnnotatedDocuments;
+import io.cucumber.java.en.Then;
 
 public class AccessingAnnotatedDocuments_StepDefinitions {
 
@@ -13,6 +12,5 @@ public class AccessingAnnotatedDocuments_StepDefinitions {
 		page = new AccessingAnnotatedDocuments();
 		page.getAnnotatedDoc();
 	}
-
 
 }

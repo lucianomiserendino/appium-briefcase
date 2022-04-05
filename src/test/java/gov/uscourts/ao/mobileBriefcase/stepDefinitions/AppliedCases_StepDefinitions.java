@@ -1,11 +1,11 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.*;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.AppliedCasesPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class AppliedCases_StepDefinitions {
 	CommonPages page1;

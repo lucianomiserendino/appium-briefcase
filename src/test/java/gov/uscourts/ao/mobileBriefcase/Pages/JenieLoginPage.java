@@ -16,14 +16,12 @@ import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
-import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
-import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.page.common.Base.Driver;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -251,5 +249,8 @@ public class JenieLoginPage extends Base {
 	public enum Environment {
 		Integration, Staging, Testing, Production
 	}
+	
+	
+
 
 }

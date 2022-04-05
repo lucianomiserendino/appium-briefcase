@@ -1,9 +1,10 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.verifyElementIsDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.*;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import io.appium.java_client.MobileElement;

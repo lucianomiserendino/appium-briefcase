@@ -5,17 +5,25 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.*;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollUp;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.openqa.selenium.By;
+
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
-import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -24,6 +32,33 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextView[1]")
 	public static MobileElement descriptionField;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Select']/preceding::XCUIElementTypeTextField")
+	public static MobileElement select;
+
+	@iOSXCUITFindBy(accessibility = "proposed order")
+	public static MobileElement proposedOrder;
+
+	@iOSXCUITFindBy(accessibility = "back")
+	public static MobileElement backBtn;
+
+	@iOSXCUITFindBy(accessibility = "submit")
+	public static MobileElement submit;
+
+	@iOSXCUITFindBy(accessibility = "View Case info")
+	public static MobileElement viewCaseInfo;
+
+	@iOSXCUITFindBy(accessibility = "Docket Entries")
+	public static MobileElement docketEntries;
+
+	@iOSXCUITFindBy(accessibility = "Auto Test")
+	public static MobileElement autoTest;
+
+	@iOSXCUITFindBy(accessibility = "OK")
+	public static MobileElement OK;
+
+	@iOSXCUITFindBy(accessibility = "(//XCUIElementTypeStaticText[@name='Downloaded'])[1]/preceding:: XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
+	public static MobileElement proposedOrderDoc;
 
 	public void verifyFieldsAreDisplayed(String descriptionText, String commentText, String submitText,
 			List<UserInputData> userInputData) {
@@ -35,7 +70,6 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 		verifyElementIsDisplayed(commentText);
 		scrollDownIfNotDisplayed("//XCUIElementTypeButton[@name='" + submitText + "']");
 
-
 	}
 
 	/**
@@ -45,7 +79,6 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 	 * description should default to 'Transaction Note'
 	 */
 	public void getDefaulDescription(String dpfName, String el_id, List<UserInputData> userInputData) {
-	
 
 		if (Utility.getSingleDpf(getAllColumns(getID(MBR_NOTE, el_id), userInputData), dpfName, 4).equals("SKIP")) {
 			assertTrue(descriptionField.getText().equals("Transaction Note"));
@@ -80,6 +113,37 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 
 	}
 
+	public void selectProposedOrder() {
 
+		CommonPages.getPanel(Panel.Proposed_Orders);
+
+		String docName = Actions.getText(proposedOrderDoc);
+
+		CommonPages.getActionName("Auto Test");
+		if (select.isDisplayed()) {
+			tap(select);
+		} else {
+			Page.performPageLoad(driver);
+			tap(select);
+		}
+		tap(Locator.XPATH, containsElement(docName));
+
+		sendKeys(select, "Test");
+
+		scrollDownIfNotDisplayed("//XCUIElementTypeButton[@name='Submit']");
+		
+		if (isDisplayed(Locator.XPATH, containsElement("The update succeded")) == true) {
+			;
+			tap(OK);
+		} else {
+			throw new RuntimeException("Failed to select proposed order");
+		}
+		scrollUp(By.id("DocumentList"));
+		tap(viewCaseInfo);
+		tap(docketEntries);
+		assertTrue(isDisplayed(Locator.XPATH, containsElement("Auto Test")));
+		tap(autoTest);
+		assertTrue(isDisplayed(Locator.XPATH, containsElement(docName)));
+	}
 
 }

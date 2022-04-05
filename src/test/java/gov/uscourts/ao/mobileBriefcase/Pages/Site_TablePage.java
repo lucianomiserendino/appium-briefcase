@@ -10,8 +10,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
-import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 
 public class Site_TablePage extends AppiumPageFactory {
 

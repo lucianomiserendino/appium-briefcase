@@ -2,12 +2,12 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import java.util.List;
 
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.iOSCapabilities;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 
 public class JenieLogin_StepDefinitions extends Base implements iOSCapabilities {
 
@@ -15,7 +15,7 @@ public class JenieLogin_StepDefinitions extends Base implements iOSCapabilities 
 
 	@Given("^I am logged into Briefcase$")
 	public void i_am_logged_into_Briefcase(List<UserInputData> table) {
-		 logPage = new JenieLoginPage();
+		logPage = new JenieLoginPage();
 		logPage.login(table);
 	}
 
@@ -31,12 +31,11 @@ public class JenieLogin_StepDefinitions extends Base implements iOSCapabilities 
 		logPage.logout();
 		safariInstance();
 	}
-	
-	
+
 	@Then("^User closes and reopens the app$")
-	public void user_closes_and_reopens_the_app()  {
-		 logPage = new JenieLoginPage();
-		 logPage.reopenTheApp();
-		 
+	public void user_closes_and_reopens_the_app() {
+		logPage = new JenieLoginPage();
+		logPage.reopenTheApp();
+
 	}
 }

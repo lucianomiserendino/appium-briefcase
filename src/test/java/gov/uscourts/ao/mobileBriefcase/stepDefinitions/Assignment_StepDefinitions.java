@@ -9,13 +9,13 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getRandomNumbe
 import java.util.Arrays;
 import java.util.List;
 
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.AssignmentsPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.AssignmentsPage.AssignmentInfo;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 
 public class Assignment_StepDefinitions {
 	AssignmentsPage assig;
@@ -67,22 +67,19 @@ public class Assignment_StepDefinitions {
 				AssignmentInfo.ASSIGNMENT_NOTE_DATE, userInputData);
 
 		info = Arrays.asList(assignee, assignment_type, assignment_due_date, assignment_note_date);
-		 info = Arrays.asList(
-		 assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
-		 AssignmentInfo.NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE,
-		 userInputData),
-		
-		 assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
-		 AssignmentInfo.ASSIGNMENT_TYPE_AND_RELIEF,
-		 userInputData),
-		
-		 assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
-		 AssignmentInfo.LATEST_ASSIGNED_ASSIGNMENT_DUE_DATES, userInputData),
-		
-		 assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
-		 AssignmentInfo.ASSIGNMENT_NOTE_DATE,
-		 userInputData));
-		
+		info = Arrays.asList(
+				assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
+						AssignmentInfo.NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE, userInputData),
+
+				assig.getAssignmentInfo(cmr_id, asignements, rnAssignment, AssignmentInfo.ASSIGNMENT_TYPE_AND_RELIEF,
+						userInputData),
+
+				assig.getAssignmentInfo(cmr_id, asignements, rnAssignment,
+						AssignmentInfo.LATEST_ASSIGNED_ASSIGNMENT_DUE_DATES, userInputData),
+
+				assig.getAssignmentInfo(cmr_id, asignements, rnAssignment, AssignmentInfo.ASSIGNMENT_NOTE_DATE,
+						userInputData));
+
 	}
 
 	@Then("^User selects a judge or staff assignment  and verifies the information and notes that display on the page$")

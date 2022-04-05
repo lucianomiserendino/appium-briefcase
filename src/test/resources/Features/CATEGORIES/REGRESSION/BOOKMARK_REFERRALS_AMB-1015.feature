@@ -13,7 +13,7 @@ Scenario:
 	Then I select a user 
 		|userType   |personrole        |jud     |
 		|judge      |Appellate Judges  |test    |
-		|Appellate Judges  |Colloton     |
+		
 	Then User verifies there's no bookmark icon displays in the navigation and on the dashboard 
 	When User selects a  "Test Automation" 
 	Then user  taps on the bookmark icon next to a case  and verifies the bookmark icon displays in the navigation and on the dashboard page. 

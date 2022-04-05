@@ -1,5 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.model;
 
+
 public class UserInputData {
 	private String courtId;
 	private String hostname;

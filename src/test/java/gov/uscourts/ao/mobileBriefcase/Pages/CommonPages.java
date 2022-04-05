@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.insertData;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
@@ -27,19 +26,17 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import cucumber.api.DataTable;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
-import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -89,10 +86,9 @@ public class CommonPages extends Base {
 
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Judge:')]")
 	public static MobileElement judge;
-	
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public List<MobileElement> Categories;
-
 
 	public void getCategory(Category category, String caseNumber) {
 
@@ -138,7 +134,7 @@ public class CommonPages extends Base {
 		case APPLICATION_FOR_COA:
 			categories = "Application";
 			list = ReferralsList;
-			
+
 		case JURISDICTIONAL:
 			categories = "Jurisdictional";
 			list = ReferralsList;
@@ -148,7 +144,7 @@ public class CommonPages extends Base {
 			break;
 		}
 
-		selectReferralCategory( categories);
+		selectReferralCategory(categories);
 		selectReferral(containsElement(caseNumber));
 	}
 
@@ -156,14 +152,15 @@ public class CommonPages extends Base {
 		scrollDownIfNotDisplayed(category);
 
 	}
-	public static void selectReferralCategory(String category){
+
+	public static void selectReferralCategory(String category) {
 		selectReferral("//XCUIElementTypeOther[@name='Categories']" + containsElement(category));
 	}
 
-	public static String getDataTable(DataTable data, int index1, int index2) {
-		List<List<String>> table = data.raw();
-		return table.get(index1).get(index2);
-	}
+//	public static String getDataTable(DataTable data, int index1, int index2) {
+//		List<List<String>> table = data.raw();
+//		return table.get(index1).get(index2);
+//	}
 
 	public void getCategoryWithCase(List<UserInputData> userInputData) {
 		String category = SystemPropertySetup.getVariable(Variables.REF_CATEGORY, userInputData);
@@ -198,6 +195,10 @@ public class CommonPages extends Base {
 			panels += "Briefs";
 			break;
 
+		case Proposed_Orders:
+			panels += "Proposed Orders";
+			break;
+
 		default:
 			break;
 		}
@@ -223,7 +224,6 @@ public class CommonPages extends Base {
 		getGroupIcons();
 		getPanel(Panel.valueOf(panel));
 		getActionName("Auto Test");
-
 
 	}
 
@@ -255,8 +255,7 @@ public class CommonPages extends Base {
 						id, "CMR_CYV_CODE", cmr_cyv_code),
 				userInputData);
 	}
-	
-	
+
 	public static String getCMRID(List<UserInputData> userInputData) {
 
 		String name = SystemPropertySetup.getJudge(userInputData);
@@ -267,7 +266,6 @@ public class CommonPages extends Base {
 		return getAllColumns(replace(Queries.CMR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id),
 				userInputData);
 	}
-	
 
 	public static String getCCRID(List<UserInputData> userInputData) {
 
@@ -315,7 +313,7 @@ public class CommonPages extends Base {
 	 */
 
 	public static void setValue(String si_value, String SI_CODE, List<UserInputData> userInputData) {
-	
+
 		insertData(replace(SET_SITE_TABLE_VARIABLE_VALUE, "SI_VALUE", si_value, "SI_CODE", SI_CODE), userInputData);
 		String value = getAllColumns(replace(SITE_TABLE_VARIABLE_VALUE, "SI_CODE", SI_CODE), userInputData);
 		assertEquals(si_value, value);
@@ -338,12 +336,12 @@ public class CommonPages extends Base {
 	}
 
 	public static void getGroupIcons() {
-	
+
 		for (int i = 1; i < GroupIcon.size() + 1; i++) {
 			String groupIcon = "(//XCUIElementTypeStaticText[@name='GroupIcon'])[";
 			while (findElements(
 					By.xpath(groupIcon + i + "]/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText[1]"))
-							.size() == 0) {
+					.size() == 0) {
 				tap(Locator.XPATH, groupIcon + i + "]");
 			}
 		}
@@ -389,7 +387,8 @@ public class CommonPages extends Base {
 	}
 
 	public enum Panel {
-		Assignments, Vote_Information, Actions, Judgment_Filed, Petition_Filed, Briefs, Applied_Referrals
+		Assignments, Vote_Information, Actions, Judgment_Filed, Petition_Filed, Briefs, Applied_Referrals,
+		Proposed_Orders
 	}
 
 	public enum Category {
