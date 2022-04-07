@@ -104,6 +104,7 @@ public class SystemPropertySetup {
 
 		if (System.getProperty(var) != null)
 			return System.getProperty(var);
+
 		log.info(var + " from Input File " + pacerInputData.get(0).getPacerInputData(var));
 		return pacerInputData.get(0).getPacerInputData(var);
 

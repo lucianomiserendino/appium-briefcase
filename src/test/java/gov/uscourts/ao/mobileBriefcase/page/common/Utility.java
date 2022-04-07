@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.openqa.selenium.By;
@@ -26,6 +27,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 
+import cucumber.api.DataTable;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import io.appium.java_client.MobileElement;
@@ -430,6 +432,28 @@ public class Utility extends Base {
 		return parValue[index].split("'")[1];
 
 	}
+
+	public static synchronized Map<String, String> TableDictionaryConverter(List<List<String>> data) {
+		Map<String, String> mapTable = new HashMap<String, String>();
+		for (List<String> rows : data) {
+			mapTable.put(rows.get(0), rows.get(1));
+		}
+		return mapTable;
+	}
+//
+//	public void test(DataTable table) {
+//		List<List<String>> dataTableRows = table.asLists(); // outer List<> is rows, inner List<> is cells
+//		for (List<String> row : dataTableRows) { // loop through every row in the DataTable input
+//			int rowIdx = dataTableRows.indexOf(row);
+//
+//			for (String expectedCell : row) { // loop through every cell in the current DataTable row
+//				int cellIdx = row.indexOf(expectedCell);
+//
+//				System.out.println("DataTable row " + rowIdx + ", cell " + cellIdx + ": " + expectedCell);
+//
+//			}
+//		}
+//	}
 
 
 }

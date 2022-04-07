@@ -5,6 +5,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
@@ -13,9 +16,6 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 
 public class Common_StepDefinitions {
 	CommonPages page;

@@ -8,11 +8,11 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 
 import java.util.List;
 
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.DashboardPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
 
 public class ReferralCategories_StepDefinitions {
 	static DashboardPage page;

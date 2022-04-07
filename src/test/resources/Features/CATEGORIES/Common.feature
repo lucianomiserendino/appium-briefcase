@@ -24,6 +24,7 @@ Scenario: User	selection
 		
 
 @selectCategoryandCase
+
 Scenario: Category and case selection
 	Then User selects
 	|refCategory|caseNumber|

@@ -2,11 +2,11 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import java.util.List;
 
+import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CaseQueryPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
-import io.cucumber.java.en.Then;
 
 public class CaseQuery_StepDefinitions {
 

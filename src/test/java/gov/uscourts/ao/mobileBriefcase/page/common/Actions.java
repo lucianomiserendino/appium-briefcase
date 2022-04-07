@@ -5,6 +5,7 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForPresenceOf
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
@@ -76,10 +77,10 @@ public class Actions extends Base {
 	}
 
 	public static String trim(String string) {
-		if(!(string==null))
-		return string.trim();
+		if (!(string == null))
+			return string.trim();
 		else {
-			return string;	
+			return string;
 		}
 
 	}
@@ -144,11 +145,20 @@ public class Actions extends Base {
 
 	}
 
-	
-	
-	
-	
-	
+	public static void clicksOn(MobileElement element) {
+		try {
+			element.click();
+		} catch (Exception e) {
+			e.getMessage();
+			javaScriptExecute("arguments[0].click();", element);
+		}
+	}
+
+	public static void javaScriptExecute(String script, MobileElement element) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript(script, element);
+	}
+
 	public enum Locator {
 		ID, XPATH, NAME, LINK_TEXT, PARTIAL_LINK_TEXT, CLASS_NAME, CSS_SELECTOR, TAG_NAME
 	}

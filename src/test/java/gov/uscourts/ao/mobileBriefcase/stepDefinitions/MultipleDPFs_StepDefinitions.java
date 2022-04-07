@@ -7,10 +7,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
-import io.cucumber.java.en.Then;
 
 public class MultipleDPFs_StepDefinitions {
 	static CommonPages page;

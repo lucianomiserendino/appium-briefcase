@@ -8,11 +8,10 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getPrope
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.sleep;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
@@ -41,7 +40,7 @@ public class AutoSyncPage extends AppiumPageFactory {
 	private static String continueUploadPage = "//*[text()='Continue']";
 	private static String syncAllDocs = "//*[text()='Sync all documents for case']";
 	private static String downloaded = "//XCUIElementTypeStaticText[@name='Downloaded]";
-	
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Brief for 2441 REPLACED']/preceding::XCUIElementTypeStaticText[@name='+']")
 	public static MobileElement plusIcon;
 
@@ -127,18 +126,16 @@ public class AutoSyncPage extends AppiumPageFactory {
 
 	public boolean getReferralSync() {
 		boolean isDisplayed = false;
-		Actions.tap(Locator.XPATH, "Sync all documents for case");
+		Page.performPageLoad(driver);
 
-		assertTrue(isDisplayed);
-		
+		Actions.tap(Locator.XPATH, containsElement("Sync all documents for case"));
+
 		try {
-			Page.performPageLoad(driver);
-			MobileElement element = (MobileElement) driver
-					.findElementByIosNsPredicate("label == \"\"");
-			
-			if (element.isDisplayed()& element.getText().equals("Downloaded"));
+			CommonPages.getPanel(Panel.Proposed_Orders);
+			if (Actions.isDisplayed(Locator.XPATH, "(//XCUIElementTypeStaticText[@name='Downloaded'])[1]"))
+				;
 
-				isDisplayed = true;
+			isDisplayed = true;
 
 		} catch (Exception e) {
 			isDisplayed = false;
@@ -146,6 +143,5 @@ public class AutoSyncPage extends AppiumPageFactory {
 		return isDisplayed;
 
 	}
-	
 
 }

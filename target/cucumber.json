@@ -1,1 +1,126 @@
-[{"line":1,"elements":[{"start_timestamp":"2022-04-05T13:33:40.660Z","before":[{"result":{"duration":9195000000,"status":"passed"},"match":{"location":"gov.uscourts.ao.mobileBriefcase.stepDefinitions.Hook.setUp()"}}],"line":4,"name":"If the user selects a file to upload in the docWP DPF the name of the file is displayed at the left,","description":"and they are able to add a new document name in the \"Enter Description\" field.  Verify that user is able to enter a name/description\n and submits the transaction and the name is saved to the DB. ","id":"ability-to-enter-a-document-description-in-docwp-dpf;if-the-user-selects-a-file-to-upload-in-the-docwp-dpf-the-name-of-the-file-is-displayed-at-the-left-","type":"scenario","keyword":"Scenario","steps":[{"result":{"error_message":"org.openqa.selenium.NoSuchSessionException: Session ID is null. Using WebDriver after calling quit()?\nBuild info: version: '3.141.59', revision: 'e82be7d358', time: '2018-11-14T08:17:03'\nSystem info: host: 'Saltant-K-MacBook-Pro.local', ip: 'fe80:0:0:0:79:6f90:ae01:b0cf%en0', os.name: 'Mac OS X', os.arch: 'x86_64', os.version: '10.16', java.version: '1.8.0_311'\nDriver info: driver.version: IOSDriver\n\tat org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:125)\n\tat io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:247)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:552)\n\tat io.appium.java_client.DefaultGenericMobileDriver.execute(DefaultGenericMobileDriver.java:41)\n\tat io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.execute(IOSDriver.java:1)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:323)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElement(DefaultGenericMobileDriver.java:61)\n\tat io.appium.java_client.AppiumDriver.findElement(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElement(IOSDriver.java:1)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElementByXPath(RemoteWebDriver.java:428)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElementByXPath(DefaultGenericMobileDriver.java:151)\n\tat io.appium.java_client.AppiumDriver.findElementByXPath(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElementByXPath(IOSDriver.java:1)\n\tat org.openqa.selenium.By$ByXPath.findElement(By.java:353)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:315)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElement(DefaultGenericMobileDriver.java:57)\n\tat io.appium.java_client.AppiumDriver.findElement(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElement(IOSDriver.java:1)\n\tat org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:182)\n\tat org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:179)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:249)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForPresenceOfElementLocated(Page.java:17)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy(Actions.java:55)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap(Actions.java:104)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.AutoSyncPage.getReferralSync(AutoSyncPage.java:130)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.AutoSync_stepDefinitions.verify_the_individual_case_referrals_have_a_Sync_link_in_the_Case_Information_panel_that_downloads_the_documents_in_that_particular_case(AutoSync_stepDefinitions.java:16)\n\tat ✽.Verify the individual case referrals have a Sync link in the Case Information panel that downloads the documents in that particular case.(file:///Users/saltanatkasabolotova/Desktop/Briefcase-test/./src/test/resources/Features/CATEGORIES/docWP_DPF_AMB-2960.feature:20)\n","duration":173000000,"status":"failed"},"line":20,"name":"Verify the individual case referrals have a Sync link in the Case Information panel that downloads the documents in that particular case.","match":{"location":"gov.uscourts.ao.mobileBriefcase.stepDefinitions.AutoSync_stepDefinitions.verify_the_individual_case_referrals_have_a_Sync_link_in_the_Case_Information_panel_that_downloads_the_documents_in_that_particular_case()"},"keyword":"And "},{"result":{"duration":2000000,"status":"skipped"},"line":22,"name":"User  selects an action and verifies the name of the action displays in the dark blue banner","match":{"location":"gov.uscourts.ao.mobileBriefcase.stepDefinitions.Common_StepDefinitions.user_selects_an_action_and_verifies_the_name_of_the_action_displays_in_the_dark_blue_banner(java.util.List<gov.uscourts.ao.mobileBriefcase.model.UserInputData>)"},"rows":[{"cells":["courtId"]},{"cells":["test"]}],"keyword":"Then "},{"result":{"status":"skipped"},"line":27,"name":"User selects one of the proposed orders, enters a description, submits the transaction, verify name is saved to the DB.","match":{"location":"gov.uscourts.ao.mobileBriefcase.stepDefinitions.UIDocketingDPF_StepDefinitions.user_selects_one_of_the_proposed_orders_enters_a_description_submits_the_transaction_verify_name_is_saved_to_the_db()"},"keyword":"Then "}],"tags":[{"name":"@Smoke"},{"name":"@AMB-2960"}]}],"name":"Ability to enter a document description in docWP DPF","description":"","id":"ability-to-enter-a-document-description-in-docwp-dpf","keyword":"Feature","uri":"file:src/test/resources/Features/CATEGORIES/docWP_DPF_AMB-2960.feature","tags":[]}]
+[
+  {
+    "line": 1,
+    "elements": [
+      {
+        "line": 4,
+        "name": "",
+        "description": "\nVerify the cached documents are not deleted and the user is presented with the message \"If you change any Citelink settings, documents cached\non this device will not reflect the change unless deleted and downloaded again.\", \"OK\"\" if the cite link settings change",
+        "id": "citelink-settings;",
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "comments": [
+              {
+                "line": 9,
+                "value": "#Given I am logged into Briefcase"
+              },
+              {
+                "line": 10,
+                "value": "#|environment|userName| password |courtId|"
+              },
+              {
+                "line": 11,
+                "value": "#|test       |test    | test     |test   |"
+              }
+            ],
+            "line": 13,
+            "name": "I select a user",
+            "match": {
+              "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "userType",
+                  "personrole",
+                  "jud"
+                ],
+                "line": 14
+              },
+              {
+                "cells": [
+                  "judge",
+                  "Appellate Judges",
+                  "test"
+                ],
+                "line": 15
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 17,
+            "name": "User selects",
+            "match": {
+              "location": "Common_StepDefinitions.user_selects(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "refCategory",
+                  "caseNumber"
+                ],
+                "line": 18
+              },
+              {
+                "cells": [
+                  "test",
+                  "test"
+                ],
+                "line": 19
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 21,
+            "name": "Verify the individual case referrals have a Sync link in the Case Information panel that downloads the documents in that particular case.",
+            "match": {
+              "location": "AutoSync_stepDefinitions.verify_the_individual_case_referrals_have_a_Sync_link_in_the_Case_Information_panel_that_downloads_the_documents_in_that_particular_case()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "status": "undefined"
+            },
+            "line": 23,
+            "name": "Verify the cached documents are not deleted and the user is presented with the message if the cite link settings change",
+            "match": {},
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 3,
+            "name": "@Smoke"
+          },
+          {
+            "line": 3,
+            "name": "@AMB-2761"
+          },
+          {
+            "line": 3,
+            "name": "@k"
+          }
+        ]
+      }
+    ],
+    "name": "citelink settings",
+    "description": "",
+    "id": "citelink-settings",
+    "keyword": "Feature",
+    "uri": "CATEGORIES/CITELINKS_SETTINGS.feature"
+  }
+]

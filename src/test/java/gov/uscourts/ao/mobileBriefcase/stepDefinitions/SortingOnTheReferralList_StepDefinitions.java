@@ -4,11 +4,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage.Sort;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.cucumber.java.en.Then;
 
 public class SortingOnTheReferralList_StepDefinitions {
 

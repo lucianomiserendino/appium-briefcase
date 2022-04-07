@@ -26,6 +26,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import cucumber.api.DataTable;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
@@ -157,10 +158,10 @@ public class CommonPages extends Base {
 		selectReferral("//XCUIElementTypeOther[@name='Categories']" + containsElement(category));
 	}
 
-//	public static String getDataTable(DataTable data, int index1, int index2) {
-//		List<List<String>> table = data.raw();
-//		return table.get(index1).get(index2);
-//	}
+	public static String getDataTable(DataTable data, int index1, int index2) {
+		List<List<String>> table = data.raw();
+		return table.get(index1).get(index2);
+	}
 
 	public void getCategoryWithCase(List<UserInputData> userInputData) {
 		String category = SystemPropertySetup.getVariable(Variables.REF_CATEGORY, userInputData);

@@ -2,8 +2,8 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static org.junit.Assert.assertTrue;
 
+import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.AutoSyncPage;
-import io.cucumber.java.en.Then;
 
 public class AutoSync_stepDefinitions {
 
@@ -14,6 +14,7 @@ public class AutoSync_stepDefinitions {
 			throws Throwable {
 		page = new AutoSyncPage();
 		assertTrue(page.getReferralSync());
+
 	}
 
 }

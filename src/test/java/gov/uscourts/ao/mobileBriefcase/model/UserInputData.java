@@ -1,5 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.model;
 
+import java.util.Map;
 
 public class UserInputData {
 	private String courtId;
@@ -18,6 +19,7 @@ public class UserInputData {
 	private String db_password;
 	private String stf;
 	private String userType;
+
 
 	public String getPacerInputData(String inputData) {
 		String var = "";

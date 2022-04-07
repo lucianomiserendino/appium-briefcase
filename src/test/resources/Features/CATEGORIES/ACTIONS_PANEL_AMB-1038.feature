@@ -1,6 +1,6 @@
 Feature: Display Actions Panel and actions 
 
-@Smoke @AMB-1038
+@Smoke @AMB-1038 @k
 Scenario: 
 
 	If there are records defined in the mbr_event table, 

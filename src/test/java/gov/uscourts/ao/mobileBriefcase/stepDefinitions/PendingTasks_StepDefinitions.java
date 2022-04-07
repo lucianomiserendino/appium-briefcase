@@ -1,8 +1,8 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.PendingTasksPage;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 
 public class PendingTasks_StepDefinitions {
 
