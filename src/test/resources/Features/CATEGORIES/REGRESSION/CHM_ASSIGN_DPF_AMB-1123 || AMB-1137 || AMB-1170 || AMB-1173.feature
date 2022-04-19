@@ -5,9 +5,9 @@ Scenario:
 	This task is to verify that a chambers user is able to create a new staff assignment,
 	to verify back-end updates when a new staff assignment is created,
 	edit existing staff assignments and verify Back-end after modifying assignment 
-	Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |
+	#Given I am logged into Briefcase 
+	#	|environment    |userName| password |courtId|
+	#	|Integration    |s haenni| Test2025!|test   |
 		
 	Then I select a user 
 		|userType   |personrole        |jud          |

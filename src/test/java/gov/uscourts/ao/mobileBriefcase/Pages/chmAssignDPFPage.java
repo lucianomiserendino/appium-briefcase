@@ -30,7 +30,6 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.clickOnNumberI
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getParameter;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.splitBy;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.tapByCoordinate;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -71,6 +70,11 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	static String assignmentCompleted = "";
 	static String cha_id = "";
 
+	String createSTF = "New Staff Assignment";
+	String actionName = "Auto Test";
+	String cmr_cyv_code = "prhr";
+	static String calendarRows = "//XCUIElementTypeOther[@name='Calendar']/XCUIElementTypeOther[4]/XCUIElementTypeOther";
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='OptionList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static List<MobileElement> optionList;
 
@@ -80,24 +84,47 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"DocumentList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[15]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
 	public static MobileElement commentField2;
 
-	public static void selectADate(chmAssign assign, String x, String y) {
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"Calendar\"]/XCUIElementTypeOther[4]/XCUIElementTypeOther[row]/XCUIElementTypeOther[column]")
+	public static MobileElement calendarColumn;
+
+	@iOSXCUITFindBy(accessibility = "CalendarForward")
+	public static MobileElement nextPage;
+
+	public static String selectADate(chmAssign assign) {
+
+		String date = "";
 		getChmAssign(assign, "tap");
 		performPageLoad(driver);
-		tapByCoordinate(x, y);
+		date = selectDate();
 		performPageLoad(driver);
+		return date;
 	}
 
-	public void createNewStaffAssignment( List<UserInputData> userInputData) {
+	public static String selectDate() {
+		performPageLoad(driver);
+		List<MobileElement> rows = Actions.findElements(By.xpath(calendarRows));
+		List<MobileElement> columns = null;
+		String date = "";
+		for (int i = 1; i < rows.size() + 1; ++i) {
+
+			columns = Actions.findElements(
+					By.xpath("//XCUIElementTypeOther[@name='Calendar']/XCUIElementTypeOther[4]/XCUIElementTypeOther["
+							+ i + "]/XCUIElementTypeOther"));
+
+		}
+		date += clickOnNumberInRange(columns);
+		return changeDateFormat(date.split(" ")[1], "dd/MMMM/yyyy", "M/d/yyyy");
+	}
+
+	public void createNewStaffAssignment(List<UserInputData> userInputData) {
 		String caseNumber = SystemPropertySetup.getVariable(Variables.CASE_NUMBER, userInputData);
 
 		String dpfName = "chmAssign";
-		String elId = getAllColumns(getID(Queries.EL_ID, "Auto Test"), userInputData);
-		String name = SystemPropertySetup.getJudge(userInputData);
+		String elId = getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
+		String name = SystemPropertySetup.getVariable(Variables.JUD, userInputData);
 		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
 		String cmr_cs_caseid = CommonPages.getCaseID(userInputData);
-		String cmr_cyv_code = "prhr";
-			
-		
+
 		/******************
 		 * @AMB-1123 ***
 		 */
@@ -105,23 +132,22 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		 * STEP 1 --Select a staff member
 		 */
 		getChmAssign(chmAssign.STAFF_MEMBER, "tap");
+
 		staffMember += getAvailableStaffMembers(dpfName, elId, cha_ju_pe_id, userInputData);
+
 		String staffFName = splitBy(staffMember, 0);
 		String staffLName = splitBy(staffMember, 1);
 
-		verifyNewStaffAssignment(Assignment.NEW, chmAssign.CREATE, dpfName, elId, cha_ju_pe_id, caseNumber,
-				cmr_cyv_code, staffFName, staffLName, "assignedDateX", "assignedDateY", "assignedDueDateX",
-				"assignedDueDateY", userInputData);
+		createNewSTF(Assignment.NEW, chmAssign.CREATE, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
+				staffFName, staffLName, userInputData);
 
 		cha_id = getCreatedAssignment(Queries.ASSIGNEES_CHA_ID, cha_ju_pe_id, cmr_cs_caseid, userInputData);
 
-		verifyNewStaffAssignment(Assignment.NEW, chmAssign.MODIFY, dpfName, elId, cha_ju_pe_id, caseNumber,
-				cmr_cyv_code,
+		createNewSTF(Assignment.NEW, chmAssign.MODIFY, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
+				staffFName, staffLName, userInputData);
 
-				staffFName, staffLName, "modifiedAssignedDateX", "modifiedAssignedDateY", "modifiedAssignedDueDateX",
-				"modifiedAssignedDueDateY", userInputData);
-
-		terminateStaffAssignment("modifiedAssignedDateX", "modifiedAssignedDateY", userInputData);
+		// terminateStaffAssignment("modifiedAssignedDateX", "modifiedAssignedDateY",
+		// userInputData);
 
 	}
 
@@ -132,9 +158,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		String staffFName = splitBy(staffMember, 0);
 		String staffLName = splitBy(staffMember, 1);
 
-		verifyNewStaffAssignment(assign, chmAssign.MULTIPLE_DPFs, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
-				staffFName, staffLName, "assignedDateX", "assignedDateY", "assignedDueDateX", "assignedDueDateY",
-				userInputData);
+		createNewSTF(assign, chmAssign.MULTIPLE_DPFs, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code, staffFName,
+				staffLName, userInputData);
 
 	}
 
@@ -211,8 +236,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			sort(uiStaffMembers);
 		}
 		assertEquals("********STAFF MEMBERS VALIDATION ERROR!!!********", dbStafMembers, uiStaffMembers);
-		// clickOnRandomValue(allStaffMembers);
-		allStaffMembers.get(0).click();
+		clickOnNumberInRange(allStaffMembers);
+		// allStaffMembers.get(0).click();
 	}
 
 	/**
@@ -273,8 +298,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			 * assignment type won't be displayed after you tap the Please Select button
 			 * next to the Assignment
 			 */
-			List<String> cavDescription = executeQuery(replace(Queries.EXISTING_STAFF_ASSIGNMENTS,
-					"CMR_ID", cmr_id, "PR_FIRST_NAME", pr_first_name, "PR_LAST_NAME", pr_last_name),userInputData);
+			List<String> cavDescription = executeQuery(replace(Queries.EXISTING_STAFF_ASSIGNMENTS, "CMR_ID", cmr_id,
+					"PR_FIRST_NAME", pr_first_name, "PR_LAST_NAME", pr_last_name), userInputData);
 			for (int i = 0; i < cavDescription.size(); i++) {
 				if (cavDescription.size() > 0 && dbAssignmentType.contains(cavDescription.get(i))) {
 					dbAssignmentType.remove(cavDescription.get(i));
@@ -288,7 +313,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		}
 	}
 
-	public void submiTransaction() {
+	public static void submiTransaction() {
 		try {
 			clickOn(submit, yes, ok);
 		} catch (WebDriverException e) {
@@ -296,9 +321,9 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		}
 	}
 
-	public void verifyNewStaffAssignment(Assignment Assignment, chmAssign assign, String dpfName, String elId,
+	public static void createNewSTF(Assignment Assignment, chmAssign assign, String dpfName, String elId,
 			String cha_ju_pe_id, String caseNumber, String cmr_cyv_code, String staffFName, String staffLName,
-			String x1, String y1, String x2, String y2, List<UserInputData> userInputData) {
+			List<UserInputData> userInputData) {
 		/** STEP 2 --Select an assignment */
 		getChmAssign(chmAssign.ASSIGNMENT, "tap");
 
@@ -318,18 +343,17 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		}
 
 		/** STEP 3 --Select an Assigned Date */
-		selectADate(chmAssign.ASSIGNED_DATE, x1, y1);
+		String assignedDate = selectADate(chmAssign.ASSIGNED_DATE);
 
 		/** STEP 4 --Select Assignment Due Date */
-		selectADate(chmAssign.ASSIGNMENT_DUE, x2, y2);
+		String assignmentDueDate = selectADate(chmAssign.ASSIGNMENT_DUE);
 
 		/** STEP 5 --Verify comment, apply and cancel display */
 		verifyElementIsDisplayed(comment);
 		verifyElementIsDisplayed(apply);
 		verifyElementIsDisplayed(cancel);
+
 		String assignment = getChmAssign(chmAssign.ASSIGNMENT, "text");
-		String assignedDate = getChmAssign(chmAssign.ASSIGNED_DATE, "text");
-		String assignmentDue = getChmAssign(chmAssign.ASSIGNMENT_DUE, "text");
 
 		try {
 			commentField1.sendKeys("$$$$$$$$$$$$$");
@@ -343,13 +367,13 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		switch (assign) {
 		case CREATE:
 			contains(apply).click();
-			getANewStaffAssignment(assignment, assignedDate, assignmentDue);
+			getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
 
 			submiTransaction();
 
 			getPanel(Panel.Assignments);
 
-			getANewStaffAssignment(assignment, assignedDate, assignmentDue);
+			getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
 
 			/******************
 			 * @AMB-1137
@@ -364,7 +388,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		case MODIFY:
 			contains(apply).click();
 			/** After the new assignment is created it clicks on it */
-			getANewStaffAssignment(assignment, assignedDate, assignmentDue);
+			getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
 			submiTransaction();
 			clickOnExistingAssignment(staffMember + ", " + assignment, elId, userInputData);
 
@@ -379,21 +403,21 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 				getCreatedRecords(changeFormat(assignedDate), getID(CHD_DATE, cha_id), userInputData);
 			} catch (AssertionError e) {
-				getCreatedRecords(changeFormat(assignmentDue), getID(CHD_DATE, cha_id), userInputData);
+				getCreatedRecords(changeFormat(assignmentDueDate), getID(CHD_DATE, cha_id), userInputData);
 			}
 			break;
 
 		case MULTIPLE_DPFs:
 			contains(apply).click();
-			getANewStaffAssignment(assignment, assignedDate, assignmentDue);
+			getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
 
 		default:
 			break;
 		}
 	}
 
-	public void terminateStaffAssignment(String x1, String y1, List<UserInputData> userInputData) {
-		selectADate(chmAssign.ASSIGNMENT_COMPLETED, "selectDateX", "selectDateY");
+	public void terminateStaffAssignment(List<UserInputData> userInputData) {
+		selectADate(chmAssign.ASSIGNMENT_COMPLETED);
 		assignmentCompleted = getChmAssign(chmAssign.ASSIGNMENT_COMPLETED, "text");
 		contains(apply).click();
 		submiTransaction();
@@ -401,11 +425,11 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	}
 
-	public String changeFormat(String date) {
+	public static String changeFormat(String date) {
 		return changeDateFormat(date, "M/d/yyyy", "yyyy-MM-dd");
 	}
 
-	public String getANewStaffAssignment(String assignment, String assignedDate, String assignmentDue) {
+	public static String getANewStaffAssignment(String assignment, String assignedDate, String assignmentDue) {
 		try {
 			MobileElement modifiedAssignedDate = getExistingAssignment(staffMember + ", " + assignment,
 					"Assigned " + assignedDate);
@@ -456,7 +480,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	}
 
-	public static String getSelectedAssignment(String assignment, int index) {
+	public static String dropDownIndex(String assignment, int index) {
 		return "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther["
 				+ index
 				+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '"
@@ -478,7 +502,6 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	public static void getCreatedRecords(String expected, String actual, List<UserInputData> userInputData) {
 		String CMECF_TABLES = getAllColumns(actual, userInputData);
 
-		
 		String exp = Actions.split(expected, ":", 0);
 		String act = Actions.split(CMECF_TABLES, ":", 0);
 
@@ -525,7 +548,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			break;
 
 		case ASSIGNMENT_DUE:
-			assignment += "Assignment Due";
+			assignment += "Due";
 			index += 9;
 			break;
 
@@ -544,19 +567,16 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		}
 		String act = "";
 		if (action.equals("tap")) {
-			tap(Locator.XPATH,
-					"//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther["
-							+ index
-							+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '"
-							+ assignment + "')]/following::XCUIElementTypeOther[2]/XCUIElementTypeButton");
+			tap(Locator.XPATH, dropDownIndex(assignment, index));
 		} else {
-			act = findElement(By.xpath(getSelectedAssignment(assignment, index))).getText();
+			act = findElement(By.xpath(dropDownIndex(assignment, index))).getText();
 		}
 		return act;
 	}
 
 	public enum chmAssign {
-		STAFF_MEMBER, ASSIGNMENT, ASSIGNED_DATE, ASSIGNMENT_DUE, ASSIGNMENT_COMPLETED, CREATE, MODIFY, TERMINATE, MULTIPLE_DPFs,
+		STAFF_MEMBER, ASSIGNMENT, ASSIGNED_DATE, ASSIGNMENT_DUE, ASSIGNMENT_COMPLETED, CREATE, MODIFY, TERMINATE,
+		MULTIPLE_DPFs,
 	}
 
 	public enum Assignment {

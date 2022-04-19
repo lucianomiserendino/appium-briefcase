@@ -3,32 +3,44 @@
     "line": 1,
     "elements": [
       {
+        "before": [
+          {
+            "result": {
+              "duration": 8658869792,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
         "line": 4,
         "name": "",
-        "description": "\nVerify the cached documents are not deleted and the user is presented with the message \"If you change any Citelink settings, documents cached\non this device will not reflect the change unless deleted and downloaded again.\", \"OK\"\" if the cite link settings change",
-        "id": "citelink-settings;",
+        "description": "This task is to verify that a chambers user is able to create a new staff assignment,\nto verify back-end updates when a new staff assignment is created,\nedit existing staff assignments and verify Back-end after modifying assignment",
+        "id": "chmassign;",
         "type": "scenario",
         "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "status": "skipped"
+              "duration": 23927835250,
+              "status": "passed"
             },
             "comments": [
               {
-                "line": 9,
+                "line": 8,
                 "value": "#Given I am logged into Briefcase"
               },
               {
-                "line": 10,
-                "value": "#|environment|userName| password |courtId|"
+                "line": 9,
+                "value": "#\t|environment    |userName| password |courtId|"
               },
               {
-                "line": 11,
-                "value": "#|test       |test    | test     |test   |"
+                "line": 10,
+                "value": "#\t|Integration    |s haenni| Test2025!|test   |"
               }
             ],
-            "line": 13,
+            "line": 12,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -40,7 +52,7 @@
                   "personrole",
                   "jud"
                 ],
-                "line": 14
+                "line": 13
               },
               {
                 "cells": [
@@ -48,16 +60,17 @@
                   "Appellate Judges",
                   "test"
                 ],
-                "line": 15
+                "line": 14
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 17688083500,
+              "status": "passed"
             },
-            "line": 17,
+            "line": 16,
             "name": "User selects",
             "match": {
               "location": "Common_StepDefinitions.user_selects(UserInputData\u003e)"
@@ -68,59 +81,93 @@
                   "refCategory",
                   "caseNumber"
                 ],
-                "line": 18
+                "line": 17
               },
               {
                 "cells": [
                   "test",
                   "test"
                 ],
-                "line": 19
+                "line": 18
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 170473603334,
+              "status": "passed"
             },
-            "line": 21,
-            "name": "Verify the individual case referrals have a Sync link in the Case Information panel that downloads the documents in that particular case.",
+            "line": 20,
+            "name": "User  selects an action and verifies the name of the action displays in the dark blue banner",
             "match": {
-              "location": "AutoSync_stepDefinitions.verify_the_individual_case_referrals_have_a_Sync_link_in_the_Case_Information_panel_that_downloads_the_documents_in_that_particular_case()"
+              "location": "Common_StepDefinitions.user_selects_an_action_and_verifies_the_name_of_the_action_displays_in_the_dark_blue_banner(UserInputData\u003e)"
             },
-            "keyword": "And "
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 22
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 23
+              }
+            ],
+            "keyword": "Then "
           },
           {
             "result": {
-              "status": "undefined"
+              "duration": 806113440875,
+              "status": "passed"
             },
-            "line": 23,
-            "name": "Verify the cached documents are not deleted and the user is presented with the message if the cite link settings change",
-            "match": {},
+            "line": 24,
+            "name": "user creates a new assignment, checks the back-end, edits existing assignment and verifies db is updated properly",
+            "match": {
+              "location": "CreateStaffAssignments_StepDefinitions.user_creates_a_new_assignment_checks_the_back_end_edits_existing_assignment_and_verifies_db_is_updated_properly()"
+            },
             "keyword": "Then "
           }
         ],
         "tags": [
           {
             "line": 3,
+            "name": "@AMB-1123"
+          },
+          {
+            "line": 3,
+            "name": "@AMB-1137"
+          },
+          {
+            "line": 3,
+            "name": "@AMB-1170"
+          },
+          {
+            "line": 3,
+            "name": "@AMB-1173"
+          },
+          {
+            "line": 3,
+            "name": "@AMB-1466"
+          },
+          {
+            "line": 3,
+            "name": "@S"
+          },
+          {
+            "line": 3,
             "name": "@Smoke"
-          },
-          {
-            "line": 3,
-            "name": "@AMB-2761"
-          },
-          {
-            "line": 3,
-            "name": "@k"
           }
         ]
       }
     ],
-    "name": "citelink settings",
+    "name": "chmAssign",
     "description": "",
-    "id": "citelink-settings",
+    "id": "chmassign",
     "keyword": "Feature",
-    "uri": "CATEGORIES/CITELINKS_SETTINGS.feature"
+    "uri": "CATEGORIES/REGRESSION/CHM_ASSIGN_DPF_AMB-1123 || AMB-1137 || AMB-1170 || AMB-1173.feature"
   }
 ]
