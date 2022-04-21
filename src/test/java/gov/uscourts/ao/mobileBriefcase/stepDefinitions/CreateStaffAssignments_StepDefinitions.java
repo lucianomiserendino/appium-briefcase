@@ -39,24 +39,6 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 
 	}
 
-	@Then("^User selects a staff member, assignment type, and at least one date, \"([^\"]*)\", \"([^\"]*)\" , \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\);$")
-	public void user_select_a_staff_member_assignment_type_and_at_least_one_date(String dbType, String dpfName,
-			String elId, String cha_ju_pe_id, String cmr_cyv_code, String cmr_cs_caseid, String caseNumber) {
-		page1 = new chmAssignDPFPage();
-		List<UserInputData> userInputData = null;
-		page1.createStaffAssignment(Assignment.NEW, dpfName, elId, cha_ju_pe_id, cmr_cyv_code, cmr_cs_caseid,
-				caseNumber, userInputData);
-	}
 
-	@Then("^User selects the same staff member, a different assignment type, and at least one date, \"([^\"]*)\", \"([^\"]*)\" , \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\);$")
-	public void user_selects_the_same_staff_member_a_different_assignment_type_and_at_least_one_date(String dbType,
-			String dpfName, String elId, String cha_ju_pe_id, String cmr_cyv_code, String cmr_cs_caseid,
-			String caseNumber) {
-		page1 = new chmAssignDPFPage();
-		List<UserInputData> userInputData = null;
-		page1.createStaffAssignment(Assignment.EXISTING, dpfName, elId, cha_ju_pe_id, cmr_cyv_code, cmr_cs_caseid,
-				caseNumber, userInputData);
-		page1.submiTransaction();
-	}
 
 }

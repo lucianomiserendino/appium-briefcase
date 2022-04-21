@@ -125,56 +125,15 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
 		String cmr_cs_caseid = CommonPages.getCaseID(userInputData);
 
-		/******************
-		 * @AMB-1123 ***
-		 */
-		/***
-		 * STEP 1 --Select a staff member
-		 */
-		getChmAssign(chmAssign.STAFF_MEMBER, "tap");
-
-		staffMember += getAvailableStaffMembers(dpfName, elId, cha_ju_pe_id, userInputData);
-
-		String staffFName = splitBy(staffMember, 0);
-		String staffLName = splitBy(staffMember, 1);
-
 		createNewSTF(Assignment.NEW, chmAssign.CREATE, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
-				staffFName, staffLName, userInputData);
+				userInputData);
 
 		cha_id = getCreatedAssignment(Queries.ASSIGNEES_CHA_ID, cha_ju_pe_id, cmr_cs_caseid, userInputData);
 
 		createNewSTF(Assignment.NEW, chmAssign.MODIFY, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
-				staffFName, staffLName, userInputData);
-
-		// terminateStaffAssignment("modifiedAssignedDateX", "modifiedAssignedDateY",
-		// userInputData);
-
-	}
-
-	public void createStaffAssignment(Assignment assign, String dpfName, String elId, String cha_ju_pe_id,
-			String cmr_cyv_code, String cmr_cs_caseid, String caseNumber, List<UserInputData> userInputData) {
-		getChmAssign(chmAssign.STAFF_MEMBER, "tap");
-		staffMember = getAvailableStaffMembers(dpfName, elId, cha_ju_pe_id, userInputData);
-		String staffFName = splitBy(staffMember, 0);
-		String staffLName = splitBy(staffMember, 1);
-
-		createNewSTF(assign, chmAssign.MULTIPLE_DPFs, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code, staffFName,
-				staffLName, userInputData);
-
-	}
-
-	public void getNewAssignment(Assignment assign, String dpfName, String elId, String cha_ju_pe_id,
-			String cmr_cyv_code, String cmr_cs_caseid, String caseNumber, List<UserInputData> userInputData) {
-
-		createStaffAssignment(Assignment.NEW, dpfName, elId, cha_ju_pe_id, cmr_cyv_code, cmr_cs_caseid, caseNumber,
 				userInputData);
-	}
+		terminateStaffAssignment(userInputData);
 
-	public void getExistingAssignment(Assignment assign, String dpfName, String elId, String cha_ju_pe_id,
-			String cmr_cyv_code, String cmr_cs_caseid, String caseNumber, List<UserInputData> userInputData) {
-
-		createStaffAssignment(Assignment.EXISTING, dpfName, elId, cha_ju_pe_id, cmr_cyv_code, cmr_cs_caseid, caseNumber,
-				userInputData);
 	}
 
 	/**
@@ -185,7 +144,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	 * in the judge's chambers -----Screen param = staff - list all staff members
 	 * inthe judge's chambers
 	 */
-	public static String getAvailableStaffMembers(String dpfName, String elId, String peID,
+	public static String getAvailableStaffMembers(String stf, String dpfName, String elId, String peID,
 			List<UserInputData> userInputData) {
 
 		String screenTypeParam = getParameter(getAllColumns(getID(MBR_NOTE, elId), userInputData), dpfName, 0);
@@ -213,7 +172,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			break;
 		}
 
-		getListOfAvailableStaffMembers(STAFF_MEMBERS_FIRST_NAME, peID, screenParam, 0, userInputData);
+		getListOfAvailableStaffMembers(stf, STAFF_MEMBERS_FIRST_NAME, peID, screenParam, 0, userInputData);
 		performPageLoad(driver);
 		return getChmAssign(chmAssign.STAFF_MEMBER, "text");
 	}
@@ -222,8 +181,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	 * gets the list of staff based on the screen parameter in the DPF, compares
 	 * staff members that are displayed on the ui with db and selects one
 	 */
-	public static void getListOfAvailableStaffMembers(String staffMember, String peID, String screenTypeParam,
-			int index, List<UserInputData> userInputData) {
+	public static void getListOfAvailableStaffMembers(String stf, String staffMember, String peID,
+			String screenTypeParam, int index, List<UserInputData> userInputData) {
 
 		List<String> dbStafMembers = executeQuery(getText(getID(staffMember, peID), screenTypeParam), userInputData);
 		sort(dbStafMembers);
@@ -235,9 +194,11 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			uiStaffMembers.add(staffMembers.getText().split(" ")[index]);
 			sort(uiStaffMembers);
 		}
-		assertEquals("********STAFF MEMBERS VALIDATION ERROR!!!********", dbStafMembers, uiStaffMembers);
+		if (stf.equals("new")) {
+			assertEquals("********STAFF MEMBERS VALIDATION ERROR!!!********", dbStafMembers, uiStaffMembers);
+		}
 		clickOnNumberInRange(allStaffMembers);
-		// allStaffMembers.get(0).click();
+
 	}
 
 	/**
@@ -318,101 +279,6 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			clickOn(submit, yes, ok);
 		} catch (WebDriverException e) {
 			e.getMessage();
-		}
-	}
-
-	public static void createNewSTF(Assignment Assignment, chmAssign assign, String dpfName, String elId,
-			String cha_ju_pe_id, String caseNumber, String cmr_cyv_code, String staffFName, String staffLName,
-			List<UserInputData> userInputData) {
-		/** STEP 2 --Select an assignment */
-		getChmAssign(chmAssign.ASSIGNMENT, "tap");
-
-		switch (Assignment) {
-		case NEW:
-			getAssignmentType(dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code, staffFName, staffLName,
-					userInputData);
-			break;
-
-		case EXISTING:
-
-			performPageLoad(driver);
-			List<MobileElement> allAssignmenTypes = optionList;
-			clickOnNumberInRange(allAssignmenTypes);
-
-			break;
-		}
-
-		/** STEP 3 --Select an Assigned Date */
-		String assignedDate = selectADate(chmAssign.ASSIGNED_DATE);
-
-		/** STEP 4 --Select Assignment Due Date */
-		String assignmentDueDate = selectADate(chmAssign.ASSIGNMENT_DUE);
-
-		/** STEP 5 --Verify comment, apply and cancel display */
-		verifyElementIsDisplayed(comment);
-		verifyElementIsDisplayed(apply);
-		verifyElementIsDisplayed(cancel);
-
-		String assignment = getChmAssign(chmAssign.ASSIGNMENT, "text");
-
-		try {
-			commentField1.sendKeys("$$$$$$$$$$$$$");
-		} catch (NoSuchElementException e) {
-
-			if (!commentField2.getText().isEmpty()) {
-				commentField2.clear();
-				commentField2.sendKeys("$$$$$$$$$$$$$");
-			}
-		}
-		switch (assign) {
-		case CREATE:
-			contains(apply).click();
-			getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
-
-			submiTransaction();
-
-			getPanel(Panel.Assignments);
-
-			getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
-
-			/******************
-			 * @AMB-1137
-			 */
-
-			newDBAssignment(cha_ju_pe_id, elId, staffFName, staffLName, assignment, userInputData);
-
-			clickOnExistingAssignment(staffMember + ", " + assignment, elId, userInputData);
-
-			break;
-
-		case MODIFY:
-			contains(apply).click();
-			/** After the new assignment is created it clicks on it */
-			getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
-			submiTransaction();
-			clickOnExistingAssignment(staffMember + ", " + assignment, elId, userInputData);
-
-			/*****
-			 * @AMB-1173
-			 * 
-			 * Back-end modify assignment updates
-			 */
-			getCreatedRecords(getAllColumns(getText(CAV_CODE, assignment), userInputData), getID(CHA_CAV_CODE, cha_id),
-					userInputData);
-			try {
-
-				getCreatedRecords(changeFormat(assignedDate), getID(CHD_DATE, cha_id), userInputData);
-			} catch (AssertionError e) {
-				getCreatedRecords(changeFormat(assignmentDueDate), getID(CHD_DATE, cha_id), userInputData);
-			}
-			break;
-
-		case MULTIPLE_DPFs:
-			contains(apply).click();
-			getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
-
-		default:
-			break;
 		}
 	}
 
@@ -581,6 +447,129 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	public enum Assignment {
 		NEW, EXISTING
+	}
+
+	public static void createNewSTF(Assignment Assignment, chmAssign assign, String dpfName, String elId,
+			String cha_ju_pe_id, String caseNumber, String cmr_cyv_code, List<UserInputData> userInputData) {
+		/** STEP 2 --Select an assignment */
+
+		/******************
+		 * @AMB-1123 ***
+		 */
+		/***
+		 * STEP 1 --Select a staff member
+		 */
+		getChmAssign(chmAssign.STAFF_MEMBER, "tap");
+
+		String staffFName = "";
+		String staffLName = "";
+
+		switch (assign) {
+		case CREATE:
+			staffMember = getAvailableStaffMembers("new", dpfName, elId, cha_ju_pe_id, userInputData);
+
+			break;
+
+		case MODIFY:
+
+			staffMember = getAvailableStaffMembers("existing", dpfName, elId, cha_ju_pe_id, userInputData);
+
+		default:
+			break;
+
+		}
+		staffFName = splitBy(staffMember, 0);
+		staffLName = splitBy(staffMember, 1);
+
+		getChmAssign(chmAssign.ASSIGNMENT, "tap");
+
+		switch (Assignment) {
+		case NEW:
+			getAssignmentType(dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code, staffFName, staffLName,
+					userInputData);
+			break;
+
+		case EXISTING:
+
+			performPageLoad(driver);
+			List<MobileElement> allAssignmenTypes = optionList;
+			clickOnNumberInRange(allAssignmenTypes);
+
+			break;
+		}
+
+		/** STEP 3 --Select an Assigned Date */
+		String assignedDate = selectADate(chmAssign.ASSIGNED_DATE);
+
+		/** STEP 4 --Select Assignment Due Date */
+		String assignmentDueDate = selectADate(chmAssign.ASSIGNMENT_DUE);
+
+		/** STEP 5 --Verify comment, apply and cancel display */
+		verifyElementIsDisplayed(comment);
+		verifyElementIsDisplayed(apply);
+		verifyElementIsDisplayed(cancel);
+
+		String assignment = getChmAssign(chmAssign.ASSIGNMENT, "text");
+
+		try {
+			commentField1.sendKeys("$$$$$$$$$$$$$");
+		} catch (NoSuchElementException e) {
+
+			if (!commentField2.getText().isEmpty()) {
+				commentField2.clear();
+				commentField2.sendKeys("$$$$$$$$$$$$$");
+			}
+		}
+		switch (assign) {
+		case CREATE:
+			contains(apply).click();
+			getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
+
+			submiTransaction();
+
+			getPanel(Panel.Assignments);
+
+			getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
+
+			/******************
+			 * @AMB-1137
+			 */
+
+			newDBAssignment(cha_ju_pe_id, elId, staffFName, staffLName, assignment, userInputData);
+
+			clickOnExistingAssignment(staffMember + ", " + assignment, elId, userInputData);
+
+			break;
+
+		case MODIFY:
+			contains(apply).click();
+			/** After the new assignment is created it clicks on it */
+			getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
+			submiTransaction();
+			clickOnExistingAssignment(staffMember + ", " + assignment, elId, userInputData);
+
+			/*****
+			 * @AMB-1173
+			 * 
+			 * Back-end modify assignment updates
+			 */
+			getCreatedRecords(getAllColumns(getText(CAV_CODE, assignment), userInputData), getID(CHA_CAV_CODE, cha_id),
+					userInputData);
+			try {
+
+				getCreatedRecords(changeFormat(assignedDate), getID(CHD_DATE, cha_id), userInputData);
+			} catch (AssertionError e) {
+				getCreatedRecords(changeFormat(assignmentDueDate), getID(CHD_DATE, cha_id), userInputData);
+			}
+			break;
+
+		case MULTIPLE_DPFs:
+			contains(apply).click();
+			getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
+
+		default:
+			break;
+		}
 	}
 
 }

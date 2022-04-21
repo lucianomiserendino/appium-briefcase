@@ -1,15 +1,24 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.clicksOn;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -33,32 +42,44 @@ public class CaseQueryPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='On Device']")
 	public static MobileElement on_device;
 
-	public void searchForACase(String caseNum) {
+	// @WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
+	public static List<MobileElement> caseNum;
 
-		searchIcon.click();
-		searchByCase(caseNum, 6);
-		tap(Locator.XPATH, containsElement("Back"));
-		searchTextField.clear();
-		searchByCase(caseNum, 7);
+	public void searchForACase() {
+		
+		
+		String caseNum=searchBy(Search.caseNumber);
+		
+		performPageLoad(driver);
+		
+		if(contains("Dashboard").isDisplayed()) {
+			contains("Dashboard").click();
+			Page.sleep(5000);
+		}
+		clicksOn(searchIcon);
+		searchByCase(caseNum);
+
 	}
 
-	public void searchByCase(String caseN, int index) {
-		sendKeys(searchTextField, caseN.substring(0, index) + "*");
-		searchBTN.click();
+	public void searchByCase(String caseN) {
+		sendKeys(searchTextField, caseN);
+		clicksOn(searchBTN);
 		performPageLoad(driver);
 		scrollDownIfNotDisplayed(containsElement(caseN));
 		performPageLoad(driver);
+
 		assertTrue("APP IS NOT RETURNING CASE LIST FOR SOME WILDCARD SEARCHES",
-				contains("Case #" + caseN).isDisplayed());
+				isDisplayed(Locator.XPATH, containsElement("Case #" + caseN)));
 	}
 
 	public void viewInfo(String caseNum, MobileElement el, String text) {
-
-		searchIcon.click();
-		sendKeys(searchTextField, caseNum);
-		searchBTN.click();
 		performPageLoad(driver);
-		el.click();
+		clicksOn(searchIcon);
+		sendKeys(searchTextField, caseNum);
+		clicksOn(searchBTN);
+		performPageLoad(driver);
+		clicksOn(el);
 		performPageLoad(driver);
 		contains(caseNum).click();
 		assertTrue(contains(text).isDisplayed());
@@ -72,6 +93,74 @@ public class CaseQueryPage extends AppiumPageFactory {
 	public void viewTheInformationOnTheDevice(String caseNum) {
 		viewInfo(caseNum, on_device, "Case Information");
 
+	}
+
+	public String  searchBy(Search search) {
+
+		String caseN = selectRandomCaseNumber(0).split(" ")[0];
+
+		String searchType = "";
+
+		switch (search) {
+
+		case partyName:
+
+			String partyN = selectRandomCaseNumber(1).split(" ")[1];
+
+			if (checkForSpecialChar(partyN) != null && !checkForSpecialChar(partyN).isEmpty()) {
+				searchType = partyN.split(checkForSpecialChar(partyN)).toString();
+			} else {
+				searchType = partyN;
+			}
+			break;
+
+		case caseNumber:
+			searchType = caseN;
+			break;
+
+		case wildcard:
+
+			searchType = caseN.substring(0, 6) + "*";
+
+		default:
+			break;
+		}
+		return searchType;
+	}
+
+	
+	
+	
+	public static String selectRandomCaseNumber(int index) {
+		String referral = "";
+		Page.sleep(20000);
+		List<String> list = Utility.retrieveAllReferrals(caseNum, " ", index);
+		MobileElement uiResult = findElementBy(Locator.XPATH, "//XCUIElementTypeStaticText[contains(@name, '"
+				+ list.get(Utility.getRandomInt(list.size() - 1)) + "')]");
+		referral = uiResult.getText();
+		return referral;
+
+	}
+
+	public static String checkForSpecialChar(String inputString) {
+
+		String speChar = "";
+
+		Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(inputString);
+
+		int count = 0;
+		while (m.find()) {
+			count = count + 1;
+
+			speChar = Character.toString(inputString.charAt(m.start()));
+		}
+		return speChar;
+
+	}
+
+	public enum Search {
+		wildcard, caseNumber, partyName
 	}
 
 }
