@@ -249,6 +249,7 @@ public class DashboardPage extends AppiumPageFactory {
 					isDisplayed = true;
 			}
 		}
+		
 		return isDisplayed;
 
 	}

@@ -30,13 +30,10 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 		page1.createNewStaffAssignment(userInputData);
 	}
 
-	@Then("^User clicks on create New Staff Assignment$")
-	public void user_clicks_on_create_New_Staff_Assignment() {
-		page = new CommonPages();
-		assertTrue(isDisplayed(containsElement("Assignments")));
-		scrollDownIfNotDisplayed("(" + containsElement("NewStaffButton") + ")[1]");
-		page.verifyElementIsDisplayed("Create Assignment");
+	@Then("^user  verifies that briefcase events include the chmSilentAssign DPF$")
+	public void user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(List<UserInputData> userInputData)  {
 
+	
 	}
 
 
