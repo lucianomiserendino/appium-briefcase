@@ -31,6 +31,12 @@ public abstract class Base implements iOSCapabilities {
 	public static WebDriver winAppDriver;
 	public static WebElement webElement;
 
+	private String BUNDLE_ID_SETTINGS = "com.apple.Preferences";
+	// locator for WiFi cell in settings app
+	private String WIFI_CELL_XPATH = "//XCUIElementTypeStaticText[@name=\"Wi-Fi\"]";
+	// locator for WiFi switch to turn on/off
+	private String WIFI_SWITCH_XPATH = "//XCUIElementTypeSwitch[@name=\"Wi-Fi\"]";
+	
 	public static WebDriver getInstance(Driver drivers) {
 
 		try {
@@ -126,10 +132,10 @@ public abstract class Base implements iOSCapabilities {
 		SetCapabilitiy(AUTOMATION_NAME);
 		SetCapabilitiy(DEVICE_NAME);
 		SetCapabilitiy(BROWSER_NAME);
-		String singleTabEditor=getProperty("singleTableEditor").replace("courtId", courtId).replace("env", env);
+		String singleTabEditor = getProperty("singleTableEditor").replace("courtId", courtId).replace("env", env);
 		driver.get(singleTabEditor);
 		Page.sleep(20000);
-	
+
 	}
 
 	/**
@@ -164,12 +170,12 @@ public abstract class Base implements iOSCapabilities {
 		try {
 			new BufferedReader(
 					new InputStreamReader(Runtime.getRuntime().exec("xcrun simctl list devices").getInputStream()))
-							.lines().forEach(s -> {
-								if (s.contains(ipad) && s.contains("Booted")) {
-									udid.add(s.substring(s.indexOf("ion)") + 6, s.indexOf("ion)") + 42));
-								}
-								;
-							});
+					.lines().forEach(s -> {
+						if (s.contains(ipad) && s.contains("Booted")) {
+							udid.add(s.substring(s.indexOf("ion)") + 6, s.indexOf("ion)") + 42));
+						}
+						;
+					});
 		} catch (IOException e) {
 			e.getMessage();
 		}
@@ -177,9 +183,32 @@ public abstract class Base implements iOSCapabilities {
 
 	}
 
+
+
+	public String getSettingsBundleID() {
+		return BUNDLE_ID_SETTINGS;
+	}
+
+	public MobileElement getWiFiCell() {
+		return driver.findElementByXPath(WIFI_CELL_XPATH);
+	}
+
+	public MobileElement getWifiSwitch() {
+		return driver.findElementByXPath(WIFI_SWITCH_XPATH);
+	}
+
+	// method to get current WiFi status
+	public String getWifiStatus() {
+		String wifiStatus = null;
+		do {
+			wifiStatus = getWifiSwitch().getAttribute("value");
+		} while (wifiStatus == null);
+		
+		return wifiStatus;
+	}
+
 	public enum Driver {
 		IOS, WINDOWS, WEBRIVER
 	}
-
 
 }

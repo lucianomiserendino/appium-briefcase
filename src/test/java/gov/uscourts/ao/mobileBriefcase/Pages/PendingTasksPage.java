@@ -183,35 +183,5 @@ public class PendingTasksPage extends AppiumPageFactory {
 						+ index + "]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText");
 	}
 
-	public static MobileElement getExistingAssignment(String assineeName, String AssignmentTypeAndDate) {
-		return findElement(By.xpath("//*[contains(@name, '" + assineeName
-				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + AssignmentTypeAndDate + "')]"));
-	}
-
-	public void getJudgeAssignment(List<UserInputData> userInputData, String assineeName,
-			String AssignmentTypeAndDate) {
-		getPendingSubFolder("MyAssignments");
-
-		List<String> list = Utility.retrieveAllReferrals(caseNum, " ", 0);
-
-		Page.sleep(20000);
-
-		MobileElement uiResult = findElementBy(Locator.XPATH, "//XCUIElementTypeStaticText[contains(@name, '"
-				+ list.get(Utility.getRandomInt(list.size() - 1)) + "')]");
-
-		uiResult.click();
-
-		boolean isDisplayed = false;
-
-		try {
-			MobileElement el = getExistingAssignment(assineeName, AssignmentTypeAndDate);
-			if (el.isDisplayed())
-				isDisplayed = true;
-		} catch (WebDriverException e) {
-			isDisplayed = false;
-		}
-		assertTrue(isDisplayed);
-
-	}
 
 }
