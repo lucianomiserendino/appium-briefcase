@@ -1,5 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
@@ -7,15 +9,22 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
+import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.Assignment;
+import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.chmAssign;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -34,6 +43,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 	public static List<MobileElement> GroupIcon;
 
 	String actionName = "Auto Test";
+	String cmr_cyv_code = "prhr";
 
 	public void createChmSilentAssign(List<UserInputData> userInputData) {
 
@@ -87,6 +97,45 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		}
 		assertTrue(isDisplayed);
 
+	}
+	public void gjhg(String caseNumber, List<UserInputData> userInputData) {
+		String dpfName = "chmAssign";
+		String elId = getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
+		String name = SystemPropertySetup.getVariable(Variables.JUD, userInputData);
+		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
+
+		chmAssignDPFPage.createNewSTF(Assignment.NEW, chmAssign.CREATE, dpfName, elId, cha_ju_pe_id, caseNumber,
+				cmr_cyv_code, userInputData);
+
+		assertTrue(getDuplicateAssignments(chmAssignDPFPage.optionList));
+	}
+
+	public boolean getDuplicateAssignments(List<MobileElement> assignments) {
+
+		String[] txt = new String[assignments.size()];
+		int k = 0;
+
+		for (MobileElement a : assignments) {
+			txt[k] = a.getText();
+			k++;
+		}
+
+		String[] array = { txt[k] };
+		ArrayList<String> str = new ArrayList<String>();
+		for (String s : array) {
+			str.add(s);
+		}
+		boolean asn = false;
+		for (int i = 0; i < array.length; i++) {
+			str.remove(array[i]);
+			for (int j = 0; j < str.size(); j++) {
+				if (array[j].equals(str.get(j))) {
+					System.out.println(str.get(j) + " " + array[j]);
+					asn = true;
+				}
+			}
+		}
+		return asn;
 	}
 
 }

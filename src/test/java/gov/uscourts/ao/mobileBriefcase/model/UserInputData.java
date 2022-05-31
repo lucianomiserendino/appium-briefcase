@@ -57,18 +57,23 @@ public class UserInputData {
 		case "hostname":
 			var = hostname;
 			break;
+			
 		case "db_username":
 			var = db_username;
 			break;
+			
 		case "db_password":
 			var = db_password;
 			break;
+			
 		case "db_dbservername":
 			var = db_servername;
 			break;
+			
 		case "db_port":
 			var = db_port;
 			break;
+			
 		case "db_Schema":
 			var = db_Schema;
 			break;

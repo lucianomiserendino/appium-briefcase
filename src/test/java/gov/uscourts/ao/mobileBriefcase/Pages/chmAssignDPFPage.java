@@ -225,7 +225,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			} else {
 				/**
 				 * If the assignment type parameter contains a colon delimited list, use this
-				 * query
+				 * query 
 				 */
 				getValidAssignmentTypes(
 						getText(ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST,
