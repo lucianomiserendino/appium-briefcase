@@ -98,7 +98,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		assertTrue(isDisplayed);
 
 	}
-	public void gjhg(String caseNumber, List<UserInputData> userInputData) {
+	public void submitChmSilentAssign(String caseNumber, List<UserInputData> userInputData) {
 		String dpfName = "chmAssign";
 		String elId = getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
 		String name = SystemPropertySetup.getVariable(Variables.JUD, userInputData);
