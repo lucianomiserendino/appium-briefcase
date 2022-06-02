@@ -19,20 +19,26 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 	static chmAssignDPFPage page1;
 	String staffMember = "";
 
-	@Then("^user creates a new assignment, checks the back-end, edits existing assignment and verifies db is updated properly$")
-	public void user_creates_a_new_assignment_checks_the_back_end_edits_existing_assignment_and_verifies_db_is_updated_properly() {
+//	@Then("^user creates a new assignment, checks the back-end, edits existing assignment and verifies db is updated properly$")
+//	public void user_creates_a_new_assignment_checks_the_back_end_edits_existing_assignment_and_verifies_db_is_updated_properly() {
+//		page = new CommonPages();
+//		List<UserInputData> userInputData = null;
+//		assertTrue(isDisplayed(containsElement("Assignments")));
+//		scrollDownIfNotDisplayed("(" + containsElement("NewStaffButton") + ")[1]");
+//		page.verifyElementIsDisplayed("Create Assignment");
+//		page1 = new chmAssignDPFPage();
+//		page1.createNewStaffAssignment(userInputData);
+//	}
+
+	@Then("^user  verifies that briefcase events include the chmSilentAssign DPF$")
+	public void user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(List<UserInputData> userInputData)  {
 		page = new CommonPages();
-		List<UserInputData> userInputData = null;
+	//	List<UserInputData> userInputData = null;
 		assertTrue(isDisplayed(containsElement("Assignments")));
 		scrollDownIfNotDisplayed("(" + containsElement("NewStaffButton") + ")[1]");
 		page.verifyElementIsDisplayed("Create Assignment");
 		page1 = new chmAssignDPFPage();
-		page1.createNewStaffAssignment(userInputData);
-	}
-
-	@Then("^user  verifies that briefcase events include the chmSilentAssign DPF$")
-	public void user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(List<UserInputData> userInputData)  {
-
+		page1.createNewStaffAssignment(Document_StepDefinitions.referral,userInputData);
 	
 	}
 

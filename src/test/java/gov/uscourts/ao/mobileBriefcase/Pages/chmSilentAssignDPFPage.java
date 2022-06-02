@@ -2,14 +2,18 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getParameter;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -21,10 +25,10 @@ import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.Assignment;
 import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.chmAssign;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -38,9 +42,12 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(id = "My Assignments")
 	public static MobileElement MyAssignments;
-	
+
 	@iOSXCUITFindBy(accessibility = "GroupIcon")
 	public static List<MobileElement> GroupIcon;
+
+	@iOSXCUITFindBy(accessibility = "//XCUIElementTypeStaticText[@name=\"Assignments\"]//following::XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
+	public static List<MobileElement> judgeAssignments;
 
 	String actionName = "Auto Test";
 	String cmr_cyv_code = "prhr";
@@ -61,13 +68,11 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		return findElement(By.xpath("//*[contains(@name, '" + assineeName
 				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + AssignmentTypeAndDate + "')]"));
 	}
-	
-	
 
 	public void getJudgeAssignment(List<UserInputData> userInputData, String assineeName,
 			String AssignmentTypeAndDate) {
 		PendingTasksPage.getPendingSubFolder("MyAssignments");
-		
+
 		for (int i = 1; i < GroupIcon.size() + 1; i++) {
 			String groupIcon = "(//XCUIElementTypeStaticText[@name='GroupIcon'])[";
 			while (findElements(
@@ -98,10 +103,11 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		assertTrue(isDisplayed);
 
 	}
+
 	public void submitChmSilentAssign(String caseNumber, List<UserInputData> userInputData) {
 		String dpfName = "chmAssign";
 		String elId = getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
-		String name = SystemPropertySetup.getVariable(Variables.JUD, userInputData);
+		String name = getLoggedInJudge(userInputData);
 		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
 
 		chmAssignDPFPage.createNewSTF(Assignment.NEW, chmAssign.CREATE, dpfName, elId, cha_ju_pe_id, caseNumber,
@@ -136,6 +142,39 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 			}
 		}
 		return asn;
+	}
+
+	public String getLoggedInJudge(List<UserInputData> userInputData) {
+		return SystemPropertySetup.getVariable(Variables.JUD, userInputData);
+
+	}
+
+	public void getJudgeAssignments(String elID, List<UserInputData> userInputData) {
+
+		String loggedInJudge = getLoggedInJudge(userInputData);
+		String[] panelJudge = contains("Panel").getText().split(": ")[1].split(" Inv")[0].split(",");
+		String mode = getParameter(getAllColumns(getID(MBR_NOTE, elID), userInputData), "chmSilentAssign", 0);
+
+		List<String> assign = new ArrayList<>();
+
+		Iterator<MobileElement> itr = judgeAssignments.iterator();
+		int size = judgeAssignments.size();
+		while (itr.hasNext()) {
+			assign.add(itr.next().getText().trim());
+		}
+
+		if (mode.equals("term") | mode.equals("termAllRelief")) {
+			assign.remove(loggedInJudge);
+			assertEquals(judgeAssignments.size(), size - 1);
+
+		} else if (mode.equals("termPanel") | mode.equals("termAllReliefPanel")) {
+			for (String judges : panelJudge) {
+				assign.remove(judges.trim());
+				assertTrue(judgeAssignments.size() < size);
+			}
+
+		}
+
 	}
 
 }

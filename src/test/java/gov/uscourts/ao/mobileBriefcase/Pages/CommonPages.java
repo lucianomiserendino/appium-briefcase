@@ -33,6 +33,8 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.page.common.Base.Driver;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
@@ -44,7 +46,11 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 public class CommonPages extends Base {
 	public CommonPages() {
 
-		initElements(new AppiumFieldDecorator(driver), this);
+		//initElements(new AppiumFieldDecorator(driver), this);
+		
+
+			initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
+		
 	}
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther[5]/XCUIElementTypeTextField")
@@ -267,7 +273,18 @@ public class CommonPages extends Base {
 		return getAllColumns(replace(Queries.CMR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id),
 				userInputData);
 	}
+	
+	public static String getCMRID(String caseNum,List<UserInputData> userInputData) {
 
+		String name = SystemPropertySetup.getJudge(userInputData);
+		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
+
+		String caseId = CommonPages.getCaseID(caseNum,userInputData);
+
+		return getAllColumns(replace(Queries.CMR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id),
+				userInputData);
+	}
+	
 	public static String getCCRID(List<UserInputData> userInputData) {
 
 		String name = SystemPropertySetup.getJudge(userInputData);
@@ -291,6 +308,15 @@ public class CommonPages extends Base {
 
 	public static String getCaseID(List<UserInputData> table) {
 		String caseNumber = SystemPropertySetup.getVariable(Variables.CASE_NUMBER, table);
+		
+		
+		return getAllColumns(replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, caseNumber), "CS_NUMBER",
+				getCase(Case.CASE_NUMBER, caseNumber)), table);
+	}
+	
+	
+	public static String getCaseID(String caseNumber, List<UserInputData> table) {
+		
 		return getAllColumns(replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, caseNumber), "CS_NUMBER",
 				getCase(Case.CASE_NUMBER, caseNumber)), table);
 	}
@@ -337,6 +363,7 @@ public class CommonPages extends Base {
 	}
 
 	public static void getGroupIcons() {
+		performPageLoad(driver);
 
 		for (int i = 1; i < GroupIcon.size() + 1; i++) {
 			String groupIcon = "(//XCUIElementTypeStaticText[@name='GroupIcon'])[";

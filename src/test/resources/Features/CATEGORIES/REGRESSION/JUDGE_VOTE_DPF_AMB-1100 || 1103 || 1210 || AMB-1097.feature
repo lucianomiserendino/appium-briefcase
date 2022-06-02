@@ -3,9 +3,9 @@ Feature: JudgeVote DPF UI
 #related to AMB-1097 as well
 Background: 
 
-	Given I am logged into Briefcase 
-		|environment|userName| password |courtId|
-		|test       |test    | test     |test   |
+	#Given I am logged into Briefcase 
+		#|environment|userName| password |courtId|
+		#|test       |test    | test     |test   |
 		
 	Then I select a user 
 		|userType   |personrole        |jud     |
@@ -31,6 +31,8 @@ Scenario:
 	And User verifies each judges' initials to whom the referral was sent , as well as their vote and date they voted
 		|courtId|jud |caseNumber|
 		|test   |test|test      |
+		
+		
 #20-42410
 @AMB-1103 
 @AMB-1210 

@@ -31,23 +31,28 @@ Scenario: Category and case selection
 	|test       |test      |
 	
 	
-	@selectRandomStfCategory
+@selectRandomStfCategory
 	Scenario: Random category and case selection
+	
+   Then I select a user 
+		|userType   |personrole        |stf  |
+		|stf        |Staff Attorneys   |test |
 	Then User selects random stf Aty category
 		|courtId|
 		|test   |
 	
-		@selectRandomJudgeCategory
-	Scenario: Random category and case selection
+@selectRandomJudgeCategory
+    Scenario: Random category and case selection
 		Then I select a user 
 		|userType   |personrole        |jud      |
 		|judge      |Appellate Judges  |test     |
+		
 	Then User selects random judge category
 		|courtId|
 		|test   |
 	
 		
-		@selectRandomCase
+@selectRandomCase
 	Scenario: Random case selection
 		Then I select a user 
 		|userType   |personrole        |jud      |
@@ -63,7 +68,7 @@ Scenario: Category and case selection
 	
 	
 			
-		@reopenTheApp
+@reopenTheApp
 	Scenario: Closing and reopening Briefcase
 		Then I select a user 
 		|userType   |personrole        |jud      |

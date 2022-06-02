@@ -1,4 +1,4 @@
-@Regression @AMB-1015
+@Regression @AMB-1015 @n
 Feature: Bookmark functionality 
 
 Scenario: 
@@ -15,7 +15,10 @@ Scenario:
 		|judge      |Appellate Judges  |test    |
 		
 	Then User verifies there's no bookmark icon displays in the navigation and on the dashboard 
-	When User selects a  "Test Automation" 
+	#When User selects a  "Test Automation" 
+		Then User selects random judge category
+		|courtId|
+		|test   |
 	Then user  taps on the bookmark icon next to a case  and verifies the bookmark icon displays in the navigation and on the dashboard page. 
 	And user taps on bookmark icon in the navigation or on the dashboard then taps on the bookmark icon next to the case he just bookmarked and verifies the case is removed from the bookmark category 
 	

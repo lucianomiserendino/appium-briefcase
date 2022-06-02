@@ -1,10 +1,11 @@
-Feature: chmAssign 
+Feature: Display Actions Panel and actions 
 
-@AMB-2986
+@Smoke 
 Scenario: 
-	This task is to verify that a chambers user is able to create a new staff assignment,
-	to verify back-end updates when a new staff assignment is created,
-	edit existing staff assignments and verify Back-end after modifying assignment 
+
+	If there are records defined in the mbr_event table, 
+       a collapsible panel entitled "Actions" should display, when expanded all the applicable actions should display.
+       
 	#Given I am logged into Briefcase 
 	#	|environment|userName| password |courtId|
 	#	|test       |test    | test     |test   |
@@ -23,7 +24,11 @@ Scenario:
 		|courtId|
 		|test   |
 		
-	Then user  verifies that briefcase events include the chmSilentAssign DPF
+	#Then user creates a new assignment
+		#|caseNumber|courtId|
+		#|test      |test   |
+		
+  Then user  verifies that briefcase events include the chmSilentAssign DPF
 		|caseNumber|courtId|
 		|test      |test   |
    

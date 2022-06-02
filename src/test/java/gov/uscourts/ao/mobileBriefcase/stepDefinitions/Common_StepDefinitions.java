@@ -100,5 +100,12 @@ public class Common_StepDefinitions {
 		assertTrue("Connection Using The New Connection Pool Failed", DBUtilities.getDBConnection(userInputData));
 
 	}
+	
+	@Then("^User expands/collapse panel$")
+	public void user_expands_collapse_panel() {
+		page = new CommonPages();
+		page.getGroupIcons();
+	}
+
 
 }

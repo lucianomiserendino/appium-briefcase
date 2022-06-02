@@ -9,6 +9,7 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class actionsPanel_StepDefinitions {
 	ActionsListViewPage page;
+	
 
 	@Then("^User verifies the correct \"([^\"]*)\" display for the selected referral$")
 	public void user_verifies_the_correct_display_for_the_selected_referral(String actions, DataTable data) {
@@ -17,7 +18,7 @@ public class actionsPanel_StepDefinitions {
 
 		List<UserInputData> userInputData = null;
 
-		page.getApplicableActions(actions, userInputData);
+		page.getApplicableActions(Document_StepDefinitions.referral,actions, userInputData);
 	}
 
 	@Then("^User verifies that Action displays if the assignment type specified in mbr_event record is = judge only$")

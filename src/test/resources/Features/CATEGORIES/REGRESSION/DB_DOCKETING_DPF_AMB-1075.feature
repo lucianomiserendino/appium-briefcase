@@ -9,10 +9,14 @@ Scenario:
 		|Integration    |s haenni| Test2025!|test   |
 		
 	Then I select a user 
-		|userType   |personrole        |jud          |
-		|judge      |Appellate Judges  |Colloton     |
+		|userType   |personrole        |jud       |
+		|judge      |Appellate Judges  |test      |
 	
-	Then User selects "TEST_AUTOMATION" and "21-3877" 
+	#Then User selects "TEST_AUTOMATION" and "21-3877" 
+	
+	Then User selects
+	|refCategory|caseNumber|
+	|test       |test      |
 	
 	
 	Then User selecs action, enters a comment in the editable field, submits and verifies Db "CMKA" is updated correctly, ( use "21-3877"  and "32" ) 

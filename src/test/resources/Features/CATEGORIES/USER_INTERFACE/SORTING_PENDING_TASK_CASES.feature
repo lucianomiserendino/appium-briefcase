@@ -2,13 +2,13 @@
 Feature: Sorting on the Pending Tasks Page 
 
 
-@AMB-2380 
+@AMB-2380 @n
 Scenario Outline: 
 	As a judge when I view the Pending Clerk's cases I can sort them by case number or by date in decending order.
 	
-	Given I am logged into Briefcase 
-		|environment|userName| password |courtId|
-		|test       |test    | test     |test   |
+	#Given I am logged into Briefcase 
+	#	|environment|userName| password |courtId|
+	#	|test       |test    | test     |test   |
 	
 	Then I select a user 
 		|userType   |personrole        |jud          |
@@ -29,9 +29,9 @@ Scenario Outline:
 			Pending Tasks - Sorting of the categories in My Assignments, Pending Clerk's Filing and Referrals Awaiting Action folders
 	The referral categories displayed in the various pending tasks folders should be sorted in the same way as they are in the left-hand navigation. 
 	
-	Given I am logged into Briefcase 
-		|environment|userName| password |courtId|
-		|test       |test    | test     |test   |
+	#Given I am logged into Briefcase 
+		#|environment|userName| password |courtId|
+		#|test       |test    | test     |test   |
 	
 	Then I select a user 
 		|userType   |personrole        |jud          |

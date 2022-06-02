@@ -116,14 +116,14 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		return changeDateFormat(date.split(" ")[1], "dd/MMMM/yyyy", "M/d/yyyy");
 	}
 
-	public void createNewStaffAssignment(List<UserInputData> userInputData) {
-		String caseNumber = SystemPropertySetup.getVariable(Variables.CASE_NUMBER, userInputData);
+	public void createNewStaffAssignment(String caseNumber, List<UserInputData> userInputData) {
+		//String caseNumber = SystemPropertySetup.getVariable(Variables.CASE_NUMBER, userInputData);
 
 		String dpfName = "chmAssign";
 		String elId = getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
 		String name = SystemPropertySetup.getVariable(Variables.JUD, userInputData);
 		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
-		String cmr_cs_caseid = CommonPages.getCaseID(userInputData);
+		String cmr_cs_caseid = CommonPages.getCaseID(caseNumber,userInputData);
 
 		createNewSTF(Assignment.NEW, chmAssign.CREATE, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
 				userInputData);

@@ -25,6 +25,7 @@ import java.util.Random;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 
 import cucumber.api.DataTable;
@@ -63,7 +64,7 @@ public class Utility extends Base {
 					scrolldown();
 					performPageLoad(driver);
 				}
-			} catch (NoSuchElementException e) {
+			} catch (TimeoutException e) {
 				isDisplayed = false;
 				scrolldown();
 			}

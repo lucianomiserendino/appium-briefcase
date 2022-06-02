@@ -25,6 +25,6 @@ public class MultipleDPFs_StepDefinitions {
 		scrollDownIfNotDisplayed("(" + containsElement("NewStaffButton") + ")[1]");
 		page.verifyElementIsDisplayed("Create Assignment");
 		page1 = new chmAssignDPFPage();
-		page1.createNewStaffAssignment(userInputData);
+		page1.createNewStaffAssignment(Document_StepDefinitions.referral,userInputData);
 	}
 }

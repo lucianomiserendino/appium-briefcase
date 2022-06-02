@@ -1,4 +1,4 @@
-@AMB-973 @S @Smoke @k
+@AMB-973 @S @Smoke @n
 Feature: Number of cases displayed for non-orally argued cases 
 
 Scenario: 
@@ -8,9 +8,9 @@ Scenario:
 
 
 	
-	    #Given I am logged into Briefcase 
-	   #|environment|userName| password |courtId|
-	   #|test       |test    | test     |test   |
+	    Given I am logged into Briefcase 
+	   |environment|userName| password |courtId|
+	   |test       |test    | test     |test   |
 		
 	Then I select a user 
 		|userType   |personrole        |jud      |

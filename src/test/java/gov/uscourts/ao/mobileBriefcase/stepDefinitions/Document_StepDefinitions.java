@@ -13,18 +13,20 @@ public class Document_StepDefinitions {
 
 	@Then("^User selects random stf Aty category$")
 	public void user_selects_random_stf_Aty_category(List<UserInputData> userInputData) {
-		DocumentPage.selectRandomSTFCategory(userInputData);
+		page=new DocumentPage();
+		page.selectRandomSTFCategory(userInputData);
 	}
 
 	@Then("^User selects random judge category$")
 	public void user_selects_random_judge_category(List<UserInputData> userInputData) {
-		categroy = DocumentPage.selectRandomJudgeCategory(userInputData);
+		page=new DocumentPage();
+		categroy = page.selectRandomJudgeCategory(userInputData);
 	}
 
 	@Then("^User selects random case number$")
 	public void user_selects_random_case_number(List<UserInputData> userInputData) {
 		page = new DocumentPage();
-		referral = DocumentPage.selectRandomCaseNumber(userInputData);
+		referral = page.selectRandomCaseNumber(userInputData);
 	}
 
 }

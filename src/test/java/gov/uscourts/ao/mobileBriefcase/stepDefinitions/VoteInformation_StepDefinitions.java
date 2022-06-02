@@ -21,6 +21,7 @@ public class VoteInformation_StepDefinitions {
 			String voteInfo) {
 		page = new VoteInformationPage();
 		// getGroupIcons();
+		page1=new CommonPages();
 		page1.getPanel(Panel.valueOf(voteInfo));
 	}
 

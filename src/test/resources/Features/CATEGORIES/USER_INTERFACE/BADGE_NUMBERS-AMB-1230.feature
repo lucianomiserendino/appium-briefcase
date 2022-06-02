@@ -1,4 +1,4 @@
-@Smoke @AMB @AMB-1230 @k
+@Smoke @AMB @AMB-1230 @n
 Feature: Badge numbers in the navigation 
 
 
@@ -7,7 +7,7 @@ Scenario:
 	
 	#Given I am logged into Briefcase 
 	#	|environment|userName| password |courtId|
-		#|test       |test    | test     |test   |
+	#	|test       |test    | test     |test   |
 		
 	Then I select a user 
 		|userType   |personrole        |jud      |

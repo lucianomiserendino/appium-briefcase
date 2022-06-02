@@ -170,6 +170,8 @@ public class DashboardPage extends AppiumPageFactory {
 				List<String> briefcaseTargReferral_n = executeQuery(
 						replace(getID(BRIEFCASE_TARGET_ONLY_N, pe_id), "CYV_CATEGORY", dbNonOrgCases), userInputData);
 
+				performPageLoad(driver);
+				
 				List<String> UInonOrallyarguedCases = asList(
 						(getNumOfDisplayedCases(Page.waitForVisibilityOfElement(total, driver))));
 

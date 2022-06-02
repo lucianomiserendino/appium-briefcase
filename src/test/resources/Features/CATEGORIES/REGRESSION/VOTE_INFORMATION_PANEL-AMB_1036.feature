@@ -10,14 +10,18 @@ Scenario Outline:
 3.  The relief on which the judge is ruling
 4.  Each judge's vote and the date they voted
 
-	Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |
-	Then I select a user 
-		|userType   |personrole        |jud          |
-		|judge      |Appellate Judges  |Colloton     |
+	#Given I am logged into Briefcase 
+	#	|environment|userName| password |courtId|
+	#	|test       |test    | test     |test   |
 		
-	Then User selects "<refCategory>" and "<caseNum>" 
+	Then I select a user 
+		|userType   |personrole        |jud     |
+		|judge      |Appellate Judges  |test    |
+			
+		
+  Then User selects
+	|refCategory|caseNumber|
+	|test       |test      |
 	Given User observes ( "<dbType>" ) the "Vote_Information" panel displays.   This should only display if the referral requires voting 
 	Then   for each referral, observes the filer's name  first initial of pr_middle_name gn_display  party type and date filed displays in a light blue heading. Use  "<cmr_ju_pe_id>" , "<cmr_cs_caseid>" ,"<cmr_cyv_code>" , "<ccr_id>" . 
 		|courtId|

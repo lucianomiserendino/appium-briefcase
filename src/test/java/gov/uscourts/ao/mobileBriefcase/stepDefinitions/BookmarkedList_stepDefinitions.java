@@ -5,15 +5,17 @@ import gov.uscourts.ao.mobileBriefcase.Pages.BookmarkedListPage;
 
 public class BookmarkedList_stepDefinitions {
 	String caseNumber = "";
-	BookmarkedListPage page = new BookmarkedListPage();
+	BookmarkedListPage page ;
 
 	@Then("^User verifies there's no bookmark icon displays in the navigation and on the dashboard$")
 	public void user_verifies_there_s_no_bookmark_icon_displays_in_the_navigation_and_on_the_dashboard() {
+		page= new BookmarkedListPage();
 		page.getBookmarkedReferrals();
 	}
 
 	@Then("^user  taps on the bookmark icon next to a case  and verifies the bookmark icon displays in the navigation and on the dashboard page\\.$")
 	public void user_taps_on_the_bookmark_icon_next_to_a_case_and_verifies_the_bookmark_icon_displays_in_the_navigation_and_on_the_dashboard_page() {
+		page= new BookmarkedListPage();
 		caseNumber = page.getReferrals();
 	}
 

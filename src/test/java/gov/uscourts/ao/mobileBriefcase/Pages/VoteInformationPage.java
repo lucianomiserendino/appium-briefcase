@@ -35,6 +35,10 @@ public class VoteInformationPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(id = "Close")
 	public static MobileElement close;
+	
+	
+	//|server         |refCategory  | caseNum |dbType| cmr_cs_caseid |cmr_ju_pe_id|cmr_cyv_code|ccr_id|
+	//|CMKA           |PETITION     | 15-3314  |CMKA  | 82226         |32          |prhr       |34870 |
 
 	public static String dbFiledDate(String pe_id, String caseId, String cyv_code, List<UserInputData> userInputData) {
 		return getAllColumns(getCode(getText(getID(FILED_DATE, pe_id), caseId), cyv_code), userInputData);
