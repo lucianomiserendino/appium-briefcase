@@ -404,17 +404,19 @@ public class Utility extends Base {
 		return cellSize;
 	}
 
+	
 	public static String getParameter(String param, String dpfName, int index) {
 
 		String dpfParam = "";
 		String[] items = param.split(";");
 		int itemCount = items.length;
-		if (itemCount > 1) {
-			String[] charac = param.split(";");
-			for (int i = 0; i < charac.length; i++) {
 
-				if (charac[i].contains(dpfName)) {
-					String[] Value = charac[i].substring(charac[i].indexOf(dpfName + "(")).split("',");
+		if (itemCount > 1) {
+
+			for (int i = 0; i < itemCount; i++) {
+
+				if (items[i].contains(dpfName)) {
+					String[] Value = items[i].substring(items[i].indexOf(dpfName + "(")).split("',");
 					dpfParam = Value[index].split("'")[1];
 				}
 			}
@@ -427,6 +429,8 @@ public class Utility extends Base {
 		}
 		return dpfParam;
 	}
+	
+	
 
 	public static String getSingleDpf(String value, String dpfName, int index) {
 		String[] parValue = value.substring(value.indexOf(dpfName + "(")).split("',");

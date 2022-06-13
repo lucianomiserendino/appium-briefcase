@@ -41,19 +41,23 @@ Any assignments that are made to a judge will display in the “Pending Tasks”
 		#|environment|userName| password |courtId|
 		#|test       |test    | test     |test   |
 		
-	Then I select a user 
-		|userType   |personrole        |jud     |
-		|judge      |Appellate Judges  |test    |
+	#Then I select a user 
+	#	|userType   |personrole        |jud     |
+	#	|judge      |Appellate Judges  |test    |
 			
-	Then User selects random judge category
-		|courtId|
-		|test   |
+	#Then User selects random judge category
+	#	|courtId|
+	#	|test   |
 			
-	Then User selects random case number
-		|courtId|
-		|test   |
+	#Then User selects random case number
+	#	|courtId|
+	#	|test   |
 		
-	Then User  selects action using "3068"  and verifies the name of the action displays in the dark blue banner 
+	#Then User  selects action using "3068"  and verifies the name of the action displays in the dark blue banner 
+	#	|courtId|
+	#	|test   |
+	Then user checks the chmSilentAssign mode
+		
 		|courtId|
 		|test   |
 					

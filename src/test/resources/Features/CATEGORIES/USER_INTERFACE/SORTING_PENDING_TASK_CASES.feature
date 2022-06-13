@@ -6,9 +6,9 @@ Feature: Sorting on the Pending Tasks Page
 Scenario Outline: 
 	As a judge when I view the Pending Clerk's cases I can sort them by case number or by date in decending order.
 	
-	#Given I am logged into Briefcase 
-	#	|environment|userName| password |courtId|
-	#	|test       |test    | test     |test   |
+	Given I am logged into Briefcase 
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
 	
 	Then I select a user 
 		|userType   |personrole        |jud          |

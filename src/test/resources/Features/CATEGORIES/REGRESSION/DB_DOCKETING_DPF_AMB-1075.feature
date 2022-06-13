@@ -4,15 +4,15 @@ Feature: note DPF back-end updates
 Scenario: 
 	Adding a note back-end database updates.
             
-	  Given I am logged into Briefcase 
-		|environment    |userName| password |courtId|
-		|Integration    |s haenni| Test2025!|test   |
+	 # Given I am logged into Briefcase 
+		#|environment    |userName| password |courtId|
+		#|Integration    |s haenni| Test2025!|test   |
 		
 	Then I select a user 
 		|userType   |personrole        |jud       |
 		|judge      |Appellate Judges  |test      |
 	
-	#Then User selects "TEST_AUTOMATION" and "21-3877" 
+	Then User selects "TEST_AUTOMATION" and "21-3877" 
 	
 	Then User selects
 	|refCategory|caseNumber|

@@ -6,9 +6,9 @@ Scenario:
 	to verify back-end updates when a new staff assignment is created,
 	edit existing staff assignments and verify Back-end after modifying assignment 
 	
-	#Given I am logged into Briefcase 
-	#	|environment|userName| password |courtId|
-		#|test       |test    | test     |test   |
+	Given I am logged into Briefcase 
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
 		
 	Then I select a user 
 		|userType   |personrole        |jud     |

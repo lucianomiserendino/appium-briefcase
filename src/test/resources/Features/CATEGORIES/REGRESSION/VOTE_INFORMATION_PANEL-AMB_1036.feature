@@ -85,9 +85,10 @@ Scenario Outline:
 						@AMB-2535 
 						Scenario Outline: 
 						
-							Given I am logged into Briefcase 
-								|environment    |userName| password |courtId|
-								|Integration    |s haenni| Test2025!|test   |
+						       
+	                      #Given I am logged into Briefcase 
+	                       #	|environment|userName| password |courtId|
+	                       #	|test       |test    | test     |test   |
 							Then I select a user 
 								|userType   |personrole        |jud          |
 								|judge      |Appellate Judges  |Colloton     |

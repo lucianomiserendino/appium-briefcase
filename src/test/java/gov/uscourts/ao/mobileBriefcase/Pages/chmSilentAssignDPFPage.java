@@ -8,12 +8,9 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getParameter;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -149,31 +146,84 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 
 	}
 
-	public void getJudgeAssignments(String elID, List<UserInputData> userInputData) {
-
+	public void getJudgeAssignment(String elID, List<UserInputData> userInputData) {
+		List<String> uiJudgeList = new ArrayList<>();
+		List<String> dbJudgeList = new ArrayList<>();
 		String loggedInJudge = getLoggedInJudge(userInputData);
-		String[] panelJudge = contains("Panel").getText().split(": ")[1].split(" Inv")[0].split(",");
-		String mode = getParameter(getAllColumns(getID(MBR_NOTE, elID), userInputData), "chmSilentAssign", 0);
+		String dpf = getAllColumns(getID(MBR_NOTE, elID), userInputData);
+		String mode = Utility.getParameter(getAllColumns(getID(MBR_NOTE, elID), userInputData), "chmSilentAssign", 0);
 
-		List<String> assign = new ArrayList<>();
+		String param = "";
 
-		Iterator<MobileElement> itr = judgeAssignments.iterator();
-		int size = judgeAssignments.size();
-		while (itr.hasNext()) {
-			assign.add(itr.next().getText().trim());
+		switch (param) {
+
+		/**
+		 * term - the assignment will be terminated based on the assignment type and
+		 * involvement code parameters values for the logged in judge. 
+		 */
+		case "term":
+			uiJudgeList.remove(loggedInJudge);
+			break;
+
+		case "termPanel":
+			uiJudgeList.remove(dbJudgeList);
+			break;
+
+		case "termAnyRelief":
+			getDPF(dpf);
+			break;
+
+		case "termAnyReliefPanel":
+			getDPF(dpf);
+			break;
+
+		case "termAllReliefs":
+			getDPF(dpf);
+
+			break;
+
+		case "termAllReliefsPanel":
+			getDPF(dpf);
+
+			break;
+
+		default:
+			break;
 		}
+	}
 
-		if (mode.equals("term") | mode.equals("termAllRelief")) {
-			assign.remove(loggedInJudge);
-			assertEquals(judgeAssignments.size(), size - 1);
+	/**
+	 * The following method checks if the parameter is set to termAnyRelief or
+	 * termAllReliefs, it is used in conjunction with the judgeVote DPF.
+	 */
 
-		} else if (mode.equals("termPanel") | mode.equals("termAllReliefPanel")) {
-			for (String judges : panelJudge) {
-				assign.remove(judges.trim());
-				assertTrue(judgeAssignments.size() < size);
+	public static boolean getDPF(String param) {
+		boolean isDisplayed = false;
+		String vote = "judgeVote";
+		String assign = "chmSilentAssign";
+		List<String> dpf = new ArrayList<>();
+
+		String[] items = param.split(";");
+		int itemCount = items.length;
+
+		if (itemCount > 1) {
+
+			for (int i = 0; i < itemCount; i++) {
+
+				dpf.add(items[i].split("\\('")[0].trim());
 			}
 
+			if (dpf.contains(vote) && dpf.contains(assign)) {
+
+				assertTrue(dpf.indexOf(vote) < dpf.indexOf(assign));
+				isDisplayed = true;
+
+			} else {
+				isDisplayed = false;
+			}
 		}
+
+		return isDisplayed;
 
 	}
 
