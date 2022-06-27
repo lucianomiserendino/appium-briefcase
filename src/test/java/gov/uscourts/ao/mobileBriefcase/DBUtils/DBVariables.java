@@ -32,4 +32,14 @@ public interface DBVariables {
 
 	public static final String CM3A_DATABASE_NAME = "databaseNameCM3A";
 
+	public static final String PVTA_DBURL = "dbUrlPVTA";
+
+	public static final String PVTA_SERVERNAME = "serverNamePVTA";
+
+	public static final String PVTA_DBUSERNAME = "dbUsernamePVTA";
+
+	public static final String PVTA_DBPWD = "dbPwdPVTA";
+
+	public static final String PVTA_DATABASE_NAME = "databaseNamePVTA";
+
 }

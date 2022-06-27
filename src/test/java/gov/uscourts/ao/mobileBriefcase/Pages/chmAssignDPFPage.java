@@ -29,7 +29,7 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.changeDateForm
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.clickOnNumberInRange;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getParameter;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.splitBy;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.*;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -50,6 +50,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -90,6 +91,9 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(accessibility = "CalendarForward")
 	public static MobileElement nextPage;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='OptionList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[3]/XCUIElementTypeStaticText")
+	public static List<MobileElement> note;
+
 	public static String selectADate(chmAssign assign) {
 
 		String date = "";
@@ -117,13 +121,12 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	}
 
 	public void createNewStaffAssignment(String caseNumber, List<UserInputData> userInputData) {
-		//String caseNumber = SystemPropertySetup.getVariable(Variables.CASE_NUMBER, userInputData);
 
 		String dpfName = "chmAssign";
 		String elId = getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
 		String name = SystemPropertySetup.getVariable(Variables.JUD, userInputData);
 		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
-		String cmr_cs_caseid = CommonPages.getCaseID(caseNumber,userInputData);
+		String cmr_cs_caseid = CommonPages.getCaseID(caseNumber, userInputData);
 
 		createNewSTF(Assignment.NEW, chmAssign.CREATE, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
 				userInputData);
@@ -225,7 +228,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			} else {
 				/**
 				 * If the assignment type parameter contains a colon delimited list, use this
-				 * query 
+				 * query
 				 */
 				getValidAssignmentTypes(
 						getText(ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST,
@@ -309,6 +312,15 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 			assertTrue(modifiedAssignmentDueDate.isDisplayed());
 		}
+
+		List<String> notes = new ArrayList<>();
+
+		for (int i = 1; i < note.size() + 1; ++i) {
+			notes.add(note.get(i).getText());
+		}
+
+		checkDatesForDescOrder(notes);
+
 		return assignment;
 	}
 
@@ -570,6 +582,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		default:
 			break;
 		}
+
 	}
 
 }

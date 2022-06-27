@@ -6,7 +6,7 @@
         "before": [
           {
             "result": {
-              "duration": 12332103250,
+              "duration": 14217197583,
               "status": "passed"
             },
             "match": {
@@ -14,15 +14,15 @@
             }
           }
         ],
-        "line": 30,
+        "line": 4,
         "name": "",
-        "description": "\nThe chmSilentAssign DPF can be used in Briefcase to silently create or terminate judges’ assignments without user interaction.  Judges may have multiple matters \nreferred to them, but not all of them require their attention right away.  This DPF could be used to route tasks to judges so they know what work needs to be done now. \nFor example, the lead judge may be initially tasked with reviewing a proposed order sent by the clerk’s office.  The lead judge then reviews the proposed order, and \nvotes on it and circulates it to the second judge.  If the chmSilentAssign DPF is defined in the voting action the judge chose in Briefcase, it could terminate the\n lead judge’s assignment and create a new assignment for the second judge to review the proposed order.  Once the second judge votes, the chmSilentAssign DPF could\n  be used to terminate the second judge’s assignment and create one for the third judge to review the proposed order.\nAny assignments that are made to a judge will display in the “Pending Tasks” category on the Dashboard page, indicating what matters requires their attention.",
-        "id": "chmsilentassign-dpf;",
+        "description": "This task is to verify that a chambers user is able to create a new staff assignment,\nto verify back-end updates when a new staff assignment is created,\nedit existing staff assignments and verify Back-end after modifying assignment",
+        "id": "chmassign;",
         "after": [
           {
             "result": {
-              "duration": 40785417,
-              "error_message": "org.openqa.selenium.NoSuchSessionException: Session ID is null. Using WebDriver after calling quit()?\nBuild info: version: \u00273.141.59\u0027, revision: \u0027e82be7d358\u0027, time: \u00272018-11-14T08:17:03\u0027\nSystem info: host: \u0027Saltant-K-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:187b:d766:983:c4c7%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.16\u0027, java.version: \u00271.8.0_311\u0027\nDriver info: driver.version: IOSDriver\n\tat org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:125)\n\tat io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:247)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:552)\n\tat io.appium.java_client.DefaultGenericMobileDriver.execute(DefaultGenericMobileDriver.java:41)\n\tat io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.execute(IOSDriver.java:1)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:323)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElement(DefaultGenericMobileDriver.java:61)\n\tat io.appium.java_client.AppiumDriver.findElement(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElement(IOSDriver.java:1)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElementByXPath(RemoteWebDriver.java:428)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElementByXPath(DefaultGenericMobileDriver.java:151)\n\tat io.appium.java_client.AppiumDriver.findElementByXPath(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElementByXPath(IOSDriver.java:1)\n\tat org.openqa.selenium.By$ByXPath.findElement(By.java:353)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:315)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElement(DefaultGenericMobileDriver.java:57)\n\tat io.appium.java_client.AppiumDriver.findElement(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElement(IOSDriver.java:1)\n\tat org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:182)\n\tat org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:179)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:249)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForPresenceOfElementLocated(Page.java:17)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains(Actions.java:68)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.logout(JenieLoginPage.java:199)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Hook.tearDown(Hook.java:19)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat cucumber.runtime.Utils$1.call(Utils.java:40)\n\tat cucumber.runtime.Timeout.timeout(Timeout.java:16)\n\tat cucumber.runtime.Utils.invoke(Utils.java:34)\n\tat cucumber.runtime.java.JavaHookDefinition.execute(JavaHookDefinition.java:60)\n\tat cucumber.runtime.Runtime.runHookIfTagsMatch(Runtime.java:224)\n\tat cucumber.runtime.Runtime.runHooks(Runtime.java:212)\n\tat cucumber.runtime.Runtime.runAfterHooks(Runtime.java:206)\n\tat cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:46)\n\tat cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat cucumber.api.junit.Cucumber.run(Cucumber.java:100)\n\tat org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:93)\n\tat org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:529)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:756)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:452)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)\n",
+              "duration": 1005004250,
+              "error_message": "org.openqa.selenium.WebDriverException: Connection refused (Connection refused)\nBuild info: version: \u00273.141.59\u0027, revision: \u0027e82be7d358\u0027, time: \u00272018-11-14T08:17:03\u0027\nSystem info: host: \u0027Saltant-K-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:488:ca58:28e4:4a4e%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.16\u0027, java.version: \u00271.8.0_311\u0027\nDriver info: driver.version: IOSDriver\n\tat io.appium.java_client.remote.AppiumCommandExecutor.lambda$6(AppiumCommandExecutor.java:259)\n\tat java.util.Optional.orElseGet(Optional.java:267)\n\tat io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:258)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:552)\n\tat io.appium.java_client.DefaultGenericMobileDriver.execute(DefaultGenericMobileDriver.java:41)\n\tat io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.execute(IOSDriver.java:1)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:323)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElement(DefaultGenericMobileDriver.java:61)\n\tat io.appium.java_client.AppiumDriver.findElement(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElement(IOSDriver.java:1)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElementByXPath(RemoteWebDriver.java:428)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElementByXPath(DefaultGenericMobileDriver.java:151)\n\tat io.appium.java_client.AppiumDriver.findElementByXPath(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElementByXPath(IOSDriver.java:1)\n\tat org.openqa.selenium.By$ByXPath.findElement(By.java:353)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:315)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElement(DefaultGenericMobileDriver.java:57)\n\tat io.appium.java_client.AppiumDriver.findElement(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.findElement(IOSDriver.java:1)\n\tat org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:182)\n\tat org.openqa.selenium.support.ui.ExpectedConditions$6.apply(ExpectedConditions.java:179)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:249)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForPresenceOfElementLocated(Page.java:17)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains(Actions.java:68)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.logout(JenieLoginPage.java:199)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Hook.tearDown(Hook.java:19)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat cucumber.runtime.Utils$1.call(Utils.java:40)\n\tat cucumber.runtime.Timeout.timeout(Timeout.java:16)\n\tat cucumber.runtime.Utils.invoke(Utils.java:34)\n\tat cucumber.runtime.java.JavaHookDefinition.execute(JavaHookDefinition.java:60)\n\tat cucumber.runtime.Runtime.runHookIfTagsMatch(Runtime.java:224)\n\tat cucumber.runtime.Runtime.runHooks(Runtime.java:212)\n\tat cucumber.runtime.Runtime.runAfterHooks(Runtime.java:206)\n\tat cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:46)\n\tat cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat cucumber.api.junit.Cucumber.run(Cucumber.java:100)\n\tat org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:93)\n\tat org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:529)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:756)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:452)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)\nCaused by: java.net.ConnectException: Connection refused (Connection refused)\n\tat java.net.PlainSocketImpl.socketConnect(Native Method)\n\tat java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:476)\n\tat java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:216)\n\tat java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:200)\n\tat java.net.SocksSocketImpl.connect(SocksSocketImpl.java:394)\n\tat java.net.Socket.connect(Socket.java:606)\n\tat okhttp3.internal.platform.Platform.connectSocket(Platform.java:129)\n\tat okhttp3.internal.connection.RealConnection.connectSocket(RealConnection.java:245)\n\tat okhttp3.internal.connection.RealConnection.connect(RealConnection.java:165)\n\tat okhttp3.internal.connection.StreamAllocation.findConnection(StreamAllocation.java:257)\n\tat okhttp3.internal.connection.StreamAllocation.findHealthyConnection(StreamAllocation.java:135)\n\tat okhttp3.internal.connection.StreamAllocation.newStream(StreamAllocation.java:114)\n\tat okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.java:42)\n\tat okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.java:147)\n\tat okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.java:121)\n\tat okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.java:93)\n\tat okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.java:147)\n\tat okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.java:121)\n\tat okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.java:93)\n\tat okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.java:147)\n\tat okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.java:126)\n\tat okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.java:147)\n\tat okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.java:121)\n\tat okhttp3.RealCall.getResponseWithInterceptorChain(RealCall.java:200)\n\tat okhttp3.RealCall.execute(RealCall.java:77)\n\tat org.openqa.selenium.remote.internal.OkHttpClient.execute(OkHttpClient.java:103)\n\tat org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:155)\n\tat io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:247)\n\t... 63 more\n",
               "status": "failed"
             },
             "match": {
@@ -35,88 +35,151 @@
         "steps": [
           {
             "result": {
-              "duration": 1922812083,
+              "duration": 32558849083,
               "status": "passed"
             },
             "comments": [
               {
-                "line": 40,
+                "line": 9,
                 "value": "#Given I am logged into Briefcase"
               },
               {
-                "line": 41,
-                "value": "#|environment|userName| password |courtId|"
+                "line": 10,
+                "value": "#\t|environment|userName| password |courtId|"
               },
               {
-                "line": 42,
-                "value": "#|test       |test    | test     |test   |"
-              },
-              {
-                "line": 44,
-                "value": "#Then I select a user"
-              },
-              {
-                "line": 45,
-                "value": "#\t|userType   |personrole        |jud     |"
-              },
-              {
-                "line": 46,
-                "value": "#\t|judge      |Appellate Judges  |test    |"
-              },
-              {
-                "line": 48,
-                "value": "#Then User selects random judge category"
-              },
-              {
-                "line": 49,
-                "value": "#\t|courtId|"
-              },
-              {
-                "line": 50,
-                "value": "#\t|test   |"
-              },
-              {
-                "line": 52,
-                "value": "#Then User selects random case number"
-              },
-              {
-                "line": 53,
-                "value": "#\t|courtId|"
-              },
-              {
-                "line": 54,
-                "value": "#\t|test   |"
-              },
-              {
-                "line": 56,
-                "value": "#Then User  selects action using \"3068\"  and verifies the name of the action displays in the dark blue banner"
-              },
-              {
-                "line": 57,
-                "value": "#\t|courtId|"
-              },
-              {
-                "line": 58,
-                "value": "#\t|test   |"
+                "line": 11,
+                "value": "#\t|test       |test    | test     |test   |"
               }
             ],
-            "line": 59,
-            "name": "user checks the chmSilentAssign mode",
+            "line": 13,
+            "name": "I select a user",
             "match": {
-              "location": "chmSilentAssign_StepDefinitions.user_checks_the_chmSilentAssign_mode(UserInputData\u003e)"
+              "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "userType",
+                  "personrole",
+                  "jud"
+                ],
+                "line": 14
+              },
+              {
+                "cells": [
+                  "judge",
+                  "Appellate Judges",
+                  "test"
+                ],
+                "line": 15
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 12330070167,
+              "status": "passed"
+            },
+            "line": 18,
+            "name": "User selects random judge category",
+            "match": {
+              "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
             },
             "rows": [
               {
                 "cells": [
                   "courtId"
                 ],
-                "line": 61
+                "line": 19
               },
               {
                 "cells": [
                   "test"
                 ],
-                "line": 62
+                "line": 20
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 61350093875,
+              "status": "passed"
+            },
+            "line": 22,
+            "name": "User selects random case number",
+            "match": {
+              "location": "Document_StepDefinitions.user_selects_random_case_number(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 23
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 24
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 193109452792,
+              "status": "passed"
+            },
+            "line": 26,
+            "name": "User  selects an action and verifies the name of the action displays in the dark blue banner",
+            "match": {
+              "location": "Common_StepDefinitions.user_selects_an_action_and_verifies_the_name_of_the_action_displays_in_the_dark_blue_banner(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 28
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 29
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 2943790663291,
+              "error_message": "org.openqa.selenium.WebDriverException: Connection refused (Connection refused)\nBuild info: version: \u00273.141.59\u0027, revision: \u0027e82be7d358\u0027, time: \u00272018-11-14T08:17:03\u0027\nSystem info: host: \u0027Saltant-K-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:488:ca58:28e4:4a4e%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.16\u0027, java.version: \u00271.8.0_311\u0027\nDriver info: driver.version: AppiumDriver\n\tat io.appium.java_client.remote.AppiumCommandExecutor.lambda$6(AppiumCommandExecutor.java:259)\n\tat java.util.Optional.orElseGet(Optional.java:267)\n\tat io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:258)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:552)\n\tat io.appium.java_client.DefaultGenericMobileDriver.execute(DefaultGenericMobileDriver.java:41)\n\tat io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.execute(IOSDriver.java:1)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:353)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElements(DefaultGenericMobileDriver.java:53)\n\tat io.appium.java_client.AppiumDriver.findElements(AppiumDriver.java:179)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElementsByXPath(RemoteWebDriver.java:432)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElementsByXPath(DefaultGenericMobileDriver.java:155)\n\tat io.appium.java_client.AppiumDriver.findElementsByXPath(AppiumDriver.java:212)\n\tat org.openqa.selenium.By$ByXPath.findElements(By.java:348)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:311)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElements(DefaultGenericMobileDriver.java:49)\n\tat io.appium.java_client.AppiumDriver.findElements(AppiumDriver.java:174)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements(Actions.java:64)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed(Utility.java:81)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getActionName(CommonPages.java:238)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectAction(CommonPages.java:225)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.clickOnExistingAssignment(chmAssignDPFPage.java:390)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.createNewSTF(chmAssignDPFPage.java:549)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.createNewStaffAssignment(chmAssignDPFPage.java:133)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.CreateStaffAssignments_StepDefinitions.user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(CreateStaffAssignments_StepDefinitions.java:41)\n\tat ✽.Then user  verifies that briefcase events include the chmSilentAssign DPF(CATEGORIES/DOCKETING/CHM_ASSIGN_DPF_AMB-1123 || AMB-1137 || AMB-1170 || AMB-1173.feature:31)\nCaused by: java.net.ConnectException: Connection refused (Connection refused)\n\tat java.net.PlainSocketImpl.socketConnect(Native Method)\n\tat java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:476)\n\tat java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:216)\n\tat java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:200)\n\tat java.net.SocksSocketImpl.connect(SocksSocketImpl.java:394)\n\tat java.net.Socket.connect(Socket.java:606)\n\tat okhttp3.internal.platform.Platform.connectSocket(Platform.java:129)\n\tat okhttp3.internal.connection.RealConnection.connectSocket(RealConnection.java:245)\n\tat okhttp3.internal.connection.RealConnection.connect(RealConnection.java:165)\n\tat okhttp3.internal.connection.StreamAllocation.findConnection(StreamAllocation.java:257)\n\tat okhttp3.internal.connection.StreamAllocation.findHealthyConnection(StreamAllocation.java:135)\n\tat okhttp3.internal.connection.StreamAllocation.newStream(StreamAllocation.java:114)\n\tat okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.java:42)\n\tat okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.java:147)\n\tat okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.java:121)\n\tat okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.java:93)\n\tat okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.java:147)\n\tat okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.java:121)\n\tat okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.java:93)\n\tat okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.java:147)\n\tat okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.java:126)\n\tat okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.java:147)\n\tat okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.java:121)\n\tat okhttp3.RealCall.getResponseWithInterceptorChain(RealCall.java:200)\n\tat okhttp3.RealCall.execute(RealCall.java:77)\n\tat org.openqa.selenium.remote.internal.OkHttpClient.execute(OkHttpClient.java:103)\n\tat org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:155)\n\tat io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:247)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:552)\n\tat io.appium.java_client.DefaultGenericMobileDriver.execute(DefaultGenericMobileDriver.java:41)\n\tat io.appium.java_client.AppiumDriver.execute(AppiumDriver.java:1)\n\tat io.appium.java_client.ios.IOSDriver.execute(IOSDriver.java:1)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:353)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElements(DefaultGenericMobileDriver.java:53)\n\tat io.appium.java_client.AppiumDriver.findElements(AppiumDriver.java:179)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElementsByXPath(RemoteWebDriver.java:432)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElementsByXPath(DefaultGenericMobileDriver.java:155)\n\tat io.appium.java_client.AppiumDriver.findElementsByXPath(AppiumDriver.java:212)\n\tat org.openqa.selenium.By$ByXPath.findElements(By.java:348)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:311)\n\tat io.appium.java_client.DefaultGenericMobileDriver.findElements(DefaultGenericMobileDriver.java:49)\n\tat io.appium.java_client.AppiumDriver.findElements(AppiumDriver.java:174)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements(Actions.java:64)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed(Utility.java:81)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getActionName(CommonPages.java:238)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectAction(CommonPages.java:225)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.clickOnExistingAssignment(chmAssignDPFPage.java:390)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.createNewSTF(chmAssignDPFPage.java:549)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.createNewStaffAssignment(chmAssignDPFPage.java:133)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.CreateStaffAssignments_StepDefinitions.user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(CreateStaffAssignments_StepDefinitions.java:41)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat cucumber.runtime.Utils$1.call(Utils.java:40)\n\tat cucumber.runtime.Timeout.timeout(Timeout.java:16)\n\tat cucumber.runtime.Utils.invoke(Utils.java:34)\n\tat cucumber.runtime.java.JavaStepDefinition.execute(JavaStepDefinition.java:38)\n\tat cucumber.runtime.StepDefinitionMatch.runStep(StepDefinitionMatch.java:37)\n\tat cucumber.runtime.Runtime.runStep(Runtime.java:300)\n\tat cucumber.runtime.model.StepContainer.runStep(StepContainer.java:44)\n\tat cucumber.runtime.model.StepContainer.runSteps(StepContainer.java:39)\n\tat cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:44)\n\tat cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat cucumber.api.junit.Cucumber.run(Cucumber.java:100)\n\tat org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:93)\n\tat org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:529)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:756)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:452)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)\n",
+              "status": "failed"
+            },
+            "line": 31,
+            "name": "user  verifies that briefcase events include the chmSilentAssign DPF",
+            "match": {
+              "location": "CreateStaffAssignments_StepDefinitions.user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "caseNumber",
+                  "courtId"
+                ],
+                "line": 32
+              },
+              {
+                "cells": [
+                  "test",
+                  "test"
+                ],
+                "line": 33
               }
             ],
             "keyword": "Then "
@@ -124,16 +187,20 @@
         ],
         "tags": [
           {
-            "line": 29,
-            "name": "@AMB-2415"
+            "line": 3,
+            "name": "@AMB-2986"
+          },
+          {
+            "line": 3,
+            "name": "@n"
           }
         ]
       }
     ],
-    "name": "chmSilentAssign DPF",
+    "name": "chmAssign",
     "description": "",
-    "id": "chmsilentassign-dpf",
+    "id": "chmassign",
     "keyword": "Feature",
-    "uri": "CATEGORIES/DOCKETING/CHM_SILENT_ASSIGN_DPF DPF_AMB-2327.feature"
+    "uri": "CATEGORIES/DOCKETING/CHM_ASSIGN_DPF_AMB-1123 || AMB-1137 || AMB-1170 || AMB-1173.feature"
   }
 ]

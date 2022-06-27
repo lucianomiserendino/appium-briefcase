@@ -5,9 +5,9 @@ Feature: note DPF UI
 Scenario: 
 	Verify when an action is selected that contains the note DPF, the note DPF UI displays.
 
-	#Given I am logged into Briefcase 
-	#	|environment|userName| password |courtId|
-		#|test       |test    | test     |test   |
+	Given I am logged into Briefcase 
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
 		
 	Then I select a user 
 		|userType   |personrole        |jud     |
