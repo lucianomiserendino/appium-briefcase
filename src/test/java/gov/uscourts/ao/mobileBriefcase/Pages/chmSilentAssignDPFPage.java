@@ -3,6 +3,7 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
@@ -13,14 +14,17 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.Assignment;
 import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.chmAssign;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
@@ -45,6 +49,15 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(accessibility = "//XCUIElementTypeStaticText[@name=\"Assignments\"]//following::XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
 	public static List<MobileElement> judgeAssignments;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='OptionList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
+	public static List<MobileElement> optionList;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Assignments']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
+	public static MobileElement assignTable;
+
+	@iOSXCUITFindBy(xpath = "label[id='settings-checkbox-1']")
+	public static MobileElement checkBox;
 
 	String actionName = "Auto Test";
 	String cmr_cyv_code = "prhr";
@@ -161,6 +174,16 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		 * term - the assignment will be terminated based on the assignment type and
 		 * involvement code parameters values for the logged in judge. 
 		 */
+
+		case "create":
+			getPanel(Panel.Assignments);
+
+			String judgeAssign = getRowFromTable(assignTable, mode, 4).getText();
+
+			Assert.assertTrue(Actions.isDisplayed(Locator.XPATH,
+					"//XCUIElementTypeStaticText[contains(@name, '" + judgeAssign + "')]"));
+			break;
+
 		case "term":
 			uiJudgeList.remove(loggedInJudge);
 			break;
@@ -170,20 +193,20 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 			break;
 
 		case "termAnyRelief":
-			getDPF(dpf);
+			Assert.assertTrue(getDPF(dpf));
 			break;
 
 		case "termAnyReliefPanel":
-			getDPF(dpf);
+			Assert.assertTrue(getDPF(dpf));
 			break;
 
 		case "termAllReliefs":
-			getDPF(dpf);
+			Assert.assertTrue(getDPF(dpf));
 
 			break;
 
 		case "termAllReliefsPanel":
-			getDPF(dpf);
+			Assert.assertTrue(getDPF(dpf));
 
 			break;
 
@@ -224,6 +247,38 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		}
 
 		return isDisplayed;
+
+	}
+
+	protected MobileElement getRowFromTable(MobileElement table, String cellTextEquals, int intCellToFind) {
+		MobileElement tableBody = table.findElement(By.tagName("tbody"));
+		List<MobileElement> rows = tableBody.findElements(By.tagName("tr"));
+		for (MobileElement row : rows) {
+			List<MobileElement> td = row.findElements(By.tagName("td"));
+			if (td.size() > 0 && td.get(intCellToFind).getText().equals(cellTextEquals)) {
+				return row;
+			}
+		}
+		return null;
+	}
+
+	public void getCheckbox() {
+
+		try {
+			if (checkBox.isDisplayed() == true) {
+
+				boolean isSelected = checkBox.isSelected();
+				Assert.assertTrue(isSelected);
+
+			} else {
+				throw new RuntimeException(
+						"The toggle entitled \"Back up Annotations to CM/ECF toggle\" should be turned on by default.");
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 

@@ -131,11 +131,11 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		createNewSTF(Assignment.NEW, chmAssign.CREATE, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
 				userInputData);
 
-		cha_id = getCreatedAssignment(Queries.ASSIGNEES_CHA_ID, cha_ju_pe_id, cmr_cs_caseid, userInputData);
+		//cha_id = getCreatedAssignment(Queries.ASSIGNEES_CHA_ID, cha_ju_pe_id, cmr_cs_caseid, userInputData);
 
-		createNewSTF(Assignment.NEW, chmAssign.MODIFY, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
-				userInputData);
-		terminateStaffAssignment(userInputData);
+		//createNewSTF(Assignment.NEW, chmAssign.MODIFY, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
+		//		userInputData);
+		//terminateStaffAssignment(userInputData);
 
 	}
 
