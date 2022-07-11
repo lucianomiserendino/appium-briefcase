@@ -11,9 +11,15 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
@@ -58,6 +64,12 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "label[id='settings-checkbox-1']")
 	public static MobileElement checkBox;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Alert']")
+	public static MobileElement alert;
+
+	@iOSXCUITFindBy(accessibility = "OK")
+	public static MobileElement ok;
 
 	String actionName = "Auto Test";
 	String cmr_cyv_code = "prhr";
@@ -215,6 +227,12 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		}
 	}
 
+	public void createchmsilentAssign() {
+		if (alert.isDisplayed() == true) {
+
+		}
+	}
+
 	/**
 	 * The following method checks if the parameter is set to termAnyRelief or
 	 * termAllReliefs, it is used in conjunction with the judgeVote DPF.
@@ -262,24 +280,6 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		return null;
 	}
 
-	public void getCheckbox() {
 
-		try {
-			if (checkBox.isDisplayed() == true) {
-
-				boolean isSelected = checkBox.isSelected();
-				Assert.assertTrue(isSelected);
-
-			} else {
-				throw new RuntimeException(
-						"The toggle entitled \"Back up Annotations to CM/ECF toggle\" should be turned on by default.");
-
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
 
 }
