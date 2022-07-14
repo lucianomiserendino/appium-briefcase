@@ -1,12 +1,12 @@
 [
   {
-    "line": 2,
+    "line": 1,
     "elements": [
       {
         "before": [
           {
             "result": {
-              "duration": 18690243375,
+              "duration": 8231153042,
               "status": "passed"
             },
             "match": {
@@ -16,108 +16,86 @@
         ],
         "line": 4,
         "name": "",
-        "description": "Tapping on a referral category that is not orally argued (chm_reftype_val.cdv_is_oral_arg\u003d\u0027n\u0027),\n  a list of cases should dipslay for the judge for that category.\n  Need to verify the correct number of referrals are being displayed.",
-        "id": "number-of-cases-displayed-for-non-orally-argued-cases;",
+        "description": "Testing  Document Annotations",
+        "id": "saving-document-annotations;",
         "type": "scenario",
         "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "duration": 22736489875,
+              "duration": 56165037000,
               "status": "passed"
             },
             "comments": [
               {
-                "line": 11,
-                "value": "# Given I am logged into Briefcase"
+                "line": 7,
+                "value": "#Given I am logged into Briefcase"
               },
               {
-                "line": 12,
+                "line": 8,
                 "value": "#|environment|userName| password |courtId|"
               },
               {
+                "line": 9,
+                "value": "#|test       |test    | test     |test   |"
+              },
+              {
+                "line": 12,
+                "value": "#Then I select a user"
+              },
+              {
                 "line": 13,
-                "value": "# |test       |test    | test     |test   |"
-              }
-            ],
-            "line": 15,
-            "name": "I select a user",
-            "match": {
-              "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "userType",
-                  "personrole",
-                  "jud"
-                ],
-                "line": 16
+                "value": "#\t|userType   |personrole        |jud     |"
               },
               {
-                "cells": [
-                  "judge",
-                  "Appellate Judges",
-                  "test"
-                ],
-                "line": 17
+                "line": 14,
+                "value": "#\t|judge      |Appellate Judges  |test    |"
+              },
+              {
+                "line": 16,
+                "value": "#Then User selects random judge category"
+              },
+              {
+                "line": 17,
+                "value": "#\t|courtId|"
+              },
+              {
+                "line": 18,
+                "value": "#\t|test   |"
+              },
+              {
+                "line": 20,
+                "value": "#Then User selects random case number"
+              },
+              {
+                "line": 21,
+                "value": "#\t|courtId|"
+              },
+              {
+                "line": 22,
+                "value": "#\t|test   |"
               }
             ],
+            "line": 26,
+            "name": "I verify that the toggles on the settings page under the PDF Options heading entitled Back up Annotations to CM/ECF, and Allow staff to view annotated documents are turned on by default",
+            "match": {
+              "location": "AccessingAnnotatedDocuments_StepDefinitions.i_verify_that_the_toggles_on_the_settings_page_under_the_PDF_Options_heading_entitled_Back_up_Annotations_to_CM_ECF_and_Allow_staff_to_view_annotated_documents_are_turned_on_by_default()"
+            },
             "keyword": "Then "
-          },
+          }
+        ],
+        "tags": [
           {
-            "result": {
-              "duration": 136534290333,
-              "status": "passed"
-            },
-            "line": 19,
-            "name": "I find the valid non-orally argued categories for the judge",
-            "match": {
-              "location": "ReferralCategories_StepDefinitions.i_find_the_valid_non_orally_argued_categories_for_the_judge(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "courtId",
-                  "jud"
-                ],
-                "line": 21
-              },
-              {
-                "cells": [
-                  "test",
-                  "test"
-                ],
-                "line": 22
-              }
-            ],
-            "keyword": "Then "
+            "line": 3,
+            "name": "@AMB-2977"
           }
         ]
       }
     ],
-    "name": "Number of cases displayed for non-orally argued cases",
+    "name": "Saving Document Annotations",
     "description": "",
-    "id": "number-of-cases-displayed-for-non-orally-argued-cases",
+    "id": "saving-document-annotations",
     "keyword": "Feature",
-    "uri": "CATEGORIES/USER_INTERFACE/NON-ORALLY_ARGUED_CASES_AMB-973.feature",
-    "tags": [
-      {
-        "line": 1,
-        "name": "@AMB-973"
-      },
-      {
-        "line": 1,
-        "name": "@S"
-      },
-      {
-        "line": 1,
-        "name": "@Smoke"
-      },
-      {
-        "line": 1,
-        "name": "@n"
-      }
-    ]
+    "uri": "CATEGORIES/SavingDocumentAnnotations.feature"
   }
 ]

@@ -142,6 +142,11 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 				uiDoCategories);
 	}
 
+	
+	
+	
+	
+	
 	public List<Integer> getCellCount(int time, int navCellSize) {
 		List<Integer> cellSize = new ArrayList<>();
 		for (int i = time; i < navCellSize; i++) {

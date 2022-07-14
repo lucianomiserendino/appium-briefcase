@@ -2,11 +2,15 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.openqa.selenium.support.PageFactory.initElements;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -14,14 +18,19 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
 
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
-import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
-public class AccessingAnnotatedDocuments extends AppiumPageFactory {
+public class AccessingAnnotatedDocuments extends Base {
+	public AccessingAnnotatedDocuments() {
+		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
+	}
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Brief for 2441 REPLACED']/preceding::XCUIElementTypeStaticText[@name='+']")
 	public static MobileElement plusIcon;
@@ -49,11 +58,26 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[2]")
 	public static MobileElement settingsIcon;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Allow staff to view annotated documents']")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Allow staff to view annotated documents']/following::XCUIElementTypeSwitch[1]")
 	public static MobileElement viewAnnotatedDoc;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Back up Annotations to CM/ECF']")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Back up Annotations to CM/ECF']/following::XCUIElementTypeSwitch[1]")
 	public static MobileElement backUpAnnotations;
+
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeToolbar[@name='Toolbar'])[1]/following::XCUIElementTypeOther[1]/XCUIElementTypeButton")
+	public static List<MobileElement> toolBar1;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar/XCUIElementTypeButton")
+	public static List<MobileElement> navigationTool1;
+
+	@iOSXCUITFindBy(accessibility = "PDF OPTIONS")
+	public static MobileElement pdfOptions;
+
+	@iOSXCUITFindBy(accessibility = "Annotations")
+	public static MobileElement annotations;
+
+	@iOSXCUITFindBy(accessibility = "FreeText")
+	public static MobileElement freeText;
 
 	public void getAnnotatedDoc() {
 		openPDFDoc(originalDoc);
@@ -73,32 +97,6 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 		}
 		tap(Locator.NAME, close);
 		tap(minIcon);
-
-	}
-
-	public void getToggle(List<UserInputData> userInputData) {
-
-		if
-
-		(contains("Dashboard").isDisplayed())
-			contains("Dashboard").click();
-		Page.sleep(5000);
-
-		try {
-			if (viewAnnotatedDoc.isDisplayed() == true || backUpAnnotations.isDisplayed()) {
-
-				Assert.assertTrue(viewAnnotatedDoc.isSelected());
-				Assert.assertTrue(backUpAnnotations.isSelected());
-
-			} else {
-				throw new RuntimeException(
-						"The toggle entitled \"Back up Annotations to CM/ECF & Allow staff to view annotated documents toggle\" should be turned on by default.");
-
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 	}
 
@@ -132,6 +130,90 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void getToggle() {
+		if (contains("Dashboard").isDisplayed())
+			contains("Dashboard").click();
+		Page.sleep(5000);
+
+		settingsIcon.click();
+
+		Assert.assertTrue(Actions.isDisplayed(pdfOptions));
+
+		try {
+			if (viewAnnotatedDoc.isDisplayed() == true || backUpAnnotations.isDisplayed() == true) {
+
+				assertTrue("THE TOGGLE ENTITLED \"BACK UP ANNOTATIONS TO CM/ECF\" SHOULD BE TURNED ON BY DEFAULT.",
+						getToggleState(backUpAnnotations));
+
+				Actions.tap(backUpAnnotations);
+
+				assertFalse(getToggleState(backUpAnnotations));
+				assertFalse(getToggleState(viewAnnotatedDoc));
+
+			} else {
+				throw new RuntimeException(
+						" THE \"BACK UP ANNOTATIONS TO CM/ECF\" TOGGLE IS MISSING FROM THE SETTINGS PAGE");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void annotateDocument() {
+
+		Actions.tap(annotations);
+		ifEditingToolsExist(toolBar1);
+
+	}
+
+	public void addAnnotation() {
+
+	}
+
+	public String ifEditingToolsExist(List<MobileElement> tools) {
+
+		List<String> list = new ArrayList<>();
+
+		String tool = "";
+
+		for (int i = 0; i < tools.size(); i++) {
+
+			tool = tools.get(i).getText().trim();
+
+			if (!tool.equals("Text Highlight") & !tool.equals("Undo") & !tool.equals("Redo") & !tool.equals("Done"))
+
+				list.add(tool);
+
+		}
+
+		int index = Utility.getRandomNumberInRange(1, list.size() - 1);
+
+		String text = list.get(index).trim();
+
+		Actions.tap(Locator.XPATH, Actions.containsElement(text));
+		return text;
+
+	}
+
+	public boolean getToggleState(MobileElement el) {
+
+		boolean status = false;
+
+		if (attributeEquals(el, "0")) {
+			status = false;
+
+		} else if (attributeEquals(el, "1")) {
+			status = true;
+		}
+		return status;
+	}
+
+	public boolean attributeEquals(MobileElement el, String index) {
+		return el.getAttribute("value").equals(index);
 	}
 
 }

@@ -145,6 +145,19 @@ public class Actions extends Base {
 
 	}
 
+	public static boolean isDisplayed(MobileElement el) {
+		boolean isDisplayed = false;
+
+		try {
+			if (el.isDisplayed())
+				isDisplayed = true;
+		} catch (WebDriverException e) {
+			isDisplayed = false;
+		}
+		return isDisplayed;
+
+	}
+
 	public static void clicksOn(MobileElement element) {
 		try {
 			element.click();
