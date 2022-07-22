@@ -79,6 +79,21 @@ public class AccessingAnnotatedDocuments extends Base {
 	@iOSXCUITFindBy(accessibility = "FreeText")
 	public static MobileElement freeText;
 
+	@iOSXCUITFindBy(accessibility = "Text Annotation")
+	public static MobileElement textAnnotation;
+
+	@iOSXCUITFindBy(accessibility = "Drawing")
+	public static MobileElement drawing;
+
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeOther[@name='Text Annotation'])[1]")
+	public static MobileElement sentText;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTable[@name='Note']")
+	public static MobileElement note;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTable[@name='Note']/XCUIElementTypeCell/XCUIElementTypeTextView")
+	public static MobileElement sentNote;
+
 	public void getAnnotatedDoc() {
 		openPDFDoc(originalDoc);
 		openPDFDoc(annotatedDoc);
@@ -174,31 +189,6 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	}
 
-	public String ifEditingToolsExist(List<MobileElement> tools) {
-
-		List<String> list = new ArrayList<>();
-
-		String tool = "";
-
-		for (int i = 0; i < tools.size(); i++) {
-
-			tool = tools.get(i).getText().trim();
-
-			if (!tool.equals("Text Highlight") & !tool.equals("Undo") & !tool.equals("Redo") & !tool.equals("Done"))
-
-				list.add(tool);
-
-		}
-
-		int index = Utility.getRandomNumberInRange(1, list.size() - 1);
-
-		String text = list.get(index).trim();
-
-		Actions.tap(Locator.XPATH, Actions.containsElement(text));
-		return text;
-
-	}
-
 	public boolean getToggleState(MobileElement el) {
 
 		boolean status = false;
@@ -214,6 +204,75 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	public boolean attributeEquals(MobileElement el, String index) {
 		return el.getAttribute("value").equals(index);
+	}
+
+	public String ifEditingToolsExist(List<MobileElement> tools) {
+
+		List<String> list = new ArrayList<>();
+
+		String tool = "";
+
+		for (int i = 0; i < tools.size(); i++) {
+
+			tool = tools.get(i).getAttribute("name").trim();
+
+			if (!tool.equals("Text Highlight") & !tool.equals("Undo") & !tool.equals("Redo") & !tool.equals("Done"))
+
+				list.add(tool);
+		}
+
+		// int index = Utility.getRandomNumberInRange(1, list.size() - 1);
+		// String text = list.get(index).trim();
+
+		String text = list.get(3).trim();
+
+		getEditingToolList(text);
+		return text;
+
+	}
+
+	public void getEditingToolList(String text) {
+
+		String actual = text + "_" + Utility.getStreamOfRandomInts();
+
+		if (text.equals("FreeText")) {
+
+			sendANote(text, textAnnotation, sentText, actual);
+
+		} else if (text.equals("Text")) {
+
+			sendANote(text, note, sentNote, actual);
+
+		} else if (text.equals("Ink_Pen")) {
+
+			Actions.tap(Locator.ID, text);
+
+		}
+
+	}
+
+	public void selectTool(String text, MobileElement tool2) {
+		Actions.tap(Locator.ID, text);
+		Utility.tapByCoordinate("pdfX", "pdfY");
+		Actions.tap(tool2);
+	}
+
+	public void sendANote(String text, MobileElement tool2, MobileElement sentTxt, String actual) {
+		selectTool(text, tool2);
+
+		Actions.sendKeys(tool2, actual);
+		String expected = sentTxt.getText().trim();
+
+		System.out.println(expected);
+		System.out.println(expected);
+	}
+
+	public void draw() {
+		org.openqa.selenium.interactions.Actions builder = new org.openqa.selenium.interactions.Actions(driver);
+		org.openqa.selenium.interactions.Action signature = builder.moveToElement(plusIcon, 100, 50).clickAndHold()
+				.moveByOffset(150, 50).click().build();
+		signature.perform();
+
 	}
 
 }
