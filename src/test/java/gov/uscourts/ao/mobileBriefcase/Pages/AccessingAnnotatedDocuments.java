@@ -2,6 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.support.PageFactory.initElements;
@@ -263,8 +264,8 @@ public class AccessingAnnotatedDocuments extends Base {
 		Actions.sendKeys(tool2, actual);
 		String expected = sentTxt.getText().trim();
 
-		System.out.println(expected);
-		System.out.println(expected);
+		assertEquals("THE EDITING TOOLS TO CREATE ANNOTATIONS ARE NOT FUNCTIONING PROPERLY IN PSPDFKIT", actual,
+				expected);
 	}
 
 	public void draw() {
