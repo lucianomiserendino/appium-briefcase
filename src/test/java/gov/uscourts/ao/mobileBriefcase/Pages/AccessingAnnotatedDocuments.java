@@ -2,7 +2,6 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.support.PageFactory.initElements;
@@ -46,8 +45,6 @@ public class AccessingAnnotatedDocuments extends Base {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='-']/following::XCUIElementTypeStaticText[@name='Brief for 2441 REPLACED']/following::XCUIElementTypeStaticText[contains(@name, 'Annotated')]")
 	public static MobileElement annotatedDoc;
 
-	static String close = "Close";
-
 	static String PDFPageView = "PDF View";
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
@@ -86,6 +83,12 @@ public class AccessingAnnotatedDocuments extends Base {
 	@iOSXCUITFindBy(accessibility = "Drawing")
 	public static MobileElement drawing;
 
+	@iOSXCUITFindBy(accessibility = "Freeform Highlight")
+	public static MobileElement freeformHighlight;
+
+	@iOSXCUITFindBy(accessibility = "Ink_Magic")
+	public static MobileElement ink_Magic;
+
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeOther[@name='Text Annotation'])[1]")
 	public static MobileElement sentText;
 
@@ -94,6 +97,18 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTable[@name='Note']/XCUIElementTypeCell/XCUIElementTypeTextView")
 	public static MobileElement sentNote;
+
+	@iOSXCUITFindBy(accessibility = "Toolbar")
+	public static MobileElement toolbar;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Author Name']")
+	public static MobileElement author;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Done']")
+	public static MobileElement done;
+
+	@iOSXCUITFindBy(accessibility = "Close")
+	public static MobileElement close;
 
 	public void getAnnotatedDoc() {
 		openPDFDoc(originalDoc);
@@ -111,7 +126,9 @@ public class AccessingAnnotatedDocuments extends Base {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		tap(Locator.NAME, close);
+
+		Actions.tap(close);
+
 		tap(minIcon);
 
 	}
@@ -182,7 +199,14 @@ public class AccessingAnnotatedDocuments extends Base {
 	public void annotateDocument() {
 
 		Actions.tap(annotations);
-		ifEditingToolsExist(toolBar1);
+		if (Actions.isDisplayed(author) == true) {
+			Actions.tap(done);
+		}
+		String annotation = ifEditingToolsExist(toolBar1);
+
+		Actions.tap(annotations);
+		Actions.tap(close);
+		assertTrue(Actions.isDisplayed(Locator.XPATH, Actions.containsElement(annotation)));
 
 	}
 
@@ -217,63 +241,77 @@ public class AccessingAnnotatedDocuments extends Base {
 
 			tool = tools.get(i).getAttribute("name").trim();
 
-			if (!tool.equals("Text Highlight") & !tool.equals("Undo") & !tool.equals("Redo") & !tool.equals("Done"))
+			if (!tool.equals("Text Highlight") & !tool.equals("Undo") & !tool.equals("Redo") & !tool.equals("Done")
+					& !tool.equals("Eraser") & !tool.equals("Line_Arrow") & !tool.equals("Image")
+					& !tool.equals("SelectionTool"))
 
 				list.add(tool);
 		}
 
-		// int index = Utility.getRandomNumberInRange(1, list.size() - 1);
-		// String text = list.get(index).trim();
+		int index = Utility.getRandomNumberInRange(1, list.size() - 1);
+		String text = list.get(index).trim();
 
-		String text = list.get(3).trim();
+		// String text = list.get(5).trim();
 
-		getEditingToolList(text);
-		return text;
+		return getEditingToolList(text);
 
 	}
 
-	public void getEditingToolList(String text) {
+	public String getEditingToolList(String text) {
+		String expected = "";
 
 		String actual = text + "_" + Utility.getStreamOfRandomInts();
 
 		if (text.equals("FreeText")) {
 
-			sendANote(text, textAnnotation, sentText, actual);
+			expected = sendText(text, textAnnotation, sentText, actual);
 
 		} else if (text.equals("Text")) {
 
-			sendANote(text, note, sentNote, actual);
+			expected = sendText(text, note, sentNote, actual);
 
 		} else if (text.equals("Ink_Pen")) {
 
-			Actions.tap(Locator.ID, text);
+			expected = draw(text, drawing, "Drawing");
 
+		} else if (text.equals("Ink_Highlighter")) {
+
+			expected = draw(text, freeformHighlight, "Freeform Highlight");
+
+		} else if (text.equals("Ink_Magic")) {
+
+			expected = draw(text, drawing, "Drawing");
 		}
+		return expected;
 
 	}
 
-	public void selectTool(String text, MobileElement tool2) {
+	public String draw(String text, MobileElement element, String actual) {
+		Actions.tap(Locator.ID, text);
+		for (int i = 0; i < 2; i++) {
+			Utility.tapByCoordinate("pdfX", "pdfY");
+		}
+		String expected = element.getAttribute("name").trim();
+		assertEquals(actual, expected);
+		return expected;
+
+	}
+
+	public String sendText(String text, MobileElement element, MobileElement sentTxt, String actual) {
 		Actions.tap(Locator.ID, text);
 		Utility.tapByCoordinate("pdfX", "pdfY");
-		Actions.tap(tool2);
-	}
+		Actions.tap(element);
 
-	public void sendANote(String text, MobileElement tool2, MobileElement sentTxt, String actual) {
-		selectTool(text, tool2);
-
-		Actions.sendKeys(tool2, actual);
+		Actions.sendKeys(element, actual);
 		String expected = sentTxt.getText().trim();
 
-		assertEquals("THE EDITING TOOLS TO CREATE ANNOTATIONS ARE NOT FUNCTIONING PROPERLY IN PSPDFKIT", actual,
-				expected);
+		assertEquals(actual, expected);
+		return expected;
 	}
 
-	public void draw() {
-		org.openqa.selenium.interactions.Actions builder = new org.openqa.selenium.interactions.Actions(driver);
-		org.openqa.selenium.interactions.Action signature = builder.moveToElement(plusIcon, 100, 50).clickAndHold()
-				.moveByOffset(150, 50).click().build();
-		signature.perform();
-
+	public void assertEquals(String actual, String expected) {
+		Assert.assertEquals("THE EDITING TOOLS TO CREATE ANNOTATIONS ARE NOT FUNCTIONING PROPERLY IN PSPDFKIT", actual,
+				expected);
 	}
 
 }
