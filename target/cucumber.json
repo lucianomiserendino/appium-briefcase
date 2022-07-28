@@ -6,7 +6,7 @@
         "before": [
           {
             "result": {
-              "duration": 7629682208,
+              "duration": 8912453708,
               "status": "passed"
             },
             "match": {
@@ -23,7 +23,7 @@
         "steps": [
           {
             "result": {
-              "duration": 24683345250,
+              "duration": 16138451584,
               "status": "passed"
             },
             "comments": [

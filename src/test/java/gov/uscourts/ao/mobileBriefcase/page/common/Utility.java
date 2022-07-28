@@ -28,12 +28,12 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 
-import cucumber.api.DataTable;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.offset.PointOption;
+import net.bytebuddy.implementation.bind.MethodDelegationBinder.AmbiguityResolver.Directional;
 
 public class Utility extends Base {
 
@@ -404,7 +404,6 @@ public class Utility extends Base {
 		return cellSize;
 	}
 
-	
 	public static String getParameter(String param, String dpfName, int index) {
 
 		String dpfParam = "";
@@ -429,8 +428,6 @@ public class Utility extends Base {
 		}
 		return dpfParam;
 	}
-	
-	
 
 	public static String getSingleDpf(String value, String dpfName, int index) {
 		String[] parValue = value.substring(value.indexOf(dpfName + "(")).split("',");
@@ -460,5 +457,28 @@ public class Utility extends Base {
 //		}
 //	}
 
+	public void mobileSwipeScreenIOS(Directional dir) {
 
+		final int ANIMATION_TIME = 200; // ms
+		final HashMap<String, String> scrollObject = new HashMap<String, String>();
+
+		switch (dir) {
+
+		case LEFT:
+			scrollObject.put("direction", "left");
+			break;
+		case RIGHT:
+			scrollObject.put("direction", "right");
+			break;
+		default:
+			throw new IllegalArgumentException("mobileSwipeScreenIOS(): dir: '" + dir + "' NOT supported");
+		}
+		try {
+			driver.executeScript("mobile:swipe", scrollObject);
+			Thread.sleep(ANIMATION_TIME);
+		} catch (Exception e) {
+			System.err.println("mobileSwipeScreenIOS(): FAILED\n" + e.getMessage());
+			return;
+		}
+	}
 }

@@ -19,6 +19,7 @@ public class AccessingAnnotatedDocuments_StepDefinitions {
 		//page.getToggle();
 		
 		page.annotateDocument();
+		page.searchForAppendix();
 	}
 
 }

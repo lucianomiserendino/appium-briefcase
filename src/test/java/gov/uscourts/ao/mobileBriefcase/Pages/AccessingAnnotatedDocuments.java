@@ -1,7 +1,9 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.clicksOn;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.support.PageFactory.initElements;
@@ -109,6 +111,29 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	@iOSXCUITFindBy(accessibility = "Close")
 	public static MobileElement close;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTable[@name='Search Results']/XCUIElementTypeCell")
+	public static List<MobileElement> searchResult;
+
+	@iOSXCUITFindBy(accessibility = "Search")
+	public static MobileElement searchIcon;
+
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeSearchField[@name=\"Search Document\"])[1]")
+	public static MobileElement searchTextField;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
+	public static MobileElement searchBTN;
+
+	@iOSXCUITFindBy(accessibility = "ResultsList")
+	public static MobileElement category;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='CM/ECF']")
+	public static MobileElement cmecf;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='On Device']")
+	public static MobileElement on_device;
+	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'FindAppendix?')]")
+	public static List<MobileElement> appxLink;
 
 	public void getAnnotatedDoc() {
 		openPDFDoc(originalDoc);
@@ -312,6 +337,23 @@ public class AccessingAnnotatedDocuments extends Base {
 	public void assertEquals(String actual, String expected) {
 		Assert.assertEquals("THE EDITING TOOLS TO CREATE ANNOTATIONS ARE NOT FUNCTIONING PROPERLY IN PSPDFKIT", actual,
 				expected);
+	}
+
+	public void searchForAppendix() {
+		String text = "Appx";
+		performPageLoad(driver);
+		clicksOn(searchIcon);
+		searchTextField.clear();
+		Actions.sendKeys(searchTextField, text);
+		String index = Utility.clickOnNumberInRange(searchResult);
+		if (!(index == null)) {
+			Utility.clickOnNumberInRange(appxLink);
+			performPageLoad(driver);
+			Assert.assertTrue(Actions.isDisplayed(Locator.XPATH, Actions.containsElement(text)));
+		} else {
+			throw new RuntimeException("THIS DOCUMENT DOES NOT CONTAIN ANY HYPERLINKS");
+		}
+
 	}
 
 }
