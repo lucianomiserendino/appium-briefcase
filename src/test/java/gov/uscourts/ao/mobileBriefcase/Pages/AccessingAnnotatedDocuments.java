@@ -1,13 +1,11 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.clicksOn;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForVisibilityOfElement;
-import static java.util.Arrays.asList;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.support.PageFactory.initElements;
@@ -26,9 +24,7 @@ import org.openqa.selenium.WebDriverException;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
-import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
-import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
@@ -361,26 +357,19 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	}
 
-
 	public static boolean isDisplayed(String query) {
 
 		String annotatedDoc = DBUtilities.execute(DBType.CMKA, query, 0).toString();
 
 		boolean isDisplayed = false;
 
-		Boolean elementNotFound = true;
-		while (elementNotFound) {
-
-			try {
-				MobileElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, Actions.containsElement(annotatedDoc)), driver);
-				if (elem.isDisplayed()) {
-					isDisplayed = true;
-				}
-			} catch (WebDriverException e) {
-				e.getMessage();
-			}
-			break;
-
+		try {
+			MobileElement elem = waitForVisibilityOfElement(
+					findElementBy(Locator.XPATH, Actions.containsElement(annotatedDoc)), driver);
+			if (elem.isDisplayed())
+				isDisplayed = true;
+		} catch (WebDriverException e) {
+			isDisplayed = false;
 		}
 		return isDisplayed;
 
