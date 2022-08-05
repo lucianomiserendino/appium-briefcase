@@ -446,12 +446,9 @@ public class Queries {
 	public static final String CCR_ID = "SELECT  first 1 ccr_id  FROM chm_mobile_referral, chambers_case_to_referral, chambers_referral WHERE cpr_vote_req = 'y'"
 			+ " and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = 'CMR_CS_CASEID' and cmr_ju_pe_id = 'CMR_JU_PE_ID'";
 
-	
 	public static final String CMR_ID = "SELECT  first 1 cmr_id  FROM chm_mobile_referral, chambers_case_to_referral, chambers_referral WHERE cpr_vote_req = 'y'"
 			+ " and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = 'CMR_CS_CASEID' and cmr_ju_pe_id = 'CMR_JU_PE_ID'";
 
-	
-	
 	public static final String FILLERs_INFORMATION = "select  FIELD " + "from chm_mobile_referral\n"
 			+ "join chambers_case_to_referral on cmr_ccr_id = ccr_id\n"
 			+ "join relate_dktpart on ccr_dp_dktpartid = rd_rel_dktpartid \n"
@@ -617,7 +614,18 @@ public class Queries {
 			+ "where a.ccr_id = 'CCR_ID' {IF TARGET ONLY ADD THIS and a.ccr_ccs_id = b.ccr_ccs_id} and b.ccr_date_end is null and NVL(cpr_vote_complete,'') <> 'y' and NVL(cpr_vote_req,'') <> 'n' "
 			+ "and crj_date_remove is null "
 			+ "order by cpr_date_ref, de_date_filed, cd_case_ext, ccs_id, pj_judge_order, cvn_date_created desc";
-	
-	public static final String me_code="select me_cyv_code from mbr_event where me_el_id = '?'";
+
+	public static final String me_code = "select me_cyv_code from mbr_event where me_el_id = '?'";
+
+	public static final String annotatedDoc = "select  first 5 cs_year||\"-\"||cs_number case_num, ur_username, annot_doc.dm_last_updated annot_upd, dcg_group, du_prid, de_date_filed, mbr_annot_to_doc.*\n"
+			+ "  , \"ANNOT_DOC >>>>>\" annot_doc, annot_doc.*, \"ORIG_DOC >>>>>\" orig_doc, orig_doc.* \n"
+			+ "from mbr_annot_to_doc, user, document orig_doc, document annot_doc, personrole, dktentry, case_dktentry, case, outer doc_user, outer doc_group\n"
+			+ "where mad_orig_dm_dls_id = orig_doc.dm_dls_id and mad_annot_dm_dls_id = annot_doc.dm_dls_id and mad_pe_id = pe_id and pe_pr_prid = ur_pr_prid\n"
+			+ "and orig_doc.dm_dktentryid = de_dktentryid and orig_doc.dm_dktentryid = cd_dktentryid and cd_caseid = cs_caseid\n"
+			+ "and annot_doc.dm_dktentryid = du_dktentryid and annot_doc.dm_seq = du_seq\n"
+			+ "and annot_doc.dm_dktentryid = dcg_dktentryid and annot_doc.dm_seq = dcg_seq\n"
+			+ "--and orig_doc.dm_dls_id = #####  -- these three optional if you want to narrow results.\n"
+			+ "--and annot_doc.dm_last_updated > TODAY - 1\n" + "--and ur_username matches \"*XXXXXX*\"\n"
+			+ "order by annot_doc.dm_last_updated desc, mad_orig_dm_dls_id desc;";
 
 }
