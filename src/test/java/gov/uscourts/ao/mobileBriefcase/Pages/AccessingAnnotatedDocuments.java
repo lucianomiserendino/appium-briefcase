@@ -1,5 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.clicksOn;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
@@ -24,7 +26,9 @@ import org.openqa.selenium.WebDriverException;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
@@ -140,6 +144,9 @@ public class AccessingAnnotatedDocuments extends Base {
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'FindAppendix?')]")
 	public static List<MobileElement> appxLink;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, 'Actions')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
+	public static List<MobileElement> docCategories;
+
 	public void getAnnotatedDoc() {
 		openPDFDoc(originalDoc);
 		openPDFDoc(annotatedDoc);
@@ -226,7 +233,13 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	}
 
-	public void annotateDocument() {
+	public void annotateDocument(String caseNum, List<UserInputData> userInputData) {
+
+		List<String> categories = getDocumentCategories();
+
+		int randomDoc = Utility.getRandomNumberInRange(1, categories.size() - 1);
+		String docName = categories.get(randomDoc).trim();
+		contains(docName).click();
 
 		Actions.tap(annotations);
 		if (Actions.isDisplayed(author) == true) {
@@ -236,7 +249,10 @@ public class AccessingAnnotatedDocuments extends Base {
 
 		Actions.tap(annotations);
 		Actions.tap(close);
+		contains(docName).click();
 		assertTrue(Actions.isDisplayed(Locator.XPATH, Actions.containsElement(annotation)));
+
+		getAssignmentInfo(caseNum, docName, userInputData);
 
 	}
 
@@ -277,7 +293,6 @@ public class AccessingAnnotatedDocuments extends Base {
 		int index = Utility.getRandomNumberInRange(1, list.size() - 1);
 		String text = list.get(index).trim();
 
-		// String text = list.get(5).trim();
 
 		return getEditingToolList(text);
 
@@ -327,7 +342,6 @@ public class AccessingAnnotatedDocuments extends Base {
 		Actions.tap(Locator.ID, text);
 		Utility.tapByCoordinate("pdfX", "pdfY");
 		Actions.tap(element);
-
 		Actions.sendKeys(element, actual);
 		String expected = sentTxt.getText().trim();
 
@@ -354,7 +368,6 @@ public class AccessingAnnotatedDocuments extends Base {
 		} else {
 			throw new RuntimeException("THIS DOCUMENT DOES NOT CONTAIN ANY HYPERLINKS");
 		}
-
 	}
 
 	public static boolean isDisplayed(String query) {
@@ -372,7 +385,35 @@ public class AccessingAnnotatedDocuments extends Base {
 			isDisplayed = false;
 		}
 		return isDisplayed;
+	}
 
+	public static void getAssignmentInfo(String caseNum, String docName, List<UserInputData> userInputData) {
+		List<String> assignInfo = new ArrayList<>();
+
+		for (int i = 2; i <= 5; i++) {
+			assignInfo = execute(DBUtilities.getText(Queries.annotatedDoc, docName), i, userInputData);
+
+			if (i == 2) {
+				assertTrue(assignInfo.contains(caseNum));
+
+			} else if (i == 3) {
+
+				assertTrue(assignInfo.contains(docName));
+			}
+		}
+
+	}
+
+	public List<String> getDocumentCategories() {
+
+		getGroupIcons();
+		Page.performPageLoad(driver);
+		List<String> categories = new ArrayList<>();
+
+		for (int i = 0; i < docCategories.size(); i++) {
+			categories.add(docCategories.get(i).getText());
+		}
+		return categories;
 	}
 
 }
