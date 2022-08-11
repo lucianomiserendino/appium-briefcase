@@ -58,6 +58,7 @@ public class ReferralCategories_StepDefinitions {
 	public void verify_the_number_of_new_items_that_displays_in_the_red_badge_in_the_navigation_match_the_number_of_new_items_listed_on_the_Dashboard_page() {
 		page = new DashboardPage();
 		page.getNewReferralsCount();
+		
 	}
 
 }

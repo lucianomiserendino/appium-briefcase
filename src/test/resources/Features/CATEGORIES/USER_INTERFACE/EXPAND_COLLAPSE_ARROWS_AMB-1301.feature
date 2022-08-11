@@ -5,9 +5,9 @@ Feature: Verify data is displayed on the Dashboard after tapping the left-hand n
 
 Scenario: 
 
-	Given I am logged into Briefcase 
-		|environment|userName| password |courtId|
-		|test       |test    | test     |test   |
+	#Given I am logged into Briefcase 
+	#	|environment|userName| password |courtId|
+	#	|test       |test    | test     |test   |
 		
 	Then I select a user 
 		|userType   |personrole        |jud       |

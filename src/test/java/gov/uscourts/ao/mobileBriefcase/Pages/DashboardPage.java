@@ -171,9 +171,9 @@ public class DashboardPage extends AppiumPageFactory {
 						replace(getID(BRIEFCASE_TARGET_ONLY_N, pe_id), "CYV_CATEGORY", dbNonOrgCases), userInputData);
 
 				performPageLoad(driver);
-				
+				performPageLoad(driver);
 				List<String> UInonOrallyarguedCases = asList(
-						(getNumOfDisplayedCases(Page.waitForVisibilityOfElement(total, driver))));
+						(getNumOfDisplayedCases(total)));
 
 				String si_value = CommonPages.getSiValue("briefcaseTargetOnly", userInputData);
 
@@ -279,6 +279,7 @@ public class DashboardPage extends AppiumPageFactory {
 				} else {
 
 					assertEquals(dashNewReferralCount, navNewReferralCount.getText().trim());
+					
 				}
 			} catch (org.openqa.selenium.TimeoutException e) {
 				e.getMessage();

@@ -51,6 +51,10 @@ public class PendingTasksPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(accessibility = "GroupIcon")
 	public static List<MobileElement> GroupIcon;
 
+	
+	@iOSXCUITFindBy(xpath = "**/XCUIElementTypeStaticText[label == '▽'][2]")
+	public static List<MobileElement> GroupIcon2;
+	
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<MobileElement> caseNum;
 
@@ -59,7 +63,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 		getPendingSubFolder(folder);
 		getGroupIcons();
 		getAssignmentCategories();
-		//
+	
 		if (folder.equals("MyAssignments") | folder.equals("ReferralsAwaiting")) {
 			tapGroupIcons();
 			getAssignmentCategories();

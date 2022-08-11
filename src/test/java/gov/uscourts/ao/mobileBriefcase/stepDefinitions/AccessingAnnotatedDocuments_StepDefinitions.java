@@ -21,7 +21,7 @@ public class AccessingAnnotatedDocuments_StepDefinitions {
 		page = new AccessingAnnotatedDocuments();
 		// page.getToggle();
 		List<UserInputData> userInputData = null;
-		page.annotateDocument(Document_StepDefinitions.referral, userInputData);
+		page.annotateDocument("OFF", Document_StepDefinitions.referral, userInputData);
 		page.searchForAppendix();
 	}
 

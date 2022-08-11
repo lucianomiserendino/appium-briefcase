@@ -23,6 +23,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.mobile.NetworkConnection;
+import org.openqa.selenium.mobile.NetworkConnection.ConnectionType;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
@@ -32,6 +34,7 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
+import gov.uscourts.ao.mobileBriefcase.page.common.Configuration;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.MobileElement;
@@ -147,6 +150,12 @@ public class AccessingAnnotatedDocuments extends Base {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, 'Actions')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
 	public static List<MobileElement> docCategories;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeCell[@name='Wi-Fi']")
+	public static MobileElement wifi;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeSwitch")
+	public static MobileElement switchBtn;
+
 	public void getAnnotatedDoc() {
 		openPDFDoc(originalDoc);
 		openPDFDoc(annotatedDoc);
@@ -233,7 +242,7 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	}
 
-	public void annotateDocument(String caseNum, List<UserInputData> userInputData) {
+	public void annotateDocument(String wifi, String caseNum, List<UserInputData> userInputData) {
 
 		List<String> categories = getDocumentCategories();
 
@@ -241,6 +250,9 @@ public class AccessingAnnotatedDocuments extends Base {
 		String docName = categories.get(randomDoc).trim();
 		contains(docName).click();
 
+		if (wifi.equals("OFF")) {
+			togglewiFi();
+		}
 		Actions.tap(annotations);
 		if (Actions.isDisplayed(author) == true) {
 			Actions.tap(done);
@@ -249,14 +261,18 @@ public class AccessingAnnotatedDocuments extends Base {
 
 		Actions.tap(annotations);
 		Actions.tap(close);
+
+		if (wifi.equals("OFF")) {
+			togglewiFi();
+		}
 		contains(docName).click();
 		assertTrue(Actions.isDisplayed(Locator.XPATH, Actions.containsElement(annotation)));
 
-		getAssignmentInfo(caseNum, docName, userInputData);
+		getBackEndUpdates(caseNum, docName, userInputData);
 
 	}
 
-	public boolean getToggleState(MobileElement el) {
+	public static boolean getToggleState(MobileElement el) {
 
 		boolean status = false;
 
@@ -269,7 +285,7 @@ public class AccessingAnnotatedDocuments extends Base {
 		return status;
 	}
 
-	public boolean attributeEquals(MobileElement el, String index) {
+	public static boolean attributeEquals(MobileElement el, String index) {
 		return el.getAttribute("value").equals(index);
 	}
 
@@ -292,7 +308,6 @@ public class AccessingAnnotatedDocuments extends Base {
 
 		int index = Utility.getRandomNumberInRange(1, list.size() - 1);
 		String text = list.get(index).trim();
-
 
 		return getEditingToolList(text);
 
@@ -387,7 +402,7 @@ public class AccessingAnnotatedDocuments extends Base {
 		return isDisplayed;
 	}
 
-	public static void getAssignmentInfo(String caseNum, String docName, List<UserInputData> userInputData) {
+	public static void getBackEndUpdates(String caseNum, String docName, List<UserInputData> userInputData) {
 		List<String> assignInfo = new ArrayList<>();
 
 		for (int i = 2; i <= 5; i++) {
@@ -414,6 +429,23 @@ public class AccessingAnnotatedDocuments extends Base {
 			categories.add(docCategories.get(i).getText());
 		}
 		return categories;
+	}
+
+	public static void wifiOff() throws InterruptedException {
+
+		NetworkConnection mobileDriver = (NetworkConnection) driver;
+		if (mobileDriver.getNetworkConnection() != ConnectionType.AIRPLANE_MODE) {
+			// enabling Airplane mode
+			mobileDriver.setNetworkConnection(ConnectionType.AIRPLANE_MODE);
+		}
+	}
+
+	public static void togglewiFi() {
+		driver.activateApp("com.apple.Preferences");
+		wifi.click();
+		switchBtn.click();
+		driver.activateApp(Configuration.getProperty(BUNDLE_ID));
+
 	}
 
 }
