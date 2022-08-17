@@ -17,11 +17,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.mobile.NetworkConnection;
 import org.openqa.selenium.mobile.NetworkConnection.ConnectionType;
@@ -155,6 +158,12 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeSwitch")
 	public static MobileElement switchBtn;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Page Label']/XCUIElementTypeOther/following:: XCUIElementTypeStaticText")
+	public static MobileElement pageNumber;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PDF Page View']")
+	public static MobileElement pdfView;
 
 	public void getAnnotatedDoc() {
 		openPDFDoc(originalDoc);
@@ -447,5 +456,69 @@ public class AccessingAnnotatedDocuments extends Base {
 		driver.activateApp(Configuration.getProperty(BUNDLE_ID));
 
 	}
+
+
+	public static void swipe(int index) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		HashMap<String, String> scrollObject = new HashMap<String, String>();
+		for (int i = 0; i < index; i++) {
+			scrollObject.put("direction", "right");
+			js.executeScript("mobile: scroll", scrollObject);
+		}
+	}
+
+	public static List<MobileElement> getDocName(String docCategory, int index) {
+		return Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + docCategory
+				+ "']/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther["
+				+ index + "]/XCUIElementTypeStaticText"));
+	}
+
+	public static void getRandomDoc() {
+
+		List<String> docName = new ArrayList<>();
+		List<String> pages = new ArrayList<>();
+
+		List<MobileElement> categories = getDocName("Briefs", 1);
+
+		int randomDoc = Utility.getRandomInt(categories.size());
+		System.out.println(randomDoc);
+
+		for (int i = 0; i < categories.size(); i++) {
+
+			docName.add(getDocName("Briefs", 1).get(i).getText());
+			pages.add(getDocName("Briefs", 2).get(i).getText().split("Pages: ")[1].trim());
+
+		}
+
+		String expectedPageNum = pages.get(randomDoc);
+		System.out.println(expectedPageNum);
+
+		categories.get(randomDoc).click();
+
+		String actualPageNum = splitBy(1);
+
+		Assert.assertEquals(expectedPageNum, actualPageNum);
+
+		if (Integer.parseInt(actualPageNum) > 1) {
+			swipe(Utility.getRandomInt(Integer.parseInt(actualPageNum)));
+		}
+
+		pdfView.click();
+
+		String lastViewedPage = splitBy(0);
+		close.click();
+
+		getDocName("Briefs", 1).get(randomDoc).click();
+
+		String expectedPage = splitBy(0);
+
+		Assert.assertEquals(lastViewedPage, expectedPage);
+
+	}
+
+	public static String splitBy(int index) {
+		return pageNumber.getText().split(" of ")[index];
+	}
+
 
 }
