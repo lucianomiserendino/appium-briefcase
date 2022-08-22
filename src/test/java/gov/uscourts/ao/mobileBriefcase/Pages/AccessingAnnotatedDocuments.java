@@ -1,6 +1,8 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SITE_TABLE_VARIABLE_VALUE;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.clicksOn;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
@@ -162,7 +164,7 @@ public class AccessingAnnotatedDocuments extends Base {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Page Label']/XCUIElementTypeOther/following:: XCUIElementTypeStaticText")
 	public static MobileElement pageNumber;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PDF Page View']")
+	@iOSXCUITFindBy(accessibility = "PDF View")
 	public static MobileElement pdfView;
 
 	public void getAnnotatedDoc() {
@@ -298,7 +300,7 @@ public class AccessingAnnotatedDocuments extends Base {
 		return el.getAttribute("value").equals(index);
 	}
 
-	public String ifEditingToolsExist(List<MobileElement> tools) {
+	public static String ifEditingToolsExist(List<MobileElement> tools) {
 
 		List<String> list = new ArrayList<>();
 
@@ -322,7 +324,7 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	}
 
-	public String getEditingToolList(String text) {
+	public static String getEditingToolList(String text) {
 		String expected = "";
 
 		String actual = text + "_" + Utility.getStreamOfRandomInts();
@@ -351,7 +353,7 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	}
 
-	public String draw(String text, MobileElement element, String actual) {
+	public static String draw(String text, MobileElement element, String actual) {
 		Actions.tap(Locator.ID, text);
 		for (int i = 0; i < 2; i++) {
 			Utility.tapByCoordinate("pdfX", "pdfY");
@@ -362,7 +364,7 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	}
 
-	public String sendText(String text, MobileElement element, MobileElement sentTxt, String actual) {
+	public static String sendText(String text, MobileElement element, MobileElement sentTxt, String actual) {
 		Actions.tap(Locator.ID, text);
 		Utility.tapByCoordinate("pdfX", "pdfY");
 		Actions.tap(element);
@@ -373,7 +375,7 @@ public class AccessingAnnotatedDocuments extends Base {
 		return expected;
 	}
 
-	public void assertEquals(String actual, String expected) {
+	public static void assertEquals(String actual, String expected) {
 		Assert.assertEquals("THE EDITING TOOLS TO CREATE ANNOTATIONS ARE NOT FUNCTIONING PROPERLY IN PSPDFKIT", actual,
 				expected);
 	}
@@ -457,68 +459,91 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	}
 
-
-	public static void swipe(int index) {
+	public static void swipe(int index, String dir) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		HashMap<String, String> scrollObject = new HashMap<String, String>();
 		for (int i = 0; i < index; i++) {
-			scrollObject.put("direction", "right");
+			scrollObject.put("direction", dir);
 			js.executeScript("mobile: scroll", scrollObject);
 		}
 	}
 
-	public static List<MobileElement> getDocName(String docCategory, int index) {
-		return Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + docCategory
-				+ "']/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther["
-				+ index + "]/XCUIElementTypeStaticText"));
+	public static List<MobileElement> getDocName(String text) {
+		int index;
+		if (text.equals("docCategory")) {
+			index = 1;
+		} else {
+			index = 2;
+		}
+		return Actions.findElements(By.xpath(
+				"//XCUIElementTypeStaticText[@name='Briefs']/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther["
+						+ index + "]/XCUIElementTypeStaticText"));
+	}
+
+	public static int getSize() {
+		return getDocName("docCategory").size();
+	}
+
+	public static int getRandomDocument() {
+		return Utility.getRandomInt(getSize());
+	}
+
+	public static String getText(String text, int i) {
+		return getDocName(text).get(i).getText();
+	}
+
+	public static void click(int index) {
+		getDocName("docCategory").get(index).click();
 	}
 
 	public static void getRandomDoc() {
 
 		List<String> docName = new ArrayList<>();
-		List<String> pages = new ArrayList<>();
 
-		List<MobileElement> categories = getDocName("Briefs", 1);
-
-		int randomDoc = Utility.getRandomInt(categories.size());
+		int randomDoc = getRandomDocument();
 		System.out.println(randomDoc);
 
-		for (int i = 0; i < categories.size(); i++) {
+		for (int i = 0; i < getSize(); i++) {
 
-			docName.add(getDocName("Briefs", 1).get(i).getText());
-			pages.add(getDocName("Briefs", 2).get(i).getText().split("Pages: ")[1].trim());
+			docName.add(getText("docCategory", i));
 
 		}
-
-		String expectedPageNum = pages.get(randomDoc);
-		System.out.println(expectedPageNum);
-
-		categories.get(randomDoc).click();
-
-		String actualPageNum = splitBy(1);
-
-		Assert.assertEquals(expectedPageNum, actualPageNum);
-
-		if (Integer.parseInt(actualPageNum) > 1) {
-			swipe(Utility.getRandomInt(Integer.parseInt(actualPageNum)));
-		}
+         		click(randomDoc);
+		randomPage();
 
 		pdfView.click();
-
 		String lastViewedPage = splitBy(0);
 		close.click();
+		getLastViewedPage(randomDoc, 0, lastViewedPage);
+		close.click();
 
-		getDocName("Briefs", 1).get(randomDoc).click();
+	}
 
-		String expectedPage = splitBy(0);
+	public static void randomPage() {
+		int pageNum = Integer.parseInt(splitBy(1));
+		int lastViewPage = Integer.parseInt(splitBy(0));
+		int randomNum;
 
-		Assert.assertEquals(lastViewedPage, expectedPage);
+		if (pageNum == lastViewPage) {
+			randomNum = Utility.getRandomNumberInRange(1, pageNum);
+			swipe(randomNum, "left");
+		} else {
+			randomNum = Utility.getRandomNumberInRange(lastViewPage, pageNum);
+			swipe(randomNum, "right");
+		}
+	}
 
+	public static void getLastViewedPage(int randomNum, int splitBy, String expectedPageNum) {
+		click(randomNum);
+		String actualPageNum = splitBy(splitBy);
+		Assert.assertEquals(expectedPageNum, actualPageNum);
+		
+	
 	}
 
 	public static String splitBy(int index) {
-		return pageNumber.getText().split(" of ")[index];
+		AccessingAnnotatedDocuments p = new AccessingAnnotatedDocuments();
+		return p.pageNumber.getText().split(" of ")[index];
 	}
-
-
+	
 }
