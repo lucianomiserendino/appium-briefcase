@@ -8,23 +8,45 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static org.junit.Assert.assertTrue;
+import static org.openqa.selenium.support.PageFactory.initElements;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.openqa.selenium.NoSuchElementException;
 
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Base;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
-public class AppliedCasesPage extends AppiumPageFactory {
+public class AppliedCasesPage extends Base {
+
+	public AppliedCasesPage() {
+		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
+
+	}
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[2]")
 	public MobileElement bookmarkBTN;
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Bookmarked'])[2]")
 	public MobileElement bookOnDashboard;
+
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[contains(@name, 'linked')]/preceding::XCUIElementTypeStaticText[@name='Viewed'][1]/preceding::XCUIElementTypeStaticText[contains(@name, '-')][1])")
+	public static List<MobileElement> targetCase;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Applied Referrals']/following::XCUIElementTypeStaticText[contains(@name, '-')]")
+	public static List<MobileElement> appliedCase;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Viewed']/following::XCUIElementTypeStaticText[contains(@name, '-')]")
+	public static List<MobileElement> redBullet;
 
 	public void getBookmarkedReferral(String caseNumber) {
 
@@ -74,4 +96,62 @@ public class AppliedCasesPage extends AppiumPageFactory {
 		Actions.isDisplayed(Locator.XPATH, containsElement("Docket Entries"));
 		Actions.isDisplayed(Locator.XPATH, containsElement("Associated Cases"));
 	}
+
+	public static List<String> caseList(List<MobileElement> element) {
+		String[] dest;
+		List<String> referrals = new ArrayList<>();
+		performPageLoad(driver);
+		Iterator<MobileElement> itr = element.iterator();
+		while (itr.hasNext()) {
+			dest = itr.next().getText().split(" ");
+			referrals.add(dest[0].trim());
+		}
+
+		return referrals;
+	}
+
+	public static String getRandomTargetCase(List<String> caseList) {
+		int randomCase = Utility.getRandomInt(caseList.size() - 1);
+
+		String caseNum = caseList.get(randomCase);
+
+		Actions.tap(Locator.XPATH, Actions.containsElement(caseNum));
+
+		return caseNum;
+
+	}
+
+	public static void getAppliedCase() {
+		CommonPages.getPanel(Panel.Applied_Referrals);
+	}
+
+	public void changeSiValue(String val, List<UserInputData> userInputData) {
+		CommonPages.setValue(val, "briefcaseTargetOnly", userInputData);
+	}
+
+	public void getSiteTableVariable(String category, List<UserInputData> userInputData) {
+
+		String variable = CommonPages.getSiValue("briefcaseTargetOnly", userInputData);
+
+		if (variable.equals("n")) {
+			changeSiValue("y", userInputData);
+
+		} else {
+			List<String> target = caseList(targetCase);
+			getRandomTargetCase(target);
+			getAppliedCase();
+
+			List<String> applied = caseList(appliedCase);
+
+			changeSiValue("n", userInputData);
+			Base.closeIOSDriver();
+			getInstance(Driver.IOS);
+			CommonPages.selectReferralCategory(category);
+			assertTrue((Actions.isDisplayed(Locator.XPATH,
+					"//XCUIElementTypeStaticText[@name='Viewed']/following::XCUIElementTypeStaticText[contains(@name, '"
+							+ applied + "')]")));
+			changeSiValue("y", userInputData);
+		}
+	}
+
 }

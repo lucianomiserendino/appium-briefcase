@@ -372,7 +372,7 @@ public class CommonPages extends Base {
 		}
 	}
 
-	public void sendCredentials(String Username, String Password) {
+	public static void sendCredentials(String Username, String Password) {
 		Page.sleep(10000);
 		Actions.findElementBy(Locator.NAME, "usernameEntered").sendKeys(Username);
 		Actions.findElementBy(Locator.NAME, "password").sendKeys(Password);
@@ -380,7 +380,7 @@ public class CommonPages extends Base {
 		Page.sleep(20000);
 	}
 
-	public void updateSi_value(String si_code, String si_value) {
+	public static void updateSi_value(String si_code, String si_value) {
 		List<MobileElement> el = Actions.findElements(By.xpath("//select[@name='table']/option"));
 		for (int i = 0; i < el.size(); i++) {
 			if (el.get(i).getText().equals("site")) {

@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
@@ -74,7 +75,7 @@ public class DocumentPage extends Base {
 
 	}
 
-	public String selectRandomCaseNumber(List<UserInputData> userInputData) {
+	public String selectRandomCaseNumber() {
 		String referral = "";
 		// Page.sleep(50000);
 		Page.performPageLoad(driver);

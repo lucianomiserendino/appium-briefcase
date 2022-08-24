@@ -26,7 +26,7 @@ public class Document_StepDefinitions {
 	@Then("^User selects random case number$")
 	public void user_selects_random_case_number(List<UserInputData> userInputData) {
 		page = new DocumentPage();
-		referral = page.selectRandomCaseNumber(userInputData);
+		referral = page.selectRandomCaseNumber();
 	}
 
 }
