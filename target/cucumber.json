@@ -1,18 +1,12 @@
 [
   {
-    "line": 2,
+    "line": 1,
     "elements": [
       {
-        "comments": [
-          {
-            "line": 21,
-            "value": "#|PendingClerkOffice |"
-          }
-        ],
         "before": [
           {
             "result": {
-              "duration": 1969259541,
+              "duration": 9112925000,
               "status": "passed"
             },
             "match": {
@@ -20,34 +14,33 @@
             }
           }
         ],
-        "line": 22,
+        "line": 35,
         "name": "",
-        "description": "As a judge when I view the Pending Clerk\u0027s cases I can sort them by case number or by date in decending order.",
-        "id": "sorting-on-the-pending-tasks-page;;;2",
+        "description": "If a referral requires voting, a collapsible Vote Information panel displays.  When expanded, it displays the following information:\n1.  The name and party type of the person who filed the motion/petition\n2.  The judges initials who are on the panel\n3.  The relief on which the judge is ruling\n4.  Each judge\u0027s vote and the date they voted",
+        "id": "display-vote-information-panel,-filer-info-and-judge\u0027s-initials;;;2",
         "type": "scenario",
         "keyword": "Scenario Outline",
         "steps": [
           {
             "result": {
-              "duration": 1360196333,
-              "error_message": "java.lang.IllegalArgumentException: Can not set io.appium.java_client.MobileElement field gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.production to null value\n\tat sun.reflect.UnsafeFieldAccessorImpl.throwSetIllegalArgumentException(UnsafeFieldAccessorImpl.java:167)\n\tat sun.reflect.UnsafeFieldAccessorImpl.throwSetIllegalArgumentException(UnsafeFieldAccessorImpl.java:171)\n\tat sun.reflect.UnsafeObjectFieldAccessorImpl.set(UnsafeObjectFieldAccessorImpl.java:81)\n\tat java.lang.reflect.Field.set(Field.java:764)\n\tat org.openqa.selenium.support.PageFactory.proxyFields(PageFactory.java:117)\n\tat org.openqa.selenium.support.PageFactory.initElements(PageFactory.java:105)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.\u003cinit\u003e(JenieLoginPage.java:34)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.JenieLogin_StepDefinitions.i_select_a_user(JenieLogin_StepDefinitions.java:25)\n\tat ✽.Then I select a user(CATEGORIES/USER_INTERFACE/SORTING_PENDING_TASK_CASES.feature:13)\n",
-              "status": "failed"
+              "duration": 21334425041,
+              "status": "passed"
             },
             "comments": [
               {
-                "line": 9,
+                "line": 13,
                 "value": "#Given I am logged into Briefcase"
               },
               {
-                "line": 10,
+                "line": 14,
                 "value": "#\t|environment|userName| password |courtId|"
               },
               {
-                "line": 11,
-                "value": "#|test       |test    | test     |test   |"
+                "line": 15,
+                "value": "#\t|test       |test    | test     |test   |"
               }
             ],
-            "line": 13,
+            "line": 17,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -59,7 +52,7 @@
                   "personrole",
                   "jud"
                 ],
-                "line": 14
+                "line": 18
               },
               {
                 "cells": [
@@ -67,7 +60,36 @@
                   "Appellate Judges",
                   "test"
                 ],
-                "line": 15
+                "line": 19
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 4267237125,
+              "error_message": "java.lang.IllegalArgumentException: No enum constant gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Category.\n\tat java.lang.Enum.valueOf(Enum.java:238)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages$Category.valueOf(CommonPages.java:1)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCategoryWithCase(CommonPages.java:173)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Common_StepDefinitions.user_selects(Common_StepDefinitions.java:34)\n\tat ✽.Then User selects(CATEGORIES/REGRESSION/VOTE_INFORMATION_PANEL-AMB_1036.feature:22)\n",
+              "status": "failed"
+            },
+            "line": 22,
+            "name": "User selects",
+            "match": {
+              "location": "Common_StepDefinitions.user_selects(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "refCategory",
+                  "caseNumber"
+                ],
+                "line": 23
+              },
+              {
+                "cells": [
+                  "test",
+                  "test"
+                ],
+                "line": 24
               }
             ],
             "keyword": "Then "
@@ -76,90 +98,126 @@
             "result": {
               "status": "skipped"
             },
-            "line": 17,
-            "name": "User selects a  \"Pending Tasks\"",
+            "line": 25,
+            "name": "User observes ( \"CMKA\" ) the \"Vote_Information\" panel displays.   This should only display if the referral requires voting",
             "match": {
               "arguments": [
                 {
-                  "val": "Pending Tasks",
+                  "val": "CMKA",
                   "offset": 17
+                },
+                {
+                  "val": "Vote_Information",
+                  "offset": 30
                 }
               ],
-              "location": "Common_StepDefinitions.user_selects_a(String)"
+              "location": "VoteInformation_StepDefinitions.user_observes_the_panel_displays_This_should_only_display_if_the_referral_requires_voting(String,String)"
             },
-            "keyword": "When "
+            "matchedColumns": [
+              3
+            ],
+            "keyword": "Given "
           },
           {
             "result": {
               "status": "skipped"
             },
-            "line": 18,
-            "name": "Verify the \"MyAssignments\" cases are sorted by date descending order",
+            "line": 26,
+            "name": "for each referral, observes the filer\u0027s name  first initial of pr_middle_name gn_display  party type and date filed displays in a light blue heading. Use  \"32\" , \"82226\" ,\"prhr\" , \"34870\" .",
             "match": {
               "arguments": [
                 {
-                  "val": "MyAssignments",
-                  "offset": 12
+                  "val": "32",
+                  "offset": 156
+                },
+                {
+                  "val": "82226",
+                  "offset": 163
+                },
+                {
+                  "val": "prhr",
+                  "offset": 172
+                },
+                {
+                  "val": "34870",
+                  "offset": 181
                 }
               ],
-              "location": "PendingTasks_StepDefinitions.verify_the_cases_are_sorted_by_date_descending_order(String)"
+              "location": "VoteInformation_StepDefinitions.for_each_referral_observes_the_filer_s_name_first_initial_of_pr_middle_name_gn_display_party_type_and_date_filed_displays_in_a_light_blue_heading_Use(String,String,String,String,UserInputData\u003e)"
             },
             "matchedColumns": [
-              0
+              4,
+              5,
+              6,
+              7
             ],
-            "keyword": "And "
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 27
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 28
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 29,
+            "name": "User checks each judge\u0027s vote  and the date  displays under their initials, using  \"34870\"",
+            "match": {
+              "arguments": [
+                {
+                  "val": "34870",
+                  "offset": 84
+                }
+              ],
+              "location": "VoteInformation_StepDefinitions.user_checks_each_judge_s_vote_and_the_date_displays_under_their_initials_using(String,UserInputData\u003e)"
+            },
+            "matchedColumns": [
+              7
+            ],
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 30
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 31
+              }
+            ],
+            "keyword": "Then "
           }
         ],
         "tags": [
           {
-            "line": 1,
+            "line": 5,
+            "name": "@AMB-1036"
+          },
+          {
+            "line": 5,
             "name": "@Regression"
-          },
-          {
-            "line": 1,
-            "name": "@AMB-2381"
-          },
-          {
-            "line": 5,
-            "name": "@AMB-2380"
-          },
-          {
-            "line": 1,
-            "name": "@AMB-2482"
-          },
-          {
-            "line": 1,
-            "name": "@AMB-2483"
-          },
-          {
-            "line": 5,
-            "name": "@n"
           }
         ]
       }
     ],
-    "name": "Sorting on the Pending Tasks Page",
-    "description": "",
-    "id": "sorting-on-the-pending-tasks-page",
+    "name": "Display Vote Information Panel, filer info and judge\u0027s initials",
+    "description": "Display Actions Panel and actions",
+    "id": "display-vote-information-panel,-filer-info-and-judge\u0027s-initials",
     "keyword": "Feature",
-    "uri": "CATEGORIES/USER_INTERFACE/SORTING_PENDING_TASK_CASES.feature",
-    "tags": [
-      {
-        "line": 1,
-        "name": "@Regression"
-      },
-      {
-        "line": 1,
-        "name": "@AMB-2482"
-      },
-      {
-        "line": 1,
-        "name": "@AMB-2483"
-      },
-      {
-        "line": 1,
-        "name": "@AMB-2381"
-      }
-    ]
+    "uri": "CATEGORIES/REGRESSION/VOTE_INFORMATION_PANEL-AMB_1036.feature"
   }
 ]

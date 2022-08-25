@@ -43,7 +43,6 @@ public class VoteInformation_StepDefinitions {
 		page.getJudesVote(FILERs_INFO.VOTE_INFO_FILLRES_INFORMATION, ccr_id, userInputData);
 	}
 
-	// judgeVote dpf UI
 	@Then("^In the judgeVoteDPf, the user observes the filer's name  first initial of pr_middle_name gn_display  party type and date filed displays in a light blue heading\\. Use  \"([^\"]*)\" , \"([^\"]*)\" ,\"([^\"]*)\" , \"([^\"]*)\" \\.$")
 	public void in_the_judgeVoteDPf_the_user_observes_the_filer_s_name_first_initial_of_pr_middle_name_gn_display_party_type_and_date_filed_displays_in_a_light_blue_heading_Use(
 			String cmr_ju_pe_id, String cmr_cs_caseid, String cmr_cyv_code, String ccr_id,

@@ -34,6 +34,10 @@ Scenario Outline:
 		|server         |refCategory  | caseNum |dbType| cmr_cs_caseid |cmr_ju_pe_id|cmr_cyv_code|ccr_id|
 		|CMKA           |PETITION     | 15-3314  |CMKA  | 82226         |32          |prhr       |34870 |
 		
+	
+	
+	
+	
 		
 		
 		@Smoke @AMB-1097 

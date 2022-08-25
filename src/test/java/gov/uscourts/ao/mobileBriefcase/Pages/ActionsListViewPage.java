@@ -20,14 +20,14 @@ import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 
 public class ActionsListViewPage extends AppiumPageFactory {
 
-	public void getApplicableActions(String caseNumber,String panel, List<UserInputData> userInputData) {
+	public void getApplicableActions(String caseNumber, String panel, List<UserInputData> userInputData) {
 
 		scrollDownIfNotDisplayed(containsElement(panel));
 		String cmr_id = CommonPages.getCMRID(caseNumber, userInputData);
 		actionIsDisplayed(cmr_id, userInputData);
 
 	}
-
+	
 	public static void actionIsDisplayed(String cmr_id, List<UserInputData> userInputData) {
 
 		List<String> dbResult = executeQuery(getID(APPLICABLE_ACTIONS, cmr_id), userInputData);

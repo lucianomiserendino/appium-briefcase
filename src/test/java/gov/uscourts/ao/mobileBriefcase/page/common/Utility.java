@@ -122,18 +122,22 @@ public class Utility extends Base {
 	}
 
 	public static synchronized void scrolldown() {
+		
 		try {
 			int pressX = getWindowSize().width / 2;
 			/** 4/5 of the screen as the bottom finger-press point */
 			int bottomY = getWindowSize().height * 4 / 8;
 			/** just non zero point, as it didn't scroll to zero normally */
 			int topY = getWindowSize().height / 8;
+
 			new TouchAction(driver).longPress(PointOption.point(pressX, bottomY))
 					.moveTo(PointOption.point(pressX, topY)).release().perform();
 		} catch (WebDriverException e) {
 			e.getMessage();
 		}
 	}
+	
+
 
 	public static Dimension getWindowSize() {
 		return driver.manage().window().getSize();
