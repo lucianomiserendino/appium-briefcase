@@ -20,12 +20,12 @@ import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 public class Common_StepDefinitions {
 	CommonPages page;
 
-//	@Then("^User selects \"([^\"]*)\" and \"([^\"]*)\"$")
-//	public void user_selects_and(String category, String caseNumber) {
-//		// JenieLoginPage logPage = new JenieLoginPage();
-//		page = new CommonPages();
-//		page.getCategoryWithCase(category, caseNumber);
-//	}
+	@Then("^User selects \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void user_selects_and(String category, String caseNumber) {
+		JenieLoginPage logPage = new JenieLoginPage();
+		page = new CommonPages();
+		page.getCategoryAndCase(category, caseNumber);
+	}
 
 	@Then("^User selects$")
 	public void user_selects(List<UserInputData> userInputData) {

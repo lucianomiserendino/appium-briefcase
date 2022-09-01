@@ -44,11 +44,10 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 public class CommonPages extends Base {
 	public CommonPages() {
 
-		//initElements(new AppiumFieldDecorator(driver), this);
-		
+		// initElements(new AppiumFieldDecorator(driver), this);
 
-			initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
-		
+		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
+
 	}
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther[5]/XCUIElementTypeTextField")
@@ -85,7 +84,7 @@ public class CommonPages extends Base {
 	@iOSXCUITFindBy(accessibility = "DocumentList")
 	public MobileElement DocumentList;
 
-	@iOSXCUITFindBy(accessibility = "GroupIcon")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='GroupIcon']")
 	public static List<MobileElement> GroupIcon;
 
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Judge:')]")
@@ -169,6 +168,12 @@ public class CommonPages extends Base {
 	public void getCategoryWithCase(List<UserInputData> userInputData) {
 		String category = SystemPropertySetup.getVariable(Variables.REF_CATEGORY, userInputData);
 		String caseNumber = SystemPropertySetup.getVariable(Variables.CASE_NUMBER, userInputData);
+		performPageLoad(driver);
+		getCategory(Category.valueOf(category), caseNumber);
+		performPageLoad(driver);
+	}
+
+	public void getCategoryAndCase(String category, String caseNumber) {
 		performPageLoad(driver);
 		getCategory(Category.valueOf(category), caseNumber);
 		performPageLoad(driver);
@@ -270,18 +275,18 @@ public class CommonPages extends Base {
 		return getAllColumns(replace(Queries.CMR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id),
 				userInputData);
 	}
-	
-	public static String getCMRID(String caseNum,List<UserInputData> userInputData) {
+
+	public static String getCMRID(String caseNum, List<UserInputData> userInputData) {
 
 		String name = SystemPropertySetup.getJudge(userInputData);
 		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
 
-		String caseId = CommonPages.getCaseID(caseNum,userInputData);
+		String caseId = CommonPages.getCaseID(caseNum, userInputData);
 
 		return getAllColumns(replace(Queries.CMR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id),
 				userInputData);
 	}
-	
+
 	public static String getCCRID(List<UserInputData> userInputData) {
 
 		String name = SystemPropertySetup.getJudge(userInputData);
@@ -305,15 +310,13 @@ public class CommonPages extends Base {
 
 	public static String getCaseID(List<UserInputData> table) {
 		String caseNumber = SystemPropertySetup.getVariable(Variables.CASE_NUMBER, table);
-		
-		
+
 		return getAllColumns(replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, caseNumber), "CS_NUMBER",
 				getCase(Case.CASE_NUMBER, caseNumber)), table);
 	}
-	
-	
+
 	public static String getCaseID(String caseNumber, List<UserInputData> table) {
-		
+
 		return getAllColumns(replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, caseNumber), "CS_NUMBER",
 				getCase(Case.CASE_NUMBER, caseNumber)), table);
 	}
@@ -361,14 +364,20 @@ public class CommonPages extends Base {
 
 	public static void getGroupIcons() {
 		performPageLoad(driver);
+		int i = 0;
+		Boolean elementNotFound = true;
+		while (elementNotFound) {
+			List<MobileElement> icons = GroupIcon;
+			if (!(i == icons.size()) && icons.get(i).getAttribute("value").equals("▽")) {
+				icons.get(i).click();
+				elementNotFound = true;
 
-		for (int i = 1; i < GroupIcon.size() + 1; i++) {
-			String groupIcon = "(//XCUIElementTypeStaticText[@name='GroupIcon'])[";
-			while (findElements(
-					By.xpath(groupIcon + i + "]/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText[1]"))
-					.size() == 0) {
-				tap(Locator.XPATH, groupIcon + i + "]");
+			} else {
+				elementNotFound = false;
+				break;
 			}
+			i++;
+
 		}
 	}
 

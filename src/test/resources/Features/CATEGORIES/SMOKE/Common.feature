@@ -75,4 +75,8 @@ Scenario: Category and case selection
 		|judge      |Appellate Judges  |test     |
 		Then User closes and reopens the app
 
+@selectRandomDocument
+     Scenario: Random document selection
+        Then user selects random document
+		
 		

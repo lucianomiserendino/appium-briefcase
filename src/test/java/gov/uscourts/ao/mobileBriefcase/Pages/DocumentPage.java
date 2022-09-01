@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
@@ -26,18 +25,19 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 public class DocumentPage extends Base {
 
 	public DocumentPage() {
-
-		// initElements(new AppiumFieldDecorator(driver), this);
-
 		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
-
 	}
 
-	// @WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<MobileElement> caseNum;
 
 	private static String xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText";
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, 'Actions')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
+	public static List<MobileElement> docCategories;
+
+	@iOSXCUITFindBy(accessibility = "GroupIcon")
+	public static List<MobileElement> GroupIcon;
 
 	public static String selectRandomItem(String query, String xpath, List<UserInputData> userInputData) {
 		String category = "";
@@ -92,5 +92,4 @@ public class DocumentPage extends Base {
 	public enum Category {
 		Referral_Category, Referral, Panel
 	}
-
 }

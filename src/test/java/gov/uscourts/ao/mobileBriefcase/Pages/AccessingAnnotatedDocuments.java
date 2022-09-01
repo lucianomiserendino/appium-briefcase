@@ -1,8 +1,9 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SITE_TABLE_VARIABLE_VALUE;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.clicksOn;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
@@ -508,7 +509,7 @@ public class AccessingAnnotatedDocuments extends Base {
 			docName.add(getText("docCategory", i));
 
 		}
-         		click(randomDoc);
+		click(randomDoc);
 		randomPage();
 
 		pdfView.click();
@@ -537,13 +538,47 @@ public class AccessingAnnotatedDocuments extends Base {
 		click(randomNum);
 		String actualPageNum = splitBy(splitBy);
 		Assert.assertEquals(expectedPageNum, actualPageNum);
-		
-	
 	}
 
 	public static String splitBy(int index) {
 		AccessingAnnotatedDocuments p = new AccessingAnnotatedDocuments();
 		return p.pageNumber.getText().split(" of ")[index];
 	}
+
+	public void selectRandomDocument(List<UserInputData> userInputData, String cmr_cyv_code, String cmr_ju_pe_id, String cmr_cs_caseid) {
+		CommonPages.getGroupIcons();
+		List<String> uiDocCategory = new ArrayList<>();
+
+		List<String> category = getDocumentCategories();
+
+		List<String> dbDocCategories = executeQuery( Actions.replace(DOCUMENT_CATEGORIES,
+				"CMR_CYV_CODE", cmr_cyv_code, "CMR_JU_PE_ID", cmr_ju_pe_id, "CMR_CS_CASEID", cmr_cs_caseid),userInputData);
+
+		for (int k = 1; k < dbDocCategories.size(); k++) {
+			uiDocCategory.add(category.get(category.size() - k));
+		}
+
+		uiDocCategory = category.subList(Math.max(category.size() - dbDocCategories.size(), 0), category.size());
+
+		Assert.assertEquals(uiDocCategory, dbDocCategories);
+		
+		
+		int randomDoc = Utility.getRandomNumberInRange(1, category.size() - 1);
+		String docName = category.get(randomDoc).trim();
+		contains(docName).click();
 	
+		Page.sleep(50000);
+		Actions.tap(annotations);
+		if (Actions.isDisplayed(author) == true) {
+			Actions.tap(done);
+		}
+		ifEditingToolsExist(toolBar1);
+
+		Actions.tap(annotations);
+		Actions.tap(close);
+
+		getBackEndUpdates(cmr_cs_caseid, docName, userInputData);
+
+	}
+
 }

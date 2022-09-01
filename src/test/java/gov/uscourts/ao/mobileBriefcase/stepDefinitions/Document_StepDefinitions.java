@@ -28,5 +28,10 @@ public class Document_StepDefinitions {
 		page = new DocumentPage();
 		referral = page.selectRandomCaseNumber();
 	}
+	
+	@Then("^user selects random document$")
+	public void user_selects_random_document()  {
+	
+	}
 
 }
