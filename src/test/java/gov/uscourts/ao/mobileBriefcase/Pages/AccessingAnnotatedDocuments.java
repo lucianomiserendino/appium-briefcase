@@ -2,7 +2,6 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.clicksOn;
@@ -20,14 +19,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.mobile.NetworkConnection;
 import org.openqa.selenium.mobile.NetworkConnection.ConnectionType;
@@ -236,12 +232,12 @@ public class AccessingAnnotatedDocuments extends Base {
 			if (viewAnnotatedDoc.isDisplayed() == true || backUpAnnotations.isDisplayed() == true) {
 
 				assertTrue("THE TOGGLE ENTITLED \"BACK UP ANNOTATIONS TO CM/ECF\" SHOULD BE TURNED ON BY DEFAULT.",
-						getToggleState(backUpAnnotations));
+						Utility.getToggleState(backUpAnnotations));
 
 				Actions.tap(backUpAnnotations);
 
-				assertFalse(getToggleState(backUpAnnotations));
-				assertFalse(getToggleState(viewAnnotatedDoc));
+				assertFalse(Utility.getToggleState(backUpAnnotations));
+				assertFalse(Utility.getToggleState(viewAnnotatedDoc));
 
 			} else {
 				throw new RuntimeException(
@@ -282,23 +278,6 @@ public class AccessingAnnotatedDocuments extends Base {
 
 		getBackEndUpdates(caseNum, docName, userInputData);
 
-	}
-
-	public static boolean getToggleState(MobileElement el) {
-
-		boolean status = false;
-
-		if (attributeEquals(el, "0")) {
-			status = false;
-
-		} else if (attributeEquals(el, "1")) {
-			status = true;
-		}
-		return status;
-	}
-
-	public static boolean attributeEquals(MobileElement el, String index) {
-		return el.getAttribute("value").equals(index);
 	}
 
 	public static String ifEditingToolsExist(List<MobileElement> tools) {
@@ -460,62 +439,26 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	}
 
-	public static void swipe(int index, String dir) {
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		HashMap<String, String> scrollObject = new HashMap<String, String>();
-		for (int i = 0; i < index; i++) {
-			scrollObject.put("direction", dir);
-			js.executeScript("mobile: scroll", scrollObject);
-		}
-	}
+	
 
-	public static List<MobileElement> getDocName(String text) {
-		int index;
-		if (text.equals("docCategory")) {
-			index = 1;
-		} else {
-			index = 2;
-		}
-		return Actions.findElements(By.xpath(
-				"//XCUIElementTypeStaticText[@name='Briefs']/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther["
-						+ index + "]/XCUIElementTypeStaticText"));
-	}
-
-	public static int getSize() {
-		return getDocName("docCategory").size();
-	}
-
-	public static int getRandomDocument() {
-		return Utility.getRandomInt(getSize());
-	}
-
-	public static String getText(String text, int i) {
-		return getDocName(text).get(i).getText();
-	}
-
-	public static void click(int index) {
-		getDocName("docCategory").get(index).click();
-	}
-
-	public static void getRandomDoc() {
+	public static void getRandomDoc(String categoryName) {
 
 		List<String> docName = new ArrayList<>();
 
-		int randomDoc = getRandomDocument();
-		System.out.println(randomDoc);
+		int randomDoc = DocumentPage.getRandomDocument(categoryName);
 
-		for (int i = 0; i < getSize(); i++) {
+		for (int i = 0; i < DocumentPage.getSize(categoryName); i++) {
 
-			docName.add(getText("docCategory", i));
+			docName.add(DocumentPage.getText("docCategory", i, categoryName));
 
 		}
-		click(randomDoc);
+		DocumentPage.click(randomDoc, categoryName);
 		randomPage();
 
 		pdfView.click();
 		String lastViewedPage = splitBy(0);
 		close.click();
-		getLastViewedPage(randomDoc, 0, lastViewedPage);
+		getLastViewedPage(randomDoc, 0, lastViewedPage, categoryName);
 		close.click();
 
 	}
@@ -527,15 +470,15 @@ public class AccessingAnnotatedDocuments extends Base {
 
 		if (pageNum == lastViewPage) {
 			randomNum = Utility.getRandomNumberInRange(1, pageNum);
-			swipe(randomNum, "left");
+			Utility.swipe(randomNum, "left");
 		} else {
 			randomNum = Utility.getRandomNumberInRange(lastViewPage, pageNum);
-			swipe(randomNum, "right");
+			Utility.swipe(randomNum, "right");
 		}
 	}
 
-	public static void getLastViewedPage(int randomNum, int splitBy, String expectedPageNum) {
-		click(randomNum);
+	public static void getLastViewedPage(int randomNum, int splitBy, String expectedPageNum, String categoryName) {
+		DocumentPage.click(randomNum, categoryName);
 		String actualPageNum = splitBy(splitBy);
 		Assert.assertEquals(expectedPageNum, actualPageNum);
 	}
@@ -545,14 +488,15 @@ public class AccessingAnnotatedDocuments extends Base {
 		return p.pageNumber.getText().split(" of ")[index];
 	}
 
-	public void selectRandomDocument(List<UserInputData> userInputData, String cmr_cyv_code, String cmr_ju_pe_id, String cmr_cs_caseid) {
+	public void selectRandomDocument(List<UserInputData> userInputData, String cmr_cyv_code, String cmr_ju_pe_id,
+			String cmr_cs_caseid) {
 		CommonPages.getGroupIcons();
 		List<String> uiDocCategory = new ArrayList<>();
 
 		List<String> category = getDocumentCategories();
 
-		List<String> dbDocCategories = executeQuery( Actions.replace(DOCUMENT_CATEGORIES,
-				"CMR_CYV_CODE", cmr_cyv_code, "CMR_JU_PE_ID", cmr_ju_pe_id, "CMR_CS_CASEID", cmr_cs_caseid),userInputData);
+		List<String> dbDocCategories = executeQuery(Actions.replace(DOCUMENT_CATEGORIES, "CMR_CYV_CODE", cmr_cyv_code,
+				"CMR_JU_PE_ID", cmr_ju_pe_id, "CMR_CS_CASEID", cmr_cs_caseid), userInputData);
 
 		for (int k = 1; k < dbDocCategories.size(); k++) {
 			uiDocCategory.add(category.get(category.size() - k));
@@ -561,12 +505,11 @@ public class AccessingAnnotatedDocuments extends Base {
 		uiDocCategory = category.subList(Math.max(category.size() - dbDocCategories.size(), 0), category.size());
 
 		Assert.assertEquals(uiDocCategory, dbDocCategories);
-		
-		
+
 		int randomDoc = Utility.getRandomNumberInRange(1, category.size() - 1);
 		String docName = category.get(randomDoc).trim();
 		contains(docName).click();
-	
+
 		Page.sleep(50000);
 		Actions.tap(annotations);
 		if (Actions.isDisplayed(author) == true) {

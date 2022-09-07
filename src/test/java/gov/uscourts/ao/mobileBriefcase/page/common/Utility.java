@@ -24,6 +24,7 @@ import java.util.Random;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
@@ -485,4 +486,28 @@ public class Utility extends Base {
 			return;
 		}
 	}
+	
+	public static boolean getToggleState(MobileElement el) {
+
+		boolean status = false;
+
+		if (Actions.attributeEquals(el, "0")) {
+			status = false;
+
+		} else if (Actions.attributeEquals(el, "1")) {
+			status = true;
+		}
+		return status;
+	}
+
+	
+	public static void swipe(int index, String dir) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		HashMap<String, String> scrollObject = new HashMap<String, String>();
+		for (int i = 0; i < index; i++) {
+			scrollObject.put("direction", dir);
+			js.executeScript("mobile: scroll", scrollObject);
+		}
+	}
+
 }

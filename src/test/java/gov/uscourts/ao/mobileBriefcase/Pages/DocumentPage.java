@@ -3,12 +3,16 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static java.util.Collections.sort;
 import static org.openqa.selenium.support.PageFactory.initElements;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.openqa.selenium.By;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -38,6 +42,9 @@ public class DocumentPage extends Base {
 
 	@iOSXCUITFindBy(accessibility = "GroupIcon")
 	public static List<MobileElement> GroupIcon;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[contains(@name, 'Applied Referrals')]")
+	public static List<MobileElement> appliedRefs;
 
 	public static String selectRandomItem(String query, String xpath, List<UserInputData> userInputData) {
 		String category = "";
@@ -89,7 +96,76 @@ public class DocumentPage extends Base {
 
 	}
 
+	public static List<String> getDocumentCategories() {
+
+		List<String> categories = new ArrayList<>();
+
+		for (int i = 0; i < docCategories().size(); i++) {
+			categories.add(docCategories().get(i).getText());
+		}
+		String docName = "";
+		if (categories.size() >= 1) {
+			docName = categories.get(0);
+			contains(categories.get(0)).click();
+		} else {
+
+			int randomDoc = Utility.getRandomNumberInRange(1, categories.size() - 1);
+			docName = categories.get(randomDoc).trim();
+			contains(docName).click();
+		}
+
+		int randomDoc = getRandomDocument(docName);
+
+		click(randomDoc, docName);
+
+		return categories;
+	}
+
+	public static List<MobileElement> getDocName(String text, String categoryName) {
+		int index;
+		if (text.equals("docCategory")) {
+			index = 1;
+		} else {
+			index = 2;
+		}
+		return Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + categoryName
+				+ "']/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther["
+				+ index + "]/XCUIElementTypeStaticText"));
+	}
+
+	public static int getSize(String categoryName) {
+
+		return getDocName("docCategory", categoryName).size();
+	}
+
+	public static int getRandomDocument(String categoryName) {
+		return Utility.getRandomInt(getSize(categoryName));
+	}
+
+	public static String getText(String text, int i, String categoryName) {
+		return getDocName(text, categoryName).get(i).getText();
+	}
+
+	public static void click(int index, String categoryName) {
+		getDocName("docCategory", categoryName).get(index).click();
+	}
+
+	public static List<MobileElement> docCategories() {
+		String pane = "";
+		if (appliedRefs.size() > 0) {
+			pane = "Applied Referrals";
+		} else {
+			pane = "Actions";
+		}
+		return Actions.findElements(By.xpath(
+				"//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, '"
+						+ pane + "')]"
+						+ "/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText"));
+	}
+
 	public enum Category {
 		Referral_Category, Referral, Panel
 	}
+
+
 }

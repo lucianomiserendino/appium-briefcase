@@ -171,6 +171,11 @@ public class Actions extends Base {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript(script, element);
 	}
+	
+	public static boolean attributeEquals(MobileElement el, String index) {
+		return el.getAttribute("value").equals(index);
+	}
+
 
 	public enum Locator {
 		ID, XPATH, NAME, LINK_TEXT, PARTIAL_LINK_TEXT, CLASS_NAME, CSS_SELECTOR, TAG_NAME

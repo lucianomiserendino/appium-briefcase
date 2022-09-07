@@ -3,6 +3,7 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import java.util.List;
 
 import cucumber.api.java.en.Then;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
@@ -13,13 +14,13 @@ public class Document_StepDefinitions {
 
 	@Then("^User selects random stf Aty category$")
 	public void user_selects_random_stf_Aty_category(List<UserInputData> userInputData) {
-		page=new DocumentPage();
+		page = new DocumentPage();
 		page.selectRandomSTFCategory(userInputData);
 	}
 
 	@Then("^User selects random judge category$")
 	public void user_selects_random_judge_category(List<UserInputData> userInputData) {
-		page=new DocumentPage();
+		page = new DocumentPage();
 		categroy = page.selectRandomJudgeCategory(userInputData);
 	}
 
@@ -28,10 +29,14 @@ public class Document_StepDefinitions {
 		page = new DocumentPage();
 		referral = page.selectRandomCaseNumber();
 	}
-	
-	@Then("^user selects random document$")
-	public void user_selects_random_document()  {
-	
+
+	@Then("^User selects random document$")
+	public void user_selects_random_document() {
+		CommonPages common=new CommonPages();
+		common.getGroupIcons();
+		
+		page = new DocumentPage();
+		page.getDocumentCategories();
 	}
 
 }
