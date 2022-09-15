@@ -8,7 +8,6 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollUp;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -131,14 +130,14 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 		sendKeys(select, "Test");
 
 		scrollDownIfNotDisplayed("//XCUIElementTypeButton[@name='Submit']");
-		
+
 		if (isDisplayed(Locator.XPATH, containsElement("The update succeded")) == true) {
 			;
 			tap(OK);
 		} else {
 			throw new RuntimeException("Failed to select proposed order");
 		}
-		scrollUp(By.id("DocumentList"));
+		Utility.scroll(By.id("Categories"), "up");
 		tap(viewCaseInfo);
 		tap(docketEntries);
 		assertTrue(isDisplayed(Locator.XPATH, containsElement("Auto Test")));

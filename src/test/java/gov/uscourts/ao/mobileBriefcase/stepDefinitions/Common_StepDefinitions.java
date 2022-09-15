@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import cucumber.api.DataTable;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -19,6 +20,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 
 public class Common_StepDefinitions {
 	CommonPages page;
+	static Boolean pane;
 
 	@Then("^User selects \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_selects_and(String category, String caseNumber) {
@@ -100,12 +102,20 @@ public class Common_StepDefinitions {
 		assertTrue("Connection Using The New Connection Pool Failed", DBUtilities.getDBConnection(userInputData));
 
 	}
-	
+
 	@Then("^User expands/collapse panel$")
 	public void user_expands_collapse_panel() {
 		page = new CommonPages();
 		page.getGroupIcons();
 	}
 
+	@Then("^User verifies that panel exists$")
+	public void user_verifies_that_panel_exists(DataTable table) {
+		List<List<String>> data = table.raw();
+		String pane = data.get(1).get(0);
+		this.pane=CommonPages.ifPaneExists(pane);
+		
+
+	}
 
 }

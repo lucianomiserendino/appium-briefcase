@@ -21,7 +21,6 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getParameter;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getStreamOfRandomInts;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollUp;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.toArray;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
@@ -39,6 +38,7 @@ import gov.uscourts.ao.mobileBriefcase.model.ElListText;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -74,21 +74,20 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 		list = table.get(index);
 
 		String record = getLatestRecord();
-		scrollUp(By.id("DocumentList"));
+		Utility.scroll(By.id("Categories"), "up");
 		Page.sleep(10000);
 		selectAction("Actions", list.getElListText(), userInputData);
 		sendKeys(commentField, "Test-" + getStreamOfRandomInts());
 		sendKeys(descriptionField, "Test-" + getStreamOfRandomInts() + "-");
 		String description = getText(descriptionField);
 
-
 		tap(submit);
 		Page.sleep(10000);
 
-
 		getDataTable(table, index, caseNum, peID, userInputData, record);
 
-		assertEquals(list.getElListText().toUpperCase()+" --------> ",description, getAllColumns(DM_DESCRIPTION, userInputData));
+		assertEquals(list.getElListText().toUpperCase() + " --------> ", description,
+				getAllColumns(DM_DESCRIPTION, userInputData));
 
 	}
 
@@ -241,7 +240,6 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 	public static List<String> getDocUserTable(List<UserInputData> userInputData, String record) {
 		return getDBResult(replace(DU_PRID, "DU_DATE_CREATED", record), userInputData);
 	}
-
 
 	public static List<String> getDocGroupTable(List<UserInputData> userInputData, String record) {
 		return getDBResult(replace(DCG_GROUP, "DCG_DATE_CREATED", record), userInputData);

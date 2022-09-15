@@ -34,7 +34,6 @@ public class Document_StepDefinitions {
 	public void user_selects_random_document() {
 		CommonPages common=new CommonPages();
 		common.getGroupIcons();
-		
 		page = new DocumentPage();
 		page.getDocumentCategories();
 	}

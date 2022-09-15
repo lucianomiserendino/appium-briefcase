@@ -3,13 +3,15 @@ Feature: JudgeVote DPF UI
 #related to AMB-1097 as well
 Background: 
 
-	#Given I am logged into Briefcase 
+
+		#Given I am logged into Briefcase 
 		#|environment|userName| password |courtId|
 		#|test       |test    | test     |test   |
 		
 	Then I select a user 
 		|userType   |personrole        |jud     |
 		|judge      |Appellate Judges  |test    |
+			
 		
 
 		
@@ -40,22 +42,31 @@ Scenario:
 	The judgeVote DPF enables judges to add notes to a vote.  There is a parameter in the judgeVote DPF called Note History.  
 	If the parameter is set to 'y', the text of the previous vote note (if there is one), should display when the judge adds a 
 	note to a new vote.  To the judge, it appears that he/she is just editing an existing vote, even though CM/ECF is creating a new note. 
-		Then User selects
-	|refCategory|caseNumber|
-	|test       |test      |
+
+
+	Then User selects random judge category
+		|courtId|
+		|test   |
+			
+	Then User selects random case number
+		|courtId|
+		|test   |
+	
+	Then User expands/collapse panel
+
+    And User verifies that panel exists
+    |panel|
+    |Vote Information|
+
 	Then User  selects an action and verifies the name of the action displays in the dark blue banner 
 	
 		|courtId|
 		|test   |
 		
 	Then user selects a vote and adds notes to a vote. 
-		
-		|courtId|jud |caseNumber|
-		|test   |test|test      |
+
 	And User verifies judge's vote is updated in Vote Information Panel.
 		
-		|courtId|jud |caseNumber|
-		|test   |test|test      |
 	
 
 	

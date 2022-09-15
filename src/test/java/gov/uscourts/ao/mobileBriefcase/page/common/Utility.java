@@ -104,26 +104,17 @@ public class Utility extends Base {
 
 	}
 
-	public static void scrollUp(By by) {
+	public static void scroll(By by, String direction) {
 		MobileElement element = Page.waitForPresenceOfElementLocated(by, driver);
 		String elementID = element.getId();
 		HashMap<String, String> scrollObject = new HashMap<String, String>();
 		scrollObject.put("element", elementID);
-		scrollObject.put("direction", "up");
-		driver.executeScript("mobile:scroll", scrollObject);
-	}
-
-	public static void scrollDown(By by) {
-		MobileElement element = Page.waitForPresenceOfElementLocated(by, driver);
-		String elementID = element.getId();
-		HashMap<String, String> scrollObject = new HashMap<String, String>();
-		scrollObject.put("element", elementID);
-		scrollObject.put("direction", "down");
+		scrollObject.put("direction", direction);
 		driver.executeScript("mobile:scroll", scrollObject);
 	}
 
 	public static synchronized void scrolldown() {
-		
+
 		try {
 			int pressX = getWindowSize().width / 2;
 			/** 4/5 of the screen as the bottom finger-press point */
@@ -137,8 +128,6 @@ public class Utility extends Base {
 			e.getMessage();
 		}
 	}
-	
-
 
 	public static Dimension getWindowSize() {
 		return driver.manage().window().getSize();
@@ -148,13 +137,17 @@ public class Utility extends Base {
 		String[] dest;
 		List<String> referrals = new ArrayList<>();
 		List<MobileElement> el = elements;
-		performPageLoad(driver);
-		Iterator<MobileElement> itr = el.iterator();
-		while (itr.hasNext()) {
-			dest = itr.next().getText().split(split);
-			referrals.add(dest[index].trim());
-		}
+		if (el.size() > 0) {
+			performPageLoad(driver);
+			Iterator<MobileElement> itr = el.iterator();
+			while (itr.hasNext()) {
+				dest = itr.next().getText().split(split);
+				referrals.add(dest[index].trim());
 
+			}
+		} else {
+			throw new RuntimeException("---------------------> REFERRAL DATES ARE MISSING FROM THE CASE ROW");
+		}
 		return referrals;
 
 	}
@@ -249,8 +242,10 @@ public class Utility extends Base {
 		}
 	}
 
-	public static void clickOnRandomValue(List<MobileElement> value) {
-		value.get(getRandomInt(value.size())).click();
+	public static int clickOnRandomValue(List<MobileElement> value) {
+		int random = getRandomInt(value.size());
+		value.get(random).click();
+		return random;
 	}
 
 	public static int getRandomInt(int index) {
@@ -266,10 +261,15 @@ public class Utility extends Base {
 	}
 
 	public static String clickOnNumberInRange(List<MobileElement> value) {
+//		String text = "";
+//		int index = getRandomNumberInRange(1, value.size() - 1);
+//		text += value.get(index).getText().trim();
+//		value.get(index).click();
+//		return text;
 		String text = "";
-		int index = getRandomNumberInRange(1, value.size() - 1);
-		text += value.get(index).getText().trim();
-		value.get(index).click();
+		int index = getRandomInt(value.size());
+		text += value.get(1).getText().trim();
+		value.get(1).click();
 		return text;
 	}
 
@@ -338,7 +338,6 @@ public class Utility extends Base {
 		}
 
 		if (decendingOrder) {
-
 			return decendingOrder;
 		} else {
 			System.out.println("The dates are not sorted in descending order:---------> " + date);
@@ -486,7 +485,7 @@ public class Utility extends Base {
 			return;
 		}
 	}
-	
+
 	public static boolean getToggleState(MobileElement el) {
 
 		boolean status = false;
@@ -500,7 +499,6 @@ public class Utility extends Base {
 		return status;
 	}
 
-	
 	public static void swipe(int index, String dir) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		HashMap<String, String> scrollObject = new HashMap<String, String>();

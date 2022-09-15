@@ -1,6 +1,5 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.clicksOn;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -41,6 +40,12 @@ public class CitelinkSettings extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PDF Page View']/XCUIElementTypeLink")
 	public static List<MobileElement> links;
 
+	@iOSXCUITFindBy(accessibility = "Done")
+	public static MobileElement done;
+
+	@iOSXCUITFindBy(accessibility = "Close")
+	public static MobileElement close;
+
 	public static String changesCitelinkSettings() {
 		String engine = "";
 		Page.performPageLoad(driver);
@@ -61,7 +66,7 @@ public class CitelinkSettings extends AppiumPageFactory {
 			int index = Utility.getRandomNumberInRange(3, citeLinkEngineList.size() - 1);
 			engine += citeLinkEngineList.get(index).getText().trim();
 			citeLinkEngineList.get(index).click();
-           driver.navigate().back();
+			driver.navigate().back();
 		}
 		return engine;
 
@@ -86,6 +91,8 @@ public class CitelinkSettings extends AppiumPageFactory {
 		Page.performPageLoad(driver);
 		assertTrue(Actions.isDisplayed(Locator.XPATH, Actions.containsElement(searchEngine)));
 
+		done.click();
+		close.click();
 	}
 
 }

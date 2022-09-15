@@ -24,6 +24,7 @@ import static org.openqa.selenium.support.PageFactory.initElements;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import cucumber.api.DataTable;
@@ -287,13 +288,13 @@ public class CommonPages extends Base {
 				userInputData);
 	}
 
-	public static String getCCRID(List<UserInputData> userInputData) {
+	public static String getCCRID(String caseNum,List<UserInputData> userInputData) {
 
 		String name = SystemPropertySetup.getJudge(userInputData);
 		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
 
-		String caseId = CommonPages.getCaseID(userInputData);
-
+		//String caseId = CommonPages.getCaseID(userInputData);
+		String caseId = CommonPages.getCaseID(caseNum, userInputData);
 		return getAllColumns(replace(Queries.CCR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id),
 				userInputData);
 	}
@@ -415,7 +416,22 @@ public class CommonPages extends Base {
 		driver.navigate().back();
 		tap(dashboard);
 	}
-
+	
+	
+	
+	public static boolean ifPaneExists(String element) {
+		boolean isDisplayed = false;
+	
+	List<MobileElement> elems = findElements(By.xpath(Actions.containsElement(element)));
+	try {
+		if (elems.size() >0) 
+			isDisplayed = true;
+	} catch (WebDriverException e) {
+		isDisplayed = false;
+	}
+	return isDisplayed;
+	
+	}
 	public enum Case {
 		CASE_YEAR, CASE_NUMBER
 	}

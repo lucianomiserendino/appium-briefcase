@@ -22,7 +22,6 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForVisibilityOfElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getCellCount;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getNumOfDisplayedCases;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollUp;
 import static java.util.Arrays.asList;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
@@ -37,7 +36,6 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.MobileElement;
@@ -99,7 +97,7 @@ public class DashboardPage extends AppiumPageFactory {
 			performPageLoad(driver);
 
 			scrollToAction(dbReferralCategories.get(i));
-			scrollUp(By.id("Categories"));
+			Utility.scroll(By.id("Categories"), "up");
 
 		}
 	}
@@ -131,7 +129,7 @@ public class DashboardPage extends AppiumPageFactory {
 				break;
 
 			} else {
-				Utility.scrollDown(By.id("Categories"));
+				Utility.scroll(By.id("Categories"), "down");
 				performPageLoad(driver);
 			}
 		}
@@ -172,8 +170,7 @@ public class DashboardPage extends AppiumPageFactory {
 
 				performPageLoad(driver);
 				performPageLoad(driver);
-				List<String> UInonOrallyarguedCases = asList(
-						(getNumOfDisplayedCases(total)));
+				List<String> UInonOrallyarguedCases = asList((getNumOfDisplayedCases(total)));
 
 				String si_value = CommonPages.getSiValue("briefcaseTargetOnly", userInputData);
 
@@ -188,7 +185,7 @@ public class DashboardPage extends AppiumPageFactory {
 							UInonOrallyarguedCases);
 				}
 				tap(dashboard);
-				scrollUp(By.id("Categories"));
+				Utility.scroll(By.id("Categories"), "up");
 
 			}
 		} catch (org.openqa.selenium.TimeoutException e) {
@@ -251,7 +248,7 @@ public class DashboardPage extends AppiumPageFactory {
 					isDisplayed = true;
 			}
 		}
-		
+
 		return isDisplayed;
 
 	}
@@ -279,7 +276,7 @@ public class DashboardPage extends AppiumPageFactory {
 				} else {
 
 					assertEquals(dashNewReferralCount, navNewReferralCount.getText().trim());
-					
+
 				}
 			} catch (org.openqa.selenium.TimeoutException e) {
 				e.getMessage();
