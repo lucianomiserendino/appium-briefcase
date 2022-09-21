@@ -1,9 +1,11 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.dashboard;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.clicksOn;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
@@ -14,7 +16,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -22,7 +26,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.appium.java_client.MobileElement;
+import gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -34,19 +38,31 @@ public class AppliedCasesPage extends Base {
 	}
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[2]")
-	public MobileElement bookmarkBTN;
+	public WebElement bookmarkBTN;
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Bookmarked'])[2]")
-	public MobileElement bookOnDashboard;
+	public WebElement bookOnDashboard;
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[contains(@name, 'linked')]/preceding::XCUIElementTypeStaticText[@name='Viewed'][1]/preceding::XCUIElementTypeStaticText[contains(@name, '-')][1])")
-	public static List<MobileElement> targetCase;
+	public static List<WebElement> targetCase;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Applied Referrals']/following::XCUIElementTypeStaticText[contains(@name, '-')]")
-	public static List<MobileElement> appliedCase;
+	public static List<WebElement> appliedCase;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Viewed']/following::XCUIElementTypeStaticText[contains(@name, '-')]")
-	public static List<MobileElement> redBullet;
+	public static List<WebElement> redBullet;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[3]")
+	public static WebElement searchIcon;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextField")
+	public static WebElement searchTextField;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
+	public static WebElement searchBTN;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='On Device']")
+	public static WebElement on_device;
 
 	public void getBookmarkedReferral(String caseNumber) {
 
@@ -97,11 +113,11 @@ public class AppliedCasesPage extends Base {
 		Actions.isDisplayed(Locator.XPATH, containsElement("Associated Cases"));
 	}
 
-	public static List<String> caseList(List<MobileElement> element) {
+	public static List<String> caseList(List<WebElement> element) {
 		String[] dest;
 		List<String> referrals = new ArrayList<>();
 		performPageLoad(driver);
-		Iterator<MobileElement> itr = element.iterator();
+		Iterator<WebElement> itr = element.iterator();
 		while (itr.hasNext()) {
 			dest = itr.next().getText().split(" ");
 			referrals.add(dest[0].trim());
@@ -121,25 +137,24 @@ public class AppliedCasesPage extends Base {
 
 	}
 
-	public static void getAppliedCase() {
-		CommonPages.getPanel(Panel.Applied_Referrals);
-	}
 
 	public void changeSiValue(String val, List<UserInputData> userInputData) {
 		CommonPages.setValue(val, "briefcaseTargetOnly", userInputData);
 	}
 
+	public String getSiVal(List<UserInputData> userInputData) {
+		return CommonPages.getSiValue("briefcaseTargetOnly", userInputData);
+	}
+
 	public void getSiteTableVariable(String category, List<UserInputData> userInputData) {
 
-		String variable = CommonPages.getSiValue("briefcaseTargetOnly", userInputData);
-
-		if (variable.equals("n")) {
+		if (getSiVal(userInputData).equals("n")) {
 			changeSiValue("y", userInputData);
 
 		} else {
 			List<String> target = caseList(targetCase);
 			getRandomTargetCase(target);
-			getAppliedCase();
+			DocumentPage.getAppliedCase();
 
 			List<String> applied = caseList(appliedCase);
 
@@ -152,6 +167,32 @@ public class AppliedCasesPage extends Base {
 							+ applied + "')]")));
 			changeSiValue("y", userInputData);
 		}
+	}
+
+	public void appliedCaseSearch(String targetCase,String applCase ,List<UserInputData> userInputData) {
+		try {
+			if (getSiVal(userInputData).equals("y")) {
+
+				clicksOn(searchIcon);
+
+				sendKeys(searchTextField, applCase);
+				clicksOn(searchBTN);
+				clicksOn(on_device);
+				performPageLoad(driver);
+
+				Actions.findElement(By.xpath(Actions.containsElement(applCase))).click();
+				assertTrue("------------------> THE USER IS NOT DIRECTED TO THE TARGET CASE REFERRAL DETAIL PAGE", Actions.isDisplayed(
+						Locator.XPATH, Actions.containsElement("Sync all documents for case #" + targetCase)));
+				
+
+			} else {
+				throw new RuntimeException("----------->PLEASE SET THE SITE TABLE VARIABLE \"BRIEFCASETARGETONLY\" TO \"Y\"");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+
 	}
 
 }

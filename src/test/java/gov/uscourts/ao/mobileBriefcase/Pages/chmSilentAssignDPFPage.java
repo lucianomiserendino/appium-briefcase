@@ -11,18 +11,13 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static org.junit.Assert.assertTrue;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
@@ -37,39 +32,38 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class chmSilentAssignDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
-	public static List<MobileElement> caseNum;
+	public static List<WebElement> caseNum;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"PendingTasksList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[6]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]")
-	public static MobileElement assignmentType;
+	public static WebElement assignmentType;
 
 	@iOSXCUITFindBy(id = "My Assignments")
-	public static MobileElement MyAssignments;
+	public static WebElement MyAssignments;
 
 	@iOSXCUITFindBy(accessibility = "GroupIcon")
-	public static List<MobileElement> GroupIcon;
+	public static List<WebElement> GroupIcon;
 
 	@iOSXCUITFindBy(accessibility = "//XCUIElementTypeStaticText[@name=\"Assignments\"]//following::XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
-	public static List<MobileElement> judgeAssignments;
+	public static List<WebElement> judgeAssignments;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='OptionList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
-	public static List<MobileElement> optionList;
+	public static List<WebElement> optionList;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Assignments']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
-	public static MobileElement assignTable;
+	public static WebElement assignTable;
 
 	@iOSXCUITFindBy(xpath = "label[id='settings-checkbox-1']")
-	public static MobileElement checkBox;
+	public static WebElement checkBox;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Alert']")
-	public static MobileElement alert;
+	public static WebElement alert;
 
 	@iOSXCUITFindBy(accessibility = "OK")
-	public static MobileElement ok;
+	public static WebElement ok;
 
 	String actionName = "Auto Test";
 	String cmr_cyv_code = "prhr";
@@ -86,7 +80,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		getJudgeAssignment(userInputData, assignment, assignmentDate);
 	}
 
-	public static MobileElement getExistingAssignment(String assineeName, String AssignmentTypeAndDate) {
+	public static WebElement getExistingAssignment(String assineeName, String AssignmentTypeAndDate) {
 		return findElement(By.xpath("//*[contains(@name, '" + assineeName
 				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + AssignmentTypeAndDate + "')]"));
 	}
@@ -108,7 +102,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 
 		Page.sleep(20000);
 
-		MobileElement uiResult = findElementBy(Locator.XPATH, "//XCUIElementTypeStaticText[contains(@name, '"
+		WebElement uiResult = findElementBy(Locator.XPATH, "//XCUIElementTypeStaticText[contains(@name, '"
 				+ list.get(Utility.getRandomInt(list.size() - 1)) + "')]");
 
 		uiResult.click();
@@ -116,7 +110,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		boolean isDisplayed = false;
 
 		try {
-			MobileElement el = getExistingAssignment(assineeName, AssignmentTypeAndDate);
+			WebElement el = getExistingAssignment(assineeName, AssignmentTypeAndDate);
 			if (el.isDisplayed())
 				isDisplayed = true;
 		} catch (WebDriverException e) {
@@ -138,12 +132,12 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		assertTrue(getDuplicateAssignments(chmAssignDPFPage.optionList));
 	}
 
-	public boolean getDuplicateAssignments(List<MobileElement> assignments) {
+	public boolean getDuplicateAssignments(List<WebElement> assignments) {
 
 		String[] txt = new String[assignments.size()];
 		int k = 0;
 
-		for (MobileElement a : assignments) {
+		for (WebElement a : assignments) {
 			txt[k] = a.getText();
 			k++;
 		}
@@ -268,18 +262,16 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 
 	}
 
-	protected MobileElement getRowFromTable(MobileElement table, String cellTextEquals, int intCellToFind) {
-		MobileElement tableBody = table.findElement(By.tagName("tbody"));
-		List<MobileElement> rows = tableBody.findElements(By.tagName("tr"));
-		for (MobileElement row : rows) {
-			List<MobileElement> td = row.findElements(By.tagName("td"));
+	protected WebElement getRowFromTable(WebElement table, String cellTextEquals, int intCellToFind) {
+		WebElement tableBody = table.findElement(By.tagName("tbody"));
+		List<WebElement> rows = tableBody.findElements(By.tagName("tr"));
+		for (WebElement row : rows) {
+			List<WebElement> td = row.findElements(By.tagName("td"));
 			if (td.size() > 0 && td.get(intCellToFind).getText().equals(cellTextEquals)) {
 				return row;
 			}
 		}
 		return null;
 	}
-
-
 
 }

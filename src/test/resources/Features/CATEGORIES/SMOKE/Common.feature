@@ -78,5 +78,14 @@ Scenario: Category and case selection
 @selectRandomDocument
      Scenario: Random document selection
         Then user selects random document
+        
+ @selectRandomTargetCase  
+      Scenario: Random target case selection    
+        Then User selects random target case
+        
+        
+ @selectRandomAppliedCase  
+      Scenario: Random applied case selection    
+        Then User selects random applied case
 		
 		

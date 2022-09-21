@@ -38,7 +38,6 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -62,42 +61,42 @@ public class CommonPages extends Base {
 	static String okButton = "OK";
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
-	public static MobileElement dashboard;
+	public static WebElement dashboard;
 
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'NavigationRenderer')]/XCUIElementTypeButton[2]")
-	public static MobileElement settingsIcon;
+	public static WebElement settingsIcon;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Logout of Briefcase']")
-	public static MobileElement logout;
+	public static WebElement logout;
 
 	@iOSXCUITFindBy(accessibility = "PendingTasksList")
-	public MobileElement PendingTasksList;
+	public WebElement PendingTasksList;
 
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(accessibility = "ReferralsList")
-	public MobileElement ReferralsList;
+	public WebElement ReferralsList;
 
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(accessibility = "SessionGroups")
-	public MobileElement SessionGroups;
+	public WebElement SessionGroups;
 
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(accessibility = "DocumentList")
-	public MobileElement DocumentList;
+	public WebElement DocumentList;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='GroupIcon']")
-	public static List<MobileElement> GroupIcon;
+	public static List<WebElement> GroupIcon;
 
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Judge:')]")
-	public static MobileElement judge;
+	public static WebElement judge;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
-	public List<MobileElement> Categories;
+	public List<WebElement> Categories;
 
 	public void getCategory(Category category, String caseNumber) {
 
 		String categories = "";
-		MobileElement list = null;
+		WebElement list = null;
 
 		switch (category) {
 		case PENDING:
@@ -288,12 +287,12 @@ public class CommonPages extends Base {
 				userInputData);
 	}
 
-	public static String getCCRID(String caseNum,List<UserInputData> userInputData) {
+	public static String getCCRID(String caseNum, List<UserInputData> userInputData) {
 
 		String name = SystemPropertySetup.getJudge(userInputData);
 		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
 
-		//String caseId = CommonPages.getCaseID(userInputData);
+		// String caseId = CommonPages.getCaseID(userInputData);
 		String caseId = CommonPages.getCaseID(caseNum, userInputData);
 		return getAllColumns(replace(Queries.CCR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id),
 				userInputData);
@@ -304,7 +303,7 @@ public class CommonPages extends Base {
 				isDisplayed(containsElement(element)) == true);
 	}
 
-	public static String getCaseID(MobileElement uiCaseNumber, List<UserInputData> table) {
+	public static String getCaseID(WebElement uiCaseNumber, List<UserInputData> table) {
 		return getAllColumns(replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, uiCaseNumber.getText()), "CS_NUMBER",
 				getCase(Case.CASE_NUMBER, uiCaseNumber.getText())), table);
 	}
@@ -368,7 +367,7 @@ public class CommonPages extends Base {
 		int i = 0;
 		Boolean elementNotFound = true;
 		while (elementNotFound) {
-			List<MobileElement> icons = GroupIcon;
+			List<WebElement> icons = GroupIcon;
 			if (!(i == icons.size()) && icons.get(i).getAttribute("value").equals("▽")) {
 				icons.get(i).click();
 				elementNotFound = true;
@@ -391,7 +390,7 @@ public class CommonPages extends Base {
 	}
 
 	public static void updateSi_value(String si_code, String si_value) {
-		List<MobileElement> el = Actions.findElements(By.xpath("//select[@name='table']/option"));
+		List<WebElement> el = Actions.findElements(By.xpath("//select[@name='table']/option"));
 		for (int i = 0; i < el.size(); i++) {
 			if (el.get(i).getText().equals("site")) {
 				el.get(i).click();
@@ -416,22 +415,21 @@ public class CommonPages extends Base {
 		driver.navigate().back();
 		tap(dashboard);
 	}
-	
-	
-	
+
 	public static boolean ifPaneExists(String element) {
 		boolean isDisplayed = false;
-	
-	List<MobileElement> elems = findElements(By.xpath(Actions.containsElement(element)));
-	try {
-		if (elems.size() >0) 
-			isDisplayed = true;
-	} catch (WebDriverException e) {
-		isDisplayed = false;
+
+		List<WebElement> elems = findElements(By.xpath(Actions.containsElement(element)));
+		try {
+			if (elems.size() > 0)
+				isDisplayed = true;
+		} catch (WebDriverException e) {
+			isDisplayed = false;
+		}
+		return isDisplayed;
+
 	}
-	return isDisplayed;
-	
-	}
+
 	public enum Case {
 		CASE_YEAR, CASE_NUMBER
 	}

@@ -20,7 +20,6 @@ import org.openqa.selenium.support.FindBy;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.pagefactory.iOSBy;
 
@@ -37,11 +36,11 @@ public class TerminateReferrals extends AppiumPageFactory {
 
 	// @WithTimeout(time = 50, unit = TimeUnit.SECONDS)
 	@iOSBy(xpath = "//*[contains(@name, 'Total')]")
-	public static MobileElement totalNumOfNewReferrals;
+	public static WebElement totalNumOfNewReferrals;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
-	public static MobileElement dashboard;
+	public static WebElement dashboard;
 
 	/** find the ccr_id for the referral */
 	public static String getCMR_CCR_ID(String caseNum, String dbType, String peID, String cmr_cyv_code) {
@@ -92,7 +91,7 @@ public class TerminateReferrals extends AppiumPageFactory {
 		return new Integer(split(totalNumOfNewReferrals.getText(), "T", 0).split(",")[1].trim());
 	}
 
-	public IOSDriver<MobileElement> tapp() {
+	public IOSDriver tapp() {
 		tap(dashboard);
 		return driver;
 	}
@@ -114,5 +113,4 @@ public class TerminateReferrals extends AppiumPageFactory {
 		TERMINATE, UN_TERMINATE
 	}
 
-	
 }

@@ -14,6 +14,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
@@ -23,41 +24,40 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class UIDocketingDPFPage extends AppiumPageFactory {
 
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextView[1]")
-	public static MobileElement descriptionField;
+	public static WebElement descriptionField;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Select']/preceding::XCUIElementTypeTextField")
-	public static MobileElement select;
+	public static WebElement select;
 
 	@iOSXCUITFindBy(accessibility = "proposed order")
-	public static MobileElement proposedOrder;
+	public static WebElement proposedOrder;
 
 	@iOSXCUITFindBy(accessibility = "back")
-	public static MobileElement backBtn;
+	public static WebElement backBtn;
 
 	@iOSXCUITFindBy(accessibility = "submit")
-	public static MobileElement submit;
+	public static WebElement submit;
 
 	@iOSXCUITFindBy(accessibility = "View Case info")
-	public static MobileElement viewCaseInfo;
+	public static WebElement viewCaseInfo;
 
 	@iOSXCUITFindBy(accessibility = "Docket Entries")
-	public static MobileElement docketEntries;
+	public static WebElement docketEntries;
 
 	@iOSXCUITFindBy(accessibility = "Auto Test")
-	public static MobileElement autoTest;
+	public static WebElement autoTest;
 
 	@iOSXCUITFindBy(accessibility = "OK")
-	public static MobileElement OK;
+	public static WebElement OK;
 
 	@iOSXCUITFindBy(accessibility = "(//XCUIElementTypeStaticText[@name='Downloaded'])[1]/preceding:: XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
-	public static MobileElement proposedOrderDoc;
+	public static WebElement proposedOrderDoc;
 
 	public void verifyFieldsAreDisplayed(String descriptionText, String commentText, String submitText,
 			List<UserInputData> userInputData) {

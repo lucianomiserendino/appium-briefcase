@@ -16,7 +16,6 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -42,10 +41,10 @@ public class AutoSyncPage extends AppiumPageFactory {
 	private static String downloaded = "//XCUIElementTypeStaticText[@name='Downloaded]";
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Brief for 2441 REPLACED']/preceding::XCUIElementTypeStaticText[@name='+']")
-	public static MobileElement plusIcon;
+	public static WebElement plusIcon;
 
 	@iOSBy(xpath = "//*[contains(@name, 'Available for download')]")
-	public static MobileElement docsAvailableForDownload;
+	public static WebElement docsAvailableForDownload;
 
 	/** Get number of new documents from the counter on the sync button */
 	public String getCounter() {

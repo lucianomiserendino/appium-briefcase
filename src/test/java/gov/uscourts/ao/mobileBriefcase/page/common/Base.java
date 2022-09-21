@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.page.common;
 
 import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getProperty;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,24 +18,17 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.remote.SupportsContextSwitching;
 
 public abstract class Base implements iOSCapabilities {
 
-	public static IOSDriver<MobileElement> driver;
+	public static IOSDriver driver;
 	protected static DesiredCapabilities capabilities;
 	public static WebDriver webDriver;
 	public static WebDriver winAppDriver;
 	public static WebElement webElement;
 
-	private String BUNDLE_ID_SETTINGS = "com.apple.Preferences";
-	// locator for WiFi cell in settings app
-	private String WIFI_CELL_XPATH = "//XCUIElementTypeStaticText[@name=\"Wi-Fi\"]";
-	// locator for WiFi switch to turn on/off
-	private String WIFI_SWITCH_XPATH = "//XCUIElementTypeSwitch[@name=\"Wi-Fi\"]";
-	
 	public static WebDriver getInstance(Driver drivers) {
 
 		try {
@@ -117,7 +109,7 @@ public abstract class Base implements iOSCapabilities {
 
 	public static void getHost(String host) {
 		try {
-			driver = new IOSDriver<MobileElement>(new URL(host), capabilities);
+			driver = new IOSDriver(new URL(host), capabilities);
 
 		} catch (MalformedURLException v) {
 			v.printStackTrace();
@@ -152,12 +144,12 @@ public abstract class Base implements iOSCapabilities {
 	 */
 	public static void changeWindow(String type) {
 		try {
-			performPageLoad(driver);
-			Set<String> windows = ((IOSDriver<MobileElement>) driver).getContextHandles();
+			Page.performPageLoad(driver);
+			Set<String> windows = ((IOSDriver) driver).getContextHandles();
 			for (String window : windows) {
 				if (window.contains(type))
 					driver.context(window);
-				((AppiumDriver<MobileElement>) driver).getContextHandles();
+				((SupportsContextSwitching) driver).getContextHandles();
 			}
 		} catch (WebDriverException e) {
 
@@ -183,32 +175,14 @@ public abstract class Base implements iOSCapabilities {
 
 	}
 
-
-
-	public String getSettingsBundleID() {
-		return BUNDLE_ID_SETTINGS;
-	}
-
-	public MobileElement getWiFiCell() {
-		return driver.findElementByXPath(WIFI_CELL_XPATH);
-	}
-
-	public MobileElement getWifiSwitch() {
-		return driver.findElementByXPath(WIFI_SWITCH_XPATH);
-	}
-
-	// method to get current WiFi status
-	public String getWifiStatus() {
-		String wifiStatus = null;
-		do {
-			wifiStatus = getWifiSwitch().getAttribute("value");
-		} while (wifiStatus == null);
-		
-		return wifiStatus;
-	}
-
 	public enum Driver {
 		IOS, WINDOWS, WEBRIVER
 	}
 
+	public static void main(String[] args) {
+		Base.getInstance(Driver.IOS);
+
+		// safariInstance();
+
+	}
 }

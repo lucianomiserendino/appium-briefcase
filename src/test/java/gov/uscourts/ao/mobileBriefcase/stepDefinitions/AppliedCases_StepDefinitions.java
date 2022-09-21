@@ -2,10 +2,13 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 
+import java.util.List;
+
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.AppliedCasesPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class AppliedCases_StepDefinitions {
 	CommonPages page1;
@@ -46,6 +49,14 @@ public class AppliedCases_StepDefinitions {
 			String caseNum) {
 		page = new AppliedCasesPage();
 		page.getAdditionalCaseInfoScreen(caseNum);
+	}
+
+	@Then("^User taps on magnifying glass icon and searches for applied case, selects On Device option & verifies that the user is directed to the target case referral detail page$")
+	public void user_taps_on_magnifying_glass_icon_and_searches_for_applied_case_selects_On_Device_option_verifies_that_the_user_is_directed_to_the_target_case_referral_detail_page() {
+		List<UserInputData> userInputData = null;
+		page = new AppliedCasesPage();
+		page.appliedCaseSearch(Document_StepDefinitions.targetCase,Document_StepDefinitions.appliedCase,userInputData);
+
 	}
 
 }

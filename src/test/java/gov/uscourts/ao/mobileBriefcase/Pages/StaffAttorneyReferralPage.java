@@ -17,6 +17,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openqa.selenium.WebElement;
+
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -24,21 +26,20 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class StaffAttorneyReferralPage extends AppiumPageFactory {
 	CommonPages page = new CommonPages();
 	// @WithTimeout(time = 15, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Senior Staff Attorney')]")
-	public static MobileElement staffAttorney;
+	public static WebElement staffAttorney;
 
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'User')]")
-	public static MobileElement selectUser;
+	public static WebElement selectUser;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
-	public static List<MobileElement> refCategories;
+	public static List<WebElement> refCategories;
 
 	/** Observe the assignment categories that display on the dashboard for SAs */
 
@@ -53,7 +54,8 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 		performPageLoad(driver);
 		findElementBy(Locator.XPATH,
 				"//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText[contains(@name, '"
-						+ assignmenType + "')]").click();
+						+ assignmenType + "')]")
+				.click();
 	}
 
 	/**
@@ -74,8 +76,8 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 		sort(category);
 
 		for (int i = 1; i < category.size() + 1; ++i) {
-			MobileElement categoryName = getRefCategory(i, 2);
-			MobileElement numOfREfCat = getRefCategory(i, 3);
+			WebElement categoryName = getRefCategory(i, 2);
+			WebElement numOfREfCat = getRefCategory(i, 3);
 
 			uiRefCategories.add(categoryName.getText().trim() + " " + numOfREfCat.getText().trim());
 			sort(uiRefCategories);
@@ -100,7 +102,7 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 				dbRefCategories, uiRefCategories);
 	}
 
-	public static MobileElement getRefCategory(int i, int numOfRef) {
+	public static WebElement getRefCategory(int i, int numOfRef) {
 
 		return findElementBy(Locator.XPATH,
 				"//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther["
@@ -153,7 +155,7 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 
 				for (int j = 0; j < docDesc.size(); j++) {
 
-					MobileElement uiResult = findElementBy(Locator.XPATH, containsElement(dbDocs.get(i)
+					WebElement uiResult = findElementBy(Locator.XPATH, containsElement(dbDocs.get(i)
 							+ "')]/following:: XCUIElementTypeStaticText[contains(@name, '" + docDesc.get(j)));
 
 					if (uiResult.isDisplayed())
@@ -166,6 +168,5 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 		return isDisplayed;
 
 	}
-
 
 }

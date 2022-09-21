@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
@@ -47,7 +48,6 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class JudgeVoteDPFPage extends AppiumPageFactory {
@@ -55,64 +55,64 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	String select = "Please Select";
 
 	@iOSXCUITFindBy(id = "Close")
-	public static MobileElement close;
+	public static WebElement close;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='NoteList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
-	public static MobileElement commentField;
+	public static WebElement commentField;
 
 	@iOSXCUITFindBy(id = "Apply")
-	public static MobileElement applyBtn;
+	public static WebElement applyBtn;
 
 	@iOSXCUITFindBy(id = "Select All")
-	public static MobileElement selectAll;
+	public static WebElement selectAll;
 
 	@iOSXCUITFindBy(id = "Cut")
-	public static MobileElement cut;
+	public static WebElement cut;
 
 	@iOSXCUITFindBy(id = "Back")
-	public static MobileElement back;
+	public static WebElement back;
 
 	@iOSXCUITFindBy(id = "Cancel")
-	public static MobileElement cancel;
+	public static WebElement cancel;
 
 	@iOSXCUITFindBy(id = "Submit")
-	public static MobileElement submit;
+	public static WebElement submit;
 
 	// @WithTimeout(time = 60, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(id = "Yes")
-	public static MobileElement yesBtn;
+	public static WebElement yesBtn;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(id = "OK")
-	public static MobileElement okBtn;
+	public static WebElement okBtn;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
-	public static MobileElement dashboard;
+	public static WebElement dashboard;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='VoteOptions']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
-	public static List<MobileElement> judgeVotes;
+	public static List<WebElement> judgeVotes;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeButton")
-	public static List<MobileElement> doc;
+	public static List<WebElement> doc;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Configuration Error']")
-	public static MobileElement configError;
+	public static WebElement configError;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Dismiss']")
-	public static MobileElement dismiss;
+	public static WebElement dismiss;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PDF View']")
-	public static MobileElement pdf;
+	public static WebElement pdf;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Page Label']")
-	public static MobileElement pageLabel;
+	public static WebElement pageLabel;
 
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'The requested document cannot be displayed at this time. Invalid Document: dls')]")
-	public static List<MobileElement> jpgMessage;
+	public static List<WebElement> jpgMessage;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeAlert[@name='Briefcase']")
-	public static MobileElement jpgAlert;
+	public static WebElement jpgAlert;
 
 	/** verify relief is displayed on the popup page */
 	public String selectViewVotes(List<UserInputData> userInputData, String caseNum) {
@@ -153,7 +153,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 		for (int inits = 0; inits < dbInitials.size(); ++inits) {
 
-			MobileElement uiJudgeInits = waitForVisibilityOfElement(findElementBy(Locator.XPATH,
+			WebElement uiJudgeInits = waitForVisibilityOfElement(findElementBy(Locator.XPATH,
 					"//XCUIElementTypeOther[@name='JudgesVotesList']/child::*//*[contains(@name, '"
 							+ dbInitials.get(inits) + "')]"),
 					driver);
@@ -185,7 +185,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 					String votedDate = changeDateFormat(dbVoteDate.get(uiVoteDate).split(" ")[0], "yyyy-MM-dd",
 							"M/d/yyyy");
 
-					MobileElement uiResult = waitForVisibilityOfElement(findElementBy(Locator.XPATH,
+					WebElement uiResult = waitForVisibilityOfElement(findElementBy(Locator.XPATH,
 							"//XCUIElementTypeOther[@name='JudgesVotesList']/child::*//*[contains(@name, '"
 									+ dbInitial.get(init) + "')]"
 									+ "/following::XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '"
@@ -220,12 +220,12 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 			tap(Locator.XPATH, getIndexOfVoteButton(reliefText, 1));
 		}
 		Page.sleep(4000);
-		List<MobileElement> votes = judgeVotes;
+		List<WebElement> votes = judgeVotes;
 
 		String voteList = "";
-		Iterator<MobileElement> i = votes.iterator();
+		Iterator<WebElement> i = votes.iterator();
 		while (i.hasNext()) {
-			MobileElement row = i.next();
+			WebElement row = i.next();
 			voteList += row.getText();
 		}
 
@@ -337,7 +337,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 	}
 
-	public static MobileElement getVote(String relief) {
+	public static WebElement getVote(String relief) {
 
 		return findElement(By.xpath("(//XCUIElementTypeStaticText[@name='" + relief
 				+ "']/following::XCUIElementTypeOther[contains(@name, 'NoteIcon')])[1]"));

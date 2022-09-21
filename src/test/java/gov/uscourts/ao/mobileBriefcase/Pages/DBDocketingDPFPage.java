@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.ElListText;
@@ -39,32 +40,31 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class DBDocketingDPFPage extends AppiumPageFactory {
 
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocketingDPFList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
-	public static MobileElement descriptionField;
+	public static WebElement descriptionField;
 
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocketingDPFList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
-	public static MobileElement commentField;
+	public static WebElement commentField;
 
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'User')]")
-	public static MobileElement selectUser;
+	public static WebElement selectUser;
 
 	@iOSXCUITFindBy(id = "Submit")
-	public static MobileElement submit;
+	public static WebElement submit;
 
 	@iOSXCUITFindBy(id = "Yes")
-	public static MobileElement YESbtn;
+	public static WebElement YESbtn;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(id = "OK")
-	public static MobileElement OKbtn;
+	public static WebElement OKbtn;
 
 	ElListText list;
 

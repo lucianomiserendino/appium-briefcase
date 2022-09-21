@@ -3,38 +3,44 @@
     "line": 2,
     "elements": [
       {
-        "comments": [
+        "before": [
           {
-            "line": 3,
-            "value": "#related to AMB-1097 as well"
+            "result": {
+              "duration": 12600659333,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
           }
         ],
         "line": 4,
         "name": "",
-        "description": "",
-        "type": "background",
-        "keyword": "Background",
+        "description": "As a user when entering an applied case number in the Search box and selecting \u0027On Device\u0027 , the user is directed to the target case referral detail page.\nThe user is not directed to the applied case.\nThe applied case can be selected from the target case.",
+        "id": "prevent-the-user-from-navigating-to-an-applied-case-referral-detail-page-from-search;",
+        "type": "scenario",
+        "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "duration": 33552622125,
+              "duration": 22464424500,
               "status": "passed"
             },
             "comments": [
               {
-                "line": 7,
+                "line": 9,
                 "value": "#Given I am logged into Briefcase"
               },
               {
-                "line": 8,
+                "line": 10,
                 "value": "#|environment|userName| password |courtId|"
               },
               {
-                "line": 9,
+                "line": 11,
                 "value": "#|test       |test    | test     |test   |"
               }
             ],
-            "line": 11,
+            "line": 13,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -46,7 +52,7 @@
                   "personrole",
                   "jud"
                 ],
-                "line": 12
+                "line": 14
               },
               {
                 "cells": [
@@ -54,44 +60,17 @@
                   "Appellate Judges",
                   "test"
                 ],
-                "line": 13
+                "line": 15
               }
             ],
             "keyword": "Then "
-          }
-        ]
-      },
-      {
-        "comments": [
-          {
-            "line": 38,
-            "value": "#20-42410"
-          }
-        ],
-        "before": [
+          },
           {
             "result": {
-              "duration": 11494863750,
+              "duration": 9992897000,
               "status": "passed"
             },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 41,
-        "name": "",
-        "description": "The judgeVote DPF enables judges to add notes to a vote.  There is a parameter in the judgeVote DPF called Note History.  \nIf the parameter is set to \u0027y\u0027, the text of the previous vote note (if there is one), should display when the judge adds a \nnote to a new vote.  To the judge, it appears that he/she is just editing an existing vote, even though CM/ECF is creating a new note.",
-        "id": "judgevote-dpf-ui;",
-        "type": "scenario",
-        "keyword": "Scenario",
-        "steps": [
-          {
-            "result": {
-              "duration": 12471144500,
-              "status": "passed"
-            },
-            "line": 47,
+            "line": 17,
             "name": "User selects random judge category",
             "match": {
               "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
@@ -101,117 +80,27 @@
                 "cells": [
                   "courtId"
                 ],
-                "line": 48
+                "line": 18
               },
               {
                 "cells": [
                   "test"
                 ],
-                "line": 49
+                "line": 19
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 77582839792,
-              "status": "passed"
-            },
-            "line": 51,
-            "name": "User selects random case number",
-            "match": {
-              "location": "Document_StepDefinitions.user_selects_random_case_number(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "courtId"
-                ],
-                "line": 52
-              },
-              {
-                "cells": [
-                  "test"
-                ],
-                "line": 53
-              }
-            ],
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 10560715250,
-              "status": "passed"
-            },
-            "line": 55,
-            "name": "User expands/collapse panel",
-            "match": {
-              "location": "Common_StepDefinitions.user_expands_collapse_panel()"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 6649502250,
-              "status": "passed"
-            },
-            "line": 57,
-            "name": "User verifies that panel exists",
-            "match": {
-              "location": "Common_StepDefinitions.user_verifies_that_panel_exists(DataTable)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "panel"
-                ],
-                "line": 58
-              },
-              {
-                "cells": [
-                  "Vote Information"
-                ],
-                "line": 59
-              }
-            ],
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "duration": 632106446375,
-              "status": "passed"
-            },
-            "line": 61,
-            "name": "User  selects an action and verifies the name of the action displays in the dark blue banner",
-            "match": {
-              "location": "Common_StepDefinitions.user_selects_an_action_and_verifies_the_name_of_the_action_displays_in_the_dark_blue_banner(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "courtId"
-                ],
-                "line": 63
-              },
-              {
-                "cells": [
-                  "test"
-                ],
-                "line": 64
-              }
-            ],
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 13623875,
-              "error_message": "java.lang.RuntimeException: ------------------- FAILED ------------------\u003e THE SELECTED REFERRAL DOESN\u0027T REQUIRE VOTING\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.JudgeVoteDPF_StepDefinitions.user_selects_a_vote_and_adds_notes_to_a_vote(JudgeVoteDPF_StepDefinitions.java:41)\n\tat ✽.Then user selects a vote and adds notes to a vote.(CATEGORIES/REGRESSION/JUDGE_VOTE_DPF_AMB-1100 || 1103 || 1210 || AMB-1097.feature:66)\n",
+              "duration": 3784210833,
+              "error_message": "java.lang.RuntimeException: ---------------------\u003e REFERRAL DATES ARE MISSING FROM THE CASE ROW\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Utility.retrieveAllReferrals(Utility.java:160)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.selectRandomCaseNumber(DocumentPage.java:162)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.getRandomCase(DocumentPage.java:196)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions.user_selects_random_target_case(Document_StepDefinitions.java:46)\n\tat ✽.Then User selects random target case(CATEGORIES/USER_INTERFACE/APPLIED_CASE_SEARCH_AMB-3136.feature:22)\n",
               "status": "failed"
             },
-            "line": 66,
-            "name": "user selects a vote and adds notes to a vote.",
+            "line": 22,
+            "name": "User selects random target case",
             "match": {
-              "location": "JudgeVoteDPF_StepDefinitions.user_selects_a_vote_and_adds_notes_to_a_vote()"
+              "location": "Document_StepDefinitions.user_selects_random_target_case()"
             },
             "keyword": "Then "
           },
@@ -219,35 +108,36 @@
             "result": {
               "status": "skipped"
             },
-            "line": 68,
-            "name": "User verifies judge\u0027s vote is updated in Vote Information Panel.",
+            "line": 24,
+            "name": "User selects random applied case",
             "match": {
-              "location": "JudgeVoteDPF_StepDefinitions.user_verifies_judge_s_vote_is_updated_in_Vote_Information_Panel()"
+              "location": "Document_StepDefinitions.user_selects_random_applied_case()"
             },
-            "keyword": "And "
-          }
-        ],
-        "tags": [
-          {
-            "line": 39,
-            "name": "@AMB-1103"
+            "keyword": "Then "
           },
           {
-            "line": 40,
-            "name": "@AMB-1210"
+            "result": {
+              "status": "skipped"
+            },
+            "line": 26,
+            "name": "User taps on magnifying glass icon and searches for applied case, selects On Device option \u0026 verifies that the user is directed to the target case referral detail page",
+            "match": {
+              "location": "AppliedCases_StepDefinitions.user_taps_on_magnifying_glass_icon_and_searches_for_applied_case_selects_On_Device_option_verifies_that_the_user_is_directed_to_the_target_case_referral_detail_page()"
+            },
+            "keyword": "Then "
           }
         ]
       }
     ],
-    "name": "JudgeVote DPF UI",
+    "name": "Prevent the user from navigating to an applied case referral detail page from Search",
     "description": "",
-    "id": "judgevote-dpf-ui",
+    "id": "prevent-the-user-from-navigating-to-an-applied-case-referral-detail-page-from-search",
     "keyword": "Feature",
-    "uri": "CATEGORIES/REGRESSION/JUDGE_VOTE_DPF_AMB-1100 || 1103 || 1210 || AMB-1097.feature",
+    "uri": "CATEGORIES/USER_INTERFACE/APPLIED_CASE_SEARCH_AMB-3136.feature",
     "tags": [
       {
         "line": 1,
-        "name": "@Smoke"
+        "name": "@AMB-3136"
       }
     ]
   }

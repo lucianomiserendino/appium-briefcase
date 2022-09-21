@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CalendarPage extends AppiumPageFactory {
@@ -36,23 +36,23 @@ public class CalendarPage extends AppiumPageFactory {
 
 	// @WithTimeout(time = 300, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='SessionGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
-	public static MobileElement weeklySessions;
+	public static WebElement weeklySessions;
 
 	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(accessibility = "SessionGroups")
-	public MobileElement sessionGroups;
+	public WebElement sessionGroups;
 
 	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[1]")
-	public static MobileElement referral;
+	public static WebElement referral;
 
 	// @WithTimeout(time = 200, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText[1]")
-	public static MobileElement argDescription;
+	public static WebElement argDescription;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeStaticText")
-	public static MobileElement hearingDate;
+	public static WebElement hearingDate;
 
 	public void getWeeklySession(String peID, List<UserInputData> table) {
 		performPageLoad(driver);

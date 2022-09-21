@@ -31,6 +31,7 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -38,22 +39,21 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class DashboardPage extends AppiumPageFactory {
 	CommonPages page = new CommonPages();
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name=\"Pending Tasks\"])[2]/following::XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
-	public static MobileElement pendingTasks;
+	public static WebElement pendingTasks;
 
 	// @WithTimeout(time = 30, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Total')]")
-	public static MobileElement total;
+	public static WebElement total;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
-	public static List<MobileElement> navIcons;
+	public static List<WebElement> navIcons;
 
 	public String verifyIfPendingTasksAreDisplayed() {
 
@@ -114,12 +114,12 @@ public class DashboardPage extends AppiumPageFactory {
 		Boolean elementNotFound = true;
 		while (elementNotFound) {
 
-			List<MobileElement> elems = findElements(By.xpath(el1));
+			List<WebElement> elems = findElements(By.xpath(el1));
 
 			if (elems.size() > 1) {
 
 				try {
-					MobileElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, element), driver);
+					WebElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, element), driver);
 					if (elem.isDisplayed()) {
 						isDisplayed = true;
 					}
@@ -222,7 +222,7 @@ public class DashboardPage extends AppiumPageFactory {
 	public boolean getDocuments(String peID, List<UserInputData> userInputData) {
 
 		CommonPages.getGroupIcons();
-		MobileElement uiDocs = null;
+		WebElement uiDocs = null;
 
 		boolean isDisplayed = false;
 
@@ -242,7 +242,7 @@ public class DashboardPage extends AppiumPageFactory {
 
 			for (int j = 0; j < docDesc.size(); j++) {
 
-				MobileElement uiResult = findElementBy(Locator.XPATH, containsElement(docDesc.get(j)));
+				WebElement uiResult = findElementBy(Locator.XPATH, containsElement(docDesc.get(j)));
 				if (uiResult.isDisplayed())
 
 					isDisplayed = true;
@@ -267,7 +267,7 @@ public class DashboardPage extends AppiumPageFactory {
 
 		for (int i = 0; i < navCellSize - 2; i++) {
 			try {
-				MobileElement navNewReferralCount = navNewRefCount(nav.get(i));
+				WebElement navNewReferralCount = navNewRefCount(nav.get(i));
 				String dashNewReferralCount = dashNewRefCount(dash.get(i)).getText().split("W")[0].split(" ")[0].trim();
 
 				if (dashNewReferralCount.equals("0")) {
@@ -284,13 +284,13 @@ public class DashboardPage extends AppiumPageFactory {
 		}
 	}
 
-	public MobileElement dashNewRefCount(int index) {
+	public WebElement dashNewRefCount(int index) {
 		return findElementBy(Locator.XPATH,
 				"(//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText)["
 						+ index + "]");
 	}
 
-	public MobileElement navNewRefCount(int index) {
+	public WebElement navNewRefCount(int index) {
 		return findElementBy(Locator.XPATH,
 				"//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther["
 						+ index

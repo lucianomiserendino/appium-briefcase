@@ -26,10 +26,11 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.changeDateFormat;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.checkDatesForDescOrder;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.clickOnNumberInRange;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getParameter;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.*;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.splitBy;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -40,6 +41,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
@@ -50,8 +52,6 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
-import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class chmAssignDPFPage extends AppiumPageFactory {
@@ -77,22 +77,22 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	static String calendarRows = "//XCUIElementTypeOther[@name='Calendar']/XCUIElementTypeOther[4]/XCUIElementTypeOther";
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='OptionList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
-	public static List<MobileElement> optionList;
+	public static List<WebElement> optionList;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[13]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
-	public static MobileElement commentField1;
+	public static WebElement commentField1;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"DocumentList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[15]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
-	public static MobileElement commentField2;
+	public static WebElement commentField2;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"Calendar\"]/XCUIElementTypeOther[4]/XCUIElementTypeOther[row]/XCUIElementTypeOther[column]")
-	public static MobileElement calendarColumn;
+	public static WebElement calendarColumn;
 
 	@iOSXCUITFindBy(accessibility = "CalendarForward")
-	public static MobileElement nextPage;
+	public static WebElement nextPage;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='OptionList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[3]/XCUIElementTypeStaticText")
-	public static List<MobileElement> note;
+	public static List<WebElement> note;
 
 	public static String selectADate(chmAssign assign) {
 
@@ -106,8 +106,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	public static String selectDate() {
 		performPageLoad(driver);
-		List<MobileElement> rows = Actions.findElements(By.xpath(calendarRows));
-		List<MobileElement> columns = null;
+		List<WebElement> rows = Actions.findElements(By.xpath(calendarRows));
+		List<WebElement> columns = null;
 		String date = "";
 		for (int i = 1; i < rows.size() + 1; ++i) {
 
@@ -131,11 +131,13 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		createNewSTF(Assignment.NEW, chmAssign.CREATE, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
 				userInputData);
 
-		//cha_id = getCreatedAssignment(Queries.ASSIGNEES_CHA_ID, cha_ju_pe_id, cmr_cs_caseid, userInputData);
+		// cha_id = getCreatedAssignment(Queries.ASSIGNEES_CHA_ID, cha_ju_pe_id,
+		// cmr_cs_caseid, userInputData);
 
-		//createNewSTF(Assignment.NEW, chmAssign.MODIFY, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
-		//		userInputData);
-		//terminateStaffAssignment(userInputData);
+		// createNewSTF(Assignment.NEW, chmAssign.MODIFY, dpfName, elId, cha_ju_pe_id,
+		// caseNumber, cmr_cyv_code,
+		// userInputData);
+		// terminateStaffAssignment(userInputData);
 
 	}
 
@@ -192,8 +194,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 		List<String> uiStaffMembers = new ArrayList<>();
 
-		List<MobileElement> allStaffMembers = optionList;
-		for (MobileElement staffMembers : allStaffMembers) {
+		List<WebElement> allStaffMembers = optionList;
+		for (WebElement staffMembers : allStaffMembers) {
 			uiStaffMembers.add(staffMembers.getText().split(" ")[index]);
 			sort(uiStaffMembers);
 		}
@@ -214,8 +216,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		List<String> uiAssignmenType = new ArrayList<>();
 		try {
 			performPageLoad(driver);
-			List<MobileElement> allAssignmenTypes = optionList;
-			for (MobileElement type : allAssignmenTypes) {
+			List<WebElement> allAssignmenTypes = optionList;
+			for (WebElement type : allAssignmenTypes) {
 				uiAssignmenType.add(type.getText().trim());
 				sort(uiAssignmenType);
 			}
@@ -300,14 +302,14 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	public static String getANewStaffAssignment(String assignment, String assignedDate, String assignmentDue) {
 		try {
-			MobileElement modifiedAssignedDate = getExistingAssignment(staffMember + ", " + assignment,
+			WebElement modifiedAssignedDate = getExistingAssignment(staffMember + ", " + assignment,
 					"Assigned " + assignedDate);
 
 			assertTrue(modifiedAssignedDate.isDisplayed());
 
 		} catch (Exception e) {
 
-			MobileElement modifiedAssignmentDueDate = getExistingAssignment(staffMember + ", " + assignment,
+			WebElement modifiedAssignmentDueDate = getExistingAssignment(staffMember + ", " + assignment,
 					"Assignment Due " + assignmentDue);
 
 			assertTrue(modifiedAssignmentDueDate.isDisplayed());
@@ -365,7 +367,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 				+ assignment + "')]/following::XCUIElementTypeOther[2]/XCUIElementTypeButton";
 	}
 
-	public static MobileElement getCreatedAssignmentNameAndAssignmentType(String staffMember, String assignmnetType) {
+	public static WebElement getCreatedAssignmentNameAndAssignmentType(String staffMember, String assignmnetType) {
 		return Actions.findElementBy(Locator.XPATH,
 				"//*[contains(@name, '" + staffMember + ", " + assignmnetType + "')]");
 
@@ -392,7 +394,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	}
 
-	public static MobileElement getExistingAssignment(String assineeName, String AssignmentTypeAndDate) {
+	public static WebElement getExistingAssignment(String assineeName, String AssignmentTypeAndDate) {
 		return findElement(By.xpath("//*[contains(@name, '" + assineeName
 				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + AssignmentTypeAndDate + "')]"));
 	}
@@ -504,7 +506,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		case EXISTING:
 
 			performPageLoad(driver);
-			List<MobileElement> allAssignmenTypes = optionList;
+			List<WebElement> allAssignmenTypes = optionList;
 			clickOnNumberInRange(allAssignmenTypes);
 
 			break;

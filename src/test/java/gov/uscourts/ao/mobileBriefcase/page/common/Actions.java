@@ -9,11 +9,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
-import io.appium.java_client.MobileElement;
-
 public class Actions extends Base {
 
-	public static MobileElement findElementBy(Locator identifier, String element) {
+	public static WebElement findElementBy(Locator identifier, String element) {
 
 		By by = null;
 
@@ -56,15 +54,15 @@ public class Actions extends Base {
 		return waitForPresenceOfElementLocated(by, driver);
 	}
 
-	public static MobileElement findElement(By by) {
+	public static WebElement findElement(By by) {
 		return driver.findElement(by);
 	}
 
-	public static List<MobileElement> findElements(By by) {
+	public static List<WebElement> findElements(By by) {
 		return driver.findElements(by);
 	}
 
-	public static MobileElement contains(String element) {
+	public static WebElement contains(String element) {
 		return Page.waitForPresenceOfElementLocated(By.xpath(containsElement(element)), driver);
 	}
 
@@ -72,7 +70,7 @@ public class Actions extends Base {
 		return "//*[contains(@name, '" + element + "')]";
 	}
 
-	public static void sendKeys(MobileElement element, String text) {
+	public static void sendKeys(WebElement element, String text) {
 		element.sendKeys(text);
 	}
 
@@ -97,7 +95,7 @@ public class Actions extends Base {
 		findElementBy(identifier, element).sendKeys(text);
 	}
 
-	public static void tap(MobileElement element) {
+	public static void tap(WebElement element) {
 		Page.waitForVisibilityOfElement(element, driver).click();
 	}
 
@@ -105,7 +103,7 @@ public class Actions extends Base {
 		findElementBy(identifier, element).click();
 	}
 
-	public static String getText(MobileElement element) {
+	public static String getText(WebElement element) {
 		return element.getText().trim();
 	}
 
@@ -135,7 +133,7 @@ public class Actions extends Base {
 		boolean isDisplayed = false;
 
 		try {
-			MobileElement el = findElementBy(locator, element);
+			WebElement el = findElementBy(locator, element);
 			if (el.isDisplayed())
 				isDisplayed = true;
 		} catch (WebDriverException e) {
@@ -145,7 +143,7 @@ public class Actions extends Base {
 
 	}
 
-	public static boolean isDisplayed(MobileElement el) {
+	public static boolean isDisplayed(WebElement el) {
 		boolean isDisplayed = false;
 
 		try {
@@ -158,7 +156,7 @@ public class Actions extends Base {
 
 	}
 
-	public static void clicksOn(MobileElement element) {
+	public static void clicksOn(WebElement element) {
 		try {
 			element.click();
 		} catch (Exception e) {
@@ -167,15 +165,14 @@ public class Actions extends Base {
 		}
 	}
 
-	public static void javaScriptExecute(String script, MobileElement element) {
+	public static void javaScriptExecute(String script, WebElement element) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript(script, element);
 	}
-	
-	public static boolean attributeEquals(MobileElement el, String index) {
+
+	public static boolean attributeEquals(WebElement el, String index) {
 		return el.getAttribute("value").equals(index);
 	}
-
 
 	public enum Locator {
 		ID, XPATH, NAME, LINK_TEXT, PARTIAL_LINK_TEXT, CLASS_NAME, CSS_SELECTOR, TAG_NAME

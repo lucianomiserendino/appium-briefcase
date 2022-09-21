@@ -625,8 +625,10 @@ public class Queries {
 			+ "and annot_doc.dm_dktentryid = du_dktentryid and annot_doc.dm_seq = du_seq\n "
 			+ "and annot_doc.dm_dktentryid = dcg_dktentryid and annot_doc.dm_seq = dcg_seq\n"
 			+ "--and orig_doc.dm_dls_id = #####  -- these three optional if you want to narrow results.\n "
-			+ "and annot_doc.dm_last_updated > TODAY \n"
-			+ "and orig_doc.dm_description matches \"*TEXT*\" \n"
+			+ "and annot_doc.dm_last_updated > TODAY \n" + "and orig_doc.dm_description matches \"*TEXT*\" \n"
 			+ "order by annot_doc.dm_last_updated desc, mad_orig_dm_dls_id desc;";
+
+	public static final String CMR_CYV_CODE = "select distinct cmr_cyv_code from chm_mobile_referral, chm_reftype_val where cmr_ju_pe_id = 'CMR_JU_PE_ID' and cmr_date_end is null and "
+			+ "cmr_cyv_code = cyv_code AND cyv_is_briefcase = 'y' and cyv_is_oral_arg = 'n' and cyv_category='CYV_CATEGORY'";
 
 }

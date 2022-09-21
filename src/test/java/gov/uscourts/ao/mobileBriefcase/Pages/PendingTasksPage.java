@@ -2,7 +2,6 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
@@ -17,60 +16,56 @@ import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 
-import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class PendingTasksPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(accessibility = "Referrals Awaiting Action by Other Chambers")
-	public static MobileElement ReferralsAwaiting;
+	public static WebElement ReferralsAwaiting;
 
 	@iOSXCUITFindBy(accessibility = "My Assignments")
-	public static MobileElement MyAssignments;
+	public static WebElement MyAssignments;
 
 	@iOSXCUITFindBy(accessibility = "Pending Clerk's Filing")
-	public static MobileElement PendingClerk;
+	public static WebElement PendingClerk;
 
 	@iOSXCUITFindBy(accessibility = "Pending Clerk's Office")
-	public static MobileElement PendingClerkOffice;
+	public static WebElement PendingClerkOffice;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText/following:: XCUIElementTypeStaticText[contains(@name, '(')]")
-	public static List<MobileElement> categoryCount;
+	public static List<WebElement> categoryCount;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
-	public static List<MobileElement> navIcons;
+	public static List<WebElement> navIcons;
 
 	@iOSXCUITFindBy(accessibility = "GroupIcon")
-	public static List<MobileElement> GroupIcon;
+	public static List<WebElement> GroupIcon;
 
-	
 	@iOSXCUITFindBy(xpath = "**/XCUIElementTypeStaticText[label == '▽'][2]")
-	public static List<MobileElement> GroupIcon2;
-	
+	public static List<WebElement> GroupIcon2;
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
-	public static List<MobileElement> caseNum;
+	public static List<WebElement> caseNum;
 
 	public void sortedInDescendingOrder(String folder) {
 
 		getPendingSubFolder(folder);
 		getGroupIcons();
 		getAssignmentCategories();
-	
+
 		if (folder.equals("MyAssignments") | folder.equals("ReferralsAwaiting")) {
 			tapGroupIcons();
 			getAssignmentCategories();
 		}
 
 		ArrayList<String> filedDates = new ArrayList<String>();
-		List<MobileElement> date = Actions.findElements(By.xpath(Actions.containsElement(": ")));
+		List<WebElement> date = Actions.findElements(By.xpath(Actions.containsElement(": ")));
 
 		for (int i = 0; i < date.size(); i++) {
 			String text = date.get(i).getText().split(": ")[1];
@@ -107,7 +102,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 	public static void getPendingSubFolder(String folder) {
 
-		MobileElement el = null;
+		WebElement el = null;
 
 		if (folder.equals("PendingClerk")) {
 			el = PendingClerk;
@@ -165,7 +160,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 	}
 
-	public static MobileElement navNewRefCount(int index) {
+	public static WebElement navNewRefCount(int index) {
 		return findElementBy(Locator.XPATH,
 				"//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther["
 						+ index
@@ -173,7 +168,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 	}
 
-	public static MobileElement ifNewCountIsZero(int index) {
+	public static WebElement ifNewCountIsZero(int index) {
 		return findElementBy(Locator.XPATH,
 				"//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther["
 						+ index + "]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/" + "XCUIElementTypeOther[2]/"
@@ -181,11 +176,10 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 	}
 
-	public static MobileElement pendingCatigories(int index) {
+	public static WebElement pendingCatigories(int index) {
 		return findElementBy(Locator.XPATH,
 				"//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther["
 						+ index + "]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText");
 	}
-
 
 }

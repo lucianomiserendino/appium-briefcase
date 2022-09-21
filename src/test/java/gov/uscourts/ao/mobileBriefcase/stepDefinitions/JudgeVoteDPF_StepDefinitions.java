@@ -20,13 +20,13 @@ public class JudgeVoteDPF_StepDefinitions {
 	public void user_verifies_a_popup_displays_In_the_red_banner_the_relief_they_are_voting_on_should_display(
 			List<UserInputData> userInputData) {
 		page = new JudgeVoteDPFPage();
-		page.selectViewVotes(userInputData,Document_StepDefinitions.referral);
+		page.selectViewVotes(userInputData,Document_StepDefinitions.regularCase);
 	}
 
 	@Then("^User verifies each judges' initials to whom the referral was sent , as well as their vote and date they voted$")
 	public void user_verifies_each_judges_initials_to_whom_the_referral_was_sent_as_well_as_their_vote_and_date_they_voted(
 			List<UserInputData> userInputData) {
-		page.verifyJudgesVote(userInputData,Document_StepDefinitions.referral);
+		page.verifyJudgesVote(userInputData,Document_StepDefinitions.regularCase);
 	}
 
 	@Then("^user selects a vote and adds notes to a vote\\.$")
@@ -35,7 +35,7 @@ public class JudgeVoteDPF_StepDefinitions {
 		page = new JudgeVoteDPFPage();
 
 		if (Common_StepDefinitions.pane == true) {
-			vote += page.getVoteSelection("judgeVote", userInputData,Document_StepDefinitions.referral);
+			vote += page.getVoteSelection("judgeVote", userInputData,Document_StepDefinitions.regularCase);
 		} else {
 			throw new RuntimeException(
 					"------------------- FAILED ------------------> THE SELECTED REFERRAL DOESN'T REQUIRE VOTING");
@@ -46,7 +46,7 @@ public class JudgeVoteDPF_StepDefinitions {
 	public void user_verifies_judge_s_vote_is_updated_in_Vote_Information_Panel() {
 		List<UserInputData> userInputData = null;
 		page = new JudgeVoteDPFPage();
-		page.verifyNoteText(vote, page.getTodaysDate(), userInputData,Document_StepDefinitions.referral);
+		page.verifyNoteText(vote, page.getTodaysDate(), userInputData,Document_StepDefinitions.regularCase);
 	}
 
 	@Then("^User verifies the court admin doesn't have access to select Actions in Briefcase$")

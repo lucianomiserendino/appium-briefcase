@@ -11,14 +11,19 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertTrue;
+import static org.openqa.selenium.support.PageFactory.initElements;
 
 import java.util.List;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
-import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Base;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
-public class ActionsListViewPage extends AppiumPageFactory {
+public class ActionsListViewPage extends Base {
+	public ActionsListViewPage() {
+		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
+	}
 
 	public void getApplicableActions(String caseNumber, String panel, List<UserInputData> userInputData) {
 
@@ -27,7 +32,7 @@ public class ActionsListViewPage extends AppiumPageFactory {
 		actionIsDisplayed(cmr_id, userInputData);
 
 	}
-	
+
 	public static void actionIsDisplayed(String cmr_id, List<UserInputData> userInputData) {
 
 		List<String> dbResult = executeQuery(getID(APPLICABLE_ACTIONS, cmr_id), userInputData);
@@ -82,4 +87,5 @@ public class ActionsListViewPage extends AppiumPageFactory {
 		}
 
 	}
+
 }

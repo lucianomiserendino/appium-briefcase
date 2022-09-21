@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.openqa.selenium.WebElement;
+
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
@@ -21,40 +23,39 @@ import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class ReferralSortOrderPage extends AppiumPageFactory {
 
 	// @WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, 'Date')]")
-	public static List<MobileElement> dates;
+	public static List<WebElement> dates;
 
 	// @WithTimeout(time = 60, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Sort ↓')]")
-	public static MobileElement sortArrowBtn;
+	public static WebElement sortArrowBtn;
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Date')])[1]")
-	public static MobileElement dateArrowDownBtn;
+	public static WebElement dateArrowDownBtn;
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Date')])[2]")
-	public static MobileElement dateArrowUpBtn;
+	public static WebElement dateArrowUpBtn;
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Case')])[1]")
-	public static MobileElement caseDownArrowBtn;
+	public static WebElement caseDownArrowBtn;
 
 	// @WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
-	public static List<MobileElement> cases;
+	public static List<WebElement> cases;
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Case')])[2]")
-	public static MobileElement caseUpArrowBtn;
+	public static WebElement caseUpArrowBtn;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, 'Actions')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
-	public static List<MobileElement> docCategories;
+	public static List<WebElement> docCategories;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
-	public static List<MobileElement> navIcons;
+	public static List<WebElement> navIcons;
 
 	public void selectReferralCategory(List<UserInputData> userInputData) {
 
@@ -142,11 +143,6 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 				uiDoCategories);
 	}
 
-	
-	
-	
-	
-	
 	public List<Integer> getCellCount(int time, int navCellSize) {
 		List<Integer> cellSize = new ArrayList<>();
 		for (int i = time; i < navCellSize; i++) {

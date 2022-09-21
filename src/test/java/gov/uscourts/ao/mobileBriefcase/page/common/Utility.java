@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.page.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
@@ -13,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -28,13 +30,13 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
-import net.bytebuddy.implementation.bind.MethodDelegationBinder.AmbiguityResolver.Directional;
 
 public class Utility extends Base {
 
@@ -57,7 +59,7 @@ public class Utility extends Base {
 		Boolean elementNotFound = true;
 		while (elementNotFound) {
 			try {
-				MobileElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, element), driver);
+				WebElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, element), driver);
 				if (elem.isDisplayed()) {
 					isDisplayed = true;
 					break;
@@ -79,7 +81,7 @@ public class Utility extends Base {
 		while (elementNotFound) {
 			try {
 
-				List<MobileElement> elems = findElements(By.xpath(element));
+				List<WebElement> elems = findElements(By.xpath(element));
 				if (elems.size() == 1) {
 
 					try {
@@ -105,12 +107,19 @@ public class Utility extends Base {
 	}
 
 	public static void scroll(By by, String direction) {
-		MobileElement element = Page.waitForPresenceOfElementLocated(by, driver);
-		String elementID = element.getId();
+//		 WebElement element = Page.waitForPresenceOfElementLocated(by, driver);
+//		String elementID = element.getId();
+//		HashMap<String, String> scrollObject = new HashMap<String, String>();
+//		scrollObject.put("element", elementID);
+//		scrollObject.put("direction", direction);
+//		driver.executeScript("mobile:scroll", scrollObject);
+//		
+
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		HashMap<String, String> scrollObject = new HashMap<String, String>();
-		scrollObject.put("element", elementID);
-		scrollObject.put("direction", direction);
-		driver.executeScript("mobile:scroll", scrollObject);
+		scrollObject.put("direction", "down");
+		js.executeScript("mobile: scroll", scrollObject);
+
 	}
 
 	public static synchronized void scrolldown() {
@@ -133,13 +142,13 @@ public class Utility extends Base {
 		return driver.manage().window().getSize();
 	}
 
-	public static List<String> retrieveAllReferrals(List<MobileElement> elements, String split, int index) {
+	public static List<String> retrieveAllReferrals(List<WebElement> elements, String split, int index) {
 		String[] dest;
 		List<String> referrals = new ArrayList<>();
-		List<MobileElement> el = elements;
+		List<WebElement> el = elements;
 		if (el.size() > 0) {
 			performPageLoad(driver);
-			Iterator<MobileElement> itr = el.iterator();
+			Iterator<WebElement> itr = el.iterator();
 			while (itr.hasNext()) {
 				dest = itr.next().getText().split(split);
 				referrals.add(dest[index].trim());
@@ -204,14 +213,14 @@ public class Utility extends Base {
 		return arr;
 	}
 
-	public static String getNumOfDisplayedCases(MobileElement element) {
+	public static String getNumOfDisplayedCases(WebElement element) {
 		return getText(waitForVisibilityOfElement(element, driver)).split(",")[1].split("T")[0].trim();
 
 	}
 
 	public static boolean elementIsDisplayed(String query, String xpath, List<UserInputData> userInputData) {
 		boolean isDisplayed = false;
-		MobileElement uiResult = null;
+		WebElement uiResult = null;
 		List<String> dbResult = executeQuery(query, userInputData);
 		sort(dbResult);
 		try {
@@ -232,7 +241,7 @@ public class Utility extends Base {
 	public static void expandPanel(String element) {
 		try {
 
-			MobileElement referral = findElementBy(Locator.XPATH, "(//XCUIElementTypeStaticText[@name='" + element
+			WebElement referral = findElementBy(Locator.XPATH, "(//XCUIElementTypeStaticText[@name='" + element
 					+ "']/following::XCUIElementTypeOther/XCUIElementTypeStaticText)[1]");
 			if (referral.isDisplayed() && referral.getText().contains("(")) {
 				referral.click();
@@ -242,7 +251,7 @@ public class Utility extends Base {
 		}
 	}
 
-	public static int clickOnRandomValue(List<MobileElement> value) {
+	public static int clickOnRandomValue(List<WebElement> value) {
 		int random = getRandomInt(value.size());
 		value.get(random).click();
 		return random;
@@ -260,7 +269,7 @@ public class Utility extends Base {
 		return new Random().nextInt((max - min) + 1) + min;
 	}
 
-	public static String clickOnNumberInRange(List<MobileElement> value) {
+	public static String clickOnNumberInRange(List<WebElement> value) {
 //		String text = "";
 //		int index = getRandomNumberInRange(1, value.size() - 1);
 //		text += value.get(index).getText().trim();
@@ -461,32 +470,65 @@ public class Utility extends Base {
 //		}
 //	}
 
-	public void mobileSwipeScreenIOS(Directional dir) {
+	public static void tapAndSwipe(Direction dir) {
 
-		final int ANIMATION_TIME = 200; // ms
-		final HashMap<String, String> scrollObject = new HashMap<String, String>();
+		System.out.println("swipeScreenSmall(): dir: '" + dir + "'"); // always log your actions
 
+		// - iOS: 200 ms
+		// final value depends on your app and could be greater
+		final int ANIMATION_TIME = 50; // ms
+
+		final int PRESS_TIME = 50; // ms
+
+		PointOption pointOptionStart, pointOptionEnd;
+
+		// init screen variables
+		Dimension dims = driver.manage().window().getSize();
+
+		// init start point = center of screen
+		pointOptionStart = PointOption.point(dims.width / 2, dims.height / 2);
+
+		// reduce swipe move into multiplier times comparing to swipeScreen move
+		int mult = 2; // multiplier
 		switch (dir) {
-
-		case LEFT:
-			scrollObject.put("direction", "left");
+		case DOWN: // center of footer
+			pointOptionEnd = PointOption.point(dims.width / 2, (dims.height / 2) + (dims.height / 2) / mult);
 			break;
-		case RIGHT:
-			scrollObject.put("direction", "right");
+		case UP: // center of header
+			pointOptionEnd = PointOption.point(dims.width / 2, (dims.height / 2) - (dims.height / 2) / mult);
+			break;
+		case LEFT: // center of left side
+			pointOptionEnd = PointOption.point((dims.width / 2) - (dims.width / 2) / mult, dims.height / 2);
+			break;
+		case RIGHT: // center of right side
+			pointOptionEnd = PointOption.point((dims.width / 2) + (dims.width / 2) / mult, dims.height / 2);
 			break;
 		default:
-			throw new IllegalArgumentException("mobileSwipeScreenIOS(): dir: '" + dir + "' NOT supported");
+			throw new IllegalArgumentException("swipeScreenSmall(): dir: '" + dir.toString() + "' NOT supported");
 		}
+
+		// execute swipe using TouchAction
 		try {
-			driver.executeScript("mobile:swipe", scrollObject);
-			Thread.sleep(ANIMATION_TIME);
+			new TouchAction(driver).tap(pointOptionStart)
+					.waitAction(WaitOptions.waitOptions(Duration.ofMillis(PRESS_TIME))).moveTo(pointOptionEnd).release()
+					.perform();
+
 		} catch (Exception e) {
-			System.err.println("mobileSwipeScreenIOS(): FAILED\n" + e.getMessage());
+			System.err.println("swipeScreenSmall(): TouchAction FAILED\n" + e.getMessage());
 			return;
+		}
+
+		try {
+			Thread.sleep(ANIMATION_TIME);
+		} catch (InterruptedException e) {
 		}
 	}
 
-	public static boolean getToggleState(MobileElement el) {
+	public enum Direction {
+		DOWN, UP, LEFT, RIGHT
+	}
+
+	public static boolean getToggleState(WebElement el) {
 
 		boolean status = false;
 
@@ -504,7 +546,7 @@ public class Utility extends Base {
 		HashMap<String, String> scrollObject = new HashMap<String, String>();
 		for (int i = 0; i < index; i++) {
 			scrollObject.put("direction", dir);
-			js.executeScript("mobile: scroll", scrollObject);
+			js.executeScript("mobile: swipe", scrollObject);
 		}
 	}
 

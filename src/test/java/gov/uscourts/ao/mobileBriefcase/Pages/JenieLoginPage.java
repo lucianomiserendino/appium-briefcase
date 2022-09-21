@@ -23,7 +23,6 @@ import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.MobileBy;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -41,19 +40,19 @@ public class JenieLoginPage extends Base {
 	static String user = "User";
 
 	@iOSBy(accessibility = "Production")
-	public MobileElement production;
+	public WebElement production;
 
 	@iOSBy(accessibility = "env")
-	public MobileElement env;
+	public WebElement env;
 
 	@iOSBy(accessibility = "Integration")
-	public MobileElement Integration;
+	public WebElement Integration;
 
 	@iOSBy(accessibility = "Staging")
-	public MobileElement staging;
+	public WebElement staging;
 
 	@iOSBy(accessibility = "Testing")
-	public MobileElement testing;
+	public WebElement testing;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther[5]/XCUIElementTypeTextField")
 	public static WebElement userName;
@@ -69,32 +68,32 @@ public class JenieLoginPage extends Base {
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Dashboard']")
-	public static MobileElement dashboard;
+	public static WebElement dashboard;
 
 	// @WithTimeout(time = 15, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'User')]")
-	public MobileElement selectUser;
+	public WebElement selectUser;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[2]")
-	public static MobileElement settingsIcon;
+	public static WebElement settingsIcon;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Logout of Briefcase']")
-	public static MobileElement logout;
+	public static WebElement logout;
 
 	@iOSXCUITFindBy(accessibility = "ReferralsList")
-	public static MobileElement referralsList;
+	public static WebElement referralsList;
 
 	@iOSXCUITFindBy(accessibility = "AvailableJudges")
-	public static MobileElement AvailableJudges_Container;
+	public static WebElement AvailableJudges_Container;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[1]")
-	public static MobileElement searchIcon;
+	public static WebElement searchIcon;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
-	public static MobileElement searchBTN;
+	public static WebElement searchBTN;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextField")
-	public static MobileElement searchTextField;
+	public static WebElement searchTextField;
 
 	public void getEnvironment(Environment environment) {
 		switch (environment) {
@@ -136,7 +135,6 @@ public class JenieLoginPage extends Base {
 
 	}
 
-	
 	public void selectUser(List<UserInputData> userInputData) {
 
 		String userType = SystemPropertySetup.getVariable(Variables.USER_TYPE, userInputData);
@@ -144,27 +142,25 @@ public class JenieLoginPage extends Base {
 
 		contains(user).click();
 
-		String name = "" ;
+		String name = "";
 
 		if (userType.equals("judge")) {
-			name= SystemPropertySetup.getVariable(Variables.JUD, userInputData);
+			name = SystemPropertySetup.getVariable(Variables.JUD, userInputData);
 
 		} else if (userType.equals("stf")) {
 
 			name = SystemPropertySetup.getVariable(Variables.STF, userInputData);
 		}
-		
+
 		selectJudge(personrole, name);
 
 	}
-	
-	
 
 	public static void selectJudge(String availableJudges, String user) {
 
 		while (true) {
 
-			List<MobileElement> elems = driver
+			List<WebElement> elems = driver
 					.findElements(MobileBy.iOSClassChain("**/XCUIElementTypeStaticText[`label == \"▽\"`]"));
 			if (elems.size() > 0) {
 				elems.get(0).click();
@@ -176,7 +172,7 @@ public class JenieLoginPage extends Base {
 
 		while (true) {
 
-			List<MobileElement> elems = driver.findElements(By.xpath(containsElement(user)));
+			List<WebElement> elems = driver.findElements(By.xpath(containsElement(user)));
 			if (elems.size() > 0) {
 				elems.get(0).click();
 				break;
@@ -217,7 +213,6 @@ public class JenieLoginPage extends Base {
 
 	}
 
-
 	public void login(List<UserInputData> userInputData) {
 		String env = SystemPropertySetup.getVariable(Variables.ENVIRONMENT, userInputData);
 		String courtId = SystemPropertySetup.getVariable(Variables.COURTID, userInputData);
@@ -234,23 +229,19 @@ public class JenieLoginPage extends Base {
 		getServer(courtId);
 
 	}
-	
-	
-	
+
 	public void reopenTheApp() {
 		closeIOSDriver();
 		getInstance(Driver.IOS);
 		Page.performPageLoad(driver);
-		if(contains("Dashboard").isDisplayed()) {
+		if (contains("Dashboard").isDisplayed()) {
 			contains("Dashboard").click();
 			Page.sleep(5000);
 		}
 	}
+
 	public enum Environment {
 		Integration, Staging, Testing, Production
 	}
-	
-	
-
 
 }

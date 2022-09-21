@@ -38,7 +38,7 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 		scrollDownIfNotDisplayed("(" + containsElement("NewStaffButton") + ")[1]");
 		page.verifyElementIsDisplayed("Create Assignment");
 		page1 = new chmAssignDPFPage();
-		page1.createNewStaffAssignment(Document_StepDefinitions.referral,userInputData);
+		page1.createNewStaffAssignment(Document_StepDefinitions.regularCase,userInputData);
 	
 	}
 

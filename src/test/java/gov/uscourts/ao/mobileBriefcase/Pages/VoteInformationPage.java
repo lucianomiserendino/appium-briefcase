@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
@@ -32,13 +33,12 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class VoteInformationPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(id = "Close")
-	public static MobileElement close;
+	public static WebElement close;
 
 	public static String dbFiledDate(String pe_id, String caseId, String cyv_code, List<UserInputData> userInputData) {
 		return getAllColumns(getCode(getText(getID(FILED_DATE, pe_id), caseId), cyv_code), userInputData);
@@ -58,7 +58,7 @@ public class VoteInformationPage extends AppiumPageFactory {
 		List<String> judgesInitials = executeQuery(getID(JUDGEs_INITIALS, ccr_id), userInputData);
 		sort(judgesInitials);
 
-		MobileElement uiResult = null;
+		WebElement uiResult = null;
 		String filerInfo = getFilerInfo(peId, caseId, cyvCode, userInputData);
 
 		try {
@@ -186,7 +186,7 @@ public class VoteInformationPage extends AppiumPageFactory {
 			List<UserInputData> userInputData) {
 		CommonPages.getPanel(Panel.Vote_Information);
 		String cmr_ccr_id = getCMRID("cmr_ccr_id", caseNum, peId, cmr_cyv_code, userInputData);
-		MobileElement uiInits = null;
+		WebElement uiInits = null;
 
 		String judgeInitials = getPANEL_MEMBERS(cmr_ccr_id, userInputData);
 
@@ -225,7 +225,7 @@ public class VoteInformationPage extends AppiumPageFactory {
 
 	}
 
-	public static List<MobileElement> getVoteInfoTable() {
+	public static List<WebElement> getVoteInfoTable() {
 		return Actions.findElements(By.xpath(judgeInitial()));
 
 	}

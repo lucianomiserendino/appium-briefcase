@@ -4,12 +4,13 @@ import static org.openqa.selenium.support.PageFactory.initElements;
 
 import java.util.List;
 
+import org.openqa.selenium.WebElement;
+
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -20,19 +21,19 @@ public class ProposedOrdersPage extends Base {
 	}
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Proposed Orders']/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
-	public static List<MobileElement> proposedOrder;
+	public static List<WebElement> proposedOrder;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='*not selected*']/following:: XCUIElementTypeStaticText[@name='Select']")
-	public static MobileElement select;
+	public static WebElement select;
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeToolbar[@name='Toolbar'])[1]/following::XCUIElementTypeOther[1]/XCUIElementTypeButton")
-	public static List<MobileElement> toolBar1;
+	public static List<WebElement> toolBar1;
 
 	@iOSXCUITFindBy(accessibility = "Annotations")
-	public static MobileElement annotations;
+	public static WebElement annotations;
 
 	@iOSXCUITFindBy(accessibility = "Close")
-	public static MobileElement close;
+	public static WebElement close;
 
 	public String selectRandomProposedOrder() {
 
@@ -48,7 +49,7 @@ public class ProposedOrdersPage extends Base {
 		Actions.tap(select);
 		Actions.tap(Locator.XPATH, docName);
 		try {
-			MobileElement el = Actions.findElementBy(Locator.XPATH, docName + ".pdf");
+			WebElement el = Actions.findElementBy(Locator.XPATH, docName + ".pdf");
 			if (el.isDisplayed()) {
 				el.click();
 			} else {

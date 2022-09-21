@@ -1,5 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.page.common;
 
+import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -8,25 +9,26 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import io.appium.java_client.MobileElement;
-
 public class Page extends Base {
 
-	public static MobileElement waitForPresenceOfElementLocated(By element, WebDriver driver) {
-		return (MobileElement) new WebDriverWait(driver, 120)
+	public static WebElement waitForPresenceOfElementLocated(By element, WebDriver driver) {
+		return (WebElement) new WebDriverWait(driver, Duration.ofSeconds(10))
 				.until(ExpectedConditions.presenceOfElementLocated((element)));
 	}
 
 	public static List<WebElement> waitForVisibilityOfAllElements(List<WebElement> elements, WebDriver driver) {
-		return new WebDriverWait(driver, 100).until(ExpectedConditions.visibilityOfAllElements(elements));
+		return new WebDriverWait(driver, Duration.ofSeconds(10))
+				.until(ExpectedConditions.visibilityOfAllElements(elements));
 	}
 
-	public static void waitToBeClickable(MobileElement element, WebDriver driver) {
-		new WebDriverWait(driver, 100).until(ExpectedConditions.elementToBeClickable(element)).click();
+	public static void waitToBeClickable(WebElement element, WebDriver driver) {
+		new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(element))
+				.click();
 	}
 
-	public static MobileElement waitForVisibilityOfElement(MobileElement element, WebDriver driver) {
-		return (MobileElement) new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(element));
+	public static WebElement waitForVisibilityOfElement(WebElement element, WebDriver driver) {
+		return (WebElement) new WebDriverWait(driver, Duration.ofSeconds(10))
+				.until(ExpectedConditions.visibilityOf(element));
 	}
 
 	public static void performPageLoad(WebDriver driver) {

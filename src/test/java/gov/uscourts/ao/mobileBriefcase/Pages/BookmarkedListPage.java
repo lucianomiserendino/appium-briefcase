@@ -10,24 +10,24 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class BookmarkedListPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
-	public static MobileElement dashboard;
+	public static WebElement dashboard;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Bookmarked']")
-	public static List<MobileElement> bookOnDashboard;
+	public static List<WebElement> bookOnDashboard;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Bookmark']")
-	public static List<MobileElement> BookmarkedReferrals;
+	public static List<WebElement> BookmarkedReferrals;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
-	public static List<MobileElement> cases;
+	public static List<WebElement> cases;
 
 	public void getBookmarkedReferrals() {
 		try {

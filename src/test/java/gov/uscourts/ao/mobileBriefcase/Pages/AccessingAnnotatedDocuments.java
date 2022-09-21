@@ -25,6 +25,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.mobile.NetworkConnection;
 import org.openqa.selenium.mobile.NetworkConnection.ConnectionType;
 
@@ -39,7 +40,6 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Configuration;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -49,120 +49,120 @@ public class AccessingAnnotatedDocuments extends Base {
 	}
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Brief for 2441 REPLACED']/preceding::XCUIElementTypeStaticText[@name='+']")
-	public static MobileElement plusIcon;
+	public static WebElement plusIcon;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Brief for 2441 REPLACED']/preceding::XCUIElementTypeStaticText[@name='-']")
 
-	public static MobileElement minIcon;
+	public static WebElement minIcon;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='-']/following::XCUIElementTypeStaticText[@name='Brief for 2441 REPLACED']")
-	public static MobileElement originalDoc;
+	public static WebElement originalDoc;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='-']/following::XCUIElementTypeStaticText[@name='Brief for 2441 REPLACED']/following::XCUIElementTypeStaticText[contains(@name, 'Annotated')]")
-	public static MobileElement annotatedDoc;
+	public static WebElement annotatedDoc;
 
 	static String PDFPageView = "PDF View";
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
-	public MobileElement dashboard;
+	public WebElement dashboard;
 
 	@iOSXCUITFindBy(xpath = "label[id='settings-checkbox-1']")
-	public static MobileElement checkBox;
+	public static WebElement checkBox;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[2]")
-	public static MobileElement settingsIcon;
+	public static WebElement settingsIcon;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Allow staff to view annotated documents']/following::XCUIElementTypeSwitch[1]")
-	public static MobileElement viewAnnotatedDoc;
+	public static WebElement viewAnnotatedDoc;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Back up Annotations to CM/ECF']/following::XCUIElementTypeSwitch[1]")
-	public static MobileElement backUpAnnotations;
+	public static WebElement backUpAnnotations;
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeToolbar[@name='Toolbar'])[1]/following::XCUIElementTypeOther[1]/XCUIElementTypeButton")
-	public static List<MobileElement> toolBar1;
+	public static List<WebElement> toolBar1;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar/XCUIElementTypeButton")
-	public static List<MobileElement> navigationTool1;
+	public static List<WebElement> navigationTool1;
 
 	@iOSXCUITFindBy(accessibility = "PDF OPTIONS")
-	public static MobileElement pdfOptions;
+	public static WebElement pdfOptions;
 
 	@iOSXCUITFindBy(accessibility = "Annotations")
-	public static MobileElement annotations;
+	public static WebElement annotations;
 
 	@iOSXCUITFindBy(accessibility = "FreeText")
-	public static MobileElement freeText;
+	public static WebElement freeText;
 
 	@iOSXCUITFindBy(accessibility = "Text Annotation")
-	public static MobileElement textAnnotation;
+	public static WebElement textAnnotation;
 
 	@iOSXCUITFindBy(accessibility = "Drawing")
-	public static MobileElement drawing;
+	public static WebElement drawing;
 
 	@iOSXCUITFindBy(accessibility = "Freeform Highlight")
-	public static MobileElement freeformHighlight;
+	public static WebElement freeformHighlight;
 
 	@iOSXCUITFindBy(accessibility = "Ink_Magic")
-	public static MobileElement ink_Magic;
+	public static WebElement ink_Magic;
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeOther[@name='Text Annotation'])[1]")
-	public static MobileElement sentText;
+	public static WebElement sentText;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTable[@name='Note']")
-	public static MobileElement note;
+	public static WebElement note;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTable[@name='Note']/XCUIElementTypeCell/XCUIElementTypeTextView")
-	public static MobileElement sentNote;
+	public static WebElement sentNote;
 
 	@iOSXCUITFindBy(accessibility = "Toolbar")
-	public static MobileElement toolbar;
+	public static WebElement toolbar;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Author Name']")
-	public static MobileElement author;
+	public static WebElement author;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Done']")
-	public static MobileElement done;
+	public static WebElement done;
 
 	@iOSXCUITFindBy(accessibility = "Close")
-	public static MobileElement close;
+	public static WebElement close;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTable[@name='Search Results']/XCUIElementTypeCell")
-	public static List<MobileElement> searchResult;
+	public static List<WebElement> searchResult;
 
 	@iOSXCUITFindBy(accessibility = "Search")
-	public static MobileElement searchIcon;
+	public static WebElement searchIcon;
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeSearchField[@name=\"Search Document\"])[1]")
-	public static MobileElement searchTextField;
+	public static WebElement searchTextField;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
-	public static MobileElement searchBTN;
+	public static WebElement searchBTN;
 
 	@iOSXCUITFindBy(accessibility = "ResultsList")
-	public static MobileElement category;
+	public static WebElement category;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='CM/ECF']")
-	public static MobileElement cmecf;
+	public static WebElement cmecf;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='On Device']")
-	public static MobileElement on_device;
+	public static WebElement on_device;
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'FindAppendix?')]")
-	public static List<MobileElement> appxLink;
+	public static List<WebElement> appxLink;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, 'Actions')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
-	public static List<MobileElement> docCategories;
+	public static List<WebElement> docCategories;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeCell[@name='Wi-Fi']")
-	public static MobileElement wifi;
+	public static WebElement wifi;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeSwitch")
-	public static MobileElement switchBtn;
+	public static WebElement switchBtn;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Page Label']/XCUIElementTypeOther/following:: XCUIElementTypeStaticText")
-	public static MobileElement pageNumber;
+	public static WebElement pageNumber;
 
 	@iOSXCUITFindBy(accessibility = "PDF View")
-	public static MobileElement pdfView;
+	public static WebElement pdfView;
 
 	public void getAnnotatedDoc() {
 		openPDFDoc(originalDoc);
@@ -170,7 +170,7 @@ public class AccessingAnnotatedDocuments extends Base {
 		tap(dashboard);
 	}
 
-	public void openPDFDoc(MobileElement el) {
+	public void openPDFDoc(WebElement el) {
 		CommonPages.getPanel(Panel.Briefs);
 		tap(plusIcon);
 		tap(el);
@@ -280,7 +280,7 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	}
 
-	public static String ifEditingToolsExist(List<MobileElement> tools) {
+	public static String ifEditingToolsExist(List<WebElement> tools) {
 
 		List<String> list = new ArrayList<>();
 
@@ -333,7 +333,7 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	}
 
-	public static String draw(String text, MobileElement element, String actual) {
+	public static String draw(String text, WebElement element, String actual) {
 		Actions.tap(Locator.ID, text);
 		for (int i = 0; i < 2; i++) {
 			Utility.tapByCoordinate("pdfX", "pdfY");
@@ -344,7 +344,7 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	}
 
-	public static String sendText(String text, MobileElement element, MobileElement sentTxt, String actual) {
+	public static String sendText(String text, WebElement element, WebElement sentTxt, String actual) {
 		Actions.tap(Locator.ID, text);
 		Utility.tapByCoordinate("pdfX", "pdfY");
 		Actions.tap(element);
@@ -383,7 +383,7 @@ public class AccessingAnnotatedDocuments extends Base {
 		boolean isDisplayed = false;
 
 		try {
-			MobileElement elem = waitForVisibilityOfElement(
+			WebElement elem = waitForVisibilityOfElement(
 					findElementBy(Locator.XPATH, Actions.containsElement(annotatedDoc)), driver);
 			if (elem.isDisplayed())
 				isDisplayed = true;
@@ -439,8 +439,6 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	}
 
-	
-
 	public static void getRandomDoc(String categoryName) {
 
 		List<String> docName = new ArrayList<>();
@@ -450,7 +448,6 @@ public class AccessingAnnotatedDocuments extends Base {
 		for (int i = 0; i < DocumentPage.getSize(categoryName); i++) {
 
 			docName.add(DocumentPage.getText("docCategory", i, categoryName));
-
 		}
 		DocumentPage.click(randomDoc, categoryName);
 		randomPage();
@@ -521,7 +518,6 @@ public class AccessingAnnotatedDocuments extends Base {
 		Actions.tap(close);
 
 		getBackEndUpdates(cmr_cs_caseid, docName, userInputData);
-
 	}
 
 }
