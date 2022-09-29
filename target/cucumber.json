@@ -1,46 +1,34 @@
 [
   {
-    "line": 2,
+    "line": 1,
     "elements": [
       {
-        "before": [
-          {
-            "result": {
-              "duration": 12600659333,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 4,
-        "name": "",
-        "description": "As a user when entering an applied case number in the Search box and selecting \u0027On Device\u0027 , the user is directed to the target case referral detail page.\nThe user is not directed to the applied case.\nThe applied case can be selected from the target case.",
-        "id": "prevent-the-user-from-navigating-to-an-applied-case-referral-detail-page-from-search;",
+        "line": 5,
+        "name": "Add an Internal Note for Judges",
+        "description": "",
+        "id": "display-an-internal-note-option-for-judges;add-an-internal-note-for-judges",
         "type": "scenario",
         "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "duration": 22464424500,
-              "status": "passed"
+              "status": "skipped"
             },
             "comments": [
               {
-                "line": 9,
+                "line": 7,
                 "value": "#Given I am logged into Briefcase"
               },
               {
-                "line": 10,
+                "line": 8,
                 "value": "#|environment|userName| password |courtId|"
               },
               {
-                "line": 11,
+                "line": 9,
                 "value": "#|test       |test    | test     |test   |"
               }
             ],
-            "line": 13,
+            "line": 11,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -52,7 +40,7 @@
                   "personrole",
                   "jud"
                 ],
-                "line": 14
+                "line": 12
               },
               {
                 "cells": [
@@ -60,17 +48,16 @@
                   "Appellate Judges",
                   "test"
                 ],
-                "line": 15
+                "line": 13
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 9992897000,
-              "status": "passed"
+              "status": "skipped"
             },
-            "line": 17,
+            "line": 15,
             "name": "User selects random judge category",
             "match": {
               "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
@@ -80,65 +67,75 @@
                 "cells": [
                   "courtId"
                 ],
-                "line": 18
+                "line": 16
               },
               {
                 "cells": [
                   "test"
                 ],
-                "line": 19
+                "line": 17
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 3784210833,
-              "error_message": "java.lang.RuntimeException: ---------------------\u003e REFERRAL DATES ARE MISSING FROM THE CASE ROW\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Utility.retrieveAllReferrals(Utility.java:160)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.selectRandomCaseNumber(DocumentPage.java:162)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.getRandomCase(DocumentPage.java:196)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions.user_selects_random_target_case(Document_StepDefinitions.java:46)\n\tat ✽.Then User selects random target case(CATEGORIES/USER_INTERFACE/APPLIED_CASE_SEARCH_AMB-3136.feature:22)\n",
-              "status": "failed"
+              "status": "skipped"
             },
-            "line": 22,
-            "name": "User selects random target case",
+            "line": 19,
+            "name": "User selects random case number",
             "match": {
-              "location": "Document_StepDefinitions.user_selects_random_target_case()"
+              "location": "Document_StepDefinitions.user_selects_random_case_number(UserInputData\u003e)"
             },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 20
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 21
+              }
+            ],
             "keyword": "Then "
           },
           {
             "result": {
               "status": "skipped"
             },
-            "line": 24,
-            "name": "User selects random applied case",
+            "line": 23,
+            "name": "User expands/collapse panel",
             "match": {
-              "location": "Document_StepDefinitions.user_selects_random_applied_case()"
+              "location": "Common_StepDefinitions.user_expands_collapse_panel()"
             },
             "keyword": "Then "
           },
           {
             "result": {
-              "status": "skipped"
+              "status": "undefined"
             },
-            "line": 26,
-            "name": "User taps on magnifying glass icon and searches for applied case, selects On Device option \u0026 verifies that the user is directed to the target case referral detail page",
-            "match": {
-              "location": "AppliedCases_StepDefinitions.user_taps_on_magnifying_glass_icon_and_searches_for_applied_case_selects_On_Device_option_verifies_that_the_user_is_directed_to_the_target_case_referral_detail_page()"
-            },
-            "keyword": "Then "
+            "line": 25,
+            "name": "User verifies that there\u0027s an option for judges to create an internal note.",
+            "match": {},
+            "keyword": "And "
+          }
+        ],
+        "tags": [
+          {
+            "line": 2,
+            "name": "@AMB-3104"
           }
         ]
       }
     ],
-    "name": "Prevent the user from navigating to an applied case referral detail page from Search",
+    "name": "Display an internal note option for judges",
     "description": "",
-    "id": "prevent-the-user-from-navigating-to-an-applied-case-referral-detail-page-from-search",
+    "id": "display-an-internal-note-option-for-judges",
     "keyword": "Feature",
-    "uri": "CATEGORIES/USER_INTERFACE/APPLIED_CASE_SEARCH_AMB-3136.feature",
-    "tags": [
-      {
-        "line": 1,
-        "name": "@AMB-3136"
-      }
-    ]
+    "uri": "ADD_INTERNAL_NOTE.feature"
   }
 ]

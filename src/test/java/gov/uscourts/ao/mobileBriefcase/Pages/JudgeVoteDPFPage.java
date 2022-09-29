@@ -113,6 +113,9 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeAlert[@name='Briefcase']")
 	public static WebElement jpgAlert;
+	
+	@iOSXCUITFindBy(accessibility = "DocumentList")
+	public static WebElement documentList;
 
 	/** verify relief is displayed on the popup page */
 	public String selectViewVotes(List<UserInputData> userInputData, String caseNum) {
@@ -249,7 +252,8 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 		addVote(dpfName, getID(MBR_NOTE, elId), reliefText, elId, userInputData);
 		tap(back);
-		Utility.scroll(By.id("DocumentList"), "up");
+		Utility.scroll(documentList, "up");
+
 		return text;
 	}
 
@@ -322,7 +326,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 			scrollDownIfNotDisplayed("//XCUIElementTypeButton[@name='Submit']");
 
 			performPageLoad(driver);
-			Utility.scroll(By.id("DocumentList"), "up");
+			Utility.scroll(documentList, "up");
 			getGroupIcons();
 			selectAction("Actions", el_id, userInputData);
 			performPageLoad(driver);

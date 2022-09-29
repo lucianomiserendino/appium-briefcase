@@ -61,6 +61,9 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(id = "Yes")
 	public static WebElement YESbtn;
+	
+	@iOSXCUITFindBy(accessibility = "Categories")
+	public static WebElement categories;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(id = "OK")
@@ -74,7 +77,7 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 		list = table.get(index);
 
 		String record = getLatestRecord();
-		Utility.scroll(By.id("Categories"), "up");
+		Utility.scroll(categories, "up");
 		Page.sleep(10000);
 		selectAction("Actions", list.getElListText(), userInputData);
 		sendKeys(commentField, "Test-" + getStreamOfRandomInts());

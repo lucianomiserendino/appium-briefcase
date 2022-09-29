@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.page.common;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
@@ -31,6 +30,9 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebElement;
+
+import com.google.common.collect.ImmutableMap;
 
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
@@ -106,19 +108,10 @@ public class Utility extends Base {
 
 	}
 
-	public static void scroll(By by, String direction) {
-//		 WebElement element = Page.waitForPresenceOfElementLocated(by, driver);
-//		String elementID = element.getId();
-//		HashMap<String, String> scrollObject = new HashMap<String, String>();
-//		scrollObject.put("element", elementID);
-//		scrollObject.put("direction", direction);
-//		driver.executeScript("mobile:scroll", scrollObject);
-//		
+	public static void scroll(WebElement element, String direction) {
 
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		HashMap<String, String> scrollObject = new HashMap<String, String>();
-		scrollObject.put("direction", "down");
-		js.executeScript("mobile: scroll", scrollObject);
+		((JavascriptExecutor) driver).executeScript("mobile: swipe", ImmutableMap
+				.of("elementId", ((RemoteWebElement) element).getId(), "direction", direction, "speed", 500));
 
 	}
 

@@ -13,7 +13,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
@@ -55,6 +54,9 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(accessibility = "OK")
 	public static WebElement OK;
+
+	@iOSXCUITFindBy(accessibility = "Categories")
+	public static WebElement categories;
 
 	@iOSXCUITFindBy(accessibility = "(//XCUIElementTypeStaticText[@name='Downloaded'])[1]/preceding:: XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
 	public static WebElement proposedOrderDoc;
@@ -137,7 +139,7 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 		} else {
 			throw new RuntimeException("Failed to select proposed order");
 		}
-		Utility.scroll(By.id("Categories"), "up");
+		Utility.scroll(categories, "up");
 		tap(viewCaseInfo);
 		tap(docketEntries);
 		assertTrue(isDisplayed(Locator.XPATH, containsElement("Auto Test")));

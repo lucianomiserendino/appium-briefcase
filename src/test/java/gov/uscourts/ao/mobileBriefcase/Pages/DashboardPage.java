@@ -26,6 +26,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.openqa.selenium.support.PageFactory.initElements;
 
 import java.util.List;
 
@@ -39,9 +40,14 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class DashboardPage extends AppiumPageFactory {
+	
+	public DashboardPage() {
+		initElements(new AppiumFieldDecorator(driver), this);
+	}
 	CommonPages page = new CommonPages();
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name=\"Pending Tasks\"])[2]/following::XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
@@ -50,6 +56,9 @@ public class DashboardPage extends AppiumPageFactory {
 	// @WithTimeout(time = 30, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Total')]")
 	public static WebElement total;
+
+	@iOSXCUITFindBy(id = "Categories")
+	public static WebElement categories;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
@@ -97,7 +106,7 @@ public class DashboardPage extends AppiumPageFactory {
 			performPageLoad(driver);
 
 			scrollToAction(dbReferralCategories.get(i));
-			Utility.scroll(By.id("Categories"), "up");
+			Utility.scroll(categories, "up");
 
 		}
 	}
@@ -129,7 +138,7 @@ public class DashboardPage extends AppiumPageFactory {
 				break;
 
 			} else {
-				Utility.scroll(By.id("Categories"), "down");
+				Utility.scroll(categories, "down");
 				performPageLoad(driver);
 			}
 		}
@@ -185,7 +194,7 @@ public class DashboardPage extends AppiumPageFactory {
 							UInonOrallyarguedCases);
 				}
 				tap(dashboard);
-				Utility.scroll(By.id("Categories"), "up");
+				Utility.scroll(categories, "up");
 
 			}
 		} catch (org.openqa.selenium.TimeoutException e) {

@@ -74,6 +74,10 @@ public class Actions extends Base {
 		element.sendKeys(text);
 	}
 
+	public static void clear(WebElement element) {
+		element.clear();
+	}
+
 	public static String trim(String string) {
 		if (!(string == null))
 			return string.trim();
