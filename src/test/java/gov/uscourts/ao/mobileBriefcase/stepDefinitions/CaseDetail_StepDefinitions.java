@@ -14,7 +14,7 @@ public class CaseDetail_StepDefinitions {
 	public void user_verifies_that_there_s_an_option_for_judges_to_create_an_internal_note() {
 		page = new CaseDetailPage();
 		List<UserInputData> pacerInputData=null;
-		page.ifInternalNoteExists(pacerInputData);
+		page.ifInternalNoteExists(Document_StepDefinitions.regularCase,pacerInputData);
 	}
 
 }

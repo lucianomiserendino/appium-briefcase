@@ -1,6 +1,5 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.clear;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
@@ -25,8 +24,8 @@ public class CaseDetailPage extends Base {
 		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
 	}
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[4]/XCUIElementTypeOther[2]/XCUIElementTypeOther[3]/XCUIElementTypeStaticText")
-	public static WebElement addIntNote;
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[4]/XCUIElementTypeOther[2]/XCUIElementTypeOther[3]/XCUIElementTypeStaticText/preceding:: XCUIElementTypeStaticText[1]")
+	public static WebElement note;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"Cancel\"]")
 	public static WebElement cancelBtn;
@@ -46,28 +45,27 @@ public class CaseDetailPage extends Base {
 	@iOSXCUITFindBy(id = "Add Internal Note")
 	public static WebElement addNote;
 
-	public void ifInternalNoteExists(List<UserInputData> pacerInputData) {
-		String siVal = CommonPages.getSiValue("briefcaseInternalNote", pacerInputData);
+	public void ifInternalNoteExists(String referral, List<UserInputData> userInputData) {
+		String siVal = CommonPages.getSiValue("briefcaseInternalNote", userInputData);
 		try {
 			if (siVal.equalsIgnoreCase("y")) {
-				tap(addIntNote);
+				String text = Actions.getText(note);
+				tap(note);
 				Page.performPageLoad(driver);
 				assertTrue(isDisplayed(cancelBtn));
 				assertTrue(isDisplayed(desc));
 				assertTrue(isDisplayed(applyBtn));
-				clear(textField);
+				clearText(text);
 				assertTrue(isDisplayed(numOfChar));
-				String text = getRandomText();
-				int charLeft = getLength(text);
-				sendKeys(textField, text);
+				String newNote = getRandomText();
+				int charLeft = getLength(newNote);
+				sendKeys(textField, newNote);
 				assertTextIsDisplayed("Characters left: " + charLeft + "");
 				tap(applyBtn);
 				Page.performPageLoad(driver);
-				assertTextIsDisplayed(text);
-				tap(addIntNote);
-				clear(textField);
-				tap(applyBtn);
-				assertTrue(isDisplayed(addNote));
+				assertTextIsDisplayed(newNote);
+				driver.navigate().back();
+				assertTrue(categoryScreenNote(referral).equals(newNote));
 
 			} else {
 				throw new RuntimeException(
@@ -78,6 +76,25 @@ public class CaseDetailPage extends Base {
 
 		}
 
+	}
+
+	public void clearText(String text) {
+		String existingNote = textField.getAttribute("value");
+
+		if (text.trim().equals("Add Internal Note")) {
+			assertTrue(existingNote.length() == 0);
+		} else {
+
+			assertTrue(existingNote.contains(text));
+			textField.clear();
+		}
+
+	}
+
+	public String categoryScreenNote(String referral) {
+		return Actions.findElementBy(Locator.XPATH,
+				Actions.containsElement(referral) + "/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
+				.getText();
 	}
 
 	public String getRandomText() {
