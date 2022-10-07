@@ -77,7 +77,7 @@ public class Queries {
 
 	public static final String CASE_ID = "SELECT cs_caseid FROM case WHERE cs_year = 'CS_YEAR' and cs_number = 'CS_NUMBER'";
 	
-	public static final String CASE_NUMBER = "SELECT select cs_year||\"-\"||cs_number case_num FROM case WHERE cs_caseid='CS_CASEID'";
+	public static final String CASE_NUMBER = "select cs_year||\"-\"||cs_number case_num FROM case WHERE cs_caseid='CS_CASEID'";
 
 
 	public static final String DKT_ENTRY_ID = "SELECT first 1 distinct cmr_dktentryid FROM chm_mobile_referral WHERE cmr_cs_caseid = ?";
@@ -634,7 +634,7 @@ public class Queries {
 	public static final String CMR_CYV_CODE = "select distinct cmr_cyv_code from chm_mobile_referral, chm_reftype_val where cmr_ju_pe_id = 'CMR_JU_PE_ID' and cmr_date_end is null and "
 			+ "cmr_cyv_code = cyv_code AND cyv_is_briefcase = 'y' and cyv_is_oral_arg = 'n' and cyv_category='CYV_CATEGORY'";
 
-	public static final String CMR_CS_CASEID = "select first 10 cmr_cs_caseid from chm_mobile_referral,chm_reftype_val where cmr_ju_pe_id = ? and  cmr_cyv_code = cyv_code GROUP BY cmr_cs_caseid, cyv_category HAVING COUNT(cyv_category)>1";
+	public static final String CMR_CS_CASEID = "select cmr_cs_caseid, cmr_ref_date from chm_mobile_referral,chm_reftype_val where cmr_ju_pe_id = ? and  cmr_cyv_code = cyv_code GROUP BY cmr_cs_caseid, cyv_category, cmr_ref_date HAVING COUNT(cyv_category)>1 order by cmr_ref_date desc";
 
 	public static final String CYV_CATEGORY = " select  field from chm_mobile_referral,chm_reftype_val where "
 			+ "cmr_ju_pe_id = CMR_JU_PE_ID  and cmr_cyv_code = cyv_code and  cmr_cs_caseid='CMR_CS_CASEID' order by cmr_ref_date asc";
