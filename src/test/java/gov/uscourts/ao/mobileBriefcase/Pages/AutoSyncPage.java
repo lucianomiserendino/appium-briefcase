@@ -1,12 +1,15 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCasePage.findWebElement;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getProperty;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.sleep;
 import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -16,6 +19,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.iOSBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -46,8 +50,21 @@ public class AutoSyncPage extends AppiumPageFactory {
 	@iOSBy(xpath = "//*[contains(@name, 'Available for download')]")
 	public static WebElement docsAvailableForDownload;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Proposed Orders']/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
+	public static List<WebElement> proposedOrder;
+
+	@iOSXCUITFindBy(accessibility = "PDF View")
+	public static WebElement pdfView;
+
+	@iOSXCUITFindBy(accessibility = "Close")
+	public static WebElement close;
+
+	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Dashboard']")
+	public static WebElement dashboard;
+
 	/** Get number of new documents from the counter on the sync button */
-	public String getCounter() {
+	public static String getCounter() {
 		String availableDocs = "";
 		if (isDisplayed(Locator.XPATH, containsElement("Available for download")) == true) {
 			availableDocs += getText(Locator.XPATH,
@@ -142,5 +159,24 @@ public class AutoSyncPage extends AppiumPageFactory {
 		return isDisplayed;
 
 	}
+
+	public static void getSyncCount(int syncCount) {
+
+		List<String> categories = AccessingAnnotatedDocuments.getDocumentCategories();
+
+		int randomDoc = Utility.getRandomNumberInRange(1, categories.size() - 1);
+		String docName = categories.get(randomDoc).trim();
+		contains(docName).click();
+
+		Page.performPageLoad(driver);
+
+		assertTrue(Actions.isDisplayed(pdfView));
+		close.click();
+		dashboard.click();
+		assertTrue(syncCount == syncCount - 1);
+
+	}
+
+
 
 }
