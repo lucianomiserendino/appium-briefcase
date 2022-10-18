@@ -1,26 +1,38 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASES_ON_CALENDAR_SESSIONS;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCaseID;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.checkDatesForAscOrder;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.checkDatesForDescOrder;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrolldown;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage.Sort;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CalendarPage extends AppiumPageFactory {
@@ -54,13 +66,24 @@ public class CalendarPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DayGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static WebElement hearingDate;
 
-	public void getWeeklySession(String peID, List<UserInputData> table) {
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='GroupIcon']")
+	public static List<WebElement> GroupIcon;
+
+	static SimpleDateFormat format1;
+	static SimpleDateFormat format2;
+
+	public void getWeeklySession(List<UserInputData> userInputData) {
 		performPageLoad(driver);
-		findElementAndGetText(Locator.XPATH, getText(weeklySessions), peID, table);
+
+		String name = SystemPropertySetup.getJudge(userInputData);
+
+		String peId = getPE_ID("jud", name, userInputData);
+
+		findElementAndGetText(getText(weeklySessions), peId, userInputData);
 
 	}
 
-	public static void findElementAndGetText(Locator locator, String element, String peId, List<UserInputData> table) {
+	public static void findElementAndGetText(String element, String peId, List<UserInputData> table) {
 		String fromToDate = "";
 		String initials = "";
 
@@ -72,7 +95,7 @@ public class CalendarPage extends AppiumPageFactory {
 					initials += weeklySessions.getText();
 					fromToDate += findElementBy(Locator.XPATH,
 							containsElement(weeklySessions.getText()) + "/preceding::XCUIElementTypeStaticText[1]")
-									.getText();
+							.getText();
 					tap(weeklySessions);
 					performPageLoad(driver);
 					break;
@@ -97,7 +120,6 @@ public class CalendarPage extends AppiumPageFactory {
 
 		assertEQ(ARG_DISPLAY, getCourtSessionFields(CourtSession.ARG_DISPLAY, peId, table),
 				add(splitBy(argDescription.getText(), "Time:", 1).trim()));
-
 
 		assertEQ(CMR_PANEL_MEMBERS, getCourtSessionFields(CourtSession.CMR_PANEL_MEMBERS, peId, table), add(initials));
 
@@ -129,7 +151,7 @@ public class CalendarPage extends AppiumPageFactory {
 
 		String date = splitBy(monthDate, " ", 1);
 
-		String toFromDate = year.trim() + "-" + getMonth(month) + "-" + date;
+		String toFromDate = year.trim() + "-" + Utility.parseMonthName(month) + "-" + date;
 		List<String> uiToFromDate = new ArrayList<>();
 
 		if (toFromDate.length() == 9) {
@@ -173,39 +195,8 @@ public class CalendarPage extends AppiumPageFactory {
 
 	public static List<String> getCourtSessionTable(String value, String peID, String caseID,
 			List<UserInputData> table) {
-		return executeQuery(
-				replace(CASES_ON_CALENDAR_SESSIONS, "VALUE", value, "CMR_JU_PE_ID", peID, "CMR_CS_CASEID", caseID),
-				table);
-	}
-
-	public static String getMonth(String month) {
-		String number = "";
-		if (month.contains("Jan")) {
-			number = "01";
-		} else if (month.contains("Feb")) {
-			number = "02";
-		} else if (month.contains("Mar")) {
-			number = "03";
-		} else if (month.contains("Apr")) {
-			number = "04";
-		} else if (month.contains("May")) {
-			number = "05";
-		} else if (month.contains("Jun")) {
-			number = "06";
-		} else if (month.contains("Jul")) {
-			number = "07";
-		} else if (month.contains("Aug")) {
-			number = "08";
-		} else if (month.contains("Sep")) {
-			number = "09";
-		} else if (month.contains("Oct")) {
-			number = "10";
-		} else if (month.contains("Nov")) {
-			number = "11";
-		} else if (month.contains("Dec")) {
-			number = "12";
-		}
-		return number;
+		return executeQuery(DBType.CMKA,
+				replace(CASES_ON_CALENDAR_SESSIONS, "VALUE", value, "CMR_JU_PE_ID", peID, "CMR_CS_CASEID", caseID));
 	}
 
 	public enum CourtSession {
@@ -213,4 +204,57 @@ public class CalendarPage extends AppiumPageFactory {
 
 	}
 
+
+	public void isSortedByMonthAndYear() {
+		int random = Utility.getRandomNumberInRange(1, 2);
+
+		String format = "M yyyy";
+
+		ReferralSortOrderPage page = new ReferralSortOrderPage();
+		page.selectSortBtn();
+
+		if (random == 1) {
+			page.getSortPage(Sort.REFERRAL_DATE_DESCENDING);
+			getGroupIcons();
+			assertTrue(checkDatesForDescOrder(getMonthlySessions(), format));
+
+		} else if (random == 2) {
+			page.getSortPage(Sort.REFERRAL_DATE_ASCENDING);
+			getGroupIcons();
+			assertTrue(checkDatesForAscOrder(getMonthlySessions(), format));
+
+		}
+		page.getSortPage(Sort.REFERRAL_DATE_DESCENDING);
+
+	}
+
+	public static List<String> getMonthlySessions() {
+
+		List<String> sortedSessions = new ArrayList<>();
+
+		List<WebElement> groups = getSessionGroups(2);
+		 for (int i = 0; i < groups.size(); i++) {
+
+
+			String session = groups.get(i).getText();
+
+			String month = session.substring(0, session.indexOf(" ")).trim();
+
+			Utility.parseMonthName(month);
+
+			sortedSessions.add(session.replace(month, Utility.parseMonthName(month)));
+
+		}
+
+		return sortedSessions;
+
+	}
+
+	public static List<WebElement> getSessionGroups(int index) {
+		return Actions.findElements(By.xpath(
+				"	//XCUIElementTypeOther[@name='SessionGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther["
+						+ index + "]/XCUIElementTypeStaticText"));
+	}
+
+	
 }
