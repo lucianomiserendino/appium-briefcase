@@ -323,13 +323,13 @@ public class Queries {
 
 	public static final String CCR_DATE_END = "select ccr_date_end from chambers_case_to_referral where ccr_id =?";
 
-	public static final String CASES_ON_CALENDAR_SESSIONS = "select   VALUE "
+	public static final String CASES_ON_CALENDAR_SESSIONS = "select  first 1 VALUE "
 			+ "from chm_mobile_referral inner join panel_case on cmr_ph_id = ph_id \n"
 			+ "inner join panel_sitting on ph_pns_id = pns_id \n" + "inner join cluster on pns_clu_id = clu_id \n"
 			+ "inner join court_session on clu_cts_id = cts_id \n"
 			+ "left outer join argue_time_val on ph_arg_code = arg_code \n"
 			+ "inner join chm_reftype_val on cyv_code = cmr_cyv_code \n"
-			+ "where cmr_ju_pe_id = 'CMR_JU_PE_ID' and cyv_is_oral_arg = 'y' and cmr_cs_caseid='CMR_CS_CASEID' and cmr_date_end is null ";
+			+ "where cmr_ju_pe_id = 'CMR_JU_PE_ID' and cyv_is_oral_arg = 'y' and cmr_cs_caseid='CMR_CS_CASEID' and cmr_date_end is null order by clu_last_updated desc ";
 
 	public static final String SET_SITE_TABLE_VARIABLE_VALUE = "UPDATE  site SET  si_value = 'SI_VALUE' where si_code ='SI_CODE'";
 

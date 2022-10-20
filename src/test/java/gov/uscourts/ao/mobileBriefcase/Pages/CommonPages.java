@@ -363,22 +363,15 @@ public class CommonPages extends Base {
 	}
 
 	public static void getGroupIcons() {
-		performPageLoad(driver);
-		int i = 0;
-		Boolean elementNotFound = true;
-		while (elementNotFound) {
-			List<WebElement> icons = GroupIcon;
-			if (!(i == icons.size()) && icons.get(i).getAttribute("value").equals("▽")) {
+		List<WebElement> icons = GroupIcon;
+
+		for (int i = 0; i < icons.size(); i++) {
+
+			while (icons.get(i).getAttribute("value").equals("▽")) {
 				icons.get(i).click();
-				elementNotFound = true;
-
-			} else {
-				elementNotFound = false;
-				break;
 			}
-			i++;
-
 		}
+
 	}
 
 	public static void sendCredentials(String Username, String Password) {

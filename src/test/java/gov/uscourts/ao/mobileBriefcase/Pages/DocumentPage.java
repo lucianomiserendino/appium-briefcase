@@ -53,6 +53,9 @@ public class DocumentPage extends Base {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Applied Referrals']/following::XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<WebElement> appliedCase;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Bookmark_Container']/preceding:: XCUIElementTypeStaticText[contains(@name, 'Panel:')]/preceding:: XCUIElementTypeStaticText[1]")
+	public static List<WebElement> caseOncalender;
+
 	public static String selectRandomItem(String query, String xpath, List<UserInputData> userInputData) {
 		String category = "";
 		List<String> list = null;
@@ -168,9 +171,11 @@ public class DocumentPage extends Base {
 		return referral;
 
 	}
+
 	public static void getAppliedCase() {
 		CommonPages.getPanel(Panel.Applied_Referrals);
 	}
+
 	public String getRandomCase(Category cat) {
 
 		List<WebElement> element = null;
@@ -189,6 +194,10 @@ public class DocumentPage extends Base {
 			getAppliedCase();
 			element = appliedCase;
 			break;
+		case CaseOnCalendar:
+			
+			element = caseOncalender;
+			break;
 
 		default:
 			break;
@@ -197,7 +206,7 @@ public class DocumentPage extends Base {
 	}
 
 	public enum Category {
-		Referral_Category, Referral, Panel, RegularCase, TargetCase, AppliedCase
+		Referral_Category, Referral, Panel, RegularCase, TargetCase, AppliedCase, CaseOnCalendar
 	}
 
 }

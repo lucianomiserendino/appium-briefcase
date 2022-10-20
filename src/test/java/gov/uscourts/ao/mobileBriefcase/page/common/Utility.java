@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -318,9 +319,9 @@ public class Utility extends Base {
 		}
 	}
 
-	public static boolean checkDatesForDescOrder(List<String> date) {
+	public static boolean checkDatesForDescOrder(List<String> date, String format) {
 
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M/d/yyyy");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
 
 		boolean decendingOrder = true;
 
@@ -328,7 +329,7 @@ public class Utility extends Base {
 			try {
 				long d = simpleDateFormat.parse(date.get(index)).getTime();
 				long d1 = simpleDateFormat.parse(date.get(index + 1)).getTime();
-
+		
 				if (d < d1) {
 					decendingOrder = false;
 					break;
@@ -340,6 +341,7 @@ public class Utility extends Base {
 		}
 
 		if (decendingOrder) {
+			
 			return decendingOrder;
 		} else {
 			System.out.println("The dates are not sorted in descending order:---------> " + date);
@@ -348,9 +350,9 @@ public class Utility extends Base {
 
 	}
 
-	public static boolean checkDatesForAscOrder(List<String> date) {
+	public static boolean checkDatesForAscOrder(List<String> date,String format) {
 
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M/d/yyyy");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
 
 		boolean decendingOrder = true;
 
@@ -542,5 +544,22 @@ public class Utility extends Base {
 			js.executeScript("mobile: swipe", scrollObject);
 		}
 	}
+	
+	public static void doubleTap(WebElement el) {
 
+		((JavascriptExecutor) driver).executeScript("mobile: doubleTap",
+				ImmutableMap.of("elementId", ((RemoteWebElement) el).getId()));
+	}
+
+	   public static String parseMonthName(String nameOfTheMonth) {
+		   SimpleDateFormat inputFormat = new SimpleDateFormat("MMMM");
+			Calendar cal = Calendar.getInstance();
+			try {
+				cal.setTime(inputFormat.parse(nameOfTheMonth));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			return new SimpleDateFormat("M").format(cal.getTime());
+			
+	   }
 }
