@@ -11,24 +11,23 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertTrue;
-import static org.openqa.selenium.support.PageFactory.initElements;
 
 import java.util.List;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
-import gov.uscourts.ao.mobileBriefcase.page.common.Base;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
 
-public class ActionsListViewPage extends Base {
-	public ActionsListViewPage() {
-		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
-	}
+public class ActionsListViewPage extends AppiumPageFactory {
 
 	public void getApplicableActions(String caseNumber, String panel, List<UserInputData> userInputData) {
 
+		CommonPages.getGroupIcons();
 		scrollDownIfNotDisplayed(containsElement(panel));
 		String cmr_id = CommonPages.getCMRID(caseNumber, userInputData);
+
 		actionIsDisplayed(cmr_id, userInputData);
 
 	}
@@ -54,6 +53,8 @@ public class ActionsListViewPage extends Base {
 		assertTrue(
 				isDisplayed("//XCUIElementTypeOther[@name='DocumentList']//XCUIElementTypeStaticText[contains(@name, '"
 						+ actionName + "')]"));
+		Utility.tapAndSwipe(Direction.DOWN);
+
 	}
 
 	/**
@@ -87,5 +88,4 @@ public class ActionsListViewPage extends Base {
 		}
 
 	}
-
 }

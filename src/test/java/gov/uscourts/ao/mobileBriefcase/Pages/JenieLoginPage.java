@@ -21,6 +21,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -67,7 +68,7 @@ public class JenieLoginPage extends Base {
 	public WebElement sendKeyButton;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Dashboard']")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"Dashboard\"]")
 	public static WebElement dashboard;
 
 	// @WithTimeout(time = 15, unit = TimeUnit.SECONDS)
@@ -177,7 +178,7 @@ public class JenieLoginPage extends Base {
 				elems.get(0).click();
 				break;
 			} else {
-				Utility.scrolldown();
+				Utility.tapAndSwipe(Direction.UP);
 			}
 		}
 	}

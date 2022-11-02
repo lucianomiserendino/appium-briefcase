@@ -376,22 +376,6 @@ public class AccessingAnnotatedDocuments extends Base {
 		}
 	}
 
-	public static boolean isDisplayed(String query) {
-
-		String annotatedDoc = DBUtilities.execute(DBType.CMKA, query, 0).toString();
-
-		boolean isDisplayed = false;
-
-		try {
-			WebElement elem = waitForVisibilityOfElement(
-					findElementBy(Locator.XPATH, Actions.containsElement(annotatedDoc)), driver);
-			if (elem.isDisplayed())
-				isDisplayed = true;
-		} catch (WebDriverException e) {
-			isDisplayed = false;
-		}
-		return isDisplayed;
-	}
 
 	public static void getBackEndUpdates(String caseNum, String docName, List<UserInputData> userInputData) {
 		List<String> assignInfo = new ArrayList<>();

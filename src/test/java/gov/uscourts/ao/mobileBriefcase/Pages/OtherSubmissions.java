@@ -17,8 +17,10 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -34,36 +36,38 @@ public class OtherSubmissions extends Base {
 	 * where the cmr_cs_caseid = caseid of the referral being viewed.
 	 **/
 
-	public void otherSubmissionsDisplayed(List<UserInputData> userInputData) {
+	public void otherSubmissionsDisplayed() {
 
 		String cs_caseid = "";
 		List<String> db_cyv_category = null;
 		List<String> db_cmr_panel_members = null;
 		List<String> db_cmr_ref_date = null;
 
-		String name = SystemPropertySetup.getJudge(userInputData);
-		String pe_id = getPE_ID("jud", name, userInputData);
+		//String name = SystemPropertySetup.getJudge(userInputData);
+		//String pe_id = getPE_ID("jud", name, userInputData);
 
-		List<String> otherSubCase = executeQuery(getID(Queries.CMR_CS_CASEID, pe_id), userInputData);
+		List<String> otherSubCase = executeQuery(DBType.CMKA, getID(Queries.CMR_CS_CASEID, "34"));
 
 		for (int i = 0; i < otherSubCase.size(); i++) {
 
 			/** this finds the type of submission */
-			List<String> refCategories = getOtherSubmissionsFromDb(userInputData, "cyv_category", pe_id,
+			List<String> refCategories = getOtherSubmissionsFromDb("cyv_category", "34",
 					otherSubCase.get(i));
 
 			/** this finds the panel to whom the submission was sent */
 
-			List<String> panelMembers = getOtherSubmissionsFromDb(userInputData, "cmr_panel_members", pe_id,
+			List<String> panelMembers = getOtherSubmissionsFromDb( "cmr_panel_members", "34",
 					otherSubCase.get(i));
 
 			/** this finds the date the item was submitted */
-			List<String> refDate = getOtherSubmissionsFromDb(userInputData, "cmr_ref_date", pe_id, otherSubCase.get(i));
+			List<String> refDate = getOtherSubmissionsFromDb( "cmr_ref_date", "34", otherSubCase.get(i));
 
 			HashSet<String> hset = new HashSet<String>(refCategories);
 
 			if (hset.size() > 1) {
 				cs_caseid = otherSubCase.get(i);
+				System.out.println(cs_caseid+"*****************");
+
 				db_cyv_category = refCategories;
 				db_cmr_panel_members = panelMembers;
 				db_cmr_ref_date = refDate;
@@ -88,27 +92,28 @@ public class OtherSubmissions extends Base {
 
 			}
 		}
+		String caseNum = findCaseWithOtherSubmissions(cs_caseid);
+		
+		System.out.println(caseNum+"*****************");
+		
+		
+		//scrollDownIfNotDisplayed(Actions.containsElement(randomCategory));
 
-		String caseNum = findCaseWithOtherSubmissions(cs_caseid, userInputData);
+		//scrollDownIfNotDisplayed(Actions.containsElement(caseNum));
 
-		scrollDownIfNotDisplayed(randomCategory);
-
-		scrollDownIfNotDisplayed(caseNum);
-
-		getOtherSubmissionsFromUI(db_cyv_category.size(), db_cyv_category, db_cmr_panel_members, db_cmr_ref_date);
+		//getOtherSubmissionsFromUI(db_cyv_category.size(), db_cyv_category, db_cmr_panel_members, db_cmr_ref_date);
 	}
 
-	public String findCaseWithOtherSubmissions(String cs_caseid, List<UserInputData> userInputData) {
-		return getAllColumns(replace(Queries.CASE_NUMBER, "CS_CASEID", "cs_caseid"), userInputData);
+	public String findCaseWithOtherSubmissions(String cs_caseid) {
+		return getAllColumns(DBType.CMKA,replace(Queries.CASE_NUMBER, "CS_CASEID", cs_caseid));
 
 	}
 
-	public List<String> getOtherSubmissionsFromDb(List<UserInputData> userInputData, String fieldName, String peId,
+	public List<String> getOtherSubmissionsFromDb( String fieldName, String peId,
 			String caseN) {
 
-		return executeQuery(
-				replace(Queries.CYV_CATEGORY, "field", fieldName, "cmr_ju_pe_id", peId, "CMR_CS_CASEID", caseN),
-				userInputData);
+		return executeQuery(DBType.CMKA,
+				replace(Queries.CYV_CATEGORY, "field", fieldName, "cmr_ju_pe_id", peId, "CMR_CS_CASEID", caseN));
 	}
 
 	public void getOtherSubmissionsFromUI(int numOfSub, List<String> db_cyv_category, List<String> db_cmr_panel_members,
@@ -138,6 +143,13 @@ public class OtherSubmissions extends Base {
 						+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther[" + col + "]/XCUIElementTypeStaticText"))
 				.getText().trim();
 
+	}
+	
+	public static void main(String[] args) {
+		getInstance(Driver.IOS);
+		OtherSubmissions a=new OtherSubmissions();
+		a.otherSubmissionsDisplayed();
+		
 	}
 
 }

@@ -32,6 +32,7 @@ import java.util.List;
 import com.informix.jdbc.IfxDriver;
 import com.informix.jdbcx.IfxConnectionPoolDataSource;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
@@ -357,6 +358,39 @@ public class DBUtilities {
 		return false;
 
 	}
+	
+
+	public static List<String> executeQuery(String query, List<UserInputData> userInputData, int col) {
+
+		DBUtilities dbConnectionPool = new DBUtilities();
+		List<String> result = new ArrayList<>();
+
+		try {
+			connection = dbConnectionPool.createConnection(userInputData);
+			if (connection == null) {
+				assertTrue("Connection Not Established...", false);
+
+			}
+			List<String[]> queryResult = runSQLQuery(query);
+
+			if (!(queryResult==null)) {
+				queryResult.forEach(record -> result.add(record[col].trim()));
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		} finally {
+			closeConnections();
+
+		}
+
+		return result;
+
+	}
+
+
 
 	public Connection createConnection(List<UserInputData> pacerInputData) {
 

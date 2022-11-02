@@ -178,6 +178,10 @@ public class Actions extends Base {
 		return el.getAttribute("value").equals(index);
 	}
 
+	public static void navigateBack() {
+		driver.navigate().back();
+	}
+
 	public enum Locator {
 		ID, XPATH, NAME, LINK_TEXT, PARTIAL_LINK_TEXT, CLASS_NAME, CSS_SELECTOR, TAG_NAME
 	}

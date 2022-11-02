@@ -17,6 +17,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.Category;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage.Sort;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -169,7 +170,7 @@ public class CalendarPage extends AppiumPageFactory {
 		driver.navigate().back();
 
 		String uiPanel = Actions.findElement(By.xpath("(//XCUIElementTypeStaticText[contains(@name, '" + caseN
-				+ "')]/following::XCUIElementTypeStaticText[contains(@name, 'Panel:')])[1]")).getText();
+				+ "')]/following::XCUIElementTypeStaticText[contains(@name, 'Panel:')])[1]")).getText().trim();
 
 		String name = SystemPropertySetup.getJudge(userInputData);
 
@@ -191,8 +192,8 @@ public class CalendarPage extends AppiumPageFactory {
 		String panelMembers = getCourtSessionFields(CourtSession.CMR_PANEL_MEMBERS, peId, userInputData, caseN);
 		String hearing_order = getCourtSessionFields(CourtSession.HEARING_ORDER, peId, userInputData, caseN);
 
-		String dbPanel = "Panel: " + panelMembers + "   Order: " + hearing_order + "  Time: " + time + " ";
-
+		String dbPanel = "Panel: " + panelMembers + trimIffNull("   Order: ", hearing_order)
+				+ trimIffNull("  Time: ", time).trim();
 		assertEquals("CASES NOT APPEARING UNDER THE CORRECT DATE BUCKET-------------------> ", uiPanel, dbPanel);
 
 	}
@@ -227,14 +228,24 @@ public class CalendarPage extends AppiumPageFactory {
 	}
 
 	public static String getCourtSessionTable(String value, String peID, String caseID, List<UserInputData> table) {
-		return DBUtilities.getAllColumns(
-				replace(CASES_ON_CALENDAR_SESSIONS, "VALUE", value, "CMR_JU_PE_ID", peID, "CMR_CS_CASEID", caseID),
-				table);
+		return DBUtilities.getAllColumns(DBType.CMKA,
+				replace(CASES_ON_CALENDAR_SESSIONS, "VALUE", value, "CMR_JU_PE_ID", peID, "CMR_CS_CASEID", caseID));
 	}
 
 	public enum CourtSession {
 		CLU_DATE_HEARING, CTS_TERM, ARG_DISPLAY, CTS_DATE_FROM, CTS_DATE_TO, CMR_PANEL_MEMBERS, HEARING_ORDER
 
+	}
+
+	public static String trimIffNull(String text, String field) {
+		String string = "";
+		if (field.equals("null")) {
+			string = field.replace("null", "   ").replace(text, "");
+
+		} else {
+			string = text + field;
+		}
+		return string;
 	}
 
 }

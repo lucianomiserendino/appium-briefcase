@@ -1,13 +1,13 @@
-@Smoke @AMB-1301 @n
+@Regresion @AMB-1301
 Feature: Verify data is displayed on the Dashboard after tapping the left-hand navigation expand/collapse arrows 
 
 
 
 Scenario: 
 
-	#Given I am logged into Briefcase 
-	#	|environment|userName| password |courtId|
-	#	|test       |test    | test     |test   |
+	Given I am logged into Briefcase 
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
 		
 	Then I select a user 
 		|userType   |personrole        |jud       |

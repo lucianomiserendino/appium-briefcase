@@ -10,7 +10,6 @@ import java.util.List;
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage;
-import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.Assignment;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 
@@ -18,30 +17,23 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 	static CommonPages page;
 	static chmAssignDPFPage page1;
 	String staffMember = "";
-
-//	@Then("^user creates a new assignment, checks the back-end, edits existing assignment and verifies db is updated properly$")
-//	public void user_creates_a_new_assignment_checks_the_back_end_edits_existing_assignment_and_verifies_db_is_updated_properly() {
-//		page = new CommonPages();
-//		List<UserInputData> userInputData = null;
-//		assertTrue(isDisplayed(containsElement("Assignments")));
-//		scrollDownIfNotDisplayed("(" + containsElement("NewStaffButton") + ")[1]");
-//		page.verifyElementIsDisplayed("Create Assignment");
-//		page1 = new chmAssignDPFPage();
-//		page1.createNewStaffAssignment(userInputData);
-//	}
+	String caseNum = Document_StepDefinitions.regularCase;
+	String categroy = Document_StepDefinitions.categroy;
 
 	@Then("^user  verifies that briefcase events include the chmSilentAssign DPF$")
-	public void user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(List<UserInputData> userInputData)  {
+	public void user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(List<UserInputData> userInputData) {
+		getInstance(Driver.IOS);
 		page = new CommonPages();
-	//	List<UserInputData> userInputData = null;
 		assertTrue(isDisplayed(containsElement("Assignments")));
 		scrollDownIfNotDisplayed("(" + containsElement("NewStaffButton") + ")[1]");
 		page.verifyElementIsDisplayed("Create Assignment");
+
 		page1 = new chmAssignDPFPage();
-		page1.createNewStaffAssignment(Document_StepDefinitions.regularCase,userInputData);
-	
+
+		page1.getCaseDetails(caseNum, categroy, userInputData);
+		page1.createNewSTF(caseNum, categroy, userInputData);
+		page1.get_cha_id(caseNum, categroy, userInputData);
+		page1.modifySTF(caseNum, categroy, userInputData);
 	}
-
-
 
 }

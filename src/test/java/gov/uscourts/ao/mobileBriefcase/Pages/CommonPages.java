@@ -320,6 +320,17 @@ public class CommonPages extends Base {
 		return getAllColumns(replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, caseNumber), "CS_NUMBER",
 				getCase(Case.CASE_NUMBER, caseNumber)), table);
 	}
+	
+	public static String cmr_cyv_code(String category, List<UserInputData> userInputData) {
+
+		String name = SystemPropertySetup.getJudge(userInputData);
+		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
+
+
+		return getAllColumns(replace(Queries.CMR_CYV_CODE,  "CMR_JU_PE_ID", cha_ju_pe_id, "CYV_CATEGORY",category.trim()),
+				userInputData);
+	}
+	
 
 	public static String getCaseNumber(String caseNumber, int index) {
 		return caseNumber.split(" ")[0].split("-")[index];

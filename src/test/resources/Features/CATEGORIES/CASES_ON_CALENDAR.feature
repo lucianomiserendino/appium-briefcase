@@ -23,7 +23,7 @@ Scenario: As a user when viewing the 'Cases on Calendar' referral category the f
 		
         When User selects a  "Cases on Calendar" 
         
-        And User verifies that the main headers display Month Year and sorted accordingly
+       # And User verifies that the main headers display Month Year and sorted accordingly
         
         Then User verifies that there're Dates and Day of the week under main header
         

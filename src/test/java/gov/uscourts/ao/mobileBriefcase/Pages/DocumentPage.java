@@ -71,8 +71,9 @@ public class DocumentPage extends Base {
 
 		sort(list);
 
-		category = scrollDownIfNotDisplayed(
-				xpath + "[contains(@name, '" + list.get(Utility.getRandomInt(list.size() - 1)) + "')]");
+		category = list.get(Utility.getRandomInt(list.size() - 1));
+		scrollDownIfNotDisplayed(
+				xpath + "[contains(@name, '" + category + "')]");
 
 		return category;
 
@@ -163,9 +164,18 @@ public class DocumentPage extends Base {
 		String referral = "";
 		Page.performPageLoad(driver);
 		List<String> list = Utility.retrieveAllReferrals(element, " ", 0);
-		WebElement uiResult = findElementBy(Locator.XPATH, "//XCUIElementTypeStaticText[contains(@name, '"
-				+ list.get(Utility.getRandomInt(list.size() - 1)) + "')]");
-		referral = uiResult.getText();
+
+		int caseN = 0;
+		if (list.size() > 1) {
+			caseN = Utility.getRandomInt(list.size() - 1);
+
+		} else {
+			caseN = 0;
+		}
+		WebElement uiResult = findElementBy(Locator.XPATH,
+				"//XCUIElementTypeStaticText[contains(@name, '" + list.get(caseN) + "')]");
+
+		referral = list.get(caseN);//uiResult.getText();
 		uiResult.click();
 		Page.performPageLoad(driver);
 		return referral;
@@ -195,7 +205,7 @@ public class DocumentPage extends Base {
 			element = appliedCase;
 			break;
 		case CaseOnCalendar:
-			
+
 			element = caseOncalender;
 			break;
 

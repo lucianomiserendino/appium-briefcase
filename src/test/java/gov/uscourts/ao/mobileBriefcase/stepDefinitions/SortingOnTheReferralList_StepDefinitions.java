@@ -19,20 +19,20 @@ public class SortingOnTheReferralList_StepDefinitions {
 		page = new ReferralSortOrderPage();
 		Page.sleep(20000);
 		List<String> defaultOrder = page.referralsSortedByDate();
-		assertTrue(Utility.checkDatesForDescOrder(defaultOrder));
+		assertTrue(Utility.checkDatesForDescOrder(defaultOrder,"M/d/yyyy"));
 
 		page.selectSortBtn();
 
 		page.getSortPage(Sort.REFERRAL_DATE_DESCENDING);
 		List<String> descOrder = page.referralsSortedByDate();
-		assertTrue(Utility.checkDatesForDescOrder(descOrder));
+		assertTrue(Utility.checkDatesForDescOrder(descOrder,"M/d/yyyy"));
 	}
 
 	@Then("^User clicks on the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order \\(oldest first\\)\\.$")
 	public void user_clicks_on_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_ascending_order_oldest_first() {
 		page.getSortPage(Sort.REFERRAL_DATE_ASCENDING);
 		List<String> ascendingOrder = page.referralsSortedByDate();
-		assertTrue(Utility.checkDatesForAscOrder(ascendingOrder));
+		assertTrue(Utility.checkDatesForAscOrder(ascendingOrder,"M/d/yyyy"));
 
 	}
 

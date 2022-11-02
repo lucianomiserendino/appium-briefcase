@@ -154,11 +154,6 @@ public class CaseQueryPage extends AppiumPageFactory {
 		return speChar;
 
 	}
-	
-	
-	
-	
-	
 
 	public enum Search {
 		wildcard, caseNumber, partyName

@@ -73,7 +73,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 		}
 
 		assertTrue("VERIFY " + folder + " CASES ARE SORTED BY DATE DESCENDING ORDER",
-				Utility.checkDatesForDescOrder(filedDates));
+				Utility.checkDatesForDescOrder(filedDates,"M/d/yyyy"));
 	}
 
 	public void getAssignmentCategories() {

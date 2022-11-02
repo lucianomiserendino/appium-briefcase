@@ -67,12 +67,13 @@ public class Utility extends Base {
 					isDisplayed = true;
 					break;
 				} else {
-					scrolldown();
+					tapAndSwipe(Direction.UP);
+
 					performPageLoad(driver);
 				}
 			} catch (TimeoutException e) {
 				isDisplayed = false;
-				scrolldown();
+				tapAndSwipe(Direction.UP);
 			}
 		}
 		return isDisplayed;
@@ -98,11 +99,11 @@ public class Utility extends Base {
 					elems.get(elems.size() - 1).click();
 					break;
 				} else {
-					scrolldown();
+					tapAndSwipe(Direction.UP);
 					performPageLoad(driver);
 				}
 			} catch (NoSuchElementException e) {
-				scrolldown();
+				tapAndSwipe(Direction.UP);
 			}
 		}
 		return element;
@@ -111,26 +112,26 @@ public class Utility extends Base {
 
 	public static void scroll(WebElement element, String direction) {
 
-		((JavascriptExecutor) driver).executeScript("mobile: swipe", ImmutableMap
-				.of("elementId", ((RemoteWebElement) element).getId(), "direction", direction, "speed", 500));
+		((JavascriptExecutor) driver).executeScript("mobile: swipe", ImmutableMap.of("elementId",
+				((RemoteWebElement) element).getId(), "direction", direction, "speed", 500));
 
 	}
 
-	public static synchronized void scrolldown() {
-
-		try {
-			int pressX = getWindowSize().width / 2;
-			/** 4/5 of the screen as the bottom finger-press point */
-			int bottomY = getWindowSize().height * 4 / 8;
-			/** just non zero point, as it didn't scroll to zero normally */
-			int topY = getWindowSize().height / 8;
-
-			new TouchAction(driver).longPress(PointOption.point(pressX, bottomY))
-					.moveTo(PointOption.point(pressX, topY)).release().perform();
-		} catch (WebDriverException e) {
-			e.getMessage();
-		}
-	}
+//	public static synchronized void scrolldown() {
+//
+//		try {
+//			int pressX = getWindowSize().width / 2;
+//			/** 4/5 of the screen as the bottom finger-press point */
+//			int bottomY = getWindowSize().height * 4 / 8;
+//			/** just non zero point, as it didn't scroll to zero normally */
+//			int topY = getWindowSize().height / 8;
+//
+//			new TouchAction(driver).longPress(PointOption.point(pressX, bottomY))
+//					.moveTo(PointOption.point(pressX, topY)).release().perform();
+//		} catch (WebDriverException e) {
+//			e.getMessage();
+//		}
+//	}
 
 	public static Dimension getWindowSize() {
 		return driver.manage().window().getSize();
@@ -329,7 +330,7 @@ public class Utility extends Base {
 			try {
 				long d = simpleDateFormat.parse(date.get(index)).getTime();
 				long d1 = simpleDateFormat.parse(date.get(index + 1)).getTime();
-		
+
 				if (d < d1) {
 					decendingOrder = false;
 					break;
@@ -341,7 +342,7 @@ public class Utility extends Base {
 		}
 
 		if (decendingOrder) {
-			
+
 			return decendingOrder;
 		} else {
 			System.out.println("The dates are not sorted in descending order:---------> " + date);
@@ -350,7 +351,7 @@ public class Utility extends Base {
 
 	}
 
-	public static boolean checkDatesForAscOrder(List<String> date,String format) {
+	public static boolean checkDatesForAscOrder(List<String> date, String format) {
 
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
 
@@ -544,22 +545,22 @@ public class Utility extends Base {
 			js.executeScript("mobile: swipe", scrollObject);
 		}
 	}
-	
+
 	public static void doubleTap(WebElement el) {
 
 		((JavascriptExecutor) driver).executeScript("mobile: doubleTap",
 				ImmutableMap.of("elementId", ((RemoteWebElement) el).getId()));
 	}
 
-	   public static String parseMonthName(String nameOfTheMonth) {
-		   SimpleDateFormat inputFormat = new SimpleDateFormat("MMMM");
-			Calendar cal = Calendar.getInstance();
-			try {
-				cal.setTime(inputFormat.parse(nameOfTheMonth));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			return new SimpleDateFormat("M").format(cal.getTime());
-			
-	   }
+	public static String parseMonthName(String nameOfTheMonth) {
+		SimpleDateFormat inputFormat = new SimpleDateFormat("MMMM");
+		Calendar cal = Calendar.getInstance();
+		try {
+			cal.setTime(inputFormat.parse(nameOfTheMonth));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return new SimpleDateFormat("M").format(cal.getTime());
+
+	}
 }

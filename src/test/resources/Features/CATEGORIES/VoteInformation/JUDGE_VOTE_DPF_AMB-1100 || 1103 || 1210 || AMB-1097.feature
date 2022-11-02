@@ -3,7 +3,6 @@ Feature: JudgeVote DPF UI
 #related to AMB-1097 as well
 Background: 
 
-
 		#Given I am logged into Briefcase 
 		#|environment|userName| password |courtId|
 		#|test       |test    | test     |test   |
@@ -13,14 +12,18 @@ Background:
 		|judge      |Appellate Judges  |test    |
 			
 		
-
-		
 @AMB-1100		
 Scenario: 
 	In the judgeVote DPF, when the user selects the View Votes button, a popup should display with each judge's vote and the day they voted.
-	Then User selects
-	|refCategory|caseNumber|
-	|test       |test      |
+	
+			
+	Then User selects random judge category
+		|courtId|
+		|test   |
+			
+	Then User selects random case number
+		|courtId|
+		|test   |
 	
 	Then User  selects an action and verifies the name of the action displays in the dark blue banner 
 	
@@ -30,6 +33,7 @@ Scenario:
 		Then user verifies a popup displays.  In the red banner, the relief they are voting on should display 
 		|courtId|jud |caseNumber|
 		|test   |test|test      |
+		
 	And User verifies each judges' initials to whom the referral was sent , as well as their vote and date they voted
 		|courtId|jud |caseNumber|
 		|test   |test|test      |

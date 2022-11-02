@@ -1,4 +1,4 @@
-@AMB-973 @S @Smoke @n
+@AMB-973 @S @Smoke
 Feature: Number of cases displayed for non-orally argued cases 
 
 Scenario: 

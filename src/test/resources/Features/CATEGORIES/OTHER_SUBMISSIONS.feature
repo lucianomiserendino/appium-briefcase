@@ -6,9 +6,9 @@ Scenario: As a user I want to display any other submissions that have been made 
  viewing a motion submission, if any other motions or screenings have been submitted in that case, the judge wants to see those as well. 
  This goes for any category (motions, screeners, petitions, oa, etc.).
        
-		Given I am logged into Briefcase 
-		|environment|userName| password |courtId|
-		|test       |test    | test     |test   |
+		#Given I am logged into Briefcase 
+		#|environment|userName| password |courtId|
+		#|test       |test    | test     |test   |
 		
 	Then I select a user 
 		|userType   |personrole        |jud     |

@@ -14,7 +14,7 @@ import gov.uscourts.ao.mobileBriefcase.Pages.DashboardPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 
-public class ReferralCategories_StepDefinitions {
+public class DashboardPage_StepDefinitions {
 	static DashboardPage page;
 
 	@Then("^user taps on left-hand navigation \"([^\"]*)\" arrows$")

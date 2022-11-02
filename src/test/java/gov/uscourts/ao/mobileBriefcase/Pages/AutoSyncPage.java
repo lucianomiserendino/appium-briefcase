@@ -1,14 +1,15 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCasePage.findWebElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getProperty;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.sleep;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -63,14 +64,18 @@ public class AutoSyncPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Dashboard']")
 	public static WebElement dashboard;
 
-	/** Get number of new documents from the counter on the sync button */
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, 'Actions')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
+	public static List<WebElement> docCategories;
+
+	/**
+	 * Get number of new documents from the counter on the sync button
+	 * 
+	 * @return
+	 */
 	public static String getCounter() {
-		String availableDocs = "";
-		if (isDisplayed(Locator.XPATH, containsElement("Available for download")) == true) {
-			availableDocs += getText(Locator.XPATH,
-					containsElement("Available for download").split(",")[1].trim().split(" ")[0]);
-		}
-		return availableDocs;
+		WebElement el = Actions.findElement(By.xpath(containsElement("Available for download")));
+		return getText(el).split(",")[1].trim().split(" ")[0];
+
 	}
 
 	/**
@@ -160,9 +165,21 @@ public class AutoSyncPage extends AppiumPageFactory {
 
 	}
 
-	public static void getSyncCount(int syncCount) {
+	public List<String> getDocumentCategories() {
 
-		List<String> categories = AccessingAnnotatedDocuments.getDocumentCategories();
+		getGroupIcons();
+		Page.performPageLoad(driver);
+		List<String> categories = new ArrayList<>();
+
+		for (int i = 0; i < docCategories.size(); i++) {
+			categories.add(docCategories.get(i).getText());
+		}
+		return categories;
+	}
+
+	public static void getSyncCount(int syncCount) {
+		AccessingAnnotatedDocuments a = new AccessingAnnotatedDocuments();
+		List<String> categories = a.getDocumentCategories();
 
 		int randomDoc = Utility.getRandomNumberInRange(1, categories.size() - 1);
 		String docName = categories.get(randomDoc).trim();
@@ -176,7 +193,5 @@ public class AutoSyncPage extends AppiumPageFactory {
 		assertTrue(syncCount == syncCount - 1);
 
 	}
-
-
 
 }

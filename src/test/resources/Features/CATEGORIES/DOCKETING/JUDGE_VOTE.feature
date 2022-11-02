@@ -1,4 +1,4 @@
-@AMB-2534 @j
+@AMB-2534
 Feature:  Judge initials order in Vote Information panel	
 Scenario Outline: The mbr docWP action should be displayed when the me_cav_code is set to 'judgement'     
   

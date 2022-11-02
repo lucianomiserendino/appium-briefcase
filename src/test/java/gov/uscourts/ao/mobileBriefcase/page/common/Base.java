@@ -178,11 +178,4 @@ public abstract class Base implements iOSCapabilities {
 	public enum Driver {
 		IOS, WINDOWS, WEBRIVER
 	}
-
-	public static void main(String[] args) {
-		Base.getInstance(Driver.IOS);
-
-		// safariInstance();
-
-	}
 }

@@ -271,5 +271,4 @@ public class VoteInformationPage extends AppiumPageFactory {
 		DB_FILER_INFORMATION, UI_FILED_DATE, JUDGE_VOTE_RELIEF
 
 	}
-
 }

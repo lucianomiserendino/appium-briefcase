@@ -1,5 +1,5 @@
 Feature: Display Actions Panel and actions 
-
+@p
 @Smoke 
 Scenario: 
 
@@ -10,23 +10,23 @@ Scenario:
 	#	|environment|userName| password |courtId|
 	#	|test       |test    | test     |test   |
 		
-	Then I select a user 
-		|userType   |personrole        |jud     |
-		|judge      |Appellate Judges  |test    |
 		
-		
-	 Then User selects
-	|refCategory|caseNumber|
-	|test       |test      |
+	#Then I select a user 
+	#	|userType   |personrole        |jud     |
+	#	|judge      |Appellate Judges  |test    |
 			
-	Then User  selects an action and verifies the name of the action displays in the dark blue banner 
+	#Then User selects random judge category
+	#	|courtId|
+	#	|test   |
+			
+	#Then User selects random case number
+	#	|courtId|
+	#	|test   |
+				
+	#Then User  selects an action and verifies the name of the action displays in the dark blue banner 
 	
-		|courtId|
-		|test   |
-		
-	#Then user creates a new assignment
-		#|caseNumber|courtId|
-		#|test      |test   |
+	#	|courtId|
+	#	|test   |
 		
   Then user  verifies that briefcase events include the chmSilentAssign DPF
 		|caseNumber|courtId|

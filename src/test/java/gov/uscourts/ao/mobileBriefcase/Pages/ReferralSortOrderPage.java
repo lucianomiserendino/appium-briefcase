@@ -88,7 +88,7 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	 * sort referrals by date referred or case number. The default is by date
 	 * referred in descending order (newest first).
 	 */
-	public void selectSortBtn() {
+	public  void selectSortBtn() {
 
 		if (Actions.isDisplayed(Locator.XPATH, "//*[contains(@name, 'Sort ↓')]") == true) {
 			tap(sortArrowBtn);
@@ -103,7 +103,7 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 		return Utility.retrieveAllReferrals(cases, " ", 0);
 	}
 
-	public void getSortPage(Sort sort) {
+	public  void getSortPage(Sort sort) {
 
 		switch (sort) {
 		case REFERRAL_DATE_DESCENDING:

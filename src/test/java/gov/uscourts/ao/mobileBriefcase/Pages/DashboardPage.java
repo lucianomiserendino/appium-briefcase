@@ -38,12 +38,13 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
-public class DashboardPage extends AppiumPageFactory {
+public class DashboardPage extends Base {
 	
 	public DashboardPage() {
 		initElements(new AppiumFieldDecorator(driver), this);
@@ -106,7 +107,7 @@ public class DashboardPage extends AppiumPageFactory {
 			performPageLoad(driver);
 
 			scrollToAction(dbReferralCategories.get(i));
-			Utility.scroll(categories, "up");
+			Utility.scroll(categories, "down");
 
 		}
 	}
@@ -138,7 +139,7 @@ public class DashboardPage extends AppiumPageFactory {
 				break;
 
 			} else {
-				Utility.scroll(categories, "down");
+				Utility.scroll(categories, "up");
 				performPageLoad(driver);
 			}
 		}
@@ -178,7 +179,7 @@ public class DashboardPage extends AppiumPageFactory {
 						replace(getID(BRIEFCASE_TARGET_ONLY_N, pe_id), "CYV_CATEGORY", dbNonOrgCases), userInputData);
 
 				performPageLoad(driver);
-				performPageLoad(driver);
+				//performPageLoad(driver);
 				List<String> UInonOrallyarguedCases = asList((getNumOfDisplayedCases(total)));
 
 				String si_value = CommonPages.getSiValue("briefcaseTargetOnly", userInputData);
@@ -193,7 +194,8 @@ public class DashboardPage extends AppiumPageFactory {
 					assertEquals(dbNonOrgCases + "-----RECORD COUNT MISMATCH-----", briefcaseTargReferral_n,
 							UInonOrallyarguedCases);
 				}
-				tap(dashboard);
+				//tap(dashboard);
+				dashboard.click();
 				Utility.scroll(categories, "up");
 
 			}

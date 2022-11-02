@@ -329,7 +329,7 @@ public class Queries {
 			+ "inner join court_session on clu_cts_id = cts_id \n"
 			+ "left outer join argue_time_val on ph_arg_code = arg_code \n"
 			+ "inner join chm_reftype_val on cyv_code = cmr_cyv_code \n"
-			+ "where cmr_ju_pe_id = 'CMR_JU_PE_ID' and cyv_is_oral_arg = 'y' and cmr_cs_caseid='CMR_CS_CASEID' and cmr_date_end is null order by clu_last_updated desc ";
+			+ "where cmr_ju_pe_id = 'CMR_JU_PE_ID' and cyv_is_oral_arg = 'y' and cmr_cs_caseid='CMR_CS_CASEID' and cmr_date_end is null order by pns_last_updated desc ";
 
 	public static final String SET_SITE_TABLE_VARIABLE_VALUE = "UPDATE  site SET  si_value = 'SI_VALUE' where si_code ='SI_CODE'";
 
