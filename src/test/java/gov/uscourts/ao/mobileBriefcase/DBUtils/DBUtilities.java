@@ -32,7 +32,6 @@ import java.util.List;
 import com.informix.jdbc.IfxDriver;
 import com.informix.jdbcx.IfxConnectionPoolDataSource;
 
-import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
@@ -55,13 +54,11 @@ public class DBUtilities {
 			case CM3A:
 				getIFXProperty(SSL_STORE, SSL_LOC, KEYPASS, PASS, CM3A_DBURL, CM3A_SERVERNAME, CM3A_DBUSERNAME,
 						CM3A_DBPWD, CM3A_DATABASE_NAME, PORT_NUMBER);
-				
+
 			case PVTA:
 				getIFXProperty(SSL_STORE, SSL_LOC, KEYPASS, PASS, CM3A_DBURL, CM3A_SERVERNAME, CM3A_DBUSERNAME,
 						CM3A_DBPWD, CM3A_DATABASE_NAME, PORT_NUMBER);
 				break;
-				
-			
 
 			default:
 				throw new RuntimeException("Invalid Database type");
@@ -134,7 +131,7 @@ public class DBUtilities {
 			}
 			List<String[]> queryResult = runSQLQuery(query);
 
-			if (!(queryResult==null)) {
+			if (!(queryResult == null)) {
 				queryResult.forEach(record -> result.add(record[0].trim()));
 			} else {
 				return null;
@@ -157,7 +154,7 @@ public class DBUtilities {
 		List<String> result = new ArrayList<>();
 		try {
 			statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-						
+
 			resultSet = statement.executeQuery(query);
 			ResultSetMetaData rsMetada = resultSet.getMetaData();
 
@@ -168,17 +165,16 @@ public class DBUtilities {
 				return null;
 			}
 
-
-				resultSet.beforeFirst();
+			resultSet.beforeFirst();
 
 			while (resultSet.next()) {
-				//try {
-					for (int i = 1; i < column; i++) {
-						a = resultSet.getString(i);
-						if(!(a==null)){
-							a.trim();
-						}
+				// try {
+				for (int i = 1; i < column; i++) {
+					a = resultSet.getString(i);
+					if (!(a == null)) {
+						a.trim();
 					}
+				}
 //				} catch (NullPointerException e) {
 //					// TODO: handle exception
 //
@@ -224,13 +220,12 @@ public class DBUtilities {
 			resultSet.beforeFirst();
 
 			while (resultSet.next()) {
-					for (int i = 1; i < column; i++) {
-						a = resultSet.getString(i);
-						if(!(a==null)){
-							a.trim();
-						}
+				for (int i = 1; i < column; i++) {
+					a = resultSet.getString(i);
+					if (!(a == null)) {
+						a.trim();
 					}
-
+				}
 
 				result.add(a);
 			}
@@ -358,7 +353,6 @@ public class DBUtilities {
 		return false;
 
 	}
-	
 
 	public static List<String> executeQuery(String query, List<UserInputData> userInputData, int col) {
 
@@ -373,7 +367,7 @@ public class DBUtilities {
 			}
 			List<String[]> queryResult = runSQLQuery(query);
 
-			if (!(queryResult==null)) {
+			if (!(queryResult == null)) {
 				queryResult.forEach(record -> result.add(record[col].trim()));
 			} else {
 				return null;
@@ -389,8 +383,6 @@ public class DBUtilities {
 		return result;
 
 	}
-
-
 
 	public Connection createConnection(List<UserInputData> pacerInputData) {
 

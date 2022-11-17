@@ -1,10 +1,11 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
+
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
-
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.*;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -51,14 +52,14 @@ public class SyncPage extends AppiumPageFactory {
 			dashboardSyncBtn.click();
 			Page.performPageLoad(driver);
 			performPageLoad(driver);
-			waitForSyncToComplete();
+			ifDownloaded(cancelSync);
 			getSyncCount();
 
 			break;
 
 		case Referral_Category:
 			categroySyncBtn.click();
-			waitForSyncToComplete();
+			ifDownloaded(cancelSync);
 
 			break;
 
@@ -91,22 +92,7 @@ public class SyncPage extends AppiumPageFactory {
 		return getSyncCount();
 	}
 
-	public static void waitForSyncToComplete() {
-		performPageLoad(driver);
-		Boolean elementNotFound = true;
-		while (elementNotFound) {
-			if (!(cancelSync.size() == 0)) {
-
-				elementNotFound = true;
-				Utility.tapAndSwipe(Direction.UP);
-
-			} else {
-				elementNotFound = false;
-				break;
-			}
-
-		}
-	}
+	
 
 	/**
 	 * Gets the number of new documents from the counter on the sync button

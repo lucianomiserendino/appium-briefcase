@@ -15,6 +15,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHD_DATE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHM_ASSIGN_TO_CASE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_MEMBERS_FIRST_NAME;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectAction;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.verifyElementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
@@ -25,7 +26,6 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.changeDateFormat;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.checkDatesForDescOrder;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.clickOnNumberInRange;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getParameter;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
@@ -54,7 +54,6 @@ import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class chmAssignDPFPage extends AppiumPageFactory {
@@ -77,11 +76,11 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	String dpfName = "chmAssign";
 	String createSTF = "New Staff Assignment";
 	String actionName = "Auto Test";
-	String elId;
-	String name;
-	String cha_ju_pe_id;
-	String cmr_cs_caseid;
-	String cmr_cyv_code;
+	static String elId = "";
+	static String name = "";
+	static String cha_ju_pe_id = "";
+	static String cmr_cs_caseid = "";
+	static String cmr_cyv_code = "";
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='OptionList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static List<WebElement> optionList;
@@ -104,9 +103,14 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//*[@name='ReferralsList' or @name='SessionGroups']/following::XCUIElementTypeButton")
 	public static WebElement categroySyncBtn;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"Sending...\"]")
+	public static List<WebElement> sending;
+
+	@iOSXCUITFindBy(xpath = "XCUIElementTypeStaticText[contains(@name, 'Assignments')]")
+	public static List<WebElement> assignments;
+
 	public static String selectADate(chmAssign assign) {
 
-		// String date = "";
 		getChmAssign(assign, "tap");
 		performPageLoad(driver);
 		selectDate(assign);
@@ -116,16 +120,17 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	public void getCaseDetails(String caseNumber, String category, List<UserInputData> userInputData) {
 
-		elId = getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
-		name = SystemPropertySetup.getVariable(Variables.JUD, userInputData);
-		cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
-		cmr_cs_caseid = CommonPages.getCaseID(caseNumber, userInputData);
+		elId += getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
+		name += SystemPropertySetup.getVariable(Variables.JUD, userInputData);
+		cha_ju_pe_id += DBUtilities.getPE_ID("jud", name, userInputData);
+		cmr_cs_caseid += CommonPages.getCaseID(caseNumber, userInputData);
 
-		cmr_cyv_code = CommonPages.cmr_cyv_code(category, userInputData).trim();
+		cmr_cyv_code += CommonPages.cmr_cyv_code(category, userInputData).trim();
 
 	}
 
 	public void createNewSTF(String caseNumber, String category, List<UserInputData> userInputData) {
+
 		createNewSTF(Assignment.NEW, chmAssign.CREATE, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
 				userInputData);
 	}
@@ -154,7 +159,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			List<UserInputData> userInputData) {
 
 		String screenTypeParam = getParameter(getAllColumns(getID(MBR_NOTE, elId), userInputData), dpfName, 0);
-
+		
 		String screenParam = "";
 
 		switch (screenTypeParam) {
@@ -211,7 +216,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		sort(dbStaffMembers);
 
 		List<String> uiStaffMembers = new ArrayList<>();
-
+		performPageLoad(driver);
 		List<WebElement> allStaffMembers = optionList;
 		for (WebElement staffMembers : allStaffMembers) {
 			uiStaffMembers.add(staffMembers.getText().trim());
@@ -310,8 +315,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	}
 
 	public void terminateStaffAssignment(List<UserInputData> userInputData) {
-		selectADate(chmAssign.ASSIGNMENT_COMPLETED);
-		assignmentCompleted = getChmAssign(chmAssign.ASSIGNMENT_COMPLETED, "text");
+		assignmentCompleted = selectADate(chmAssign.ASSIGNMENT_COMPLETED);
+		// assignmentCompleted = getChmAssign(chmAssign.ASSIGNMENT_COMPLETED, "text");
 		contains(apply).click();
 		submiTransaction();
 		getCreatedRecords(changeFormat(assignmentCompleted), getID(CHC_DATE_END, cha_id), userInputData);
@@ -337,13 +342,13 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			assertTrue(modifiedAssignmentDueDate.isDisplayed());
 		}
 
-		List<String> notes = new ArrayList<>();
+		// List<String> notes = new ArrayList<>();
 
-		for (int i = 1; i < note.size() + 1; ++i) {
-			notes.add(note.get(i).getText());
-		}
-
-		checkDatesForDescOrder(notes, "M/d/yyyy");
+//		for (int i = 1; i < note.size() + 1; ++i) {
+//			notes.add(note.get(i).getText());
+//		}
+//
+//		checkDatesForDescOrder(notes, "M/d/yyyy");
 
 		return assignment;
 	}
@@ -422,14 +427,13 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	}
 
 	public static void clickOnExistingAssignment(String staffMember, String elID, List<UserInputData> userInputData) {
-		// selectAction(dbType, "Actions", elID);
 		selectAction("Actions", elID, userInputData);
 		scrollDownIfNotDisplayed(containsElement(staffMember));
 	}
 
 	public static void clickOn(String submit, String yes, String ok) {
 		scrollDownIfNotDisplayed(containsElement(submit));
-		tap(Locator.XPATH, containsElement(yes));
+		ifDownloaded(sending);
 		tap(Locator.XPATH, containsElement(ok));
 
 	}
@@ -513,7 +517,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			break;
 
 		case MODIFY:
-
+			performPageLoad(driver);
 			staffMember = getAvailableStaffMembers("existing", dpfName, elId, cha_ju_pe_id, userInputData);
 
 		default:
@@ -571,8 +575,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
 
 			submiTransaction();
-			performPageLoad(driver);
-			Utility.tapAndSwipe(Direction.DOWN);
+			ifDownloaded(assignments);
 			CommonPages page = new CommonPages();
 			page.getPanel(Panel.Assignments);
 
@@ -626,7 +629,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 		LocalDate currentdate = LocalDate.now();
 
-		// int currentDay = currentdate.getDayOfMonth();
+		int currentDay = currentdate.getDayOfMonth();
 
 		Month currentMonth = currentdate.getMonth();
 
@@ -663,7 +666,11 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			break;
 
 		case ASSIGNMENT_COMPLETED:
-			day = totalDayCount;
+			if (currentDay > 01) {
+				day = currentDay - 1;
+			} else {
+				day = currentDay;
+			}
 			break;
 
 		default:

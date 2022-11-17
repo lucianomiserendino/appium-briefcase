@@ -31,9 +31,28 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 		page1 = new chmAssignDPFPage();
 
 		page1.getCaseDetails(caseNum, categroy, userInputData);
+	}
+
+	@Then("^User creates a new staff assignment$")
+	public void user_creates_a_new_staff_assignment(List<UserInputData> userInputData) {
+
+		page1 = new chmAssignDPFPage();
 		page1.createNewSTF(caseNum, categroy, userInputData);
 		page1.get_cha_id(caseNum, categroy, userInputData);
+
+	}
+
+	@Then("^User edits existing staff assignment$")
+	public void user_edits_existing_staff_assignment(List<UserInputData> userInputData) {
+		page1 = new chmAssignDPFPage();
 		page1.modifySTF(caseNum, categroy, userInputData);
+	}
+
+	@Then("^User terminates the assignment$")
+	public void user_terminates_the_assignment(List<UserInputData> userInputData) {
+		page1 = new chmAssignDPFPage();
+		page1.terminateStaffAssignment(userInputData);
+
 	}
 
 }

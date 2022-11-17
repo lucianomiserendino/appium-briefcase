@@ -1,12 +1,12 @@
 [
   {
-    "line": 1,
+    "line": 3,
     "elements": [
       {
         "before": [
           {
             "result": {
-              "duration": 10628932667,
+              "duration": 9753003000,
               "status": "passed"
             },
             "match": {
@@ -14,121 +14,102 @@
             }
           }
         ],
-        "line": 4,
+        "line": 5,
         "name": "",
-        "description": "\nIf there are records defined in the mbr_event table, \n     a collapsible panel entitled \"Actions\" should display, when expanded all the applicable actions should display.",
-        "id": "display-actions-panel-and-actions;",
+        "description": "Referral categories display on the dashboard for the judge",
+        "id": "referral-categories-display-on-the-dashboard-for-the-judge;",
         "type": "scenario",
         "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "duration": 360101419250,
-              "error_message": "org.openqa.selenium.WebDriverException: org.openqa.selenium.NoSuchSessionException: A session is either terminated or not started\nBuild info: version: \u00274.4.0\u0027, revision: \u0027e5c75ed026a\u0027\nSystem info: host: \u0027Saltant-K-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:1034:7d8d:29d6:6460%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.16\u0027, java.version: \u00271.8.0_311\u0027\nDriver info: io.appium.java_client.ios.IOSDriver\nCommand: [54b21e9a-9ca2-4d7c-97a0-c4a887ebec98, findElements {using\u003dxpath, value\u003d//XCUIElementTypeOther[@name\u003d\u0027OptionList\u0027]/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[3]/XCUIElementTypeStaticText}]\nCapabilities {appium:autoAcceptAlerts: true, appium:automationName: XCUITest, appium:bundleId: gov.uscourts.ambbriefcase-beta, appium:databaseEnabled: false, appium:deviceName: iPad Pro (12.9-inch) (5th g..., appium:deviceType: ipad, appium:fullReset: false, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: false, appium:noReset: true, appium:platformVersion: 15.5, appium:safariInitialUrl: http://0.0.0.0:4723/welcome , appium:startIWDP: true, appium:takesScreenshot: true, appium:takes_screehshot: true, appium:udid: 6FBC3DED-B27C-4F61-9045-58E..., appium:webStorageEnabled: false, appium:xcodeOrgId: 6A52AWXC9Z, appium:xcodeSigningId: iPhone Developer, platformName: IOS}\nSession ID: 54b21e9a-9ca2-4d7c-97a0-c4a887ebec98\n\tat io.appium.java_client.pagefactory.AppiumElementLocator$WaitingFunction.apply(AppiumElementLocator.java:192)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator$WaitingFunction.apply(AppiumElementLocator.java:165)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:208)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator.waitFor(AppiumElementLocator.java:99)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator.findElements(AppiumElementLocator.java:140)\n\tat io.appium.java_client.pagefactory.interceptors.InterceptorOfAListOfElements.intercept(InterceptorOfAListOfElements.java:48)\n\tat $java.util.ArrayList$$EnhancerByCGLIB$$b5855c01.size(\u003cgenerated\u003e)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.getANewStaffAssignment(chmAssignDPFPage.java:353)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.createNewSTF(chmAssignDPFPage.java:591)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.createNewSTF(chmAssignDPFPage.java:136)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.CreateStaffAssignments_StepDefinitions.user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(CreateStaffAssignments_StepDefinitions.java:36)\n\tat ✽.Then user  verifies that briefcase events include the chmSilentAssign DPF(CATEGORIES/REGRESSION/chmAssign.feature:31)\nCaused by: org.openqa.selenium.NoSuchSessionException: A session is either terminated or not started\nBuild info: version: \u00274.4.0\u0027, revision: \u0027e5c75ed026a\u0027\nSystem info: host: \u0027Saltant-K-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:1034:7d8d:29d6:6460%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.16\u0027, java.version: \u00271.8.0_311\u0027\nDriver info: io.appium.java_client.ios.IOSDriver\nCommand: [54b21e9a-9ca2-4d7c-97a0-c4a887ebec98, findElements {using\u003dxpath, value\u003d//XCUIElementTypeOther[@name\u003d\u0027OptionList\u0027]/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[3]/XCUIElementTypeStaticText}]\nCapabilities {appium:autoAcceptAlerts: true, appium:automationName: XCUITest, appium:bundleId: gov.uscourts.ambbriefcase-beta, appium:databaseEnabled: false, appium:deviceName: iPad Pro (12.9-inch) (5th g..., appium:deviceType: ipad, appium:fullReset: false, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: false, appium:noReset: true, appium:platformVersion: 15.5, appium:safariInitialUrl: http://0.0.0.0:4723/welcome , appium:startIWDP: true, appium:takesScreenshot: true, appium:takes_screehshot: true, appium:udid: 6FBC3DED-B27C-4F61-9045-58E..., appium:webStorageEnabled: false, appium:xcodeOrgId: 6A52AWXC9Z, appium:xcodeSigningId: iPhone Developer, platformName: IOS}\nSession ID: 54b21e9a-9ca2-4d7c-97a0-c4a887ebec98\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)\n\tat sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)\n\tat java.lang.reflect.Constructor.newInstance(Constructor.java:423)\n\tat org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.createException(W3CHttpResponseCodec.java:200)\n\tat org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:133)\n\tat org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:53)\n\tat org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:184)\n\tat io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:189)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:547)\n\tat org.openqa.selenium.remote.ElementLocation$ElementFinder$2.findElements(ElementLocation.java:179)\n\tat org.openqa.selenium.remote.ElementLocation.findElements(ElementLocation.java:102)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:380)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:372)\n\tat org.openqa.selenium.By$BaseW3CLocator.findElements(By.java:405)\n\tat org.openqa.selenium.By$ByXPath.findElements(By.java:279)\n\tat org.openqa.selenium.support.pagefactory.ByChained.findElements(ByChained.java:66)\n\tat org.openqa.selenium.remote.ElementLocation$ElementFinder$1.findElements(ElementLocation.java:146)\n\tat org.openqa.selenium.remote.ElementLocation.findElements(ElementLocation.java:102)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:380)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:372)\n\tat io.appium.java_client.pagefactory.bys.ContentMappedBy.findElements(ContentMappedBy.java:54)\n\tat org.openqa.selenium.remote.ElementLocation$ElementFinder$1.findElements(ElementLocation.java:146)\n\tat org.openqa.selenium.remote.ElementLocation.findElements(ElementLocation.java:102)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:380)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:372)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator.lambda$findElements$1(AppiumElementLocator.java:142)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator$WaitingFunction.apply(AppiumElementLocator.java:172)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator$WaitingFunction.apply(AppiumElementLocator.java:165)\n\tat org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:208)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator.waitFor(AppiumElementLocator.java:99)\n\tat io.appium.java_client.pagefactory.AppiumElementLocator.findElements(AppiumElementLocator.java:140)\n\tat io.appium.java_client.pagefactory.interceptors.InterceptorOfAListOfElements.intercept(InterceptorOfAListOfElements.java:48)\n\tat $java.util.ArrayList$$EnhancerByCGLIB$$b5855c01.size(\u003cgenerated\u003e)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.getANewStaffAssignment(chmAssignDPFPage.java:353)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.createNewSTF(chmAssignDPFPage.java:591)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.createNewSTF(chmAssignDPFPage.java:136)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.CreateStaffAssignments_StepDefinitions.user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(CreateStaffAssignments_StepDefinitions.java:36)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat cucumber.runtime.Utils$1.call(Utils.java:40)\n\tat cucumber.runtime.Timeout.timeout(Timeout.java:16)\n\tat cucumber.runtime.Utils.invoke(Utils.java:34)\n\tat cucumber.runtime.java.JavaStepDefinition.execute(JavaStepDefinition.java:38)\n\tat cucumber.runtime.StepDefinitionMatch.runStep(StepDefinitionMatch.java:37)\n\tat cucumber.runtime.Runtime.runStep(Runtime.java:300)\n\tat cucumber.runtime.model.StepContainer.runStep(StepContainer.java:44)\n\tat cucumber.runtime.model.StepContainer.runSteps(StepContainer.java:39)\n\tat cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:44)\n\tat cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat cucumber.api.junit.Cucumber.run(Cucumber.java:100)\n\tat org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:93)\n\tat org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:529)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:756)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:452)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)\n",
-              "status": "failed"
+              "duration": 46842896500,
+              "status": "passed"
             },
             "comments": [
               {
-                "line": 9,
+                "line": 8,
                 "value": "#Given I am logged into Briefcase"
               },
               {
-                "line": 10,
+                "line": 9,
                 "value": "#\t|environment|userName| password |courtId|"
               },
               {
-                "line": 11,
+                "line": 10,
                 "value": "#\t|test       |test    | test     |test   |"
-              },
-              {
-                "line": 14,
-                "value": "#Then I select a user"
-              },
-              {
-                "line": 15,
-                "value": "#\t|userType   |personrole        |jud     |"
-              },
-              {
-                "line": 16,
-                "value": "#\t|judge      |Appellate Judges  |test    |"
-              },
-              {
-                "line": 18,
-                "value": "#Then User selects random judge category"
-              },
-              {
-                "line": 19,
-                "value": "#\t|courtId|"
-              },
-              {
-                "line": 20,
-                "value": "#\t|test   |"
-              },
-              {
-                "line": 22,
-                "value": "#Then User selects random case number"
-              },
-              {
-                "line": 23,
-                "value": "#\t|courtId|"
-              },
-              {
-                "line": 24,
-                "value": "#\t|test   |"
-              },
-              {
-                "line": 26,
-                "value": "#Then User  selects an action and verifies the name of the action displays in the dark blue banner"
-              },
-              {
-                "line": 28,
-                "value": "#\t|courtId|"
-              },
-              {
-                "line": 29,
-                "value": "#\t|test   |"
               }
             ],
-            "line": 31,
-            "name": "user  verifies that briefcase events include the chmSilentAssign DPF",
+            "line": 12,
+            "name": "I select a user",
             "match": {
-              "location": "CreateStaffAssignments_StepDefinitions.user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(UserInputData\u003e)"
+              "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
             },
             "rows": [
               {
                 "cells": [
-                  "caseNumber",
+                  "userType",
+                  "personrole",
+                  "jud"
+                ],
+                "line": 13
+              },
+              {
+                "cells": [
+                  "judge",
+                  "Appellate Judges",
+                  "test"
+                ],
+                "line": 14
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 233961074250,
+              "status": "passed"
+            },
+            "line": 16,
+            "name": "User observes the referral categories that display on the dashboard. Query the chm_mobile_referral, and chm_reftype_val table to get valid categories for the logged in user.",
+            "match": {
+              "location": "DashboardPage_StepDefinitions.user_observes_the_referral_categories_that_display_on_the_dashboard_Query_the_chm_mobile_referral_and_chm_reftype_val_table_to_get_valid_categories_for_the_logged_in_user(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "jud",
                   "courtId"
                 ],
-                "line": 32
+                "line": 17
               },
               {
                 "cells": [
                   "test",
                   "test"
                 ],
-                "line": 33
+                "line": 18
               }
             ],
-            "keyword": "Then "
-          }
-        ],
-        "tags": [
-          {
-            "line": 2,
-            "name": "@p"
-          },
-          {
-            "line": 3,
-            "name": "@Smoke"
+            "keyword": "And "
           }
         ]
       }
     ],
-    "name": "Display Actions Panel and actions",
+    "name": "Referral Categories display on the dashboard for the judge",
     "description": "",
-    "id": "display-actions-panel-and-actions",
+    "id": "referral-categories-display-on-the-dashboard-for-the-judge",
     "keyword": "Feature",
-    "uri": "CATEGORIES/REGRESSION/chmAssign.feature"
+    "uri": "CATEGORIES/SMOKE/REFERRAL_CATEGORIES_AMB-956   || AMB-1302 .feature",
+    "tags": [
+      {
+        "line": 1,
+        "name": "@Smoke"
+      },
+      {
+        "line": 1,
+        "name": "@AMB-956"
+      }
+    ]
   }
 ]

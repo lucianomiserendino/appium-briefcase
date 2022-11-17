@@ -37,7 +37,9 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -232,7 +234,8 @@ public class CommonPages extends Base {
 	public static void selectAction(String panel, List<UserInputData> userInputData) {
 		getGroupIcons();
 		getPanel(Panel.valueOf(panel));
-		getActionName("Auto Test");
+		getActionName("mbr jo 1058 chmAssign");
+		//getActionName("Auto Test");
 
 	}
 
@@ -432,6 +435,23 @@ public class CommonPages extends Base {
 		}
 		return isDisplayed;
 
+	}
+	
+	public static void ifDownloaded(List<WebElement> el) {
+		performPageLoad(driver);
+		Boolean elementNotFound = true;
+		while (elementNotFound) {
+			if (!(el.size() == 0)) {
+
+				elementNotFound = true;
+				Utility.tapAndSwipe(Direction.UP);
+
+			} else {
+				elementNotFound = false;
+				break;
+			}
+
+		}
 	}
 
 	public enum Case {
