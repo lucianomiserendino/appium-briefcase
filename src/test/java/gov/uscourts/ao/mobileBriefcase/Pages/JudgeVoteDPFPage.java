@@ -113,9 +113,18 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeAlert[@name='Briefcase']")
 	public static WebElement jpgAlert;
-	
+
 	@iOSXCUITFindBy(accessibility = "DocumentList")
 	public static WebElement documentList;
+
+	@iOSXCUITFindBy(accessibility = "PDF View")
+	public static WebElement pdfView;
+
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeToolbar[@name='Toolbar'])[1]/following::XCUIElementTypeOther[1]/XCUIElementTypeButton")
+	public static List<WebElement> toolBar1;
+
+	@iOSXCUITFindBy(accessibility = "Annotations")
+	public static WebElement annotations;
 
 	/** verify relief is displayed on the popup page */
 	public String selectViewVotes(List<UserInputData> userInputData, String caseNum) {
@@ -251,6 +260,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 		tap(Locator.XPATH, getIndexOfNoteIcon(reliefText));
 
 		addVote(dpfName, getID(MBR_NOTE, elId), reliefText, elId, userInputData);
+
 		tap(back);
 		Utility.scroll(documentList, "up");
 
@@ -335,6 +345,10 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 			assertEquals(
 					" THE \"NOTE HISTORY PARAMETER\" IS SET TO \"Y\", HOWEVER THE TEXT OF THE PREVIOUS VOTE NOTE IS NOT DISPLYED CORRECTLY! ",
 					text, getText(commentField));
+			tap(pdfView);
+			Actions.tap(annotations);
+			assertTrue("THE EDIT ICON IN THE PDF IS NOT GRAYED OUT",
+					!findElement(By.xpath(AccessingAnnotatedDocuments.ifEditingToolsExist(toolBar1))).isEnabled());
 			tap(cancel);
 
 		}
