@@ -96,10 +96,8 @@ public class DashboardPage extends Base {
 
 	public void getRefCategories(List<UserInputData> userInputData) {
 
-		String name = SystemPropertySetup.getJudge(userInputData);
-
 		List<String> dbReferralCategories = executeQuery(
-				getID(Queries.REFERRAL_CATEGORIES, getPE_ID("jud", name, userInputData)), userInputData);
+				getID(Queries.REFERRAL_CATEGORIES, DocumentPage.get_pe_id( userInputData)), userInputData);
 
 		sort(dbReferralCategories);
 
@@ -214,7 +212,7 @@ public class DashboardPage extends Base {
 	public void get_lbrrpt_CATEGORY(String cyvCategory, String PE_RT_CODE, String judgeName,
 			List<UserInputData> userInputData) {
 		performPageLoad(driver);
-		String peID = getPE_ID(PE_RT_CODE, judgeName, userInputData);
+		String peID = DocumentPage.get_pe_id( userInputData) ;
 
 		List<String> cmr_cyv_code = executeQuery(getID(lbrrpt_CATEGORY, peID), userInputData);
 		if (cmr_cyv_code.contains(cyvCategory)) {

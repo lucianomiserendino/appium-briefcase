@@ -27,7 +27,7 @@ public class SystemPropertySetup {
 	public static final String stf = "stf";
 	public static final String userName = "userName";
 	public static final String password = "password";
-	
+	public static final String judFirstName = "judFirstName";
 
 	public static final String getVariable(Variables variable, List<UserInputData> pacerInputData) {
 		String var = "";
@@ -49,7 +49,7 @@ public class SystemPropertySetup {
 		case PASSWORD:
 			var = password;
 			break;
-			
+
 		case PERSONROLE:
 			var = personrole;
 			break;
@@ -98,6 +98,10 @@ public class SystemPropertySetup {
 			var = db_Schema;
 			break;
 
+		case JUD_FIRST_NAME:
+			var = judFirstName;
+			break;
+
 		default:
 			break;
 		}
@@ -144,6 +148,15 @@ public class SystemPropertySetup {
 		log.info("Role type from Property File " + System.getProperty(jud));
 		log.info("Role type from Input File " + userInputData.get(0).getJud());
 		return userInputData.get(0).getJud();
+	}
+
+	public static final String getJudgesFirstName(List<UserInputData> userInputData) {
+
+		if (System.getProperty(judFirstName) != null)
+			return System.getProperty(judFirstName);
+		log.info("Role type from Property File " + System.getProperty(judFirstName));
+		log.info("Role type from Input File " + userInputData.get(0).getJudFirstName());
+		return userInputData.get(0).getJudFirstName();
 	}
 
 	public static final String getStf(List<UserInputData> userInputData) {
@@ -252,7 +265,7 @@ public class SystemPropertySetup {
 
 	public enum Variables {
 		ENVIRONMENT, JUD, STF, CASE_NUMBER, REF_CATEGORY, COURTID, PERSONROLE, HOSTNAME, DB_USERNAME, DB_PASSWORD,
-		DB_SERVERNAME, DB_PORT, DB_SCHEMA, USERNAME, PASSWORD, USER_TYPE
+		DB_SERVERNAME, DB_PORT, DB_SCHEMA, USERNAME, PASSWORD, USER_TYPE, JUD_FIRST_NAME
 	}
 
 }

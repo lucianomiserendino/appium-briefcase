@@ -1,7 +1,5 @@
 package gov.uscourts.ao.mobileBriefcase.model;
 
-import java.util.Map;
-
 public class UserInputData {
 	private String courtId;
 	private String hostname;
@@ -15,11 +13,11 @@ public class UserInputData {
 	private String db_Schema;
 	private String personrole;
 	private String jud;
+	private String judFirstName;
 	private String db_username;
 	private String db_password;
 	private String stf;
 	private String userType;
-
 
 	public String getPacerInputData(String inputData) {
 		String var = "";
@@ -57,23 +55,23 @@ public class UserInputData {
 		case "hostname":
 			var = hostname;
 			break;
-			
+
 		case "db_username":
 			var = db_username;
 			break;
-			
+
 		case "db_password":
 			var = db_password;
 			break;
-			
+
 		case "db_dbservername":
 			var = db_servername;
 			break;
-			
+
 		case "db_port":
 			var = db_port;
 			break;
-			
+
 		case "db_Schema":
 			var = db_Schema;
 			break;
@@ -82,10 +80,22 @@ public class UserInputData {
 			var = personrole;
 			break;
 
+		case "judFirstName":
+			var = judFirstName;
+			break;
+
 		default:
 			break;
 		}
 		return var;
+	}
+
+	public String getJudFirstName() {
+		return judFirstName;
+	}
+
+	public void setJudFirstName(String judFirstName) {
+		this.judFirstName = judFirstName;
 	}
 
 	public String getCourtId() {

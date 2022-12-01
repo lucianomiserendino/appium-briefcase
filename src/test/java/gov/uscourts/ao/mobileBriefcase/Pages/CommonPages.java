@@ -37,8 +37,8 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
-import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -234,8 +234,8 @@ public class CommonPages extends Base {
 	public static void selectAction(String panel, List<UserInputData> userInputData) {
 		getGroupIcons();
 		getPanel(Panel.valueOf(panel));
-		getActionName("mbr jo 1058 chmAssign");
-		//getActionName("Auto Test");
+		// getActionName("mbr multiple DMI");
+		getActionName("Auto Test");
 
 	}
 
@@ -270,8 +270,7 @@ public class CommonPages extends Base {
 
 	public static String getCMRID(List<UserInputData> userInputData) {
 
-		String name = SystemPropertySetup.getJudge(userInputData);
-		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
+		String cha_ju_pe_id = DocumentPage.get_pe_id( userInputData) ;
 
 		String caseId = CommonPages.getCaseID(userInputData);
 
@@ -281,8 +280,7 @@ public class CommonPages extends Base {
 
 	public static String getCMRID(String caseNum, List<UserInputData> userInputData) {
 
-		String name = SystemPropertySetup.getJudge(userInputData);
-		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
+		String cha_ju_pe_id = DocumentPage.get_pe_id( userInputData) ;
 
 		String caseId = CommonPages.getCaseID(caseNum, userInputData);
 
@@ -292,8 +290,7 @@ public class CommonPages extends Base {
 
 	public static String getCCRID(String caseNum, List<UserInputData> userInputData) {
 
-		String name = SystemPropertySetup.getJudge(userInputData);
-		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
+		String cha_ju_pe_id = DocumentPage.get_pe_id( userInputData) ;
 
 		// String caseId = CommonPages.getCaseID(userInputData);
 		String caseId = CommonPages.getCaseID(caseNum, userInputData);
@@ -323,17 +320,14 @@ public class CommonPages extends Base {
 		return getAllColumns(replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, caseNumber), "CS_NUMBER",
 				getCase(Case.CASE_NUMBER, caseNumber)), table);
 	}
-	
-	public static String cmr_cyv_code(String category, List<UserInputData> userInputData) {
 
-		String name = SystemPropertySetup.getJudge(userInputData);
-		String cha_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
+	public static String cmr_cyv_code(String category, String caseID, List<UserInputData> userInputData) {
 
+		String cha_ju_pe_id = DocumentPage.get_pe_id(userInputData);
 
-		return getAllColumns(replace(Queries.CMR_CYV_CODE,  "CMR_JU_PE_ID", cha_ju_pe_id, "CYV_CATEGORY",category.trim()),
-				userInputData);
+		return getAllColumns(replace(Queries.CMR_CYV_CODE, "CMR_JU_PE_ID", cha_ju_pe_id, "CYV_CATEGORY",
+				category.trim(), "CMR_CS_CASEID", caseID), userInputData);
 	}
-	
 
 	public static String getCaseNumber(String caseNumber, int index) {
 		return caseNumber.split(" ")[0].split("-")[index];
@@ -436,7 +430,7 @@ public class CommonPages extends Base {
 		return isDisplayed;
 
 	}
-	
+
 	public static void ifDownloaded(List<WebElement> el) {
 		performPageLoad(driver);
 		Boolean elementNotFound = true;

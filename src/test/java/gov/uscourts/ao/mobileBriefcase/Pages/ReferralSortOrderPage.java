@@ -2,7 +2,6 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
@@ -21,7 +20,6 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
-import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -59,9 +57,7 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 
 	public void selectReferralCategory(List<UserInputData> userInputData) {
 
-		String name = SystemPropertySetup.getJudge(userInputData);
-
-		String query = getID(Queries.REFERRAL_CATEGORIES, getPE_ID("jud", name, userInputData));
+		String query = getID(Queries.REFERRAL_CATEGORIES, DocumentPage.get_pe_id(userInputData));
 
 		List<String> dbReferralCategories = executeQuery(query, userInputData);
 		if (dbReferralCategories.contains("Reference Documents")
@@ -88,7 +84,7 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	 * sort referrals by date referred or case number. The default is by date
 	 * referred in descending order (newest first).
 	 */
-	public  void selectSortBtn() {
+	public void selectSortBtn() {
 
 		if (Actions.isDisplayed(Locator.XPATH, "//*[contains(@name, 'Sort ↓')]") == true) {
 			tap(sortArrowBtn);
@@ -103,7 +99,7 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 		return Utility.retrieveAllReferrals(cases, " ", 0);
 	}
 
-	public  void getSortPage(Sort sort) {
+	public void getSortPage(Sort sort) {
 
 		switch (sort) {
 		case REFERRAL_DATE_DESCENDING:

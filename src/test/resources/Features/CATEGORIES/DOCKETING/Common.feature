@@ -87,5 +87,4 @@ Scenario: Category and case selection
  @selectRandomAppliedCase  
       Scenario: Random applied case selection    
         Then User selects random applied case
-		
-		
+        

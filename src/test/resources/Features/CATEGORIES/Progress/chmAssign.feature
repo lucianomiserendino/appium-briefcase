@@ -11,9 +11,9 @@ Scenario:
 	#	|test       |test    | test     |test   |
 		
 		
-	Then I select a user 
-		|userType   |personrole        |jud     |
-		|judge      |Appellate Judges  |test    |
+	#Then I select a user 
+	#	|userType   |personrole        |jud     |
+	#	|judge      |Appellate Judges  |test    |
 			
 	Then User selects random judge category
 		|courtId|

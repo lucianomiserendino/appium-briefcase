@@ -54,6 +54,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class chmAssignDPFPage extends AppiumPageFactory {
@@ -111,6 +112,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	public static String selectADate(chmAssign assign) {
 
+		// String date = "";
 		getChmAssign(assign, "tap");
 		performPageLoad(driver);
 		selectDate(assign);
@@ -121,11 +123,10 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	public void getCaseDetails(String caseNumber, String category, List<UserInputData> userInputData) {
 
 		elId += getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
-		name += SystemPropertySetup.getVariable(Variables.JUD, userInputData);
-		cha_ju_pe_id += DBUtilities.getPE_ID("jud", name, userInputData);
+		cha_ju_pe_id +=  DocumentPage.get_pe_id( userInputData) ;
 		cmr_cs_caseid += CommonPages.getCaseID(caseNumber, userInputData);
 
-		cmr_cyv_code += CommonPages.cmr_cyv_code(category, userInputData).trim();
+		cmr_cyv_code +=CommonPages.cmr_cyv_code(category,cmr_cs_caseid, userInputData).trim();
 
 	}
 
@@ -159,7 +160,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			List<UserInputData> userInputData) {
 
 		String screenTypeParam = getParameter(getAllColumns(getID(MBR_NOTE, elId), userInputData), dpfName, 0);
-		
+
 		String screenParam = "";
 
 		switch (screenTypeParam) {
@@ -427,6 +428,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	}
 
 	public static void clickOnExistingAssignment(String staffMember, String elID, List<UserInputData> userInputData) {
+		// selectAction(dbType, "Actions", elID);
 		selectAction("Actions", elID, userInputData);
 		scrollDownIfNotDisplayed(containsElement(staffMember));
 	}
@@ -434,6 +436,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	public static void clickOn(String submit, String yes, String ok) {
 		scrollDownIfNotDisplayed(containsElement(submit));
 		ifDownloaded(sending);
+		// tap(Locator.XPATH, containsElement(yes));
 		tap(Locator.XPATH, containsElement(ok));
 
 	}
@@ -684,6 +687,16 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 				.xpath("//*[contains(@name, '" + changeDateFormat(selectedDate, "d/MMMM/yyyy", "dd/MMMM/yyyy") + "')]"))
 				.click();
 
+	}
+
+	// *[contains(@name,
+	// 'Due')]/following::XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeButton/XCUIElementTypeStaticText
+
+	public static void main(String[] args) {
+		getInstance(Driver.IOS);
+		List<UserInputData> userInputData = null;
+		chmAssignDPFPage page1 = new chmAssignDPFPage();
+		page1.terminateStaffAssignment(userInputData);
 	}
 
 }

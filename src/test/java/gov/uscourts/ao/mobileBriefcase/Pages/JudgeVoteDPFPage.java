@@ -345,10 +345,6 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 			assertEquals(
 					" THE \"NOTE HISTORY PARAMETER\" IS SET TO \"Y\", HOWEVER THE TEXT OF THE PREVIOUS VOTE NOTE IS NOT DISPLYED CORRECTLY! ",
 					text, getText(commentField));
-			tap(pdfView);
-			Actions.tap(annotations);
-			assertTrue("THE EDIT ICON IN THE PDF IS NOT GRAYED OUT",
-					!findElement(By.xpath(AccessingAnnotatedDocuments.ifEditingToolsExist(toolBar1))).isEnabled());
 			tap(cancel);
 
 		}

@@ -5,7 +5,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getCode;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.FILED_DATE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.FILERS_INOFRMATION;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGEs_INITIALS;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.RELIEF;
@@ -40,10 +39,6 @@ public class VoteInformationPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(id = "Close")
 	public static WebElement close;
 
-	public static String dbFiledDate(String pe_id, String caseId, String cyv_code, List<UserInputData> userInputData) {
-		return getAllColumns(getCode(getText(getID(FILED_DATE, pe_id), caseId), cyv_code), userInputData);
-	}
-
 	/**
 	 * For each referral, observe the filer's name (pr_last_name + , + pr_first_name
 	 * + first initial of pr_middle_name + , + gn_display) party type
@@ -70,6 +65,7 @@ public class VoteInformationPage extends AppiumPageFactory {
 							"//*[contains(@name, 'Vote Information')]/following:: XCUIElementTypeStaticText[contains(@name, '"
 									+ filerInfo + "')]/following::XCUIElementTypeStaticText[contains(@name, '"
 									+ judgesInitials.get(i) + "')]");
+
 				}
 			case JUDGE_VOTE_DPF_FILLRES_INFORMATION:
 
@@ -85,6 +81,7 @@ public class VoteInformationPage extends AppiumPageFactory {
 		} catch (Exception e) {
 			isDisplayed = false;
 		}
+
 		return isDisplayed;
 
 	}
@@ -92,39 +89,70 @@ public class VoteInformationPage extends AppiumPageFactory {
 	public static String getVoteInofrmation(String filersInfo, String peId, String caseId, String cyvCode,
 			List<UserInputData> userInputData) {
 		String string = "";
+
+		String replaced = "";
+
 		switch (filersInfo) {
 		case "FirstName":
 			string = "pr_first_name";
+			replaced = " ";
 			break;
 		case "LastName":
 			string = "pr_last_name";
+			replaced = ", ";
 			break;
 		case "MiddleName":
 			string = "pr_middle_name";
+			replaced = " ";
 			break;
 		case "gn_display":
 			string = "gn_display";
 			break;
+
 		case "pt_display":
 			string = "pt_display";
+
 			break;
+
+		case "de_date_filed":
+			string = "de_date_filed";
+			break;
+
 		default:
 			break;
 		}
-		return getAllColumns(
+
+		String k = "";
+
+		String a = getAllColumns(
 				getCode(getText(getID(replace(FILERS_INOFRMATION, "FIELD", string), peId), caseId), cyvCode),
-				userInputData);
+				userInputData).trim();
+
+		if (a.equals("null")) {
+			return "";
+		} else {
+
+			if (string.equals("de_date_filed")) {
+				k = changeDateFormat(a, "yyyy-MM-dd", "M/d/yyyy");
+			} else {
+				k = a;
+			}
+			if (string.equals("pt_display"))
+				k = "(" + a + ") ";
+
+			return k + replaced;
+		}
 	}
 
 	public static String getFilerInfo(String peId, String caseId, String cyvCode, List<UserInputData> userInputData) {
-		String LastName = getVoteInofrmation("LastName", peId, caseId, cyvCode, userInputData).trim();
-		String FirstName = getVoteInofrmation("FirstName", peId, caseId, cyvCode, userInputData).trim();
-		String MiddleName = getVoteInofrmation("MiddleName", peId, caseId, cyvCode, userInputData).trim();
-		String pt_display = getVoteInofrmation("pt_display", peId, caseId, cyvCode, userInputData).trim();
-		String voteInfoDbFiledDate = dbFiledDate(peId, caseId, cyvCode, userInputData).trim();
-		String gn_display = getVoteInofrmation("gn_display", peId, caseId, cyvCode, userInputData).trim();
-		return LastName + ", " + FirstName + " " + MiddleName + " " + gn_display + "(" + pt_display + ") " + "Filed: "
-				+ changeDateFormat(voteInfoDbFiledDate, "yyyy-MM-dd", "M/d/yyyy");
+		String LastName = getVoteInofrmation("LastName", peId, caseId, cyvCode, userInputData);
+		String FirstName = getVoteInofrmation("FirstName", peId, caseId, cyvCode, userInputData);
+		String MiddleName = getVoteInofrmation("MiddleName", peId, caseId, cyvCode, userInputData);
+		String pt_display = getVoteInofrmation("pt_display", peId, caseId, cyvCode, userInputData);
+		String voteInfoDbFiledDate = getVoteInofrmation("de_date_filed", peId, caseId, cyvCode, userInputData);
+		String gn_display = getVoteInofrmation("gn_display", peId, caseId, cyvCode, userInputData);
+
+		return LastName + FirstName + MiddleName + gn_display + pt_display + "Filed: " + voteInfoDbFiledDate;
 
 	}
 
@@ -271,4 +299,5 @@ public class VoteInformationPage extends AppiumPageFactory {
 		DB_FILER_INFORMATION, UI_FILED_DATE, JUDGE_VOTE_RELIEF
 
 	}
+
 }

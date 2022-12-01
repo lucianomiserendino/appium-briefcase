@@ -563,5 +563,8 @@ public class Utility extends Base {
 		return new SimpleDateFormat("M").format(cal.getTime());
 
 	}
+	public static String replaceNull(String str) {
+		return str == null ? "" : str;
+	}
 	
 }

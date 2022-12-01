@@ -4,7 +4,7 @@ public class Queries {
 
 	/** Query to find peId of the judge */
 	public static final String PE_ID = "(select  pe_id from person, personrole where "
-			+ "pe_pr_prid=pr_prid and pe_rt_code='PE_RT_CODE' and pr_last_name='PR_LAST_NAME')";
+			+ "pe_pr_prid=pr_prid and pe_rt_code='PE_RT_CODE' and pr_last_name='PR_LAST_NAME' and pr_first_name='PR_FIRST_NAME')";
 
 	/** Query to get valid categories for the logged in user */
 	public static final String REFERRAL_CATEGORIES = "select distinct (cyv_category) from "
@@ -395,20 +395,13 @@ public class Queries {
 			+ " where cmr_cs_caseid = 'TEXT' and cmr_ju_pe_id = ? and cmr_cyv_code = 'CODE' and cmr_ju_pe_id = ? ";
 
 	// pr_last_name, pr_first_name, pr_middle_name,gn_display, pt_display
-	public static final String FILERS_INOFRMATION = "select FIELD "
+	public static final String FILERS_INOFRMATION = "select first 1 FIELD "
 			+ " from chm_mobile_referral join chambers_case_to_referral on cmr_ccr_id = ccr_id join relate_dktpart "
 			+ "on ccr_dp_dktpartid = rd_rel_dktpartid  join case_dktentry on rd_cre_cd_id = cd_id  join dktentry on "
 			+ "cd_dktentryid = de_dktentryid  join dktperson on cd_id = dep_cd_id and dep_type = 'filer' and dep_py_pcid <> 1 "
 			+ " join party on dep_py_pcid = py_pcid  join personrole on py_pe_id = pe_id  join pty_type_val"
 			+ " on py_pt_code = pt_code  join person on pr_prid = pe_pr_prid  left join generation_val on gn_code = pr_gn_code "
 			+ " where cmr_cs_caseid = 'TEXT' and cmr_ju_pe_id = ? and cmr_cyv_code = 'CODE'";
-
-	public static final String FILED_DATE = "select  de_date_filed from chm_mobile_referral join chambers_case_to_referral on cmr_ccr_id = ccr_id "
-			+ "join relate_dktpart on ccr_dp_dktpartid = rd_rel_dktpartid join case_dktentry on rd_cre_cd_id = cd_id "
-			+ "join dktentry on cd_dktentryid = de_dktentryid join dktperson on cd_id = dep_cd_id and dep_type = 'filer' and dep_py_pcid <> 1 "
-			+ "join party on dep_py_pcid = py_pcid join personrole on py_pe_id = pe_id join pty_type_val on py_pt_code = pt_code "
-			+ "join person on pr_prid = pe_pr_prid left join generation_val on gn_code = pr_gn_code "
-			+ "where cmr_cs_caseid = 'TEXT' and cmr_ju_pe_id = ? and cmr_cyv_code = 'CODE' and cmr_ju_pe_id = ?";
 
 	public static final String JUDGEs_INITIALS = " SELECT ju_initials FROM chm_mobile_referral, "
 			+ "judge WHERE cmr_ccr_id = ? and cmr_ju_pe_id = ju_pe_id order by ju_initials desc";
@@ -632,7 +625,7 @@ public class Queries {
 			+ "order by annot_doc.dm_last_updated desc, mad_orig_dm_dls_id desc;";
 
 	public static final String CMR_CYV_CODE = "select distinct cmr_cyv_code from chm_mobile_referral, chm_reftype_val where cmr_ju_pe_id = 'CMR_JU_PE_ID' and cmr_date_end is null and "
-			+ "cmr_cyv_code = cyv_code AND cyv_is_briefcase = 'y' and cyv_is_oral_arg = 'n' and cyv_category='CYV_CATEGORY'";
+			+ "cmr_cyv_code = cyv_code AND cyv_is_briefcase = 'y' and cyv_is_oral_arg = 'n' and cyv_category='CYV_CATEGORY' and cmr_cs_caseid='CMR_CS_CASEID'";
 
 	public static final String CMR_CS_CASEID = "select cmr_cs_caseid, cmr_ref_date from chm_mobile_referral,chm_reftype_val where cmr_ju_pe_id = ? and  cmr_cyv_code = cyv_code GROUP BY cmr_cs_caseid, cyv_category, cmr_ref_date HAVING COUNT(cyv_category)>1 order by cmr_ref_date desc";
 

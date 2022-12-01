@@ -1,17 +1,14 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
-import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
+import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.VoteInformationPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.VoteInformationPage.FILERs_INFO;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -20,6 +17,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 public class VoteInformation_StepDefinitions {
 	VoteInformationPage page;
 	CommonPages page1;
+	String cmr_cyv_code;
 
 	@Given("^User observes the \"([^\"]*)\" panel displays\\.   This should only display if the referral requires voting$")
 	public void user_observes_the_panel_displays_This_should_only_display_if_the_referral_requires_voting(
@@ -37,13 +35,12 @@ public class VoteInformation_StepDefinitions {
 
 		String ccr_id = CommonPages.getCCRID(caseNum, userInputData);
 		String name = SystemPropertySetup.getJudge(userInputData);
-		String cmr_ju_pe_id = DBUtilities.getPE_ID("jud", name, userInputData);
+		String cmr_ju_pe_id = DocumentPage.get_pe_id(userInputData);
 		String cmr_cs_caseid = CommonPages.getCaseID(caseNum, userInputData);
 
-		executeQuery(replace(Queries.CMR_CYV_CODE, "CMR_JU_PE_ID", cmr_ju_pe_id, "CYV_CATEGORY",
-				Document_StepDefinitions.regularCase), userInputData);
+		cmr_cyv_code = CommonPages.cmr_cyv_code(Document_StepDefinitions.category, cmr_cs_caseid, userInputData).trim();
 
-		assertTrue(page.filersInfo(FILERs_INFO.VOTE_INFO_FILLRES_INFORMATION, cmr_ju_pe_id, cmr_cs_caseid, "auto",
+		assertTrue(page.filersInfo(FILERs_INFO.VOTE_INFO_FILLRES_INFORMATION, cmr_ju_pe_id, cmr_cs_caseid, cmr_cyv_code,
 				ccr_id, userInputData));
 	}
 

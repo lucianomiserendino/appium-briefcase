@@ -3,10 +3,10 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getRandomInt;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.support.PageFactory.initElements;
 
@@ -18,11 +18,8 @@ import org.openqa.selenium.By;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
-import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
-import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
-import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
 public class OtherSubmissions extends Base {
@@ -36,29 +33,29 @@ public class OtherSubmissions extends Base {
 	 * where the cmr_cs_caseid = caseid of the referral being viewed.
 	 **/
 
-	public void otherSubmissionsDisplayed(List<UserInputData> userInputData) {
+	public void otherSubmissionsDisplayed() {
 
 		String cs_caseid = "";
 		List<String> db_cyv_category = null;
 		List<String> db_cmr_panel_members = null;
 		List<String> db_cmr_ref_date = null;
 
-		String name = SystemPropertySetup.getJudge(userInputData);
-		String pe_id = getPE_ID("jud", name, userInputData);
+		// String name = SystemPropertySetup.getJudge(userInputData);
+		// String pe_id = getPE_ID("jud", name, userInputData);
 
-		List<String> otherSubCase = executeQuery(getID(Queries.CMR_CS_CASEID, pe_id), userInputData);
+		List<String> otherSubCase = executeQuery(DBType.CMKA, getID(Queries.CMR_CS_CASEID, "34"));
 
 		for (int i = 0; i < otherSubCase.size(); i++) {
 
 			/** this finds the type of submission */
-			List<String> refCategories = getOtherSubmissionsFromDb("cyv_category", pe_id, otherSubCase.get(i),userInputData);
+			List<String> refCategories = getOtherSubmissionsFromDb("cyv_category", "34", otherSubCase.get(i));
 
 			/** this finds the panel to whom the submission was sent */
 
-			List<String> panelMembers = getOtherSubmissionsFromDb("cmr_panel_members", pe_id, otherSubCase.get(i),userInputData);
+			List<String> panelMembers = getOtherSubmissionsFromDb("cmr_panel_members", "34", otherSubCase.get(i));
 
 			/** this finds the date the item was submitted */
-			List<String> refDate = getOtherSubmissionsFromDb("cmr_ref_date",pe_id, otherSubCase.get(i),userInputData);
+			List<String> refDate = getOtherSubmissionsFromDb("cmr_ref_date", "34", otherSubCase.get(i));
 
 			HashSet<String> hset = new HashSet<String>(refCategories);
 
@@ -89,24 +86,24 @@ public class OtherSubmissions extends Base {
 
 			}
 		}
-		String caseNum = findCaseWithOtherSubmissions(userInputData,cs_caseid);
+		String caseNum = findCaseWithOtherSubmissions(cs_caseid);
 
-		Utility.scrollDownIfNotDisplayed(Actions.containsElement(randomCategory));
+		scrollDownIfNotDisplayed(Actions.containsElement(randomCategory));
 
-		Utility.scrollDownIfNotDisplayed(Actions.containsElement(caseNum));
+		scrollDownIfNotDisplayed(Actions.containsElement(caseNum));
 
 		getOtherSubmissionsFromUI(db_cyv_category.size(), db_cyv_category, db_cmr_panel_members, db_cmr_ref_date);
 	}
 
-	public String findCaseWithOtherSubmissions(List<UserInputData> userInputData,String cs_caseid) {
-		return getAllColumns( replace(Queries.CASE_NUMBER, "CS_CASEID", cs_caseid),userInputData);
+	public String findCaseWithOtherSubmissions(String cs_caseid) {
+		return getAllColumns(DBType.CMKA, replace(Queries.CASE_NUMBER, "CS_CASEID", cs_caseid));
 
 	}
 
-	public List<String> getOtherSubmissionsFromDb(String fieldName, String peId, String caseN,List<UserInputData> userInputData) {
+	public List<String> getOtherSubmissionsFromDb(String fieldName, String peId, String caseN) {
 
-		return executeQuery(
-				replace(Queries.CYV_CATEGORY, "field", fieldName, "cmr_ju_pe_id", peId, "CMR_CS_CASEID", caseN), userInputData);
+		return executeQuery(DBType.CMKA,
+				replace(Queries.CYV_CATEGORY, "field", fieldName, "cmr_ju_pe_id", peId, "CMR_CS_CASEID", caseN));
 	}
 
 	public void getOtherSubmissionsFromUI(int numOfSub, List<String> db_cyv_category, List<String> db_cmr_panel_members,

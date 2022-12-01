@@ -41,5 +41,16 @@ public interface DBVariables {
 	public static final String PVTA_DBPWD = "dbPwdPVTA";
 
 	public static final String PVTA_DATABASE_NAME = "databaseNamePVTA";
+	
+	public static final String CM2A_DBURL = "dbUrlCM2A";
 
+	public static final String CM2A_SERVERNAME = "serverNameCM2A";
+
+	public static final String CM2A_DBUSERNAME = "dbUsernameCM2A";
+
+	public static final String CM2A_DBPWD = "dbPwdCM2A";
+
+	public static final String CM2A_DATABASE_NAME = "databaseNameCM2A";
+
+	
 }

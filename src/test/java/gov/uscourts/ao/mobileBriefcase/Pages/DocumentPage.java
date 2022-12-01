@@ -72,8 +72,7 @@ public class DocumentPage extends Base {
 		sort(list);
 
 		category = list.get(Utility.getRandomInt(list.size() - 1));
-		scrollDownIfNotDisplayed(
-				xpath + "[contains(@name, '" + category + "')]");
+		scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
 
 		return category;
 
@@ -86,10 +85,14 @@ public class DocumentPage extends Base {
 	}
 
 	public String selectRandomJudgeCategory(List<UserInputData> userInputData) {
+		return selectRandomItem(getID(Queries.REFERRAL_CATEGORIES, get_pe_id(userInputData)), xpath, userInputData);
 
-		String name = SystemPropertySetup.getJudge(userInputData);
-		return selectRandomItem(getID(Queries.REFERRAL_CATEGORIES, getPE_ID("jud", name, userInputData)), xpath,
-				userInputData);
+	}
+
+	public static String get_pe_id(List<UserInputData> userInputData) {
+		String fName = SystemPropertySetup.getJudgesFirstName(userInputData);
+		String lName = SystemPropertySetup.getJudge(userInputData);
+		return getPE_ID("jud", lName, fName, userInputData);
 
 	}
 
@@ -175,7 +178,7 @@ public class DocumentPage extends Base {
 		WebElement uiResult = findElementBy(Locator.XPATH,
 				"//XCUIElementTypeStaticText[contains(@name, '" + list.get(caseN) + "')]");
 
-		referral = list.get(caseN);//uiResult.getText();
+		referral = list.get(caseN);// uiResult.getText();
 		uiResult.click();
 		Page.performPageLoad(driver);
 		return referral;

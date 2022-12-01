@@ -58,6 +58,12 @@ public class DBUtilities {
 			case PVTA:
 				getIFXProperty(SSL_STORE, SSL_LOC, KEYPASS, PASS, CM3A_DBURL, CM3A_SERVERNAME, CM3A_DBUSERNAME,
 						CM3A_DBPWD, CM3A_DATABASE_NAME, PORT_NUMBER);
+				
+				
+			case CM2A:
+				getIFXProperty(SSL_STORE, SSL_LOC, KEYPASS, PASS, CM3A_DBURL, CM3A_SERVERNAME, CM3A_DBUSERNAME,
+						CM3A_DBPWD, CM3A_DATABASE_NAME, PORT_NUMBER);
+				
 				break;
 
 			default:
@@ -451,8 +457,11 @@ public class DBUtilities {
 		return query.replace("?", id);
 	}
 
-	public static String getPE_ID(String PE_RT_CODE, String judgeName, List<UserInputData> userInputData) {
-		return getAllColumns(replace(PE_ID, "PE_RT_CODE", PE_RT_CODE, "PR_LAST_NAME", judgeName), userInputData);
+	public static String getPE_ID(String PE_RT_CODE, String judgeLName, String judgeFName,
+			List<UserInputData> userInputData) {
+		return getAllColumns(
+				replace(PE_ID, "PE_RT_CODE", PE_RT_CODE, "PR_LAST_NAME", judgeLName, "PR_FIRST_NAME", judgeFName),
+				userInputData);
 
 	}
 
@@ -473,7 +482,7 @@ public class DBUtilities {
 	}
 
 	public enum DBType {
-		CMKA, CM3A, PVTA
+		CMKA, CM3A, PVTA, CM2A
 	}
 
 }
