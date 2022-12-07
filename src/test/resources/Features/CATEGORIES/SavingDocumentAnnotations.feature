@@ -5,7 +5,7 @@ Background:
 
 		#Given I am logged into Briefcase 
 		#|environment|userName| password |courtId|
-		#|test       |test    | test     |test   |
+	#|test       |test    | test     |test   |
 		
 
 	#Then I select a user 

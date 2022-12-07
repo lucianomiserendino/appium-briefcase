@@ -9,6 +9,7 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class CalendaredCases_StepDefinitions {
 	CalendarPage page;
+	String hearingDate="";
 
 	@When("^User verifies that the main headers display Month Year and sorted accordingly$")
 	public void user_verifies_that_the_main_headers_display_Month_Year_and_sorted_accordingly() {
@@ -20,14 +21,14 @@ public class CalendaredCases_StepDefinitions {
 	@Then("^User verifies that there're Dates and Day of the week under main header$")
 	public void user_verifies_that_there_re_Dates_and_Day_of_the_week_under_main_header() {
 		page = new CalendarPage();
-		page.expandSubAccordion();
+		hearingDate+=page.expandSubAccordion();
 	}
 
 	@When("^accordion for a date are expanded User should see Case number, Case Title, Panel, also Order$")
 	public void accordion_for_a_date_are_expanded_User_should_see_Case_number_Case_Title_Panel_also_Order() {
 		page = new CalendarPage();
 		List<UserInputData> userInputData = null;
-		page.selectRandomCase(userInputData);
+		page.selectRandomCase(hearingDate,userInputData);
 	}
 
 }

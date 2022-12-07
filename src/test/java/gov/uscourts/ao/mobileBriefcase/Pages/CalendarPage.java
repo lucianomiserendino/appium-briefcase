@@ -4,6 +4,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASES_ON_CALENDAR_
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCaseID;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.changeDateFormat;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.checkDatesForAscOrder;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.checkDatesForDescOrder;
 import static org.junit.Assert.assertEquals;
@@ -16,7 +17,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
-import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.Category;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage.Sort;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -88,15 +88,16 @@ public class CalendarPage extends AppiumPageFactory {
 						+ index + "]/XCUIElementTypeStaticText"));
 	}
 
-	public void expandSubAccordion() {
+	public String expandSubAccordion() {
 		List<WebElement> groups = getSessionGroups(3);
 
 		int randomGroup = Utility.getRandomNumberInRange(1, 5);
 
 		int numOfCases = totalNumOfSubHeader(groups, randomGroup);
+
 		String month = getSession(randomGroup);
 
-		expandAccordion(numOfCases, month);
+		return expandAccordion(numOfCases, month);
 	}
 
 	public static String getSession(int i) {
@@ -111,7 +112,8 @@ public class CalendarPage extends AppiumPageFactory {
 		return Integer.parseInt(Actions.replace(groups.get(randomGroup).getText(), "\\(", "", "\\)", "").trim());
 	}
 
-	public static void expandAccordion(int numOfCases, String month) {
+	public static String expandAccordion(int numOfCases, String month) {
+		String hearing = "";
 		int subHeader = 0;
 		int caseCount = 1;
 		int total = 0;
@@ -145,6 +147,14 @@ public class CalendarPage extends AppiumPageFactory {
 					} else {
 						subHeader = 0;
 					}
+
+					int n1 = subHeader, n2 = 1, sum;
+					sum = n1 + n2;
+
+					hearing = Actions.findElement(By.xpath("(//XCUIElementTypeStaticText[@name='" + month
+							+ "']/following::XCUIElementTypeStaticText[@name='GroupIcon']/following::XCUIElementTypeOther[1]/XCUIElementTypeStaticText[1])["
+							+ sum + "]")).getText();
+
 					icons.get(subHeader).click();
 					elementNotFound = false;
 
@@ -159,9 +169,19 @@ public class CalendarPage extends AppiumPageFactory {
 			}
 		}
 
+		String session = hearing.split(",", 2)[1];
+
+		String nameOfTheMonth = session.substring(0, hearing.indexOf(" ")).trim();
+
+		String index = Utility.parseMonthName(nameOfTheMonth);
+
+		String hearingDate = session.replace(nameOfTheMonth, index).trim();
+
+		return changeDateFormat(hearingDate.replace(",", ""), "MM dd yyyy", "yyyy-M-d");
+
 	}
 
-	public void selectRandomCase(List<UserInputData> userInputData) {
+	public void selectRandomCase(String hearing, List<UserInputData> userInputData) {
 		DocumentPage page = new DocumentPage();
 		String caseN = page.getRandomCase(Category.CaseOnCalendar).split(" ")[0].trim();
 
@@ -169,7 +189,6 @@ public class CalendarPage extends AppiumPageFactory {
 
 		String uiPanel = Actions.findElement(By.xpath("(//XCUIElementTypeStaticText[contains(@name, '" + caseN
 				+ "')]/following::XCUIElementTypeStaticText[contains(@name, 'Panel:')])[1]")).getText().trim();
-
 
 		String peId = DocumentPage.get_pe_id(userInputData);
 
@@ -184,19 +203,22 @@ public class CalendarPage extends AppiumPageFactory {
 		 * 
 		 */
 
-		String hearingDate = getCourtSessionFields(CourtSession.CLU_DATE_HEARING, peId, userInputData, caseN);
-		String time = getCourtSessionFields(CourtSession.ARG_DISPLAY, peId, userInputData, caseN);
-		String panelMembers = getCourtSessionFields(CourtSession.CMR_PANEL_MEMBERS, peId, userInputData, caseN);
-		String hearing_order = getCourtSessionFields(CourtSession.HEARING_ORDER, peId, userInputData, caseN);
+		// String hearingDate = getCourtSessionFields(CourtSession.CLU_DATE_HEARING,
+		// peId,hearing, userInputData, caseN);
+		String time = getCourtSessionFields(CourtSession.ARG_DISPLAY, peId, hearing, userInputData, caseN);
+		String panelMembers = getCourtSessionFields(CourtSession.CMR_PANEL_MEMBERS, peId, hearing, userInputData,
+				caseN);
+		String hearing_order = getCourtSessionFields(CourtSession.HEARING_ORDER, peId, hearing, userInputData, caseN);
 
-		String dbPanel = "Panel: " + panelMembers + trimIffNull("   Order: ", hearing_order)
-				+ trimIffNull("  Time: ", time).trim();
-		assertEquals("CASES NOT APPEARING UNDER THE CORRECT DATE BUCKET-------------------> ", uiPanel, dbPanel);
+		String dbPanel = trimIffNull("Panel: ", panelMembers) + trimIffNull(" Order: ", hearing_order)
+				+ trimIffNull(" Time: ", time);
+
+		assertEquals("CASES NOT APPEARING UNDER THE CORRECT DATE BUCKET-------------------> ", uiPanel.trim(), dbPanel.trim());
 
 	}
 
-	public static String getCourtSessionFields(CourtSession session, String peId, List<UserInputData> table,
-			String caseNum) {
+	public static String getCourtSessionFields(CourtSession session, String peId, String hearing,
+			List<UserInputData> table, String caseNum) {
 		String courtSession = "";
 		switch (session) {
 		case CLU_DATE_HEARING:
@@ -221,12 +243,15 @@ public class CalendarPage extends AppiumPageFactory {
 			break;
 		}
 
-		return getCourtSessionTable(courtSession, peId, getCaseID(caseNum, table), table);
+		return getCourtSessionTable(courtSession, peId, getCaseID(caseNum, table), hearing, table);
 	}
 
-	public static String getCourtSessionTable(String value, String peID, String caseID, List<UserInputData> table) {
-		return DBUtilities.getAllColumns(DBType.CMKA,
-				replace(CASES_ON_CALENDAR_SESSIONS, "VALUE", value, "CMR_JU_PE_ID", peID, "CMR_CS_CASEID", caseID));
+	public static String getCourtSessionTable(String value, String peID, String caseID, String hearing,
+			List<UserInputData> table) {
+		return DBUtilities.getAllColumns(
+				replace(CASES_ON_CALENDAR_SESSIONS, "VALUE", value, "CMR_JU_PE_ID", peID, "CMR_CS_CASEID", caseID)
+						.replace("CLU_DATE_HEARING", hearing),
+				table);
 	}
 
 	public enum CourtSession {
@@ -236,8 +261,9 @@ public class CalendarPage extends AppiumPageFactory {
 
 	public static String trimIffNull(String text, String field) {
 		String string = "";
-		if (field.equals("null")) {
-			string = field.replace("null", "   ").replace(text, "");
+		String dbCol = field.trim();
+		if (dbCol.equals("null") || dbCol.isEmpty()) {
+			return string;
 
 		} else {
 			string = text + field;

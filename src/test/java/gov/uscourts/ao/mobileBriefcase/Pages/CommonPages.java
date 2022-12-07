@@ -318,7 +318,7 @@ public class CommonPages extends Base {
 	public static String getCaseID(String caseNumber, List<UserInputData> table) {
 
 		return getAllColumns(replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, caseNumber), "CS_NUMBER",
-				getCase(Case.CASE_NUMBER, caseNumber)), table);
+				getCase(Case.CASE_NUMBER, caseNumber)),table);
 	}
 
 	public static String cmr_cyv_code(String category, String caseID, List<UserInputData> userInputData) {

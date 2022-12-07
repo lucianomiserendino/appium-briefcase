@@ -3,16 +3,10 @@
     "line": 1,
     "elements": [
       {
-        "comments": [
-          {
-            "line": 4,
-            "value": "#dependent on AMB-2257"
-          }
-        ],
         "before": [
           {
             "result": {
-              "duration": 33122566166,
+              "duration": 33557925875,
               "status": "passed"
             },
             "match": {
@@ -20,33 +14,69 @@
             }
           }
         ],
-        "line": 6,
-        "name": "",
-        "description": "If a referral requires voting, a collapsible Vote Information panel displays.  When expanded, it displays the following information:\n1.  The name and party type of the person who filed the motion/petition\n2.  The judges initials who are on the panel\n3.  The relief on which the judge is ruling\n4.  Each judge\u0027s vote and the date they voted",
-        "id": "display-vote-information-panel,-filer-info-and-judge\u0027s-initials;",
+        "line": 5,
+        "name": "As a user when viewing the \u0027Cases on Calendar\u0027 referral category the following is displayed:",
+        "description": "",
+        "id": "collapsible-panels-in-the-cases-on-calendar-category;as-a-user-when-viewing-the-\u0027cases-on-calendar\u0027-referral-category-the-following-is-displayed:",
         "type": "scenario",
         "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "duration": 23873865292,
+              "duration": 23235364708,
               "status": "passed"
             },
             "comments": [
               {
+                "line": 6,
+                "value": "#Screen 1:"
+              },
+              {
+                "line": 7,
+                "value": "#Month/Year Header"
+              },
+              {
+                "line": 8,
+                "value": "#Date and Day of the week  under header that are accordions"
+              },
+              {
+                "line": 9,
+                "value": "#When the user expands the accordion for a date the following is displayed"
+              },
+              {
+                "line": 10,
+                "value": "#1st line:  Case number, Case Title"
+              },
+              {
+                "line": 11,
+                "value": "#2nd line: Panel, Order, Time"
+              },
+              {
+                "line": 12,
+                "value": "#3rd line:  Internal note"
+              },
+              {
                 "line": 13,
-                "value": "#Given I am logged into Briefcase"
+                "value": "#Current sorting of cases for each day will remain (time and case)"
               },
               {
                 "line": 14,
+                "value": "#The user is able to click on the case directly from the expanded accordion to access the case."
+              },
+              {
+                "line": 16,
+                "value": "#Given I am logged into Briefcase"
+              },
+              {
+                "line": 17,
                 "value": "#|environment|userName| password |courtId|"
               },
               {
-                "line": 15,
+                "line": 18,
                 "value": "#|test       |test    | test     |test   |"
               }
             ],
-            "line": 17,
+            "line": 20,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -58,7 +88,7 @@
                   "personrole",
                   "jud"
                 ],
-                "line": 18
+                "line": 21
               },
               {
                 "cells": [
@@ -66,106 +96,79 @@
                   "Appellate Judges",
                   "test"
                 ],
-                "line": 19
-              }
-            ],
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 10484030208,
-              "status": "passed"
-            },
-            "line": 21,
-            "name": "User selects random judge category",
-            "match": {
-              "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "courtId"
-                ],
                 "line": 22
-              },
-              {
-                "cells": [
-                  "test"
-                ],
-                "line": 23
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 79177412000,
+              "duration": 9952337625,
               "status": "passed"
             },
-            "line": 25,
-            "name": "User selects random case number",
-            "match": {
-              "location": "Document_StepDefinitions.user_selects_random_case_number(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "courtId"
-                ],
-                "line": 26
-              },
-              {
-                "cells": [
-                  "test"
-                ],
-                "line": 27
-              }
-            ],
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 242929985208,
-              "status": "passed"
-            },
-            "line": 29,
-            "name": "User observes the \"Vote_Information\" panel displays.   This should only display if the referral requires voting",
+            "line": 24,
+            "name": "User selects a  \"Cases on Calendar\"",
             "match": {
               "arguments": [
                 {
-                  "val": "Vote_Information",
-                  "offset": 19
+                  "val": "Cases on Calendar",
+                  "offset": 17
                 }
               ],
-              "location": "VoteInformation_StepDefinitions.user_observes_the_panel_displays_This_should_only_display_if_the_referral_requires_voting(String)"
+              "location": "Common_StepDefinitions.user_selects_a(String)"
             },
-            "keyword": "Given "
+            "keyword": "When "
           },
           {
             "result": {
-              "duration": 23931954625,
+              "duration": 423039182042,
               "status": "passed"
             },
-            "line": 31,
-            "name": "for each referral, observes the filer\u0027s name  first initial of pr_middle_name gn_display  party type and date filed displays in a light blue heading.",
+            "line": 26,
+            "name": "User verifies that the main headers display Month Year and sorted accordingly",
             "match": {
-              "location": "VoteInformation_StepDefinitions.for_each_referral_observes_the_filer_s_name_first_initial_of_pr_middle_name_gn_display_party_type_and_date_filed_displays_in_a_light_blue_heading()"
+              "location": "CalendaredCases_StepDefinitions.user_verifies_that_the_main_headers_display_Month_Year_and_sorted_accordingly()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 51185828208,
+              "status": "passed"
+            },
+            "line": 28,
+            "name": "User verifies that there\u0027re Dates and Day of the week under main header",
+            "match": {
+              "location": "CalendaredCases_StepDefinitions.user_verifies_that_there_re_Dates_and_Day_of_the_week_under_main_header()"
             },
             "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 38938058333,
+              "error_message": "org.junit.ComparisonFailure: CASES NOT APPEARING UNDER THE CORRECT DATE BUCKET-------------------\u003e  expected:\u003c...nel: WDB*, CAB, BES [  Order: 3  Time: 20 Minutes]\u003e but was:\u003c...nel: WDB*, CAB, BES [Order: 3 Time: 20 Minutes                    ]\u003e\n\tat org.junit.Assert.assertEquals(Assert.java:117)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CalendarPage.selectRandomCase(CalendarPage.java:216)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.CalendaredCases_StepDefinitions.accordion_for_a_date_are_expanded_User_should_see_Case_number_Case_Title_Panel_also_Order(CalendaredCases_StepDefinitions.java:31)\n\tat ✽.When accordion for a date are expanded User should see Case number, Case Title, Panel, also Order(CATEGORIES/CASES_ON_CALENDAR.feature:30)\n",
+              "status": "failed"
+            },
+            "line": 30,
+            "name": "accordion for a date are expanded User should see Case number, Case Title, Panel, also Order",
+            "match": {
+              "location": "CalendaredCases_StepDefinitions.accordion_for_a_date_are_expanded_User_should_see_Case_number_Case_Title_Panel_also_Order()"
+            },
+            "keyword": "When "
           }
         ],
         "tags": [
           {
-            "line": 5,
-            "name": "@AMB-1036"
+            "line": 2,
+            "name": "@AMB-3196"
           }
         ]
       }
     ],
-    "name": "Display Vote Information Panel, filer info and judge\u0027s initials",
-    "description": "Display Actions Panel and actions",
-    "id": "display-vote-information-panel,-filer-info-and-judge\u0027s-initials",
+    "name": "Collapsible Panels in the Cases on Calendar Category",
+    "description": "",
+    "id": "collapsible-panels-in-the-cases-on-calendar-category",
     "keyword": "Feature",
-    "uri": "CATEGORIES/VoteInformation/VoteInformationPage.feature"
+    "uri": "CATEGORIES/CASES_ON_CALENDAR.feature"
   }
 ]
