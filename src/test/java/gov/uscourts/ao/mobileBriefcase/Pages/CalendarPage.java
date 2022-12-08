@@ -39,6 +39,7 @@ public class CalendarPage extends AppiumPageFactory {
 	public static List<WebElement> Bookmark;
 
 	public void isSortedByMonthAndYear() {
+
 		int random = Utility.getRandomNumberInRange(1, 2);
 
 		String format = "M yyyy";
@@ -86,18 +87,6 @@ public class CalendarPage extends AppiumPageFactory {
 		return Actions.findElements(By.xpath(
 				"	//XCUIElementTypeOther[@name='SessionGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther["
 						+ index + "]/XCUIElementTypeStaticText"));
-	}
-
-	public String expandSubAccordion() {
-		List<WebElement> groups = getSessionGroups(3);
-
-		int randomGroup = Utility.getRandomNumberInRange(1, 5);
-
-		int numOfCases = totalNumOfSubHeader(groups, randomGroup);
-
-		String month = getSession(randomGroup);
-
-		return expandAccordion(numOfCases, month);
 	}
 
 	public static String getSession(int i) {
@@ -169,15 +158,7 @@ public class CalendarPage extends AppiumPageFactory {
 			}
 		}
 
-		String session = hearing.split(",", 2)[1];
-
-		String nameOfTheMonth = session.substring(0, hearing.indexOf(" ")).trim();
-
-		String index = Utility.parseMonthName(nameOfTheMonth);
-
-		String hearingDate = session.replace(nameOfTheMonth, index).trim();
-
-		return changeDateFormat(hearingDate.replace(",", ""), "MM dd yyyy", "yyyy-M-d");
+		return getHearingDate(hearing, "dailySession");
 
 	}
 
@@ -213,7 +194,8 @@ public class CalendarPage extends AppiumPageFactory {
 		String dbPanel = trimIffNull("Panel: ", panelMembers) + trimIffNull(" Order: ", hearing_order)
 				+ trimIffNull(" Time: ", time);
 
-		assertEquals("CASES NOT APPEARING UNDER THE CORRECT DATE BUCKET-------------------> ", uiPanel.trim(), dbPanel.trim());
+		assertEquals("CASES NOT APPEARING UNDER THE CORRECT DATE BUCKET-------------------> ", uiPanel.trim(),
+				dbPanel.trim());
 
 	}
 
@@ -269,6 +251,87 @@ public class CalendarPage extends AppiumPageFactory {
 			string = text + field;
 		}
 		return string;
+	}
+
+	public  String getbriefcaseOralArgsView(List<UserInputData> table) {
+		return CommonPages.getSiValue("briefcaseOralArgsView", table).trim();
+
+	}
+
+	public String expandSubAccordion(String siVal) {
+		List<WebElement> groups = getSessionGroups(3);
+
+		int randomGroup = Utility.getRandomNumberInRange(1, 5);
+
+		int numOfCases = totalNumOfSubHeader(groups, randomGroup);
+		String month = getSession(randomGroup);
+
+		if (siVal.equals("n") || siVal.isEmpty()) {
+
+			return expandAccordion(numOfCases, month);
+
+		} else {
+
+			return getWeeklySession(numOfCases, month);
+
+		}
+
+	}
+
+	public String getWeeklySession(int numOfCases, String month) {
+		WebElement monthName = null;
+		String hearing = "";
+		String a = month.substring(0, 3);
+		int randomGroup = 0;
+
+		if (numOfCases > 1) {
+			randomGroup = Utility.getRandomNumberInRange(1, numOfCases);
+		} else {
+			randomGroup = 1;
+		}
+
+		String panel = getXpathOfSession(randomGroup, month, 1).getText();
+		monthName = getXpathOfSession(randomGroup, month, 2);
+
+		String b = monthName.getText().split(" ")[0];
+
+		assertEquals("VERIFY  THAT DAYS  FOR CALENDARED CASES ARE DISPLAYED CORRECTLY", b, a);
+		hearing = getHearingDate(monthName.getText(), "");
+		monthName.click();
+		return hearing;
+	}
+
+	public WebElement getXpathOfSession(int randomGroup, String month, int i) {
+		return Actions.findElement(By.xpath("(//XCUIElementTypeStaticText[@name='" + month
+				+ "']/following::XCUIElementTypeStaticText[contains(@name, '')])[" + randomGroup
+				+ "]/preceding::XCUIElementTypeStaticText[" + i + "]"));
+	}
+
+	public static String getHearingDate(String hearing, String format) {
+		String hearingDate = "";
+		String nameOfTheMonth = "";
+		String index = "";
+		if (format.contains("dailySession")) {
+
+			String session = hearing.split(",", 2)[1];
+
+			nameOfTheMonth = session.substring(0, hearing.indexOf(" ")).trim();
+
+			index = Utility.parseMonthName(nameOfTheMonth);
+
+			hearingDate = session.replace(nameOfTheMonth, index).trim();
+
+		} else {
+			nameOfTheMonth = hearing.substring(0, hearing.indexOf(" ")).trim();
+
+			index = Utility.parseMonthName(nameOfTheMonth);
+
+			hearingDate = hearing.replace(nameOfTheMonth, index).trim();
+
+		}
+
+		return changeDateFormat(hearingDate.replace(",", ""), "MM dd yyyy", "yyyy-M-d");
+
 	}
 
 }

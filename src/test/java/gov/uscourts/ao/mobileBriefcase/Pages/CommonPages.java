@@ -28,7 +28,6 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import cucumber.api.DataTable;
-import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -270,7 +269,7 @@ public class CommonPages extends Base {
 
 	public static String getCMRID(List<UserInputData> userInputData) {
 
-		String cha_ju_pe_id = DocumentPage.get_pe_id( userInputData) ;
+		String cha_ju_pe_id = DocumentPage.get_pe_id(userInputData);
 
 		String caseId = CommonPages.getCaseID(userInputData);
 
@@ -280,7 +279,7 @@ public class CommonPages extends Base {
 
 	public static String getCMRID(String caseNum, List<UserInputData> userInputData) {
 
-		String cha_ju_pe_id = DocumentPage.get_pe_id( userInputData) ;
+		String cha_ju_pe_id = DocumentPage.get_pe_id(userInputData);
 
 		String caseId = CommonPages.getCaseID(caseNum, userInputData);
 
@@ -290,7 +289,7 @@ public class CommonPages extends Base {
 
 	public static String getCCRID(String caseNum, List<UserInputData> userInputData) {
 
-		String cha_ju_pe_id = DocumentPage.get_pe_id( userInputData) ;
+		String cha_ju_pe_id = DocumentPage.get_pe_id(userInputData);
 
 		// String caseId = CommonPages.getCaseID(userInputData);
 		String caseId = CommonPages.getCaseID(caseNum, userInputData);
@@ -317,8 +316,8 @@ public class CommonPages extends Base {
 
 	public static String getCaseID(String caseNumber, List<UserInputData> table) {
 
-		return getAllColumns(replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, caseNumber), "CS_NUMBER",
-				getCase(Case.CASE_NUMBER, caseNumber)),table);
+		return getAllColumns( replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, caseNumber), "CS_NUMBER",
+				getCase(Case.CASE_NUMBER, caseNumber)), table);
 	}
 
 	public static String cmr_cyv_code(String category, String caseID, List<UserInputData> userInputData) {

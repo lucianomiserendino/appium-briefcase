@@ -6,7 +6,7 @@
         "before": [
           {
             "result": {
-              "duration": 33557925875,
+              "duration": 32742348292,
               "status": "passed"
             },
             "match": {
@@ -23,7 +23,7 @@
         "steps": [
           {
             "result": {
-              "duration": 23235364708,
+              "duration": 23382133041,
               "status": "passed"
             },
             "comments": [
@@ -103,7 +103,7 @@
           },
           {
             "result": {
-              "duration": 9952337625,
+              "duration": 10120002875,
               "status": "passed"
             },
             "line": 24,
@@ -121,7 +121,7 @@
           },
           {
             "result": {
-              "duration": 423039182042,
+              "duration": 392002270000,
               "status": "passed"
             },
             "line": 26,
@@ -133,7 +133,7 @@
           },
           {
             "result": {
-              "duration": 51185828208,
+              "duration": 50617618875,
               "status": "passed"
             },
             "line": 28,
@@ -145,8 +145,8 @@
           },
           {
             "result": {
-              "duration": 38938058333,
-              "error_message": "org.junit.ComparisonFailure: CASES NOT APPEARING UNDER THE CORRECT DATE BUCKET-------------------\u003e  expected:\u003c...nel: WDB*, CAB, BES [  Order: 3  Time: 20 Minutes]\u003e but was:\u003c...nel: WDB*, CAB, BES [Order: 3 Time: 20 Minutes                    ]\u003e\n\tat org.junit.Assert.assertEquals(Assert.java:117)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CalendarPage.selectRandomCase(CalendarPage.java:216)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.CalendaredCases_StepDefinitions.accordion_for_a_date_are_expanded_User_should_see_Case_number_Case_Title_Panel_also_Order(CalendaredCases_StepDefinitions.java:31)\n\tat ✽.When accordion for a date are expanded User should see Case number, Case Title, Panel, also Order(CATEGORIES/CASES_ON_CALENDAR.feature:30)\n",
+              "duration": 36748816750,
+              "error_message": "org.junit.ComparisonFailure: CASES NOT APPEARING UNDER THE CORRECT DATE BUCKET-------------------\u003e  expected:\u003cPanel: WDB, CAB [  Order: 4 ] Time: Guidelines Ca...\u003e but was:\u003cPanel: WDB, CAB [Order: 4] Time: Guidelines Ca...\u003e\n\tat org.junit.Assert.assertEquals(Assert.java:117)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CalendarPage.selectRandomCase(CalendarPage.java:197)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.CalendaredCases_StepDefinitions.accordion_for_a_date_are_expanded_User_should_see_Case_number_Case_Title_Panel_also_Order(CalendaredCases_StepDefinitions.java:34)\n\tat ✽.When accordion for a date are expanded User should see Case number, Case Title, Panel, also Order(CATEGORIES/CASES_ON_CALENDAR.feature:30)\n",
               "status": "failed"
             },
             "line": 30,
