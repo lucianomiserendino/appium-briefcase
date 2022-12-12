@@ -6,7 +6,7 @@
         "before": [
           {
             "result": {
-              "duration": 32742348292,
+              "duration": 32743785875,
               "status": "passed"
             },
             "match": {
@@ -15,68 +15,32 @@
           }
         ],
         "line": 5,
-        "name": "As a user when viewing the \u0027Cases on Calendar\u0027 referral category the following is displayed:",
-        "description": "",
-        "id": "collapsible-panels-in-the-cases-on-calendar-category;as-a-user-when-viewing-the-\u0027cases-on-calendar\u0027-referral-category-the-following-is-displayed:",
+        "name": "As a user I want to display any other submissions that have been made in a case on the referral detail page. For example, when",
+        "description": "viewing a motion submission, if any other motions or screenings have been submitted in that case, the judge wants to see those as well. \nThis goes for any category (motions, screeners, petitions, oa, etc.).",
+        "id": "display-other-submissions-that-have-been-made-in-a-case-on-referral-detail-page;as-a-user-i-want-to-display-any-other-submissions-that-have-been-made-in-a-case-on-the-referral-detail-page.-for-example,-when",
         "type": "scenario",
         "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "duration": 23382133041,
+              "duration": 23381492125,
               "status": "passed"
             },
             "comments": [
               {
-                "line": 6,
-                "value": "#Screen 1:"
-              },
-              {
-                "line": 7,
-                "value": "#Month/Year Header"
-              },
-              {
-                "line": 8,
-                "value": "#Date and Day of the week  under header that are accordions"
-              },
-              {
                 "line": 9,
-                "value": "#When the user expands the accordion for a date the following is displayed"
-              },
-              {
-                "line": 10,
-                "value": "#1st line:  Case number, Case Title"
-              },
-              {
-                "line": 11,
-                "value": "#2nd line: Panel, Order, Time"
-              },
-              {
-                "line": 12,
-                "value": "#3rd line:  Internal note"
-              },
-              {
-                "line": 13,
-                "value": "#Current sorting of cases for each day will remain (time and case)"
-              },
-              {
-                "line": 14,
-                "value": "#The user is able to click on the case directly from the expanded accordion to access the case."
-              },
-              {
-                "line": 16,
                 "value": "#Given I am logged into Briefcase"
               },
               {
-                "line": 17,
+                "line": 10,
                 "value": "#|environment|userName| password |courtId|"
               },
               {
-                "line": 18,
+                "line": 11,
                 "value": "#|test       |test    | test     |test   |"
               }
             ],
-            "line": 20,
+            "line": 13,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -88,7 +52,7 @@
                   "personrole",
                   "jud"
                 ],
-                "line": 21
+                "line": 14
               },
               {
                 "cells": [
@@ -96,79 +60,37 @@
                   "Appellate Judges",
                   "test"
                 ],
-                "line": 22
+                "line": 15
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 10120002875,
-              "status": "passed"
-            },
-            "line": 24,
-            "name": "User selects a  \"Cases on Calendar\"",
-            "match": {
-              "arguments": [
-                {
-                  "val": "Cases on Calendar",
-                  "offset": 17
-                }
-              ],
-              "location": "Common_StepDefinitions.user_selects_a(String)"
-            },
-            "keyword": "When "
-          },
-          {
-            "result": {
-              "duration": 392002270000,
-              "status": "passed"
-            },
-            "line": 26,
-            "name": "User verifies that the main headers display Month Year and sorted accordingly",
-            "match": {
-              "location": "CalendaredCases_StepDefinitions.user_verifies_that_the_main_headers_display_Month_Year_and_sorted_accordingly()"
-            },
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "duration": 50617618875,
-              "status": "passed"
-            },
-            "line": 28,
-            "name": "User verifies that there\u0027re Dates and Day of the week under main header",
-            "match": {
-              "location": "CalendaredCases_StepDefinitions.user_verifies_that_there_re_Dates_and_Day_of_the_week_under_main_header()"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 36748816750,
-              "error_message": "org.junit.ComparisonFailure: CASES NOT APPEARING UNDER THE CORRECT DATE BUCKET-------------------\u003e  expected:\u003cPanel: WDB, CAB [  Order: 4 ] Time: Guidelines Ca...\u003e but was:\u003cPanel: WDB, CAB [Order: 4] Time: Guidelines Ca...\u003e\n\tat org.junit.Assert.assertEquals(Assert.java:117)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CalendarPage.selectRandomCase(CalendarPage.java:197)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.CalendaredCases_StepDefinitions.accordion_for_a_date_are_expanded_User_should_see_Case_number_Case_Title_Panel_also_Order(CalendaredCases_StepDefinitions.java:34)\n\tat ✽.When accordion for a date are expanded User should see Case number, Case Title, Panel, also Order(CATEGORIES/CASES_ON_CALENDAR.feature:30)\n",
+              "duration": 28488457125,
+              "error_message": "org.openqa.selenium.NoSuchElementException: An element could not be located on the page using the given search parameters.\nFor documentation on this error, please visit: https://selenium.dev/exceptions/#no_such_element\nBuild info: version: \u00274.4.0\u0027, revision: \u0027e5c75ed026a\u0027\nSystem info: host: \u0027Saltant-K-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:1c0a:780c:35e8:86b5%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.16\u0027, java.version: \u00271.8.0_311\u0027\nDriver info: io.appium.java_client.ios.IOSDriver\nCommand: [5218ecde-d4f6-460a-a9e2-3b9abdff408e, findElement {using\u003dxpath, value\u003d//XCUIElementTypeStaticText[@name\u003d\u0027Other Submissions in Case\u0027]/following::XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText}]\nCapabilities {appium:autoAcceptAlerts: true, appium:automationName: XCUITest, appium:bundleId: gov.uscourts.ambbriefcase-beta, appium:databaseEnabled: false, appium:deviceName: iPad Pro (12.9-inch) (6th g..., appium:deviceType: ipad, appium:fullReset: false, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: false, appium:noReset: true, appium:platformVersion: 16.1, appium:safariInitialUrl: http://0.0.0.0:4723/welcome , appium:startIWDP: true, appium:takesScreenshot: true, appium:takes_screehshot: true, appium:udid: F0B8797E-2B7E-439E-9F29-109..., appium:webStorageEnabled: false, appium:xcodeOrgId: 6A52AWXC9Z, appium:xcodeSigningId: iPhone Developer, platformName: IOS}\nSession ID: 5218ecde-d4f6-460a-a9e2-3b9abdff408e\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)\n\tat sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)\n\tat java.lang.reflect.Constructor.newInstance(Constructor.java:423)\n\tat org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.createException(W3CHttpResponseCodec.java:200)\n\tat org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:133)\n\tat org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:53)\n\tat org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:184)\n\tat io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:189)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:547)\n\tat org.openqa.selenium.remote.ElementLocation$ElementFinder$2.findElement(ElementLocation.java:162)\n\tat org.openqa.selenium.remote.ElementLocation.findElement(ElementLocation.java:60)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:365)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:357)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElement(Actions.java:58)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.OtherSubmissions.getNumberOfRows(OtherSubmissions.java:156)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.OtherSubmissions.getOtherSubmissionsFromUI(OtherSubmissions.java:143)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.OtherSubmissions.otherSubmissionsDisplayed(OtherSubmissions.java:120)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.OtherSubmissions_StepDefinitions.i_navigate_to_a_case_with_multiple_referrals_and_verify_that_the_case_displays_the_Other_Submissions_in_Case_panel_and_contains_the_date_type_of_submission_the_panel_it_was_sent_to_and_the_status(OtherSubmissions_StepDefinitions.java:17)\n\tat ✽.Then I navigate to a case with multiple referrals and verify that the case displays the Other Submissions in Case panel and contains the date, type of submission, the panel it was sent to and the status.(CATEGORIES/OTHER_SUBMISSIONS.feature:17)\n",
               "status": "failed"
             },
-            "line": 30,
-            "name": "accordion for a date are expanded User should see Case number, Case Title, Panel, also Order",
+            "line": 17,
+            "name": "I navigate to a case with multiple referrals and verify that the case displays the Other Submissions in Case panel and contains the date, type of submission, the panel it was sent to and the status.",
             "match": {
-              "location": "CalendaredCases_StepDefinitions.accordion_for_a_date_are_expanded_User_should_see_Case_number_Case_Title_Panel_also_Order()"
+              "location": "OtherSubmissions_StepDefinitions.i_navigate_to_a_case_with_multiple_referrals_and_verify_that_the_case_displays_the_Other_Submissions_in_Case_panel_and_contains_the_date_type_of_submission_the_panel_it_was_sent_to_and_the_status()"
             },
-            "keyword": "When "
+            "keyword": "Then "
           }
         ],
         "tags": [
           {
             "line": 2,
-            "name": "@AMB-3196"
+            "name": "@AMB-3155"
           }
         ]
       }
     ],
-    "name": "Collapsible Panels in the Cases on Calendar Category",
+    "name": "Display other submissions that have been made in a case on referral detail page",
     "description": "",
-    "id": "collapsible-panels-in-the-cases-on-calendar-category",
+    "id": "display-other-submissions-that-have-been-made-in-a-case-on-referral-detail-page",
     "keyword": "Feature",
-    "uri": "CATEGORIES/CASES_ON_CALENDAR.feature"
+    "uri": "CATEGORIES/OTHER_SUBMISSIONS.feature"
   }
 ]

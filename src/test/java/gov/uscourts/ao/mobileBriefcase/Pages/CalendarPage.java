@@ -17,6 +17,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.Category;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage.Sort;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -58,7 +59,7 @@ public class CalendarPage extends AppiumPageFactory {
 			assertTrue(checkDatesForAscOrder(getMonthlySessions(), format));
 
 		}
-		page.getSortPage(Sort.REFERRAL_DATE_DESCENDING);
+		// page.getSortPage(Sort.REFERRAL_DATE_DESCENDING);
 
 	}
 
@@ -157,12 +158,11 @@ public class CalendarPage extends AppiumPageFactory {
 
 			}
 		}
-
 		return getHearingDate(hearing, "dailySession");
 
 	}
 
-	public void selectRandomCase(String hearing, List<UserInputData> userInputData) {
+	public boolean selectRandomCase(String hearing, List<UserInputData> userInputData) {
 		DocumentPage page = new DocumentPage();
 		String caseN = page.getRandomCase(Category.CaseOnCalendar).split(" ")[0].trim();
 
@@ -191,11 +191,20 @@ public class CalendarPage extends AppiumPageFactory {
 				caseN);
 		String hearing_order = getCourtSessionFields(CourtSession.HEARING_ORDER, peId, hearing, userInputData, caseN);
 
-		String dbPanel = trimIffNull("Panel: ", panelMembers) + trimIffNull(" Order: ", hearing_order)
-				+ trimIffNull(" Time: ", time);
+		String dbPanel = trimIffNull("Panel:", panelMembers) + trimIffNull("Order:", hearing_order)
+				+ trimIffNull("Time:", time);
 
-		assertEquals("CASES NOT APPEARING UNDER THE CORRECT DATE BUCKET-------------------> ", uiPanel.trim(),
-				dbPanel.trim());
+		String a1 = dbPanel;
+		String b = uiPanel;
+		a1 = a1.replace(" ", "");
+		b = b.replace(" ", "");
+
+		if (a1.equalsIgnoreCase(b)) {
+
+			return true;
+		} else {
+			return false;
+		}
 
 	}
 
@@ -230,10 +239,9 @@ public class CalendarPage extends AppiumPageFactory {
 
 	public static String getCourtSessionTable(String value, String peID, String caseID, String hearing,
 			List<UserInputData> table) {
-		return DBUtilities.getAllColumns(
+		return DBUtilities.getAllColumns(DBType.CMKA,
 				replace(CASES_ON_CALENDAR_SESSIONS, "VALUE", value, "CMR_JU_PE_ID", peID, "CMR_CS_CASEID", caseID)
-						.replace("CLU_DATE_HEARING", hearing),
-				table);
+						.replace("CLU_DATE_HEARING", hearing));
 	}
 
 	public enum CourtSession {
@@ -253,7 +261,7 @@ public class CalendarPage extends AppiumPageFactory {
 		return string;
 	}
 
-	public  String getbriefcaseOralArgsView(List<UserInputData> table) {
+	public String getbriefcaseOralArgsView(List<UserInputData> table) {
 		return CommonPages.getSiValue("briefcaseOralArgsView", table).trim();
 
 	}
@@ -261,7 +269,7 @@ public class CalendarPage extends AppiumPageFactory {
 	public String expandSubAccordion(String siVal) {
 		List<WebElement> groups = getSessionGroups(3);
 
-		int randomGroup = Utility.getRandomNumberInRange(1, 5);
+		int randomGroup = Utility.getRandomNumberInRange(1, 4);
 
 		int numOfCases = totalNumOfSubHeader(groups, randomGroup);
 		String month = getSession(randomGroup);
@@ -312,14 +320,13 @@ public class CalendarPage extends AppiumPageFactory {
 		String nameOfTheMonth = "";
 		String index = "";
 		if (format.contains("dailySession")) {
+			String session = hearing.split(", ", 2)[1];
 
-			String session = hearing.split(",", 2)[1];
+			nameOfTheMonth += session.substring(0, session.indexOf(" ")).trim();
 
-			nameOfTheMonth = session.substring(0, hearing.indexOf(" ")).trim();
+			index += Utility.parseMonthName(nameOfTheMonth);
 
-			index = Utility.parseMonthName(nameOfTheMonth);
-
-			hearingDate = session.replace(nameOfTheMonth, index).trim();
+			hearingDate += session.replace(nameOfTheMonth, index).trim();
 
 		} else {
 			nameOfTheMonth = hearing.substring(0, hearing.indexOf(" ")).trim();
@@ -329,7 +336,6 @@ public class CalendarPage extends AppiumPageFactory {
 			hearingDate = hearing.replace(nameOfTheMonth, index).trim();
 
 		}
-
 		return changeDateFormat(hearingDate.replace(",", ""), "MM dd yyyy", "yyyy-M-d");
 
 	}
