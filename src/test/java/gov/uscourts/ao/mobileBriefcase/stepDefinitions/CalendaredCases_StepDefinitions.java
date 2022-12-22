@@ -12,13 +12,16 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 public class CalendaredCases_StepDefinitions {
 	CalendarPage page;
 	String hearingDate = "";
-	String siVal = "";
+	String oralArgView = "";
+	String courtSession = "";
 
 	@When("^User verifies that the main headers display Month Year and sorted accordingly$")
 	public void user_verifies_that_the_main_headers_display_Month_Year_and_sorted_accordingly() {
 		page = new CalendarPage();
 		List<UserInputData> userInputData = null;
-		siVal = page.getbriefcaseOralArgsView(userInputData);
+		oralArgView = page.getbriefcaseOralArgsView("briefcaseOralArgsView", userInputData);
+		courtSession = page.getbriefcaseOralArgsView("briefcaseUseCourtSession", userInputData);
+
 		page.isSortedByMonthAndYear();
 
 	}
@@ -26,14 +29,18 @@ public class CalendaredCases_StepDefinitions {
 	@Then("^User verifies that there're Dates and Day of the week under main header$")
 	public void user_verifies_that_there_re_Dates_and_Day_of_the_week_under_main_header() {
 		page = new CalendarPage();
-		hearingDate += page.expandSubAccordion(siVal);
+		List<UserInputData> userInputData = null;
+		oralArgView = page.getbriefcaseOralArgsView("briefcaseOralArgsView", userInputData);
+		courtSession = page.getbriefcaseOralArgsView("briefcaseUseCourtSession", userInputData);
+		hearingDate += page.getSubHeader(oralArgView, courtSession);
 	}
 
 	@When("^accordion for a date are expanded User should see Case number, Case Title, Panel, also Order$")
 	public void accordion_for_a_date_are_expanded_User_should_see_Case_number_Case_Title_Panel_also_Order() {
 		page = new CalendarPage();
 		List<UserInputData> userInputData = null;
-		assertTrue(page.selectRandomCase(hearingDate, userInputData));
+		assertTrue("CASES NOT APPEARING UNDER THE CORRECT DATE BUCKET: " + hearingDate.toUpperCase(),
+				page.selectRandomCase(page.caseN,hearingDate, userInputData));
 	}
 
 }
