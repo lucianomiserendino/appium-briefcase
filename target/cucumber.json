@@ -3,27 +3,16 @@
     "line": 1,
     "elements": [
       {
-        "before": [
-          {
-            "result": {
-              "duration": 32743785875,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 5,
-        "name": "As a user I want to display any other submissions that have been made in a case on the referral detail page. For example, when",
-        "description": "viewing a motion submission, if any other motions or screenings have been submitted in that case, the judge wants to see those as well. \nThis goes for any category (motions, screeners, petitions, oa, etc.).",
-        "id": "display-other-submissions-that-have-been-made-in-a-case-on-referral-detail-page;as-a-user-i-want-to-display-any-other-submissions-that-have-been-made-in-a-case-on-the-referral-detail-page.-for-example,-when",
+        "line": 4,
+        "name": "",
+        "description": "\nIf there are records defined in the mbr_event table, \n     a collapsible panel entitled \"Actions\" should display, when expanded all the applicable actions should display.",
+        "id": "display-actions-panel-and-actions;",
         "type": "scenario",
         "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "duration": 23381492125,
+              "duration": 25042902500,
               "status": "passed"
             },
             "comments": [
@@ -33,14 +22,14 @@
               },
               {
                 "line": 10,
-                "value": "#|environment|userName| password |courtId|"
+                "value": "#\t|environment|userName| password |courtId|"
               },
               {
                 "line": 11,
-                "value": "#|test       |test    | test     |test   |"
+                "value": "#\t|test       |test    | test     |test   |"
               }
             ],
-            "line": 13,
+            "line": 14,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -52,7 +41,7 @@
                   "personrole",
                   "jud"
                 ],
-                "line": 14
+                "line": 15
               },
               {
                 "cells": [
@@ -60,37 +49,212 @@
                   "Appellate Judges",
                   "test"
                 ],
-                "line": 15
+                "line": 16
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 28488457125,
-              "error_message": "org.openqa.selenium.NoSuchElementException: An element could not be located on the page using the given search parameters.\nFor documentation on this error, please visit: https://selenium.dev/exceptions/#no_such_element\nBuild info: version: \u00274.4.0\u0027, revision: \u0027e5c75ed026a\u0027\nSystem info: host: \u0027Saltant-K-MacBook-Pro.local\u0027, ip: \u0027fe80:0:0:0:1c0a:780c:35e8:86b5%en0\u0027, os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.16\u0027, java.version: \u00271.8.0_311\u0027\nDriver info: io.appium.java_client.ios.IOSDriver\nCommand: [5218ecde-d4f6-460a-a9e2-3b9abdff408e, findElement {using\u003dxpath, value\u003d//XCUIElementTypeStaticText[@name\u003d\u0027Other Submissions in Case\u0027]/following::XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText}]\nCapabilities {appium:autoAcceptAlerts: true, appium:automationName: XCUITest, appium:bundleId: gov.uscourts.ambbriefcase-beta, appium:databaseEnabled: false, appium:deviceName: iPad Pro (12.9-inch) (6th g..., appium:deviceType: ipad, appium:fullReset: false, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: false, appium:noReset: true, appium:platformVersion: 16.1, appium:safariInitialUrl: http://0.0.0.0:4723/welcome , appium:startIWDP: true, appium:takesScreenshot: true, appium:takes_screehshot: true, appium:udid: F0B8797E-2B7E-439E-9F29-109..., appium:webStorageEnabled: false, appium:xcodeOrgId: 6A52AWXC9Z, appium:xcodeSigningId: iPhone Developer, platformName: IOS}\nSession ID: 5218ecde-d4f6-460a-a9e2-3b9abdff408e\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)\n\tat sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)\n\tat sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)\n\tat java.lang.reflect.Constructor.newInstance(Constructor.java:423)\n\tat org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.createException(W3CHttpResponseCodec.java:200)\n\tat org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:133)\n\tat org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:53)\n\tat org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:184)\n\tat io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:189)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:547)\n\tat org.openqa.selenium.remote.ElementLocation$ElementFinder$2.findElement(ElementLocation.java:162)\n\tat org.openqa.selenium.remote.ElementLocation.findElement(ElementLocation.java:60)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:365)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:357)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElement(Actions.java:58)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.OtherSubmissions.getNumberOfRows(OtherSubmissions.java:156)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.OtherSubmissions.getOtherSubmissionsFromUI(OtherSubmissions.java:143)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.OtherSubmissions.otherSubmissionsDisplayed(OtherSubmissions.java:120)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.OtherSubmissions_StepDefinitions.i_navigate_to_a_case_with_multiple_referrals_and_verify_that_the_case_displays_the_Other_Submissions_in_Case_panel_and_contains_the_date_type_of_submission_the_panel_it_was_sent_to_and_the_status(OtherSubmissions_StepDefinitions.java:17)\n\tat ✽.Then I navigate to a case with multiple referrals and verify that the case displays the Other Submissions in Case panel and contains the date, type of submission, the panel it was sent to and the status.(CATEGORIES/OTHER_SUBMISSIONS.feature:17)\n",
-              "status": "failed"
+              "duration": 10622445875,
+              "status": "passed"
             },
-            "line": 17,
-            "name": "I navigate to a case with multiple referrals and verify that the case displays the Other Submissions in Case panel and contains the date, type of submission, the panel it was sent to and the status.",
+            "line": 18,
+            "name": "User selects random judge category",
             "match": {
-              "location": "OtherSubmissions_StepDefinitions.i_navigate_to_a_case_with_multiple_referrals_and_verify_that_the_case_displays_the_Other_Submissions_in_Case_panel_and_contains_the_date_type_of_submission_the_panel_it_was_sent_to_and_the_status()"
+              "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
             },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 19
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 20
+              }
+            ],
             "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 75012658125,
+              "status": "passed"
+            },
+            "line": 22,
+            "name": "User selects random case number",
+            "match": {
+              "location": "Document_StepDefinitions.user_selects_random_case_number(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 23
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 24
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 166675463458,
+              "status": "passed"
+            },
+            "line": 26,
+            "name": "User  selects an action and verifies the name of the action displays in the dark blue banner",
+            "match": {
+              "location": "Common_StepDefinitions.user_selects_an_action_and_verifies_the_name_of_the_action_displays_in_the_dark_blue_banner(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 28
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 29
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 22803496375,
+              "status": "passed"
+            },
+            "line": 31,
+            "name": "user  verifies that briefcase events include the chmSilentAssign DPF",
+            "match": {
+              "location": "CreateStaffAssignments_StepDefinitions.user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "caseNumber",
+                  "courtId"
+                ],
+                "line": 32
+              },
+              {
+                "cells": [
+                  "test",
+                  "test"
+                ],
+                "line": 33
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 389825853500,
+              "status": "passed"
+            },
+            "line": 35,
+            "name": "User creates a new staff assignment",
+            "match": {
+              "location": "CreateStaffAssignments_StepDefinitions.user_creates_a_new_staff_assignment(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 36
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 37
+              }
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 338447005583,
+              "status": "passed"
+            },
+            "line": 39,
+            "name": "User edits existing staff assignment",
+            "match": {
+              "location": "CreateStaffAssignments_StepDefinitions.user_edits_existing_staff_assignment(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 40
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 41
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 47485824625,
+              "status": "passed"
+            },
+            "line": 43,
+            "name": "User terminates the assignment",
+            "match": {
+              "location": "CreateStaffAssignments_StepDefinitions.user_terminates_the_assignment(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 44
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 45
+              }
+            ],
+            "keyword": "And "
           }
         ],
         "tags": [
           {
             "line": 2,
-            "name": "@AMB-3155"
+            "name": "@p"
+          },
+          {
+            "line": 3,
+            "name": "@Smoke"
           }
         ]
       }
     ],
-    "name": "Display other submissions that have been made in a case on referral detail page",
+    "name": "Display Actions Panel and actions",
     "description": "",
-    "id": "display-other-submissions-that-have-been-made-in-a-case-on-referral-detail-page",
+    "id": "display-actions-panel-and-actions",
     "keyword": "Feature",
-    "uri": "CATEGORIES/OTHER_SUBMISSIONS.feature"
+    "uri": "CATEGORIES/Progress/chmAssign.feature"
   }
 ]

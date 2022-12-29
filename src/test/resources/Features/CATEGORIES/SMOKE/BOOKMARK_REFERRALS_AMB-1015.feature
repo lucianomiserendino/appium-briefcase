@@ -6,17 +6,16 @@ Scenario:
 	The following scenarios need to be automated:
 	
 
-	Given I am logged into Briefcase 
-		|environment|userName| password |courtId|
-		|test       |test    | test     |test   |
+	#Given I am logged into Briefcase 
+	#	|environment|userName| password |courtId|
+		#|test       |test    | test     |test   |
 		
 	Then I select a user 
 		|userType   |personrole        |jud     |
 		|judge      |Appellate Judges  |test    |
 		
 	Then User verifies there's no bookmark icon displays in the navigation and on the dashboard 
-	#When User selects a  "Test Automation" 
-		Then User selects random judge category
+	Then User selects random judge category
 		|courtId|
 		|test   |
 	Then user  taps on the bookmark icon next to a case  and verifies the bookmark icon displays in the navigation and on the dashboard page. 

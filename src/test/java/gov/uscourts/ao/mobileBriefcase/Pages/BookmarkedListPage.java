@@ -9,7 +9,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
@@ -30,16 +29,14 @@ public class BookmarkedListPage extends AppiumPageFactory {
 	public static List<WebElement> cases;
 
 	public void getBookmarkedReferrals() {
-		try {
-			if (bookOnDashboard.size() > 0) {
-				tap(bookOnDashboard.get(bookOnDashboard.size() - 1));
-				getBookmarkIcons();
-			} else {
-				assertEquals(0, bookOnDashboard.size());
-			}
-		} catch (NoSuchElementException e) {
-			e.getMessage();
+		if (bookOnDashboard.size() > 0) {
+			tap(bookOnDashboard.get(bookOnDashboard.size() - 1));
+
+			getBookmarkIcons();
+		} else {
+			assertEquals(0, bookOnDashboard.size());
 		}
+
 		tap(dashboard);
 	}
 
@@ -69,5 +66,6 @@ public class BookmarkedListPage extends AppiumPageFactory {
 		tap(dashboard);
 		assertEquals(bookmarkedReferral, bookOnDashboard.size());
 	}
+
 
 }

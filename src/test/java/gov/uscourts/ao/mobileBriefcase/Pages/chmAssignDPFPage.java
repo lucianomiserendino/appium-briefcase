@@ -40,21 +40,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
-import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
-import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class chmAssignDPFPage extends AppiumPageFactory {
@@ -86,11 +81,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='OptionList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static List<WebElement> optionList;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[13]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
-	public static WebElement commentField1;
-
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"DocumentList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[15]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
-	public static WebElement commentField2;
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[contains(@name, 'Comments')]/following:: XCUIElementTypeTextView[1]")
+	public static WebElement commentField;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"Calendar\"]/XCUIElementTypeOther[4]/XCUIElementTypeOther[row]/XCUIElementTypeOther[column]")
 	public static WebElement calendarColumn;
@@ -110,6 +102,9 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "XCUIElementTypeStaticText[contains(@name, 'Assignments')]")
 	public static List<WebElement> assignments;
 
+	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Due')]/following::XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeButton")
+	public static WebElement dueDate;
+
 	public static String selectADate(chmAssign assign) {
 
 		// String date = "";
@@ -123,10 +118,10 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	public void getCaseDetails(String caseNumber, String category, List<UserInputData> userInputData) {
 
 		elId += getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
-		cha_ju_pe_id +=  DocumentPage.get_pe_id( userInputData) ;
+		cha_ju_pe_id += DocumentPage.get_pe_id(userInputData);
 		cmr_cs_caseid += CommonPages.getCaseID(caseNumber, userInputData);
 
-		cmr_cyv_code +=CommonPages.cmr_cyv_code(category,cmr_cs_caseid, userInputData).trim();
+		cmr_cyv_code += CommonPages.cmr_cyv_code(category, cmr_cs_caseid, userInputData).trim();
 
 	}
 
@@ -551,8 +546,10 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		String assignedDate = selectADate(chmAssign.ASSIGNED_DATE);
 
 		/** STEP 4 --Select Assignment Due Date */
-		String assignmentDueDate = selectADate(chmAssign.ASSIGNMENT_DUE);
-
+		String assignmentDueDate ="";
+		if (Actions.isDisplayed(dueDate) == true) {
+			assignmentDueDate= selectADate(chmAssign.ASSIGNMENT_DUE);
+		}
 		/** STEP 4 --Select Assignment Due Date */
 		// String draftPrepared = selectADate(chmAssign.DRAFT_PREPARED);
 
@@ -563,15 +560,16 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 		String assignment = getChmAssign(chmAssign.ASSIGNMENT, "text");
 
-		try {
-			commentField1.sendKeys("$$$$$$$$$$$$$");
-		} catch (NoSuchElementException e) {
+//		try {
+//			commentField1.sendKeys("$$$$$$$$$$$$$");
+//		} catch (NoSuchElementException e) {
 
-			if (!commentField2.getText().isEmpty()) {
-				commentField2.clear();
-				commentField2.sendKeys("$$$$$$$$$$$$$");
-			}
+		if (!commentField.getText().isEmpty()) {
+			commentField.clear();
 		}
+		commentField.sendKeys("$$$$$$$$$$$$$");
+		// }
+
 		switch (assign) {
 		case CREATE:
 			contains(apply).click();

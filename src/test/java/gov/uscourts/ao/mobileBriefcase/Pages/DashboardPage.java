@@ -3,7 +3,6 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.BRIEFCASE_TARGET_ONLY_N;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.BRIEFCASE_TARGET_ONLY_Y;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.NON_ORALLY_ARGUED_CASES;
@@ -17,7 +16,6 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForVisibilityOfElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getCellCount;
@@ -37,18 +35,18 @@ import org.openqa.selenium.WebElement;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
-import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class DashboardPage extends Base {
-	
+
 	public DashboardPage() {
 		initElements(new AppiumFieldDecorator(driver), this);
 	}
+
 	CommonPages page = new CommonPages();
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name=\"Pending Tasks\"])[2]/following::XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
@@ -97,7 +95,7 @@ public class DashboardPage extends Base {
 	public void getRefCategories(List<UserInputData> userInputData) {
 
 		List<String> dbReferralCategories = executeQuery(
-				getID(Queries.REFERRAL_CATEGORIES, DocumentPage.get_pe_id( userInputData)), userInputData);
+				getID(Queries.REFERRAL_CATEGORIES, DocumentPage.get_pe_id(userInputData)), userInputData);
 
 		sort(dbReferralCategories);
 
@@ -177,7 +175,6 @@ public class DashboardPage extends Base {
 						replace(getID(BRIEFCASE_TARGET_ONLY_N, pe_id), "CYV_CATEGORY", dbNonOrgCases), userInputData);
 
 				performPageLoad(driver);
-				//performPageLoad(driver);
 				List<String> UInonOrallyarguedCases = asList((getNumOfDisplayedCases(total)));
 
 				String si_value = CommonPages.getSiValue("briefcaseTargetOnly", userInputData);
@@ -192,8 +189,8 @@ public class DashboardPage extends Base {
 					assertEquals(dbNonOrgCases + "-----RECORD COUNT MISMATCH-----", briefcaseTargReferral_n,
 							UInonOrallyarguedCases);
 				}
-				//tap(dashboard);
-				dashboard.click();
+				Page.waitForVisibilityOfElement(dashboard, driver).click();
+				// dashboard.click();
 				Utility.scroll(categories, "up");
 
 			}
@@ -212,7 +209,7 @@ public class DashboardPage extends Base {
 	public void get_lbrrpt_CATEGORY(String cyvCategory, String PE_RT_CODE, String judgeName,
 			List<UserInputData> userInputData) {
 		performPageLoad(driver);
-		String peID = DocumentPage.get_pe_id( userInputData) ;
+		String peID = DocumentPage.get_pe_id(userInputData);
 
 		List<String> cmr_cyv_code = executeQuery(getID(lbrrpt_CATEGORY, peID), userInputData);
 		if (cmr_cyv_code.contains(cyvCategory)) {

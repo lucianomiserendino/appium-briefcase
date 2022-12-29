@@ -82,7 +82,7 @@ public abstract class Base implements iOSCapabilities {
 			SetCapabilitiy(AUTOMATION_NAME);
 			SetCapabilitiy(DEVICE_NAME);
 			SetCapabilitiy(BROWSER_NAME);
-			getDriver();
+			driver = new IOSDriver(new URL(getProperty(LOCAL_HOST)), capabilities);
 
 		} catch (Exception e) {
 			e.printStackTrace();

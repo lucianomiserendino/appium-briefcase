@@ -3,10 +3,12 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.support.PageFactory.initElements;
 
 import java.util.List;
+import java.util.Random;
 
 import org.openqa.selenium.WebElement;
 
@@ -45,63 +47,66 @@ public class CaseDetailPage extends Base {
 	@iOSXCUITFindBy(id = "Add Internal Note")
 	public static WebElement addNote;
 
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name=\"GroupIcon\"])[1]/preceding::XCUIElementTypeStaticText[@name=\"\"]")
+	public static List<WebElement> arrow;
+
 	public void ifInternalNoteExists(String referral, List<UserInputData> userInputData) {
 		String siVal = CommonPages.getSiValue("briefcaseInternalNote", userInputData);
-		try {
-			if (siVal.equalsIgnoreCase("y")) {
-				String text = Actions.getText(note);
-				tap(note);
-				Page.performPageLoad(driver);
-				assertTrue(isDisplayed(cancelBtn));
-				assertTrue(isDisplayed(desc));
-				assertTrue(isDisplayed(applyBtn));
-				clearText(text);
-				assertTrue(isDisplayed(numOfChar));
-				String newNote = getRandomText();
-				int charLeft = getLength(newNote);
-				sendKeys(textField, newNote);
-				assertTextIsDisplayed("Characters left: " + charLeft + "");
-				tap(applyBtn);
-				Page.performPageLoad(driver);
-				assertTextIsDisplayed(newNote);
-				driver.navigate().back();
-				assertTrue(categoryScreenNote(referral).equals(newNote));
 
-			} else {
-				throw new RuntimeException(
-						"----------->PLEASE SET THE SITE TABLE VARIABLE \"BRIEFCASETARGETONLY\" TO \"Y\"");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (siVal.equalsIgnoreCase("y")) {
+			String text = Actions.getText(note);
+			tap(note);
+			Page.performPageLoad(driver);
+			assertTrue(isDisplayed(cancelBtn));
+			assertTrue(isDisplayed(desc));
+			assertTrue(isDisplayed(applyBtn));
+			clearText(text);
+			assertTrue(isDisplayed(numOfChar));
+			String newNote = randomCharArray(201);
+			sendKeys(textField, newNote);
+			assertTrue("THE CHARACTER LIMIT IS 200: ", textField.getText().length() == 200);
+			assertTrue(Actions.contains("Characters left: ").getText().split(": ")[1].trim().equals("0"));
+			textField.clear();
+			String txt = getRandomText();
+			sendKeys(textField, txt);
+			tap(applyBtn);
+			Page.performPageLoad(driver);
+			assertTextIsDisplayed(txt);
+			driver.navigate().back();
+			assertTrue(categoryScreenNote(referral).equals(txt));
+
+		} else {
+			assertTrue(arrow.size() == 2);
 
 		}
 
 	}
 
-	public void clearText(String text) {
+	public static void clearText(String text) {
 		String existingNote = textField.getAttribute("value");
 
 		if (text.trim().equals("Add Internal Note")) {
-			assertTrue(existingNote.length() == 0);
-		} else {
+			assertNull(
+					"CASE INFORMATION SECTION: IF THERE IS ALREADY A NOTE, THE NOTE SHOULD BE DISPLAYED INSTEAD OF \"ADD INTERNAL NOTE\".",
+					existingNote);
 
-			assertTrue(existingNote.contains(text));
+		} else {
 			textField.clear();
 		}
 
 	}
 
-	public String categoryScreenNote(String referral) {
+	public static String categoryScreenNote(String referral) {
 		return Actions.findElementBy(Locator.XPATH,
 				Actions.containsElement(referral) + "/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
 				.getText();
 	}
 
-	public String getRandomText() {
+	public static String getRandomText() {
 		return "Auto-Test: " + Utility.getStreamOfRandomInts();
 	}
 
-	public int getLength(String txt) {
+	public static int getLength(String txt) {
 		return 200 - txt.length();
 	}
 
@@ -109,8 +114,24 @@ public class CaseDetailPage extends Base {
 		return "//XCUIElementTypeStaticText[@name='Characters left: " + charLeft + "']";
 	}
 
-	public void assertTextIsDisplayed(String txt) {
+	public static void assertTextIsDisplayed(String txt) {
 		assertTrue(Actions.isDisplayed(Locator.XPATH, Actions.containsElement(txt)));
+	}
+
+	public static String randomCharArray(int len) {
+
+		String randomChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz" + "0123456789";
+
+		StringBuilder b = new StringBuilder();
+
+		for (int i = 0; i < len; i++) {
+			int randIdx = new Random().nextInt(randomChar.length());
+			char randChar = randomChar.charAt(randIdx);
+			b.append(randChar);
+		}
+
+		return b.toString();
+
 	}
 
 }
