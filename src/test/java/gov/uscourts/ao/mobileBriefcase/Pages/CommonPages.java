@@ -333,8 +333,27 @@ public class CommonPages extends Base {
 
 	}
 
-	public static String getSiValue(String value, List<UserInputData> pacerInputData) {
-		return getAllColumns(getID(SITE_TABLE_VARIABLE_VALUE, value), pacerInputData);
+	public static String getSiValue(SiteTableVariable var, List<UserInputData> pacerInputData) {
+		String br = "briefcase";
+		String value = "";
+		switch (var) {
+		case targetOnly:
+			value = "TargetOnly";
+			break;
+		case internalNote:
+			value = "InternalNote";
+			break;
+		case oralArgsView:
+			value = "OralArgsView";
+			break;
+		case useCourtSession:
+			value = "UseCourtSession";
+			break;
+		default:
+			break;
+		}
+
+		return getAllColumns(getID(SITE_TABLE_VARIABLE_VALUE, br + value), pacerInputData);
 	}
 
 	public static String getSiValue(String dbType, String value) {
@@ -446,8 +465,6 @@ public class CommonPages extends Base {
 
 		}
 	}
-	
-	
 
 	public enum Case {
 		CASE_YEAR, CASE_NUMBER
@@ -462,4 +479,8 @@ public class CommonPages extends Base {
 		PENDING, PETITION, CASES_ON, MOTION, SCREENING, REFERENCE, TEST_AUTOMATION, APPLICATION_FOR_COA, JURISDICTIONAL
 	}
 
+	public enum SiteTableVariable {
+
+		targetOnly, internalNote, oralArgsView, useCourtSession
+	}
 }

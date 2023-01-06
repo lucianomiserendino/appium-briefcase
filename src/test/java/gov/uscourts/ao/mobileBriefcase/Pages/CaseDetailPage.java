@@ -12,6 +12,7 @@ import java.util.Random;
 
 import org.openqa.selenium.WebElement;
 
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
@@ -51,7 +52,7 @@ public class CaseDetailPage extends Base {
 	public static List<WebElement> arrow;
 
 	public void ifInternalNoteExists(String referral, List<UserInputData> userInputData) {
-		String siVal = CommonPages.getSiValue("briefcaseInternalNote", userInputData);
+		String siVal = CommonPages.getSiValue(SiteTableVariable.internalNote, userInputData);
 
 		if (siVal.equalsIgnoreCase("y")) {
 			String text = Actions.getText(note);

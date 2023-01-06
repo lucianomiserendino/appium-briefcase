@@ -4,6 +4,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static java.util.Collections.sort;
@@ -47,10 +48,10 @@ public class DocumentPage extends Base {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[contains(@name, 'Applied Referrals')]")
 	public static List<WebElement> appliedRefs;
 
-	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[contains(@name, 'linked')]/preceding::XCUIElementTypeStaticText[@name='Viewed'][1]/preceding::XCUIElementTypeStaticText[contains(@name, '-')][1])")
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[contains(@name, 'linked')]/preceding::XCUIElementTypeStaticText[contains(@name, '-')][1])")
 	public static List<WebElement> targetCase;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Applied Referrals']/following::XCUIElementTypeStaticText[contains(@name, '-')]")
+	@iOSXCUITFindBy(xpath = "//*[@name='Applied Referrals' or @name='Associated Cases']/following::XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<WebElement> appliedCase;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Bookmark_Container']/preceding:: XCUIElementTypeStaticText[contains(@name, 'Panel:')]/preceding:: XCUIElementTypeStaticText[1]")
@@ -186,7 +187,7 @@ public class DocumentPage extends Base {
 	}
 
 	public static void getAppliedCase() {
-		CommonPages.getPanel(Panel.Applied_Referrals);
+		scrollDownIfNotDisplayed("//*[@name='Applied Referrals' or @name='Associated Cases']");
 	}
 
 	public String getRandomCase(Category cat) {
@@ -194,19 +195,22 @@ public class DocumentPage extends Base {
 		List<WebElement> element = null;
 
 		switch (cat) {
-		case RegularCase:
+		case judgeRegularCase:
 			element = regCaseNum;
 			break;
 
-		case TargetCase:
+		case targetCase:
 			element = targetCase;
 			break;
 
-		case AppliedCase:
-			CommonPages.getGroupIcons();
+		case appliedCase:
+			CommonPages page = new CommonPages();
+			page.getGroupIcons();
 			getAppliedCase();
-			element = appliedCase;
+			DocumentPage p = new DocumentPage();
+			element = p.appliedCase;
 			break;
+
 		case CaseOnCalendar:
 
 			element = caseOncalender;
@@ -219,7 +223,7 @@ public class DocumentPage extends Base {
 	}
 
 	public enum Category {
-		Referral_Category, Referral, Panel, RegularCase, TargetCase, AppliedCase, CaseOnCalendar
+		Referral_Category, Referral, Panel, judgeRegularCase, targetCase, appliedCase, CaseOnCalendar,
 	}
 
 }

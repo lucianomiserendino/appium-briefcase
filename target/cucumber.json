@@ -1,35 +1,39 @@
 [
   {
-    "line": 1,
+    "line": 2,
     "elements": [
       {
-        "line": 4,
+        "line": 5,
         "name": "",
-        "description": "\nIf there are records defined in the mbr_event table, \n     a collapsible panel entitled \"Actions\" should display, when expanded all the applicable actions should display.",
-        "id": "display-actions-panel-and-actions;",
+        "description": "",
+        "type": "background",
+        "keyword": "Background"
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 32993089791,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 34,
+        "name": "",
+        "description": "As a staff attorney user when entering an applied case number in the Search box and selecting \u0027On Device\u0027 ,\nthe user is directed to the target case referral detail page.\nThe user is not directed to the applied case.\nThe applied case can be selected from the target case.",
+        "id": "prevent-the-user-from-navigating-to-an-applied-case-referral-detail-page-from-search;",
         "type": "scenario",
         "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "duration": 25042902500,
+              "duration": 28507179708,
               "status": "passed"
             },
-            "comments": [
-              {
-                "line": 9,
-                "value": "#Given I am logged into Briefcase"
-              },
-              {
-                "line": 10,
-                "value": "#\t|environment|userName| password |courtId|"
-              },
-              {
-                "line": 11,
-                "value": "#\t|test       |test    | test     |test   |"
-              }
-            ],
-            "line": 14,
+            "line": 40,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -39,222 +43,103 @@
                 "cells": [
                   "userType",
                   "personrole",
-                  "jud"
-                ],
-                "line": 15
-              },
-              {
-                "cells": [
-                  "judge",
-                  "Appellate Judges",
-                  "test"
-                ],
-                "line": 16
-              }
-            ],
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 10622445875,
-              "status": "passed"
-            },
-            "line": 18,
-            "name": "User selects random judge category",
-            "match": {
-              "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "courtId"
-                ],
-                "line": 19
-              },
-              {
-                "cells": [
-                  "test"
-                ],
-                "line": 20
-              }
-            ],
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 75012658125,
-              "status": "passed"
-            },
-            "line": 22,
-            "name": "User selects random case number",
-            "match": {
-              "location": "Document_StepDefinitions.user_selects_random_case_number(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "courtId"
-                ],
-                "line": 23
-              },
-              {
-                "cells": [
-                  "test"
-                ],
-                "line": 24
-              }
-            ],
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 166675463458,
-              "status": "passed"
-            },
-            "line": 26,
-            "name": "User  selects an action and verifies the name of the action displays in the dark blue banner",
-            "match": {
-              "location": "Common_StepDefinitions.user_selects_an_action_and_verifies_the_name_of_the_action_displays_in_the_dark_blue_banner(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "courtId"
-                ],
-                "line": 28
-              },
-              {
-                "cells": [
-                  "test"
-                ],
-                "line": 29
-              }
-            ],
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 22803496375,
-              "status": "passed"
-            },
-            "line": 31,
-            "name": "user  verifies that briefcase events include the chmSilentAssign DPF",
-            "match": {
-              "location": "CreateStaffAssignments_StepDefinitions.user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "caseNumber",
-                  "courtId"
-                ],
-                "line": 32
-              },
-              {
-                "cells": [
-                  "test",
-                  "test"
-                ],
-                "line": 33
-              }
-            ],
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 389825853500,
-              "status": "passed"
-            },
-            "line": 35,
-            "name": "User creates a new staff assignment",
-            "match": {
-              "location": "CreateStaffAssignments_StepDefinitions.user_creates_a_new_staff_assignment(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "courtId"
-                ],
-                "line": 36
-              },
-              {
-                "cells": [
-                  "test"
-                ],
-                "line": 37
-              }
-            ],
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "duration": 338447005583,
-              "status": "passed"
-            },
-            "line": 39,
-            "name": "User edits existing staff assignment",
-            "match": {
-              "location": "CreateStaffAssignments_StepDefinitions.user_edits_existing_staff_assignment(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "courtId"
-                ],
-                "line": 40
-              },
-              {
-                "cells": [
-                  "test"
+                  "stf"
                 ],
                 "line": 41
+              },
+              {
+                "cells": [
+                  "stf",
+                  "Staff Attorneys",
+                  "test"
+                ],
+                "line": 42
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 47485824625,
+              "duration": 6453010500,
               "status": "passed"
             },
-            "line": 43,
-            "name": "User terminates the assignment",
+            "line": 45,
+            "name": "User selects random stf Aty category",
             "match": {
-              "location": "CreateStaffAssignments_StepDefinitions.user_terminates_the_assignment(UserInputData\u003e)"
+              "location": "Document_StepDefinitions.user_selects_random_stf_Aty_category(UserInputData\u003e)"
             },
             "rows": [
               {
                 "cells": [
                   "courtId"
                 ],
-                "line": 44
+                "line": 46
               },
               {
                 "cells": [
                   "test"
                 ],
-                "line": 45
+                "line": 47
               }
             ],
-            "keyword": "And "
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 25078712125,
+              "status": "passed"
+            },
+            "line": 49,
+            "name": "User selects random target case",
+            "match": {
+              "location": "Document_StepDefinitions.user_selects_random_target_case()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 30508139333,
+              "status": "passed"
+            },
+            "line": 51,
+            "name": "User selects random applied case",
+            "match": {
+              "location": "Document_StepDefinitions.user_selects_random_applied_case()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 30996525250,
+              "error_message": "java.lang.AssertionError: ------------------\u003e THE USER IS DIRECTED TO THE APPLIED CASE DETAIL PAGE, SHOULD BE DIRECTED TO THE TARGET CASE DETAIL PAGE\n\tat org.junit.Assert.fail(Assert.java:89)\n\tat org.junit.Assert.assertTrue(Assert.java:42)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.AppliedCasesPage.appliedCaseSearch(AppliedCasesPage.java:184)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.AppliedCases_StepDefinitions.user_taps_on_magnifying_glass_icon_and_searches_for_applied_case_selects_On_Device_option_verifies_that_the_user_is_directed_to_the_target_case_referral_detail_page(AppliedCases_StepDefinitions.java:58)\n\tat ✽.Then User taps on magnifying glass icon and searches for applied case, selects On Device option \u0026 verifies that the user is directed to the target case referral detail page(CATEGORIES/Progress/APPLIED_CASES_SEARCH.feature:53)\n",
+              "status": "failed"
+            },
+            "line": 53,
+            "name": "User taps on magnifying glass icon and searches for applied case, selects On Device option \u0026 verifies that the user is directed to the target case referral detail page",
+            "match": {
+              "location": "AppliedCases_StepDefinitions.user_taps_on_magnifying_glass_icon_and_searches_for_applied_case_selects_On_Device_option_verifies_that_the_user_is_directed_to_the_target_case_referral_detail_page()"
+            },
+            "keyword": "Then "
           }
         ],
         "tags": [
           {
-            "line": 2,
-            "name": "@p"
-          },
-          {
-            "line": 3,
-            "name": "@Smoke"
+            "line": 33,
+            "name": "@AMB-3338"
           }
         ]
       }
     ],
-    "name": "Display Actions Panel and actions",
+    "name": "Prevent the user from navigating to an applied case referral detail page from Search",
     "description": "",
-    "id": "display-actions-panel-and-actions",
+    "id": "prevent-the-user-from-navigating-to-an-applied-case-referral-detail-page-from-search",
     "keyword": "Feature",
-    "uri": "CATEGORIES/Progress/chmAssign.feature"
+    "uri": "CATEGORIES/Progress/APPLIED_CASES_SEARCH.feature",
+    "tags": [
+      {
+        "line": 1,
+        "name": "@Regression"
+      }
+    ]
   }
 ]

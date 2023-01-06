@@ -7,6 +7,7 @@ import java.util.List;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.CalendarPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class CalendaredCases_StepDefinitions {
@@ -19,8 +20,8 @@ public class CalendaredCases_StepDefinitions {
 	public void user_verifies_that_the_main_headers_display_Month_Year_and_sorted_accordingly() {
 		page = new CalendarPage();
 		List<UserInputData> userInputData = null;
-		oralArgView = page.getbriefcaseOralArgsView("briefcaseOralArgsView", userInputData);
-		courtSession = page.getbriefcaseOralArgsView("briefcaseUseCourtSession", userInputData);
+		oralArgView = page.getbriefcaseOralArgsView(SiteTableVariable.oralArgsView, userInputData);
+		courtSession = page.getbriefcaseOralArgsView(SiteTableVariable.useCourtSession, userInputData);
 
 		page.isSortedByMonthAndYear();
 
@@ -29,9 +30,6 @@ public class CalendaredCases_StepDefinitions {
 	@Then("^User verifies that there're Dates and Day of the week under main header$")
 	public void user_verifies_that_there_re_Dates_and_Day_of_the_week_under_main_header() {
 		page = new CalendarPage();
-		List<UserInputData> userInputData = null;
-		oralArgView = page.getbriefcaseOralArgsView("briefcaseOralArgsView", userInputData);
-		courtSession = page.getbriefcaseOralArgsView("briefcaseUseCourtSession", userInputData);
 		hearingDate += page.getSubHeader(oralArgView, courtSession);
 	}
 
@@ -40,7 +38,7 @@ public class CalendaredCases_StepDefinitions {
 		page = new CalendarPage();
 		List<UserInputData> userInputData = null;
 		assertTrue("CASES NOT APPEARING UNDER THE CORRECT DATE BUCKET: " + hearingDate.toUpperCase(),
-				page.selectRandomCase(page.caseN,hearingDate, userInputData));
+				page.selectRandomCase(page.caseN, hearingDate, userInputData));
 	}
 
 }

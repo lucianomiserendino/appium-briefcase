@@ -1,5 +1,5 @@
 Feature:  Collapsible Panels in the Cases on Calendar Category
-@AMB-3196 @AMB-3275 @AMB-3284
+@AMB-1249 @AMB-3196 @AMB-3275 @AMB-3284
 
 
 Scenario: As a user when viewing the 'Cases on Calendar' referral category the following is displayed:

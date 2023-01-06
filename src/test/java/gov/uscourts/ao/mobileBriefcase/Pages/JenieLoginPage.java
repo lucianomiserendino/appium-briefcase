@@ -21,8 +21,8 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
-import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSBy;
@@ -96,6 +96,9 @@ public class JenieLoginPage extends Base {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextField")
 	public static WebElement searchTextField;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Court not set']")
+	public static WebElement setCourt;
+
 	public void getEnvironment(Environment environment) {
 		switch (environment) {
 
@@ -131,6 +134,9 @@ public class JenieLoginPage extends Base {
 	}
 
 	public void getServer(String server) {
+		if (setCourt.isDisplayed()) {
+			setCourt.click();
+		}
 		contains(server).click();
 		performPageLoad(driver);
 

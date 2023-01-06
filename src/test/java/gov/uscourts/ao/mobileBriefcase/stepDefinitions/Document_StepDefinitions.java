@@ -15,6 +15,7 @@ public class Document_StepDefinitions {
 	public static String targetCase;
 	public static String appliedCase;
 	public static String cmr_cyv_code;
+
 	@Then("^User selects random stf Aty category$")
 	public void user_selects_random_stf_Aty_category(List<UserInputData> userInputData) {
 		page = new DocumentPage();
@@ -30,7 +31,7 @@ public class Document_StepDefinitions {
 	@Then("^User selects random case number$")
 	public void user_selects_random_case_number(List<UserInputData> userInputData) {
 		page = new DocumentPage();
-		regularCase = page.getRandomCase(Category.RegularCase);
+		regularCase = page.getRandomCase(Category.judgeRegularCase);
 	}
 
 	@Then("^User selects random document$")
@@ -43,14 +44,16 @@ public class Document_StepDefinitions {
 
 	@Then("^User selects random target case$")
 	public void user_selects_random_target_case() {
-		targetCase = page.getRandomCase(Category.TargetCase);
+		page = new DocumentPage();
+		targetCase = page.getRandomCase(Category.targetCase);
 	}
 
 	@Then("^User selects random applied case$")
 	public void user_selects_random_applied_case() {
-		appliedCase = page.getRandomCase(Category.AppliedCase);
+		page = new DocumentPage();
+		appliedCase = page.getRandomCase(Category.appliedCase);
 
 	}
-	
+
 
 }

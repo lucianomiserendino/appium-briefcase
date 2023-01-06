@@ -16,6 +16,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.Category;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage.Sort;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -298,7 +299,7 @@ public class CalendarPage extends AppiumPageFactory {
 		return string;
 	}
 
-	public String getbriefcaseOralArgsView(String siVal, List<UserInputData> table) {
+	public String getbriefcaseOralArgsView(SiteTableVariable siVal, List<UserInputData> table) {
 		return CommonPages.getSiValue(siVal, table).trim();
 
 	}

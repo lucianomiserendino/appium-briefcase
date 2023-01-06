@@ -40,6 +40,7 @@ Scenario: Category and case selection
 	Then User selects random stf Aty category
 		|courtId|
 		|test   |
+		
 	
 @selectRandomJudgeCategory
     Scenario: Random category and case selection
@@ -70,9 +71,6 @@ Scenario: Category and case selection
 			
 @reopenTheApp
 	Scenario: Closing and reopening Briefcase
-		Then I select a user 
-		|userType   |personrole        |jud      |
-		|judge      |Appellate Judges  |test     |
 		Then User closes and reopens the app
 
 @selectRandomDocument
@@ -87,4 +85,7 @@ Scenario: Category and case selection
  @selectRandomAppliedCase  
       Scenario: Random applied case selection    
         Then User selects random applied case
+        
+  
+
         

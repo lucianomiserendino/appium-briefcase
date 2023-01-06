@@ -546,9 +546,9 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		String assignedDate = selectADate(chmAssign.ASSIGNED_DATE);
 
 		/** STEP 4 --Select Assignment Due Date */
-		String assignmentDueDate ="";
+		String assignmentDueDate = "";
 		if (Actions.isDisplayed(dueDate) == true) {
-			assignmentDueDate= selectADate(chmAssign.ASSIGNMENT_DUE);
+			assignmentDueDate = selectADate(chmAssign.ASSIGNMENT_DUE);
 		}
 		/** STEP 4 --Select Assignment Due Date */
 		// String draftPrepared = selectADate(chmAssign.DRAFT_PREPARED);

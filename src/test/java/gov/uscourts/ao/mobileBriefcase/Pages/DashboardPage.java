@@ -33,6 +33,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
@@ -62,6 +63,9 @@ public class DashboardPage extends Base {
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public static List<WebElement> navIcons;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Dashboard']")
+	public static WebElement dashboard;
 
 	public String verifyIfPendingTasksAreDisplayed() {
 
@@ -177,7 +181,7 @@ public class DashboardPage extends Base {
 				performPageLoad(driver);
 				List<String> UInonOrallyarguedCases = asList((getNumOfDisplayedCases(total)));
 
-				String si_value = CommonPages.getSiValue("briefcaseTargetOnly", userInputData);
+				String si_value = CommonPages.getSiValue(SiteTableVariable.targetOnly, userInputData);
 
 				if (si_value.equals("y")) {
 
@@ -189,8 +193,7 @@ public class DashboardPage extends Base {
 					assertEquals(dbNonOrgCases + "-----RECORD COUNT MISMATCH-----", briefcaseTargReferral_n,
 							UInonOrallyarguedCases);
 				}
-				Page.waitForVisibilityOfElement(dashboard, driver).click();
-				// dashboard.click();
+				 dashboard.click();
 				Utility.scroll(categories, "up");
 
 			}

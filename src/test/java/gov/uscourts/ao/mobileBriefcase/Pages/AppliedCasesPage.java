@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.dashboard;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.clicksOn;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
@@ -21,12 +20,12 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -52,16 +51,16 @@ public class AppliedCasesPage extends Base {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Viewed']/following::XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<WebElement> redBullet;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[3]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[2]")
 	public static WebElement searchIcon;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextField")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Search by Case Number or Party Name:']/following:: XCUIElementTypeTextField[1]")
 	public static WebElement searchTextField;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='SEARCH']")
 	public static WebElement searchBTN;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='On Device']")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='On Device']")
 	public static WebElement on_device;
 
 	public void getBookmarkedReferral(String caseNumber) {
@@ -137,13 +136,12 @@ public class AppliedCasesPage extends Base {
 
 	}
 
-
 	public void changeSiValue(String val, List<UserInputData> userInputData) {
 		CommonPages.setValue(val, "briefcaseTargetOnly", userInputData);
 	}
 
 	public String getSiVal(List<UserInputData> userInputData) {
-		return CommonPages.getSiValue("briefcaseTargetOnly", userInputData);
+		return CommonPages.getSiValue(SiteTableVariable.targetOnly, userInputData);
 	}
 
 	public void getSiteTableVariable(String category, List<UserInputData> userInputData) {
@@ -169,24 +167,28 @@ public class AppliedCasesPage extends Base {
 		}
 	}
 
-	public void appliedCaseSearch(String targetCase,String applCase ,List<UserInputData> userInputData) {
+	public void appliedCaseSearch(String targetCase, String applCase, List<UserInputData> userInputData) {
 		try {
 			if (getSiVal(userInputData).equals("y")) {
 
-				clicksOn(searchIcon);
-
+				searchIcon.click();
 				sendKeys(searchTextField, applCase);
-				clicksOn(searchBTN);
-				clicksOn(on_device);
+				searchBTN.click();
+				performPageLoad(driver);
+				on_device.click();
+
 				performPageLoad(driver);
 
 				Actions.findElement(By.xpath(Actions.containsElement(applCase))).click();
-				assertTrue("------------------> THE USER IS NOT DIRECTED TO THE TARGET CASE REFERRAL DETAIL PAGE", Actions.isDisplayed(
-						Locator.XPATH, Actions.containsElement("Sync all documents for case #" + targetCase)));
-				
+
+				assertTrue(
+						"------------------> THE USER IS DIRECTED TO THE APPLIED CASE DETAIL PAGE, SHOULD BE DIRECTED TO THE TARGET CASE DETAIL PAGE",
+						Actions.isDisplayed(Locator.XPATH,
+								Actions.containsElement("Sync all documents for case #" + targetCase)));
 
 			} else {
-				throw new RuntimeException("----------->PLEASE SET THE SITE TABLE VARIABLE \"BRIEFCASETARGETONLY\" TO \"Y\"");
+				throw new RuntimeException(
+						"----------->PLEASE SET THE SITE TABLE VARIABLE \"BRIEFCASETARGETONLY\" TO \"Y\"");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -265,15 +265,15 @@ public class Utility extends Base {
 	}
 
 	public static String clickOnNumberInRange(List<WebElement> value) {
-//		String text = "";
-//		int index = getRandomNumberInRange(1, value.size() - 1);
-//		text += value.get(index).getText().trim();
-//		value.get(index).click();
-//		return text;
 		String text = "";
-		int index = getRandomInt(value.size());
-		text += value.get(1).getText().trim();
-		value.get(1).click();
+		int index = getRandomNumberInRange(1, value.size() - 1);
+		text += value.get(index).getText().trim();
+		value.get(index).click();
+//		return text;
+//		String text = "";
+//		int index = getRandomInt(value.size());
+//		text += value.get(1).getText().trim();
+//		value.get(1).click();
 		return text;
 	}
 
