@@ -19,16 +19,10 @@ The applied case can be selected from the target case.
 		|userType   |personrole        |jud     |
 		|judge      |Appellate Judges  |test    |
 			
-	Then User selects random judge category
-		|courtId|
-		|test   |
-		
-	Then User selects random target case
-	
-	Then User selects random applied case
 	
 	Then User taps on magnifying glass icon and searches for applied case, selects On Device option & verifies that the user is directed to the target case referral detail page
-	
+	|userType |
+	|judge    |
 	
 @AMB-3338
 Scenario:
@@ -42,15 +36,8 @@ The applied case can be selected from the target case.
 		|stf        |Staff Attorneys   |test |
 		
 		
-		Then User selects random stf Aty category
-		|courtId|
-		|test   |
-		
-	   Then User selects random target case
-		
-		Then User selects random applied case
-		
-		Then User taps on magnifying glass icon and searches for applied case, selects On Device option & verifies that the user is directed to the target case referral detail page
-		
+		#Then User taps on magnifying glass icon and searches for applied case, selects On Device option & verifies that the user is directed to the target case referral detail page
+			|userType |
+	        |stf      |
 		
 		

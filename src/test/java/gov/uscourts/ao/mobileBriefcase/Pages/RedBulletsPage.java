@@ -48,4 +48,5 @@ public class RedBulletsPage extends AppiumPageFactory {
 		return new Integer(
 				split(Page.waitForVisibilityOfElement(totalNumOfNewReferrals, driver).getText(), "N", 0).trim());
 	}
+
 }

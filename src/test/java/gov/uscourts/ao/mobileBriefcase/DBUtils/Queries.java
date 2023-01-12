@@ -76,9 +76,8 @@ public class Queries {
 			+ "smr_mrc_id = SMR_MRC_ID  and\n" + "smr_id = cmd_smr_id and cmd_doc_category = 'CMD_DOC_CATEGORY'";
 
 	public static final String CASE_ID = "SELECT cs_caseid FROM case WHERE cs_year = 'CS_YEAR' and cs_number = 'CS_NUMBER'";
-	
-	public static final String CASE_NUMBER = "select cs_year||\"-\"||cs_number case_num FROM case WHERE cs_caseid='CS_CASEID'";
 
+	public static final String CASE_NUMBER = "select cs_year||\"-\"||cs_number case_num FROM case WHERE cs_caseid='CS_CASEID'";
 
 	public static final String DKT_ENTRY_ID = "SELECT first 1 distinct cmr_dktentryid FROM chm_mobile_referral WHERE cmr_cs_caseid = ?";
 
@@ -631,4 +630,21 @@ public class Queries {
 
 	public static final String CYV_CATEGORY = " select  field from chm_mobile_referral,chm_reftype_val where "
 			+ "cmr_ju_pe_id = CMR_JU_PE_ID  and cmr_cyv_code = cyv_code and  cmr_cs_caseid='CMR_CS_CASEID' order by cmr_ref_date asc";
+
+	/**
+	 * Query the site table where si_code = 'briefcaseTargetOnly' if the si_value =
+	 * 'y', run the following query:
+	 */
+	public static final String TARGET_CASES = "select distinct cs_caseid from chm_mobile_referral, "
+			+ "chm_reftype_val, case_dktentry, case where cmr_ju_pe_id = ? and cmr_cyv_code = cyv_code  and cyv_category = 'CYV_CATEGORY' and cmr_cs_caseid = cs_caseid and cmr_date_end is null and "
+			+ "cd_caseid = cmr_cs_caseid and cmr_dktentryid = cd_dktentryid and cd_case_ext  = 1";
+	/**
+	 * Query the site table where si_code = 'briefcaseTargetOnly' if the si_value =
+	 * 'n' or does not exist, run the following query:
+	 */
+	public static final String TARGET_AND_APPLIED_CASES = "select distinct cs_caseid from chm_mobile_referral, "
+			+ "chm_reftype_val, case_dktentry, case where cmr_ju_pe_id = ? and cmr_cyv_code = cyv_code  and cyv_category = 'CYV_CATEGORY' and cmr_cs_caseid = cs_caseid and cmr_date_end is null and "
+			+ "cd_caseid = cmr_cs_caseid and cmr_dktentryid = cd_dktentryid";
+	
+	
 }

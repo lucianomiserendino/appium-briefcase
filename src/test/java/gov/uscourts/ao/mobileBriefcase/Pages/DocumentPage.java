@@ -79,9 +79,9 @@ public class DocumentPage extends Base {
 
 	}
 
-	public void selectRandomSTFCategory(List<UserInputData> userInputData) {
+	public String selectRandomSTFCategory(List<UserInputData> userInputData) {
 
-		selectRandomItem(Actions.replace(Queries.SAs_ASSIGNMENT_CATEGORIES, "RA_PE_ID", "434"), xpath, userInputData);
+		return selectRandomItem(Actions.replace(Queries.SAs_ASSIGNMENT_CATEGORIES, "RA_PE_ID", "434"), xpath, userInputData);
 
 	}
 

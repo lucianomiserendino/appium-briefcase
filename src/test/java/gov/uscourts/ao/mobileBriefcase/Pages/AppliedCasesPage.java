@@ -1,31 +1,42 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASE_NUMBER;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.NON_ORALLY_ARGUED_CASES;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.TARGET_AND_APPLIED_CASES;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.TARGET_CASES;
 import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.dashboard;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
-import static org.junit.Assert.assertTrue;
+import static java.util.Collections.sort;
 import static org.openqa.selenium.support.PageFactory.initElements;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
+import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.Category;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Filter;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -63,6 +74,19 @@ public class AppliedCasesPage extends Base {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='On Device']")
 	public static WebElement on_device;
 
+	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Total')]")
+	public static WebElement total;
+
+	@iOSXCUITFindBy(id = "Categories")
+	public static WebElement categories;
+
+	static String dbAppliedCase = "";
+	public static String category = "";
+	String targetReferral = "";
+	String uiAppliedCase = "";
+
+	public static String xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText";
+
 	public void getBookmarkedReferral(String caseNumber) {
 
 		try {
@@ -96,7 +120,7 @@ public class AppliedCasesPage extends Base {
 	}
 
 	public void verifyAppliedCaseLinkIsDisplayed(String caseNumber) {
-		assertTrue("******APPLIED CASES LINK ICON DISAPPEARS WHEN BOOKMARKING CASE/REFERRAL******",
+		Assert.assertTrue("******APPLIED CASES LINK ICON DISAPPEARS WHEN BOOKMARKING CASE/REFERRAL******",
 				isDisplayed(Locator.XPATH, containsElement(caseNumber)
 						+ "/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText[@name='linked']"));
 
@@ -140,61 +164,112 @@ public class AppliedCasesPage extends Base {
 		CommonPages.setValue(val, "briefcaseTargetOnly", userInputData);
 	}
 
-	public String getSiVal(List<UserInputData> userInputData) {
+	public static String getSiVal(List<UserInputData> userInputData) {
 		return CommonPages.getSiValue(SiteTableVariable.targetOnly, userInputData);
 	}
 
-	public void getSiteTableVariable(String category, List<UserInputData> userInputData) {
+	/**
+	 * If briefcaseTargetOnly is set to 'y', the referral will be listed for the
+	 * target case only and an indicator will display if the referral was sent to
+	 * multiple cases. If the site table variable is set to 'n' or does not exist,
+	 * the referral will be listed for each case.
+	 */
 
-		if (getSiVal(userInputData).equals("n")) {
-			changeSiValue("y", userInputData);
+	public static void searchForAppliedCase(List<UserInputData> userInputData) {
 
-		} else {
-			List<String> target = caseList(targetCase);
-			getRandomTargetCase(target);
-			DocumentPage.getAppliedCase();
+		String pe_id = DocumentPage.get_pe_id(userInputData);
 
-			List<String> applied = caseList(appliedCase);
+		Boolean elementNotFound = true;
 
-			changeSiValue("n", userInputData);
-			Base.closeIOSDriver();
-			getInstance(Driver.IOS);
-			CommonPages.selectReferralCategory(category);
-			assertTrue((Actions.isDisplayed(Locator.XPATH,
-					"//XCUIElementTypeStaticText[@name='Viewed']/following::XCUIElementTypeStaticText[contains(@name, '"
-							+ applied + "')]")));
-			changeSiValue("y", userInputData);
+		List<String> referralCategories = executeQuery(
+				getID(replace(NON_ORALLY_ARGUED_CASES, "CMR_CYV_CODE", "lbrrpt"), pe_id), userInputData);
+		sort(referralCategories);
+
+		while (elementNotFound) {
+
+			for (int i = 0; i < referralCategories.size(); ++i) {
+
+				category = referralCategories.get(i);
+
+				List<String> briefcaseTargReferral_y = executeQuery(
+						replace(getID(TARGET_CASES, pe_id), "CYV_CATEGORY", category), userInputData);
+
+				List<String> briefcaseTargReferral_n = executeQuery(
+						replace(getID(TARGET_AND_APPLIED_CASES, pe_id), "CYV_CATEGORY", category), userInputData);
+
+				List<String> appliedCases = Utility.filterArraylistItems(Filter.UNIQUE_VALUES, briefcaseTargReferral_y,
+						briefcaseTargReferral_n);
+
+				int size = appliedCases.size();
+
+				if (!(size == 0)) {
+
+					int randomAppliedCase = 0;
+
+					if (size > 1) {
+
+						randomAppliedCase = Utility.getRandomNumberInRange(1, appliedCases.size() - 1);
+					} else {
+						randomAppliedCase = 1;
+					}
+
+					dbAppliedCase = DBUtilities.getAllColumns(
+							replace(CASE_NUMBER, "CS_CASEID", appliedCases.get(randomAppliedCase)), userInputData);
+					elementNotFound = false;
+					break;
+
+				} else {
+					elementNotFound = true;
+				}
+
+			}
+
 		}
 	}
 
-	public void appliedCaseSearch(String targetCase, String applCase, List<UserInputData> userInputData) {
-		try {
-			if (getSiVal(userInputData).equals("y")) {
+	public void navigateToAppliedReferral(List<UserInputData> userInputData) {
 
-				searchIcon.click();
-				sendKeys(searchTextField, applCase);
-				searchBTN.click();
-				performPageLoad(driver);
-				on_device.click();
+		scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
 
-				performPageLoad(driver);
+		if (getSiVal(userInputData).equals("y")) {
 
-				Actions.findElement(By.xpath(Actions.containsElement(applCase))).click();
+			DocumentPage page = new DocumentPage();
 
-				assertTrue(
-						"------------------> THE USER IS DIRECTED TO THE APPLIED CASE DETAIL PAGE, SHOULD BE DIRECTED TO THE TARGET CASE DETAIL PAGE",
-						Actions.isDisplayed(Locator.XPATH,
-								Actions.containsElement("Sync all documents for case #" + targetCase)));
+			targetReferral = page.getRandomCase(Category.targetCase);
+			uiAppliedCase = page.getRandomCase(Category.appliedCase);
 
-			} else {
-				throw new RuntimeException(
-						"----------->PLEASE SET THE SITE TABLE VARIABLE \"BRIEFCASETARGETONLY\" TO \"Y\"");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			AppliedCasesPage appCasePage = new AppliedCasesPage();
+
+			appCasePage.searchIcon.click();
+			sendKeys(appCasePage.searchTextField, uiAppliedCase);
+			appCasePage.searchBTN.click();
+			performPageLoad(appCasePage.driver);
+			appCasePage.on_device.click();
+
+			performPageLoad(driver);
+
+			Actions.findElement(By.xpath("(//*[contains(@name, '" + category
+					+ "')]/preceding:: XCUIElementTypeStaticText[contains(@name, '" + uiAppliedCase + "')][1])"))
+					.click();
+
+			assertTrue(
+					"THE USER IS DIRECTED TO THE APPLIED CASE DETAIL PAGE, SHOULD BE DIRECTED TO THE TARGET CASE DETAIL PAGE",
+					targetReferral);
+
+		} else {
+
+			scrollDownIfNotDisplayed(Actions.containsElement(dbAppliedCase));
+
+			assertTrue("THE USER IS NOT DIRECTED TO THE CASE DETAIL PAGE, " + category + " CASE: " + dbAppliedCase,
+					dbAppliedCase);
 
 		}
+	}
 
+	public static void assertTrue(String msg, String caseNum) {
+		Assert.assertTrue("------------------> " + msg,
+
+				Actions.isDisplayed(Locator.XPATH, Actions.containsElement("Sync all documents for case #" + caseNum)));
 	}
 
 }

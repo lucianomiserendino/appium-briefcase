@@ -1,5 +1,10 @@
 package gov.uscourts.ao.mobileBriefcase.DBUtils;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM2A_DATABASE_NAME;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM2A_DBPWD;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM2A_DBURL;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM2A_DBUSERNAME;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM2A_SERVERNAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DATABASE_NAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DBPWD;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBVariables.CM3A_DBURL;
@@ -61,8 +66,8 @@ public class DBUtilities {
 				
 				
 			case CM2A:
-				getIFXProperty(SSL_STORE, SSL_LOC, KEYPASS, PASS, CM3A_DBURL, CM3A_SERVERNAME, CM3A_DBUSERNAME,
-						CM3A_DBPWD, CM3A_DATABASE_NAME, PORT_NUMBER);
+				getIFXProperty(SSL_STORE, SSL_LOC, KEYPASS, PASS, CM2A_DBURL, CM2A_SERVERNAME, CM2A_DBUSERNAME,
+						CM2A_DBPWD, CM2A_DATABASE_NAME, PORT_NUMBER);
 				
 				break;
 

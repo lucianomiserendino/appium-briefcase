@@ -9,6 +9,8 @@ import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.AppliedCasesPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 
 public class AppliedCases_StepDefinitions {
 	CommonPages page1;
@@ -52,11 +54,16 @@ public class AppliedCases_StepDefinitions {
 	}
 
 	@Then("^User taps on magnifying glass icon and searches for applied case, selects On Device option & verifies that the user is directed to the target case referral detail page$")
-	public void user_taps_on_magnifying_glass_icon_and_searches_for_applied_case_selects_On_Device_option_verifies_that_the_user_is_directed_to_the_target_case_referral_detail_page() {
+	public void user_taps_on_magnifying_glass_icon_and_searches_for_applied_case_selects_On_Device_option_verifies_that_the_user_is_directed_to_the_target_case_referral_detail_page(
+			List<UserInputData> table) {
 		List<UserInputData> userInputData = null;
 		page = new AppliedCasesPage();
-		page.appliedCaseSearch(Document_StepDefinitions.targetCase,Document_StepDefinitions.appliedCase,userInputData);
+		String userType = SystemPropertySetup.getVariable(Variables.USER_TYPE, table);
+		page.searchForAppliedCase(userInputData);
+		page.navigateToAppliedReferral(userInputData);
 
 	}
+
+
 
 }

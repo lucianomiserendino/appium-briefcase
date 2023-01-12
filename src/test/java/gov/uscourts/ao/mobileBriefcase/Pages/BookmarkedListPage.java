@@ -28,6 +28,12 @@ public class BookmarkedListPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<WebElement> cases;
 
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[contains(@name, 'linked')]/preceding::XCUIElementTypeStaticText[contains(@name, '-')][1])")
+	public static WebElement targetCase;
+
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[contains(@name, 'linked')]/preceding::XCUIElementTypeStaticText[contains(@name, '-')]/following::XCUIElementTypeStaticText[@name='Bookmark'][1])")
+	public static WebElement bookmarkIcon;
+
 	public void getBookmarkedReferrals() {
 		if (bookOnDashboard.size() > 0) {
 			tap(bookOnDashboard.get(bookOnDashboard.size() - 1));
@@ -67,5 +73,21 @@ public class BookmarkedListPage extends AppiumPageFactory {
 		assertEquals(bookmarkedReferral, bookOnDashboard.size());
 	}
 
+	public void bookmarkAcase() {
+
+		String referralDeatilPage = getReferral();
+		bookmarkIcon.click();
+		dashboard.click();
+		bookOnDashboard.get(0).click();
+		String bookmarkDeatilPage = getReferral();
+
+		assertEquals(
+				"APPLIED CASES LINK ICON DISAPPEARS WHEN BOOKMARKING CASE/REFERRAL",referralDeatilPage, bookmarkDeatilPage);
+
+	}
+
+	public String getReferral() {
+		return targetCase.getText().split(" ")[0].trim();
+	}
 
 }

@@ -19,10 +19,13 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -150,7 +153,9 @@ public class Utility extends Base {
 
 			}
 		} else {
-			throw new RuntimeException("---------------------> REFERRAL DATES ARE MISSING FROM THE CASE ROW");
+			throw new RuntimeException("---------------------> CHECK ONE OF THE FOLLOWING ITEMS:"
+					+ "1. REFERRAL DATES ARE MISSING FROM THE CASE ROW."
+					+ "2. THE SELECTED CATEGORY DOESN'T HAVE ANY APPLIED REFERRALS");
 		}
 		return referrals;
 
@@ -563,8 +568,36 @@ public class Utility extends Base {
 		return new SimpleDateFormat("M").format(cal.getTime());
 
 	}
+
 	public static String replaceNull(String str) {
 		return str == null ? "" : str;
 	}
-	
+
+	public static List<String> filterArraylistItems(Filter filet, List<String> listOne, List<String> listTwo) {
+
+		Set<String> containsAll = new HashSet<String>();
+		containsAll.addAll(listOne);
+		containsAll.addAll(listTwo);
+
+		switch (filet) {
+
+		case UNIQUE_VALUES:
+
+			return containsAll.stream().filter(str -> listOne.contains(str) ^ listTwo.contains(str))
+					.collect(Collectors.toList());
+		case DUPLICATE_VALUES:
+
+			return containsAll.stream().filter(str -> listOne.contains(str) && listTwo.contains(str))
+					.collect(Collectors.toList());
+
+		default:
+			throw new RuntimeException("MAKE SURE THE ARRAYLIST IS NOT EMPTY");
+		}
+
+	}
+
+	public enum Filter {
+		UNIQUE_VALUES, DUPLICATE_VALUES
+	}
+
 }
