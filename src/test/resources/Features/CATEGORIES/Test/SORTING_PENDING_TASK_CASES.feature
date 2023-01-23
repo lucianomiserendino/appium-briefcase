@@ -1,4 +1,4 @@
-@Regression @AMB-2482 @AMB-2483 @AMB-2381 
+@Regression 
 Feature: Sorting on the Pending Tasks Page 
 
 
@@ -18,9 +18,9 @@ Scenario Outline:
 	And  Verify the "<folder>" cases are sorted by date descending order 
 	Examples: 
 		|folder             |
-		#|PendingClerkOffice |
+		|PendingClerkOffice |
 		|MyAssignments      |
-		#|ReferralsAwaiting  |
+		|ReferralsAwaiting  |
 	
 		
 		
@@ -42,8 +42,8 @@ Scenario Outline:
 			Examples: 
 				|folder             |
 				|MyAssignments      |
-				|PendingClerkOffice |
-				|ReferralsAwaiting  |
+			#	|PendingClerkOffice |
+			#	|ReferralsAwaiting  |
 				
 				
 				

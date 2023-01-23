@@ -269,7 +269,7 @@ public class CommonPages extends Base {
 
 	public static String getCMRID(List<UserInputData> userInputData) {
 
-		String cha_ju_pe_id = DocumentPage.get_pe_id(userInputData);
+		String cha_ju_pe_id = DocumentPage.get_pe_id("jud",userInputData);
 
 		String caseId = CommonPages.getCaseID(userInputData);
 
@@ -279,7 +279,7 @@ public class CommonPages extends Base {
 
 	public static String getCMRID(String caseNum, List<UserInputData> userInputData) {
 
-		String cha_ju_pe_id = DocumentPage.get_pe_id(userInputData);
+		String cha_ju_pe_id = DocumentPage.get_pe_id("jud",userInputData);
 
 		String caseId = CommonPages.getCaseID(caseNum, userInputData);
 
@@ -289,7 +289,7 @@ public class CommonPages extends Base {
 
 	public static String getCCRID(String caseNum, List<UserInputData> userInputData) {
 
-		String cha_ju_pe_id = DocumentPage.get_pe_id(userInputData);
+		String cha_ju_pe_id = DocumentPage.get_pe_id("jud",userInputData);
 
 		// String caseId = CommonPages.getCaseID(userInputData);
 		String caseId = CommonPages.getCaseID(caseNum, userInputData);
@@ -322,7 +322,7 @@ public class CommonPages extends Base {
 
 	public static String cmr_cyv_code(String category, String caseID, List<UserInputData> userInputData) {
 
-		String cha_ju_pe_id = DocumentPage.get_pe_id(userInputData);
+		String cha_ju_pe_id = DocumentPage.get_pe_id("jud",userInputData);
 
 		return getAllColumns(replace(Queries.CMR_CYV_CODE, "CMR_JU_PE_ID", cha_ju_pe_id, "CYV_CATEGORY",
 				category.trim(), "CMR_CS_CASEID", caseID), userInputData);

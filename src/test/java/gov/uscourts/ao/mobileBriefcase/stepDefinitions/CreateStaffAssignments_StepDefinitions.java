@@ -18,7 +18,7 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 	static chmAssignDPFPage page1;
 	String staffMember = "";
 	String caseNum = Document_StepDefinitions.regularCase;
-	String categroy = Document_StepDefinitions.category;
+	String categroy = Document_StepDefinitions.judCategory;
 
 	@Then("^user  verifies that briefcase events include the chmSilentAssign DPF$")
 	public void user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(List<UserInputData> userInputData) {

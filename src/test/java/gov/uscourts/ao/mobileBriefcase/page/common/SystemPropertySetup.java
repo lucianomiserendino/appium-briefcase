@@ -28,6 +28,7 @@ public class SystemPropertySetup {
 	public static final String userName = "userName";
 	public static final String password = "password";
 	public static final String judFirstName = "judFirstName";
+	public static final String stfFirstName = "stfFirstName";
 
 	public static final String getVariable(Variables variable, List<UserInputData> pacerInputData) {
 		String var = "";
@@ -100,6 +101,10 @@ public class SystemPropertySetup {
 
 		case JUD_FIRST_NAME:
 			var = judFirstName;
+			break;
+
+		case STF_FIRST_NAME:
+			var = stfFirstName;
 			break;
 
 		default:
@@ -265,7 +270,7 @@ public class SystemPropertySetup {
 
 	public enum Variables {
 		ENVIRONMENT, JUD, STF, CASE_NUMBER, REF_CATEGORY, COURTID, PERSONROLE, HOSTNAME, DB_USERNAME, DB_PASSWORD,
-		DB_SERVERNAME, DB_PORT, DB_SCHEMA, USERNAME, PASSWORD, USER_TYPE, JUD_FIRST_NAME
+		DB_SERVERNAME, DB_PORT, DB_SCHEMA, USERNAME, PASSWORD, USER_TYPE, JUD_FIRST_NAME, STF_FIRST_NAME
 	}
 
 }

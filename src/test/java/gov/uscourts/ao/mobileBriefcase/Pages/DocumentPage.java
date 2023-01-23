@@ -1,10 +1,10 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static java.util.Collections.sort;
@@ -17,13 +17,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
-import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -81,19 +81,53 @@ public class DocumentPage extends Base {
 
 	public String selectRandomSTFCategory(List<UserInputData> userInputData) {
 
-		return selectRandomItem(Actions.replace(Queries.SAs_ASSIGNMENT_CATEGORIES, "RA_PE_ID", "434"), xpath, userInputData);
+		String category = "";
+		String category_code = "";
 
+		List<String> sfa_display = getAssignmentCategories(2, userInputData);
+		List<String> smr_sfa_code = getAssignmentCategories(3, userInputData);
+
+		sort(sfa_display);
+
+		int randomCat = Utility.getRandomNumberInRange(1, sfa_display.size() - 1);
+
+		category = sfa_display.get(Utility.getRandomInt(randomCat));
+		category_code = smr_sfa_code.get(Utility.getRandomInt(randomCat));
+
+		scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category.trim() + "')]");
+
+		return category_code.trim();
+
+	}
+
+	public static List<String> getAssignmentCategories(int col, List<UserInputData> userInputData) {
+
+		return execute(Actions.replace(Queries.SAs_ASSIGNMENT_CATEGORIES, "RA_PE_ID", get_pe_id("stf", userInputData)),
+				col, userInputData);
 	}
 
 	public String selectRandomJudgeCategory(List<UserInputData> userInputData) {
-		return selectRandomItem(getID(Queries.REFERRAL_CATEGORIES, get_pe_id(userInputData)), xpath, userInputData);
+		return selectRandomItem(getID(Queries.REFERRAL_CATEGORIES, get_pe_id("jud", userInputData)), xpath,
+				userInputData);
 
 	}
 
-	public static String get_pe_id(List<UserInputData> userInputData) {
-		String fName = SystemPropertySetup.getJudgesFirstName(userInputData);
-		String lName = SystemPropertySetup.getJudge(userInputData);
-		return getPE_ID("jud", lName, fName, userInputData);
+	public static String get_pe_id(String pe_rt_code, List<UserInputData> userInputData) {
+
+		String fName = "";
+		String lName = "";
+
+		if (pe_rt_code.equals("jud")) {
+
+			lName = SystemPropertySetup.getVariable(Variables.JUD, userInputData);
+			fName = SystemPropertySetup.getVariable(Variables.JUD_FIRST_NAME, userInputData);
+
+		} else if (pe_rt_code.equals("stf")) {
+			lName = SystemPropertySetup.getVariable(Variables.STF, userInputData);
+			fName = SystemPropertySetup.getVariable(Variables.STF_FIRST_NAME, userInputData);
+		}
+
+		return getPE_ID(pe_rt_code, lName, fName, userInputData);
 
 	}
 

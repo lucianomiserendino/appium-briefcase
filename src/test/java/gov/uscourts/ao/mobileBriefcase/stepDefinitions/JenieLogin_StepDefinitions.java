@@ -27,7 +27,7 @@ public class JenieLogin_StepDefinitions extends Base implements iOSCapabilities 
 	}
 
 	@Then("^User logs out from the Briefcase$")
-	public void user_logs_out_from_the_Briefcase() throws Throwable {
+	public void user_logs_out_from_the_Briefcase() {
 		logPage = new JenieLoginPage();
 		logPage.logout();
 		safariInstance();

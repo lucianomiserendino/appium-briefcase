@@ -10,22 +10,23 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class Document_StepDefinitions {
 	DocumentPage page;
-	public static String category;
+	public static String judCategory;
 	public static String regularCase;
 	public static String targetCase;
 	public static String appliedCase;
 	public static String cmr_cyv_code;
+	public static String stfCategory;
 
 	@Then("^User selects random stf Aty category$")
 	public void user_selects_random_stf_Aty_category(List<UserInputData> userInputData) {
 		page = new DocumentPage();
-		page.selectRandomSTFCategory(userInputData);
+		stfCategory = page.selectRandomSTFCategory(userInputData);
 	}
 
 	@Then("^User selects random judge category$")
 	public void user_selects_random_judge_category(List<UserInputData> userInputData) {
 		page = new DocumentPage();
-		category = page.selectRandomJudgeCategory(userInputData);
+		judCategory = page.selectRandomJudgeCategory(userInputData);
 	}
 
 	@Then("^User selects random case number$")
@@ -54,6 +55,5 @@ public class Document_StepDefinitions {
 		appliedCase = page.getRandomCase(Category.appliedCase);
 
 	}
-
 
 }

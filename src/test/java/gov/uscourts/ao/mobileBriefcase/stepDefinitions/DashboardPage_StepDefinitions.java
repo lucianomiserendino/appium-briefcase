@@ -34,14 +34,14 @@ public class DashboardPage_StepDefinitions {
 	public void if_The_judge_has_any_pending_assignments_it_will_validate_the_total_num_of_pending_task_on_UI_with_DB_Use_judge_s_and_to_retrieve_pending_tasks_from_db(
 			String pe_id, String PE_RT_CODE, List<UserInputData> userInputData) {
 		page = new DashboardPage();
-		page.getPendingTasks(getID(PENDING_TASK_ASSIGNMENTS, DocumentPage.get_pe_id(userInputData)), userInputData);
+		page.getPendingTasks(getID(PENDING_TASK_ASSIGNMENTS, DocumentPage.get_pe_id("jud",userInputData)), userInputData);
 
 	}
 
 	@Then("^I find the valid non-orally argued categories for the judge$")
 	public void i_find_the_valid_non_orally_argued_categories_for_the_judge(List<UserInputData> userInputData) {
 		page = new DashboardPage();
-		page.verifyNonOrallyArgCases("lbrrpt", DocumentPage.get_pe_id(userInputData), userInputData);
+		page.verifyNonOrallyArgCases("lbrrpt", DocumentPage.get_pe_id("jud",userInputData), userInputData);
 	}
 
 	@Then("^I verify that the referral detail page only displays documents if chm_mobile_referral\\.cmr_cyv_code = lbrrpt$")

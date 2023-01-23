@@ -4,7 +4,7 @@ public class Queries {
 
 	/** Query to find peId of the judge */
 	public static final String PE_ID = "(select  pe_id from person, personrole where "
-			+ "pe_pr_prid=pr_prid and pe_rt_code='PE_RT_CODE' and pr_last_name='PR_LAST_NAME' and pr_first_name='PR_FIRST_NAME')";
+			+ "pe_pr_prid=pr_prid and pe_rt_code='PE_RT_CODE' and pr_last_name='PR_LAST_NAME' and pr_first_name='PR_FIRST_NAME' and pe_date_end is null)";
 
 	/** Query to get valid categories for the logged in user */
 	public static final String REFERRAL_CATEGORIES = "select distinct (cyv_category) from "
@@ -48,7 +48,7 @@ public class Queries {
 	 * Query the stfaty_mobile_referral, and stfaty_assign_val table to get valid
 	 * assignment categories for the logged in user
 	 */
-	public static final String SAs_ASSIGNMENT_CATEGORIES = "select distinct(sfa_display) from stfaty_mobile_referral, stfaty_ref_assign, stfaty_assign_val\n"
+	public static final String SAs_ASSIGNMENT_CATEGORIES = "select distinct(sfa_display), smr_sfa_code from stfaty_mobile_referral, stfaty_ref_assign, stfaty_assign_val\n"
 			+ "where smr_ra_id = ra_id and\n" + "ra_pe_id = 'RA_PE_ID' and\n" + "smr_sfa_code = sfa_code and\n"
 			+ "smr_date_end is null";
 
@@ -58,14 +58,14 @@ public class Queries {
 
 			"SELECT distinct ( mrc_name)  FROM stfaty_mobile_ref_cat, stfaty_mobile_referral\n"
 					+ "WHERE smr_mrc_id = mrc_id and\n" + "smr_assign_pe_id = 'SMR_ASSIGN_PE_ID'  and\n"
-					+ "smr_sfa_code = 'sstfa'  \n" + "order by mrc_name";
+					+ "smr_sfa_code = 'SMR_SFA_CODE'  \n" + "order by mrc_name";
 
 	public static final String ID_OF_THE_REFERRAL_CATEGORY = "SELECT distinct(mrc_id),mrc_id FROM stfaty_mobile_ref_cat, stfaty_mobile_referral"
-			+ " WHERE smr_mrc_id = mrc_id and smr_assign_pe_id = 'SMR_ASSIGN_PE_ID' and  mrc_name='MRC_NAME'  and smr_sfa_code = 'sstfa'";
+			+ " WHERE smr_mrc_id = mrc_id and smr_assign_pe_id = 'SMR_ASSIGN_PE_ID' and  mrc_name='MRC_NAME'  and smr_sfa_code = 'SMR_SFA_CODE'";
 
 	/** Query to to find the number of referrals in each categories */
 	public static final String REFERRAL_NUMBERS = "SELECT count(smr_id) FROM stfaty_mobile_referral WHERE smr_mrc_id = SMR_MRC_ID "
-			+ "and smr_assign_pe_id = 'SMR_ASSIGN_PE_ID' and smr_sfa_code = 'sstfa'";
+			+ "and smr_assign_pe_id = 'SMR_ASSIGN_PE_ID' and smr_sfa_code = 'SMR_SFA_CODE'";
 
 	public static final String SAs_DOCUMENT_CATEGORIES = "SELECT distinct cmd_doc_category FROM chm_mobile_docs, stfaty_mobile_referral\n"
 			+ "WHERE smr_assign_pe_id ='SMR_ASSIGN_PE_ID'  and\n" + "smr_mrc_id = SMR_MRC_ID  and\n"

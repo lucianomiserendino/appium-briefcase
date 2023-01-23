@@ -57,7 +57,7 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 
 	public void selectReferralCategory(List<UserInputData> userInputData) {
 
-		String query = getID(Queries.REFERRAL_CATEGORIES, DocumentPage.get_pe_id(userInputData));
+		String query = getID(Queries.REFERRAL_CATEGORIES, DocumentPage.get_pe_id("jud",userInputData));
 
 		List<String> dbReferralCategories = executeQuery(query, userInputData);
 		if (dbReferralCategories.contains("Reference Documents")

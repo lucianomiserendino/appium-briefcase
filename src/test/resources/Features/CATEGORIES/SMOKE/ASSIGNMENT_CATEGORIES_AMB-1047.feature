@@ -16,6 +16,5 @@ Scenario:
 		|userType   |personrole        |stf  |
 		|stf        |Staff Attorneys   |test |
 		
-	Given User verifies Data is displayed on the Dashboard, retrieves categories from db ,'RA_PE_ID' : "434" 
-	|courtId|
-	|test   |
+	Given User verifies correct assignment categories  display on the dashboard for Staff Attorneys
+

@@ -77,7 +77,7 @@ public class CalendarPage extends AppiumPageFactory {
 		String month = getSession(mainHeader);
 
 		/**
-		 * If briefcaseOralArgView = n or doesn't exist, subheaders display "Day, Month
+		 * If briefcaseOralArgsView = n or doesn't exist, subheaders display "Day, Month
 		 * Date
 		 */
 		if (oralArgView.equals("n") || oralArgView.isEmpty()) {
@@ -85,7 +85,7 @@ public class CalendarPage extends AppiumPageFactory {
 			return newUI(numOfCases, month);
 		} else {
 
-			/** If briefcaseOralArgView = y, cases are organized based on weekly sessions */
+			/** If briefcaseOralArgsView = y, cases are organized based on weekly sessions */
 			return oldUI(courtSession, numOfCases, month);
 		}
 
@@ -204,7 +204,7 @@ public class CalendarPage extends AppiumPageFactory {
 		String uiPanel = Actions.findElement(By.xpath("(//XCUIElementTypeStaticText[contains(@name, '" + caseN
 				+ "')]/following::XCUIElementTypeStaticText[contains(@name, 'Panel:')])[1]")).getText().trim();
 
-		String peId = DocumentPage.get_pe_id(userInputData);
+		String peId = DocumentPage.get_pe_id("jud",userInputData);
 
 		/**
 		 * In the chm_mobile_referral table, there is a field for the panel_case.ph_id

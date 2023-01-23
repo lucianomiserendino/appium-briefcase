@@ -1,6 +1,5 @@
 package gov.uscourts.ao.mobileBriefcase.page.common;
 
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
@@ -9,14 +8,12 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForVisibilityOfElement;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.sort;
-import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -218,15 +215,15 @@ public class Utility extends Base {
 
 	}
 
-	public static boolean elementIsDisplayed(String query, String xpath, List<UserInputData> userInputData) {
+	public static boolean elementIsDisplayed(List<String> categories, String xpath, List<UserInputData> userInputData) {
 		boolean isDisplayed = false;
 		WebElement uiResult = null;
-		List<String> dbResult = executeQuery(query, userInputData);
+		List<String> dbResult = categories;
 		sort(dbResult);
 		try {
 			for (int i = 0; i < dbResult.size(); ++i) {
 
-				uiResult = findElementBy(Locator.XPATH, xpath + "[contains(@name, '" + dbResult.get(i) + "')]");
+				uiResult = findElementBy(Locator.XPATH, xpath + "[contains(@name, '" + dbResult.get(i).trim() + "')]");
 				if (uiResult.isDisplayed())
 					isDisplayed = true;
 
@@ -347,7 +344,6 @@ public class Utility extends Base {
 		}
 
 		if (decendingOrder) {
-
 			return decendingOrder;
 		} else {
 			System.out.println("The dates are not sorted in descending order:---------> " + date);
@@ -387,27 +383,18 @@ public class Utility extends Base {
 
 	}
 
-	public static void isSorted(String sort, List<String> list, List<String> listTwo) {
+	public static boolean checkIfSorted( List<String> list) {
 
-		Comparator<String> primaryComparator = (a, b) -> Integer.valueOf(a.split("-")[0])
-				.compareTo(Integer.valueOf(b.split("-")[0]));
+		boolean isSorted = true;
+		for (int i = 1; i < list.size(); i++) {
+			if (list.get(i - 1).compareTo(list.get(i)) > 0) {
 
-		Comparator<String> secondaryComparator = (a, b) -> Integer.valueOf(a.split("-")[1])
-				.compareTo(Integer.valueOf(b.split("-")[1]));
-
-		if (sort.equals("Asc")) {
-
-			listTwo.sort(primaryComparator.thenComparing(secondaryComparator));
-
-			assertEquals("The referrals are not sorted by case number in ascending order: " + list, list, listTwo);
-
-		} else {
-
-			listTwo.sort(primaryComparator.thenComparing(secondaryComparator).reversed());
-
-			assertEquals("The referrals are not sorted by case number in descending order: " + list, list, listTwo);
-
+				isSorted = false;
+				break;
+			}
 		}
+		return isSorted;
+
 	}
 
 	public static List<Integer> getCellCount(int time, int navCellSize) {
@@ -594,6 +581,19 @@ public class Utility extends Base {
 			throw new RuntimeException("MAKE SURE THE ARRAYLIST IS NOT EMPTY");
 		}
 
+	}
+
+	public static boolean ifSortedInAlphabeticalOrder(List<String> list) {
+		boolean isSorted = true;
+		for (int i = 0; i < list.size() - 1; i++) {
+			// current String is > than the next one (if there are equal list is still
+			// sorted)
+			if (list.get(i).compareToIgnoreCase(list.get(i + 1)) > 0) {
+				isSorted = false;
+				break;
+			}
+		}
+		return isSorted;
 	}
 
 	public enum Filter {

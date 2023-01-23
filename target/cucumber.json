@@ -3,44 +3,33 @@
     "line": 2,
     "elements": [
       {
-        "before": [
-          {
-            "result": {
-              "duration": 8384077125,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
         "line": 5,
         "name": "",
-        "description": "Display Applied Cases link  when bookmarking case/referral",
-        "id": "applied-cases-link;",
+        "description": "There is a sorting feature on the referral list page that enables users to sort referrals by date referred or case number.  \nThe default is by date referred in descending order (newest first).",
+        "id": "sorting-on-the-referral-list-page;",
         "type": "scenario",
         "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "duration": 30716609875,
+              "duration": 23522262708,
               "status": "passed"
             },
             "comments": [
               {
-                "line": 7,
-                "value": "#Given I am logged into Briefcase"
+                "line": 10,
+                "value": "# Given I am logged into Briefcase"
               },
               {
-                "line": 8,
+                "line": 11,
                 "value": "#|environment|userName| password |courtId|"
               },
               {
-                "line": 9,
+                "line": 12,
                 "value": "#|test       |test    | test     |test   |"
               }
             ],
-            "line": 12,
+            "line": 14,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -52,7 +41,7 @@
                   "personrole",
                   "jud"
                 ],
-                "line": 13
+                "line": 15
               },
               {
                 "cells": [
@@ -60,51 +49,101 @@
                   "Appellate Judges",
                   "test"
                 ],
-                "line": 14
+                "line": 16
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 79147016750,
+              "duration": 14356787250,
               "status": "passed"
             },
-            "line": 16,
-            "name": "User verifies there\u0027s no bookmark icon displays in the navigation and on the dashboard",
+            "line": 18,
+            "name": "User selects random judge category",
             "match": {
-              "location": "BookmarkedList_stepDefinitions.user_verifies_there_s_no_bookmark_icon_displays_in_the_navigation_and_on_the_dashboard()"
+              "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 19
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 20
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 171438622042,
+              "status": "passed"
+            },
+            "line": 22,
+            "name": "User verify the Date Down Arrow is selected by default and that the referrals are sorted by referred date in descending order (newest first).",
+            "match": {
+              "location": "SortingOnTheReferralList_StepDefinitions.user_verify_the_Date_Down_Arrow_is_selected_by_default_and_that_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first()"
             },
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 25294502875,
+              "duration": 72458807375,
               "status": "passed"
             },
-            "line": 18,
-            "name": "User verifies that bookmarking a targeted case doesn\u0027t remove the applied link icon",
+            "line": 23,
+            "name": "User clicks on the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order (oldest first).",
             "match": {
-              "location": "BookmarkedList_stepDefinitions.user_verifies_that_bookmarking_a_targeted_case_doesn_t_remove_the_applied_link_icon()"
+              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_on_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_ascending_order_oldest_first()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 71951905750,
+              "status": "passed"
+            },
+            "line": 24,
+            "name": "User clicks on the Case Down Arrow button and verifies the referrals are sorted by case number in descending order",
+            "match": {
+              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_on_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_descending_order()"
+            },
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "duration": 104289595375,
+              "status": "passed"
+            },
+            "line": 25,
+            "name": "User clicks on the Case Down Arrow button and verifies the referrals are sorted by case number in ascending order.",
+            "match": {
+              "location": "SortingOnTheReferralList_StepDefinitions.user_clicks_on_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_ascending_order()"
             },
             "keyword": "Then "
           }
         ]
       }
     ],
-    "name": "Applied Cases link",
+    "name": "Sorting on the Referral List Page",
     "description": "",
-    "id": "applied-cases-link",
+    "id": "sorting-on-the-referral-list-page",
     "keyword": "Feature",
-    "uri": "CATEGORIES/REGRESSION/BOOKMARKING_APPLIED_CASE_AMB-1241.feature",
+    "uri": "CATEGORIES/SMOKE/SORTING_ON_THE_REFERRAL_LIST_PAGE_AMB-1010.feature",
     "tags": [
       {
         "line": 1,
-        "name": "@Regression"
+        "name": "@Smoke"
       },
       {
         "line": 1,
-        "name": "@AMB-1241"
+        "name": "@AMB-1010"
       }
     ]
   }

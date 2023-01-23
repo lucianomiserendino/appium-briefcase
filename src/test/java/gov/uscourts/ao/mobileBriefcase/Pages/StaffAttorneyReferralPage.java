@@ -15,8 +15,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
@@ -24,11 +26,13 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
-public class StaffAttorneyReferralPage extends AppiumPageFactory {
+public class StaffAttorneyReferralPage extends Base {
+
 	CommonPages page = new CommonPages();
 	// @WithTimeout(time = 15, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Senior Staff Attorney')]")
@@ -41,11 +45,26 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public static List<WebElement> refCategories;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Sorting Options']")
+	public static WebElement sortingPopup;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"Apply\"]")
+	public static WebElement apply;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther//following::XCUIElementTypeStaticText[contains(@name, '(')]")
+	public static List<WebElement> categoryCount;
+
+	@iOSXCUITFindBy(xpath = "XCUIElementTypeStaticText[@name='Asc'][1]")
+	public static WebElement asc;
+
+	@iOSXCUITFindBy(xpath = "XCUIElementTypeStaticText[@name='Desc'][1]")
+	public static WebElement desc;
+
 	/** Observe the assignment categories that display on the dashboard for SAs */
 
-	public void verifyDataOnTheDashboard(String query, String ra_pe_id, List<UserInputData> userInputData) {
+	public void verifyDataOnTheDashboard(List<UserInputData> userInputData) {
 
-		assertTrue(elementIsDisplayed(Actions.replace(query, "RA_PE_ID", ra_pe_id),
+		assertTrue(elementIsDisplayed(DocumentPage.getAssignmentCategories(2, userInputData),
 				"//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText",
 				userInputData));
 	}
@@ -62,17 +81,20 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 	 * Observe there are six referral categories listed .Verify the number of
 	 * referrals in each categories, matches the number of referrals in the DB
 	 */
-	public void osberveReferralCategories(String smr_assign_pe_id, List<UserInputData> table) {
+	public void osberveReferralCategories(List<UserInputData> table) {
 		page.getGroupIcons();
-		getReferralCategories(smr_assign_pe_id, table);
+		getReferralCategories(table);
 	}
 
-	public static void getReferralCategories(String smr_assign_pe_id, List<UserInputData> table) {
+	public static void getReferralCategories(List<UserInputData> table) {
+		String smr_sfa_code = Document_StepDefinitions.stfCategory;
+
+		String smr_assign_pe_id = DocumentPage.get_pe_id("stf", table);
 		List<String> uiRefCategories = new ArrayList<>();
 		List<String> dbRefCategories = new ArrayList<>();
 
-		List<String> category = executeQuery(
-				replace(Queries.SAs_REFERRAL_CATEGORIES, "SMR_ASSIGN_PE_ID", smr_assign_pe_id), table);
+		List<String> category = executeQuery(replace(Queries.SAs_REFERRAL_CATEGORIES, "SMR_ASSIGN_PE_ID",
+				smr_assign_pe_id, "SMR_SFA_CODE", smr_sfa_code), table);
 		sort(category);
 
 		for (int i = 1; i < category.size() + 1; ++i) {
@@ -85,12 +107,12 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 		for (int i = 0; i < category.size(); ++i) {
 
 			List<String> refCatId = executeQuery(replace(ID_OF_THE_REFERRAL_CATEGORY, "SMR_ASSIGN_PE_ID",
-					smr_assign_pe_id, "MRC_NAME", category.get(i)), table);
+					smr_assign_pe_id, "MRC_NAME", category.get(i), "SMR_SFA_CODE", smr_sfa_code), table);
 
 			for (int j = 0; j < refCatId.size(); j++) {
 
 				List<String> refNumbers = executeQuery(replace(Queries.REFERRAL_NUMBERS, "SMR_ASSIGN_PE_ID",
-						smr_assign_pe_id, "SMR_MRC_ID", refCatId.get(j)), table);
+						smr_assign_pe_id, "SMR_MRC_ID", refCatId.get(j), "SMR_SFA_CODE", smr_sfa_code), table);
 				for (int k = 0; k < refNumbers.size(); k++) {
 
 					dbRefCategories.add(category.get(i) + " (" + refNumbers.get(k) + ")");
@@ -167,6 +189,117 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 		}
 		return isDisplayed;
 
+	}
+
+	public static void getSortButton() {
+		ReferralSortOrderPage page = new ReferralSortOrderPage();
+		page.selectSortBtn();
+		assertTrue("A SORT POP-UP DOESN'T DISPLAY FOR STAFF ATTORNEYS",
+				Actions.isDisplayed(Actions.contains("Sorting Options")));
+
+	}
+
+	public static WebElement sortBy(String sortOption) {
+		return Actions.findElement(By.xpath(Actions.containsElement(sortOption)));
+	}
+
+	public static void selectSortOption(String sortOption) {
+		getSortButton();
+		sortBy(sortOption).click();
+		Actions.contains("Apply").click();
+		CommonPages page = new CommonPages();
+		page.getGroupIcons();
+	}
+
+	public static void getReferralCategoryList(List<UserInputData> table) {
+		String smr_sfa_code = Document_StepDefinitions.stfCategory;
+
+		String smr_assign_pe_id = DocumentPage.get_pe_id("stf", table);
+		List<String> uiRefCategories = new ArrayList<>();
+
+		List<String> dbRefCategories = executeQuery(replace(Queries.SAs_REFERRAL_CATEGORIES, "SMR_ASSIGN_PE_ID",
+				smr_assign_pe_id, "SMR_SFA_CODE", smr_sfa_code), table);
+		sort(dbRefCategories);
+
+		for (int i = 1; i < dbRefCategories.size() + 1; ++i) {
+			WebElement categoryName = getRefCategory(i, 2);
+
+			uiRefCategories.add(categoryName.getText().trim());
+		}
+		assertTrue(Utility.ifSortedInAlphabeticalOrder(uiRefCategories));
+
+	}
+
+	public static int getRandomInt(String sortOption) {
+		WebElement el = null;
+		int random = Utility.getRandomInt(2);
+		if (random == 1) {
+			el = asc;
+		} else if (random == 2) {
+			el = desc;
+		}
+		Actions.findElement(By.xpath(Actions.containsElement(sortOption) + "/following::" + el));
+		return random;
+	}
+
+	public static void selectSortOption(SortingOptions opt1, String opt2, List<UserInputData> table) {
+
+		selectSortOption(opt2);
+		if (opt2.equals("Default")) {
+			/**
+			 * the referrals should be grouped in accordion panels by referral category and
+			 * sorted by case number
+			 */
+			getReferralCategoryList(table);
+			sortedInAscendingOrder(1);
+
+		} else if (opt2.equals("Case Number")) {
+			int order = getRandomInt(opt2);
+
+			sortedInAscendingOrder(order);
+		}
+
+	}
+
+	public static void sortedInAscendingOrder(int order) {
+
+		List<Integer> count = new ArrayList<>();
+
+		List<WebElement> el1 = Actions.findElements(By.xpath(
+				"//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther//following::XCUIElementTypeStaticText[contains(@name, '(')]"));
+
+		int s = el1.size();
+
+		for (int i = 0; i < s; i++) {
+
+			count.add(Integer.parseInt(Actions.replace(el1.get(i).getText(), "\\(", "", "\\)", "")));
+		}
+
+		Integer max = Collections.max(count);
+
+		String categoryName = Actions.containsElement("(" + max.toString() + ")")
+				+ "/preceding:: XCUIElementTypeStaticText[1]";
+
+		String catN = Actions.findElementBy(Locator.XPATH, categoryName).getText().trim();
+		Actions.tap(Locator.XPATH, categoryName);
+
+		List<WebElement> el = Actions.findElements(By.xpath("//XCUIElementTypeStaticText[contains(@name, '" + catN
+				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '-')]"));
+
+		List<String> sortedBy = Utility.retrieveAllReferrals(el, " ", 0);
+
+		if (order == 2) {
+
+			Collections.reverse(sortedBy);
+
+		}
+
+		assertTrue("REFERRALS ARE NOT SORTED BY CASE NUMBER IN ASCENDING ORDER",
+				Utility.checkIfSorted(sortedBy));
+	}
+
+	public enum SortingOptions {
+		DEFAULT, CASE_NUMBER, REFERRED, STATUS, DUE, RECEIVED, DESCENDING, ASCENDING
 	}
 
 }

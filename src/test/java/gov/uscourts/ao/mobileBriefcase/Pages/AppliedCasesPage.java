@@ -177,7 +177,7 @@ public class AppliedCasesPage extends Base {
 
 	public static void searchForAppliedCase(List<UserInputData> userInputData) {
 
-		String pe_id = DocumentPage.get_pe_id(userInputData);
+		String pe_id = DocumentPage.get_pe_id("jud",userInputData);
 
 		Boolean elementNotFound = true;
 

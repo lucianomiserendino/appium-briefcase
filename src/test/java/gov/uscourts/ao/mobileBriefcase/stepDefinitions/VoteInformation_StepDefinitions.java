@@ -35,10 +35,10 @@ public class VoteInformation_StepDefinitions {
 
 		String ccr_id = CommonPages.getCCRID(caseNum, userInputData);
 		String name = SystemPropertySetup.getJudge(userInputData);
-		String cmr_ju_pe_id = DocumentPage.get_pe_id(userInputData);
+		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud",userInputData);
 		String cmr_cs_caseid = CommonPages.getCaseID(caseNum, userInputData);
 
-		cmr_cyv_code = CommonPages.cmr_cyv_code(Document_StepDefinitions.category, cmr_cs_caseid, userInputData).trim();
+		cmr_cyv_code = CommonPages.cmr_cyv_code(Document_StepDefinitions.judCategory, cmr_cs_caseid, userInputData).trim();
 
 		assertTrue(page.filersInfo(FILERs_INFO.VOTE_INFO_FILLRES_INFORMATION, cmr_ju_pe_id, cmr_cs_caseid, cmr_cyv_code,
 				ccr_id, userInputData));

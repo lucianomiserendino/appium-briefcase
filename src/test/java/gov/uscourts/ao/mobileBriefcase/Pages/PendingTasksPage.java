@@ -57,12 +57,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 		getPendingSubFolder(folder);
 		getGroupIcons();
-		getAssignmentCategories();
-
-		if (folder.equals("MyAssignments") | folder.equals("ReferralsAwaiting")) {
-			tapGroupIcons();
-			getAssignmentCategories();
-		}
+		sortedInDescendingOr(folder);
 
 		ArrayList<String> filedDates = new ArrayList<String>();
 		List<WebElement> date = Actions.findElements(By.xpath(Actions.containsElement(": ")));
@@ -73,7 +68,98 @@ public class PendingTasksPage extends AppiumPageFactory {
 		}
 
 		assertTrue("VERIFY " + folder + " CASES ARE SORTED BY DATE DESCENDING ORDER",
-				Utility.checkDatesForDescOrder(filedDates,"M/d/yyyy"));
+				Utility.checkDatesForDescOrder(filedDates, "M/d/yyyy"));
+	}
+
+	public void sortedInDescendingOr(String folder) {
+
+		int caseCount = 1;
+		int total = 0;
+
+		List<Integer> count = new ArrayList<>();
+
+		int s = categoryCount.size();
+
+		for (int i = 0; i < s; i++) {
+
+			count.add(Integer.parseInt(Actions.replace(categoryCount.get(i).getText(), "\\(", "", "\\)", "")));
+		}
+
+		Integer max = Collections.max(count);
+
+		String categoryName = Actions.containsElement("(" + max.toString() + ")")
+				+ "/preceding:: XCUIElementTypeStaticText[1]";
+
+		String catN = Actions.findElementBy(Locator.XPATH, categoryName).getText().trim();
+		Actions.tap(Locator.XPATH, categoryName);
+
+		if (folder.equals("MyAssignments") | folder.equals("ReferralsAwaiting")) {
+
+			Boolean elementNotFound = true;
+
+			while (elementNotFound) {
+
+				List<WebElement> icons = Actions.findElements(By.xpath(
+						"//XCUIElementTypeOther[@name=\"PendingTasksList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther//following::XCUIElementTypeStaticText[@name='"
+								+ catN + "']/following::XCUIElementTypeStaticText[@name=\"GroupIcon\"]"));
+
+				for (int i = 0; i < s + icons.size(); i++) {
+
+					if (icons.get(i).getAttribute("value").equals("▽")) {
+
+						icons.get(i).click();
+
+					}
+
+					List<WebElement> groups = Actions.findElements(By.xpath(
+							"//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther//following::XCUIElementTypeStaticText[@name='"
+									+ catN + "']/following::XCUIElementTypeStaticText[contains(@name, '(')]"));
+
+					int left = CalendarPage.totalNumOfCases(groups, i);
+
+					total += left;
+
+					if (total == max) {
+
+						if (caseCount > 1) {
+
+							List<Integer> c = new ArrayList<>();
+
+							for (int k = 0; k < caseCount; k++) {
+
+								c.add(Integer.parseInt(Actions.replace(groups.get(k).getText(), "\\(", "", "\\)", "")));
+							}
+
+							Integer m = Collections.max(c);
+
+							WebElement g = Actions.findElement(By.xpath(
+									"//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther//following::XCUIElementTypeStaticText[@name='"
+											+ catN + "']/following::XCUIElementTypeStaticText[contains(@name, '" + "("
+											+ m.toString() + ")" + "')][1]"));
+
+							// Actions.findElementBy(Locator.XPATH, categoryName).getText().trim();
+
+							g.click();
+
+						} else {
+							groups.get(0).click();
+							;
+						}
+
+						elementNotFound = false;
+
+						break;
+
+					} else {
+						caseCount++;
+						elementNotFound = true;
+
+					}
+
+				}
+			}
+		}
+
 	}
 
 	public void getAssignmentCategories() {

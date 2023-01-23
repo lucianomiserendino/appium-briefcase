@@ -24,7 +24,7 @@ public class RedBullets_StepDefintions extends Base {
 
 	@Then("^User closes the app, reopens and goes back to the category that contains the referral that was just viewed$")
 	public void user_closes_the_app_reopens_and_goes_back_to_the_category_that_contains_the_referral_that_was_just_viewed() {
-		String refCategory = Document_StepDefinitions.category;
+		String refCategory = Document_StepDefinitions.judCategory;
 		page = new RedBulletsPage();
 		page.getCountAfterReopeningTheApp(refCategory, afterViewingReferral);
 	}

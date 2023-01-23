@@ -2,6 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collections;
 import java.util.List;
 
 import cucumber.api.java.en.Then;
@@ -19,20 +20,20 @@ public class SortingOnTheReferralList_StepDefinitions {
 		page = new ReferralSortOrderPage();
 		Page.sleep(20000);
 		List<String> defaultOrder = page.referralsSortedByDate();
-		assertTrue(Utility.checkDatesForDescOrder(defaultOrder,"M/d/yyyy"));
+		assertTrue(Utility.checkDatesForDescOrder(defaultOrder, "M/d/yyyy"));
 
 		page.selectSortBtn();
 
 		page.getSortPage(Sort.REFERRAL_DATE_DESCENDING);
 		List<String> descOrder = page.referralsSortedByDate();
-		assertTrue(Utility.checkDatesForDescOrder(descOrder,"M/d/yyyy"));
+		assertTrue(Utility.checkDatesForDescOrder(descOrder, "M/d/yyyy"));
 	}
 
 	@Then("^User clicks on the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order \\(oldest first\\)\\.$")
 	public void user_clicks_on_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_ascending_order_oldest_first() {
 		page.getSortPage(Sort.REFERRAL_DATE_ASCENDING);
 		List<String> ascendingOrder = page.referralsSortedByDate();
-		assertTrue(Utility.checkDatesForAscOrder(ascendingOrder,"M/d/yyyy"));
+		assertTrue(Utility.checkDatesForAscOrder(ascendingOrder, "M/d/yyyy"));
 
 	}
 
@@ -40,7 +41,10 @@ public class SortingOnTheReferralList_StepDefinitions {
 	public void user_clicks_on_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_descending_order() {
 		page.getSortPage(Sort.CASE_NUMBER_DESCENDING);
 		List<String> referralsSortedByDescOrd = page.referralsSortedByCase();
-		Utility.isSorted("Desc", referralsSortedByDescOrd, referralsSortedByDescOrd);
+		List<String> beforeReversing = referralsSortedByDescOrd;
+		Collections.reverse(referralsSortedByDescOrd);
+		assertTrue("REFERRALS ARE NOT SORTED BY CASE NUMBER IN DESCENDING ORDER ------> " + beforeReversing,
+				Utility.checkIfSorted(referralsSortedByDescOrd));
 
 	}
 
@@ -49,7 +53,8 @@ public class SortingOnTheReferralList_StepDefinitions {
 
 		page.getSortPage(Sort.CASE_NUMBER_ASCENDING);
 		List<String> referralsSortedByAscOrd = page.referralsSortedByCase();
-		Utility.isSorted("Asc", referralsSortedByAscOrd, referralsSortedByAscOrd);
+		assertTrue("REFERRALS ARE NOT SORTED BY CASE NUMBER IN ASCENDING ORDER  ------> " + referralsSortedByAscOrd,
+				Utility.checkIfSorted(referralsSortedByAscOrd));
 		page.getSortPage(Sort.REFERRAL_DATE_DESCENDING);
 		page.selectSortBtn();
 	}

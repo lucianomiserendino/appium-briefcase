@@ -118,7 +118,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	public void getCaseDetails(String caseNumber, String category, List<UserInputData> userInputData) {
 
 		elId += getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
-		cha_ju_pe_id += DocumentPage.get_pe_id(userInputData);
+		cha_ju_pe_id += DocumentPage.get_pe_id("jud",userInputData);
 		cmr_cs_caseid += CommonPages.getCaseID(caseNumber, userInputData);
 
 		cmr_cyv_code += CommonPages.cmr_cyv_code(category, cmr_cs_caseid, userInputData).trim();
@@ -685,16 +685,6 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 				.xpath("//*[contains(@name, '" + changeDateFormat(selectedDate, "d/MMMM/yyyy", "dd/MMMM/yyyy") + "')]"))
 				.click();
 
-	}
-
-	// *[contains(@name,
-	// 'Due')]/following::XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeButton/XCUIElementTypeStaticText
-
-	public static void main(String[] args) {
-		getInstance(Driver.IOS);
-		List<UserInputData> userInputData = null;
-		chmAssignDPFPage page1 = new chmAssignDPFPage();
-		page1.terminateStaffAssignment(userInputData);
 	}
 
 }

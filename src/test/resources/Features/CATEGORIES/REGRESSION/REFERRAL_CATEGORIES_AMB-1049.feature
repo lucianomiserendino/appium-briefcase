@@ -2,12 +2,13 @@
 Feature: Referral categories display on the dashboard for Staff Attorneys
 
   Background: 
-    Given I am logged into Briefcase
-      | environment | userName | password  | courtId |
-      | Integration | s haenni | Test2025! | test    |
-    Then I select a user
-      | userType | personrole      | stf             |
-      | stf      | Staff Attorneys | Brown, Benjamin |
+   # Given I am logged into Briefcase
+   #   | environment | userName | password  | courtId |
+    #  | Integration | s haenni | Test2025! | test    |
+  		Then I select a user 
+		|userType   |personrole        |stf  |
+		|stf        |Staff Attorneys   |test |
+		
 
   Scenario: 
     Assignment categories are listed on the Dashboard page for staff attorneys.
@@ -16,7 +17,9 @@ Feature: Referral categories display on the dashboard for Staff Attorneys
     panel. This task is to verify each referral category is displayed and the
     number of referrals is correct for each category
 
-    Given User selects assignment type "Senior Staff Attorney"
-    When User observes there are six referral categories listed on UI and DB, use smr_assign_pe_id: "434"
-      | courtId |
-      | test    |
+  
+  	Then User selects random stf Aty category
+		|courtId|
+		|test   |
+    When User observes correct referral categories listed for Staff Attorney
+ 
