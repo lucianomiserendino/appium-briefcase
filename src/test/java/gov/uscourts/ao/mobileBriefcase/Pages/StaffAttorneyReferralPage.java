@@ -1,5 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_DESCRIPTION;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ID_OF_THE_REFERRAL_CATEGORY;
@@ -18,9 +19,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -59,6 +62,9 @@ public class StaffAttorneyReferralPage extends Base {
 
 	@iOSXCUITFindBy(xpath = "XCUIElementTypeStaticText[@name='Desc'][1]")
 	public static WebElement desc;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='GroupIcon']")
+	public static List<WebElement> GroupIcon;
 
 	/** Observe the assignment categories that display on the dashboard for SAs */
 
@@ -242,10 +248,11 @@ public class StaffAttorneyReferralPage extends Base {
 		return random;
 	}
 
-	public static void selectSortOption(SortingOptions opt1, String opt2, List<UserInputData> table) {
+	public static void selectSortOption(String opt, List<UserInputData> table) {
 
-		selectSortOption(opt2);
-		if (opt2.equals("Default")) {
+		selectSortOption(opt);
+
+		if (opt.equals("Default")) {
 			/**
 			 * the referrals should be grouped in accordion panels by referral category and
 			 * sorted by case number
@@ -253,10 +260,10 @@ public class StaffAttorneyReferralPage extends Base {
 			getReferralCategoryList(table);
 			sortedInAscendingOrder(1);
 
-		} else if (opt2.equals("Case Number")) {
-			int order = getRandomInt(opt2);
-
+		} else if (opt.equals("Case Number")) {
+			int order = getRandomInt(opt);
 			sortedInAscendingOrder(order);
+
 		}
 
 	}
@@ -294,12 +301,29 @@ public class StaffAttorneyReferralPage extends Base {
 
 		}
 
-		assertTrue("REFERRALS ARE NOT SORTED BY CASE NUMBER IN ASCENDING ORDER",
-				Utility.checkIfSorted(sortedBy));
+		assertTrue("REFERRALS ARE NOT SORTED BY CASE NUMBER IN ASCENDING ORDER", Utility.checkIfSorted(sortedBy));
 	}
 
-	public enum SortingOptions {
-		DEFAULT, CASE_NUMBER, REFERRED, STATUS, DUE, RECEIVED, DESCENDING, ASCENDING
-	}
+	public void gestfaty_supervisor_to_group(List<UserInputData> table) {
+		List<String> group = execute(Queries.SUPERVISOR_STF, 6, table);
+		Actions.tap(Locator.XPATH, group.get(0));
+		CommonPages.getGroupIcons();
 
+		List<WebElement> categoryName = Actions
+				.findElements(By.xpath(containsElement("(") + "/preceding:: XCUIElementTypeStaticText[1]"));
+
+		String stf = categoryName.get(0).getText();
+
+		String categoryCount = Actions.replace(Actions.findElements(By.xpath(containsElement("("))).get(0).getText(),
+				"\\(", "", "\\)", "");
+
+		String lName = stf.split(",")[0];
+		String fName = stf.split(",")[1].split(" ")[0];
+
+		String peId = DBUtilities.getPE_ID("stf", lName, fName, table);
+
+		int refNumbers = executeQuery(replace(Queries.STF_REFERRAL_CATEGORIES, "RA_PE_ID", peId), table).size();
+
+		Assert.assertEquals(categoryCount, refNumbers);
+	}
 }

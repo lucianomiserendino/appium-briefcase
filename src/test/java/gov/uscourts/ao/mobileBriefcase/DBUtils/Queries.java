@@ -645,6 +645,9 @@ public class Queries {
 	public static final String TARGET_AND_APPLIED_CASES = "select distinct cs_caseid from chm_mobile_referral, "
 			+ "chm_reftype_val, case_dktentry, case where cmr_ju_pe_id = ? and cmr_cyv_code = cyv_code  and cyv_category = 'CYV_CATEGORY' and cmr_cs_caseid = cs_caseid and cmr_date_end is null and "
 			+ "cd_caseid = cmr_cs_caseid and cmr_dktentryid = cd_dktentryid";
-	
-	
+
+	public static final String SUPERVISOR_STF = "select pr_last_name, pr_first_name, ssg_pe_id,ssg_gp_id, gp_name from stfaty_supervisor_to_group, person, personrole, group where pe_pr_prid=pr_prid  and pe_date_end is null and pe_rt_code=\"stf\" and pe_id=ssg_pe_id and ssg_gp_id=gp_id";
+
+	public static final String STF_REFERRAL_CATEGORIES = "select distinct count(cs_year||\"-\"||cs_number) case_num  FROM case, stfaty_case_ref, stfaty_ref_assign, personrole, dktentry, case_dktentry, relate_dktpart,stfaty_mobile_referral , outer stfaty_refstat_val , outer stfaty_mobile_ref_cat  WHERE ra_sar_id = sar_id and   ra_pe_id = pe_id and   sar_cre_reldktid = rd_reldktid and  rd_cre_cd_id = cd_id and  cd_dktentryid = de_dktentryid and  sar_srv_code = mrc_code   and ra_pe_id='RA_PE_ID'  and ra_date_end is null and sar_cs_caseid=cs_caseid and  sar_id=smr_sar_id  ";
+
 }

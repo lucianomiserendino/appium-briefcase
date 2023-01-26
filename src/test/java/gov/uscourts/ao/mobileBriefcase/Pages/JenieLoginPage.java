@@ -55,10 +55,10 @@ public class JenieLoginPage extends Base {
 	@iOSBy(accessibility = "Testing")
 	public WebElement testing;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther[5]/XCUIElementTypeTextField")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther/following::XCUIElementTypeTextField[1]")
 	public static WebElement userName;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther[6]/XCUIElementTypeSecureTextField")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther/following:: XCUIElementTypeSecureTextField[1]")
 	public static WebElement password;
 
 	@iOSXCUITFindBy(id = "SIGN ON")
@@ -159,11 +159,11 @@ public class JenieLoginPage extends Base {
 			name = SystemPropertySetup.getVariable(Variables.STF, userInputData);
 		}
 
-		selectJudge(personrole, name);
+		selectUser(personrole, name);
 
 	}
 
-	public static void selectJudge(String availableJudges, String user) {
+	public static void selectUser(String availableJudges, String user) {
 
 		while (true) {
 

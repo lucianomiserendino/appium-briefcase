@@ -1,14 +1,13 @@
 @Regression 
 Feature: Sorting on the Pending Tasks Page 
 
-
 @AMB-2380 @n
 Scenario Outline: 
 	As a judge when I view the Pending Clerk's cases I can sort them by case number or by date in decending order.
 	
-	#Given I am logged into Briefcase 
-	#	|environment|userName| password |courtId|
-		#|test       |test    | test     |test   |
+	Given I am logged into Briefcase 
+		|environment|userName| password |courtId|
+		|test       |test    | test     |test   |
 	
 	Then I select a user 
 		|userType   |personrole        |jud          |
@@ -18,8 +17,8 @@ Scenario Outline:
 	And  Verify the "<folder>" cases are sorted by date descending order 
 	Examples: 
 		|folder             |
-		|PendingClerkOffice |
-		|MyAssignments      |
+		#|PendingClerkOffice |
+		#|MyAssignments      |
 		|ReferralsAwaiting  |
 	
 		

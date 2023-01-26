@@ -8,7 +8,6 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.StaffAttorneyReferralPage;
-import gov.uscourts.ao.mobileBriefcase.Pages.StaffAttorneyReferralPage.SortingOptions;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class StaffAttorney_StepDefinitions {
@@ -50,7 +49,9 @@ public class StaffAttorney_StepDefinitions {
 	public void user_selects_a_sort_option_and_verifies_the_items_on_the_page_is_sorted_accordingly() {
 		List<UserInputData> userInputData = null;
 		page = new StaffAttorneyReferralPage();
-		page.selectSortOption(SortingOptions.DEFAULT, "Default",userInputData);
+		//page.selectSortOption("Default", userInputData);
+		page.selectSortOption("Case Number", userInputData);
+
 	}
 
 }
