@@ -6,25 +6,17 @@ import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 
 public class Hook extends Base {
-//
-//	@Before
-//	public void setUp() {
-//		safariInstance();
-//
-//	}
-//
-//	@After
-//	public void tearDown() {
-//		JenieLoginPage.logout();
-//		closeIOSDriver();
-//	}
-//	
-//	
-//	
-//	public static void main(String[] args) {
-//		safariInstance();
-//		JenieLoginPage.logout();
-//		closeIOSDriver();
-//	}
+
+	@Before
+	public void setUp() {
+		safariInstance();
+
+	}
+
+	@After
+	public void tearDown() {
+		JenieLoginPage.logout();
+		closeIOSDriver();
+	}
 
 }

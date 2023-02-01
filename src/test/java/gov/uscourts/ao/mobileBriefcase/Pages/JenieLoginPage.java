@@ -97,7 +97,7 @@ public class JenieLoginPage extends Base {
 	public static WebElement searchTextField;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Court not set']")
-	public static WebElement setCourt;
+	public static List<WebElement> setCourt;
 
 	public void getEnvironment(Environment environment) {
 		switch (environment) {
@@ -134,8 +134,8 @@ public class JenieLoginPage extends Base {
 	}
 
 	public void getServer(String server) {
-		if (setCourt.isDisplayed()) {
-			setCourt.click();
+		if (setCourt.size() > 0) {
+			setCourt.get(0).click();
 		}
 		contains(server).click();
 		performPageLoad(driver);

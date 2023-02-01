@@ -9,7 +9,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
-public class Actions extends Base {
+public class Actions extends AppiumPageFactory {
 
 	public static WebElement findElementBy(Locator identifier, String element) {
 

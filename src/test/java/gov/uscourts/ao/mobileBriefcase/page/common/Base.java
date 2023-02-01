@@ -51,6 +51,7 @@ public abstract class Base implements iOSCapabilities {
 				SetCapabilitiy(NO_RESET);
 				SetCapabilitiy(START_IWDP);
 				SetCapabilitiy(SAFARI_INITIAL_URL);
+				SetCapabilitiy(SHOULD_TERMINATE_APP);
 				getDriver();
 				break;
 

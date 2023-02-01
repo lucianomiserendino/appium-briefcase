@@ -34,6 +34,8 @@ public interface iOSCapabilities {
 
 	public static final String NO_RESET = "noReset";
 	
+	public static final String SHOULD_TERMINATE_APP = "shouldTerminateApp";
+	
 	public static final String SAFARI_INITIAL_URL="safariInitialUrl";
 
 	public static final String LOCAL_HOST = "host";

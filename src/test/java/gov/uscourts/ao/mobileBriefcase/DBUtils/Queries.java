@@ -650,4 +650,7 @@ public class Queries {
 
 	public static final String STF_REFERRAL_CATEGORIES = "select distinct count(cs_year||\"-\"||cs_number) case_num  FROM case, stfaty_case_ref, stfaty_ref_assign, personrole, dktentry, case_dktentry, relate_dktpart,stfaty_mobile_referral , outer stfaty_refstat_val , outer stfaty_mobile_ref_cat  WHERE ra_sar_id = sar_id and   ra_pe_id = pe_id and   sar_cre_reldktid = rd_reldktid and  rd_cre_cd_id = cd_id and  cd_dktentryid = de_dktentryid and  sar_srv_code = mrc_code   and ra_pe_id='RA_PE_ID'  and ra_date_end is null and sar_cs_caseid=cs_caseid and  sar_id=smr_sar_id  ";
 
+	public static final String CMA_CMR_ID = "select first 1 cmr_id from chm_mobile_referral, chm_reftype_val where cmr_ju_pe_id = 'CMR_JU_PE_ID' and cmr_date_end is null and cmr_cyv_code = cyv_code and cyv_is_briefcase = 'y' and cyv_is_oral_arg = 'n' and cyv_category='CYV_CATEGORY' and cmr_cs_caseid='CMR_CS_CASEID' and cmr_panel_members='CMR_PANEL_MEMBERS'";
+
+	public static final String INTERNAL_NOTE = "select  first 1 cma_value from chm_mobile_data where cma_key='Internal Note' and cma_cmr_id='CMA_CMR_ID'";
 }

@@ -33,6 +33,7 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
@@ -42,14 +43,14 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
-public class CommonPages extends Base {
-	public CommonPages() {
+public class CommonPages extends AppiumPageFactory {
+	//public CommonPages() {
 
 		// initElements(new AppiumFieldDecorator(driver), this);
-
-		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
-
-	}
+//
+//		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
+//
+//	}
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther[5]/XCUIElementTypeTextField")
 	public static WebElement userName;
@@ -231,7 +232,7 @@ public class CommonPages extends Base {
 	}
 
 	public static void selectAction(String panel, List<UserInputData> userInputData) {
-		getGroupIcons();
+		//getGroupIcons();
 		getPanel(Panel.valueOf(panel));
 		// getActionName("mbr multiple DMI");
 		getActionName("Auto Test");

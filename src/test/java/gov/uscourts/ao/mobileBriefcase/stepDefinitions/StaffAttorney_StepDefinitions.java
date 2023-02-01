@@ -45,13 +45,6 @@ public class StaffAttorney_StepDefinitions {
 		page.getCategories(valueOf(dbType), category, smr_assign_pe_id);
 	}
 
-	@Then("^User selects a sort option and verifies the items on the page is sorted accordingly$")
-	public void user_selects_a_sort_option_and_verifies_the_items_on_the_page_is_sorted_accordingly() {
-		List<UserInputData> userInputData = null;
-		page = new StaffAttorneyReferralPage();
-		//page.selectSortOption("Default", userInputData);
-		page.selectSortOption("Case Number", userInputData);
 
-	}
 
 }

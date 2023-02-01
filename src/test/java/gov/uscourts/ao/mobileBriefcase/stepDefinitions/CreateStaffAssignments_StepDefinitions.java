@@ -22,7 +22,7 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 
 	@Then("^user  verifies that briefcase events include the chmSilentAssign DPF$")
 	public void user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(List<UserInputData> userInputData) {
-		getInstance(Driver.IOS);
+		//getInstance(Driver.IOS);
 		page = new CommonPages();
 		assertTrue(isDisplayed(containsElement("Assignments")));
 		scrollDownIfNotDisplayed("(" + containsElement("NewStaffButton") + ")[1]");
