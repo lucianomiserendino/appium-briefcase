@@ -1,5 +1,6 @@
+@AMB-3104 @AMB-3286 @AMB-3384 @AMB-3386
 Feature: Display an internal note option for judges
-@AMB-3104 @AMB-3286
+
 
 
 Scenario: Add an Internal Note for Judges

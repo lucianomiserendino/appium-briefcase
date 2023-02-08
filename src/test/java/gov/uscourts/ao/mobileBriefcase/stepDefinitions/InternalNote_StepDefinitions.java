@@ -44,7 +44,7 @@ public class InternalNote_StepDefinitions {
 	@Then("^User verifies that the note doesn't come back after closing and reopening the app$")
 	public void user_verifies_that_the_note_doesn_t_come_back_after_closing_and_reopening_the_app() {
 		page = new InternalNotePage();
-		page.navAwayAfterRemoving(Document_StepDefinitions.judCategory, Document_StepDefinitions.regularCase);
+		page.removeAndNavigateAway(Document_StepDefinitions.judCategory, Document_StepDefinitions.regularCase);
 	}
 
 }

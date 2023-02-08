@@ -5,9 +5,9 @@ Scenario:
 	If there are records defined in the mbr_event table, 
        a collapsible panel entitled "Actions" should display, when expanded all the applicable actions should display.
        
-		Given I am logged into Briefcase 
-		|environment|userName| password |courtId|
-		|test       |test    | test     |test   |
+		#Given I am logged into Briefcase 
+	#	|environment|userName| password |courtId|
+	#	|test       |test    | test     |test   |
 		
 		Then I select a user 
 		|userType   |personrole        |jud      |
@@ -34,9 +34,9 @@ Scenario:
 @AMB-2785	
 Scenario: The mbr docWP action should be displayed when the me_cav_code is set to 'judgement'     
   
-	Given I am logged into Briefcase 
-		|environment|userName| password |courtId|
-		|test       |test    | test     |test   |
+	#Given I am logged into Briefcase 
+	#	|environment|userName| password |courtId|
+	   #|test       |test    | test     |test   |
 		
 	Then I select a user 
 		|userType   |personrole        |jud     |

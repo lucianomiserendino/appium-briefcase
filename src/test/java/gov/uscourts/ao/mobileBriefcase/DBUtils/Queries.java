@@ -653,4 +653,7 @@ public class Queries {
 	public static final String CMA_CMR_ID = "select first 1 cmr_id from chm_mobile_referral, chm_reftype_val where cmr_ju_pe_id = 'CMR_JU_PE_ID' and cmr_date_end is null and cmr_cyv_code = cyv_code and cyv_is_briefcase = 'y' and cyv_is_oral_arg = 'n' and cyv_category='CYV_CATEGORY' and cmr_cs_caseid='CMR_CS_CASEID' and cmr_panel_members='CMR_PANEL_MEMBERS'";
 
 	public static final String INTERNAL_NOTE = "select  first 1 cma_value from chm_mobile_data where cma_key='Internal Note' and cma_cmr_id='CMA_CMR_ID'";
+
+	public static final String SMR_STATUS = "SELECT distinct  smr_status  FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and  smr_assign_pe_id = 'SMR_ASSIGN_PE_ID'  and smr_sfa_code = 'SMR_SFA_CODE'  order by smr_status asc";
+
 }

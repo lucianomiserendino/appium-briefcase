@@ -92,9 +92,9 @@ public class DocumentPage extends AppiumPageFactory {
 
 		int randomCat = Utility.getRandomNumberInRange(1, sfa_display.size() - 1);
 
-		category = sfa_display.get(Utility.getRandomInt(randomCat));
-		category_code = smr_sfa_code.get(Utility.getRandomInt(randomCat));
-
+		category = sfa_display.get(randomCat);
+		category_code = smr_sfa_code.get(randomCat);
+		
 		scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category.trim() + "')]");
 
 		return category_code.trim();
