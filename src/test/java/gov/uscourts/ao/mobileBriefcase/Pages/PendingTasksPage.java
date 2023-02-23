@@ -53,9 +53,22 @@ public class PendingTasksPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<WebElement> caseNum;
 
-	public void sortedInDescendingOrder(String folder) {
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
+	public static List<WebElement> pendingSubFolders;
 
-		getPendingSubFolder(folder);
+	public String getRandomSubFolder() {
+
+		//int random = Utility.getRandomNumberInRange(1, pendingSubFolders.size());
+		//WebElement randomFolder = pendingSubFolders.get(random - 1);
+		WebElement randomFolder = pendingSubFolders.get(0);
+
+		String folder = randomFolder.getText();
+		randomFolder.click();
+		return folder.trim();
+	}
+
+	public void sortedInDescendingOrder() {
+		String folder = getRandomSubFolder();
 		getGroupIcons();
 		sortedInDescendingOr(folder);
 
@@ -93,7 +106,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 		String catN = Actions.findElementBy(Locator.XPATH, categoryName).getText().trim();
 		Actions.tap(Locator.XPATH, categoryName);
 
-		if (folder.equals("MyAssignments") | folder.equals("ReferralsAwaiting")) {
+		if (folder.equals("My Assignments") | folder.contains("Referrals Awaiting")) {
 
 			Boolean elementNotFound = true;
 
@@ -103,7 +116,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 						"//XCUIElementTypeOther[@name=\"PendingTasksList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther//following::XCUIElementTypeStaticText[@name='"
 								+ catN + "']/following::XCUIElementTypeStaticText[@name=\"GroupIcon\"]"));
 
-				for (int i = 0; i < s + icons.size(); i++) {
+				for (int i = 0; i < s+icons.size(); i++) {
 
 					if (icons.get(i).getAttribute("value").equals("▽")) {
 
@@ -186,28 +199,11 @@ public class PendingTasksPage extends AppiumPageFactory {
 		}
 	}
 
-	public static void getPendingSubFolder(String folder) {
 
-		WebElement el = null;
 
-		if (folder.equals("PendingClerk")) {
-			el = PendingClerk;
+	public void leftNavAndPendingTasksCategoriesAreSorted() {
 
-		} else if (folder.equals("MyAssignments")) {
-			el = MyAssignments;
-
-		} else if (folder.equals("ReferralsAwaiting")) {
-			el = ReferralsAwaiting;
-
-		} else
-			el = PendingClerkOffice;
-
-		Actions.tap(el);
-	}
-
-	public void leftNavAndPendingTasksCategoriesAreSorted(String folder) {
-
-		getPendingSubFolder(folder);
+		String folder = getRandomSubFolder();
 		getGroupIcons();
 		ArrayList<String> listTwo = new ArrayList<String>();
 		for (int y = 1; y < categoryCount.size() + 1; y++) {

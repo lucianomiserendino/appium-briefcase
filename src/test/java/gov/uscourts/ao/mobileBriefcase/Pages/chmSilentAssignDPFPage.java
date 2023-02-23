@@ -64,6 +64,8 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(accessibility = "OK")
 	public static WebElement ok;
+	
+
 
 	String actionName = "Auto Test";
 	String cmr_cyv_code = "prhr";
@@ -87,7 +89,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 
 	public void getJudgeAssignment(List<UserInputData> userInputData, String assineeName,
 			String AssignmentTypeAndDate) {
-		PendingTasksPage.getPendingSubFolder("MyAssignments");
+		MyAssignments.click();
 
 		for (int i = 1; i < GroupIcon.size() + 1; i++) {
 			String groupIcon = "(//XCUIElementTypeStaticText[@name='GroupIcon'])[";

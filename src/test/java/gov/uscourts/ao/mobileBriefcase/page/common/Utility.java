@@ -260,10 +260,13 @@ public class Utility extends Base {
 	}
 
 	public static int getRandomNumberInRange(int min, int max) {
-		if (min >= max) {
-			throw new IllegalArgumentException("MAX MUST BE GREATER THAN MIN");
-		}
-		return new Random().nextInt((max - min) + 1) + min;
+
+		int diff = max - min;
+		Random rn = new Random();
+		int i = rn.nextInt(diff + 1);
+		i += min;
+		return i;
+
 	}
 
 	public static String clickOnNumberInRange(List<WebElement> value) {
@@ -383,7 +386,7 @@ public class Utility extends Base {
 
 	}
 
-	public static boolean checkIfSorted( List<String> list) {
+	public static boolean checkIfSorted(List<String> list) {
 
 		boolean isSorted = true;
 		for (int i = 1; i < list.size(); i++) {
