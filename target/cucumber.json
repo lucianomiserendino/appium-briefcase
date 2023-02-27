@@ -1,12 +1,12 @@
 [
   {
-    "line": 2,
+    "line": 1,
     "elements": [
       {
         "before": [
           {
             "result": {
-              "duration": 176250,
+              "duration": 93000,
               "status": "passed"
             },
             "match": {
@@ -14,14 +14,14 @@
             }
           }
         ],
-        "line": 5,
+        "line": 4,
         "name": "",
-        "description": "As a judge when I view the Pending Tasks sub folder cases I can sort them by case number or by date in decending order.",
-        "id": "sorting-on-the-pending-tasks-page;",
+        "description": "This task is to verify that a chambers user is able to create a new staff assignment,\nto verify back-end updates when a new staff assignment is created,\nedit existing staff assignments and verify Back-end after modifying assignment",
+        "id": "chmassign;",
         "after": [
           {
             "result": {
-              "duration": 59541,
+              "duration": 58833,
               "status": "passed"
             },
             "match": {
@@ -34,24 +34,25 @@
         "steps": [
           {
             "result": {
-              "duration": 41795719417,
-              "status": "passed"
+              "duration": 1807470792,
+              "error_message": "java.lang.IllegalArgumentException: Input must be set\n\tat org.openqa.selenium.internal.Require.nonNull(Require.java:59)\n\tat org.openqa.selenium.support.ui.FluentWait.\u003cinit\u003e(FluentWait.java:97)\n\tat org.openqa.selenium.support.ui.WebDriverWait.\u003cinit\u003e(WebDriverWait.java:77)\n\tat org.openqa.selenium.support.ui.WebDriverWait.\u003cinit\u003e(WebDriverWait.java:46)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForPresenceOfElementLocated(Page.java:15)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains(Actions.java:66)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.selectUser(JenieLoginPage.java:156)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.JenieLogin_StepDefinitions.i_select_a_user(JenieLogin_StepDefinitions.java:26)\n\tat ✽.Then I select a user(CATEGORIES/SMOKE/chmAssign.feature:15)\n",
+              "status": "failed"
             },
             "comments": [
               {
-                "line": 8,
+                "line": 10,
                 "value": "#Given I am logged into Briefcase"
               },
               {
-                "line": 9,
+                "line": 11,
                 "value": "#\t|environment|userName| password |courtId|"
               },
               {
-                "line": 10,
+                "line": 12,
                 "value": "#\t|test       |test    | test     |test   |"
               }
             ],
-            "line": 12,
+            "line": 15,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -63,7 +64,7 @@
                   "personrole",
                   "jud"
                 ],
-                "line": 13
+                "line": 16
               },
               {
                 "cells": [
@@ -71,65 +72,217 @@
                   "Appellate Judges",
                   "test"
                 ],
-                "line": 14
+                "line": 17
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 6637970834,
-              "status": "passed"
+              "status": "skipped"
             },
-            "line": 16,
-            "name": "User selects a  \"Pending Tasks\"",
+            "line": 19,
+            "name": "User selects random judge category",
             "match": {
-              "arguments": [
-                {
-                  "val": "Pending Tasks",
-                  "offset": 17
-                }
-              ],
-              "location": "Common_StepDefinitions.user_selects_a(String)"
+              "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
             },
-            "keyword": "When "
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 20
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 21
+              }
+            ],
+            "keyword": "Then "
           },
           {
             "result": {
-              "duration": 231434152375,
-              "error_message": "java.lang.IndexOutOfBoundsException: Index: 4, Size: 4\n\tat java.util.ArrayList.rangeCheck(ArrayList.java:659)\n\tat java.util.ArrayList.get(ArrayList.java:435)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.PendingTasksPage.sortedInDescendingOr(PendingTasksPage.java:133)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.PendingTasksPage.sortedInDescendingOrder(PendingTasksPage.java:73)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.PendingTasks_StepDefinitions.verify_the_sub_folder_cases_are_sorted_by_date_descending_order(PendingTasks_StepDefinitions.java:14)\n\tat ✽.And Verify the sub-folder cases are sorted by date descending order(CATEGORIES/Test/SORTING_PENDING_TASK_CASES.feature:17)\n",
-              "status": "failed"
+              "status": "skipped"
             },
-            "line": 17,
-            "name": "Verify the sub-folder cases are sorted by date descending order",
+            "line": 23,
+            "name": "User selects random case number",
             "match": {
-              "location": "PendingTasks_StepDefinitions.verify_the_sub_folder_cases_are_sorted_by_date_descending_order()"
+              "location": "Document_StepDefinitions.user_selects_random_case_number(UserInputData\u003e)"
             },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 24
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 25
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 27,
+            "name": "User  selects an action and verifies the name of the action displays in the dark blue banner",
+            "match": {
+              "location": "Common_StepDefinitions.user_selects_an_action_and_verifies_the_name_of_the_action_displays_in_the_dark_blue_banner(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 29
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 30
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 32,
+            "name": "user  verifies that briefcase events include the chmSilentAssign DPF",
+            "match": {
+              "location": "CreateStaffAssignments_StepDefinitions.user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "caseNumber",
+                  "courtId"
+                ],
+                "line": 33
+              },
+              {
+                "cells": [
+                  "test",
+                  "test"
+                ],
+                "line": 34
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 36,
+            "name": "User creates a new staff assignment",
+            "match": {
+              "location": "CreateStaffAssignments_StepDefinitions.user_creates_a_new_staff_assignment(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 37
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 38
+              }
+            ],
+            "keyword": "And "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 40,
+            "name": "User edits existing staff assignment",
+            "match": {
+              "location": "CreateStaffAssignments_StepDefinitions.user_edits_existing_staff_assignment(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 41
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 42
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 44,
+            "name": "User terminates the assignment",
+            "match": {
+              "location": "CreateStaffAssignments_StepDefinitions.user_terminates_the_assignment(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 45
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 46
+              }
+            ],
             "keyword": "And "
           }
         ],
         "tags": [
           {
-            "line": 4,
-            "name": "@AMB-2380"
+            "line": 3,
+            "name": "@AMB-1122"
           },
           {
-            "line": 4,
-            "name": "@n"
+            "line": 3,
+            "name": "@AMB-1123"
+          },
+          {
+            "line": 3,
+            "name": "@AMB-1137"
+          },
+          {
+            "line": 3,
+            "name": "@AMB-1170"
+          },
+          {
+            "line": 3,
+            "name": "@AMB-1173"
           }
         ]
       }
     ],
-    "name": "Sorting on the Pending Tasks Page",
+    "name": "chmAssign",
     "description": "",
-    "id": "sorting-on-the-pending-tasks-page",
+    "id": "chmassign",
     "keyword": "Feature",
-    "uri": "CATEGORIES/Test/SORTING_PENDING_TASK_CASES.feature",
-    "tags": [
-      {
-        "line": 1,
-        "name": "@Regression"
-      }
-    ]
+    "uri": "CATEGORIES/SMOKE/chmAssign.feature"
   }
 ]

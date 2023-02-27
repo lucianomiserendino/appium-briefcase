@@ -6,6 +6,7 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
+import static org.junit.Assert.assertEquals;
 import static org.openqa.selenium.support.PageFactory.initElements;
 
 import java.util.List;
@@ -64,12 +65,12 @@ public class JenieLoginPage extends Base {
 	@iOSXCUITFindBy(id = "SIGN ON")
 	public static WebElement submButton;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"Send Key to Device\"]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Send Key to Device']")
 	public WebElement sendKeyButton;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"Dashboard\"]")
-	public static WebElement dashboard;
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Dashboard']")
+	public static List<WebElement> dashboard;
 
 	// @WithTimeout(time = 15, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'User')]")
@@ -98,6 +99,12 @@ public class JenieLoginPage extends Base {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Court not set']")
 	public static List<WebElement> setCourt;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='✓']/following::XCUIElementTypeStaticText[1]")
+	public static WebElement checkmark;
+
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name=''])[1]")
+	public static WebElement arrow;
 
 	public void getEnvironment(Environment environment) {
 		switch (environment) {
@@ -133,14 +140,7 @@ public class JenieLoginPage extends Base {
 		tap(Locator.XPATH, "(//XCUIElementTypeStaticText[@name=\"Open\"])[1]");
 	}
 
-	public void getServer(String server) {
-		if (setCourt.size() > 0) {
-			setCourt.get(0).click();
-		}
-		contains(server).click();
-		performPageLoad(driver);
 
-	}
 
 	public void selectUser(List<UserInputData> userInputData) {
 
@@ -249,6 +249,39 @@ public class JenieLoginPage extends Base {
 
 	public enum Environment {
 		Integration, Staging, Testing, Production
+	}
+
+	public static void getServer(String server) {
+
+		if (dashboard.size() > 1) {
+			if (setCourt.size() > 0) {
+
+				setCourt.get(0).click();
+
+			} else {
+
+				arrow.click();
+			}
+		}
+
+		performPageLoad(driver);
+
+		contains(server).click();
+		performPageLoad(driver);
+
+		String courtList = contains(server).getAttribute("value");
+
+		String last = courtList.substring(courtList.lastIndexOf('-'));
+
+		String court1 = courtList.split(last)[0].trim();
+
+		contains(server).click();
+		String court2 = checkmark.getText();
+		checkmark.click();
+
+		assertEquals("VERIFY A GREEN CHECKMARK DISPLAYS TO THE LEFT OF THE COURT THAT IS CURRENTLY SELECTED: ", court1,
+				court2);
+
 	}
 
 }

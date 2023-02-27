@@ -76,6 +76,10 @@ public class AppliedCasesPage extends Base {
 
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Total')]")
 	public static WebElement total;
+	
+	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Dashboard']")
+	public static WebElement dashboard;
 
 	@iOSXCUITFindBy(id = "Categories")
 	public static WebElement categories;
