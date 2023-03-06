@@ -599,6 +599,21 @@ public class Utility extends Base {
 		return isSorted;
 	}
 
+	public static boolean hasDublicates(List<String> list) {
+		boolean hasDublicates = false;
+		Set<String> k = new HashSet<String>();
+
+		for (String name : list) {
+			if (k.add(name) == false)
+				hasDublicates = true;
+			else {
+				hasDublicates = false;
+			}
+		}
+		return hasDublicates;
+	}
+
+	
 	public enum Filter {
 		UNIQUE_VALUES, DUPLICATE_VALUES
 	}

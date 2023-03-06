@@ -22,7 +22,7 @@ public class VoteInformation_StepDefinitions {
 	@Given("^User observes the \"([^\"]*)\" panel displays\\.   This should only display if the referral requires voting$")
 	public void user_observes_the_panel_displays_This_should_only_display_if_the_referral_requires_voting(
 			String voteInfo) {
-		page = new VoteInformationPage();
+		//page = new VoteInformationPage();
 		page1 = new CommonPages();
 		page1.getPanel(Panel.valueOf(voteInfo));
 	}

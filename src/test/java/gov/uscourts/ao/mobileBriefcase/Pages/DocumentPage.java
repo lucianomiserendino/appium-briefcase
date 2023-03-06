@@ -8,7 +8,7 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static java.util.Collections.sort;
-import static org.openqa.selenium.support.PageFactory.initElements;
+import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +21,10 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class DocumentPage extends AppiumPageFactory {
@@ -94,7 +92,7 @@ public class DocumentPage extends AppiumPageFactory {
 
 		category = sfa_display.get(randomCat);
 		category_code = smr_sfa_code.get(randomCat);
-		
+
 		scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category.trim() + "')]");
 
 		return category_code.trim();
@@ -204,6 +202,11 @@ public class DocumentPage extends AppiumPageFactory {
 		Page.performPageLoad(driver);
 		List<String> list = Utility.retrieveAllReferrals(element, " ", 0);
 
+		/** This might change in 1.8 - AMB-3399 */
+		assertFalse(
+				"VERIFY IF THERE IS MORE THAN ONE REFERRAL IN THE SAME CATEGORY FOR A CASE, THE CASE IS DISPLAYED ONLY ONCE",
+				Utility.hasDublicates(list));
+
 		int caseN = 0;
 		if (list.size() > 1) {
 			caseN = Utility.getRandomInt(list.size() - 1);
@@ -214,7 +217,7 @@ public class DocumentPage extends AppiumPageFactory {
 		WebElement uiResult = findElementBy(Locator.XPATH,
 				"//XCUIElementTypeStaticText[contains(@name, '" + list.get(caseN) + "')]");
 
-		referral = list.get(caseN);// uiResult.getText();
+		referral = list.get(caseN);
 		uiResult.click();
 		Page.performPageLoad(driver);
 		return referral;
