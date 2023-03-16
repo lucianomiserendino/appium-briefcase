@@ -1,8 +1,11 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
+import java.util.List;
+
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.PendingTasksPage;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class PendingTasks_StepDefinitions {
 
@@ -11,7 +14,8 @@ public class PendingTasks_StepDefinitions {
 	@When("^Verify the sub-folder cases are sorted by date descending order$")
 	public void verify_the_sub_folder_cases_are_sorted_by_date_descending_order() {
 		pending = new PendingTasksPage();
-		pending.sortedInDescendingOrder();
+		List<UserInputData> userInputData=null;
+		pending.sortedInDescendingOrder( userInputData);
 	}
 
 	@Then("^User taps on sub - folder and verify the referral categories are sorted in the same order as the left-hand navigation$")

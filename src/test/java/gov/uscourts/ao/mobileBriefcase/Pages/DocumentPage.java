@@ -56,6 +56,7 @@ public class DocumentPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Bookmark_Container']/preceding:: XCUIElementTypeStaticText[contains(@name, 'Panel:')]/preceding:: XCUIElementTypeStaticText[1]")
 	public static List<WebElement> caseOncalender;
 
+
 	public static String selectRandomItem(String query, String xpath, List<UserInputData> userInputData) {
 		String category = "";
 		List<String> list = null;
@@ -254,6 +255,11 @@ public class DocumentPage extends AppiumPageFactory {
 			element = caseOncalender;
 			break;
 
+		//case PendingTasks:
+
+			//element = pendingTasksCaseNum;
+			//break;
+
 		default:
 			break;
 		}
@@ -261,7 +267,7 @@ public class DocumentPage extends AppiumPageFactory {
 	}
 
 	public enum Category {
-		Referral_Category, Referral, Panel, judgeRegularCase, targetCase, appliedCase, CaseOnCalendar,
+		Referral_Category, Referral, Panel, judgeRegularCase, targetCase, appliedCase, CaseOnCalendar, PendingTasks
 	}
 
 }

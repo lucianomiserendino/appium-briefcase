@@ -6,7 +6,7 @@
         "before": [
           {
             "result": {
-              "duration": 166041,
+              "duration": 143541,
               "status": "passed"
             },
             "match": {
@@ -21,7 +21,7 @@
         "after": [
           {
             "result": {
-              "duration": 82583,
+              "duration": 67417,
               "status": "passed"
             },
             "match": {
@@ -34,7 +34,7 @@
         "steps": [
           {
             "result": {
-              "duration": 39183310000,
+              "duration": 38085141709,
               "status": "passed"
             },
             "comments": [
@@ -78,7 +78,7 @@
           },
           {
             "result": {
-              "duration": 6516055458,
+              "duration": 5946362042,
               "status": "passed"
             },
             "line": 16,
@@ -96,8 +96,8 @@
           },
           {
             "result": {
-              "duration": 459984230750,
-              "error_message": "java.lang.IndexOutOfBoundsException: Index: 4, Size: 4\n\tat java.util.ArrayList.rangeCheck(ArrayList.java:659)\n\tat java.util.ArrayList.get(ArrayList.java:435)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.PendingTasksPage.sortedInDescendingOr(PendingTasksPage.java:121)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.PendingTasksPage.sortedInDescendingOrder(PendingTasksPage.java:73)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.PendingTasks_StepDefinitions.verify_the_sub_folder_cases_are_sorted_by_date_descending_order(PendingTasks_StepDefinitions.java:14)\n\tat ✽.And Verify the sub-folder cases are sorted by date descending order(CATEGORIES/Test/SORTING_PENDING_TASK_CASES.feature:17)\n",
+              "duration": 382339328875,
+              "error_message": "java.lang.IndexOutOfBoundsException: Index: 6, Size: 6\n\tat java.util.ArrayList.rangeCheck(ArrayList.java:659)\n\tat java.util.ArrayList.get(ArrayList.java:435)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.PendingTasksPage.sortedInDescendingOr(PendingTasksPage.java:215)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.PendingTasksPage.sortedInDescendingOrder(PendingTasksPage.java:81)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.PendingTasks_StepDefinitions.verify_the_sub_folder_cases_are_sorted_by_date_descending_order(PendingTasks_StepDefinitions.java:18)\n\tat ✽.And Verify the sub-folder cases are sorted by date descending order(CATEGORIES/Test/SORTING_PENDING_TASK_CASES.feature:17)\n",
               "status": "failed"
             },
             "line": 17,

@@ -12,6 +12,8 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.Category;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
@@ -70,7 +72,11 @@ public class SyncPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Downloaded'])[6]")
 	public static WebElement Downloaded6;
 
-	public void getSync(SyncType page) {
+	public static void getSync(SyncType page, List<UserInputData> userInputData) {
+		DocumentPage docPage = new DocumentPage();
+
+		SyncPage page1 = new SyncPage();
+
 		switch (page) {
 
 		case Dashboard:
@@ -86,15 +92,23 @@ public class SyncPage extends AppiumPageFactory {
 			break;
 
 		case Referral_Category:
-			categroySyncBtn.click();
-			ifDownloaded(activityIndicator);
+
+			docPage.selectRandomJudgeCategory(userInputData);
+
+			page1.categroySyncBtn.click();
+			ifDownloaded(page1.activityIndicator);
+
+			docPage.getRandomCase(Category.judgeRegularCase);
 
 			break;
 
 		case Case_Detail:
 
-			Utility.doubleTap(caseSyncBtn);
-			ifDownloaded(activityIndicator);
+			docPage.selectRandomJudgeCategory(userInputData);
+			docPage.getRandomCase(Category.judgeRegularCase);
+
+			Utility.doubleTap(page1.caseSyncBtn);
+			ifDownloaded(page1.activityIndicator);
 
 			break;
 
@@ -104,7 +118,7 @@ public class SyncPage extends AppiumPageFactory {
 
 	}
 
-	public String viewSyncResults() {
+	public static String viewSyncResults() {
 		settingsIcon.click();
 		viewSyncResults.click();
 		performPageLoad(driver);
@@ -143,5 +157,13 @@ public class SyncPage extends AppiumPageFactory {
 		Dashboard, Referral_Category, Case_Detail;
 
 	}
+
+//	public static void main(String[] args) {
+//		getInstance(Driver.IOS);
+//
+//		SyncPage p = new SyncPage();
+//		p.getSync(SyncType.Referral_Category);
+//
+//	}
 
 }

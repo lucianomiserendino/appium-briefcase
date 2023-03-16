@@ -613,7 +613,6 @@ public class Utility extends Base {
 		return hasDublicates;
 	}
 
-	
 	public enum Filter {
 		UNIQUE_VALUES, DUPLICATE_VALUES
 	}

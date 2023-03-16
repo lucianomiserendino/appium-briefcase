@@ -314,8 +314,7 @@ public class Queries {
 			+ "join chambers_assign_date on cha_id = chd_cha_id \n"
 			+ "join chm_assign_to_case on chc_cha_id = ? order by cha_last_updated desc";
 
-	public static final String CAV_CODE = "SELECT cav_code  \n" + "	FROM chm_assign_type_val \n"
-			+ "	WHERE cav_display='TEXT' ";
+	public static final String CAV_CODE = "SELECT cav_code	FROM chm_assign_type_val WHERE cav_display like '%TEXT%'";
 
 	public static final String UPDATE_CHAMBERS_CASE_TO_REFERRAL = "UPDATE\n" + "  chambers_case_to_referral\n" + "SET\n"
 			+ "  ccr_date_end = 'TEXT' where ccr_id =?";
@@ -655,5 +654,15 @@ public class Queries {
 	public static final String INTERNAL_NOTE = "select  first 1 cma_value from chm_mobile_data where cma_key='Internal Note' and cma_cmr_id='CMA_CMR_ID'";
 
 	public static final String SMR_STATUS = "SELECT distinct  smr_status  FROM stfaty_mobile_ref_cat, stfaty_mobile_referral WHERE smr_mrc_id = mrc_id and  smr_assign_pe_id = 'SMR_ASSIGN_PE_ID'  and smr_sfa_code = 'SMR_SFA_CODE'  order by smr_status asc";
+
+	public static final String PENDING_TASKS_PANEL_MEMBERS = " select  FIELD from chm_mobile_referral, chambers_case_to_referral, chm_assign_to_case, chambers_assignment, "
+			+ "chm_reftype_val where  cmr_ccr_id = ccr_id and  ccr_cpr_id = chc_cpr_id and cmr_cs_caseid = chc_cs_caseid and  chc_date_end is null and cmr_ju_pe_id = 'CMR_JU_PE_ID' and"
+			+ " chc_cha_id = cha_id and cmr_ju_pe_id = cha_chm_pe_id and cmr_cs_caseid='CMR_CS_CASEID' and  cmr_ju_pe_id = 'CMR_JU_PE_ID' and cmr_date_end is null and "
+			+ "cmr_cyv_code = cyv_code and cyv_is_briefcase = 'y' and cyv_category ='CYV_CATEGORY' and cha_cav_code='CHA_CAV_CODE'";
+
+	public static final String PENDING_TASKS_ASSIGNED_DATE = "SELECT FIELD FROM chambers_assign_date ad, chm_assign_datetype_val, (Select max(chd_date) as maxnum, "
+			+ " chd_cha_id from chambers_assign_date group by chd_cha_id) maxresults WHERE ad.chd_cha_id in (CHD_CHA_ID) and chd_cdv_code = cdv_code and"
+			+ " ad.chd_cha_id=  maxresults.chd_cha_id and  ad.chd_date = maxresults.maxnum";
+
 
 }
