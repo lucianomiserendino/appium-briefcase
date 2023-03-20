@@ -6,7 +6,7 @@
         "before": [
           {
             "result": {
-              "duration": 143541,
+              "duration": 98000,
               "status": "passed"
             },
             "match": {
@@ -21,7 +21,7 @@
         "after": [
           {
             "result": {
-              "duration": 67417,
+              "duration": 227000,
               "status": "passed"
             },
             "match": {
@@ -34,7 +34,7 @@
         "steps": [
           {
             "result": {
-              "duration": 38085141709,
+              "duration": 40154351625,
               "status": "passed"
             },
             "comments": [
@@ -78,7 +78,7 @@
           },
           {
             "result": {
-              "duration": 5946362042,
+              "duration": 5979848792,
               "status": "passed"
             },
             "line": 16,
@@ -96,9 +96,8 @@
           },
           {
             "result": {
-              "duration": 382339328875,
-              "error_message": "java.lang.IndexOutOfBoundsException: Index: 6, Size: 6\n\tat java.util.ArrayList.rangeCheck(ArrayList.java:659)\n\tat java.util.ArrayList.get(ArrayList.java:435)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.PendingTasksPage.sortedInDescendingOr(PendingTasksPage.java:215)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.PendingTasksPage.sortedInDescendingOrder(PendingTasksPage.java:81)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.PendingTasks_StepDefinitions.verify_the_sub_folder_cases_are_sorted_by_date_descending_order(PendingTasks_StepDefinitions.java:18)\n\tat ✽.And Verify the sub-folder cases are sorted by date descending order(CATEGORIES/Test/SORTING_PENDING_TASK_CASES.feature:17)\n",
-              "status": "failed"
+              "duration": 358748075250,
+              "status": "passed"
             },
             "line": 17,
             "name": "Verify the sub-folder cases are sorted by date descending order",

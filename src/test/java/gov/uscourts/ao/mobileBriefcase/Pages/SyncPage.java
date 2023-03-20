@@ -1,14 +1,18 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -58,19 +62,14 @@ public class SyncPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Downloaded'])[1]")
 	public static WebElement Downloaded;
 
-	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Downloaded'])[2]")
-	public static WebElement Downloaded2;
+	@iOSXCUITFindBy(accessibility = "PDF View")
+	public static WebElement pdfView;
 
-	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Downloaded'])[3]")
-	public static WebElement Downloaded3;
+	@iOSXCUITFindBy(accessibility = "Close")
+	public static WebElement close;
 
-	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Downloaded'])[4]")
-	public static WebElement Downloaded4;
-
-	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Downloaded'])[5]")
-	public static WebElement Downloaded5;
-	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Downloaded'])[6]")
-	public static WebElement Downloaded6;
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, 'Actions')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
+	public static List<WebElement> docCategories;
 
 	public static void getSync(SyncType page, List<UserInputData> userInputData) {
 		DocumentPage docPage = new DocumentPage();
@@ -110,12 +109,31 @@ public class SyncPage extends AppiumPageFactory {
 			Utility.doubleTap(page1.caseSyncBtn);
 			ifDownloaded(page1.activityIndicator);
 
+			List<String> categories = getDocumentCategories();
+
+			int randomDoc = Utility.getRandomNumberInRange(1, categories.size() - 1);
+			 categories.get(randomDoc).trim();
+
+			ifViewed();
+
 			break;
 
 		default:
 			break;
 		}
 
+	}
+
+	public static List<String> getDocumentCategories() {
+
+		getGroupIcons();
+		Page.performPageLoad(driver);
+		List<String> categories = new ArrayList<>();
+
+		for (int i = 0; i < docCategories.size(); i++) {
+			categories.add(docCategories.get(i).getText());
+		}
+		return categories;
 	}
 
 	public static String viewSyncResults() {
@@ -153,17 +171,42 @@ public class SyncPage extends AppiumPageFactory {
 
 	}
 
+	public static void ifViewed() {
+		selectRandomPage();
+		pdfView.click();
+		close.click();
+		assertTrue(Actions.isDisplayed(Downloaded));
+
+	}
+
+	public static void selectRandomPage() {
+		int pageNum = Integer.parseInt(splitBy(1));
+		int lastViewPage = Integer.parseInt(splitBy(0));
+		int randomNum;
+
+		if (pageNum == lastViewPage) {
+			randomNum = Utility.getRandomNumberInRange(1, pageNum);
+			Utility.swipe(randomNum, "left");
+		} else {
+			randomNum = Utility.getRandomNumberInRange(lastViewPage, pageNum);
+			Utility.swipe(randomNum, "right");
+		}
+	}
+
+	public static String splitBy(int index) {
+		AccessingAnnotatedDocuments p = new AccessingAnnotatedDocuments();
+		return p.pageNumber.getText().split(" of ")[index];
+	}
+
+	public static void getLastViewedPage(int randomNum, int splitBy, String expectedPageNum, String categoryName) {
+		DocumentPage.click(randomNum, categoryName);
+		String actualPageNum = splitBy(splitBy);
+		Assert.assertEquals(expectedPageNum, actualPageNum);
+	}
+
 	public enum SyncType {
 		Dashboard, Referral_Category, Case_Detail;
 
 	}
-
-//	public static void main(String[] args) {
-//		getInstance(Driver.IOS);
-//
-//		SyncPage p = new SyncPage();
-//		p.getSync(SyncType.Referral_Category);
-//
-//	}
 
 }

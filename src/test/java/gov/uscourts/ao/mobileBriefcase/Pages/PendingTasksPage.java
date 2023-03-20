@@ -65,7 +65,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 	public String getRandomSubFolder() {
 
-		//WebElement randomFolder = pendingSubFolders.get(2);
+		//WebElement randomFolder = pendingSubFolders.get(0);
 
 		int random = Utility.getRandomNumberInRange(1, pendingSubFolders.size());
 		WebElement randomFolder = pendingSubFolders.get(random - 1);
@@ -80,8 +80,6 @@ public class PendingTasksPage extends AppiumPageFactory {
 		getGroupIcons();
 		sortedInDescendingOr(folder);
 
-
-
 		ArrayList<String> filedDates = new ArrayList<String>();
 		List<WebElement> date = Actions.findElements(By.xpath(Actions.containsElement(": ")));
 
@@ -93,7 +91,8 @@ public class PendingTasksPage extends AppiumPageFactory {
 				Utility.checkDatesForDescOrder(filedDates, "M/d/yyyy"));
 
 		assertTrue(
-				"VERIFY THE ASSIGNMENT TYPE, PANEL MEMBER INITIALS, DATE LABEL OF THE LATEST ASSIGNMENT DATE TYPE AND DATE ARE DISPLAYED CORRCETLY ON THE PENDING TASKS PAGE",getReferralAssignmentInfo(userInputData, folder, assinmentType));
+				"VERIFY THE ASSIGNMENT TYPE, PANEL MEMBER INITIALS, DATE LABEL OF THE LATEST ASSIGNMENT DATE TYPE AND DATE ARE DISPLAYED CORRCETLY ON THE PENDING TASKS PAGE",
+				getReferralAssignmentInfo(userInputData, folder, assinmentType));
 
 	}
 
@@ -130,7 +129,6 @@ public class PendingTasksPage extends AppiumPageFactory {
 			replace = assignmentDatetype;
 		}
 
-
 		String formatedDate = Utility.changeDateFormat(assignmentDate, "yyyy-MM-dd", "M/dd/yyyy");
 
 		String dbPanelMembersAndAssignedDate = dbPanelMembers + " " + replace.trim() + ": " + formatedDate;
@@ -145,6 +143,10 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 			return true;
 		} else {
+			System.out.println("EXPECTED: " + uiPanelMembersAndAssignedDate);
+
+			System.out.println("ACTUAL: " + dbPanelMembersAndAssignedDate);
+
 			return false;
 		}
 
