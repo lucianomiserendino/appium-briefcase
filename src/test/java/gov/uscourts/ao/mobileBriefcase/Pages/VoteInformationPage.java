@@ -65,7 +65,7 @@ public class VoteInformationPage extends AppiumPageFactory {
 							"//*[contains(@name, 'Vote Information')]/following:: XCUIElementTypeStaticText[contains(@name, '"
 									+ filerInfo + "')]/following::XCUIElementTypeStaticText[contains(@name, '"
 									+ judgesInitials.get(i) + "')]");
-
+									
 				}
 			case JUDGE_VOTE_DPF_FILLRES_INFORMATION:
 
@@ -75,7 +75,6 @@ public class VoteInformationPage extends AppiumPageFactory {
 				break;
 			}
 			if (uiResult.isDisplayed())
-
 				isDisplayed = true;
 
 		} catch (Exception e) {

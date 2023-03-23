@@ -271,8 +271,14 @@ public class Utility extends Base {
 
 	public static String clickOnNumberInRange(List<WebElement> value) {
 		String text = "";
-		int index = getRandomNumberInRange(1, value.size() - 1);
-		text += value.get(index).getText().trim();
+		int index;
+		if (value.size() > 1) {
+			index = getRandomNumberInRange(1, value.size() - 1);
+			text = value.get(index).getText().trim();
+		} else {
+			index = 0;
+			text = value.get(0).getText().trim();
+		}
 		value.get(index).click();
 //		return text;
 //		String text = "";

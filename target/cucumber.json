@@ -1,12 +1,12 @@
 [
   {
-    "line": 2,
+    "line": 1,
     "elements": [
       {
         "before": [
           {
             "result": {
-              "duration": 98000,
+              "duration": 112666,
               "status": "passed"
             },
             "match": {
@@ -14,14 +14,14 @@
             }
           }
         ],
-        "line": 5,
+        "line": 4,
         "name": "",
-        "description": "As a judge when I view the Pending Tasks sub folder cases I can sort them by case number or by date in decending order.",
-        "id": "sorting-on-the-pending-tasks-page;",
+        "description": "Verify if the matter was referred to an en banc panel, instead of listing all the judges on the page, a button is displayed next \nto the logged in judge’s vote that when tapped, shows all the judges’ vote in a popup. (v1.2.x) (line 243)",
+        "id": "vote-information---en-banc-panel;",
         "after": [
           {
             "result": {
-              "duration": 227000,
+              "duration": 272166,
               "status": "passed"
             },
             "match": {
@@ -34,7 +34,7 @@
         "steps": [
           {
             "result": {
-              "duration": 40154351625,
+              "duration": 39211210834,
               "status": "passed"
             },
             "comments": [
@@ -78,57 +78,71 @@
           },
           {
             "result": {
-              "duration": 5979848792,
+              "duration": 95566205084,
               "status": "passed"
             },
             "line": 16,
-            "name": "User selects a  \"Pending Tasks\"",
+            "name": "user selects a category and case with en banc panel",
             "match": {
-              "arguments": [
-                {
-                  "val": "Pending Tasks",
-                  "offset": 17
-                }
-              ],
-              "location": "Common_StepDefinitions.user_selects_a(String)"
+              "location": "EnBanc_StepDefinitions.user_selects_a_category_and_case_with_en_banc_panel()"
             },
-            "keyword": "When "
+            "keyword": "Then "
           },
           {
             "result": {
-              "duration": 358748075250,
+              "duration": 122468207167,
               "status": "passed"
             },
-            "line": 17,
-            "name": "Verify the sub-folder cases are sorted by date descending order",
+            "line": 18,
+            "name": "User observes the \"Vote_Information\" panel displays.   This should only display if the referral requires voting",
             "match": {
-              "location": "PendingTasks_StepDefinitions.verify_the_sub_folder_cases_are_sorted_by_date_descending_order()"
+              "arguments": [
+                {
+                  "val": "Vote_Information",
+                  "offset": 19
+                }
+              ],
+              "location": "VoteInformation_StepDefinitions.user_observes_the_panel_displays_This_should_only_display_if_the_referral_requires_voting(String)"
             },
-            "keyword": "And "
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 8039628125,
+              "status": "passed"
+            },
+            "line": 20,
+            "name": "User verifies that a button is displayed next to the logged in judge’s vote",
+            "match": {
+              "location": "EnBanc_StepDefinitions.user_verifies_that_a_button_is_displayed_next_to_the_logged_in_judge_s_vote()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 175578265875,
+              "status": "passed"
+            },
+            "line": 22,
+            "name": "it\u0027s tapped, it shows all the judges’ vote in a popup.",
+            "match": {
+              "location": "EnBanc_StepDefinitions.it_s_tapped_it_shows_all_the_judges_vote_in_a_popup()"
+            },
+            "keyword": "When "
           }
         ],
         "tags": [
           {
-            "line": 4,
-            "name": "@AMB-2380"
-          },
-          {
-            "line": 4,
-            "name": "@n"
+            "line": 3,
+            "name": "@AMB-3474"
           }
         ]
       }
     ],
-    "name": "Sorting on the Pending Tasks Page",
+    "name": "Vote Information - En banc panel",
     "description": "",
-    "id": "sorting-on-the-pending-tasks-page",
+    "id": "vote-information---en-banc-panel",
     "keyword": "Feature",
-    "uri": "CATEGORIES/Test/SORTING_PENDING_TASK_CASES.feature",
-    "tags": [
-      {
-        "line": 1,
-        "name": "@Regression"
-      }
-    ]
+    "uri": "CATEGORIES/Test/EN_BANC_PANEL.feature"
   }
 ]

@@ -56,6 +56,8 @@ public class DocumentPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Bookmark_Container']/preceding:: XCUIElementTypeStaticText[contains(@name, 'Panel:')]/preceding:: XCUIElementTypeStaticText[1]")
 	public static List<WebElement> caseOncalender;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[contains(@name, 'EN BANC ')]")
+	public static List<WebElement> enBanc;
 
 	public static String selectRandomItem(String query, String xpath, List<UserInputData> userInputData) {
 		String category = "";
@@ -198,7 +200,7 @@ public class DocumentPage extends AppiumPageFactory {
 						+ "/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText"));
 	}
 
-	public String selectRandomCaseNumber(List<WebElement> element) {
+	public static String selectRandomCaseNumber(List<WebElement> element) {
 		String referral = "";
 		Page.performPageLoad(driver);
 		List<String> list = Utility.retrieveAllReferrals(element, " ", 0);
@@ -255,10 +257,10 @@ public class DocumentPage extends AppiumPageFactory {
 			element = caseOncalender;
 			break;
 
-		//case PendingTasks:
+		case EnBanc:
 
-			//element = pendingTasksCaseNum;
-			//break;
+			element = enBanc;
+			break;
 
 		default:
 			break;
@@ -267,7 +269,7 @@ public class DocumentPage extends AppiumPageFactory {
 	}
 
 	public enum Category {
-		Referral_Category, Referral, Panel, judgeRegularCase, targetCase, appliedCase, CaseOnCalendar, PendingTasks
+		Referral_Category, Referral, Panel, judgeRegularCase, targetCase, appliedCase, CaseOnCalendar, EnBanc
 	}
 
 }

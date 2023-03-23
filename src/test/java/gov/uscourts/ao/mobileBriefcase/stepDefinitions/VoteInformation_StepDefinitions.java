@@ -34,7 +34,7 @@ public class VoteInformation_StepDefinitions {
 		List<UserInputData> userInputData = null;
 
 		String ccr_id = CommonPages.getCCRID(caseNum, userInputData);
-		String name = SystemPropertySetup.getJudge(userInputData);
+		//String name = SystemPropertySetup.getJudge(userInputData);
 		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud",userInputData);
 		String cmr_cs_caseid = CommonPages.getCaseID(caseNum, userInputData);
 

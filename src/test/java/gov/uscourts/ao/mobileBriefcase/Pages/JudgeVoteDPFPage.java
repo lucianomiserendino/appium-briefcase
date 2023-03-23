@@ -130,7 +130,13 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	public String selectViewVotes(List<UserInputData> userInputData, String caseNum) {
 
 		String ccr_id = CommonPages.getCCRID(caseNum, userInputData);
-		String relief = getRelief(ccr_id, userInputData);
+		String dbRelief = getRelief(ccr_id, userInputData);
+		String relief = "";
+		if (dbRelief.equals(null)) {
+			relief = "-";
+		} else {
+			relief = dbRelief;
+		}
 		tap(Locator.XPATH, "(//XCUIElementTypeStaticText[@name='" + relief
 				+ "']/following::XCUIElementTypeOther/XCUIElementTypeButton[@name='View Votes'])[1]");
 		return relief;
@@ -200,11 +206,12 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 					WebElement uiResult = waitForVisibilityOfElement(findElementBy(Locator.XPATH,
 							"//XCUIElementTypeOther[@name='JudgesVotesList']/child::*//*[contains(@name, '"
 									+ dbInitial.get(init) + "')]"
-									+ "/following::XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '"
+									+ "/following::XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '"
 									+ dbVote.get(vote)
-									+ "')]/following::XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '"
+									+ "')]/following::XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '"
 									+ votedDate + "')]"),
 							driver);
+
 					assertTrue(uiResult.isDisplayed());
 				}
 			}
