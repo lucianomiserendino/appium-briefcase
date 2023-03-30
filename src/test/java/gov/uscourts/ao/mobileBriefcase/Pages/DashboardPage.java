@@ -10,7 +10,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.REFERRAL_DOCUMENTS
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.lbrrpt_CATEGORY;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.lbrrpt_CYV_CATEGORY;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.lbrrpt_DOCUMENT_CATEGORY;
-import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.dashboard;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
@@ -26,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.support.PageFactory.initElements;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -37,7 +37,6 @@ import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
-import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -63,9 +62,50 @@ public class DashboardPage extends Base {
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public static List<WebElement> navIcons;
-	
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Dashboard']")
 	public static WebElement dashboard;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"Categories\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
+	public static List<WebElement> dashCategories;
+
+	// @WithTimeout(time = 30, unit = TimeUnit.SECONDS)
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"nav\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther")
+	public static List<WebElement> navCategories;
+
+	public void pendingTaskPosition(String page) {
+
+		List<String> categoryList = new ArrayList<>();
+
+		if (page.equals("Dashboard")) {
+			List<WebElement> dashRfCategories = dashCategories;
+			for (int i = 0; i < dashRfCategories.size(); i++) {
+				categoryList.add(dashRfCategories.get(i).getAttribute("value").trim());
+			}
+
+		} else if (page.equals("Navigation")) {
+			WebElement navRefCategories;
+			performPageLoad(driver);
+			int size = navCategories.size();
+
+			for (int i = 3; i < size; i++) {
+
+				navRefCategories = driver.findElement(By.xpath(
+						"(//XCUIElementTypeOther[@name=\"nav\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther["
+								+ i
+								+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText)[last()]"));
+
+				categoryList.add(navRefCategories.getText().trim());
+			}
+
+		}
+		if (categoryList.contains("Pending Tasks")) {
+			assertTrue(categoryList.indexOf("Pending Tasks") == 0);
+
+		} else {
+			System.out.println("Pending Tasks are not available");
+		}
+	}
 
 	public String verifyIfPendingTasksAreDisplayed() {
 
@@ -99,7 +139,7 @@ public class DashboardPage extends Base {
 	public void getRefCategories(List<UserInputData> userInputData) {
 
 		List<String> dbReferralCategories = executeQuery(
-				getID(Queries.REFERRAL_CATEGORIES, DocumentPage.get_pe_id("jud",userInputData)), userInputData);
+				getID(Queries.REFERRAL_CATEGORIES, DocumentPage.get_pe_id("jud", userInputData)), userInputData);
 
 		sort(dbReferralCategories);
 
@@ -193,7 +233,7 @@ public class DashboardPage extends Base {
 					assertEquals(dbNonOrgCases + "-----RECORD COUNT MISMATCH-----", briefcaseTargReferral_n,
 							UInonOrallyarguedCases);
 				}
-				 dashboard.click();
+				dashboard.click();
 				Utility.scroll(categories, "up");
 
 			}
@@ -212,7 +252,7 @@ public class DashboardPage extends Base {
 	public void get_lbrrpt_CATEGORY(String cyvCategory, String PE_RT_CODE, String judgeName,
 			List<UserInputData> userInputData) {
 		performPageLoad(driver);
-		String peID = DocumentPage.get_pe_id("jud",userInputData);
+		String peID = DocumentPage.get_pe_id("jud", userInputData);
 
 		List<String> cmr_cyv_code = executeQuery(getID(lbrrpt_CATEGORY, peID), userInputData);
 		if (cmr_cyv_code.contains(cyvCategory)) {

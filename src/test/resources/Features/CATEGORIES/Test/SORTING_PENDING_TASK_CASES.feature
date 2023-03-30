@@ -36,5 +36,24 @@ Scenario:
 			Then User taps on sub - folder and verify the referral categories are sorted in the same order as the left-hand navigation 
 
 				
-				
+		
+		@AMB-3454
+Scenario: 
+Pending Tasks displays at the top
+	
+	#Given I am logged into Briefcase 
+	#	|environment|userName| password |courtId|
+	#	|test       |test    | test     |test   |
+	
+	Then I select a user 
+		|userType   |personrole        |jud          |
+		|judge      |Appellate Judges  |test         |
+		
+
+	And  Verify the sub-folder cases are sorted by date descending order 
+     Then Verify the Pending Tasks category (if available) will always display at the top of the Dashboard 
+     Then user taps on left-hand navigation "Expand" arrows 
+     And Verify the Pending Tasks category (if available) will always display at the top of the left navigation 
+     
+			
 			
