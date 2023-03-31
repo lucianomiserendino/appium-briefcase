@@ -66,7 +66,7 @@ public class DashboardPage extends Base {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Dashboard']")
 	public static WebElement dashboard;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"Categories\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"Categories\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[1]")
 	public static List<WebElement> dashCategories;
 
 	// @WithTimeout(time = 30, unit = TimeUnit.SECONDS)
@@ -74,7 +74,7 @@ public class DashboardPage extends Base {
 	public static List<WebElement> navCategories;
 
 	public void pendingTaskPosition(String page) {
-
+		performPageLoad(driver);
 		List<String> categoryList = new ArrayList<>();
 
 		if (page.equals("Dashboard")) {
@@ -85,7 +85,6 @@ public class DashboardPage extends Base {
 
 		} else if (page.equals("Navigation")) {
 			WebElement navRefCategories;
-			performPageLoad(driver);
 			int size = navCategories.size();
 
 			for (int i = 3; i < size; i++) {

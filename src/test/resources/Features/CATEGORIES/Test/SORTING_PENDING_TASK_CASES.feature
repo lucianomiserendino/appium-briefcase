@@ -50,7 +50,6 @@ Pending Tasks displays at the top
 		|judge      |Appellate Judges  |test         |
 		
 
-	And  Verify the sub-folder cases are sorted by date descending order 
      Then Verify the Pending Tasks category (if available) will always display at the top of the Dashboard 
      Then user taps on left-hand navigation "Expand" arrows 
      And Verify the Pending Tasks category (if available) will always display at the top of the left navigation 

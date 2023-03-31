@@ -2,16 +2,16 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
@@ -19,8 +19,8 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class ReferralSortOrderPage extends AppiumPageFactory {
@@ -55,9 +55,12 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public static List<WebElement> navIcons;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Applied Referrals']")
+	public static List<WebElement> appliedRefs;
+
 	public void selectReferralCategory(List<UserInputData> userInputData) {
 
-		String query = getID(Queries.REFERRAL_CATEGORIES, DocumentPage.get_pe_id("jud",userInputData));
+		String query = getID(Queries.REFERRAL_CATEGORIES, DocumentPage.get_pe_id("jud", userInputData));
 
 		List<String> dbReferralCategories = executeQuery(query, userInputData);
 		if (dbReferralCategories.contains("Reference Documents")
@@ -123,20 +126,58 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 		}
 	}
 
-	public void getDocumentCategories(String dbType, String cmr_cyv_code, String cmr_ju_pe_id, String cmr_cs_caseid) {
-		getGroupIcons();
-		Page.performPageLoad(driver);
-		List<String> uiDoCategories = new ArrayList<>();
+	public void getDocumentCategories(List<UserInputData> userInputData) {
+		String caseNum = Document_StepDefinitions.regularCase;
+		String cmr_cs_caseid = CommonPages.getCaseID(caseNum, userInputData);
+		String cmr_cyv_code = CommonPages
+				.cmr_cyv_code(Document_StepDefinitions.judCategory, cmr_cs_caseid, userInputData).trim();
+		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
 
-		for (int i = 0; i < docCategories.size(); i++) {
-			uiDoCategories.add(docCategories.get(i).getText());
+		// getGroupIcons();
+
+		List<String> uiDocCategories = new ArrayList<>();
+		List<String> uiDocList = new ArrayList<>();
+		String panel = "";
+		if (appliedRefs.size() > 0) {
+			panel = "Applied";
+		} else {
+			panel = "Actions";
+		}
+		getDocCategoryList(panel);
+
+		for (int i = 0; i < getDocCategoryList(panel).size(); i++) {
+			uiDocCategories.add(getDocCategoryList(panel).get(i).getText());
 		}
 
-		List<String> dbDoCategories = executeQuery(valueOf(dbType), Actions.replace(DOCUMENT_CATEGORIES, "CMR_CYV_CODE",
-				cmr_cyv_code, "CMR_JU_PE_ID", cmr_ju_pe_id, "CMR_CS_CASEID", cmr_cs_caseid));
+		List<String> dbDoCategories = executeQuery(Actions.replace(DOCUMENT_CATEGORIES, "CMR_CYV_CODE", cmr_cyv_code,
+				"CMR_JU_PE_ID", cmr_ju_pe_id, "CMR_CS_CASEID", cmr_cs_caseid), userInputData);
 
 		assertEquals(" DOCUMENT CATEGORIES ARE NOT SORTED ON THE REFERRAL DETAIL PAGE ", dbDoCategories,
-				uiDoCategories);
+				uiDocCategories);
+
+		Utility.clickOnRandomValue(getDocCategoryList(panel));
+
+		for (int k = 0; k < getDocList(panel).size(); k++) {
+			uiDocList.add(getDocList(panel).get(k).getText().split(",")[1].split("Pages")[0]);
+		}
+		assertTrue("DOCUMENTS ARE NOT ORDERED BY THE FILED DATE: ", Utility.checkIfSorted(uiDocList));
+
+	}
+
+	public List<WebElement> getDocCategoryList(String panel) {
+
+		return Actions.findElements(By.xpath(
+				"//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, '"
+						+ panel
+						+ "')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText"));
+
+	}
+
+	public List<WebElement> getDocList(String panel) {
+
+		return Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + panel
+				+ "']/following::XCUIElementTypeStaticText[contains(@name, ',')]"));
+
 	}
 
 	public List<Integer> getCellCount(int time, int navCellSize) {

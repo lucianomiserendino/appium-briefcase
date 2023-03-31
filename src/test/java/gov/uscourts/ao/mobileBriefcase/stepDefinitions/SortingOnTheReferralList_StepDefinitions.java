@@ -8,6 +8,7 @@ import java.util.List;
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage.Sort;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 
@@ -59,10 +60,10 @@ public class SortingOnTheReferralList_StepDefinitions {
 		page.selectSortBtn();
 	}
 
-	@Then("^User verifies  Document Categories are sorted on the referral detail page \\(\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"\\)$")
-	public void user_verifies_Document_Categories_are_sorted_on_the_referral_detail_page(String dbType,
-			String cmr_cyv_code, String cmr_ju_pe_id, String cmr_cs_caseid) {
+	@Then("^User verifies  Document Categories are sorted on the referral detail page and each document for a specific category is listed and ordered by the filed date\\.$")
+	public void user_verifies_Document_Categories_are_sorted_on_the_referral_detail_page_and_each_document_for_a_specific_category_is_listed_and_ordered_by_the_filed_date() {
+		List<UserInputData> userInputData = null;
 		page = new ReferralSortOrderPage();
-		page.getDocumentCategories(dbType, cmr_cyv_code, cmr_ju_pe_id, cmr_cs_caseid);
+		page.getDocumentCategories(userInputData);
 	}
 }
