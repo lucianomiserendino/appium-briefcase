@@ -55,5 +55,12 @@ public class Document_StepDefinitions {
 		appliedCase = page.getRandomCase(Category.appliedCase);
 
 	}
+	@Then("^User downloads/opens a random document from Case Detail page$")
+	public void user_downloads_opens_a_random_document_from_Case_Detail_page()  {
+		List<UserInputData> userInputData = null;
+		page = new DocumentPage();
+		page.getDocumentList(userInputData) ;
+	}
+
 
 }

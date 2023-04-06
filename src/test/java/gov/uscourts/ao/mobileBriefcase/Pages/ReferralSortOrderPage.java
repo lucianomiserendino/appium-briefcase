@@ -2,9 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -20,7 +18,6 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class ReferralSortOrderPage extends AppiumPageFactory {
@@ -127,51 +124,20 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	}
 
 	public void getDocumentCategories(List<UserInputData> userInputData) {
-		String caseNum = Document_StepDefinitions.regularCase;
-		String cmr_cs_caseid = CommonPages.getCaseID(caseNum, userInputData);
-		String cmr_cyv_code = CommonPages
-				.cmr_cyv_code(Document_StepDefinitions.judCategory, cmr_cs_caseid, userInputData).trim();
-		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
+	
 
-		// getGroupIcons();
-
-		List<String> uiDocCategories = new ArrayList<>();
+		DocumentPage.getDocumentCategoryList( userInputData) ;
+		String pane = DocumentPage.panel;
+		
 		List<String> uiDocList = new ArrayList<>();
-		String panel = "";
-		if (appliedRefs.size() > 0) {
-			panel = "Applied";
-		} else {
-			panel = "Actions";
-		}
-		getDocCategoryList(panel);
 
-		for (int i = 0; i < getDocCategoryList(panel).size(); i++) {
-			uiDocCategories.add(getDocCategoryList(panel).get(i).getText());
-		}
-
-		List<String> dbDoCategories = executeQuery(Actions.replace(DOCUMENT_CATEGORIES, "CMR_CYV_CODE", cmr_cyv_code,
-				"CMR_JU_PE_ID", cmr_ju_pe_id, "CMR_CS_CASEID", cmr_cs_caseid), userInputData);
-
-		assertEquals(" DOCUMENT CATEGORIES ARE NOT SORTED ON THE REFERRAL DETAIL PAGE ", dbDoCategories,
-				uiDocCategories);
-
-		Utility.clickOnRandomValue(getDocCategoryList(panel));
-
-		for (int k = 0; k < getDocList(panel).size(); k++) {
-			uiDocList.add(getDocList(panel).get(k).getText().split(",")[1].split("Pages")[0]);
+		for (int k = 0; k < getDocList(pane).size(); k++) {
+			uiDocList.add(getDocList(pane).get(k).getText().split(",")[1].split("Pages")[0]);
 		}
 		assertTrue("DOCUMENTS ARE NOT ORDERED BY THE FILED DATE: ", Utility.checkIfSorted(uiDocList));
 
 	}
 
-	public List<WebElement> getDocCategoryList(String panel) {
-
-		return Actions.findElements(By.xpath(
-				"//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, '"
-						+ panel
-						+ "')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText"));
-
-	}
 
 	public List<WebElement> getDocList(String panel) {
 

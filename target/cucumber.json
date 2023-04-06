@@ -1,57 +1,34 @@
 [
   {
-    "line": 2,
+    "line": 1,
     "elements": [
       {
-        "before": [
-          {
-            "result": {
-              "duration": 143083,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 5,
+        "line": 4,
         "name": "",
-        "description": "There is a sort field in the chm_mobile_docs table that the courts can set for sorting Document categories.\n Briefcase should this field for sorting. Briefcase needs to be updated to sort document categories \n based on the chm_mobile_doc.cmd_sort field",
-        "id": "sorting-on-the-referral-detail-page;",
-        "after": [
-          {
-            "result": {
-              "duration": 278667,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.tearDown()"
-            }
-          }
-        ],
-        "type": "scenario",
-        "keyword": "Scenario",
+        "description": "",
+        "type": "background",
+        "keyword": "Background",
         "steps": [
           {
             "result": {
-              "duration": 41322382250,
+              "duration": 41990508667,
               "status": "passed"
             },
             "comments": [
               {
-                "line": 11,
+                "line": 6,
                 "value": "#Given I am logged into Briefcase"
               },
               {
-                "line": 12,
-                "value": "#\t|environment|userName| password |courtId|"
+                "line": 7,
+                "value": "#|environment|userName| password |courtId|"
               },
               {
-                "line": 13,
-                "value": "#\t|test       |test    | test     |test   |"
+                "line": 8,
+                "value": "#|test       |test    | test     |test   |"
               }
             ],
-            "line": 15,
+            "line": 11,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -63,12 +40,38 @@
                   "personrole",
                   "jud"
                 ],
-                "line": 16
+                "line": 12
               },
               {
                 "cells": [
                   "judge",
                   "Appellate Judges",
+                  "test"
+                ],
+                "line": 13
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 8235527250,
+              "status": "passed"
+            },
+            "line": 15,
+            "name": "User selects random judge category",
+            "match": {
+              "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 16
+              },
+              {
+                "cells": [
                   "test"
                 ],
                 "line": 17
@@ -78,13 +81,13 @@
           },
           {
             "result": {
-              "duration": 7818628250,
+              "duration": 79352058959,
               "status": "passed"
             },
             "line": 19,
-            "name": "User selects random judge category",
+            "name": "User selects random case number",
             "match": {
-              "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
+              "location": "Document_StepDefinitions.user_selects_random_case_number(UserInputData\u003e)"
             },
             "rows": [
               {
@@ -101,39 +104,45 @@
               }
             ],
             "keyword": "Then "
-          },
+          }
+        ]
+      },
+      {
+        "before": [
           {
             "result": {
-              "duration": 34563225458,
+              "duration": 461416,
               "status": "passed"
             },
-            "line": 23,
-            "name": "User selects random case number",
             "match": {
-              "location": "Document_StepDefinitions.user_selects_random_case_number(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "courtId"
-                ],
-                "line": 24
-              },
-              {
-                "cells": [
-                  "test"
-                ],
-                "line": 25
-              }
-            ],
-            "keyword": "Then "
-          },
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 27,
+        "name": "",
+        "description": "Testing  Document Annotations",
+        "id": "saving-document-annotations;",
+        "after": [
           {
             "result": {
-              "duration": 269228058750,
+              "duration": 153917,
               "status": "passed"
             },
-            "line": 27,
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 5513895917,
+              "status": "passed"
+            },
+            "line": 30,
             "name": "User expands/collapse panel",
             "match": {
               "location": "Common_StepDefinitions.user_expands_collapse_panel()"
@@ -142,33 +151,41 @@
           },
           {
             "result": {
-              "duration": 29183437958,
-              "status": "passed"
+              "duration": 44282551875,
+              "error_message": "java.lang.AssertionError:  DOCUMENT CATEGORIES ARE NOT SORTED ON THE REFERRAL DETAIL PAGE  expected:\u003c[Motion filed]\u003e but was:\u003c[Motion filed, Date Filed Tuesday, April 4, 2023 Pages: 26, Date Filed Tuesday, April 4, 2023 Pages: 17]\u003e\n\tat org.junit.Assert.fail(Assert.java:89)\n\tat org.junit.Assert.failNotEquals(Assert.java:835)\n\tat org.junit.Assert.assertEquals(Assert.java:120)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.getDocumentCategoryList(DocumentPage.java:308)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.getDocumentList(DocumentPage.java:318)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.AccessingAnnotatedDocuments_StepDefinitions.i_verify_that_the_toggles_on_the_settings_page_under_the_PDF_Options_heading_entitled_Back_up_Annotations_to_CM_ECF_and_Allow_staff_to_view_annotated_documents_are_turned_on_by_default(AccessingAnnotatedDocuments_StepDefinitions.java:33)\n\tat ✽.Then I verify that the toggles on the settings page under the PDF Options heading entitled Back up Annotations to CM/ECF, and Allow staff to view annotated documents are turned on by default(CATEGORIES/REGRESSION/SavingDocumentAnnotations.feature:32)\n",
+              "status": "failed"
             },
-            "line": 29,
-            "name": "User verifies  Document Categories are sorted on the referral detail page and each document for a specific category is listed and ordered by the filed date.",
+            "line": 32,
+            "name": "I verify that the toggles on the settings page under the PDF Options heading entitled Back up Annotations to CM/ECF, and Allow staff to view annotated documents are turned on by default",
             "match": {
-              "location": "SortingOnTheReferralList_StepDefinitions.user_verifies_Document_Categories_are_sorted_on_the_referral_detail_page_and_each_document_for_a_specific_category_is_listed_and_ordered_by_the_filed_date()"
+              "location": "AccessingAnnotatedDocuments_StepDefinitions.i_verify_that_the_toggles_on_the_settings_page_under_the_PDF_Options_heading_entitled_Back_up_Annotations_to_CM_ECF_and_Allow_staff_to_view_annotated_documents_are_turned_on_by_default()"
             },
             "keyword": "Then "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 33,
+            "name": "User downloads/opens a random document from Case Detail page",
+            "match": {
+              "location": "Document_StepDefinitions.user_downloads_opens_a_random_document_from_Case_Detail_page()"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 26,
+            "name": "@AMB-2977"
           }
         ]
       }
     ],
-    "name": "Sorting on the Referral Detail Page",
+    "name": "Saving Document Annotations",
     "description": "",
-    "id": "sorting-on-the-referral-detail-page",
+    "id": "saving-document-annotations",
     "keyword": "Feature",
-    "uri": "CATEGORIES/Progress/SORTING_ON_THE_REFERRAL_DETAIL_PAGE_AMB-1394.feature",
-    "tags": [
-      {
-        "line": 1,
-        "name": "@Regression"
-      },
-      {
-        "line": 1,
-        "name": "@AMB-1394"
-      }
-    ]
+    "uri": "CATEGORIES/REGRESSION/SavingDocumentAnnotations.feature"
   }
 ]

@@ -160,6 +160,7 @@ public class JenieLoginPage extends Base {
 		}
 
 		selectUser(personrole, name);
+		performPageLoad(driver);
 
 	}
 

@@ -73,9 +73,6 @@ Scenario: Category and case selection
 	Scenario: Closing and reopening Briefcase
 		Then User closes and reopens the app
 
-@selectRandomDocument
-     Scenario: Random document selection
-        Then user selects random document
         
  @selectRandomTargetCase  
       Scenario: Random target case selection    
@@ -86,6 +83,8 @@ Scenario: Category and case selection
       Scenario: Random applied case selection    
         Then User selects random applied case
         
-  
+   @selectRandomDocument
+         Scenario: Random document selection    
+        Then User downloads/opens a random document from Case Detail page 
 
         

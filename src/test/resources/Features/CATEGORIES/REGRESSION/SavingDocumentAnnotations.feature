@@ -8,9 +8,9 @@ Background:
 	#|test       |test    | test     |test   |
 		
 
-	#Then I select a user 
-	#	|userType   |personrole        |jud     |
-	#	|judge      |Appellate Judges  |test    |
+	Then I select a user 
+		|userType   |personrole        |jud     |
+	|judge      |Appellate Judges  |test    |
 			
 	Then User selects random judge category
 		|courtId|
@@ -20,9 +20,14 @@ Background:
 		|courtId|
 		|test   |
 		
+	
+		
 
 @AMB-2977
 Scenario: 
 Testing  Document Annotations
+
+        Then User expands/collapse panel
+        
 		Then I verify that the toggles on the settings page under the PDF Options heading entitled Back up Annotations to CM/ECF, and Allow staff to view annotated documents are turned on by default
-	
+	   Then User downloads/opens a random document from Case Detail page  

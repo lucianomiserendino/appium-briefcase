@@ -4,10 +4,13 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static java.util.Collections.sort;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
@@ -25,6 +28,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class DocumentPage extends AppiumPageFactory {
@@ -58,6 +62,16 @@ public class DocumentPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[contains(@name, 'EN BANC ')]")
 	public static List<WebElement> enBanc;
+
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeOther[@name='Downloaded_Container'])[1]")
+	public static WebElement downloaded;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Progress halted' or @name='In progress']")
+	public static List<WebElement> activityIndicator;
+
+	static String panel = "";
+	String randomCategory = "";
+	String randomDocument = "";
 
 	public static String selectRandomItem(String query, String xpath, List<UserInputData> userInputData) {
 		String category = "";
@@ -266,6 +280,68 @@ public class DocumentPage extends AppiumPageFactory {
 			break;
 		}
 		return selectRandomCaseNumber(element);
+	}
+
+	public static List<String> getDocumentCategoryList(List<UserInputData> userInputData) {
+
+		String caseNum = Document_StepDefinitions.regularCase;
+		String cmr_cs_caseid = CommonPages.getCaseID(caseNum, userInputData);
+		String cmr_cyv_code = CommonPages
+				.cmr_cyv_code(Document_StepDefinitions.judCategory, cmr_cs_caseid, userInputData).trim();
+		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
+
+		List<String> uiDocCategories = new ArrayList<>();
+		if (appliedRefs.size() > 0) {
+			panel = "Applied";
+		} else {
+			panel = "Actions";
+		}
+		getDocCategoryLocator(panel);
+
+		for (int i = 0; i < getDocCategoryLocator(panel).size(); i++) {
+			uiDocCategories.add(getDocCategoryLocator(panel).get(i).getText());
+		}
+
+		List<String> dbDoCategories = executeQuery(Actions.replace(DOCUMENT_CATEGORIES, "CMR_CYV_CODE", cmr_cyv_code,
+				"CMR_JU_PE_ID", cmr_ju_pe_id, "CMR_CS_CASEID", cmr_cs_caseid), userInputData);
+
+		assertEquals(" DOCUMENT CATEGORIES ARE NOT SORTED ON THE REFERRAL DETAIL PAGE ", dbDoCategories,
+				uiDocCategories);
+
+		return dbDoCategories;
+
+	}
+
+	public void getDocumentList(List<UserInputData> userInputData) {
+
+		try {
+			if (getDocumentCategoryList(userInputData).size() > 0) {
+				randomCategory = Utility.clickOnNumberInRange(getDocCategoryLocator(panel));
+
+				randomDocument = Utility.clickOnNumberInRange(getDocListLocator(randomCategory));
+
+				ifDownloaded(activityIndicator);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+
+	}
+
+	public List<WebElement> getDocListLocator(String categoryName) {
+		return Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + categoryName + "']/following::"
+				+ "XCUIElementTypeOther[@name='Downloaded_Container']/preceding::XCUIElementTypeStaticText[2]"));
+	}
+
+	public static List<WebElement> getDocCategoryLocator(String panel) {
+
+		return Actions.findElements(By.xpath(
+				"//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, '"
+						+ panel
+						+ "')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText"));
+
 	}
 
 	public enum Category {
