@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class RedBulletsPage extends AppiumPageFactory {
@@ -23,23 +24,33 @@ public class RedBulletsPage extends AppiumPageFactory {
 //(//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, 'Viewed')])[1]/preceding::XCUIElementTypeStaticText[contains(@name, '-')]
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]/preceding::XCUIElementTypeStaticText[contains(@name, 'Viewed')])[1]")
 	public List<WebElement> unviewedReferrals;
+	
+	public static String xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText";
+
 
 	public int getUnviewedReferral() {
-
+		WebElement newRef = null;
 		int newReferrals = getTotalNumOfNewReferrals();
-		WebElement newRef = unviewedReferrals.get(unviewedReferrals.size() - 1);
+		if (unviewedReferrals.size() > 1) {
+			newRef = unviewedReferrals.get(unviewedReferrals.size() - 1);
+		} else {
+			newRef = unviewedReferrals.get(0);
+		}
 		tap(newRef);
 		Page.performPageLoad(driver);
 		driver.navigate().back();
 		Page.performPageLoad(driver);
-		assertEquals(newReferrals - 1, getTotalNumOfNewReferrals());
-		return getTotalNumOfNewReferrals();
+
+		int totalNewReferrals =getTotalNumOfNewReferrals();
+		assertEquals(newReferrals - 1, totalNewReferrals);
+		return totalNewReferrals;
 
 	}
 
 	public void getCountAfterReopeningTheApp(String refCategory, int count) {
+	
+		Utility.scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + refCategory+ "')]");
 
-		CommonPages.selectReferralCategory(refCategory);
 		Page.sleep(10000);
 		assertEquals("WHEN CLOSING AND REOPENING THE APP ITEMS APPEAR AS NEW", count, getTotalNumOfNewReferrals());
 	}

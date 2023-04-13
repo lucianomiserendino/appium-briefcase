@@ -5,9 +5,9 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
@@ -28,6 +28,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
 import gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -66,7 +67,7 @@ public class DocumentPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeOther[@name='Downloaded_Container'])[1]")
 	public static WebElement downloaded;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Progress halted' or @name='In progress']")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PDF Page View']")
 	public static List<WebElement> activityIndicator;
 
 	static String panel = "";
@@ -296,7 +297,6 @@ public class DocumentPage extends AppiumPageFactory {
 		} else {
 			panel = "Actions";
 		}
-		getDocCategoryLocator(panel);
 
 		for (int i = 0; i < getDocCategoryLocator(panel).size(); i++) {
 			uiDocCategories.add(getDocCategoryLocator(panel).get(i).getText());
@@ -314,19 +314,29 @@ public class DocumentPage extends AppiumPageFactory {
 
 	public void getDocumentList(List<UserInputData> userInputData) {
 
-		try {
-			if (getDocumentCategoryList(userInputData).size() > 0) {
-				randomCategory = Utility.clickOnNumberInRange(getDocCategoryLocator(panel));
+		if (getDocumentCategoryList(userInputData).size() > 0) {
 
-				randomDocument = Utility.clickOnNumberInRange(getDocListLocator(randomCategory));
+			randomCategory = Utility.clickOnNumberInRange(getDocCategoryLocator(panel));
 
-				ifDownloaded(activityIndicator);
+			randomDocument = Utility.clickOnNumberInRange(getDocListLocator(randomCategory));
+
+			performPageLoad(driver);
+			Boolean elementNotFound = true;
+			while (elementNotFound) {
+				if (!(activityIndicator.size() == 1)) {
+
+					elementNotFound = true;
+					Utility.tapAndSwipe(Direction.UP);
+
+				} else {
+					elementNotFound = false;
+					break;
+				}
 
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 
 		}
+
 
 	}
 

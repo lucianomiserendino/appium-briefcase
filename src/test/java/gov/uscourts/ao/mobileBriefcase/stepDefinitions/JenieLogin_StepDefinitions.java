@@ -8,6 +8,7 @@ import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.iOSCapabilities;
+import gov.uscourts.ao.mobileBriefcase.page.common.Base.Driver;
 
 public class JenieLogin_StepDefinitions extends Base implements iOSCapabilities {
 
@@ -28,8 +29,8 @@ public class JenieLogin_StepDefinitions extends Base implements iOSCapabilities 
 
 	@Then("^User logs out from the Briefcase$")
 	public void user_logs_out_from_the_Briefcase() {
-		logPage = new JenieLoginPage();
-		logPage.logout();
+	//	logPage = new JenieLoginPage();
+		JenieLoginPage.logout();
 		safariInstance();
 	}
 

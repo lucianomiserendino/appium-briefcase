@@ -206,17 +206,18 @@ public class JenieLoginPage extends Base {
 
 			settingsIcon.click();
 			logout.click();
-			try {
-				if (findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
-					contains(okButton).click();
-				} else {
-					Page.sleep(55000);
-					logout.click();
-					contains(okButton).click();
-				}
-			} catch (NoSuchElementException e) {
-				e.getMessage();
-			}
+			performPageLoad(driver);
+//			try {
+//				if (findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
+//					contains(okButton).click();
+//				} else {
+//					Page.sleep(55000);
+//					logout.click();
+//					contains(okButton).click();
+//				}
+//			} catch (NoSuchElementException e) {
+//				e.getMessage();
+//			}
 		}
 
 	}
@@ -239,11 +240,10 @@ public class JenieLoginPage extends Base {
 	}
 
 	public void reopenTheApp() {
-		closeIOSDriver();
-		getInstance(Driver.IOS);
+	
 		Page.performPageLoad(driver);
-		if (contains("Dashboard").isDisplayed()) {
-			contains("Dashboard").click();
+		if (dashboard.size()>0) {
+			dashboard.get(0).click();
 			Page.sleep(5000);
 		}
 	}
