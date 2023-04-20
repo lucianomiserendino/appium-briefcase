@@ -72,7 +72,7 @@ public class DocumentPage extends AppiumPageFactory {
 
 	static String panel = "";
 	String randomCategory = "";
-	String randomDocument = "";
+	public static String randomDocument = "";
 
 	public static String selectRandomItem(String query, String xpath, List<UserInputData> userInputData) {
 		String category = "";
@@ -90,8 +90,9 @@ public class DocumentPage extends AppiumPageFactory {
 		sort(list);
 
 		category = list.get(Utility.getRandomInt(list.size() - 1));
-		scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
+	scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
 
+		
 		return category;
 
 	}

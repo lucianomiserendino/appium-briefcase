@@ -1,74 +1,79 @@
 [
   {
-    "line": 2,
+    "line": 1,
     "elements": [
       {
-        "before": [
-          {
-            "result": {
-              "duration": 160583,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 6,
+        "line": 4,
         "name": "",
-        "description": "A red bullet icon displays next to referrals which the user has not viewed yet. \nOnce the user taps on the referral, the red bullet icon is removed, indicating the referral has been viewed. \n This task is to automate the display of the red bullet icon.",
-        "id": "red-bullet-displays-for-new-referrals-and-does-not-display-for-viewed-referrals;",
-        "after": [
-          {
-            "result": {
-              "duration": 362916,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.tearDown()"
-            }
-          }
-        ],
-        "type": "scenario",
-        "keyword": "Scenario",
+        "description": "",
+        "type": "background",
+        "keyword": "Background",
         "steps": [
           {
             "result": {
-              "duration": 42183725167,
+              "duration": 101866090500,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "I am logged into Briefcase",
+            "match": {
+              "location": "JenieLogin_StepDefinitions.i_am_logged_into_Briefcase(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "environment",
+                  "userName",
+                  "password",
+                  "courtId"
+                ],
+                "line": 7
+              },
+              {
+                "cells": [
+                  "test",
+                  "test",
+                  "test",
+                  "test"
+                ],
+                "line": 8
+              }
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 8379267584,
               "status": "passed"
             },
             "comments": [
               {
                 "line": 11,
-                "value": "#Given I am logged into Briefcase"
+                "value": "#Then I select a user"
               },
               {
                 "line": 12,
-                "value": "#\t|environment|userName| password |courtId|"
+                "value": "#\t|userType   |personrole        |jud     |"
               },
               {
                 "line": 13,
-                "value": "#|test       |test    | test     |test   |"
+                "value": "#|judge      |Appellate Judges  |test    |"
               }
             ],
             "line": 15,
-            "name": "I select a user",
+            "name": "User selects random judge category",
             "match": {
-              "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
+              "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
             },
             "rows": [
               {
                 "cells": [
-                  "userType",
-                  "personrole",
-                  "jud"
+                  "courtId"
                 ],
                 "line": 16
               },
               {
                 "cells": [
-                  "judge",
-                  "Appellate Judges",
                   "test"
                 ],
                 "line": 17
@@ -78,13 +83,13 @@
           },
           {
             "result": {
-              "duration": 8295732250,
+              "duration": 76498787167,
               "status": "passed"
             },
             "line": 19,
-            "name": "User selects random judge category",
+            "name": "User selects random case number",
             "match": {
-              "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
+              "location": "Document_StepDefinitions.user_selects_random_case_number(UserInputData\u003e)"
             },
             "rows": [
               {
@@ -101,152 +106,88 @@
               }
             ],
             "keyword": "Then "
-          },
+          }
+        ]
+      },
+      {
+        "before": [
           {
             "result": {
-              "duration": 64978439750,
+              "duration": 374375,
               "status": "passed"
             },
-            "line": 23,
-            "name": "User selects a category that has unviewed referrals and verifies that the red bullet icon displays next to any unviewed referrals, taps on a referral and then gets back to the referral list page",
             "match": {
-              "location": "RedBullets_StepDefintions.user_selects_a_category_that_has_unviewed_referrals_and_verifies_that_the_red_bullet_icon_displays_next_to_any_unviewed_referrals_taps_on_a_referral_and_then_gets_back_to_the_referral_list_page()"
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 27,
+        "name": "",
+        "description": "Testing  Document Annotations",
+        "id": "saving-document-annotations;",
+        "after": [
+          {
+            "result": {
+              "duration": 95541,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 46315377375,
+              "status": "passed"
+            },
+            "line": 30,
+            "name": "User expands/collapse panel",
+            "match": {
+              "location": "Common_StepDefinitions.user_expands_collapse_panel()"
             },
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 25221949583,
-              "status": "passed"
-            },
-            "line": 24,
-            "name": "User closes and reopens the app",
-            "match": {
-              "location": "JenieLogin_StepDefinitions.user_closes_and_reopens_the_app()"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 34584405709,
-              "status": "passed"
-            },
-            "line": 25,
-            "name": "User closes the app, reopens and goes back to the category that contains the referral that was just viewed",
-            "match": {
-              "location": "RedBullets_StepDefintions.user_closes_the_app_reopens_and_goes_back_to_the_category_that_contains_the_referral_that_was_just_viewed()"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 67433501084,
-              "status": "passed"
-            },
-            "line": 26,
-            "name": "User logs out from the Briefcase",
-            "match": {
-              "location": "JenieLogin_StepDefinitions.user_logs_out_from_the_Briefcase()"
-            },
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "duration": 72305382041,
-              "status": "passed"
-            },
-            "line": 28,
-            "name": "I am logged into Briefcase",
-            "match": {
-              "location": "JenieLogin_StepDefinitions.i_am_logged_into_Briefcase(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "environment",
-                  "userName",
-                  "password",
-                  "courtId"
-                ],
-                "line": 29
-              },
-              {
-                "cells": [
-                  "test",
-                  "test",
-                  "test",
-                  "test"
-                ],
-                "line": 30
-              }
-            ],
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "duration": 24490760708,
-              "status": "passed"
+              "duration": 22782487000,
+              "error_message": "java.lang.IndexOutOfBoundsException: Index: 0, Size: 0\n\tat java.util.ArrayList.rangeCheck(ArrayList.java:659)\n\tat java.util.ArrayList.get(ArrayList.java:435)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Utility.clickOnNumberInRange(Utility.java:280)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.getDocumentList(DocumentPage.java:322)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions.user_downloads_opens_a_random_document_from_Case_Detail_page(Document_StepDefinitions.java:62)\n\tat ✽.Then User downloads/opens a random document from Case Detail page(CATEGORIES/REGRESSION/SavingDocumentAnnotations.feature:32)\n",
+              "status": "failed"
             },
             "line": 32,
-            "name": "I select a user",
+            "name": "User downloads/opens a random document from Case Detail page",
             "match": {
-              "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
+              "location": "Document_StepDefinitions.user_downloads_opens_a_random_document_from_Case_Detail_page()"
             },
-            "rows": [
-              {
-                "cells": [
-                  "userType",
-                  "personrole",
-                  "jud"
-                ],
-                "line": 33
-              },
-              {
-                "cells": [
-                  "judge",
-                  "Appellate Judges",
-                  "test"
-                ],
-                "line": 34
-              }
-            ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 38383797583,
-              "status": "passed"
+              "status": "skipped"
             },
-            "line": 36,
-            "name": "User goes back to the refCategory that contains the referral that was just viewed and verify the bullet does not display",
+            "line": 34,
+            "name": "User verifies both the top banner editing icons and the editing tool palette are easily visible in the PSPDFKit.",
             "match": {
-              "location": "RedBullets_StepDefintions.user_goes_back_to_the_refCategory_that_contains_the_referral_that_was_just_viewed_and_verify_the_bullet_does_not_display()"
+              "location": "AccessingAnnotatedDocuments_StepDefinitions.user_verifies_both_the_top_banner_editing_icons_and_the_editing_tool_palette_are_easily_visible_in_the_PSPDFKit()"
             },
-            "keyword": "Then "
+            "keyword": "And "
           }
         ],
         "tags": [
           {
-            "line": 5,
-            "name": "@AMB-1152"
+            "line": 26,
+            "name": "@AMB-2977"
           }
         ]
       }
     ],
-    "name": "Red bullet displays for new referrals and does not display for viewed referrals",
+    "name": "Saving Document Annotations",
     "description": "",
-    "id": "red-bullet-displays-for-new-referrals-and-does-not-display-for-viewed-referrals",
+    "id": "saving-document-annotations",
     "keyword": "Feature",
-    "uri": "CATEGORIES/REGRESSION/RED_BULLETS_FOR_REFERRALS_AMB-1152.feature",
-    "tags": [
-      {
-        "line": 1,
-        "name": "@AMB"
-      },
-      {
-        "line": 1,
-        "name": "@Regression"
-      }
-    ]
+    "uri": "CATEGORIES/REGRESSION/SavingDocumentAnnotations.feature"
   }
 ]

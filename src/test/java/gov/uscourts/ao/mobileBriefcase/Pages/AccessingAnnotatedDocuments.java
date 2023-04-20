@@ -1,19 +1,15 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.clicksOn;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForVisibilityOfElement;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.openqa.selenium.support.PageFactory.initElements;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -25,29 +21,23 @@ import java.util.List;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.mobile.NetworkConnection;
 import org.openqa.selenium.mobile.NetworkConnection.ConnectionType;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
-import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.page.common.Base;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Configuration;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
-public class AccessingAnnotatedDocuments extends Base {
-	public AccessingAnnotatedDocuments() {
-		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
-	}
+public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Brief for 2441 REPLACED']/preceding::XCUIElementTypeStaticText[@name='+']")
 	public static WebElement plusIcon;
@@ -79,8 +69,8 @@ public class AccessingAnnotatedDocuments extends Base {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Back up Annotations to CM/ECF']/following::XCUIElementTypeSwitch[1]")
 	public static WebElement backUpAnnotations;
 
-	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeToolbar[@name='Toolbar'])[1]/following::XCUIElementTypeOther[1]/XCUIElementTypeButton")
-	public static List<WebElement> toolBar1;
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeToolbar[@name='Toolbar'])[2]/preceding::XCUIElementTypeOther[1]/XCUIElementTypeButton")
+	public static List<WebElement> toolBar2;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar/XCUIElementTypeButton")
 	public static List<WebElement> navigationTool1;
@@ -120,6 +110,9 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Author Name']")
 	public static WebElement author;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextField[@name='Name']")
+	public static WebElement name;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Done']")
 	public static WebElement done;
@@ -251,29 +244,23 @@ public class AccessingAnnotatedDocuments extends Base {
 
 	}
 
-	public void annotateDocument(String wifi, String caseNum, List<UserInputData> userInputData) {
+	public void annotateDocument(String docName, String caseNum, List<UserInputData> userInputData) {
 
-		List<String> categories = getDocumentCategories();
-
-		int randomDoc = Utility.getRandomNumberInRange(1, categories.size() - 1);
-		String docName = categories.get(randomDoc).trim();
-		contains(docName).click();
-
-		if (wifi.equals("OFF")) {
-			togglewiFi();
-		}
 		Actions.tap(annotations);
 		if (Actions.isDisplayed(author) == true) {
+			if (done.isEnabled() == false) {
+				name.sendKeys("Test");
+			}
+
 			Actions.tap(done);
+
 		}
-		String annotation = ifEditingToolsExist(toolBar1);
+		String annotation = ifEditingToolsExist(toolBar2);
 
 		Actions.tap(annotations);
+		performPageLoad(driver);
 		Actions.tap(close);
 
-		if (wifi.equals("OFF")) {
-			togglewiFi();
-		}
 		contains(docName).click();
 		assertTrue(Actions.isDisplayed(Locator.XPATH, Actions.containsElement(annotation)));
 
@@ -377,13 +364,11 @@ public class AccessingAnnotatedDocuments extends Base {
 		}
 	}
 
-
 	public static void getBackEndUpdates(String caseNum, String docName, List<UserInputData> userInputData) {
 		List<String> assignInfo = new ArrayList<>();
 
-		for (int i = 2; i <= 5; i++) {
+		for (int i = 2; i <= 3; i++) {
 			assignInfo = execute(DBUtilities.getText(Queries.annotatedDoc, docName), i, userInputData);
-
 			if (i == 2) {
 				assertTrue(assignInfo.contains(caseNum));
 
@@ -497,7 +482,7 @@ public class AccessingAnnotatedDocuments extends Base {
 		if (Actions.isDisplayed(author) == true) {
 			Actions.tap(done);
 		}
-		ifEditingToolsExist(toolBar1);
+		ifEditingToolsExist(toolBar2);
 
 		Actions.tap(annotations);
 		Actions.tap(close);
