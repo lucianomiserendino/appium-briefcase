@@ -2,7 +2,6 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_INFO;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getRandomNumberInRange;
 
@@ -14,7 +13,6 @@ import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.AssignmentsPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.AssignmentsPage.AssignmentInfo;
-import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class Assignment_StepDefinitions {
@@ -25,19 +23,6 @@ public class Assignment_StepDefinitions {
 	static List<String> info;
 	static int rnAssignment = 0;
 	static DBType db;
-
-	@Then("^User observes a collapsible panel entitled \"([^\"]*)\" displays$")
-	public void user_observes_a_collapsible_panel_entitled_displays(String assignment) {
-		getPanel(Panel.valueOf(assignment));
-	}
-
-	@Then("^User verifies the staff assignments associated with the referral by using \"([^\"]*)\" , \"([^\"]*)\" , \"([^\"]*)\" , \"([^\"]*)\" ,$")
-	public void user_verifies_the_staff_assignments_associated_with_the_referral_by_using(String dbType, String caseId,
-			String peId, String cmr_cyv_code) {
-		assig = new AssignmentsPage();
-		assig.getAssignmentsLinkedToReferral(DBType.valueOf(dbType), caseId, peId, cmr_cyv_code);
-
-	}
 
 	@Given("^User gets judge's/staff assignment's info from DataBase  by using  \"([^\"]*)\" , \"([^\"]*)\" , \"([^\"]*)\"$")
 	public void user_gets_judge_s_staff_assignment_s_info_from_DataBase_by_using(String caseId, String peId,

@@ -1,119 +1,12 @@
 [
   {
-    "line": 1,
+    "line": 2,
     "elements": [
-      {
-        "line": 4,
-        "name": "",
-        "description": "",
-        "type": "background",
-        "keyword": "Background",
-        "steps": [
-          {
-            "result": {
-              "duration": 101866090500,
-              "status": "passed"
-            },
-            "line": 6,
-            "name": "I am logged into Briefcase",
-            "match": {
-              "location": "JenieLogin_StepDefinitions.i_am_logged_into_Briefcase(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "environment",
-                  "userName",
-                  "password",
-                  "courtId"
-                ],
-                "line": 7
-              },
-              {
-                "cells": [
-                  "test",
-                  "test",
-                  "test",
-                  "test"
-                ],
-                "line": 8
-              }
-            ],
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "duration": 8379267584,
-              "status": "passed"
-            },
-            "comments": [
-              {
-                "line": 11,
-                "value": "#Then I select a user"
-              },
-              {
-                "line": 12,
-                "value": "#\t|userType   |personrole        |jud     |"
-              },
-              {
-                "line": 13,
-                "value": "#|judge      |Appellate Judges  |test    |"
-              }
-            ],
-            "line": 15,
-            "name": "User selects random judge category",
-            "match": {
-              "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "courtId"
-                ],
-                "line": 16
-              },
-              {
-                "cells": [
-                  "test"
-                ],
-                "line": 17
-              }
-            ],
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 76498787167,
-              "status": "passed"
-            },
-            "line": 19,
-            "name": "User selects random case number",
-            "match": {
-              "location": "Document_StepDefinitions.user_selects_random_case_number(UserInputData\u003e)"
-            },
-            "rows": [
-              {
-                "cells": [
-                  "courtId"
-                ],
-                "line": 20
-              },
-              {
-                "cells": [
-                  "test"
-                ],
-                "line": 21
-              }
-            ],
-            "keyword": "Then "
-          }
-        ]
-      },
       {
         "before": [
           {
             "result": {
-              "duration": 374375,
+              "duration": 398958,
               "status": "passed"
             },
             "match": {
@@ -121,14 +14,14 @@
             }
           }
         ],
-        "line": 27,
+        "line": 5,
         "name": "",
-        "description": "Testing  Document Annotations",
-        "id": "saving-document-annotations;",
+        "description": "Staff members can be assigned to referrals and/or just cases. \nThis task is to verify that staff assignments are displaying on the referral list page",
+        "id": "staff-assignments;",
         "after": [
           {
             "result": {
-              "duration": 95541,
+              "duration": 137500,
               "status": "passed"
             },
             "match": {
@@ -141,53 +34,147 @@
         "steps": [
           {
             "result": {
-              "duration": 46315377375,
+              "duration": 27170613625,
               "status": "passed"
             },
-            "line": 30,
-            "name": "User expands/collapse panel",
+            "comments": [
+              {
+                "line": 10,
+                "value": "#Given I am logged into Briefcase"
+              },
+              {
+                "line": 11,
+                "value": "#\t|environment|userName| password |courtId|"
+              },
+              {
+                "line": 12,
+                "value": "#\t|test       |test    | test     |test   |"
+              }
+            ],
+            "line": 14,
+            "name": "I select a user",
             "match": {
-              "location": "Common_StepDefinitions.user_expands_collapse_panel()"
+              "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "userType",
+                  "personrole",
+                  "jud"
+                ],
+                "line": 15
+              },
+              {
+                "cells": [
+                  "judge",
+                  "Appellate Judges",
+                  "test"
+                ],
+                "line": 16
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 7792481417,
+              "status": "passed"
+            },
+            "line": 18,
+            "name": "User selects random judge category",
+            "match": {
+              "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 19
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 20
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 61952244625,
+              "status": "passed"
+            },
+            "line": 22,
+            "name": "User selects random case number",
+            "match": {
+              "location": "Document_StepDefinitions.user_selects_random_case_number(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId"
+                ],
+                "line": 23
+              },
+              {
+                "cells": [
+                  "test"
+                ],
+                "line": 24
+              }
+            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 218504254250,
+              "status": "passed"
+            },
+            "line": 26,
+            "name": "User observes a collapsible panel entitled \"Assignments\" displays",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Assignments",
+                  "offset": 44
+                }
+              ],
+              "location": "A_chmAssign_StepDefs.user_observes_a_collapsible_panel_entitled_displays(String)"
             },
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 22782487000,
-              "error_message": "java.lang.IndexOutOfBoundsException: Index: 0, Size: 0\n\tat java.util.ArrayList.rangeCheck(ArrayList.java:659)\n\tat java.util.ArrayList.get(ArrayList.java:435)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Utility.clickOnNumberInRange(Utility.java:280)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.getDocumentList(DocumentPage.java:322)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions.user_downloads_opens_a_random_document_from_Case_Detail_page(Document_StepDefinitions.java:62)\n\tat ✽.Then User downloads/opens a random document from Case Detail page(CATEGORIES/REGRESSION/SavingDocumentAnnotations.feature:32)\n",
-              "status": "failed"
+              "duration": 316100627250,
+              "status": "passed"
             },
-            "line": 32,
-            "name": "User downloads/opens a random document from Case Detail page",
+            "line": 28,
+            "name": "User verifies that the Staff Assignments are Displayed correctly",
             "match": {
-              "location": "Document_StepDefinitions.user_downloads_opens_a_random_document_from_Case_Detail_page()"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 34,
-            "name": "User verifies both the top banner editing icons and the editing tool palette are easily visible in the PSPDFKit.",
-            "match": {
-              "location": "AccessingAnnotatedDocuments_StepDefinitions.user_verifies_both_the_top_banner_editing_icons_and_the_editing_tool_palette_are_easily_visible_in_the_PSPDFKit()"
+              "location": "A_chmAssign_StepDefs.user_verifies_that_the_Staff_Assignments_are_Displayed_correctly()"
             },
             "keyword": "And "
-          }
-        ],
-        "tags": [
-          {
-            "line": 26,
-            "name": "@AMB-2977"
           }
         ]
       }
     ],
-    "name": "Saving Document Annotations",
+    "name": "Staff Assignments",
     "description": "",
-    "id": "saving-document-annotations",
+    "id": "staff-assignments",
     "keyword": "Feature",
-    "uri": "CATEGORIES/REGRESSION/SavingDocumentAnnotations.feature"
+    "uri": "CATEGORIES/REGRESSION/STAFF_ASSIGNMENTS_AMB1021.feature",
+    "tags": [
+      {
+        "line": 1,
+        "name": "@Smoke"
+      },
+      {
+        "line": 1,
+        "name": "@AMB-1021"
+      }
+    ]
   }
 ]

@@ -86,13 +86,12 @@ public class DocumentPage extends AppiumPageFactory {
 		list.remove("Pending Tasks");
 		list.remove("Cases on Calendar");
 		list.remove("No Argument Case");
-
+		list.remove("Oral Arguments");
 		sort(list);
 
 		category = list.get(Utility.getRandomInt(list.size() - 1));
-	scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
+		scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
 
-		
 		return category;
 
 	}
@@ -337,7 +336,6 @@ public class DocumentPage extends AppiumPageFactory {
 			}
 
 		}
-
 
 	}
 

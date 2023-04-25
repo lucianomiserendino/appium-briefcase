@@ -314,7 +314,7 @@ public class Utility extends Base {
 		return id;
 	}
 
-	public static boolean isSorted(String sort, List<String> listOfStrings) {
+	public static boolean isSorted( List<String> listOfStrings) {
 		return isSortedinDescOrder(listOfStrings, listOfStrings.size());
 
 	}
@@ -569,13 +569,13 @@ public class Utility extends Base {
 		return str == null ? "" : str;
 	}
 
-	public static List<String> filterArraylistItems(Filter filet, List<String> listOne, List<String> listTwo) {
+	public static List<String> filterArraylistItems(Filter filter, List<String> listOne, List<String> listTwo) {
 
 		Set<String> containsAll = new HashSet<String>();
 		containsAll.addAll(listOne);
 		containsAll.addAll(listTwo);
 
-		switch (filet) {
+		switch (filter) {
 
 		case UNIQUE_VALUES:
 

@@ -253,7 +253,6 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 			}
 
 			Actions.tap(done);
-
 		}
 		String annotation = ifEditingToolsExist(toolBar2);
 

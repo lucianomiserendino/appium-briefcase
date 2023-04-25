@@ -12,6 +12,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_ASSIGNMENTS_
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_LAST_NAME;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCMRID;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.trim;
@@ -23,44 +24,77 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
+
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Filter;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class AssignmentsPage extends AppiumPageFactory {
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Assignments']/following::XCUIElementTypeStaticText[contains(@name, '')]/preceding::XCUIElementTypeStaticText[1]")
+	public static List<WebElement> assignments;
+
+	public boolean isAssignmentsExist() {
+		CommonPages page = new CommonPages();
+		page.getGroupIcons();
+
+		boolean isDisplayed = false;
+
+		List<WebElement> elems = findElements(By.xpath(Actions.containsElement("Assignments")));
+		try {
+			if (elems.size() > 0)
+				elems.get(0).click();
+			isDisplayed = true;
+		} catch (WebDriverException e) {
+			isDisplayed = false;
+		}
+		return isDisplayed;
+	}
+
 	/** Find staff assignments associated with the referral */
-	public void getAssignmentsLinkedToReferral(DBType dbType, String caseId, String peID, String cmr_cyv_code) {
+	public List<String> getAssignmentsLinkedToReferral(List<UserInputData> userInputData, String caseId, String peID,
+			String cmr_cyv_code) {
 
 		List<String> staffAssignments = new ArrayList<>();
-		List<String> staffAssignment = new ArrayList<>();
-		List<String> dbStaffFName = getAssignmentsFirstName(dbType, caseId, peID, cmr_cyv_code);
+		List<String> dbStaffLName = new ArrayList<>();
+		// List<String> staffAssignment = new ArrayList<>();
+
+		List<String> dbStaffFName = getAssignmentsFirstName(userInputData, caseId, peID, cmr_cyv_code);
 
 		for (int i = 0; i < dbStaffFName.size(); i++) {
 
-			List<String> dbStaffLName = getAssignmentsLastName(dbType,
-					STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_LAST_NAME, dbStaffFName.get(i), caseId, peID,
-					cmr_cyv_code);
+			dbStaffLName = getAssignmentsLastName(userInputData, STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_LAST_NAME,
+					dbStaffFName.get(i), caseId, peID, cmr_cyv_code);
 
 			for (int j = 0; j < dbStaffLName.size(); j++) {
 
-				List<String> dbassignmentType = getAssignmentsLastName(dbType, ASSIGNMENT_TYPE, dbStaffFName.get(i),
-						caseId, peID, cmr_cyv_code);
+				List<String> dbassignmentType = getAssignmentsLastName(userInputData, ASSIGNMENT_TYPE,
+						dbStaffFName.get(i), caseId, peID, cmr_cyv_code);
 
 				for (int l = 0; l < dbassignmentType.size(); l++) {
 
-					List<String> code = getAssignmentsLastName(dbType, CHA_ID, dbStaffFName.get(i), caseId, peID,
+					List<String> code = getAssignmentsLastName(userInputData, CHA_ID, dbStaffFName.get(i), caseId, peID,
 							cmr_cyv_code);
 
 					for (int k = 0; k < code.size(); k++) {
 
-						List<String> dbAssignment = getAssignmentTypeAndDate(dbType, CDV_DESCRIPTION, code.get(k));
+						List<String> dbAssignment = getAssignmentTypeAndDate(userInputData, CDV_DESCRIPTION,
+								code.get(k));
 						for (int m = 0; m < dbAssignment.size(); m++) {
 
-							List<String> assignmentDate = getAssignmentTypeAndDate(dbType, AD_CHD_DATE, code.get(k));
+							List<String> assignmentDate = getAssignmentTypeAndDate(userInputData, AD_CHD_DATE,
+									code.get(k));
 
 							for (int n = 0; n < assignmentDate.size(); n++) {
 
@@ -76,29 +110,64 @@ public class AssignmentsPage extends AppiumPageFactory {
 										+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + a
 										+ changeFormat(assignmentDate.get(n)) + "')]").replaceAll("Date", ""));
 
-								staffAssignment.add(dbStaffLName.get(j) + " " + dbStaffFName.get(i) + ", "
-										+ dbassignmentType.get(l));
-			}}	}}}
+//								staffAssignment.add(dbStaffLName.get(j) + " " + dbStaffFName.get(i) + ", "
+//										+ dbassignmentType.get(l));
+
+							}
+						}
+					}
+				}
+			}
 		}
 
 		for (int i = 0; i < staffAssignments.size(); i++) {
+
 			assertTrue(Actions.isDisplayed(Locator.XPATH, staffAssignments.get(i)));
 		}
+		return dbStaffFName;
+
 	}
 
-	public static List<String> getAssignmentsFirstName(DBType dbType, String caseId, String peID, String cmr_cyv_code) {
-		return executeQuery(dbType, replace(STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL, "CMR_CS_CASEID", caseId,
-				"CHA_JU_PE_ID", peID, "CMR_CYV_CODE", cmr_cyv_code));
+	public void ifAssignmentsSorted(List<String> dbAssignmentList, List<UserInputData> userInputData) {
+		List<String> allAssignments = new ArrayList<>();
+
+		List<String> judgeAssignments = new ArrayList<>();
+		List<String> staffAssignments = new ArrayList<>();
+
+		for (int i = 0; i < assignments.size(); i++) {
+			allAssignments.add(assignments.get(i).getText().split(",")[0].split(" ")[1].trim());
+		}
+
+		String fName = SystemPropertySetup.getVariable(Variables.JUD, userInputData);
+
+		if (dbAssignmentList.contains(fName)) {
+			dbAssignmentList.remove(fName);
+		}
+
+		judgeAssignments = Utility.filterArraylistItems(Filter.UNIQUE_VALUES, allAssignments, dbAssignmentList);
+
+		staffAssignments = Utility.filterArraylistItems(Filter.DUPLICATE_VALUES, allAssignments, dbAssignmentList);
+
+		Utility.ifSortedInAlphabeticalOrder(judgeAssignments);
+		Utility.ifSortedInAlphabeticalOrder(staffAssignments);
+
 	}
 
-	public static List<String> getAssignmentsLastName(DBType dbType, String query, String string, String caseId,
-			String peID, String cmr_cyv_code) {
-		return executeQuery(dbType, replace(replace(query, "PR_LAST_NAME", string), "CMR_CS_CASEID", caseId,
-				"CHA_JU_PE_ID", peID, "CMR_CYV_CODE", cmr_cyv_code));
+	public static List<String> getAssignmentsFirstName(List<UserInputData> userInputData, String caseId, String peID,
+			String cmr_cyv_code) {
+		return executeQuery(replace(STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL, "CMR_CS_CASEID", caseId, "CHA_JU_PE_ID",
+				peID, "CMR_CYV_CODE", cmr_cyv_code), userInputData);
 	}
 
-	public static List<String> getAssignmentTypeAndDate(DBType dbType, String query, String string) {
-		return executeQuery(dbType, replace(query, "CHD_CHA_ID", string));
+	public static List<String> getAssignmentsLastName(List<UserInputData> userInputData, String query, String string,
+			String caseId, String peID, String cmr_cyv_code) {
+		return executeQuery(replace(replace(query, "PR_LAST_NAME", string), "CMR_CS_CASEID", caseId, "CHA_JU_PE_ID",
+				peID, "CMR_CYV_CODE", cmr_cyv_code), userInputData);
+	}
+
+	public static List<String> getAssignmentTypeAndDate(List<UserInputData> userInputData, String query,
+			String string) {
+		return executeQuery(replace(query, "CHD_CHA_ID", string), userInputData);
 
 	}
 
@@ -123,7 +192,7 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 			List<String> bb = uniqueValues(cmr_id, getAssignmentInfo(cmr_id, randomAssignment, userInputData),
 					getAssignmentInfo(cmr_id, randomAssignment - 1, userInputData));
-			
+
 			return uniqueValues(cmr_id, aa, bb);
 		}
 	}
@@ -141,13 +210,12 @@ public class AssignmentsPage extends AppiumPageFactory {
 			commonElementsFromBothList.addAll(listTwo.stream().filter(str -> !listOne.contains(str)).collect(toList()));
 
 			return commonElementsFromBothList;
-			
+
 		} else {
 
 			return listOne;
 		}
 	}
-
 
 	public static String changeFormat(String assignDate) {
 		String date = "";
@@ -205,7 +273,7 @@ public class AssignmentsPage extends AppiumPageFactory {
 				assignmentInformation = containsElement(assignedDate) + assignName;
 			}
 			break;
-			
+
 		case ASSIGNMENT_TYPE_AND_RELIEF:
 
 			String relief = execute(replace(ASSIGNMENT_INFO, "CMR_ID", cmr_id), 9, userInputData).get(randomAssignment);
@@ -244,11 +312,11 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 			if (!(can_dm_dls_id_AND_can_dm_dls_id.length() == 0) && cdn_dm_dls_id_AND_cdn_date_created.length() == 0) {
 				assignmentInformation = can_dm_dls_id_AND_can_dm_dls_id;
-		
+
 			} else if (can_dm_dls_id_AND_can_dm_dls_id.length() == 0
 					&& !(cdn_dm_dls_id_AND_cdn_date_created.length() == 0)) {
 				assignmentInformation = cdn_dm_dls_id_AND_cdn_date_created;
-			
+
 			} else if (!(can_dm_dls_id_AND_can_dm_dls_id.length() == 0)
 					&& !(cdn_dm_dls_id_AND_cdn_date_created.length() == 0)) {
 				List<String> attachedNotes = new ArrayList<>();
@@ -256,16 +324,16 @@ public class AssignmentsPage extends AppiumPageFactory {
 				attachedNotes.add(cdn_dm_dls_id_AND_cdn_date_created);
 				int notes = getRandomNumberInRange(0, attachedNotes.size() - 1);
 				assignmentInformation = attachedNotes.get(notes);
-	
+
 			} else {
 				assignmentInformation = "Assignment Notes";
-	
+
 			}
-			
+
 		default:
 			break;
 		}
-		
+
 		return assignmentInformation;
 
 	}
@@ -299,7 +367,7 @@ public class AssignmentsPage extends AppiumPageFactory {
 			}
 		} catch (NullPointerException e) {
 		}
-		
+
 		return notes;
 
 	}
@@ -362,9 +430,6 @@ public class AssignmentsPage extends AppiumPageFactory {
 			e.getMessage();
 		}
 	}
-	
-	
-	
 
 	public static String getassignmentDate(String cdv_display, String chd_date, String caseNumber, String cav_display) {
 		return "//XCUIElementTypeStaticText[contains(@name, '" + cdv_display + ": "
@@ -375,7 +440,8 @@ public class AssignmentsPage extends AppiumPageFactory {
 	}
 
 	public enum AssignmentInfo {
-		ASSINMENT_TYPE, ASSIGNMENT_DATE, NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE, ASSIGNMENT_TYPE_AND_RELIEF, LATEST_ASSIGNED_ASSIGNMENT_DUE_DATES, ASSIGNMENT_NOTE_DATE
+		ASSINMENT_TYPE, ASSIGNMENT_DATE, NAME_OF_THE_ASSIGNEE_AND_LATEST_ASSIGNMENT_DATE, ASSIGNMENT_TYPE_AND_RELIEF,
+		LATEST_ASSIGNED_ASSIGNMENT_DUE_DATES, ASSIGNMENT_NOTE_DATE
 	}
 
 }
