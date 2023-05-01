@@ -3,10 +3,63 @@
     "line": 2,
     "elements": [
       {
+        "line": 5,
+        "name": "",
+        "description": "",
+        "type": "background",
+        "keyword": "Background",
+        "steps": [
+          {
+            "result": {
+              "duration": 30566091042,
+              "status": "passed"
+            },
+            "comments": [
+              {
+                "line": 7,
+                "value": "#Given I am logged into Briefcase"
+              },
+              {
+                "line": 8,
+                "value": "#\t|environment    |userName| password |courtId|"
+              },
+              {
+                "line": 9,
+                "value": "#\t|Integration    |s haenni| Test2025!|test   |"
+              }
+            ],
+            "line": 11,
+            "name": "I select a user",
+            "match": {
+              "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
+            },
+            "rows": [
+              {
+                "cells": [
+                  "userType",
+                  "personrole",
+                  "stf"
+                ],
+                "line": 12
+              },
+              {
+                "cells": [
+                  "stf",
+                  "Staff Attorneys",
+                  "Brown, Benjamin"
+                ],
+                "line": 13
+              }
+            ],
+            "keyword": "Then "
+          }
+        ]
+      },
+      {
         "before": [
           {
             "result": {
-              "duration": 398958,
+              "duration": 115291,
               "status": "passed"
             },
             "match": {
@@ -14,14 +67,14 @@
             }
           }
         ],
-        "line": 5,
+        "line": 30,
         "name": "",
-        "description": "Staff members can be assigned to referrals and/or just cases. \nThis task is to verify that staff assignments are displaying on the referral list page",
-        "id": "staff-assignments;",
+        "description": "Staff Attorney Test: If the \"Replace Author Supplied Hyperlinks\" toggle is set to \"on/yes\" the browser selected by the original author in the PDF should be \nreplaced by the browser selected by the Briefcase user as specified in the Citelink Search Engine pane.",
+        "id": "verify-document-categories-display-for-staff-attorneys;",
         "after": [
           {
             "result": {
-              "duration": 137500,
+              "duration": 306584,
               "status": "passed"
             },
             "match": {
@@ -34,24 +87,24 @@
         "steps": [
           {
             "result": {
-              "duration": 27170613625,
+              "duration": 28733667917,
               "status": "passed"
             },
             "comments": [
               {
-                "line": 10,
+                "line": 36,
                 "value": "#Given I am logged into Briefcase"
               },
               {
-                "line": 11,
+                "line": 37,
                 "value": "#\t|environment|userName| password |courtId|"
               },
               {
-                "line": 12,
+                "line": 38,
                 "value": "#\t|test       |test    | test     |test   |"
               }
             ],
-            "line": 14,
+            "line": 40,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -61,111 +114,129 @@
                 "cells": [
                   "userType",
                   "personrole",
-                  "jud"
+                  "stf"
                 ],
-                "line": 15
+                "line": 41
               },
               {
                 "cells": [
-                  "judge",
-                  "Appellate Judges",
+                  "stf",
+                  "Staff Attorneys",
                   "test"
                 ],
-                "line": 16
+                "line": 42
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 7792481417,
+              "duration": 5775013417,
               "status": "passed"
             },
-            "line": 18,
-            "name": "User selects random judge category",
+            "line": 44,
+            "name": "User selects random stf Aty category",
             "match": {
-              "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
+              "location": "Document_StepDefinitions.user_selects_random_stf_Aty_category(UserInputData\u003e)"
             },
             "rows": [
               {
                 "cells": [
                   "courtId"
                 ],
-                "line": 19
+                "line": 45
               },
               {
                 "cells": [
                   "test"
                 ],
-                "line": 20
+                "line": 46
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 61952244625,
+              "duration": 4606354416,
               "status": "passed"
             },
-            "line": 22,
-            "name": "User selects random case number",
+            "line": 48,
+            "name": "User expands/collapse panel",
             "match": {
-              "location": "Document_StepDefinitions.user_selects_random_case_number(UserInputData\u003e)"
+              "location": "Common_StepDefinitions.user_expands_collapse_panel()"
             },
-            "rows": [
-              {
-                "cells": [
-                  "courtId"
-                ],
-                "line": 23
-              },
-              {
-                "cells": [
-                  "test"
-                ],
-                "line": 24
-              }
-            ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 218504254250,
+              "duration": 7789101792,
               "status": "passed"
             },
-            "line": 26,
-            "name": "User observes a collapsible panel entitled \"Assignments\" displays",
+            "comments": [
+              {
+                "line": 50,
+                "value": "#Then User selects sub Category"
+              },
+              {
+                "line": 51,
+                "value": "#|courtId|"
+              },
+              {
+                "line": 52,
+                "value": "#|test   |"
+              },
+              {
+                "line": 53,
+                "value": "#Then User selects a random stf Referral"
+              }
+            ],
+            "line": 54,
+            "name": "User selects stf sub Category",
+            "match": {
+              "location": "StaffAttorney_StepDefinitions.user_selects_stf_sub_Category()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 6767610750,
+              "status": "passed"
+            },
+            "line": 55,
+            "name": "After selecting \"Anders Cases\" , user verifies the document categories and the number of docs displayed for each category matches the number of docs in the DB \"CMKA\". smr_assign_pe_id: \"434\"",
             "match": {
               "arguments": [
                 {
-                  "val": "Assignments",
-                  "offset": 44
+                  "val": "Anders Cases",
+                  "offset": 17
+                },
+                {
+                  "val": "CMKA",
+                  "offset": 160
+                },
+                {
+                  "val": "434",
+                  "offset": 186
                 }
               ],
-              "location": "A_chmAssign_StepDefs.user_observes_a_collapsible_panel_entitled_displays(String)"
-            },
-            "keyword": "Then "
-          },
-          {
-            "result": {
-              "duration": 316100627250,
-              "status": "passed"
-            },
-            "line": 28,
-            "name": "User verifies that the Staff Assignments are Displayed correctly",
-            "match": {
-              "location": "A_chmAssign_StepDefs.user_verifies_that_the_Staff_Assignments_are_Displayed_correctly()"
+              "location": "StaffAttorney_StepDefinitions.after_selecting_user_verifies_the_document_categories_and_the_number_of_docs_displayed_for_each_category_matches_the_number_of_docs_in_the_DB_smr_assign_pe_id(String,String,String)"
             },
             "keyword": "And "
+          }
+        ],
+        "tags": [
+          {
+            "line": 29,
+            "name": "@AMB-3498"
           }
         ]
       }
     ],
-    "name": "Staff Assignments",
+    "name": "Verify Document Categories display for Staff Attorneys",
     "description": "",
-    "id": "staff-assignments",
+    "id": "verify-document-categories-display-for-staff-attorneys",
     "keyword": "Feature",
-    "uri": "CATEGORIES/REGRESSION/STAFF_ASSIGNMENTS_AMB1021.feature",
+    "uri": "CATEGORIES/Progress/DOCUMENT_CATEGORIES_AMB-1050.feature",
     "tags": [
       {
         "line": 1,
@@ -173,7 +244,7 @@
       },
       {
         "line": 1,
-        "name": "@AMB-1021"
+        "name": "@AMB-1050"
       }
     ]
   }

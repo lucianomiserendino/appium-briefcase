@@ -20,6 +20,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
@@ -77,7 +78,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 	public void sortedInDescendingOrder(List<UserInputData> userInputData) {
 		String folder = getRandomSubFolder();
-		getGroupIcons();
+		getGroupIcons(GroupIcons.Expand);
 		sortedInDescendingOr(folder);
 
 		ArrayList<String> filedDates = new ArrayList<String>();
@@ -302,7 +303,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 	public void leftNavAndPendingTasksCategoriesAreSorted() {
 
 		String folder = getRandomSubFolder();
-		getGroupIcons();
+		getGroupIcons(GroupIcons.Expand);
 		ArrayList<String> listTwo = new ArrayList<String>();
 		for (int y = 1; y < categoryCount.size() + 1; y++) {
 			String pendingCategory = pendingCatigories(y).getText();

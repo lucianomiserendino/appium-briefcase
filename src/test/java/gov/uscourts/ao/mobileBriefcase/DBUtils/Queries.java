@@ -71,9 +71,9 @@ public class Queries {
 			+ "WHERE smr_assign_pe_id ='SMR_ASSIGN_PE_ID'  and\n" + "smr_mrc_id = SMR_MRC_ID  and\n"
 			+ "smr_id = cmd_smr_id ";
 
-	public static final String DOCUMENT_DESCRIPTION = "SELECT distinct cmd_description FROM chm_mobile_docs, stfaty_mobile_referral\n"
-			+ "WHERE smr_assign_pe_id = 'SMR_ASSIGN_PE_ID' and smr_sfa_code='sstfa' and\n"
-			+ "smr_mrc_id = SMR_MRC_ID  and\n" + "smr_id = cmd_smr_id and cmd_doc_category = 'CMD_DOC_CATEGORY'";
+	public static final String DOCUMENT_DESCRIPTION = "SELECT distinct cmd_doc_category,cmd_description, cmd_sort FROM chm_mobile_docs, stfaty_mobile_referral,"
+			+ " stfaty_case_ref, stfaty_mobile_ref_cat  WHERE smr_assign_pe_id = 'SMR_ASSIGN_PE_ID' and smr_sfa_code='SMR_SFA_CODE' and  smr_id = cmd_smr_id  and  smr_sar_id=sar_id "
+			+ " and smr_mrc_id = mrc_id and sar_cs_caseid='SAR_CS_CASEID' order by cmd_sort asc";
 
 	public static final String CASE_ID = "SELECT cs_caseid FROM case WHERE cs_year = 'CS_YEAR' and cs_number = 'CS_NUMBER'";
 
@@ -664,5 +664,8 @@ public class Queries {
 			+ " chd_cha_id from chambers_assign_date group by chd_cha_id) maxresults WHERE ad.chd_cha_id in (CHD_CHA_ID) and chd_cdv_code = cdv_code and"
 			+ " ad.chd_cha_id=  maxresults.chd_cha_id and  ad.chd_date = maxresults.maxnum";
 
+	public static final String SMR_SFA_CODE = "SELECT distinct sar_cs_caseid, mrc_name FROM chm_mobile_docs, stfaty_mobile_referral, stfaty_case_ref, "
+			+ "stfaty_mobile_ref_cat WHERE smr_assign_pe_id = 'SMR_ASSIGN_PE_ID' and smr_sfa_code='SMR_SFA_CODE' and  smr_id = cmd_smr_id  and  smr_sar_id=sar_id and"
+			+ " smr_mrc_id = mrc_id";
 
 }

@@ -25,7 +25,7 @@ Verify the cached documents are not deleted and the user is presented with the m
 	
 @AMB-3108 
 Scenario: 
-If the "Replace Author Supplied Hyperlinks" toggle is set to "on/yes" the browser selected by the original author in the PDF should be 
+Judge Test: If the "Replace Author Supplied Hyperlinks" toggle is set to "on/yes" the browser selected by the original author in the PDF should be 
 replaced by the browser selected by the Briefcase user as specified in the Citelink Search Engine pane.  
 
 		#Given I am logged into Briefcase 
@@ -47,7 +47,10 @@ Then I select a user
 		|test   |
 		
 	
-     Then User selects random document
+    # Then User selects random document
+    
+    Then User downloads/opens a random document from Case Detail page  
      
      Then User scrolls through the document until finds a citation link, taps it and verifies The link opens to the correct interface
      
+    

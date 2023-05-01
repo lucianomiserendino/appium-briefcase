@@ -19,7 +19,6 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNo
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.splitBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.openqa.selenium.support.PageFactory.initElements;
 
 import java.util.List;
 
@@ -34,19 +33,17 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CommonPages extends AppiumPageFactory {
-	//public CommonPages() {
+	// public CommonPages() {
 
-		// initElements(new AppiumFieldDecorator(driver), this);
+	// initElements(new AppiumFieldDecorator(driver), this);
 //
 //		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
 //
@@ -213,12 +210,12 @@ public class CommonPages extends AppiumPageFactory {
 		default:
 			break;
 		}
-		getGroupIcons();
+		getGroupIcons(GroupIcons.Expand);
 		scrollDownIfNotDisplayed(containsElement(panels));
 	}
 
 	public static void selectAction(String panel, String el_id, List<UserInputData> userInputData) {
-		getGroupIcons();
+		getGroupIcons(GroupIcons.Expand);
 		getPanel(Panel.valueOf(panel));
 		String actionName1 = "";
 		String actionName2 = getAllColumns(getID(ACTION_NAME, el_id), userInputData);
@@ -232,7 +229,7 @@ public class CommonPages extends AppiumPageFactory {
 	}
 
 	public static void selectAction(String panel, List<UserInputData> userInputData) {
-		//getGroupIcons();
+		// getGroupIcons();
 		getPanel(Panel.valueOf(panel));
 		// getActionName("mbr multiple DMI");
 		getActionName("Auto Test");
@@ -270,7 +267,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	public static String getCMRID(List<UserInputData> userInputData) {
 
-		String cha_ju_pe_id = DocumentPage.get_pe_id("jud",userInputData);
+		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
 
 		String caseId = CommonPages.getCaseID(userInputData);
 
@@ -280,7 +277,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	public static String getCMRID(String caseNum, List<UserInputData> userInputData) {
 
-		String cha_ju_pe_id = DocumentPage.get_pe_id("jud",userInputData);
+		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
 
 		String caseId = CommonPages.getCaseID(caseNum, userInputData);
 
@@ -290,7 +287,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	public static String getCCRID(String caseNum, List<UserInputData> userInputData) {
 
-		String cha_ju_pe_id = DocumentPage.get_pe_id("jud",userInputData);
+		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
 
 		// String caseId = CommonPages.getCaseID(userInputData);
 		String caseId = CommonPages.getCaseID(caseNum, userInputData);
@@ -323,7 +320,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	public static String cmr_cyv_code(String category, String caseID, List<UserInputData> userInputData) {
 
-		String cha_ju_pe_id = DocumentPage.get_pe_id("jud",userInputData);
+		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
 
 		return getAllColumns(replace(Queries.CMR_CYV_CODE, "CMR_JU_PE_ID", cha_ju_pe_id, "CYV_CATEGORY",
 				category.trim(), "CMR_CS_CASEID", caseID), userInputData);
@@ -389,14 +386,29 @@ public class CommonPages extends AppiumPageFactory {
 
 	}
 
-	public static void getGroupIcons() {
+	public static void getGroupIcons(GroupIcons icon) {
+
+		String grIcon = "";
+
 		List<WebElement> icons = GroupIcon;
 
+		switch (icon) {
+
+		case Collapse:
+			grIcon = "▷";
+			break;
+		case Expand:
+			grIcon = "▽";
+			break;
+		default:
+			break;
+		}
 		for (int i = 0; i < icons.size(); i++) {
 
-			while (icons.get(i).getAttribute("value").equals("▽")) {
+			while (icons.get(i).getAttribute("value").equals(grIcon)) {
 				icons.get(i).click();
 			}
+
 		}
 
 	}
@@ -483,5 +495,10 @@ public class CommonPages extends AppiumPageFactory {
 	public enum SiteTableVariable {
 
 		targetOnly, internalNote, oralArgsView, useCourtSession
+	}
+
+	public enum GroupIcons {
+		Collapse, Expand
+
 	}
 }

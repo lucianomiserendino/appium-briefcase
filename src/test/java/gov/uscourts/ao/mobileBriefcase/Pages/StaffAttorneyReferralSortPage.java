@@ -14,6 +14,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
@@ -79,7 +80,7 @@ public class StaffAttorneyReferralSortPage extends AppiumPageFactory {
 
 		Actions.contains("Apply").click();
 		CommonPages page = new CommonPages();
-		page.getGroupIcons();
+		page.getGroupIcons(GroupIcons.Expand);
 		return random;
 	}
 
@@ -111,8 +112,7 @@ public class StaffAttorneyReferralSortPage extends AppiumPageFactory {
 		return random;
 	}
 
-	public static void sortedByCase(int order) {
-
+	public static String getRandomCategory() {
 		List<Integer> count = new ArrayList<>();
 
 		List<WebElement> el1 = Actions.findElements(By.xpath(
@@ -132,9 +132,22 @@ public class StaffAttorneyReferralSortPage extends AppiumPageFactory {
 
 		String catN = Actions.findElementBy(Locator.XPATH, categoryName).getText().trim();
 		Actions.tap(Locator.XPATH, categoryName);
+		return catN;
+	}
+	
+	public void selectRandomCase(String categoryName) {
+		DocumentPage page=new DocumentPage();
+		page.selectRandomCaseNumber(getSTFReferrals( categoryName));
+	}
 
-		List<WebElement> el = Actions.findElements(By.xpath("//XCUIElementTypeStaticText[contains(@name, '" + catN
+	public static List<WebElement> getSTFReferrals(String categoryName) {
+		return Actions.findElements(By.xpath("//XCUIElementTypeStaticText[contains(@name, '" + categoryName
 				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '-')]"));
+	}
+
+	public static void sortedByCase(int order) {
+
+		List<WebElement> el = getSTFReferrals(getRandomCategory());
 
 		List<String> sortedBy = Utility.retrieveAllReferrals(el, " ", 0);
 

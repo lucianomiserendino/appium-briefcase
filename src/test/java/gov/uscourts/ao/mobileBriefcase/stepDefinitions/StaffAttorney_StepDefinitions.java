@@ -26,7 +26,8 @@ public class StaffAttorney_StepDefinitions {
 		page = new StaffAttorneyReferralPage();
 		page.osberveReferralCategories(userInputData);
 	}
-
+	
+//------------------------------------
 	@Given("^User selects assignment type \"([^\"]*)\"$")
 	public void user_selects_assignment_type(String assignmentType) {
 		page = new StaffAttorneyReferralPage();
@@ -36,15 +37,28 @@ public class StaffAttorney_StepDefinitions {
 	@Then("^User selects category \"([^\"]*)\" and \"([^\"]*)\" ,SMR_ASSIGN_PE_ID : \"([^\"]*)\"$")
 	public void user_selects_category_and_SMR_ASSIGN_PE_ID(String category, String caseNum, String smr_assign_pe_id) {
 		page = new StaffAttorneyReferralPage();
-		page.tapOnReferralCategory(category, caseNum, smr_assign_pe_id);
+		List<UserInputData> userInputData = null;
+		page.tapOnReferralCategory(userInputData);
 	}
 
 	@Then("^After selecting \"([^\"]*)\" , user verifies the document categories and the number of docs displayed for each category matches the number of docs in the DB \"([^\"]*)\"\\. smr_assign_pe_id: \"([^\"]*)\"$")
 	public void after_selecting_user_verifies_the_document_categories_and_the_number_of_docs_displayed_for_each_category_matches_the_number_of_docs_in_the_DB_smr_assign_pe_id(
 			String category, String dbType, String smr_assign_pe_id) {
-		page.getCategories(valueOf(dbType), category, smr_assign_pe_id);
+		
+		page = new StaffAttorneyReferralPage();
+		List<UserInputData> userInputData = null;
+		
+		page.getDocuments(StaffAttorneyReferralPage.smr_assign_pe_id, StaffAttorneyReferralPage.smr_sfa_code,
+				StaffAttorneyReferralPage. sar_cs_caseid, userInputData);
 	}
 
-
+//================================
+	
+	@Then("^User selects stf sub Category$")
+	public void user_selects_stf_sub_Category(){
+		page = new StaffAttorneyReferralPage();
+		List<UserInputData> userInputData = null;
+		page.tapOnReferralCategory(userInputData);
+	}
 
 }

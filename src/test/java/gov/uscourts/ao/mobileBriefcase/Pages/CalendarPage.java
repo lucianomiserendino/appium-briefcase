@@ -16,6 +16,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.Category;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage.Sort;
@@ -51,14 +52,14 @@ public class CalendarPage extends AppiumPageFactory {
 
 		if (random == 1) {
 			page.getSortPage(Sort.REFERRAL_DATE_DESCENDING);
-			getGroupIcons();
+			getGroupIcons(GroupIcons.Expand);
 
 			assertTrue("THE MAIN HEADERS ARE NOT SORTED BY \"MONTH YEAR\" IN DESCENDING ORDER: ",
 					checkDatesForDescOrder(getMonthlySessions(), format));
 
 		} else if (random == 2) {
 			page.getSortPage(Sort.REFERRAL_DATE_ASCENDING);
-			getGroupIcons();
+			getGroupIcons(GroupIcons.Expand);
 			assertTrue("THE MAIN HEADERS ARE NOT SORTED BY \"MONTH YEAR\" IN ASCENDING ORDER: ",
 					checkDatesForAscOrder(getMonthlySessions(), format));
 

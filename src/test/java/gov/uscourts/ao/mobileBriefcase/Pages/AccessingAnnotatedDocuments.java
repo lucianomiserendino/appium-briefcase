@@ -4,7 +4,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.clicksOn;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
@@ -27,6 +26,7 @@ import org.openqa.selenium.mobile.NetworkConnection.ConnectionType;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
@@ -347,22 +347,6 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 				expected);
 	}
 
-	public void searchForAppendix() {
-		String text = "Appx";
-		performPageLoad(driver);
-		clicksOn(searchIcon);
-		searchTextField.clear();
-		Actions.sendKeys(searchTextField, text);
-		String index = Utility.clickOnNumberInRange(searchResult);
-		if (!(index == null)) {
-			Utility.clickOnNumberInRange(appxLink);
-			performPageLoad(driver);
-			Assert.assertTrue(Actions.isDisplayed(Locator.XPATH, Actions.containsElement(text)));
-		} else {
-			throw new RuntimeException("THIS DOCUMENT DOES NOT CONTAIN ANY HYPERLINKS");
-		}
-	}
-
 	public static void getBackEndUpdates(String caseNum, String docName, List<UserInputData> userInputData) {
 		List<String> assignInfo = new ArrayList<>();
 
@@ -381,7 +365,7 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 
 	public List<String> getDocumentCategories() {
 
-		getGroupIcons();
+		getGroupIcons(GroupIcons.Expand);
 		Page.performPageLoad(driver);
 		List<String> categories = new ArrayList<>();
 
@@ -456,7 +440,7 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 
 	public void selectRandomDocument(List<UserInputData> userInputData, String cmr_cyv_code, String cmr_ju_pe_id,
 			String cmr_cs_caseid) {
-		CommonPages.getGroupIcons();
+		CommonPages.getGroupIcons(GroupIcons.Expand);
 		List<String> uiDocCategory = new ArrayList<>();
 
 		List<String> category = getDocumentCategories();

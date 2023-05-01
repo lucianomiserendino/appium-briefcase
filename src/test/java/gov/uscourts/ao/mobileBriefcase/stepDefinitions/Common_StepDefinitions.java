@@ -11,6 +11,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -106,8 +107,16 @@ public class Common_StepDefinitions {
 	@Then("^User expands/collapse panel$")
 	public void user_expands_collapse_panel() {
 		page = new CommonPages();
-		page.getGroupIcons();
+		page.getGroupIcons(GroupIcons.Expand);
 	}
+	
+	@Then("^User collapses panel$")
+	public void user_collapses_panel()  {
+		page = new CommonPages();
+		page.getGroupIcons(GroupIcons.Collapse);
+	}
+
+
 
 	@Then("^User verifies that panel exists$")
 	public void user_verifies_that_panel_exists(DataTable table) {

@@ -29,6 +29,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
@@ -42,12 +43,12 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class AssignmentsPage extends AppiumPageFactory {
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Assignments']/following::XCUIElementTypeStaticText[contains(@name, '')]/preceding::XCUIElementTypeStaticText[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Assignments']/following::XCUIElementTypeStaticText[contains(@name, '')]/preceding::XCUIElementTypeStaticText[2]")
 	public static List<WebElement> assignments;
 
 	public boolean isAssignmentsExist() {
 		CommonPages page = new CommonPages();
-		page.getGroupIcons();
+		page.getGroupIcons(GroupIcons.Expand);
 
 		boolean isDisplayed = false;
 
@@ -68,10 +69,9 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 		List<String> staffAssignments = new ArrayList<>();
 		List<String> dbStaffLName = new ArrayList<>();
-		// List<String> staffAssignment = new ArrayList<>();
+		 List<String> dbAssignments = new ArrayList<>();
 
 		List<String> dbStaffFName = getAssignmentsFirstName(userInputData, caseId, peID, cmr_cyv_code);
-
 		for (int i = 0; i < dbStaffFName.size(); i++) {
 
 			dbStaffLName = getAssignmentsLastName(userInputData, STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_LAST_NAME,
@@ -109,7 +109,7 @@ public class AssignmentsPage extends AppiumPageFactory {
 										+ dbStaffFName.get(i) + ", " + dbassignmentType.get(l)
 										+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + a
 										+ changeFormat(assignmentDate.get(n)) + "')]").replaceAll("Date", ""));
-
+								dbAssignments.add(dbStaffFName.get(i));
 //								staffAssignment.add(dbStaffLName.get(j) + " " + dbStaffFName.get(i) + ", "
 //										+ dbassignmentType.get(l));
 
@@ -124,7 +124,7 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 			assertTrue(Actions.isDisplayed(Locator.XPATH, staffAssignments.get(i)));
 		}
-		return dbStaffFName;
+		return dbAssignments;
 
 	}
 
@@ -140,9 +140,8 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 		String fName = SystemPropertySetup.getVariable(Variables.JUD, userInputData);
 
-		if (dbAssignmentList.contains(fName)) {
+		if (dbAssignmentList.contains(fName))
 			dbAssignmentList.remove(fName);
-		}
 
 		judgeAssignments = Utility.filterArraylistItems(Filter.UNIQUE_VALUES, allAssignments, dbAssignmentList);
 
@@ -417,7 +416,7 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 		try {
 			value = getAssignmentDateType(dbType, cmrId, pr_last_name, pr_first_name, 2);
-			CommonPages.getGroupIcons();
+			CommonPages.getGroupIcons(GroupIcons.Expand);
 			if (!(value.length() == 0)) {
 				tap(Locator.XPATH, "//XCUIElementTypeStaticText[contains(@name, '" + value + "')]");
 

@@ -33,6 +33,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
@@ -269,7 +270,7 @@ public class DashboardPage extends Base {
 
 	public boolean getDocuments(String peID, List<UserInputData> userInputData) {
 
-		CommonPages.getGroupIcons();
+		CommonPages.getGroupIcons(GroupIcons.Expand);
 		WebElement uiDocs = null;
 
 		boolean isDisplayed = false;

@@ -41,6 +41,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
@@ -344,7 +345,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 			performPageLoad(driver);
 			Utility.scroll(documentList, "up");
-			getGroupIcons();
+			getGroupIcons(GroupIcons.Expand);
 			selectAction("Actions", el_id, userInputData);
 			performPageLoad(driver);
 			tap(Locator.XPATH, getIndexOfNoteIcon(relief));
@@ -395,7 +396,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	}
 
 	public void verifyCourtAdminAccess() {
-		getGroupIcons();
+		getGroupIcons(GroupIcons.Expand);
 		assertFalse(
 				"SITE TABLE VARIABLE \"BRIEFCASECTADMINDKT\" IS SET TO 'N', HOWEVER COURT ADMINS CAN SEE ACTIONS IN BRIEFCASE",
 				isDisplayed(Locator.XPATH, containsElement("Actions")));

@@ -87,4 +87,21 @@ Scenario: Category and case selection
          Scenario: Random document selection    
         Then User downloads/opens a random document from Case Detail page 
 
+ @expandPanel
+   Scenario: Expand group icon
+    Then User expands/collapse panel
+    
+     @collapsePanel
+      Scenario: Collapse group icon
+      Then User collapses panel
+      
+      
+      
+   @selectSTFSubCategoryandCase
+Scenario: STF sub Category and case selection
+	Then User selects sub Category
+	|courtId|
+	|test   |
+	Then User selects a random stf Referral
+	
         

@@ -20,6 +20,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
@@ -261,7 +262,7 @@ public class DocumentPage extends AppiumPageFactory {
 
 		case appliedCase:
 			CommonPages page = new CommonPages();
-			page.getGroupIcons();
+			page.getGroupIcons(GroupIcons.Expand);
 			getAppliedCase();
 			DocumentPage p = new DocumentPage();
 			element = p.appliedCase;

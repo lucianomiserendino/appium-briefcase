@@ -16,6 +16,7 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.Category;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
@@ -126,7 +127,7 @@ public class SyncPage extends AppiumPageFactory {
 
 	public static List<String> getDocumentCategories() {
 
-		getGroupIcons();
+		getGroupIcons(GroupIcons.Expand);
 		Page.performPageLoad(driver);
 		List<String> categories = new ArrayList<>();
 

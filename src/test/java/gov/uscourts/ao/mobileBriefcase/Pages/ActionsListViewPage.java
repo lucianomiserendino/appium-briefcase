@@ -15,6 +15,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
@@ -24,7 +25,7 @@ public class ActionsListViewPage extends AppiumPageFactory {
 
 	public void getApplicableActions(String caseNumber, String panel, List<UserInputData> userInputData) {
 
-		CommonPages.getGroupIcons();
+		CommonPages.getGroupIcons(GroupIcons.Expand);
 		scrollDownIfNotDisplayed(containsElement(panel));
 		String cmr_id = CommonPages.getCMRID(caseNumber, userInputData);
 
@@ -63,7 +64,7 @@ public class ActionsListViewPage extends AppiumPageFactory {
 	 */
 	public void verifyMbrdocWPisDisplayed(List<UserInputData> userInputData) {
 		performPageLoad(driver);
-		getGroupIcons();
+		getGroupIcons(GroupIcons.Expand);
 		scrollDownIfNotDisplayed(containsElement("Actions"));
 		String cmr_id = CommonPages.getCMRID(userInputData);
 
