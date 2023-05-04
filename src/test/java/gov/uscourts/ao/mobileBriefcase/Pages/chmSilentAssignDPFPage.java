@@ -166,61 +166,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 
 	}
 
-	public void getJudgeAssignment(String elID, List<UserInputData> userInputData) {
-		List<String> uiJudgeList = new ArrayList<>();
-		List<String> dbJudgeList = new ArrayList<>();
-		String loggedInJudge = getLoggedInJudge(userInputData);
-		String dpf = getAllColumns(getID(MBR_NOTE, elID), userInputData);
-		String mode = Utility.getParameter(getAllColumns(getID(MBR_NOTE, elID), userInputData), "chmSilentAssign", 0);
 
-		String param = "";
-
-		switch (param) {
-
-		/**
-		 * term - the assignment will be terminated based on the assignment type and
-		 * involvement code parameters values for the logged in judge. 
-		 */
-
-		case "create":
-			getPanel(Panel.Assignments);
-
-			String judgeAssign = getRowFromTable(assignTable, mode, 4).getText();
-
-			Assert.assertTrue(Actions.isDisplayed(Locator.XPATH,
-					"//XCUIElementTypeStaticText[contains(@name, '" + judgeAssign + "')]"));
-			break;
-
-		case "term":
-			uiJudgeList.remove(loggedInJudge);
-			break;
-
-		case "termPanel":
-			uiJudgeList.remove(dbJudgeList);
-			break;
-
-		case "termAnyRelief":
-			Assert.assertTrue(getDPF(dpf));
-			break;
-
-		case "termAnyReliefPanel":
-			Assert.assertTrue(getDPF(dpf));
-			break;
-
-		case "termAllReliefs":
-			Assert.assertTrue(getDPF(dpf));
-
-			break;
-
-		case "termAllReliefsPanel":
-			Assert.assertTrue(getDPF(dpf));
-
-			break;
-
-		default:
-			break;
-		}
-	}
 
 	public void createchmsilentAssign() {
 		if (alert.isDisplayed() == true) {
@@ -228,51 +174,9 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		}
 	}
 
-	/**
-	 * The following method checks if the parameter is set to termAnyRelief or
-	 * termAllReliefs, it is used in conjunction with the judgeVote DPF.
-	 */
 
-	public static boolean getDPF(String param) {
-		boolean isDisplayed = false;
-		String vote = "judgeVote";
-		String assign = "chmSilentAssign";
-		List<String> dpf = new ArrayList<>();
 
-		String[] items = param.split(";");
-		int itemCount = items.length;
-
-		if (itemCount > 1) {
-
-			for (int i = 0; i < itemCount; i++) {
-
-				dpf.add(items[i].split("\\('")[0].trim());
-			}
-
-			if (dpf.contains(vote) && dpf.contains(assign)) {
-
-				assertTrue(dpf.indexOf(vote) < dpf.indexOf(assign));
-				isDisplayed = true;
-
-			} else {
-				isDisplayed = false;
-			}
-		}
-
-		return isDisplayed;
-
-	}
-
-	protected WebElement getRowFromTable(WebElement table, String cellTextEquals, int intCellToFind) {
-		WebElement tableBody = table.findElement(By.tagName("tbody"));
-		List<WebElement> rows = tableBody.findElements(By.tagName("tr"));
-		for (WebElement row : rows) {
-			List<WebElement> td = row.findElements(By.tagName("td"));
-			if (td.size() > 0 && td.get(intCellToFind).getText().equals(cellTextEquals)) {
-				return row;
-			}
-		}
-		return null;
-	}
+	
+	
 
 }

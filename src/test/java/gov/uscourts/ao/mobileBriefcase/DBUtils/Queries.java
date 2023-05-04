@@ -668,4 +668,16 @@ public class Queries {
 			+ "stfaty_mobile_ref_cat WHERE smr_assign_pe_id = 'SMR_ASSIGN_PE_ID' and smr_sfa_code='SMR_SFA_CODE' and  smr_id = cmd_smr_id  and  smr_sar_id=sar_id and"
 			+ " smr_mrc_id = mrc_id";
 
+	public static final String CAV_DISPLAY = "SELECT cav_display FROM chm_assign_type_val WHERE cav_code like '%TEXT%'";
+
+	public static final String CHM_SILENT_ASSIGN_DPF = "select el_list_text, el_functions from mbr_event join event_list on el_id = me_el_id where "
+			+ "(me_cyv_code = (select cmr_cyv_code from chm_mobile_referral where cmr_id = ?) or me_cyv_code = \"-\" "
+			+ " or me_cyv_code is null) and (me_ic_code = (select cmr_ic_code from chm_mobile_referral where cmr_id = ?) "
+			+ "or me_ic_code is null or me_ic_code = \"-\") and (me_cav_code = (select distinct(cav_code) FROM chm_mobile_referral JOIN chambers_case_to_referral "
+			+ "on ccr_id = cmr_ccr_id JOIN chm_assign_to_case on chc_cpr_id = ccr_cpr_id and chc_cs_caseid = cmr_cs_caseid "
+			+ "JOIN chambers_assignment on cha_id = chc_cha_id and cha_chm_pe_id = cmr_ju_pe_id JOIN chm_assign_type_val on cav_code = cha_cav_code JOIN chambers_assign_date "
+			+ "on chd_cha_id = cha_id join chm_assign_datetype_val on cdv_code = chd_cdv_code "
+			+ " WHERE chc_date_end is null and cmr_id = ?) or me_cav_code = \"-\" or me_cav_code is null) and el_functions is not null "
+			+ "and el_list_text LIKE '%silent%' and el_functions LIKE '%chmSilentAssign%' and el_functions LIKE '%term%'";
+
 }

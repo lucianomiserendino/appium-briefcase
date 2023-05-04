@@ -216,7 +216,7 @@ public class DocumentPage extends AppiumPageFactory {
 						+ "/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText"));
 	}
 
-	public static String selectRandomCaseNumber(List<WebElement> element) {
+	public static  String selectRandomCaseNumber(List<WebElement> element) {
 		String referral = "";
 		Page.performPageLoad(driver);
 		List<String> list = Utility.retrieveAllReferrals(element, " ", 0);

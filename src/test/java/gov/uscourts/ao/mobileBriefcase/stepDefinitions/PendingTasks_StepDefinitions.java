@@ -12,6 +12,7 @@ public class PendingTasks_StepDefinitions {
 
 	PendingTasksPage pending;
 	DashboardPage page;
+	String folder;
 
 	@When("^Verify the sub-folder cases are sorted by date descending order$")
 	public void verify_the_sub_folder_cases_are_sorted_by_date_descending_order() {
@@ -36,6 +37,20 @@ public class PendingTasks_StepDefinitions {
 	public void verify_the_Pending_Tasks_category_if_available_will_always_display_at_the_top_of_the_left_navigation() {
 		page = new DashboardPage();
 		page.pendingTaskPosition("Navigation");
+	}
+
+	@When("^User select a sub folder$")
+	public void user_select_a_sub_folder() {
+		pending = new PendingTasksPage();
+		folder = pending.getRandomSubFolder();
+		pending.selectAssignmentType(folder);
+
+	}
+
+	@Then("^selects a random pending tasks case$")
+	public void selects_a_random_pending_tasks_case() {
+		pending = new PendingTasksPage();
+		pending.clickOnCase();
 	}
 
 }

@@ -174,7 +174,7 @@ public class StaffAttorneyReferralPage extends Base {
 
 		if (caseList.size() > 1) {
 			sar_cs_caseid = caseList.get(random-1).trim();
-			category = categoryName.get(random).trim();
+			category = categoryName.get(random-1).trim();
 		} else if (caseList.size() == 1) {
 			sar_cs_caseid = caseList.get(0).trim();
 			category = categoryName.get(0).trim();

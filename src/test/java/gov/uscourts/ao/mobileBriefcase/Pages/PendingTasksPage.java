@@ -1,13 +1,16 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getCellCount;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getParameter;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -25,6 +28,7 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -60,26 +64,32 @@ public class PendingTasksPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
 	public static List<WebElement> pendingSubFolders;
 
-	String category;
+	public static String category;
 	String assinmentType;
-	String caseN;
+	String referral = "";
+	String elId = "";
+	String dpfName = "chmSilentAssign";
+	
 
 	public String getRandomSubFolder() {
 
-		//WebElement randomFolder = pendingSubFolders.get(0);
+		// WebElement randomFolder = pendingSubFolders.get(0);
 
 		int random = Utility.getRandomNumberInRange(1, pendingSubFolders.size());
 		WebElement randomFolder = pendingSubFolders.get(random - 1);
 
 		String folder = randomFolder.getText();
 		randomFolder.click();
+
+		getGroupIcons(GroupIcons.Expand);
+
 		return folder.trim();
 	}
 
 	public void sortedInDescendingOrder(List<UserInputData> userInputData) {
 		String folder = getRandomSubFolder();
-		getGroupIcons(GroupIcons.Expand);
-		sortedInDescendingOr(folder);
+
+		selectAssignmentType(folder);
 
 		ArrayList<String> filedDates = new ArrayList<String>();
 		List<WebElement> date = Actions.findElements(By.xpath(Actions.containsElement(": ")));
@@ -97,28 +107,16 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 	}
 
-	public static String getCaseNumber(String category) {
-
-		DocumentPage page = new DocumentPage();
-
-		String caseN = page.selectRandomCaseNumber(Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='"
-				+ category + "']/following::XCUIElementTypeStaticText[contains(@name, '-')]"))).split(" ")[0].trim();
-		driver.navigate().back();
-		return caseN;
-
-	}
-
 	public boolean getReferralAssignmentInfo(List<UserInputData> userInputData, String folder, String assignmenType) {
-		caseN = getCaseNumber(category);
-
+		selectRandomCase();
 		String uiPanelMembersAndAssignedDate = Actions
-				.findElement(By.xpath("//XCUIElementTypeStaticText[contains(@name, '" + caseN
+				.findElement(By.xpath("//XCUIElementTypeStaticText[contains(@name, '" + referral
 						+ "')]/following::XCUIElementTypeStaticText[1]"))
 				.getText().trim();
 
-		String dbPanelMembers = getAssignmentInfo("cmr_panel_members", category, caseN, userInputData, folder,
+		String dbPanelMembers = getAssignmentInfo("cmr_panel_members", category, referral, userInputData, folder,
 				assignmenType);
-		String chc_cha_id = getAssignmentInfo("chc_cha_id", category, caseN, userInputData, folder, assignmenType);
+		String chc_cha_id = getAssignmentInfo("chc_cha_id", category, referral, userInputData, folder, assignmenType);
 
 		String assignmentDatetype = getDateAndAssignmentDatetype("cdv_description", chc_cha_id, userInputData);
 		String assignmentDate = getDateAndAssignmentDatetype("ad.chd_date", chc_cha_id, userInputData);
@@ -180,10 +178,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 				userInputData);
 	}
 
-	public void sortedInDescendingOr(String folder) {
-
-		int caseCount = 1;
-		int total = 0;
+	public void selectAssignmentType(String folder) {
 
 		List<Integer> count = new ArrayList<>();
 
@@ -205,75 +200,85 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 		if (folder.equals("My Assignments") | folder.contains("Referrals Awaiting")) {
 
-			Boolean elementNotFound = true;
-
-			while (elementNotFound) {
+			int i;
+			for (i = 0; i < max; i++) {
 
 				List<WebElement> icons = Actions.findElements(By.xpath(
 						"//XCUIElementTypeOther[@name=\"PendingTasksList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther//following::XCUIElementTypeStaticText[@name='"
 								+ category + "']/following::XCUIElementTypeStaticText[@name=\"GroupIcon\"]"));
 
-				for (int i = 0; i < s + max; i++) {
-
-					if (icons.get(i).getAttribute("value").equals("▽")) {
-
-						icons.get(i).click();
-
-					}
-
-					List<WebElement> assignmentCount = Actions.findElements(By.xpath(assinmentCount()));
-
-					int left = CalendarPage.totalNumOfCases(assignmentCount, i);
-
-					total += left;
-
-					if (total == max) {
-
-						if (caseCount > 1) {
-
-							List<Integer> c = new ArrayList<>();
-
-							for (int k = 0; k < caseCount; k++) {
-
-								c.add(Integer.parseInt(
-										Actions.replace(assignmentCount.get(k).getText(), "\\(", "", "\\)", "")));
-							}
-
-							Integer m = Collections.max(c);
-
-							assinmentType = Actions
-									.findElement(
-											By.xpath(assinmentType(m) + "/preceding::XCUIElementTypeStaticText[1]"))
-									.getText();
-
-							WebElement g = Actions.findElement(By.xpath(assinmentType(m)));
-
-							g.click();
-
-						} else {
-
-							assinmentType = Actions
-									.findElement(
-											By.xpath(assinmentCount() + "[1]/preceding::XCUIElementTypeStaticText[1]"))
-									.getText();
-							assignmentCount.get(0).click();
-							;
-						}
-
-						elementNotFound = false;
-
-						break;
-
-					} else {
-						caseCount++;
-						elementNotFound = true;
-
-					}
-
+				if (icons.get(i).getAttribute("value").equals("▽")) {
+					icons.get(i).click();
+				} else {
+					break;
 				}
 			}
+
+			List<Integer> c = new ArrayList<>();
+
+			List<WebElement> assignmentCount = Actions.findElements(By.xpath(assinmentCount()));
+
+			int i1 = 0;
+			for (WebElement element : assignmentCount) {
+				String value = Actions.replace(element.getText(), "\\(", "", "\\)", "").trim();
+				int intValue = Integer.parseInt(value);
+				c.add(intValue);
+				i1 += intValue;
+				if (i1 >= max) {
+					break;
+				}
+			}
+
+			Integer m = Collections.max(c);
+
+			assinmentType = Actions.findElement(By.xpath(assinmentType(m) + "/preceding::XCUIElementTypeStaticText[1]"))
+					.getText();
+
+			assignmentCount.get(c.indexOf(m)).click();
+
 		}
 
+	}
+
+	public void clickOnCase() {
+		WebElement ref = selectRandomCase();
+
+		String uiPanelMembersAndAssignedDate = Actions
+				.findElement(By.xpath("//XCUIElementTypeStaticText[contains(@name, '" + referral
+						+ "')]/following::XCUIElementTypeStaticText[1]"))
+				.getText().trim();
+
+		ref.click();
+	}
+
+	public WebElement selectRandomCase() {
+
+		Page.performPageLoad(driver);
+
+		List<String> list = Utility
+				.retrieveAllReferrals(Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + category
+						+ "']/following::XCUIElementTypeStaticText[contains(@name, '-')]")), " ", 0);
+
+		/** This might change in 1.8 - AMB-3399 */
+		assertFalse(
+				"VERIFY IF THERE IS MORE THAN ONE REFERRAL IN THE SAME CATEGORY FOR A CASE, THE CASE IS DISPLAYED ONLY ONCE",
+				Utility.hasDublicates(list));
+
+		int caseN = 0;
+		if (list.size() > 1) {
+			caseN = Utility.getRandomInt(list.size() - 1);
+
+		} else {
+			caseN = 0;
+		}
+		WebElement uiResult = findElementBy(Locator.XPATH,
+				"//XCUIElementTypeStaticText[contains(@name, '" + list.get(caseN) + "')]");
+
+		referral = list.get(caseN).split(" ")[0].trim();
+		;
+
+		Page.performPageLoad(driver);
+		return uiResult;
 	}
 
 	public void getAssignmentCategories() {
@@ -285,19 +290,6 @@ public class PendingTasksPage extends AppiumPageFactory {
 		Integer max = Collections.max(categories);
 		Actions.tap(Locator.XPATH, Actions.containsElement("(" + max.toString() + ")"));
 
-	}
-
-	public static void tapGroupIcons() {
-		if (GroupIcon.size() > 1) {
-			for (int i = 2; i < GroupIcon.size() + 1; i++) {
-				String groupIcon = "(//XCUIElementTypeStaticText[@name='GroupIcon'])[";
-				while (findElements(
-						By.xpath(groupIcon + i + "]/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText[1]"))
-						.size() == 0) {
-					tap(Locator.XPATH, groupIcon + i + "]");
-				}
-			}
-		}
 	}
 
 	public void leftNavAndPendingTasksCategoriesAreSorted() {
@@ -340,6 +332,14 @@ public class PendingTasksPage extends AppiumPageFactory {
 				commonElementsFromBothList, listTwo);
 
 	}
+	
+	
+	public void findAssingmenType(String actionName,List<UserInputData> userInputData ) {
+		elId += getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
+		String el_functions = getParameter(getAllColumns(getID(MBR_NOTE, elId), userInputData), dpfName, 1);
+
+
+	}
 
 	public static WebElement navNewRefCount(int index) {
 		return findElementBy(Locator.XPATH,
@@ -373,4 +373,5 @@ public class PendingTasksPage extends AppiumPageFactory {
 		return "//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther//following::XCUIElementTypeStaticText[@name='"
 				+ category + "']/following::XCUIElementTypeStaticText[contains(@name, '(')]";
 	}
+
 }

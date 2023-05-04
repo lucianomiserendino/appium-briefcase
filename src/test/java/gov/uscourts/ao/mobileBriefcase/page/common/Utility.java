@@ -419,6 +419,7 @@ public class Utility extends Base {
 		String dpfParam = "";
 		String[] items = param.split(";");
 		int itemCount = items.length;
+		
 
 		if (itemCount > 1) {
 

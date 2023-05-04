@@ -386,10 +386,10 @@ public class CommonPages extends AppiumPageFactory {
 
 	}
 
-	public static void getGroupIcons(GroupIcons icon) {
+	public static int getGroupIcons(GroupIcons icon) {
 
 		String grIcon = "";
-
+		int i ;
 		List<WebElement> icons = GroupIcon;
 
 		switch (icon) {
@@ -403,13 +403,15 @@ public class CommonPages extends AppiumPageFactory {
 		default:
 			break;
 		}
-		for (int i = 0; i < icons.size(); i++) {
+		for ( i = 0; i < icons.size(); i++) {
 
 			while (icons.get(i).getAttribute("value").equals(grIcon)) {
 				icons.get(i).click();
+				
 			}
 
 		}
+		return i;
 
 	}
 
