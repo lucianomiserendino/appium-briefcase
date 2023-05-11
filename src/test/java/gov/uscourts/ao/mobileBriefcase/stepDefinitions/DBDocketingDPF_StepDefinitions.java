@@ -19,6 +19,8 @@ public class DBDocketingDPF_StepDefinitions {
 		for (int i = 0; i < values; i++) {
 			page.selectActioName(table, i, caseNume, peID, userInputData);
 		}
+		
+		page.getDocTableColumns(page.record,  userInputData);
 
 	}
 }

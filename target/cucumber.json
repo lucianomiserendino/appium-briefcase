@@ -1,12 +1,12 @@
 [
   {
-    "line": 1,
+    "line": 2,
     "elements": [
       {
         "before": [
           {
             "result": {
-              "duration": 152125,
+              "duration": 160667,
               "status": "passed"
             },
             "match": {
@@ -15,13 +15,13 @@
           }
         ],
         "line": 5,
-        "name": "As a user when viewing the \u0027Cases on Calendar\u0027 referral category the following is displayed:",
+        "name": "User shouldn\u0027t see  caseNumber when view documents that are not case related",
         "description": "",
-        "id": "collapsible-panels-in-the-cases-on-calendar-category;as-a-user-when-viewing-the-\u0027cases-on-calendar\u0027-referral-category-the-following-is-displayed:",
+        "id": "non-case-related-docs---suppress-case-number-for-\u0027lbrrpt\u0027-category;user-shouldn\u0027t-see--casenumber-when-view-documents-that-are-not-case-related",
         "after": [
           {
             "result": {
-              "duration": 189416,
+              "duration": 61875,
               "status": "passed"
             },
             "match": {
@@ -34,56 +34,24 @@
         "steps": [
           {
             "result": {
-              "duration": 92606785291,
+              "duration": 75960545750,
               "status": "passed"
             },
             "comments": [
               {
-                "line": 6,
-                "value": "#Screen 1:"
-              },
-              {
                 "line": 7,
-                "value": "#Month/Year Header"
-              },
-              {
-                "line": 8,
-                "value": "#Date and Day of the week  under header that are accordions"
-              },
-              {
-                "line": 9,
-                "value": "#When the user expands the accordion for a date the following is displayed"
-              },
-              {
-                "line": 10,
-                "value": "#1st line:  Case number, Case Title"
-              },
-              {
-                "line": 11,
-                "value": "#2nd line: Panel, Order, Time"
-              },
-              {
-                "line": 12,
-                "value": "#Current sorting of cases for each day will remain (time and case)"
-              },
-              {
-                "line": 13,
-                "value": "#The user is able to click on the case directly from the expanded accordion to access the case."
-              },
-              {
-                "line": 15,
                 "value": "#Given I am logged into Briefcase"
               },
               {
-                "line": 16,
-                "value": "#|environment|userName| password |courtId|"
+                "line": 8,
+                "value": "#\t|environment|userName| password |courtId|"
               },
               {
-                "line": 17,
-                "value": "#|test       |test    | test     |test   |"
+                "line": 9,
+                "value": "#\t|test       |test    | test     |test   |"
               }
             ],
-            "line": 19,
+            "line": 11,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -95,7 +63,7 @@
                   "personrole",
                   "jud"
                 ],
-                "line": 20
+                "line": 12
               },
               {
                 "cells": [
@@ -103,88 +71,57 @@
                   "Appellate Judges",
                   "test"
                 ],
-                "line": 21
+                "line": 13
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 64317732032542,
-              "error_message": "org.openqa.selenium.remote.UnreachableBrowserException: Error communicating with the remote browser. It may have died.\nBuild info: version: \u00274.6.0\u0027, revision: \u002779f1c02ae20\u0027\nSystem info: os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.16\u0027, java.version: \u00271.8.0_311\u0027\nDriver info: io.appium.java_client.ios.IOSDriver\nCommand: [614cc824-81dc-4b73-abe5-8a74aedad0f7, findElements {using\u003dxpath, value\u003d//XCUIElementTypeOther[@name\u003d\u0027Categories\u0027]//*[contains(@name, \u0027Cases on Calendar\u0027)]}]\nCapabilities {appium:autoAcceptAlerts: true, appium:automationName: XCUITest, appium:bundleId: gov.uscourts.ambbriefcase-beta, appium:databaseEnabled: false, appium:deviceName: iPad Pro (12.9-inch) (6th g..., appium:deviceType: ipad, appium:fullReset: false, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: false, appium:noReset: true, appium:platformVersion: 16.2, appium:safariInitialUrl: http://0.0.0.0:4723/welcome, appium:shouldTerminateApp: true, appium:startIWDP: true, appium:takesScreenshot: true, appium:takes_screehshot: true, appium:udid: 9E8DFC47-7407-43A2-B9EE-823..., appium:webStorageEnabled: false, appium:xcodeOrgId: 6A52AWXC9Z, appium:xcodeSigningId: iPhone Developer, platformName: IOS}\nSession ID: 614cc824-81dc-4b73-abe5-8a74aedad0f7\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:565)\n\tat org.openqa.selenium.remote.ElementLocation$ElementFinder$2.findElements(ElementLocation.java:179)\n\tat org.openqa.selenium.remote.ElementLocation.findElements(ElementLocation.java:102)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:380)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:372)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements(Actions.java:62)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed(Utility.java:88)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectReferral(CommonPages.java:154)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Common_StepDefinitions.user_selects_a(Common_StepDefinitions.java:57)\n\tat ✽.When User selects a  \"Cases on Calendar\"(CATEGORIES/Test/CASES_ON_CALENDAR.feature:23)\nCaused by: java.io.UncheckedIOException: org.asynchttpclient.exception.RemotelyClosedException: Remotely closed\n\tat org.openqa.selenium.remote.http.netty.NettyHttpHandler.makeCall(NettyHttpHandler.java:73)\n\tat io.appium.java_client.AppiumUserAgentFilter.lambda$apply$0(AppiumUserAgentFilter.java:88)\n\tat org.openqa.selenium.remote.http.Filter.lambda$andFinally$1(Filter.java:56)\n\tat org.openqa.selenium.remote.http.netty.NettyHttpHandler.execute(NettyHttpHandler.java:49)\n\tat io.appium.java_client.AppiumUserAgentFilter.lambda$apply$0(AppiumUserAgentFilter.java:88)\n\tat org.openqa.selenium.remote.http.Filter.lambda$andFinally$1(Filter.java:56)\n\tat org.openqa.selenium.remote.http.netty.NettyClient.execute(NettyClient.java:99)\n\tat org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:181)\n\tat io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:262)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:541)\n\tat org.openqa.selenium.remote.ElementLocation$ElementFinder$2.findElements(ElementLocation.java:179)\n\tat org.openqa.selenium.remote.ElementLocation.findElements(ElementLocation.java:102)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:380)\n\tat org.openqa.selenium.remote.RemoteWebDriver.findElements(RemoteWebDriver.java:372)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements(Actions.java:62)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed(Utility.java:88)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectReferral(CommonPages.java:154)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.Common_StepDefinitions.user_selects_a(Common_StepDefinitions.java:57)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat cucumber.runtime.Utils$1.call(Utils.java:40)\n\tat cucumber.runtime.Timeout.timeout(Timeout.java:16)\n\tat cucumber.runtime.Utils.invoke(Utils.java:34)\n\tat cucumber.runtime.java.JavaStepDefinition.execute(JavaStepDefinition.java:38)\n\tat cucumber.runtime.StepDefinitionMatch.runStep(StepDefinitionMatch.java:37)\n\tat cucumber.runtime.Runtime.runStep(Runtime.java:300)\n\tat cucumber.runtime.model.StepContainer.runStep(StepContainer.java:44)\n\tat cucumber.runtime.model.StepContainer.runSteps(StepContainer.java:39)\n\tat cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:44)\n\tat cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat cucumber.api.junit.Cucumber.run(Cucumber.java:100)\n\tat org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:93)\n\tat org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:529)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:756)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:452)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)\nCaused by: org.asynchttpclient.exception.RemotelyClosedException: Remotely closed\n\tat org.asynchttpclient.exception.RemotelyClosedException.INSTANCE(Unknown Source)\n",
+              "duration": 19600150542,
+              "error_message": "java.lang.IndexOutOfBoundsException: Index: 0, Size: 0\n\tat java.util.ArrayList.rangeCheck(ArrayList.java:659)\n\tat java.util.ArrayList.get(ArrayList.java:435)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat io.appium.java_client.pagefactory.ElementListInterceptor.getObject(ElementListInterceptor.java:40)\n\tat io.appium.java_client.pagefactory.interceptors.InterceptorOfAListOfElements.intercept(InterceptorOfAListOfElements.java:49)\n\tat $java.util.ArrayList$$EnhancerByCGLIB$$b5855c01.get(\u003cgenerated\u003e)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons(CommonPages.java:409)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.DashboardPage.getDocuments(DashboardPage.java:273)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.DashboardPage.get_lbrrpt_CATEGORY(DashboardPage.java:266)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.DashboardPage_StepDefinitions.i_verify_that_the_referral_detail_page_only_displays_documents_if_chm_mobile_referral_cmr_cyv_code_lbrrpt(DashboardPage_StepDefinitions.java:52)\n\tat ✽.Then I verify that the referral detail page only displays documents if chm_mobile_referral.cmr_cyv_code \u003d lbrrpt(CATEGORIES/SMOKE/NON_CASE_RELATED_DOCUMENTS_AMB-1207.feature:14)\n",
               "status": "failed"
             },
-            "line": 23,
-            "name": "User selects a  \"Cases on Calendar\"",
+            "line": 14,
+            "name": "I verify that the referral detail page only displays documents if chm_mobile_referral.cmr_cyv_code \u003d lbrrpt",
             "match": {
-              "arguments": [
-                {
-                  "val": "Cases on Calendar",
-                  "offset": 17
-                }
-              ],
-              "location": "Common_StepDefinitions.user_selects_a(String)"
+              "location": "DashboardPage_StepDefinitions.i_verify_that_the_referral_detail_page_only_displays_documents_if_chm_mobile_referral_cmr_cyv_code_lbrrpt(UserInputData\u003e)"
             },
-            "keyword": "When "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 25,
-            "name": "User verifies that the main headers display Month Year and sorted accordingly",
-            "match": {
-              "location": "CalendaredCases_StepDefinitions.user_verifies_that_the_main_headers_display_Month_Year_and_sorted_accordingly()"
-            },
-            "keyword": "And "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 27,
-            "name": "User verifies that there\u0027re Dates and Day of the week under main header",
-            "match": {
-              "location": "CalendaredCases_StepDefinitions.user_verifies_that_there_re_Dates_and_Day_of_the_week_under_main_header()"
-            },
+            "rows": [
+              {
+                "cells": [
+                  "courtId",
+                  "jud"
+                ],
+                "line": 15
+              },
+              {
+                "cells": [
+                  "test",
+                  "test"
+                ],
+                "line": 16
+              }
+            ],
             "keyword": "Then "
-          },
-          {
-            "result": {
-              "status": "skipped"
-            },
-            "line": 29,
-            "name": "accordion for a date are expanded User should see Case number, Case Title, Panel, also Order",
-            "match": {
-              "location": "CalendaredCases_StepDefinitions.accordion_for_a_date_are_expanded_User_should_see_Case_number_Case_Title_Panel_also_Order()"
-            },
-            "keyword": "When "
-          }
-        ],
-        "tags": [
-          {
-            "line": 2,
-            "name": "@AMB-1249"
-          },
-          {
-            "line": 2,
-            "name": "@AMB-3196"
-          },
-          {
-            "line": 2,
-            "name": "@AMB-3275"
-          },
-          {
-            "line": 2,
-            "name": "@AMB-3284"
           }
         ]
       }
     ],
-    "name": "Collapsible Panels in the Cases on Calendar Category",
+    "name": "Non case related docs - Suppress case number for \u0027lbrrpt\u0027 category",
     "description": "",
-    "id": "collapsible-panels-in-the-cases-on-calendar-category",
+    "id": "non-case-related-docs---suppress-case-number-for-\u0027lbrrpt\u0027-category",
     "keyword": "Feature",
-    "uri": "CATEGORIES/Test/CASES_ON_CALENDAR.feature"
+    "uri": "CATEGORIES/SMOKE/NON_CASE_RELATED_DOCUMENTS_AMB-1207.feature",
+    "tags": [
+      {
+        "line": 1,
+        "name": "@Smoke"
+      },
+      {
+        "line": 1,
+        "name": "@AMB-1207"
+      }
+    ]
   }
 ]

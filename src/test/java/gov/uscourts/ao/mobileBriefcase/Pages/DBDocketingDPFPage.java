@@ -25,13 +25,14 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.toArray;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
@@ -61,7 +62,7 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(id = "Yes")
 	public static WebElement YESbtn;
-	
+
 	@iOSXCUITFindBy(accessibility = "Categories")
 	public static WebElement categories;
 
@@ -70,13 +71,14 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 	public static WebElement OKbtn;
 
 	ElListText list;
+	public String record ="";
 
 	public void selectActioName(List<ElListText> table, int index, String caseNum, String peID,
 			List<UserInputData> userInputData) {
 
 		list = table.get(index);
 
-		String record = getLatestRecord();
+		 record = getLatestRecord();
 		Utility.scroll(categories, "up");
 		Page.sleep(10000);
 		selectAction("Actions", list.getElListText(), userInputData);
@@ -125,6 +127,39 @@ public class DBDocketingDPFPage extends AppiumPageFactory {
 			l = list.getDm_acc_spec();
 		}
 		assertEquals(getAllColumns(replace(set, "DM_DATE_CREATED", record), userInputData), l);
+
+	}
+
+	public void getDocTableColumns(String record, List<UserInputData> userInputData) {
+		String[] values = { "dm_seq", "dm_file_name", "dm_signature", "dm_doc", "dm_size", "dm_pages",
+				"dm_internal_type" };
+		List<String> list = Arrays.asList(values);
+
+		for (int j = 0; j < values.length; j++) {
+
+			String table = getAllColumns(replace(Queries.DOCUMENT, "TEXT", list.get(j), "DM_DATE_CREATED", record),
+					userInputData);
+			if (j == 0) {
+				assertEquals(table, 0);
+
+			} else if (j == 1) {
+				assertEquals(table, null);
+
+			} else if (j == 2) {
+				assertTrue(table.length() > 0);
+
+			} else if (j == 3) {
+				assertEquals(table, null);
+
+			} else if (j == 4) {
+				assertTrue(table.length() > 0);
+
+			} else if (j == 5) {
+				assertEquals(table, 0);
+			} else if (j == 5) {
+				assertEquals(table, "noteTrans");
+			}
+		}
 
 	}
 

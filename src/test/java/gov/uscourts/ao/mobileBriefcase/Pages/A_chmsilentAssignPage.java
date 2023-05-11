@@ -41,7 +41,6 @@ public class A_chmsilentAssignPage extends AppiumPageFactory {
 
 			list1.add(col1.get(i).trim());
 			list2.add(col2.get(i).trim());
-
 		}
 
 		for (int k = 0; k < size; k++) {

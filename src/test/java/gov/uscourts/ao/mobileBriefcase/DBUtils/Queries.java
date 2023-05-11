@@ -168,6 +168,9 @@ public class Queries {
 	// document order by dm_date_created desc";
 
 	public static final String DM_ACC_SPEC = "select first 1 dm_acc_spec from  document where dm_date_created>='DM_DATE_CREATED'";
+
+	public static final String DOCUMENT = "select first 1 TEXT from  document where dm_date_created>='DM_DATE_CREATED'";
+
 	// public static final String DM_ACC_SPEC = "select first 1 dm_acc_spec from
 	// document order by dm_date_created desc";
 
