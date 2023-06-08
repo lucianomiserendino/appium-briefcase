@@ -28,6 +28,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Rotatable;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -314,7 +316,7 @@ public class Utility extends Base {
 		return id;
 	}
 
-	public static boolean isSorted( List<String> listOfStrings) {
+	public static boolean isSorted(List<String> listOfStrings) {
 		return isSortedinDescOrder(listOfStrings, listOfStrings.size());
 
 	}
@@ -419,7 +421,6 @@ public class Utility extends Base {
 		String dpfParam = "";
 		String[] items = param.split(";");
 		int itemCount = items.length;
-		
 
 		if (itemCount > 1) {
 
@@ -618,6 +619,14 @@ public class Utility extends Base {
 			}
 		}
 		return hasDublicates;
+	}
+
+	public static void rotateDeviceScreenToLandscape(String mode) {
+		if (mode.equals("LANDSCAPE")) {
+			((Rotatable) driver).rotate(ScreenOrientation.LANDSCAPE);
+		} else {
+			((Rotatable) driver).rotate(ScreenOrientation.PORTRAIT);
+		}
 	}
 
 	public enum Filter {

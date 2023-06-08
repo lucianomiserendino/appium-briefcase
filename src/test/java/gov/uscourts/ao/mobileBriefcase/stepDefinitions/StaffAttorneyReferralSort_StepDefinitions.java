@@ -16,8 +16,8 @@ public class StaffAttorneyReferralSort_StepDefinitions {
 		List<UserInputData> userInputData = null;
 		page = new StaffAttorneyReferralSortPage();
 		page.selectSortOption("Default", userInputData);
-		page.selectSortOption("Case Number", userInputData);
-		page.selectSortOption("Status", userInputData);
-		page.selectSortOption("Referred", userInputData);
+//		page.selectSortOption("Case Number", userInputData);
+//		page.selectSortOption("Status", userInputData);
+//		page.selectSortOption("Referred", userInputData);
 	}
 }

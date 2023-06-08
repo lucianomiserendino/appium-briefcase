@@ -683,4 +683,15 @@ public class Queries {
 			+ " WHERE chc_date_end is null and cmr_id = ?) or me_cav_code = \"-\" or me_cav_code is null) and el_functions is not null "
 			+ "and el_list_text LIKE '%silent%' and el_functions LIKE '%chmSilentAssign%' and el_functions LIKE '%term%'";
 
+	public static final String REPLACED_ANNOTATED_DOC = "select ur_username, de_date_filed, annot_doc.dm_last_updated "
+			+ "from mbr_annot_to_doc, user, document orig_doc, document annot_doc, personrole, dktentry, case_dktentry, case, outer doc_user, outer doc_group "
+			+ "where mad_orig_dm_dls_id = orig_doc.dm_dls_id and mad_annot_dm_dls_id = annot_doc.dm_dls_id and mad_pe_id = pe_id and pe_pr_prid = ur_pr_prid "
+			+ "and orig_doc.dm_dktentryid = de_dktentryid and orig_doc.dm_dktentryid = cd_dktentryid and cd_caseid = cs_caseid "
+			+ "and annot_doc.dm_dktentryid = du_dktentryid and annot_doc.dm_seq = du_seq "
+			+ "and annot_doc.dm_dktentryid = dcg_dktentryid and annot_doc.dm_seq = dcg_seq and cs_year='CS_YEAR' and cs_number='CS_NUMBER'  "
+			+ "--and orig_doc.dm_dls_id = #####  -- these three optional if you want to narrow results. "
+			+ "--and annot_doc.dm_last_updated > TODAY  "
+			+ "and orig_doc.dm_description matches \"*DM_DESCRIPTION*\"  "
+			+ "order by annot_doc.dm_last_updated desc, mad_orig_dm_dls_id desc;";
+
 }
