@@ -27,7 +27,6 @@ public class StaffAttorney_StepDefinitions {
 		page.osberveReferralCategories(userInputData);
 	}
 	
-//------------------------------------
 	@Given("^User selects assignment type \"([^\"]*)\"$")
 	public void user_selects_assignment_type(String assignmentType) {
 		page = new StaffAttorneyReferralPage();
@@ -52,7 +51,6 @@ public class StaffAttorney_StepDefinitions {
 				StaffAttorneyReferralPage. sar_cs_caseid, userInputData);
 	}
 
-//================================
 	
 	@Then("^User selects stf sub Category$")
 	public void user_selects_stf_sub_Category(){
@@ -60,5 +58,13 @@ public class StaffAttorney_StepDefinitions {
 		List<UserInputData> userInputData = null;
 		page.tapOnReferralCategory(userInputData);
 	}
+	
+	@Then("^I verify the icons displayed on the dashboard page and navigation are stored in the sfa_briefcase_cat_icon field$")
+	public void i_verify_the_icons_displayed_on_the_dashboard_page_and_navigation_are_stored_in_the_sfa_briefcase_cat_icon_field()  {
+		page = new StaffAttorneyReferralPage();
+		List<UserInputData> userInputData = null;
+		page.verifyIconsMatchSfaBriefcaseCatIcon( userInputData);
+	}
+
 
 }

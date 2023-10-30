@@ -33,6 +33,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Filter;
 import gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -46,9 +47,6 @@ public class StaffAttorneyReferralPage extends Base {
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'User')]")
 	public static WebElement selectUser;
-
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
-	public static List<WebElement> refCategories;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Sorting Options']")
 	public static WebElement sortingPopup;
@@ -173,8 +171,8 @@ public class StaffAttorneyReferralPage extends Base {
 		String category = "";
 
 		if (caseList.size() > 1) {
-			sar_cs_caseid = caseList.get(random-1).trim();
-			category = categoryName.get(random-1).trim();
+			sar_cs_caseid = caseList.get(random - 1).trim();
+			category = categoryName.get(random - 1).trim();
 		} else if (caseList.size() == 1) {
 			sar_cs_caseid = caseList.get(0).trim();
 			category = categoryName.get(0).trim();
@@ -220,7 +218,7 @@ public class StaffAttorneyReferralPage extends Base {
 
 		String randomDoc = "";
 		if (docDesc.size() > 1) {
-			randomDoc = docDesc.get(random-1).trim();
+			randomDoc = docDesc.get(random - 1).trim();
 		} else if (docDesc.size() == 1) {
 			randomDoc = docDesc.get(0).trim();
 		}
@@ -255,5 +253,19 @@ public class StaffAttorneyReferralPage extends Base {
 		int refNumbers = executeQuery(replace(Queries.STF_REFERRAL_CATEGORIES, "RA_PE_ID", peId), table).size();
 
 		Assert.assertEquals(categoryCount, refNumbers);
+	}
+
+	public void verifyIconsMatchSfaBriefcaseCatIcon(List<UserInputData> userInputData) {
+		List<String> dashboardIcons = executeQuery(Actions.replace(Queries.SAs_ASSIGNMENT_CATEGORIES, "RA_PE_ID",
+				DocumentPage.get_pe_id("stf", userInputData)), userInputData);
+
+		List<String> dbIcons = executeQuery(Queries.STAFF_ATTORNEY_DASHBOARD_ICONS, userInputData);
+
+		int sfaBriefcaseCatIcons = Utility.filterArraylistItems(Filter.DUPLICATE_VALUES, dashboardIcons, dbIcons).size();
+
+		assertEquals(
+				"The icons displayed on the dashboard/navigation don't match the icons stored in the sfa_briefcase_cat_icon field",
+				dashboardIcons.size(), sfaBriefcaseCatIcons);
+
 	}
 }
