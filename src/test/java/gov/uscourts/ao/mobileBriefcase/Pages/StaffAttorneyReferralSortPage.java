@@ -134,10 +134,10 @@ public class StaffAttorneyReferralSortPage extends AppiumPageFactory {
 		Actions.tap(Locator.XPATH, categoryName);
 		return catN;
 	}
-
+	
 	public void selectRandomCase(String categoryName) {
-		DocumentPage page = new DocumentPage();
-		page.selectRandomCaseNumber(getSTFReferrals(categoryName));
+		DocumentPage page=new DocumentPage();
+		page.selectRandomCaseNumber(getSTFReferrals( categoryName));
 	}
 
 	public static List<WebElement> getSTFReferrals(String categoryName) {

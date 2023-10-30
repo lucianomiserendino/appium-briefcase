@@ -1,7 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
-
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
@@ -35,7 +34,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Configuration;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.*;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class AccessingAnnotatedDocuments extends AppiumPageFactory {
@@ -159,14 +158,6 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 	@iOSXCUITFindBy(accessibility = "PDF View")
 	public static WebElement pdfView;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"Single Page View\"]/following:: XCUIElementTypeSwitch[1]")
-	public static WebElement singlePageView;
-
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[4]")
-	public static WebElement settingsPage;
-	
-
-
 	public void getAnnotatedDoc() {
 		openPDFDoc(originalDoc);
 		openPDFDoc(annotatedDoc);
@@ -235,12 +226,12 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 			if (viewAnnotatedDoc.isDisplayed() == true || backUpAnnotations.isDisplayed() == true) {
 
 				assertTrue("THE TOGGLE ENTITLED \"BACK UP ANNOTATIONS TO CM/ECF\" SHOULD BE TURNED ON BY DEFAULT.",
-						getToggleState(backUpAnnotations));
+						Utility.getToggleState(backUpAnnotations));
 
 				Actions.tap(backUpAnnotations);
 
-				assertFalse(getToggleState(backUpAnnotations));
-				assertFalse(getToggleState(viewAnnotatedDoc));
+				assertFalse(Utility.getToggleState(backUpAnnotations));
+				assertFalse(Utility.getToggleState(viewAnnotatedDoc));
 
 			} else {
 				throw new RuntimeException(
@@ -293,7 +284,7 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 				list.add(tool);
 		}
 
-		int index = getRandomNumberInRange(1, list.size() - 1);
+		int index = Utility.getRandomNumberInRange(1, list.size() - 1);
 		String text = list.get(index).trim();
 
 		return getEditingToolList(text);
@@ -303,7 +294,7 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 	public static String getEditingToolList(String text) {
 		String expected = "";
 
-		String actual = text + "_" + getStreamOfRandomInts();
+		String actual = text + "_" + Utility.getStreamOfRandomInts();
 
 		if (text.equals("FreeText")) {
 
@@ -332,7 +323,7 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 	public static String draw(String text, WebElement element, String actual) {
 		Actions.tap(Locator.ID, text);
 		for (int i = 0; i < 2; i++) {
-			tapByCoordinate("pdfX", "pdfY");
+			Utility.tapByCoordinate("pdfX", "pdfY");
 		}
 		String expected = element.getAttribute("name").trim();
 		assertEquals(actual, expected);
@@ -342,7 +333,7 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 
 	public static String sendText(String text, WebElement element, WebElement sentTxt, String actual) {
 		Actions.tap(Locator.ID, text);
-		tapByCoordinate("pdfX", "pdfY");
+		Utility.tapByCoordinate("pdfX", "pdfY");
 		Actions.tap(element);
 		Actions.sendKeys(element, actual);
 		String expected = sentTxt.getText().trim();
@@ -428,11 +419,11 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 		int randomNum;
 
 		if (pageNum == lastViewPage) {
-			randomNum = getRandomNumberInRange(1, pageNum);
-			swipe(randomNum, "left");
+			randomNum = Utility.getRandomNumberInRange(1, pageNum);
+			Utility.swipe(randomNum, "left");
 		} else {
-			randomNum = getRandomNumberInRange(lastViewPage, pageNum);
-			swipe(randomNum, "right");
+			randomNum = Utility.getRandomNumberInRange(lastViewPage, pageNum);
+			Utility.swipe(randomNum, "right");
 		}
 	}
 
@@ -465,7 +456,7 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 
 		Assert.assertEquals(uiDocCategory, dbDocCategories);
 
-		int randomDoc = getRandomNumberInRange(1, category.size() - 1);
+		int randomDoc = Utility.getRandomNumberInRange(1, category.size() - 1);
 		String docName = category.get(randomDoc).trim();
 		contains(docName).click();
 
@@ -480,28 +471,6 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 		Actions.tap(close);
 
 		getBackEndUpdates(cmr_cs_caseid, docName, userInputData);
-	}
-
-	public void landscapeMode() {
-
-		settingsPage.click();
-
-		if (getToggleState(singlePageView) == false) {
-
-			Actions.tap(singlePageView);
-		}
-
-		Actions.navigateBack();
-
-		rotateDeviceScreenToLandscape("LANDSCAPE");
-
-	}
-
-	public void verifySinglePageModeIsOn() {
-		assertTrue(!splitBy(0).contains("-"));
-		Actions.tap(close);
-		rotateDeviceScreenToLandscape("PORTRAIT");
-
 	}
 
 }

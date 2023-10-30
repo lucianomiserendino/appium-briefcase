@@ -39,19 +39,8 @@ public class AccessingAnnotatedDocuments_StepDefinitions {
 		List<UserInputData> userInputData = null;
 		page = new AccessingAnnotatedDocuments();
 		page.annotateDocument(DocumentPage.randomDocument, Document_StepDefinitions.regularCase, userInputData);
-
-	}
-
-	@Then("^User turns the Single page view mode on, from the settings page$")
-	public void user_turns_the_Single_page_view_mode_on_from_the_settings_page() {
-		page = new AccessingAnnotatedDocuments();
-		page.landscapeMode();
-	}
-
-	@Then("^Verifies that it allows the user to view documents on the iPad in landscape mode a single page at a time$")
-	public void verifies_that_it_allows_the_user_to_view_documents_on_the_iPad_in_landscape_mode_a_single_page_at_a_time() {
-		page = new AccessingAnnotatedDocuments();
-		page.verifySinglePageModeIsOn();
+	
+		
 	}
 
 }

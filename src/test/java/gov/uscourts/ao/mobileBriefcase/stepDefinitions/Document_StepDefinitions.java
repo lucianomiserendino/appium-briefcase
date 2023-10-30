@@ -63,8 +63,8 @@ public class Document_StepDefinitions {
 	@Then("^User downloads/opens a random document from Case Detail page$")
 	public void user_downloads_opens_a_random_document_from_Case_Detail_page() {
 		List<UserInputData> userInputData = null;
-//		CommonPages common = new CommonPages();
-//		common.getGroupIcons(GroupIcons.Expand);
+		CommonPages common = new CommonPages();
+		common.getGroupIcons(GroupIcons.Expand);
 		page = new DocumentPage();
 		page.getDocumentList(userInputData);
 	}

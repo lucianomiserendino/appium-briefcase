@@ -2,14 +2,18 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocketEntryPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.chmSilentAssignDPFPage;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 
 public class DocketEntry_StepDefinitions extends Base {
-
+	chmSilentAssignDPFPage silentAssignPage;
 	DocketEntryPage page;
 	String judgesEntries = "";
 	CommonPages pages;
@@ -27,6 +31,13 @@ public class DocketEntry_StepDefinitions extends Base {
 		page = new DocketEntryPage();
 		assertEquals("******A JA OR LAW CLERK CAN'T SEE THE SAME ENTRIES AS THEIR JUDGE******", judgesEntries,
 				page.getDocketEntries(caseNum));
+	}
+
+	@Then("^view docket entries$")
+	public void view_docket_entries() {
+		List<UserInputData> userInputData = null;
+		silentAssignPage = new chmSilentAssignDPFPage();
+		silentAssignPage.retrieveChmSilentAssignText(userInputData);
 	}
 
 }

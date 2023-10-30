@@ -3,31 +3,55 @@
     "line": 1,
     "elements": [
       {
+        "before": [
+          {
+            "result": {
+              "duration": 142000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
         "line": 4,
         "name": "",
-        "description": "",
-        "type": "background",
-        "keyword": "Background",
+        "description": "Verify if the matter was referred to an en banc panel, instead of listing all the judges on the page, a button is displayed next \nto the logged in judge’s vote that when tapped, shows all the judges’ vote in a popup. (v1.2.x) (line 243)",
+        "id": "vote-information---en-banc-panel;",
+        "after": [
+          {
+            "result": {
+              "duration": 131375,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "status": "skipped"
+              "duration": 52096243625,
+              "status": "passed"
             },
             "comments": [
               {
-                "line": 6,
+                "line": 8,
                 "value": "#Given I am logged into Briefcase"
               },
               {
-                "line": 7,
-                "value": "#|environment|userName| password |courtId|"
+                "line": 9,
+                "value": "#\t|environment|userName| password |courtId|"
               },
               {
-                "line": 8,
-                "value": "#|test       |test    | test     |test   |"
+                "line": 10,
+                "value": "#\t|test       |test    | test     |test   |"
               }
             ],
-            "line": 11,
+            "line": 12,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -39,7 +63,7 @@
                   "personrole",
                   "jud"
                 ],
-                "line": 12
+                "line": 13
               },
               {
                 "cells": [
@@ -47,104 +71,76 @@
                   "Appellate Judges",
                   "test"
                 ],
-                "line": 13
+                "line": 14
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "status": "skipped"
+              "duration": 7228106351875,
+              "error_message": "org.openqa.selenium.remote.UnreachableBrowserException: Error communicating with the remote browser. It may have died.\nBuild info: version: \u00274.6.0\u0027, revision: \u002779f1c02ae20\u0027\nSystem info: os.name: \u0027Mac OS X\u0027, os.arch: \u0027x86_64\u0027, os.version: \u002710.16\u0027, java.version: \u00271.8.0_311\u0027\nDriver info: io.appium.java_client.ios.IOSDriver\nCommand: [63a2ed48-d9c0-45a1-b659-1837db5a5353, executeScript {script\u003dmobile: swipe, args\u003d[{elementId\u003d0E270200-0000-0000-C524-010000000000, speed\u003d500, direction\u003dup}]}]\nCapabilities {appium:autoAcceptAlerts: true, appium:automationName: XCUITest, appium:bundleId: gov.uscourts.ambbriefcase-beta, appium:databaseEnabled: false, appium:deviceName: iPad Pro (12.9-inch) (6th g..., appium:deviceType: ipad, appium:fullReset: false, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: false, appium:noReset: true, appium:platformVersion: 16.2, appium:safariInitialUrl: http://0.0.0.0:4723/welcome, appium:shouldTerminateApp: true, appium:startIWDP: true, appium:takesScreenshot: true, appium:takes_screehshot: true, appium:udid: 9E8DFC47-7407-43A2-B9EE-823..., appium:webStorageEnabled: false, appium:xcodeOrgId: 6A52AWXC9Z, appium:xcodeSigningId: iPhone Developer, platformName: IOS}\nSession ID: 63a2ed48-d9c0-45a1-b659-1837db5a5353\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:565)\n\tat org.openqa.selenium.remote.RemoteWebDriver.executeScript(RemoteWebDriver.java:478)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Utility.scroll(Utility.java:115)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.EnBancPage.getReffCategories(EnBancPage.java:66)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.EnBanc_StepDefinitions.user_selects_a_category_and_case_with_en_banc_panel(EnBanc_StepDefinitions.java:23)\n\tat ✽.Then user selects a category and case with en banc panel(CATEGORIES/Test/EN_BANC_PANEL.feature:16)\nCaused by: java.io.UncheckedIOException: org.asynchttpclient.exception.RemotelyClosedException: Remotely closed\n\tat org.openqa.selenium.remote.http.netty.NettyHttpHandler.makeCall(NettyHttpHandler.java:73)\n\tat io.appium.java_client.AppiumUserAgentFilter.lambda$apply$0(AppiumUserAgentFilter.java:88)\n\tat org.openqa.selenium.remote.http.Filter.lambda$andFinally$1(Filter.java:56)\n\tat org.openqa.selenium.remote.http.netty.NettyHttpHandler.execute(NettyHttpHandler.java:49)\n\tat io.appium.java_client.AppiumUserAgentFilter.lambda$apply$0(AppiumUserAgentFilter.java:88)\n\tat org.openqa.selenium.remote.http.Filter.lambda$andFinally$1(Filter.java:56)\n\tat org.openqa.selenium.remote.http.netty.NettyClient.execute(NettyClient.java:99)\n\tat org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:181)\n\tat io.appium.java_client.remote.AppiumCommandExecutor.execute(AppiumCommandExecutor.java:262)\n\tat org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:541)\n\tat org.openqa.selenium.remote.RemoteWebDriver.executeScript(RemoteWebDriver.java:478)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.Utility.scroll(Utility.java:115)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.EnBancPage.getReffCategories(EnBancPage.java:66)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.EnBanc_StepDefinitions.user_selects_a_category_and_case_with_en_banc_panel(EnBanc_StepDefinitions.java:23)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat cucumber.runtime.Utils$1.call(Utils.java:40)\n\tat cucumber.runtime.Timeout.timeout(Timeout.java:16)\n\tat cucumber.runtime.Utils.invoke(Utils.java:34)\n\tat cucumber.runtime.java.JavaStepDefinition.execute(JavaStepDefinition.java:38)\n\tat cucumber.runtime.StepDefinitionMatch.runStep(StepDefinitionMatch.java:37)\n\tat cucumber.runtime.Runtime.runStep(Runtime.java:300)\n\tat cucumber.runtime.model.StepContainer.runStep(StepContainer.java:44)\n\tat cucumber.runtime.model.StepContainer.runSteps(StepContainer.java:39)\n\tat cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:44)\n\tat cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat cucumber.api.junit.Cucumber.run(Cucumber.java:100)\n\tat org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:93)\n\tat org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:529)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:756)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:452)\n\tat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)\nCaused by: org.asynchttpclient.exception.RemotelyClosedException: Remotely closed\n\tat org.asynchttpclient.exception.RemotelyClosedException.INSTANCE(Unknown Source)\n",
+              "status": "failed"
             },
-            "line": 15,
-            "name": "User selects random judge category",
+            "line": 16,
+            "name": "user selects a category and case with en banc panel",
             "match": {
-              "location": "Document_StepDefinitions.user_selects_random_judge_category(UserInputData\u003e)"
+              "location": "EnBanc_StepDefinitions.user_selects_a_category_and_case_with_en_banc_panel()"
             },
-            "rows": [
-              {
-                "cells": [
-                  "courtId"
-                ],
-                "line": 16
-              },
-              {
-                "cells": [
-                  "test"
-                ],
-                "line": 17
-              }
-            ],
             "keyword": "Then "
           },
           {
             "result": {
               "status": "skipped"
             },
-            "line": 19,
-            "name": "User selects random case number",
+            "line": 18,
+            "name": "User observes the \"Vote_Information\" panel displays.   This should only display if the referral requires voting",
             "match": {
-              "location": "Document_StepDefinitions.user_selects_random_case_number(UserInputData\u003e)"
+              "arguments": [
+                {
+                  "val": "Vote_Information",
+                  "offset": 19
+                }
+              ],
+              "location": "VoteInformation_StepDefinitions.user_observes_the_panel_displays_This_should_only_display_if_the_referral_requires_voting(String)"
             },
-            "rows": [
-              {
-                "cells": [
-                  "courtId"
-                ],
-                "line": 20
-              },
-              {
-                "cells": [
-                  "test"
-                ],
-                "line": 21
-              }
-            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "line": 20,
+            "name": "User verifies that a button is displayed next to the logged in judge’s vote",
+            "match": {
+              "location": "EnBanc_StepDefinitions.user_verifies_that_a_button_is_displayed_next_to_the_logged_in_judge_s_vote()"
+            },
             "keyword": "Then "
           },
           {
             "result": {
               "status": "skipped"
             },
-            "line": 23,
-            "name": "User expands/collapse panel",
+            "line": 22,
+            "name": "it\u0027s tapped, it shows all the judges’ vote in a popup.",
             "match": {
-              "location": "Common_StepDefinitions.user_expands_collapse_panel()"
+              "location": "EnBanc_StepDefinitions.it_s_tapped_it_shows_all_the_judges_vote_in_a_popup()"
             },
-            "keyword": "Then "
-          }
-        ]
-      },
-      {
-        "line": 27,
-        "name": "",
-        "description": "\nVerify in the event an annotated document is replaced in CM/ECF and the judge would want to view the replaced document and his/her annotations, the replaced document displays in Briefcase with a plus icon next to it, indicating there is an annotated version of the document. (line 310)\nVerify when the plus icon is selected the annotated document displays under the replaced document. (line 311)",
-        "id": "document-annotations---annotated-document-is-replaced;",
-        "type": "scenario",
-        "keyword": "Scenario",
-        "steps": [
-          {
-            "result": {
-              "status": "undefined"
-            },
-            "line": 33,
-            "name": "User verifies that the annotated/replaced documents are displayed as expected",
-            "match": {},
-            "keyword": "Then "
+            "keyword": "When "
           }
         ],
         "tags": [
           {
-            "line": 26,
-            "name": "@AMB-3483"
+            "line": 3,
+            "name": "@AMB-3474"
           }
         ]
       }
     ],
-    "name": "Document Annotations - Annotated document is replaced",
+    "name": "Vote Information - En banc panel",
     "description": "",
-    "id": "document-annotations---annotated-document-is-replaced",
+    "id": "vote-information---en-banc-panel",
     "keyword": "Feature",
-    "uri": "CATEGORIES/Test/REPLACED_DOCUMENTS.feature"
+    "uri": "CATEGORIES/Test/EN_BANC_PANEL.feature"
   }
 ]
