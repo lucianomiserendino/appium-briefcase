@@ -2,6 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import java.util.List;
 
+import cucumber.api.DataTable;
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
@@ -20,6 +21,7 @@ public class Document_StepDefinitions {
 	public static String cmr_cyv_code;
 	public static String stfCategory;
 	public static String stfSubCategory;
+	public static String dpfName;
 
 	@Then("^User selects random stf Aty category$")
 	public void user_selects_random_stf_Aty_category(List<UserInputData> userInputData) {
@@ -80,6 +82,14 @@ public class Document_StepDefinitions {
 	public void user_selects_a_random_stf_Referral() {
 		stfPage = new StaffAttorneyReferralSortPage();
 		stfPage.selectRandomCase(stfSubCategory);
+	}
+	
+	@Then("^User navigates to View Case Info, then taps Docket Entries$")
+	public void user_navigates_to_View_Case_Info_then_taps_Docket_Entries(DataTable table)  {
+		List<List<String>> data = table.raw();
+		 dpfName = data.get(0).get(0);
+		page = new DocumentPage();
+		page.navigateToViewCaseInfo(dpfName);
 	}
 
 }

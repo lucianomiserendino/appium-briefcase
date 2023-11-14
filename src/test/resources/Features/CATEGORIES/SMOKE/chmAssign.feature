@@ -44,4 +44,9 @@ Scenario:
 	    And User terminates the assignment
    		|courtId|
 	    |test   |
+	    
+	    Then User navigates to View Case Info, then taps Docket Entries
+	    |Auto Test|
+	    
+	    Then User verifies that Briefcase supports the chmAssignText TPF
    

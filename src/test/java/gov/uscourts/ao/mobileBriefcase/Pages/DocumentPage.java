@@ -70,6 +70,12 @@ public class DocumentPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PDF Page View']")
 	public static List<WebElement> activityIndicator;
+	
+	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'View Case Info')]")
+	public static WebElement viewCaseInfo;
+
+	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Docket Entries ')]")
+	public static WebElement docketEntries;
 
 	static String panel = "";
 	String randomCategory = "";
@@ -87,7 +93,7 @@ public class DocumentPage extends AppiumPageFactory {
 		list.remove("Pending Tasks");
 		list.remove("Cases on Calendar");
 		list.remove("No Argument Case");
-		list.remove("Oral Arguments");
+		list.remove("Oral Argument");
 		sort(list);
 
 		category = list.get(Utility.getRandomInt(list.size() - 1));
@@ -352,6 +358,11 @@ public class DocumentPage extends AppiumPageFactory {
 						+ panel
 						+ "')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText"));
 
+	}
+	public void navigateToViewCaseInfo(String dpfName) {
+		Page.waitToBeClickable(viewCaseInfo, driver);
+		Page.waitToBeClickable(docketEntries, driver);
+		contains(dpfName).click();
 	}
 
 	public enum Category {

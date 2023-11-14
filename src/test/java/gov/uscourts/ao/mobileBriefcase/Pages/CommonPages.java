@@ -230,6 +230,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	public static void selectAction(String panel, List<UserInputData> userInputData) {
 		// getGroupIcons();
+		getGroupIcons(GroupIcons.Expand);
 		getPanel(Panel.valueOf(panel));
 		// getActionName("mbr multiple DMI");
 		getActionName("Auto Test");
@@ -503,4 +504,5 @@ public class CommonPages extends AppiumPageFactory {
 		Collapse, Expand
 
 	}
+	
 }

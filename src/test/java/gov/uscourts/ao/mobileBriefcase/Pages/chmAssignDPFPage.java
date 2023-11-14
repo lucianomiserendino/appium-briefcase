@@ -64,8 +64,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	static String close = "Close";
 	static String staffMember = "";
 	static String assignment = "";
-	static String assignmentNameAndType = "";
-	static String assignmentDate = "";
+	static String assignedDate = "";
+	static String assignmentDueDate = "";
 	static String assignmentCompleted = "";
 	static String cha_id = "";
 
@@ -104,6 +104,13 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Due')]/following::XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeButton")
 	public static WebElement dueDate;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Apply ruling to all reliefs']")
+	public static List<WebElement> applyRulling;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"DocketingDPFList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[9]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeSwitch")
+	public static WebElement toggle;
+
 
 	public static String selectADate(chmAssign assign) {
 
@@ -429,6 +436,13 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	}
 
 	public static void clickOn(String submit, String yes, String ok) {
+		Utility.swipe(1, "up");
+		if (applyRulling.size() == 1) {
+			if (Utility.getToggleState(toggle) == false) {
+				toggle.click();
+
+			}
+		}
 		scrollDownIfNotDisplayed(containsElement(submit));
 		ifDownloaded(sending);
 		// tap(Locator.XPATH, containsElement(yes));
@@ -543,10 +557,10 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		}
 
 		/** STEP 3 --Select an Assigned Date */
-		String assignedDate = selectADate(chmAssign.ASSIGNED_DATE);
+		 assignedDate = selectADate(chmAssign.ASSIGNED_DATE);
 
 		/** STEP 4 --Select Assignment Due Date */
-		String assignmentDueDate = "";
+		//String assignmentDueDate = "";
 		if (Actions.isDisplayed(dueDate) == true) {
 			assignmentDueDate = selectADate(chmAssign.ASSIGNMENT_DUE);
 		}
@@ -558,7 +572,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		verifyElementIsDisplayed(apply);
 		verifyElementIsDisplayed(cancel);
 
-		String assignment = getChmAssign(chmAssign.ASSIGNMENT, "text");
+		 assignment = getChmAssign(chmAssign.ASSIGNMENT, "text");
 
 //		try {
 //			commentField1.sendKeys("$$$$$$$$$$$$$");
@@ -684,6 +698,13 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		Actions.findElement(By
 				.xpath("//*[contains(@name, '" + changeDateFormat(selectedDate, "d/MMMM/yyyy", "dd/MMMM/yyyy") + "')]"))
 				.click();
+
+	}
+	public void verifyChmAssignTextSupport() {
+
+		Actions.isDisplayed(Locator.XPATH, Actions.containsElement(assignment));
+		Actions.isDisplayed(Locator.XPATH, Actions.containsElement(assignedDate));
+		Actions.isDisplayed(Locator.XPATH, Actions.containsElement(assignmentDueDate));
 
 	}
 
