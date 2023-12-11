@@ -12,6 +12,8 @@ import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
+import gov.uscourts.ao.mobileBriefcase.page.common.DPFs;
+import gov.uscourts.ao.mobileBriefcase.page.common.DPFs.DPF;
 
 public class CreateStaffAssignments_StepDefinitions extends Base {
 	static CommonPages page;
@@ -20,7 +22,7 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 	String caseNum = Document_StepDefinitions.regularCase;
 	String categroy = Document_StepDefinitions.judCategory;
 
-	@Then("^user  verifies that briefcase events include the chmSilentAssign DPF$")
+	@Then("^user  verifies that briefcase events include the chmAssign DPF$")
 	public void user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(List<UserInputData> userInputData) {
 		// getInstance(Driver.IOS);
 		page = new CommonPages();
@@ -60,5 +62,16 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 		page1 = new chmAssignDPFPage();
 		page1.verifyChmAssignTextSupport();
 	}
+
+	@Then("^User modifies the existing dates and completes the assignment in the same transaction$")
+	public void user_modifies_the_existing_dates_and_completes_the_assignment_in_the_same_transaction() {
+		List<UserInputData> userInputData = null;
+		 page1 = new chmAssignDPFPage();
+		 page1.modify_terminate_STF(caseNum, categroy, userInputData);
+		 
+
+	}
+	
+
 
 }
