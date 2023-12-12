@@ -23,6 +23,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.stepDefinitions.DPF_stepDefinitions;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class UIDocketingDPFPage extends AppiumPageFactory {
@@ -40,9 +41,6 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(accessibility = "back")
 	public static WebElement backBtn;
 
-	@iOSXCUITFindBy(accessibility = "submit")
-	public static WebElement submit;
-
 	@iOSXCUITFindBy(accessibility = "View Case info")
 	public static WebElement viewCaseInfo;
 
@@ -58,18 +56,47 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(accessibility = "Categories")
 	public static WebElement categories;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']")
+	public static WebElement documentListPage;
+
+	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Comment')]/following::XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeTextView")
+	public static WebElement commentField;
+
 	@iOSXCUITFindBy(accessibility = "(//XCUIElementTypeStaticText[@name='Downloaded'])[1]/preceding:: XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
 	public static WebElement proposedOrderDoc;
 
-	public void verifyFieldsAreDisplayed(String descriptionText, String commentText, String submitText,
-			List<UserInputData> userInputData) {
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Description']")
+	public static WebElement description;
 
-		String elId = getAllColumns(getID(Queries.EL_ID, "Auto Test"), userInputData);
+	public String submit = "//XCUIElementTypeStaticText[@name='Submit']";
 
-		verifyElementIsDisplayed(descriptionText);
-		getDefaulDescription("note", elId, userInputData);
-		verifyElementIsDisplayed(commentText);
-		scrollDownIfNotDisplayed("//XCUIElementTypeButton[@name='" + submitText + "']");
+	public String note = "Test-!@#<>$%^&*()_+|:?";
+
+	public static String uiParam = "";
+
+	public void verifyFieldsAreDisplayed(List<UserInputData> userInputData) {
+		String actionName = DPF_stepDefinitions.actionName;
+
+		String elId = getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
+
+		try {
+
+			getDefaulDescription("note", elId, userInputData);
+
+			if (commentField.getText().length() == 0) {
+
+				commentField.sendKeys(note);
+			} else {
+				throw new RuntimeException("Verify an editable comment field displays and it does not contain text.");
+			}
+
+			scrollDownIfNotDisplayed(submit);
+			Page.sleep(1000);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
 
 	}
 
@@ -81,17 +108,22 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 	 */
 	public void getDefaulDescription(String dpfName, String el_id, List<UserInputData> userInputData) {
 
-		if (Utility.getSingleDpf(getAllColumns(getID(MBR_NOTE, el_id), userInputData), dpfName, 4).equals("SKIP")) {
-			assertTrue(descriptionField.getText().equals("Transaction Note"));
+		assertTrue("Verify an editable description field displays", isDisplayed(description));
+
+		String dbNoteDescription = Utility.getSingleDpf(getAllColumns(getID(MBR_NOTE, el_id), userInputData), dpfName,
+				4);
+
+		String uiNoteDescription = descriptionField.getText();
+
+		if (dbNoteDescription.equals("SKIP")) {
+			assertTrue(uiNoteDescription.equals("Transaction Note"));
 
 		} else {
-			String dbParam = replaceWithEmptyString(
-					Utility.getSingleDpf(getAllColumns(getID(MBR_NOTE, el_id), userInputData), dpfName, 4), "\\");
-			String ui = descriptionField.getText();
-			String uiParam = "";
+			String dbParam = replaceWithEmptyString(dbNoteDescription, "\\");
+			String ui = uiNoteDescription;
 
 			if (ui.contains("'")) {
-				uiParam = ui.split("'")[0];
+				uiParam += ui.split("'")[0];
 			} else {
 				uiParam += ui;
 			}
@@ -145,6 +177,17 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 		assertTrue(isDisplayed(Locator.XPATH, containsElement("Auto Test")));
 		tap(autoTest);
 		assertTrue(isDisplayed(Locator.XPATH, containsElement(docName)));
+	}
+
+	public void isNoteTextTPFSupported() {
+
+		assertTrue("Verify the docket entry page in Briefcase displays the Docket Text & Note",
+				isDisplayed(Locator.XPATH, containsElement(uiParam) + containText("Docket Text") + containText(note)));
+
+	}
+
+	public String containText(String txt) {
+		return "/following::XCUIElementTypeStaticText[contains(@name, '" + txt + "')]";
 	}
 
 }

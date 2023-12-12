@@ -237,6 +237,21 @@ public class CommonPages extends AppiumPageFactory {
 
 	}
 
+	public static void selectBriefcaseAction(String panel, String actionName) {
+		getGroupIcons(GroupIcons.Expand);
+		getPanel(Panel.valueOf(panel));
+
+		String actionName1 = "";
+
+		if (actionName.contains("'")) {
+			actionName1 += actionName.split("'")[0];
+			getActionName(actionName1);
+		} else {
+			getActionName(actionName);
+
+		}
+	}
+
 	public static void getActionName(String element) {
 		scrollDownIfNotDisplayed(
 				"//XCUIElementTypeOther[@name='DocumentList']//XCUIElementTypeStaticText[contains(@name, '" + element
@@ -390,7 +405,7 @@ public class CommonPages extends AppiumPageFactory {
 	public static int getGroupIcons(GroupIcons icon) {
 
 		String grIcon = "";
-		int i ;
+		int i;
 		List<WebElement> icons = GroupIcon;
 
 		switch (icon) {
@@ -404,11 +419,11 @@ public class CommonPages extends AppiumPageFactory {
 		default:
 			break;
 		}
-		for ( i = 0; i < icons.size(); i++) {
+		for (i = 0; i < icons.size(); i++) {
 
 			while (icons.get(i).getAttribute("value").equals(grIcon)) {
 				icons.get(i).click();
-				
+
 			}
 
 		}
@@ -504,5 +519,5 @@ public class CommonPages extends AppiumPageFactory {
 		Collapse, Expand
 
 	}
-	
+
 }

@@ -15,10 +15,17 @@ public class UIDocketingDPF_StepDefinitions {
 		page.verifyElementIsDisplayed(text);
 	}
 
-	@Then("^user verifies an editable \"([^\"]*)\" , \"([^\"]*)\" , \"([^\"]*)\" fields are  displayed\\.  The default description is defined in the Default description parameter of the note DPF$")
-	public void user_verifies_an_editable_fields_are_displayed_The_default_description_is_defined_in_the_Default_description_parameter_of_the_note_DPF(
-			String description, String comment, String submit, List<UserInputData> userInputData) {
-		page.verifyFieldsAreDisplayed(description, comment, submit, userInputData);
+
+	@Then("^user verifies an editable Description , Comment , Submit fields are  displayed\\.  The default description is defined in the Default description parameter of the note DPF$")
+	public void user_verifies_an_editable_Description_Comment_Submit_fields_are_displayed_The_default_description_is_defined_in_the_Default_description_parameter_of_the_note_DPF(
+			List<UserInputData> userInputData) {
+		page.verifyFieldsAreDisplayed(userInputData);
+	}
+	
+	@Then("^user verifies Briefcase supports the noteText TPF$")
+	public void user_verifies_Briefcase_supports_the_noteText_TPF()  {
+		page = new UIDocketingDPFPage();
+		page.isNoteTextTPFSupported();
 	}
 
 	@Then("User selects one of the proposed orders, enters a description, submits the transaction, verify name is saved to the DB.")
