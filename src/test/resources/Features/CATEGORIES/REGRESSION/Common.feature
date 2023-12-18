@@ -104,4 +104,26 @@ Scenario: STF sub Category and case selection
 	|test   |
 	Then User selects a random stf Referral
 	
+@viewDocEntry
+Scenario: View docket entry
+	Then User navigates to View Case Info, then taps Docket Entries
+	|test|
+	
+	@caseSync
+	Scenario: Case Detail Page Sync
+	Then sync all the documents for the selected case
+	
+	
+@selectAction
+Scenario: Selecting briefcase action
+	Then User selects action
+	|dpf       |courtId    |
+	|chmAssign |test       |
+	
+	
+@si_val
+Scenario: Selecting si_value from site table
+	Then User gets the si_value from the site table
+	|si_value  |courtId    |
+	|val       |test       |
         

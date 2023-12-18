@@ -13,6 +13,7 @@ import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
 import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
@@ -22,6 +23,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 public class Common_StepDefinitions {
 	CommonPages page;
 	static Boolean pane;
+	public static String siVal;
 
 	@Then("^User selects \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_selects_and(String category, String caseNumber) {
@@ -109,22 +111,29 @@ public class Common_StepDefinitions {
 		page = new CommonPages();
 		page.getGroupIcons(GroupIcons.Expand);
 	}
-	
+
 	@Then("^User collapses panel$")
-	public void user_collapses_panel()  {
+	public void user_collapses_panel() {
 		page = new CommonPages();
 		page.getGroupIcons(GroupIcons.Collapse);
 	}
-
-
 
 	@Then("^User verifies that panel exists$")
 	public void user_verifies_that_panel_exists(DataTable table) {
 		List<List<String>> data = table.raw();
 		String pane = data.get(1).get(0);
-		this.pane=CommonPages.ifPaneExists(pane);
-		
+		this.pane = CommonPages.ifPaneExists(pane);
 
+	}
+
+	@Then("^User gets the si_value from the site table$")
+	public void user_gets_the_si_value_from_the_site_table(DataTable table) {
+
+		List<UserInputData> userInputData = null;
+		List<List<String>> data = table.raw();
+		String siVal = data.get(1).get(0);
+		page = new CommonPages();
+		page.getSiValue(SiteTableVariable.valueOf(siVal), userInputData).trim();
 	}
 
 }

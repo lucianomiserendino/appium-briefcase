@@ -57,7 +57,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(id = "SIGN ON")
 	public static WebElement submButton;
-	static String okButton = "OK";
+
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
 	public static WebElement dashboard;
@@ -92,6 +92,10 @@ public class CommonPages extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public List<WebElement> Categories;
 
+	static String okButton = "OK";
+	
+	static String siVal ="";
+	
 	public void getCategory(Category category, String caseNumber) {
 
 		String categories = "";
@@ -363,11 +367,14 @@ public class CommonPages extends AppiumPageFactory {
 		case useCourtSession:
 			value = "UseCourtSession";
 			break;
+		case ctAdmDkt:
+			value ="CtAdminDkt";
 		default:
 			break;
 		}
 
-		return getAllColumns(getID(SITE_TABLE_VARIABLE_VALUE, br + value), pacerInputData);
+		 siVal+=getAllColumns(getID(SITE_TABLE_VARIABLE_VALUE, br + value), pacerInputData);
+		 return siVal;
 	}
 
 	public static String getSiValue(String dbType, String value) {
@@ -512,7 +519,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	public enum SiteTableVariable {
 
-		targetOnly, internalNote, oralArgsView, useCourtSession
+		targetOnly, internalNote, oralArgsView, useCourtSession,ctAdmDkt
 	}
 
 	public enum GroupIcons {

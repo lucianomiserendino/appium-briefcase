@@ -14,23 +14,34 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.openqa.selenium.WebElement;
+
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class ActionsListViewPage extends AppiumPageFactory {
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='GroupIcon']/following:: XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
+	public static List<WebElement> documentListAccordionText;
+
 	public void getApplicableActions(String caseNumber, String panel, List<UserInputData> userInputData) {
 
-		CommonPages.getGroupIcons(GroupIcons.Expand);
-		scrollDownIfNotDisplayed(containsElement(panel));
-		String cmr_id = CommonPages.getCMRID(caseNumber, userInputData);
+		if (CommonPages.siVal.equalsIgnoreCase("n")) {
+			assertTrue("Site table variable briefcaseCtAdmDkt not being honored",
+					!Utility.getWebElementList(documentListAccordionText).contains("Actions"));
+		} else {
 
-		actionIsDisplayed(cmr_id, userInputData);
+			scrollDownIfNotDisplayed(containsElement(panel));
 
+			String cmr_id = CommonPages.getCMRID(caseNumber, userInputData);
+
+			actionIsDisplayed(cmr_id, userInputData);
+		}
 	}
 
 	public static void actionIsDisplayed(String cmr_id, List<UserInputData> userInputData) {
@@ -87,6 +98,5 @@ public class ActionsListViewPage extends AppiumPageFactory {
 		if (me_cyv_code.equals("-") | me_cyv_code.equals("judgment")) {
 			scrollToAction(actionName);
 		}
-
 	}
 }

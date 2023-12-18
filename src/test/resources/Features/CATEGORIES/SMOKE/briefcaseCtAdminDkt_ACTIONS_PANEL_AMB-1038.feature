@@ -1,13 +1,14 @@
 Feature: Display Actions Panel and actions 
 
-@Smoke @AMB-1038
+@Smoke @AMB-1038 @AMB-3967
 Scenario: 
 	If there are records defined in the mbr_event table, 
        a collapsible panel entitled "Actions" should display, when expanded all the applicable actions should display.
+       Verify Actions are not displayed when briefcaseCtAdmDkt is set to "n"
        
 		#Given I am logged into Briefcase 
-	#	|environment|userName| password |courtId|
-	#	|test       |test    | test     |test   |
+	#|environment|userName| password |courtId|
+	#|test       |test    | test     |test   |
 		
 		Then I select a user 
 		|userType   |personrole        |jud      |
@@ -21,13 +22,16 @@ Scenario:
 		|courtId|
 		|test   |
 	
+	Then User gets the si_value from the site table
+	|si_value    |courtId    |
+	|CtAdminDkt  |test       |
 	
 	Then User expands/collapse panel
 	
 	And User verifies the correct "Actions" display for the selected referral 
 	
-		|courtId|caseNumber|jud     |
-		|test   |test      |test    |
+		|courtId|jud     |
+		|test   |test    |
 				
 		
 
