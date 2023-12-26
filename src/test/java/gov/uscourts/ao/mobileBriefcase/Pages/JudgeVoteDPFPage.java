@@ -1,5 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
@@ -33,6 +34,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -40,6 +42,7 @@ import java.util.NoSuchElementException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
@@ -55,7 +58,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 	String select = "Please Select";
 
-	@iOSXCUITFindBy(id = "Close")
+	@iOSXCUITFindBy(accessibility = "Close")
 	public static WebElement close;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='NoteList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
@@ -126,6 +129,15 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(accessibility = "Annotations")
 	public static WebElement annotations;
+
+	public static String cyv_category = "";
+	public static String caseid = "";
+	public static String cyv_code = "";
+	public static String dm_description = "";
+	public static String dm_file_name = "";
+	public static String rl_list_text = "";
+	public static String cvv_display = "";
+	public static String chv_date_created = "";
 
 	/** verify relief is displayed on the popup page */
 	public String selectViewVotes(List<UserInputData> userInputData, String caseNum) {
@@ -297,33 +309,29 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 		assertTrue(isDisplayed(Locator.XPATH, containsElement("$$")));
 		String title = getAllColumns(Queries.DM_DESCRIPTION, userInputData);
 		assertTrue(isDisplayed(Locator.XPATH, containsElement(title)));
-		ifDocumentAccessbile();
+		// ifDocumentAccessbile();
 		tap(close);
 
 	}
 
-	public static void ifDocumentAccessbile() {
+	public static void ifDocumentAccessbile(String docName) {
 
-		String docName = "";
-		if (doc.size() > 0) {
-			docName = clickOnNumberInRange(doc);
 
-			if (docName.equalsIgnoreCase("pdf") & (docName.equalsIgnoreCase("doc"))) {
-				performPageLoad(driver);
+		if (docName.equalsIgnoreCase("pdf")) {
+			performPageLoad(driver);
 
-				if (Actions.isDisplayed(configError) == true) {
-					dismiss.click();
-				}
-				assertTrue(isDisplayed(pdf));
-				assertTrue(isDisplayed(pageLabel));
-
-			} else if (docName.equalsIgnoreCase("jpg")) {
-
-				assertTrue(driver.getPageSource()
-						.contains("The requested document cannot be displayed at this time. Invalid Document: dls"));
-
+			if (Actions.isDisplayed(configError) == true) {
+				dismiss.click();
 			}
+			assertTrue(isDisplayed(pdf));
+			assertTrue(isDisplayed(pageLabel));
+			tap(close);
 
+		} else if (docName.equalsIgnoreCase("jpg")) {
+
+			assertTrue(driver.getPageSource()
+					.contains("The requested document cannot be displayed at this time. Invalid Document: dls"));
+			tap(close);
 		}
 	}
 
@@ -400,6 +408,52 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 		assertFalse(
 				"SITE TABLE VARIABLE \"BRIEFCASECTADMINDKT\" IS SET TO 'N', HOWEVER COURT ADMINS CAN SEE ACTIONS IN BRIEFCASE",
 				isDisplayed(Locator.XPATH, containsElement("Actions")));
+	}
+
+	public List<String> getReferralWithDoc(List<UserInputData> userInputData) {
+
+		String crj_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
+
+		String voteDoc = replace(Queries.JUDGE_VOTE_NOTE_DOC, "CRJ_JU_PE_ID", crj_ju_pe_id);
+
+		List<String> caseWithDoc = DBUtilities.executeQuery(voteDoc, userInputData);
+
+		int random = Utility.getRandomNumberInRange(1, caseWithDoc.size());
+
+		List<String> value = new ArrayList<>();
+
+		for (int j = 2; j < 10; j++) {
+
+			value.add(execute(voteDoc, j, userInputData).get(random).trim());
+		}
+
+		cyv_category = value.get(0);
+
+		caseid = DBUtilities.getAllColumns(replace(Queries.CASE_NUMBER, "CS_CASEID", value.get(1)), userInputData);
+		cyv_code = value.get(2);
+		dm_description = value.get(3);
+		dm_file_name = value.get(4);
+		rl_list_text = value.get(5);
+		cvv_display = value.get(6);
+		chv_date_created = value.get(7);
+
+		return value;
+
+	}
+
+	public void verifyDocumentIsDisplayed() {
+		getVote(rl_list_text).click();
+		if (dm_description.length() > 0) {
+
+			assertTrue(isDisplayed(Locator.XPATH, containsElement(dm_description)));
+			Actions.contains(dm_description).click();
+			ifDocumentAccessbile(dm_description);
+		} else {
+			assertTrue(isDisplayed(Locator.XPATH, containsElement(dm_file_name)));
+			Actions.contains(dm_file_name).click();
+			ifDocumentAccessbile(dm_file_name);
+		}
+
 	}
 
 }

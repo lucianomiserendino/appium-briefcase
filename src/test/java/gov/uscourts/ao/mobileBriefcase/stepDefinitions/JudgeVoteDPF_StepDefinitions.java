@@ -4,6 +4,7 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import java.util.List;
 
 import cucumber.api.java.en.Then;
+import gov.uscourts.ao.mobileBriefcase.Pages.CaseQueryPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.JudgeVoteDPFPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.VoteInformationPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -11,22 +12,21 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 public class JudgeVoteDPF_StepDefinitions {
 
 	static JudgeVoteDPFPage page;
+	CaseQueryPage casequerypage;
 	VoteInformationPage votePage = new VoteInformationPage();
 	static String vote = "";
-	
-	
 
 	@Then("^user verifies a popup displays\\.  In the red banner, the relief they are voting on should display$")
 	public void user_verifies_a_popup_displays_In_the_red_banner_the_relief_they_are_voting_on_should_display(
 			List<UserInputData> userInputData) {
 		page = new JudgeVoteDPFPage();
-		page.selectViewVotes(userInputData,Document_StepDefinitions.regularCase);
+		page.selectViewVotes(userInputData, Document_StepDefinitions.regularCase);
 	}
 
 	@Then("^User verifies each judges' initials to whom the referral was sent , as well as their vote and date they voted$")
 	public void user_verifies_each_judges_initials_to_whom_the_referral_was_sent_as_well_as_their_vote_and_date_they_voted(
 			List<UserInputData> userInputData) {
-		page.verifyJudgesVote(userInputData,Document_StepDefinitions.regularCase);
+		page.verifyJudgesVote(userInputData, Document_StepDefinitions.regularCase);
 	}
 
 	@Then("^user selects a vote and adds notes to a vote\\.$")
@@ -35,7 +35,7 @@ public class JudgeVoteDPF_StepDefinitions {
 		page = new JudgeVoteDPFPage();
 
 		if (Common_StepDefinitions.pane == true) {
-			vote += page.getVoteSelection("judgeVote", userInputData,Document_StepDefinitions.regularCase);
+			vote += page.getVoteSelection("judgeVote", userInputData, Document_StepDefinitions.regularCase);
 		} else {
 			throw new RuntimeException(
 					"------------------- FAILED ------------------> THE SELECTED REFERRAL DOESN'T REQUIRE VOTING");
@@ -46,7 +46,7 @@ public class JudgeVoteDPF_StepDefinitions {
 	public void user_verifies_judge_s_vote_is_updated_in_Vote_Information_Panel() {
 		List<UserInputData> userInputData = null;
 		page = new JudgeVoteDPFPage();
-		page.verifyNoteText(vote, page.getTodaysDate(), userInputData,Document_StepDefinitions.regularCase);
+		page.verifyNoteText(vote, page.getTodaysDate(), userInputData, Document_StepDefinitions.regularCase);
 	}
 
 	@Then("^User verifies the court admin doesn't have access to select Actions in Briefcase$")
@@ -54,5 +54,22 @@ public class JudgeVoteDPF_StepDefinitions {
 		page = new JudgeVoteDPFPage();
 		page.verifyCourtAdminAccess();
 	}
+
+	@Then("^User selects a case that has at least one document In the Note/Vote$")
+	public void user_selects_a_case_that_has_at_least_one_document_In_the_Note_Vote() {
+		page = new JudgeVoteDPFPage();
+		List<UserInputData> userInputData = null;
+		page.getReferralWithDoc(userInputData);
+		casequerypage = new CaseQueryPage();
+		casequerypage.searchForACase(page.cyv_category, page.caseid);
+
+	}
+	
+	@Then("^User verifies that doc popup is accessible from judgeVote note and document description is correct$")
+	public void user_verifies_that_doc_popup_is_accessible_from_judgeVote_note_and_document_description_is_correct() {
+		page = new JudgeVoteDPFPage();
+		page.verifyDocumentIsDisplayed();
+	}
+
 
 }

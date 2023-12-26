@@ -46,9 +46,14 @@ public class CaseQueryPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<WebElement> caseNum;
 
-	public void searchForACase() {
-
+	
+	public void getCaseSearch(String category) {
 		String caseNum = searchBy(Search.caseNumber);
+		searchForACase( category,  caseNum);
+	}
+
+
+	public void searchForACase(String category, String caseNum) {
 
 		performPageLoad(driver);
 
@@ -57,17 +62,19 @@ public class CaseQueryPage extends AppiumPageFactory {
 			Page.sleep(5000);
 		}
 		clicksOn(searchIcon);
-		searchByCase(caseNum);
+		searchByCase(category, caseNum);
 
 	}
 
-	public void searchByCase(String caseN) {
+	public void searchByCase(String category, String caseN) {
 		sendKeys(searchTextField, caseN);
 		clicksOn(searchBTN);
 		performPageLoad(driver);
-		scrollDownIfNotDisplayed(containsElement(caseN));
-		performPageLoad(driver);
-
+		clicksOn(on_device);
+		scrollDownIfNotDisplayed(
+				containsElement(category) + "/preceding::XCUIElementTypeStaticText[contains(@name, '" + caseN + "')]");
+		Page.sleep(5000);
+        
 		assertTrue("APP IS NOT RETURNING CASE LIST FOR SOME WILDCARD SEARCHES",
 				isDisplayed(Locator.XPATH, containsElement("Case #" + caseN)));
 	}
