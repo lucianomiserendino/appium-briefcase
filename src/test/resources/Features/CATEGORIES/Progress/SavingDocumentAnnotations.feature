@@ -4,13 +4,12 @@ Feature: Saving Document Annotations
 Background:
 
 		Given I am logged into Briefcase 
-		|environment|userName| password |courtId|
-	|test       |test    | test     |test   |
-		
-
-	#Then I select a user 
-	#	|userType   |personrole        |jud     |
-	#|judge      |Appellate Judges  |test    |
+		|environment|sysadminUserName| sysadminPassword |courtId|user |judgeUserName|judgePassword|
+		|test       |test            | test             |test   |judge|test         |test         |
+			
+		Then I select a user 
+		|userType   |personrole        |jud      |user  |
+		|judge      |Appellate Judges  |test     |judge |
 			
 	Then User selects random judge category
 		|courtId|
@@ -23,7 +22,7 @@ Background:
 	
 		
 
-@AMB-2977
+@AMB-2977 @AMB-3481
 Scenario: 
 Testing  Document Annotations
 
@@ -31,6 +30,7 @@ Testing  Document Annotations
         
 	   Then User downloads/opens a random document from Case Detail page  
 
+       #This step also verifies if the correct pe_id is saved in the mbr_annot_to_doc table after the judge user annotates a doc
        And User verifies both the top banner editing icons and the editing tool palette are easily visible in the PSPDFKit.
          
          

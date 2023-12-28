@@ -5,15 +5,15 @@ Feature: Common
  @login
  Scenario: Login Functionality
 	Given I am logged into Briefcase 
-		|environment|userName| password |courtId|
-		|test       |test    | test     |test   |
+		|environment|sysadminUserName| sysadminPassword |courtId|judgeUserName|judgePassword|user|
+		|test       |test            | test             |test   |test         |test         |test|
 	
 	 
 	 @selectSTF  
 Scenario: User	selection
 		Then I select a user 
-		|userType   |personrole        |stf  |
-		|stf        |Staff Attorneys   |test |
+		|userType   |personrole        |stf  |user|
+		|stf        |Staff Attorneys   |test |test|
 		
 		
 	 @selectJUD 

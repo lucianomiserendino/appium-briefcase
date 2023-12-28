@@ -20,20 +20,6 @@ public class AccessingAnnotatedDocuments_StepDefinitions {
 		page.getAnnotatedDoc();
 	}
 
-	@Then("^I verify that the toggles on the settings page under the PDF Options heading entitled Back up Annotations to CM/ECF, and Allow staff to view annotated documents are turned on by default$")
-	public void i_verify_that_the_toggles_on_the_settings_page_under_the_PDF_Options_heading_entitled_Back_up_Annotations_to_CM_ECF_and_Allow_staff_to_view_annotated_documents_are_turned_on_by_default() {
-
-//	 page.getToggle();
-//		List<UserInputData> userInputData = null;
-//		page.annotateDocument("OFF", Document_StepDefinitions.regularCase, userInputData);
-//		page.searchForAppendix();
-		List<UserInputData> userInputData = null;
-//		page1 = new DocumentPage();
-//		page1.getDocumentList(userInputData) ;
-//		
-
-	}
-
 	@Then("^User verifies both the top banner editing icons and the editing tool palette are easily visible in the PSPDFKit\\.$")
 	public void user_verifies_both_the_top_banner_editing_icons_and_the_editing_tool_palette_are_easily_visible_in_the_PSPDFKit() {
 		List<UserInputData> userInputData = null;

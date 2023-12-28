@@ -254,6 +254,7 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 
 			Actions.tap(done);
 		}
+		Page.waitForVisibilityOfAllElements(toolBar2, driver);
 		String annotation = ifEditingToolsExist(toolBar2);
 
 		Actions.tap(annotations);
@@ -350,7 +351,7 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 	public static void getBackEndUpdates(String caseNum, String docName, List<UserInputData> userInputData) {
 		List<String> assignInfo = new ArrayList<>();
 
-		for (int i = 2; i <= 3; i++) {
+		for (int i = 2; i <= 4; i++) {
 			assignInfo = execute(DBUtilities.getText(Queries.annotatedDoc, docName), i, userInputData);
 			if (i == 2) {
 				assertTrue(assignInfo.contains(caseNum));
@@ -358,6 +359,10 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 			} else if (i == 3) {
 
 				assertTrue(assignInfo.contains(docName));
+
+			} else if (i == 4) {
+				String pe_id = DocumentPage.get_pe_id("jud", userInputData);
+				assertTrue(assignInfo.get(0).equals(pe_id));
 			}
 		}
 
