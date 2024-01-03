@@ -367,8 +367,12 @@ public class CommonPages extends AppiumPageFactory {
 		case useCourtSession:
 			value = "UseCourtSession";
 			break;
-		case ctAdmDkt:
+		case ctAdminDkt:
 			value ="CtAdminDkt";
+			break;
+		case displayTools:
+			value ="DisplayTools";
+			break;
 		default:
 			break;
 		}
@@ -519,7 +523,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	public enum SiteTableVariable {
 
-		targetOnly, internalNote, oralArgsView, useCourtSession,ctAdmDkt
+		targetOnly, internalNote, oralArgsView, useCourtSession,ctAdminDkt,displayTools
 	}
 
 	public enum GroupIcons {
