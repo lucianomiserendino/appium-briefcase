@@ -15,6 +15,7 @@ public class Tools_StepDefinitions {
 	@Then("^Verify that tapping \"([^\"]*)\" without existing clerk generate a message$")
 	public void verify_that_tapping_without_existing_clerk_generate_a_message(String arg1) {
 		page = new ToolsPage();
+		page.applyWithoutExistingClerk();
 
 	}
 

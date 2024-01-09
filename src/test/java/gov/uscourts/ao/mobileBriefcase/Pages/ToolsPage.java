@@ -16,6 +16,9 @@ public class ToolsPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Tools']")
 	public static List<WebElement> tools;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Tools']/following::XCUIElementTypeStaticText[@name='']")
+	public static List<WebElement> redBullet;
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"nav\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]")
 	public static WebElement leftNav;
 
@@ -31,6 +34,7 @@ public class ToolsPage extends AppiumPageFactory {
 		Utility.scroll(leftNav, "up");
 
 		int toolSize = tools.size();
+		int redBulletCount = redBullet.size();
 
 		if (CommonPages.siVal.equalsIgnoreCase("n")) {
 			assertTrue("The left nav displays the Tools category, even when briefcaseDisplayTools is set to 'n'. ",
@@ -40,8 +44,19 @@ public class ToolsPage extends AppiumPageFactory {
 			assertTrue(
 					"The left nav doesn't display the Tools category, even when briefcaseDisplayTools is set to 'y'. ",
 					toolSize >= 1);
+			assertTrue("the Tools icon displays a red badge with a count in it ", redBulletCount == 0);
 		}
-	
+	}
+
+	public void applyWithoutExistingClerk() {
+		tools.get(0).click();
+		if (Actions.isDisplayed(applyAll) == true) {
+			applyAll.click();
+
+			boolean progressBar = driver.getPageSource().contains("Please select an existing clerk");
+			assertTrue("Tapping 'Apply All' without existing clerk is not generating a message", progressBar);
+
+		}
 	}
 
 }
