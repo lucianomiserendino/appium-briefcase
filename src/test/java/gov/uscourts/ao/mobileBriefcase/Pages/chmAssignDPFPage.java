@@ -80,6 +80,11 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	static String cmr_cs_caseid = "";
 	static String cmr_cyv_code = "";
 
+	public static boolean existing = false;
+	public static String exitsingStaffMember = "";
+	public static String exitsingAssignmentType = "";
+	public static List<String> staffMembers=new ArrayList<>();
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='OptionList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static List<WebElement> optionList;
 
@@ -148,15 +153,15 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	}
 
 	public void modifySTF(String caseNumber, String category, List<UserInputData> userInputData) {
-
-		getStaffAssignment(Assignment.NEW, chmAssign.MODIFY, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
+		existing = true;
+		getStaffAssignment(Assignment.EXISTING, chmAssign.MODIFY, dpfName, elId, cha_ju_pe_id, caseNumber, cmr_cyv_code,
 				userInputData);
 
 	}
 
 	public void modify_terminate_STF(String caseNumber, String category, List<UserInputData> userInputData) {
-
-		getStaffAssignment(Assignment.NEW, chmAssign.MODIFY_TERMINATE, dpfName, elId, cha_ju_pe_id, caseNumber,
+		existing = true;
+		getStaffAssignment(Assignment.EXISTING, chmAssign.MODIFY_TERMINATE, dpfName, elId, cha_ju_pe_id, caseNumber,
 				cmr_cyv_code, userInputData);
 
 	}
@@ -169,7 +174,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	 * in the judge's chambers -----Screen param = staff - list all staff members
 	 * inthe judge's chambers
 	 */
-	public static String getAvailableStaffMembers(String stf, String dpfName, String elId, String peID,
+	public static String getAvailableStaffMembers(String dpfName, String elId, String peID,
 			List<UserInputData> userInputData) {
 
 		String screenTypeParam = getParameter(getAllColumns(getID(MBR_NOTE, elId), userInputData), dpfName, 0);
@@ -197,7 +202,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			break;
 		}
 
-		getListOfAvailableStaffMembers(stf, STAFF_MEMBERS_FIRST_NAME, peID, screenParam, 0, userInputData);
+		getListOfAvailableStaffMembers(STAFF_MEMBERS_FIRST_NAME, peID, screenParam, 0, userInputData);
 		performPageLoad(driver);
 		return getChmAssign(chmAssign.STAFF_MEMBER, "text");
 	}
@@ -206,8 +211,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	 * gets the list of staff based on the screen parameter in the DPF, compares
 	 * staff members that are displayed on the ui with db and selects one
 	 */
-	public static void getListOfAvailableStaffMembers(String stf, String staffMember, String peID,
-			String screenTypeParam, int index, List<UserInputData> userInputData) {
+	public static void getListOfAvailableStaffMembers(String staffMember, String peID, String screenTypeParam,
+			int index, List<UserInputData> userInputData) {
 
 		List<String> dbStaffMembers = new ArrayList<>();
 		String fName = "";
@@ -237,14 +242,15 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 			sort(uiStaffMembers);
 		}
-
-		if (stf.equals("new")) {
-
+		
+		if (existing == false) {
 			assertEquals("********STAFF MEMBERS VALIDATION ERROR!!!********", dbStaffMembers, uiStaffMembers);
+
+		} else {
+			allStaffMembers.remove(exitsingStaffMember);
 		}
-
-		clickOnNumberInRange(allStaffMembers);
-
+		exitsingStaffMember = clickOnNumberInRange(allStaffMembers);
+		staffMembers.add(exitsingStaffMember);
 	}
 
 	/**
@@ -279,7 +285,11 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 						uiAssignmenType, cha_ju_pe_id, caseNumber, cmr_cyv_code, pr_first_name, pr_last_name,
 						userInputData);
 			}
-			clickOnNumberInRange(allAssignmenTypes);
+			if (existing == false) {
+				exitsingAssignmentType = clickOnNumberInRange(allAssignmenTypes);
+			} else {
+				Actions.contains(exitsingAssignmentType).click();
+			}
 
 		} catch (Exception e) {
 			e.getMessage();
@@ -444,9 +454,9 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	}
 
 	public static void clickOnExistingAssignment(String staffMember) {
-		
-		String actionName=DPF_stepDefinitions.actionName;
-		
+
+		String actionName = DPF_stepDefinitions.actionName;
+
 		selectBriefcaseAction("Actions", actionName);
 
 		scrollDownIfNotDisplayed(containsElement(staffMember));
@@ -552,18 +562,18 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 		switch (assign) {
 		case CREATE:
-			staffMember = getAvailableStaffMembers("new", dpfName, elId, cha_ju_pe_id, userInputData);
+			staffMember = getAvailableStaffMembers(dpfName, elId, cha_ju_pe_id, userInputData);
 
 			break;
 
 		case MODIFY:
 			performPageLoad(driver);
-			staffMember = getAvailableStaffMembers("existing", dpfName, elId, cha_ju_pe_id, userInputData);
+			staffMember = getAvailableStaffMembers(dpfName, elId, cha_ju_pe_id, userInputData);
 			break;
 
 		case MODIFY_TERMINATE:
 			performPageLoad(driver);
-			staffMember = getAvailableStaffMembers("existing", dpfName, elId, cha_ju_pe_id, userInputData);
+			staffMember = getAvailableStaffMembers(dpfName, elId, cha_ju_pe_id, userInputData);
 			break;
 
 		default:
@@ -573,8 +583,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		staffFName = splitBy(staffMember, 0);
 		staffLName = splitBy(staffMember, 1);
 
-		// getChmAssign(chmAssign.ASSIGNMENT, "tap");
-		getChmAssign(chmAssign.DRAFT_PREPARED, "tap");
+		getChmAssign(chmAssign.ASSIGNMENT, "tap");
 
 		switch (Assignment) {
 		case NEW:
@@ -607,9 +616,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		verifyElementIsDisplayed(apply);
 		verifyElementIsDisplayed(cancel);
 
-		// assignment = getChmAssign(chmAssign.ASSIGNMENT, "text");
-		assignment = getChmAssign(chmAssign.DRAFT_PREPARED, "text");
-
+		assignment = getChmAssign(chmAssign.ASSIGNMENT, "text");
 
 		if (!commentField.getText().isEmpty()) {
 			commentField.clear();
@@ -624,19 +631,29 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 			submiTransaction();
 			ifDownloaded(assignments);
-			CommonPages page = new CommonPages();
-			page.getPanel(Panel.Assignments);
 
-			getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
+			if (existing = false) {
+				CommonPages page = new CommonPages();
+				page.getPanel(Panel.Assignments);
 
-			/******************
-			 * @AMB-1137
-			 */
+				getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
 
-			// newDBAssignment(cha_ju_pe_id, elId, staffFName, staffLName, assignment,
-			// userInputData);
+				/******************
+				 * @AMB-1137
+				 */
 
-			clickOnExistingAssignment(staffMember + ", " + assignment);
+				// newDBAssignment(cha_ju_pe_id, elId, staffFName, staffLName, assignment,
+				// userInputData);
+
+				clickOnExistingAssignment(staffMember + ", " + assignment);
+
+			} else {
+				String actionName = DPF_stepDefinitions.actionName;
+
+				selectBriefcaseAction("Actions", actionName);
+				scrollDownIfNotDisplayed("(" + containsElement("NewStaffButton") + ")[1]");
+
+			}
 
 			break;
 

@@ -20,7 +20,7 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 	static chmAssignDPFPage page1;
 	String staffMember = "";
 	String caseNum = Document_StepDefinitions.regularCase;
-	String categroy = Document_StepDefinitions.judCategory;
+	String category = Document_StepDefinitions.judCategory;
 
 	@Then("^user  verifies that briefcase events include the chmAssign DPF$")
 	public void user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(List<UserInputData> userInputData) {
@@ -32,22 +32,23 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 
 		page1 = new chmAssignDPFPage();
 
-		page1.getCaseDetails(caseNum, categroy, userInputData);
+		page1.getCaseDetails(caseNum, category, userInputData);
 	}
 
 	@Then("^User creates a new staff assignment$")
 	public void user_creates_a_new_staff_assignment(List<UserInputData> userInputData) {
 
 		page1 = new chmAssignDPFPage();
-		page1.createNewSTF(caseNum, categroy, userInputData);
-		page1.get_cha_id(caseNum, categroy, userInputData);
+		page1.existing = false;
+		page1.createNewSTF(caseNum, category, userInputData);
+		page1.get_cha_id(caseNum, category, userInputData);
 
 	}
 
 	@Then("^User edits existing staff assignment$")
 	public void user_edits_existing_staff_assignment(List<UserInputData> userInputData) {
 		page1 = new chmAssignDPFPage();
-		page1.modifySTF(caseNum, categroy, userInputData);
+		page1.modifySTF(caseNum, category, userInputData);
 	}
 
 	@Then("^User terminates the assignment$")
@@ -67,7 +68,7 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 	public void user_modifies_the_existing_dates_and_completes_the_assignment_in_the_same_transaction() {
 		List<UserInputData> userInputData = null;
 		 page1 = new chmAssignDPFPage();
-		 page1.modify_terminate_STF(caseNum, categroy, userInputData);
+		 page1.modify_terminate_STF(caseNum, category, userInputData);
 		 
 
 	}
