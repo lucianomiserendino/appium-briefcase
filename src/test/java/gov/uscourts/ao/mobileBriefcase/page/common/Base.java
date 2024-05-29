@@ -2,6 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.page.common;
 
 import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getProperty;
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,7 +15,6 @@ import java.util.Set;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -62,9 +62,7 @@ public abstract class Base implements iOSCapabilities {
 				winAppDriver = new RemoteWebDriver(new URL(getProperty(REMOTE_HOST)), capabilities);
 				break;
 
-			case WEBRIVER:
-				System.setProperty(getProperty(CHROME_DRIVER_KYE), getProperty(CHROME_DRIVER));
-				webDriver = new ChromeDriver();
+
 
 			}
 		} catch (Exception e) {

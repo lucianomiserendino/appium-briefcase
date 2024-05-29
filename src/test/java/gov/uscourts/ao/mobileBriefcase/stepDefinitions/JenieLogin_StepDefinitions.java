@@ -23,7 +23,7 @@ public class JenieLogin_StepDefinitions extends Base implements iOSCapabilities 
 
 	@Then("^I select a user$")
 	public void i_select_a_user(List<UserInputData> table) {
-		logPage = new JenieLoginPage();
+		//logPage = new JenieLoginPage();
 		logPage.selectUser(table);
 	}
 

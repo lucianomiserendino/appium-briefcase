@@ -7,7 +7,7 @@ Background:
 		|test       |sysadmin|
 			
 		
-@AMB-3136
+@AMB-3136 @Regression
 Scenario:
 As a judge user when entering an applied case number in the Search box and selecting 'On Device' ,
  the user is directed to the target case referral detail page.

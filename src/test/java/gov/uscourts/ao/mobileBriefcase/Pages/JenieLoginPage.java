@@ -78,7 +78,7 @@ public class JenieLoginPage extends Base {
 	public WebElement selectUser;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[2]")
-	public static List<WebElement>  settingsIcon;
+	public static List<WebElement> settingsIcon;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Logout of Briefcase']")
 	public static WebElement logout;
@@ -118,6 +118,9 @@ public class JenieLoginPage extends Base {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"Back\"]")
 	public static WebElement back;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JenieSelection\"]")
+	public static List<WebElement> jenieSelectionPage;
 
 	public final String environment = "environment";
 	public final String userType = "userType";
@@ -204,35 +207,35 @@ public class JenieLoginPage extends Base {
 	}
 
 	public static void selectUser(String availableJudges, String user) {
-	    // Click all 'GroupIcon' elements with label '▽' until none are left
-	    while (true) {
-	        List<WebElement> elems = driver.findElements(By.xpath("//XCUIElementTypeStaticText[@name='GroupIcon' and @label='▽']"));
-	        if (!elems.isEmpty()) {
-	            elems.get(0).click();
-	        } else {
-	            break;
-	        }
-	    }
+		// Click all 'GroupIcon' elements with label '▽' until none are left
+		while (true) {
+			List<WebElement> elems = driver
+					.findElements(By.xpath("//XCUIElementTypeStaticText[@name='GroupIcon' and @label='▽']"));
+			if (!elems.isEmpty()) {
+				elems.get(0).click();
+			} else {
+				break;
+			}
+		}
 
-	    // Tap on the specified available judge
-	    tap(Locator.XPATH, "//*[contains(@name, '" + availableJudges + "')]");
+		// Tap on the specified available judge
+		tap(Locator.XPATH, "//*[contains(@name, '" + availableJudges + "')]");
 
-	    // Attempt to find the user with a maximum of 10 swipes
-	    int maxAttempts = 10;
-	    for (int attempt = 0; attempt < maxAttempts; attempt++) {
-	        List<WebElement> elems = driver.findElements(By.xpath(containsElement(user)));
-	        if (!elems.isEmpty()) {
-	            elems.get(0).click();
-	            return;
-	        } else {
-	            Utility.tapAndSwipe(Direction.UP);
-	        }
-	    }
+		// Attempt to find the user with a maximum of 10 swipes
+		int maxAttempts = 10;
+		for (int attempt = 0; attempt < maxAttempts; attempt++) {
+			List<WebElement> elems = driver.findElements(By.xpath(containsElement(user)));
+			if (!elems.isEmpty()) {
+				elems.get(0).click();
+				return;
+			} else {
+				Utility.tapAndSwipe(Direction.UP);
+			}
+		}
 
-	    // If the user is not found after 10 attempts, throw an error
-	    throw new NoSuchElementException("User '" + user + "' not found after 10 attempts.");
+		// If the user is not found after 10 attempts, throw an error
+		throw new NoSuchElementException("User '" + user + "' not found after 10 attempts.");
 	}
-
 
 	public static void searchForACase(String caseNum) {
 		tap(searchIcon);
@@ -240,31 +243,27 @@ public class JenieLoginPage extends Base {
 		tap(searchBTN);
 
 	}
+
 	public static void logout() {
-	    if (CMECFSevers.size() > 0) {
-	        tap(back);
-	    }
 
-	    if (contains("Dashboard").isDisplayed()) {
-	        contains("Dashboard").click();
-	        Page.sleep(5000);
-	    
+		if (contains("Dashboard").isDisplayed()) {
+			contains("Dashboard").click();
+			Page.sleep(5000);
 
-	    if (settingsIcon.size() > 0) {
-	        settingsIcon.get(0).click();
-	        Page.sleep(5000);
+			if (settingsIcon.size() > 0) {
+				settingsIcon.get(0).click();
+				Page.sleep(5000);
 
-	        ifDownloaded(inProgress);
+				ifDownloaded(inProgress);
 
-	        logout.click();
-           performPageLoad(driver);
-	        if (Actions.findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
-	            contains(okButton).click();
-	        }
-	    }}
+				logout.click();
+				performPageLoad(driver);
+				if (Actions.findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
+					contains(okButton).click();
+				}
+			}
+		}
 	}
-
-
 
 	public void login(List<UserInputData> userInputData) {
 		// Get the court ID and append a period
@@ -294,9 +293,12 @@ public class JenieLoginPage extends Base {
 			throw new IllegalArgumentException("Invalid user type: " + user);
 		}
 
-		logout();
-		// Tap on the environment element
-
+		if (!(jenieSelectionPage.size() > 0)) {
+			if (CMECFSevers.size() > 0) {
+				tap(back);
+			}
+			logout();
+		}
 		Page.waitToBeClickable(contains(env), driver);
 
 		// Change to WEBVIEW context
@@ -342,24 +344,24 @@ public class JenieLoginPage extends Base {
 	public static void getServer(List<UserInputData> userInputData, String server) {
 		try {
 			// Retrieve the user type from system properties
-			//String user = SystemPropertySetup.getVariable(Variables.USER, userInputData);
+			// String user = SystemPropertySetup.getVariable(Variables.USER, userInputData);
 
 			// Check if the user is a sysadmin
-			//if (user.contains("sysadmin")) {
+			// if (user.contains("sysadmin")) {
 
-				//if (dashboard.size() > 0) {
-					if (setCourt.size()>0) {
-						setCourt.get(0).click();
-					//}
-				//}
+			// if (dashboard.size() > 0) {
+			if (setCourt.size() > 0) {
+				setCourt.get(0).click();
+				// }
+				// }
 			}
 
 			// Perform a page load
 			performPageLoad(driver);
-		    if (CMECFSevers.size() > 0) {
-		    	contains(server).click();
-		    }
-			
+			if (CMECFSevers.size() > 0) {
+				contains(server).click();
+			}
+
 			performPageLoad(driver);
 
 			// Retrieve the court list value
