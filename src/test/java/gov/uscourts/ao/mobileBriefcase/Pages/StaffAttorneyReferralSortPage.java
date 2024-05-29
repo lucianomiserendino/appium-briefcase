@@ -40,10 +40,18 @@ public class StaffAttorneyReferralSortPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther//following::XCUIElementTypeStaticText[contains(@name, 'Referred')]")
 	public static List<WebElement> referred;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther//following::XCUIElementTypeStaticText[contains(@name, 'Received')]")
+	public static List<WebElement> received;
+
+	
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name=\"Default\"])[2]")
+	public static WebElement defaultBtn;
+	
+	
 	public static void selectSortOption(String opt, List<UserInputData> table) {
 
 		int ran = selectSortOption(opt);
-
+		System.out.println(ran + "__________________");
 		if (opt.equals("Default")) {
 			/**
 			 * the referrals should be grouped in accordion panels by referral category and
@@ -61,7 +69,8 @@ public class StaffAttorneyReferralSortPage extends AppiumPageFactory {
 
 			sortedBy(opt, Queries.SMR_STATUS, ran, table);
 
-		} else if (opt.equals("Referred") & opt.equals("Received")) {
+		} else if (opt.equals("Referred") || opt.equals("Received")) {
+
 			sortByDate(opt, ran);
 
 		}
@@ -72,12 +81,14 @@ public class StaffAttorneyReferralSortPage extends AppiumPageFactory {
 		int random = 0;
 		getSortButton();
 		if (sortOption.equals("Default")) {
-			sortBy(sortOption).click();
+			
+			defaultBtn.click();
 			random = 1;
 		} else {
 			random = getRandomInt(sortOption);
 		}
 
+		System.out.println(random+"***********************");
 		Actions.contains("Apply").click();
 		CommonPages page = new CommonPages();
 		page.getGroupIcons(GroupIcons.Expand);
@@ -134,15 +145,18 @@ public class StaffAttorneyReferralSortPage extends AppiumPageFactory {
 		Actions.tap(Locator.XPATH, categoryName);
 		return catN;
 	}
-	
+
 	public void selectRandomCase(String categoryName) {
-		DocumentPage page=new DocumentPage();
-		page.selectRandomCaseNumber(getSTFReferrals( categoryName));
+		DocumentPage page = new DocumentPage();
+		page.selectRandomCaseNumber(getSTFReferrals(categoryName));
 	}
 
 	public static List<WebElement> getSTFReferrals(String categoryName) {
-		return Actions.findElements(By.xpath("//XCUIElementTypeStaticText[contains(@name, '" + categoryName
-				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '-')]"));
+//		return Actions.findElements(By.xpath("//XCUIElementTypeStaticText[contains(@name, '" + categoryName
+//				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '-')]"));
+		return Actions.findElements(By.xpath(
+				"//XCUIElementTypeOther[@name=\"ReferralsList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]"
+						+ "/XCUIElementTypeOther/following::XCUIElementTypeStaticText[contains(@name, '-')][1]"));
 	}
 
 	public static void sortedByCase(int order) {
@@ -169,8 +183,7 @@ public class StaffAttorneyReferralSortPage extends AppiumPageFactory {
 
 		List<String> dbRefCategories = executeQuery(
 				replace(query, "SMR_ASSIGN_PE_ID", smr_assign_pe_id, "SMR_SFA_CODE", smr_sfa_code), table);
-
-		for (int i = 0; i < dbRefCategories.size(); ++i) {
+		for (int i = 1; i < dbRefCategories.size() + 1; ++i) {
 
 			if (opt.equals("Status") && dbRefCategories.get(i).isEmpty()) {
 				dbRefCategories.set(i, "No Status");
@@ -191,26 +204,25 @@ public class StaffAttorneyReferralSortPage extends AppiumPageFactory {
 
 	}
 
-	public static void sortByDate(String opt, int sortOder) {
-		String el = "";
-		if (sortOder == 1) {
-			el += "Ascending";
-		} else if (sortOder == 2) {
-			el += "Descending";
+	public static void sortByDate(String opt, int sortOrder) {
+		List<WebElement> el = null;
+		getRandomCategory();
+		List<String> sortedBy = null;
+
+		if (opt.equals("Referred")) {
+			el = referred;
+		} else if (opt.equals("Received")) {
+			el = received;
 		}
-		Actions.findElement(By.xpath(Actions.containsElement(opt + " " + el))).click();
 
-		List<String> sortedBy = Utility.retrieveAllReferrals(referred, " ", 1);
+		sortedBy = Utility.retrieveAllReferrals(el, opt + " ", opt.equals("Referred") ? 0 : 1);
 
-		if (sortOder == 2) {
-
+		if (sortOrder == 2) {
 			Collections.reverse(sortedBy);
-
 		}
 
-		assertTrue("REFERRALS ARE NOT SORTED BY " + opt + " IN " + sortOder + " ORDER",
+		assertTrue("REFERRALS ARE NOT SORTED BY " + opt + " IN " + sortOrder + " ORDER",
 				Utility.checkIfSorted(sortedBy));
-
 	}
 
 }

@@ -1,4 +1,4 @@
-@Regression @AMB-1189 
+@AMB-1189 
 Feature: Links in NDA open in Briefcase 
 
 

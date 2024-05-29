@@ -1,10 +1,11 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getProperty;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static org.junit.Assert.assertEquals;
 import static org.openqa.selenium.support.PageFactory.initElements;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -24,7 +26,6 @@ import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
-import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -39,7 +40,7 @@ public class JenieLoginPage extends Base {
 
 	static String okButton = "OK";
 
-	static String user = "User";
+	static String User = "User";
 
 	@iOSBy(accessibility = "Production")
 	public WebElement production;
@@ -77,7 +78,7 @@ public class JenieLoginPage extends Base {
 	public WebElement selectUser;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[2]")
-	public static WebElement settingsIcon;
+	public static List<WebElement>  settingsIcon;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Logout of Briefcase']")
 	public static WebElement logout;
@@ -106,6 +107,30 @@ public class JenieLoginPage extends Base {
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name=''])[1]")
 	public static WebElement arrow;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"Retrieving pending referrals\"]")
+	public static List<WebElement> retrievePendingRefs;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
+	public static List<WebElement> inProgress;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='CMECFSevers']")
+	public static List<WebElement> CMECFSevers;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"Back\"]")
+	public static WebElement back;
+
+	public final String environment = "environment";
+	public final String userType = "userType";
+	public final String jud = "jud";
+	public final String stf = "stf";
+	public final String sysadminUserName = "sysadminUserName";
+	public final String sysadminPassword = "sysadminPassword";
+	public final String judFirstName = "judFirstName";
+	public final String stfFirstName = "stfFirstName";
+	public final String user = "user";
+	public final String judgeUserName = "judgeUserName";
+	public final String judgePassword = "judgePassword";
+
 	public void getEnvironment(Environment environment) {
 		switch (environment) {
 
@@ -130,65 +155,84 @@ public class JenieLoginPage extends Base {
 		}
 	}
 
-	public void sendCredentials(String Username, String Password) {
-		sendKeys(userName, Username, password, Password);
-		submButton.click();
+	public void sendCredentials(String username, String password) {
+		try {
+			// Send the username and password to their respective input fields
+			sendKeys(this.userName, username, this.password, password);
 
+			// Wait for the submit button to be clickable
+			Page.waitToBeClickable(submButton, driver);
+
+		} catch (WebDriverException e) {
+			// Log the exception and rethrow it to ensure it's not silently ignored
+			System.err.println("Error sending credentials: " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 	public static void open() {
 		tap(Locator.XPATH, "(//XCUIElementTypeStaticText[@name=\"Open\"])[1]");
 	}
 
-
-
 	public void selectUser(List<UserInputData> userInputData) {
-
+		String env = SystemPropertySetup.getCourtId(userInputData) + ".";
+		String user = SystemPropertySetup.getVariable(Variables.USER, userInputData);
 		String userType = SystemPropertySetup.getVariable(Variables.USER_TYPE, userInputData);
 		String personrole = SystemPropertySetup.getVariable(Variables.PERSONROLE, userInputData);
 
-		contains(user).click();
+		ifDownloaded(retrievePendingRefs);
 
-		String name = "";
+		// Page.waitForVisibilityOfElement(selectUser, driver);
 
-		if (userType.equals("judge")) {
-			name = SystemPropertySetup.getVariable(Variables.JUD, userInputData);
+		if (user.equals("sysadmin")) {
+			contains(User).click();
 
-		} else if (userType.equals("stf")) {
+			String name = "";
 
-			name = SystemPropertySetup.getVariable(Variables.STF, userInputData);
+			if (userType.equals("judge")) {
+				name = getProperty(env + jud);
+			} else if (userType.equals("stf")) {
+
+				name = getProperty(env + stf);
+			}
+
+			selectUser(personrole, name);
+			ifDownloaded(inProgress);
+
 		}
-
-		selectUser(personrole, name);
-		performPageLoad(driver);
-
 	}
 
 	public static void selectUser(String availableJudges, String user) {
+	    // Click all 'GroupIcon' elements with label '▽' until none are left
+	    while (true) {
+	        List<WebElement> elems = driver.findElements(By.xpath("//XCUIElementTypeStaticText[@name='GroupIcon' and @label='▽']"));
+	        if (!elems.isEmpty()) {
+	            elems.get(0).click();
+	        } else {
+	            break;
+	        }
+	    }
 
-		while (true) {
+	    // Tap on the specified available judge
+	    tap(Locator.XPATH, "//*[contains(@name, '" + availableJudges + "')]");
 
-			List<WebElement> elems = driver
-					.findElements(MobileBy.iOSClassChain("**/XCUIElementTypeStaticText[`label == \"▽\"`]"));
-			if (elems.size() > 0) {
-				elems.get(0).click();
-			} else {
-				break;
-			}
-		}
-		tap(Locator.XPATH, "//*[contains(@name, '" + availableJudges + "')]");
+	    // Attempt to find the user with a maximum of 10 swipes
+	    int maxAttempts = 10;
+	    for (int attempt = 0; attempt < maxAttempts; attempt++) {
+	        List<WebElement> elems = driver.findElements(By.xpath(containsElement(user)));
+	        if (!elems.isEmpty()) {
+	            elems.get(0).click();
+	            return;
+	        } else {
+	            Utility.tapAndSwipe(Direction.UP);
+	        }
+	    }
 
-		while (true) {
-
-			List<WebElement> elems = driver.findElements(By.xpath(containsElement(user)));
-			if (elems.size() > 0) {
-				elems.get(0).click();
-				break;
-			} else {
-				Utility.tapAndSwipe(Direction.UP);
-			}
-		}
+	    // If the user is not found after 10 attempts, throw an error
+	    throw new NoSuchElementException("User '" + user + "' not found after 10 attempts.");
 	}
+
 
 	public static void searchForACase(String caseNum) {
 		tap(searchIcon);
@@ -196,55 +240,98 @@ public class JenieLoginPage extends Base {
 		tap(searchBTN);
 
 	}
-
 	public static void logout() {
-		if
+	    if (CMECFSevers.size() > 0) {
+	        tap(back);
+	    }
 
-		(contains("Dashboard").isDisplayed()) {
-			contains("Dashboard").click();
-			Page.sleep(5000);
+	    if (contains("Dashboard").isDisplayed()) {
+	        contains("Dashboard").click();
+	        Page.sleep(5000);
+	    
 
-			settingsIcon.click();
-			logout.click();
-			performPageLoad(driver);
-//			try {
-//				if (findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
-//					contains(okButton).click();
-//				} else {
-//					Page.sleep(55000);
-//					logout.click();
-//					contains(okButton).click();
-//				}
-//			} catch (NoSuchElementException e) {
-//				e.getMessage();
-//			}
-		}
+	    if (settingsIcon.size() > 0) {
+	        settingsIcon.get(0).click();
+	        Page.sleep(5000);
 
+	        ifDownloaded(inProgress);
+
+	        logout.click();
+           performPageLoad(driver);
+	        if (Actions.findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
+	            contains(okButton).click();
+	        }
+	    }}
 	}
 
+
+
 	public void login(List<UserInputData> userInputData) {
-		String env = SystemPropertySetup.getVariable(Variables.ENVIRONMENT, userInputData);
-		String courtId = SystemPropertySetup.getVariable(Variables.COURTID, userInputData);
-		String userName = SystemPropertySetup.getVariable(Variables.USERNAME, userInputData);
-		String password = SystemPropertySetup.getVariable(Variables.PASSWORD, userInputData);
+		// Get the court ID and append a period
+		String courtId = SystemPropertySetup.getCourtId(userInputData) + ".";
 
-		Actions.tap(contains(env));
+		// Get the user type from the system properties
+		String user = SystemPropertySetup.getVariable(Variables.USER, userInputData);
+
+		// Get the environment property using the court ID
+		String env = getProperty(courtId + this.environment);
+
+		// Initialize username and password variables
+		String userName;
+		String password;
+
+		// Determine the username and password based on the user type
+		switch (user) {
+		case "judge":
+			userName = getProperty(courtId + this.judgeUserName);
+			password = getProperty(courtId + this.judgePassword);
+			break;
+		case "sysadmin":
+			userName = getProperty(courtId + this.sysadminUserName);
+			password = getProperty(courtId + this.sysadminPassword);
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid user type: " + user);
+		}
+
+		logout();
+		// Tap on the environment element
+
+		Page.waitToBeClickable(contains(env), driver);
+
+		// Change to WEBVIEW context
 		changeWindow("WEBVIEW");
-		sendCredentials(userName, password);
-		performPageLoad(driver);
-		sendKeyButton.click();
-		changeWindow("NATIVE");
-		// open();
-		getServer(courtId);
 
+		// Send the credentials
+		sendCredentials(userName, password);
+
+		// Wait for the page to load and the send key button to be clickable
+		performPageLoad(driver);
+		Page.waitToBeClickable(sendKeyButton, driver);
+
+		// Uncomment if needed to click the send key button
+		// sendKeyButton.click();
+
+		// Change back to NATIVE context
+		changeWindow("NATIVE");
+
+		// Open the server using the provided user input data and court ID
+		getServer(userInputData, courtId.replace(".", "").toUpperCase());
 	}
 
 	public void reopenTheApp() {
-	
+		// Ensure the page is fully loaded
 		Page.performPageLoad(driver);
-		if (dashboard.size()>0) {
+
+		// Check if the dashboard elements list is not null and not empty
+		if (dashboard != null && !dashboard.isEmpty()) {
+			// Click on the first element in the dashboard
 			dashboard.get(0).click();
+			// Wait for 5 seconds to allow any actions triggered by the click to complete
 			Page.sleep(5000);
+		} else {
+			// Handle the case where the dashboard is not available
+			System.err.println("Dashboard is not available. Cannot reopen the app.");
 		}
 	}
 
@@ -252,37 +339,50 @@ public class JenieLoginPage extends Base {
 		Integration, Staging, Testing, Production
 	}
 
-	public static void getServer(String server) {
+	public static void getServer(List<UserInputData> userInputData, String server) {
+		try {
+			// Retrieve the user type from system properties
+			//String user = SystemPropertySetup.getVariable(Variables.USER, userInputData);
 
-		if (dashboard.size() > 1) {
-			if (setCourt.size() > 0) {
+			// Check if the user is a sysadmin
+			//if (user.contains("sysadmin")) {
 
-				setCourt.get(0).click();
-
-			} else {
-
-				arrow.click();
+				//if (dashboard.size() > 0) {
+					if (setCourt.size()>0) {
+						setCourt.get(0).click();
+					//}
+				//}
 			}
+
+			// Perform a page load
+			performPageLoad(driver);
+		    if (CMECFSevers.size() > 0) {
+		    	contains(server).click();
+		    }
+			
+			performPageLoad(driver);
+
+			// Retrieve the court list value
+			String courtListValue = contains(server).getAttribute("value");
+
+			String lastPart = courtListValue.substring(courtListValue.lastIndexOf('-'));
+			String court1 = courtListValue.split(lastPart)[0].trim();
+
+			// Click on the server and get the name
+			contains(server).click();
+			String court2 = checkmark.getText();
+			checkmark.click();
+
+			// Verify that the selected court has a green checkmark
+			assertEquals("VERIFY A GREEN CHECKMARK DISPLAYS TO THE LEFT OF THE COURT THAT IS CURRENTLY SELECTED: ",
+					court1, court2);
+
+		} catch (Exception e) {
+			// Log and rethrow the exception to ensure it's not silently ignored
+			System.err.println("Error getting server: " + e.getMessage());
+			e.printStackTrace();
+			throw e;
 		}
-
-		performPageLoad(driver);
-
-		contains(server).click();
-		performPageLoad(driver);
-
-		String courtList = contains(server).getAttribute("value");
-
-		String last = courtList.substring(courtList.lastIndexOf('-'));
-
-		String court1 = courtList.split(last)[0].trim();
-
-		contains(server).click();
-		String court2 = checkmark.getText();
-		checkmark.click();
-
-		assertEquals("VERIFY A GREEN CHECKMARK DISPLAYS TO THE LEFT OF THE COURT THAT IS CURRENTLY SELECTED: ", court1,
-				court2);
-
 	}
 
 }

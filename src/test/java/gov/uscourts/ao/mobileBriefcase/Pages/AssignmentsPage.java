@@ -16,6 +16,7 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.trim;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getProperty;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.changeDateFormat;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getRandomNumberInRange;
 import static java.util.stream.Collectors.toList;
@@ -137,15 +138,18 @@ public class AssignmentsPage extends AppiumPageFactory {
 		for (int i = 0; i < assignments.size(); i++) {
 			allAssignments.add(assignments.get(i).getText().split(",")[0].split(" ")[1].trim());
 		}
-
-		String fName = SystemPropertySetup.getVariable(Variables.JUD, userInputData);
+		String env = SystemPropertySetup.getCourtId(userInputData) + ".";
+		
+		String fName = getProperty(env + "jud");
 
 		if (dbAssignmentList.contains(fName))
 			dbAssignmentList.remove(fName);
+		
 
 		judgeAssignments = Utility.filterArraylistItems(Filter.UNIQUE_VALUES, allAssignments, dbAssignmentList);
 
 		staffAssignments = Utility.filterArraylistItems(Filter.DUPLICATE_VALUES, allAssignments, dbAssignmentList);
+		
 
 		Utility.ifSortedInAlphabeticalOrder(judgeAssignments);
 		Utility.ifSortedInAlphabeticalOrder(staffAssignments);

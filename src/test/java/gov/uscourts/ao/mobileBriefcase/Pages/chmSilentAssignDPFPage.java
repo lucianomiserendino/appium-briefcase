@@ -15,6 +15,7 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getParameter;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -146,7 +147,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		String elId = getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
 		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData) ;
 
-		chmAssignDPFPage.createNewSTF(Assignment.NEW, chmAssign.CREATE, dpfName, elId, cha_ju_pe_id, caseNumber,
+		chmAssignDPFPage.getStaffAssignment(Assignment.NEW, chmAssign.CREATE, dpfName, elId, cha_ju_pe_id, caseNumber,
 				cmr_cyv_code, userInputData);
 
 		assertTrue(getDuplicateAssignments(chmAssignDPFPage.optionList));
@@ -323,51 +324,58 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 
 	}
 
-	public  void retrieveChmSilentAssignText(List<UserInputData> userInputData) {
+	public void retrieveChmSilentAssignText(List<UserInputData> userInputData) {
+	    String panelJudges = extractPanelJudges();
+	    List<String> judgeInitials = findPanelJudges(panelJudges);
 
-		String panelJudges = panel.getText().split(" Date")[0].split("Panel: ")[1];
+	    String createSilentAssignment = findchmsilentAssignDPF(userInputData, 3, "create").get(0).trim();
 
-		List<String> judgeInitilas = findPanelJudges(panelJudges);
+	    Utility.scrollDownIfNotDisplayed(Actions.containsElement("Actions"));
+	    CommonPages.getActionName(createSilentAssignment);
 
-		String createSilentAssignment = findchmsilentAssignDPF(userInputData, 3, "create").get(0).trim();
-		
-		CommonPages.getPanel(Panel.valueOf("Actions"));
+	    handleAlerts();
 
-		CommonPages.getActionName(createSilentAssignment);
+	    Page.waitToBeClickable(viewCaseInfo, driver);
+	    Page.waitToBeClickable(docketEntries, driver);
 
-		Page.sleep(1000);
-		if (alert.size()>=1) {
-			ok.click();
-			
-		}else {
-			submit.click();
-			if (yes.size()>=1) {
-				yes.get(0).click();
-			}
-		}
-		Page.waitToBeClickable(viewCaseInfo, driver);
-		Page.waitToBeClickable(docketEntries, driver);
+	    contains(createSilentAssignment).click();
 
-		contains(createSilentAssignment).click();
-		for (int i = 0; i < judgeInitilas.size(); i++) {
-			assertTrue("Verify chmSilentAssignText TPF enables docket text information",
-					Actions.isDisplayed(Locator.XPATH, Actions.containsElement(judgeInitilas.get(i).trim() + " related to")));
-		}
+	    verifyJudgeInitials(judgeInitials);
+	}
 
+	private String extractPanelJudges() {
+	    String panelText = panel.getText();
+	    String[] panelSplit = panelText.split(" Date");
+	    return panelSplit[0].split("Panel: ")[1];
+	}
+
+	private void handleAlerts() {
+	    Page.sleep(1000);
+	    if (alert.size() >= 1) {
+	        ok.click();
+	    } else {
+	        submit.click();
+	        if (yes.size() >= 1) {
+	            yes.get(0).click();
+	        }
+	    }
+	}
+
+	private void verifyJudgeInitials(List<String> judgeInitials) {
+	    for (String judgeInitial : judgeInitials) {
+	        judgeInitial = judgeInitial.contains("*") ? judgeInitial.replace("*", "").trim() : judgeInitial.trim();
+	        assertTrue("Verify chmSilentAssignText TPF enables docket text information",
+	                Actions.isDisplayed(Locator.XPATH, Actions.containsElement(judgeInitial + " related to")));
+	    }
 	}
 
 	public static List<String> findPanelJudges(String panelJudges) {
-		String[] items = panelJudges.split(",");
-		int itemCount = items.length;
-
-		List<String> judges = new ArrayList<>();
-
-		for (int i = 0; i < itemCount; i++) {
-			judges.add(items[i]);
-		}
-		return judges;
-
+	    String[] judgeNames = panelJudges.split(",");
+	    return new ArrayList<>(Arrays.asList(judgeNames));
 	}
+
+
+
 
 	
 	

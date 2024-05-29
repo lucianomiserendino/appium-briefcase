@@ -18,10 +18,10 @@ public class AutoSync_stepDefinitions {
 
 	}
 
-	@Then("^note the total documents available for download count in the Sync button on the Dashboard$")
+	@Then("^note the total documents available for download in the Sync button on the Dashboard$")
 	public void note_the_total_documents_available_for_download_count_in_the_Sync_button_on_the_Dashboard() {
 		page = new AutoSyncPage();
-		//syncCount = page.getCounter();
+		syncCount = page.getCounter();
 	}
 
 	@Then("^Verify that tapping the link in the Case Info panel downloads all original documents, decreases the total count in the device Sync button correctly$")

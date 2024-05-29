@@ -183,40 +183,41 @@ public class CommonPages extends AppiumPageFactory {
 	}
 
 	public static void getPanel(Panel panel) {
+	    try {
+	        String panelName;
+	        switch (panel) {
+	            case Assignments:
+	                panelName = "Assignments";
+	                break;
+	            case Actions:
+	                panelName = "Actions";
+	                break;
+	            case Vote_Information:
+	                panelName = "Vote Information";
+	                break;
+	            case Applied_Referrals:
+	                panelName = "Applied Referrals";
+	                break;
+	            case Briefs:
+	                panelName = "Briefs";
+	                break;
+	            case Proposed_Orders:
+	                panelName = "Proposed Orders";
+	                break;
+	            default:
+	                panelName = "";
+	                break;
+	        }
 
-		String panels = "";
-		switch (panel) {
-
-		case Assignments:
-			panels += "Assignments";
-			break;
-
-		case Actions:
-			panels += "Actions";
-			break;
-
-		case Vote_Information:
-			panels += "Vote Information";
-			break;
-
-		case Applied_Referrals:
-			panels += "Applied Referrals";
-			break;
-
-		case Briefs:
-			panels += "Briefs";
-			break;
-
-		case Proposed_Orders:
-			panels += "Proposed Orders";
-			break;
-
-		default:
-			break;
-		}
-		getGroupIcons(GroupIcons.Expand);
-		scrollDownIfNotDisplayed(containsElement(panels));
+	        if (!panelName.isEmpty()) {
+	            getGroupIcons(GroupIcons.Expand);
+	            scrollDownIfNotDisplayed(containsElement(panelName));
+	        }
+	    } catch (Exception e) {
+	        System.err.println("An error occurred: " + e.getMessage());
+	    }
 	}
+
 
 	public static void selectAction(String panel, String el_id, List<UserInputData> userInputData) {
 		getGroupIcons(GroupIcons.Expand);
@@ -234,7 +235,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	public static void selectAction(String panel, List<UserInputData> userInputData) {
 		// getGroupIcons();
-		getGroupIcons(GroupIcons.Expand);
+		//getGroupIcons(GroupIcons.Expand);
 		getPanel(Panel.valueOf(panel));
 		// getActionName("mbr multiple DMI");
 		getActionName("Auto Test");
@@ -242,7 +243,7 @@ public class CommonPages extends AppiumPageFactory {
 	}
 
 	public static void selectBriefcaseAction(String panel, String actionName) {
-		getGroupIcons(GroupIcons.Expand);
+		//getGroupIcons(GroupIcons.Expand);
 		getPanel(Panel.valueOf(panel));
 
 		String actionName1 = "";
@@ -257,6 +258,7 @@ public class CommonPages extends AppiumPageFactory {
 	}
 
 	public static void getActionName(String element) {
+		
 		scrollDownIfNotDisplayed(
 				"//XCUIElementTypeOther[@name='DocumentList']//XCUIElementTypeStaticText[contains(@name, '" + element
 						+ "')]");
@@ -309,7 +311,6 @@ public class CommonPages extends AppiumPageFactory {
 
 		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
 
-		// String caseId = CommonPages.getCaseID(userInputData);
 		String caseId = CommonPages.getCaseID(caseNum, userInputData);
 		return getAllColumns(replace(Queries.CCR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id),
 				userInputData);
@@ -412,35 +413,49 @@ public class CommonPages extends AppiumPageFactory {
 		return getCaseNumber(uiCaseNumber, index);
 
 	}
+	public static int getGroupIcons( GroupIcons icon) {
+        String grIcon;
+        switch (icon) {
+            case Collapse:
+                grIcon = "▷";
+                break;
+            case Expand:
+                grIcon = "▽";
+                break;
+            default:
+                return 0;
+        }
 
-	public static int getGroupIcons(GroupIcons icon) {
+        int clickCount = 0;
 
-		String grIcon = "";
-		int i;
-		List<WebElement> icons = GroupIcon;
+        while (true) {
+            List<WebElement> icons = GroupIcon;
+            boolean iconFound = false;
+            for (WebElement element : icons) {
+                String attributeValue = element.getAttribute("value");
+                if (attributeValue.equals(grIcon)) {
+                    element.click();
+                    iconFound = true;
+                    clickCount++;
+                    break; // Exit the for loop to refresh the icon list
+                }
+            }
 
-		switch (icon) {
+            if (!iconFound) {
+                break; // Exit the while loop if no matching icon is found
+            }
 
-		case Collapse:
-			grIcon = "▷";
-			break;
-		case Expand:
-			grIcon = "▽";
-			break;
-		default:
-			break;
-		}
-		for (i = 0; i < icons.size(); i++) {
+            try {
+                Thread.sleep(500); // 0.5 second pause
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
-			while (icons.get(i).getAttribute("value").equals(grIcon)) {
-				icons.get(i).click();
+        return clickCount;
+    }
 
-			}
 
-		}
-		return i;
-
-	}
 
 	public static void sendCredentials(String Username, String Password) {
 		Page.sleep(10000);

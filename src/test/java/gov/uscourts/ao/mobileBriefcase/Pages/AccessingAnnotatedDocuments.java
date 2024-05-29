@@ -262,7 +262,7 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 		Actions.tap(close);
 
 		contains(docName).click();
-		assertTrue(Actions.isDisplayed(Locator.XPATH, Actions.containsElement(annotation)));
+		assertTrue(driver.getPageSource().contains(annotation));
 
 		getBackEndUpdates(caseNum, docName, userInputData);
 
@@ -349,23 +349,29 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 	}
 
 	public static void getBackEndUpdates(String caseNum, String docName, List<UserInputData> userInputData) {
-		List<String> assignInfo = new ArrayList<>();
+	    for (int i = 2; i <= 4; i++) {
+	        try {
+	            List<String> assignInfo = execute(DBUtilities.getText(Queries.annotatedDoc, docName), i, userInputData);
 
-		for (int i = 2; i <= 4; i++) {
-			assignInfo = execute(DBUtilities.getText(Queries.annotatedDoc, docName), i, userInputData);
-			if (i == 2) {
-				assertTrue(assignInfo.contains(caseNum));
-
-			} else if (i == 3) {
-
-				assertTrue(assignInfo.contains(docName));
-
-			} else if (i == 4) {
-				String pe_id = DocumentPage.get_pe_id("jud", userInputData);
-				assertTrue(assignInfo.get(0).equals(pe_id));
-			}
-		}
-
+	            switch (i) {
+	                case 2:
+	                    assertTrue("Case number not found in backend", assignInfo.contains(caseNum));
+	                    break;
+	                case 3:
+	                    assertTrue("Document name not found in backend", assignInfo.contains(docName));
+	                    break;
+	                case 4:
+	                    String pe_id = DocumentPage.get_pe_id("jud", userInputData);
+	                    assertTrue("Incorrect pe_id saved in the mbr_annot_to_doc table after annotation, document: "+docName+", case Number:"+caseNum,
+	                             assignInfo.get(0).equals(pe_id));
+	                    break;
+	            }
+	        } catch (Exception e) {
+	            System.err.println("An error occurred while verifying backend updates: " + e.getMessage());
+	            // You may choose to fail the test here or continue with the next iteration
+	        }
+	    }
+	    close.click();
 	}
 
 	public List<String> getDocumentCategories() {

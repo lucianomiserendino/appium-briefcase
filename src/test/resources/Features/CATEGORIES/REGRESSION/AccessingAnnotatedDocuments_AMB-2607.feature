@@ -1,4 +1,4 @@
-@Regression @AMB-2607
+@AMB-2607
 Feature: Chambers users are able to download/view annotated documents 
 
  

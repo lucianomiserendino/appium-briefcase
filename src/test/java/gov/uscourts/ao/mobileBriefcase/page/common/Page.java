@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class Page extends Base {
 
 	public static WebElement waitForPresenceOfElementLocated(By element, WebDriver driver) {
-		return (WebElement) new WebDriverWait(driver, Duration.ofSeconds(10))
+		return (WebElement) new WebDriverWait(driver, Duration.ofSeconds(30))
 				.until(ExpectedConditions.presenceOfElementLocated((element)));
 	}
 

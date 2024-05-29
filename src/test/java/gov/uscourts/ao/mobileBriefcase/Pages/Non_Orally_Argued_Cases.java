@@ -28,87 +28,69 @@ public class Non_Orally_Argued_Cases extends AppiumPageFactory {
 	public static WebElement date;
 
 	public static String getFileDate() {
+	    List<String> dates = new ArrayList<>();
 
-		List<String> dates = new ArrayList<String>();
+	    for (WebElement file : filed) {
+	        String date = splitBy(file, "Filed: ");
+	        dates.add(date);
+	    }
 
-		for (int i = 0; i < filed.size(); i++) {
-
-			String date = splitBy(filed.get(i), "Filed: ");
-
-			dates.add(date);
-
-		}
-		return latestFiledDate(dates);
+	    return latestFiledDate(dates);
 	}
 
-	/** From Vote Info pane */
-	public static String latestFiledDate(List<String> d) {
+	public static String latestFiledDate(List<String> dates) {
+	    List<Date> dateObjects = new ArrayList<>(dates.size());
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("M/d/yyyy");
 
-		List<Date> dates = new ArrayList<>(d.size());
+	    for (String dateStr : dates) {
+	        try {
+	            Date dateObj = dateFormat.parse(dateStr);
+	            dateObjects.add(dateObj);
+	        } catch (ParseException e) {
+	            e.printStackTrace();
+	        }
+	    }
 
-		for (String s : d) {
-
-			try {
-				Date dateObj = new SimpleDateFormat("m/d/yyyy").parse(s);
-
-				dates.add(dateObj);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		}
-
-		String str = new SimpleDateFormat("m/d/yyyy").format(Collections.max(dates));
-		return str;
-
+	    String latestDateStr = dateFormat.format(Collections.max(dateObjects));
+	    return latestDateStr;
 	}
 
-	public static String splitBy(WebElement el, String str) {
-		return Page.waitForVisibilityOfElement(el, driver).getText().split(str)[1].trim();
+	public static String splitBy(WebElement element, String str) {
+	    return Page.waitForVisibilityOfElement(element, driver).getText().split(str)[1].trim();
 	}
 
-	/** Date’ for the referral that is displayed in the banner on the detail page */
 	public static String getDate() {
-		return splitBy(date, "Date: ");
-
+	    return splitBy(date, "Date: ");
 	}
 
 	public static String getReferralDate(ReferralDate session) {
-
-		String refDate = "";
-		switch (session) {
-		case Banner:
-			refDate += getDate();
-			break;
-		case Vote_Information:
-			refDate += getFileDate();
-			break;
-
-		default:
-			break;
-		}
-		return refDate;
-
+	    switch (session) {
+	        case Banner:
+	            return getDate();
+	        case Vote_Information:
+	            return getFileDate();
+	        default:
+	            return "";
+	    }
 	}
 
 	public void ifReferralDateDisplayed(ReferralDate session, String caseNum) {
+	    String caseDetailPage = getReferralDate(session);
+	    Actions.navigateBack();
+	    Page.performPageLoad(driver);
 
-		String caseDetailPage = getReferralDate(session);
+	    String referralListPage = splitBy(Actions.findElement(By.xpath("(//XCUIElementTypeStaticText[contains(@name, '"
+	            + caseNum + "')]/following::XCUIElementTypeStaticText[contains(@name, 'Panel:')])[1]")), "Date: ");
 
-		Actions.navigateBack();
-		Page.performPageLoad(driver);
-
-		String referralListPage = splitBy(Actions.findElement(By.xpath("(//XCUIElementTypeStaticText[contains(@name, '"
-				+ caseNum + "')]/following::XCUIElementTypeStaticText[contains(@name, 'Panel:')])[1]")), "Date: ");
-
-		assertEquals(
-				"PLEASE DOUBLE CHECK THE REFERRAL LIST PAGE. VERIFY THE MOST RECENT REFERRAL DATE DISPLAYS UNDER THE CASE AND SHORT TITLE",
-				caseDetailPage, referralListPage);
-
+	    assertEquals(
+	            "PLEASE DOUBLE CHECK THE REFERRAL LIST PAGE. VERIFY THE MOST RECENT REFERRAL DATE DISPLAYS UNDER THE CASE AND SHORT TITLE",
+	            caseDetailPage, referralListPage);
 	}
 
 	public enum ReferralDate {
-		Banner, Vote_Information
+	    Banner, Vote_Information
 	}
+
 
 	
 }

@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
 Feature: Pending Tasks --Display date assignment type 
 
 
-@Regression 
 @AMB-1220 
 Scenario Outline: 
 

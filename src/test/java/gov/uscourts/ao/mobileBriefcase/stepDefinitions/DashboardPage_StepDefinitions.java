@@ -30,9 +30,9 @@ public class DashboardPage_StepDefinitions {
 
 	}
 
-	@Given("^If The judge has any pending assignments it will validate the total num of pending task on UI with DB\\. Use  judge's \"([^\"]*)\" and  \"([^\"]*)\" to retrieve pending tasks from db$")
+	@Given("^If The judge has any pending assignments it will validate the total num of pending task on UI with DB\\.$")
 	public void if_The_judge_has_any_pending_assignments_it_will_validate_the_total_num_of_pending_task_on_UI_with_DB_Use_judge_s_and_to_retrieve_pending_tasks_from_db(
-			String pe_id, String PE_RT_CODE, List<UserInputData> userInputData) {
+			 List<UserInputData> userInputData) {
 		page = new DashboardPage();
 		page.getPendingTasks(getID(PENDING_TASK_ASSIGNMENTS, DocumentPage.get_pe_id("jud",userInputData)), userInputData);
 
@@ -49,7 +49,7 @@ public class DashboardPage_StepDefinitions {
 			List<UserInputData> userInputData) {
 		page = new DashboardPage();
 		String judge = SystemPropertySetup.getJudge(userInputData);
-		page.get_lbrrpt_CATEGORY("lbrrpt", "jud", judge, userInputData);
+		page.verifyDocumentsForCategory("lbrrpt", "jud", judge, userInputData);
 	}
 
 	@Given("^Verify the number of new items that displays in the red badge in the navigation match the number of new items listed on the Dashboard page\\.$")

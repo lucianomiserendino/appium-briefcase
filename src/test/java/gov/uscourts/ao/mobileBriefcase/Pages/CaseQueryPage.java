@@ -45,39 +45,49 @@ public class CaseQueryPage extends AppiumPageFactory {
 	// @WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<WebElement> caseNum;
-
 	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
+	public static List<WebElement> inProgress;
+
 	public void getCaseSearch(String category) {
-		String caseNum = searchBy(Search.caseNumber);
-		searchForACase( category,  caseNum);
+	    String fullCaseNumber = selectRandomCaseNumber(0).split(" ")[0];
+	    searchForACase("target",category, fullCaseNumber, Search.wildcard);
 	}
 
 
-	public void searchForACase(String category, String caseNum) {
+	public void searchByCase(String targetOrApplied,String category, String fullCaseNumber, Search searchType) {
+	    String searchValue = searchBy(searchType, fullCaseNumber);
+	    sendKeys(searchTextField, searchValue);
+	    clicksOn(searchBTN);
+	    performPageLoad(driver);
+	    clicksOn(on_device);
 
-		performPageLoad(driver);
+	    scrollDownIfNotDisplayed(
+	        containsElement(category) + "/preceding::XCUIElementTypeStaticText[contains(@name, '" + fullCaseNumber + "')]");
+	    CommonPages.ifDownloaded(inProgress);
+	    
+	    if (targetOrApplied.equals("target")) {
 
-		if (contains("Dashboard").isDisplayed()) {
-			contains("Dashboard").click();
-			Page.sleep(5000);
-		}
-		clicksOn(searchIcon);
-		searchByCase(category, caseNum);
+	    assertTrue("APP IS NOT RETURNING CASE LIST FOR SOME WILDCARD SEARCHES",
+	        isDisplayed(Locator.XPATH, containsElement("Case #" + fullCaseNumber)));
+	    }
+	}
+	
+	
 
+
+
+	public void searchForACase(String targetOrApplied,String category, String fullCaseNumber, Search searchType) {
+	    performPageLoad(driver);
+
+	    if (contains("Dashboard").isDisplayed()) {
+	        contains("Dashboard").click();
+	        Page.sleep(5000);
+	    }
+	    clicksOn(searchIcon);
+	    searchByCase(targetOrApplied,category, fullCaseNumber, searchType);
 	}
 
-	public void searchByCase(String category, String caseN) {
-		sendKeys(searchTextField, caseN);
-		clicksOn(searchBTN);
-		performPageLoad(driver);
-		clicksOn(on_device);
-		scrollDownIfNotDisplayed(
-				containsElement(category) + "/preceding::XCUIElementTypeStaticText[contains(@name, '" + caseN + "')]");
-		Page.sleep(5000);
-        
-		assertTrue("APP IS NOT RETURNING CASE LIST FOR SOME WILDCARD SEARCHES",
-				isDisplayed(Locator.XPATH, containsElement("Case #" + caseN)));
-	}
 
 	public void viewInfo(String caseNum, WebElement el, String text) {
 		performPageLoad(driver);
@@ -101,38 +111,30 @@ public class CaseQueryPage extends AppiumPageFactory {
 
 	}
 
-	public String searchBy(Search search) {
+	public String searchBy(Search search, String caseN) {
+	    String searchType = "";
 
-		String caseN = selectRandomCaseNumber(0).split(" ")[0];
+	    switch (search) {
+	        case partyName:
+	            String partyN = selectRandomCaseNumber(1).split(" ")[1];
+	            String specialChar = checkForSpecialChar(partyN);
+	            searchType = (specialChar != null && !specialChar.isEmpty()) ? partyN.split(specialChar).toString() : partyN;
+	            break;
 
-		String searchType = "";
+	        case caseNumber:
+	            searchType = caseN;
+	            break;
 
-		switch (search) {
+	        case wildcard:
+	            searchType = caseN.substring(0, caseN.length() - 1) + "*";
+	            break;
 
-		case partyName:
-
-			String partyN = selectRandomCaseNumber(1).split(" ")[1];
-
-			if (checkForSpecialChar(partyN) != null && !checkForSpecialChar(partyN).isEmpty()) {
-				searchType = partyN.split(checkForSpecialChar(partyN)).toString();
-			} else {
-				searchType = partyN;
-			}
-			break;
-
-		case caseNumber:
-			searchType = caseN;
-			break;
-
-		case wildcard:
-
-			searchType = caseN.substring(0, 6) + "*";
-
-		default:
-			break;
-		}
-		return searchType;
+	        default:
+	            break;
+	    }
+	    return searchType;
 	}
+
 
 	public static String selectRandomCaseNumber(int index) {
 		String referral = "";

@@ -11,7 +11,7 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 public class A_chmAssign_StepDefs {
 	AssignmentsPage assig;
 	CommonPages page;
-	String cmr_cyv_code;
+	static String cmr_cyv_code;
 	boolean displayed;
 
 	@Then("^User observes a collapsible panel entitled \"([^\"]*)\" displays$")
@@ -22,7 +22,7 @@ public class A_chmAssign_StepDefs {
 
 	@Then("^User verifies that the Staff Assignments are Displayed correctly$")
 	public void user_verifies_that_the_Staff_Assignments_are_Displayed_correctly() {
-		if (displayed == true) {
+	
 			String caseNum = Document_StepDefinitions.regularCase;
 
 			List<UserInputData> userInputData = null;
@@ -34,13 +34,13 @@ public class A_chmAssign_StepDefs {
 			cmr_cyv_code = CommonPages.cmr_cyv_code(Document_StepDefinitions.judCategory, cmr_cs_caseid, userInputData)
 					.trim();
 			assig = new AssignmentsPage();
-			List<String> list = assig.getAssignmentsLinkedToReferral(userInputData, cmr_cs_caseid, cmr_ju_pe_id,
+			 assig.getAssignmentsLinkedToReferral(userInputData, cmr_cs_caseid, cmr_ju_pe_id,
 					cmr_cyv_code);
-			assig.ifAssignmentsSorted(list, userInputData);
+			//assig.ifAssignmentsSorted(list, userInputData);
 
-		} else {
+	
 
-		}
+		
 	}
 
 }

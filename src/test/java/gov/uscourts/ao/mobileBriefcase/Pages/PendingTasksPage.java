@@ -262,7 +262,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 		/** This might change in 1.8 - AMB-3399 */
 		assertFalse(
 				"VERIFY IF THERE IS MORE THAN ONE REFERRAL IN THE SAME CATEGORY FOR A CASE, THE CASE IS DISPLAYED ONLY ONCE",
-				Utility.hasDublicates(list));
+				Utility.hasDuplicates(list));
 
 		int caseN = 0;
 		if (list.size() > 1) {

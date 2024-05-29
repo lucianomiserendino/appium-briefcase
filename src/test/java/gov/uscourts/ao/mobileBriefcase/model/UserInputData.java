@@ -3,8 +3,8 @@ package gov.uscourts.ao.mobileBriefcase.model;
 public class UserInputData {
 	private String courtId;
 	private String hostname;
-	private String userName;
-	private String password;
+	private String sysadminUserName;
+	private String sysadminPassword;
 	private String environment;
 	private String caseNumber;
 	private String refCategory;
@@ -18,7 +18,11 @@ public class UserInputData {
 	private String db_password;
 	private String stf;
 	private String userType;
-
+	private String user;
+	private String judgeUserName;
+	private String judgePassword;
+	
+	
 	public String getPacerInputData(String inputData) {
 		String var = "";
 
@@ -32,16 +36,16 @@ public class UserInputData {
 			var = environment;
 			break;
 
-		case "userName":
-			var = userName;
+		case "sysadminUserName":
+			var = sysadminUserName;
 			break;
 
 		case "userType":
 			var = userType;
 			break;
 
-		case "password":
-			var = password;
+		case "sysadminPassword":
+			var = sysadminPassword;
 			break;
 
 		case "jud":
@@ -83,11 +87,49 @@ public class UserInputData {
 		case "judFirstName":
 			var = judFirstName;
 			break;
+			
+		case "user":
+			var = user;
+			break;
+			
+		case "judgeUserName":
+			var = judgeUserName;
+			break;
+
+		case "judgePassword":
+			var = judgePassword;
+			break;
+
+	
 
 		default:
 			break;
 		}
 		return var;
+	}
+
+	public String getJudgeUserName() {
+		return judgeUserName;
+	}
+
+	public void setJudgeUserName(String judgeUserName) {
+		this.judgeUserName = judgeUserName;
+	}
+
+	public String getJudgePassword() {
+		return judgePassword;
+	}
+
+	public void setJudgePassword(String judgePassword) {
+		this.judgePassword = judgePassword;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
 	}
 
 	public String getJudFirstName() {
@@ -114,20 +156,20 @@ public class UserInputData {
 		this.hostname = host_name;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getSysadminUserName() {
+		return sysadminUserName;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setSysadminUserName(String userName) {
+		this.sysadminUserName = userName;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getSysadminPassword() {
+		return sysadminPassword;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setSysadminPassword(String password) {
+		this.sysadminPassword = password;
 	}
 
 	public String getEnvironment() {

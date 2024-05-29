@@ -39,7 +39,6 @@ import com.informix.jdbcx.IfxConnectionPoolDataSource;
 
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
-import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 
 public class DBUtilities {
 	private IfxConnectionPoolDataSource cds;
@@ -47,6 +46,18 @@ public class DBUtilities {
 	private static Statement statement;
 	private static ResultSet resultSet;
 	static PreparedStatement ps = null;
+
+	public static final String courtId = "courtId";
+	public static final String hostname = "hostname";
+
+	public static final String environment = "environment";
+	public static final String caseNumber = "caseNumber";
+	public static final String refCategory = "refCategory";
+	public static final String db_servername = "servername";
+	public static final String db_Schema = "schema";
+	public static final String db_username = "db.username";
+	public static final String db_password = "db.password";
+
 
 	public static void establishConnection(DBType dbType) {
 		try {
@@ -134,7 +145,7 @@ public class DBUtilities {
 		List<String> result = new ArrayList<>();
 
 		try {
-			connection = dbConnectionPool.createConnection(userInputData);
+			connection = dbConnectionPool.createDbConnection(userInputData);
 			if (connection == null) {
 				assertTrue("Connection Not Established...", false);
 
@@ -210,7 +221,7 @@ public class DBUtilities {
 		DBUtilities dbConnectionPool = new DBUtilities();
 
 		try {
-			connection = dbConnectionPool.createConnection(userInputData);
+			connection = dbConnectionPool.createDbConnection(userInputData);
 			if (connection == null) {
 				assertTrue("Connection Not Established...", false);
 
@@ -232,9 +243,10 @@ public class DBUtilities {
 			while (resultSet.next()) {
 				for (int i = 1; i < column; i++) {
 					a = resultSet.getString(i);
-					if (!(a == null)) {
-						a.trim();
-					}
+
+				}
+				if (!(a == null)) {
+					a.trim();
 				}
 
 				result.add(a);
@@ -287,7 +299,7 @@ public class DBUtilities {
 
 		DBUtilities dbConnectionPool = new DBUtilities();
 		try {
-			connection = dbConnectionPool.createConnection(userInputData);
+			connection = dbConnectionPool.createDbConnection(userInputData);
 			if (connection == null) {
 				assertTrue("Connection Not Established...", false);
 			}
@@ -341,7 +353,7 @@ public class DBUtilities {
 	public static boolean getDBConnection(List<UserInputData> pacerInputData) {
 		DBUtilities dbConnectionPool = new DBUtilities();
 		try {
-			connection = dbConnectionPool.createConnection(pacerInputData);
+			connection = dbConnectionPool.createDbConnection(pacerInputData);
 			if (connection == null) {
 				assertTrue("Connection Not Established...", false);
 
@@ -370,7 +382,7 @@ public class DBUtilities {
 		List<String> result = new ArrayList<>();
 
 		try {
-			connection = dbConnectionPool.createConnection(userInputData);
+			connection = dbConnectionPool.createDbConnection(userInputData);
 			if (connection == null) {
 				assertTrue("Connection Not Established...", false);
 
@@ -394,26 +406,28 @@ public class DBUtilities {
 
 	}
 
-	public Connection createConnection(List<UserInputData> pacerInputData) {
+	public Connection createDbConnection(List<UserInputData> pacerInputData) {
+
+		String env = SystemPropertySetup.getCourtId(pacerInputData)+".";
 
 		setProperty(getProperty(SSL_STORE), getProperty(SSL_LOC));
 		setProperty(getProperty(KEYPASS), getProperty(PASS));
 
 		cds = new IfxConnectionPoolDataSource();
 
-		cds.setIfxIFXHOST(SystemPropertySetup.getVariable(Variables.HOSTNAME, pacerInputData));
+		cds.setIfxIFXHOST(getProperty(env + hostname));
 
-		cds.setServerName(SystemPropertySetup.getVariable(Variables.DB_SERVERNAME, pacerInputData));
+		cds.setServerName(getProperty(env +db_servername));
 
-		cds.setPortNumber(Integer.parseInt(SystemPropertySetup.getVariable(Variables.DB_PORT, pacerInputData)));
+		cds.setPortNumber(Integer.parseInt(getProperty(PORT_NUMBER)));
 
-		cds.setUser(SystemPropertySetup.getVariable(Variables.DB_USERNAME, pacerInputData));
+		cds.setUser(getProperty(db_username));
 
-		cds.setPassword(SystemPropertySetup.getVariable(Variables.DB_PASSWORD, pacerInputData));
+		cds.setPassword(getProperty(db_password));
 
-		cds.setDatabaseName(SystemPropertySetup.getVariable(Variables.DB_SCHEMA, pacerInputData));
+		cds.setDatabaseName(getProperty(env + db_Schema));
 
-		if (SystemPropertySetup.getVariable(Variables.DB_SERVERNAME, pacerInputData).split("_")[1].equals("ssl")) {
+		if (getProperty(env + db_servername).split("_")[1].equals("ssl")) {
 			cds.setIfxSSLCONNECTION("true");
 			System.out.println(" JDBC Driver Version .: " + IfxDriver.getJDBCVersion());
 		}
@@ -427,35 +441,32 @@ public class DBUtilities {
 	}
 
 	public static String getAllColumns(String query, List<UserInputData> pacerInputData) {
-		ResultSetMetaData metaData;
-		String allColumns = "";
+	    StringBuilder allColumns = new StringBuilder();
+	    DBUtilities dbConnectionPool = new DBUtilities();
 
-		DBUtilities dbConnectionPool = new DBUtilities();
-		try {
-			connection = dbConnectionPool.createConnection(pacerInputData);
-			if (connection == null) {
-				assertTrue("Connection Not Established...", false);
+	    try (Connection connection = dbConnectionPool.createDbConnection(pacerInputData);
+	         PreparedStatement ps = connection.prepareStatement(query);
+	         ResultSet resultSet = ps.executeQuery()) {
 
-			}
-			ps = connection.prepareStatement(query);
-			resultSet = ps.executeQuery();
-			metaData = resultSet.getMetaData();
-			int numberOfColumns = metaData.getColumnCount();
-			while (resultSet.next()) {
-				for (int i = 1; i <= numberOfColumns; i++) {
-					allColumns += resultSet.getString(i);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+	        if (connection == null) {
+	            assertTrue("Connection Not Established...", false);
+	        }
 
-		} finally {
-			closeConnections();
+	        ResultSetMetaData metaData = resultSet.getMetaData();
+	        int numberOfColumns = metaData.getColumnCount();
 
-		}
-		return allColumns;
+	        while (resultSet.next()) {
+	            for (int i = 1; i <= numberOfColumns; i++) {
+	                allColumns.append(resultSet.getString(i));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 
+	    return allColumns.toString();
 	}
+
 
 	public static String getID(String query, String id) {
 		return query.replace("?", id);

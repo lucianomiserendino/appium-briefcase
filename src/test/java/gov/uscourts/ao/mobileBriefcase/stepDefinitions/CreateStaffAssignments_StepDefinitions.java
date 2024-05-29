@@ -20,11 +20,11 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 	static chmAssignDPFPage page1;
 	String staffMember = "";
 	String caseNum = Document_StepDefinitions.regularCase;
-	String category = Document_StepDefinitions.judCategory;
-
+	String category =Document_StepDefinitions.judCategory;
+     String action=DPF_stepDefinitions.actionName;
 	@Then("^user  verifies that briefcase events include the chmAssign DPF$")
 	public void user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(List<UserInputData> userInputData) {
-		// getInstance(Driver.IOS);
+		
 		page = new CommonPages();
 		assertTrue(isDisplayed(containsElement("Assignments")));
 		scrollDownIfNotDisplayed("(" + containsElement("NewStaffButton") + ")[1]");
@@ -32,7 +32,7 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 
 		page1 = new chmAssignDPFPage();
 
-		page1.getCaseDetails(caseNum, category, userInputData);
+		page1.getCaseDetails(caseNum, category, action, userInputData);
 	}
 
 	@Then("^User creates a new staff assignment$")

@@ -1,4 +1,4 @@
-@Regression @AMB-2636
+@AMB-2636
 Feature: Display additional case information screen when selecting an applied case 
 
 

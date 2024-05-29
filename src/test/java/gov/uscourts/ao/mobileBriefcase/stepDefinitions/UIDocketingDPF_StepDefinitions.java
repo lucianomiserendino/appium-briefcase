@@ -19,7 +19,7 @@ public class UIDocketingDPF_StepDefinitions {
 	@Then("^user verifies an editable Description , Comment , Submit fields are  displayed\\.  The default description is defined in the Default description parameter of the note DPF$")
 	public void user_verifies_an_editable_Description_Comment_Submit_fields_are_displayed_The_default_description_is_defined_in_the_Default_description_parameter_of_the_note_DPF(
 			List<UserInputData> userInputData) {
-		page.verifyFieldsAreDisplayed(userInputData);
+		page.verifyFieldsAreDisplayedAndEditable(userInputData);
 	}
 	
 	@Then("^user verifies Briefcase supports the noteText TPF$")

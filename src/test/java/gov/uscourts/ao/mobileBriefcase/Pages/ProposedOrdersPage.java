@@ -66,8 +66,8 @@ public class ProposedOrdersPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[contains(@name, '.pdf')]")
 	public static WebElement preSelctedPDF;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"Sending...\"]")
-	public static List<WebElement> sending;
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
+	public static List<WebElement> inProgress;
 
 	static String panel = "";
 	static String yes = "Yes";
@@ -183,8 +183,8 @@ public class ProposedOrdersPage extends AppiumPageFactory {
 				String name = docList.get(i).getText();
 				docList.get(i).click();
 
-				performPageLoad(driver);
-
+				//performPageLoad(driver);
+				 ifDownloaded(inProgress);
 				if (pdf.size() > 0) {
 					close.click();
 					docName = name;
@@ -213,7 +213,7 @@ public class ProposedOrdersPage extends AppiumPageFactory {
 
 	public String submitDocWPDPF() {
 		CommonPages page = new CommonPages();
-		page.getGroupIcons(GroupIcons.Expand);
+		//page.getGroupIcons(GroupIcons.Expand);
 		page.getPanel(Panel.valueOf("Actions"));
 		/** me_preselect_order=y */
 		page.getActionName("mbr docWP DMI ");
@@ -224,7 +224,7 @@ public class ProposedOrdersPage extends AppiumPageFactory {
 
 		try {
 			scrollDownIfNotDisplayed(containsElement(submit));
-			ifDownloaded(sending);
+			ifDownloaded(inProgress);
 			tap(Locator.XPATH, containsElement(ok));
 		} catch (WebDriverException e) {
 			e.getMessage();

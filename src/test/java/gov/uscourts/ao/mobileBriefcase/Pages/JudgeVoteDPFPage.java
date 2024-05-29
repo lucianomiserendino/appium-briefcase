@@ -129,7 +129,10 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(accessibility = "Annotations")
 	public static WebElement annotations;
-
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
+	public static List<WebElement> progress;
+	
 	public static String cyv_category = "";
 	public static String caseid = "";
 	public static String cyv_code = "";
@@ -316,7 +319,6 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 	public static void ifDocumentAccessbile(String docName) {
 
-
 		if (docName.equalsIgnoreCase("pdf")) {
 			performPageLoad(driver);
 
@@ -325,13 +327,13 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 			}
 			assertTrue(isDisplayed(pdf));
 			assertTrue(isDisplayed(pageLabel));
-			tap(close);
+			Page.waitToBeClickable(close, driver);
 
 		} else if (docName.equalsIgnoreCase("jpg")) {
 
 			assertTrue(driver.getPageSource()
 					.contains("The requested document cannot be displayed at this time. Invalid Document: dls"));
-			tap(close);
+			Page.waitToBeClickable(close, driver);
 		}
 	}
 
@@ -442,17 +444,27 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	}
 
 	public void verifyDocumentIsDisplayed() {
-		getVote(rl_list_text).click();
-		if (dm_description.length() > 0) {
 
-			assertTrue(isDisplayed(Locator.XPATH, containsElement(dm_description)));
-			Actions.contains(dm_description).click();
-			ifDocumentAccessbile(dm_description);
+		String el = null;
+
+		getVote(rl_list_text).click();
+
+		if (dm_description.length() > 0) {
+			el = dm_description;
+
 		} else {
-			assertTrue(isDisplayed(Locator.XPATH, containsElement(dm_file_name)));
-			Actions.contains(dm_file_name).click();
-			ifDocumentAccessbile(dm_file_name);
+			if (dm_file_name.length() > 0) {
+				el = dm_description;
+
+			} else {
+				el = "Document";
+
+			}
 		}
+		assertTrue(isDisplayed(Locator.XPATH, containsElement(el)));
+		Actions.contains(el).click();
+		CommonPages.ifDownloaded(progress);
+		ifDocumentAccessbile(el);
 
 	}
 

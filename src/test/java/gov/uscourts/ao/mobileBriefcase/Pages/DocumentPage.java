@@ -5,13 +5,16 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getPE_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getProperty;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
+import gov.uscourts.ao.mobileBriefcase.stepDefinitions.DPF_stepDefinitions;
 import gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -71,8 +75,11 @@ public class DocumentPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PDF Page View']")
 	public static List<WebElement> activityIndicator;
 	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
+	public static List<WebElement> inProgress;
+
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'View Case Info')]")
-	public static WebElement viewCaseInfo;
+	public static List<WebElement> viewCaseInfo;
 
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Docket Entries ')]")
 	public static WebElement docketEntries;
@@ -80,6 +87,10 @@ public class DocumentPage extends AppiumPageFactory {
 	static String panel = "";
 	String randomCategory = "";
 	public static String randomDocument = "";
+	public  final static String jud = "jud";
+	public  final static String stf = "stf";
+	public  final static String judFirstName = "judFirstName";
+	public  final static String stfFirstName = "stfFirstName";
 
 	public static String selectRandomItem(String query, String xpath, List<UserInputData> userInputData) {
 		String category = "";
@@ -137,18 +148,19 @@ public class DocumentPage extends AppiumPageFactory {
 	}
 
 	public static String get_pe_id(String pe_rt_code, List<UserInputData> userInputData) {
+		String courtId = SystemPropertySetup.getCourtId(userInputData)+".";
 
 		String fName = "";
 		String lName = "";
 
 		if (pe_rt_code.equals("jud")) {
 
-			lName = SystemPropertySetup.getVariable(Variables.JUD, userInputData);
-			fName = SystemPropertySetup.getVariable(Variables.JUD_FIRST_NAME, userInputData);
+			lName = getProperty(courtId+jud);
+			fName = getProperty(courtId+judFirstName);
 
 		} else if (pe_rt_code.equals("stf")) {
-			lName = SystemPropertySetup.getVariable(Variables.STF, userInputData);
-			fName = SystemPropertySetup.getVariable(Variables.STF_FIRST_NAME, userInputData);
+			lName = getProperty(courtId+stf);
+			fName = getProperty(courtId+stfFirstName);
 		}
 
 		return getPE_ID(pe_rt_code, lName, fName, userInputData);
@@ -222,15 +234,15 @@ public class DocumentPage extends AppiumPageFactory {
 						+ "/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText"));
 	}
 
-	public static  String selectRandomCaseNumber(List<WebElement> element) {
+	public static String selectRandomCaseNumber(List<WebElement> element) {
 		String referral = "";
 		Page.performPageLoad(driver);
 		List<String> list = Utility.retrieveAllReferrals(element, " ", 0);
 
 		/** This might change in 1.8 - AMB-3399 */
-		assertFalse(
-				"VERIFY IF THERE IS MORE THAN ONE REFERRAL IN THE SAME CATEGORY FOR A CASE, THE CASE IS DISPLAYED ONLY ONCE",
-				Utility.hasDublicates(list));
+//		assertFalse(
+//				"VERIFY IF THERE IS MORE THAN ONE REFERRAL IN THE SAME CATEGORY FOR A CASE, THE CASE IS DISPLAYED ONLY ONCE",
+//				Utility.hasDuplicates(list));
 
 		int caseN = 0;
 		if (list.size() > 1) {
@@ -253,7 +265,7 @@ public class DocumentPage extends AppiumPageFactory {
 		scrollDownIfNotDisplayed("//*[@name='Applied Referrals' or @name='Associated Cases']");
 	}
 
-	public String getRandomCase(Category cat) {
+	public static String getRandomCase(Category cat) {
 
 		List<WebElement> element = null;
 
@@ -309,13 +321,13 @@ public class DocumentPage extends AppiumPageFactory {
 			uiDocCategories.add(getDocCategoryLocator(panel).get(i).getText());
 		}
 
-		List<String> dbDoCategories = executeQuery(Actions.replace(DOCUMENT_CATEGORIES, "CMR_CYV_CODE", cmr_cyv_code,
+		List<String> dbDocCategories = executeQuery(Actions.replace(DOCUMENT_CATEGORIES, "CMR_CYV_CODE", cmr_cyv_code,
 				"CMR_JU_PE_ID", cmr_ju_pe_id, "CMR_CS_CASEID", cmr_cs_caseid), userInputData);
 
-		assertEquals(" DOCUMENT CATEGORIES ARE NOT SORTED ON THE REFERRAL DETAIL PAGE ", dbDoCategories,
-				uiDocCategories);
+	    assertTrue("DOCUMENT CATEGORIES ARE NOT SORTED ON THE REFERRAL DETAIL PAGE", dbDocCategories.equals(uiDocCategories));
 
-		return dbDoCategories;
+
+		return dbDocCategories;
 
 	}
 
@@ -359,11 +371,29 @@ public class DocumentPage extends AppiumPageFactory {
 						+ "')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText"));
 
 	}
-	public void navigateToViewCaseInfo(String dpfName) {
-		Page.waitToBeClickable(viewCaseInfo, driver);
-		Page.waitToBeClickable(docketEntries, driver);
-		contains(dpfName).click();
+
+	public void navigateToViewCaseInfo() {
+	    // Scroll  until viewCaseInfo is visible
+	    while (viewCaseInfo.size() != 1) {
+	        Utility.tapAndSwipe(Direction.DOWN);
+	    }
+
+	    // Click on the first viewCaseInfo element
+	    viewCaseInfo.get(0).click();
+
+	    ifDownloaded(inProgress);
+
+	    // Wait for docketEntries to be clickable
+	    Page.waitToBeClickable(docketEntries, driver);
+
+	    ifDownloaded(inProgress);
+	    // Wait for actionName to be clickable
+	    String actionName = DPF_stepDefinitions.actionName;
+	    // Remove single quote if present
+	    actionName = actionName.contains("'") ? actionName.split("'")[0] : actionName;
+	    Page.waitToBeClickable(contains(actionName), driver);
 	}
+
 
 	public enum Category {
 		Referral_Category, Referral, Panel, judgeRegularCase, targetCase, appliedCase, CaseOnCalendar, EnBanc

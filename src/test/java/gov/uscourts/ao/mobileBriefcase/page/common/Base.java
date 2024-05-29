@@ -19,7 +19,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import io.appium.java_client.ios.IOSDriver;
-import io.appium.java_client.remote.SupportsContextSwitching;
 
 public abstract class Base implements iOSCapabilities {
 
@@ -145,17 +144,26 @@ public abstract class Base implements iOSCapabilities {
 	 */
 	public static void changeWindow(String type) {
 		try {
+			// Perform the initial page load
 			Page.performPageLoad(driver);
+
+			// Get the available context handles (windows)
 			Set<String> windows = ((IOSDriver) driver).getContextHandles();
+
+			// Iterate through the context handles
 			for (String window : windows) {
-				if (window.contains(type))
+				// Switch to the context that contains the specified type
+				if (window.contains(type)) {
 					driver.context(window);
-				((SupportsContextSwitching) driver).getContextHandles();
+					break; // Exit the loop once the desired context is found
+				}
 			}
 		} catch (WebDriverException e) {
-
+			// Log the exception and rethrow it to ensure it's not silently ignored
+			System.err.println("Error changing window context to: " + type);
+			e.printStackTrace();
+			throw e;
 		}
-
 	}
 
 	public static List<String> getUdid(String ipad) {

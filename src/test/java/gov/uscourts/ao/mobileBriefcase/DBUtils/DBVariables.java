@@ -10,7 +10,7 @@ public interface DBVariables {
 
 	public static final String PASS = "Pass";
 
-	public static final String PORT_NUMBER = "portNumber";
+	public static final String PORT_NUMBER = "db.portNumber";
 
 	public static final String CMKA_DBURL = "dbUrlCMKA";
 

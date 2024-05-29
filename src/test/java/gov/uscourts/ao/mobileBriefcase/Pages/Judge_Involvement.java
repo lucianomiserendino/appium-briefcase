@@ -7,7 +7,9 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -44,54 +46,42 @@ public class Judge_Involvement extends AppiumPageFactory {
 	static String cmr_ju_pe_id = "";
 
 	public void selectCaseWithInvolvement(List<UserInputData> userInputData) {
-		cmr_ju_pe_id += DocumentPage.get_pe_id("jud", userInputData);
 
-		List<String> referralCategories = executeQuery(
-				getID(replace(NON_ORALLY_ARGUED_CASES, "CMR_CYV_CODE", "lbrrpt"), cmr_ju_pe_id), userInputData);
-		sort(referralCategories);
+	    cmr_ju_pe_id += DocumentPage.get_pe_id("jud", userInputData);
 
-		Boolean elementNotFound = true;
+	    // Retrieve and sort the referral categories
+	    List<String> referralCategories = executeQuery(
+	        getID(replace(NON_ORALLY_ARGUED_CASES, "CMR_CYV_CODE", "lbrrpt"), cmr_ju_pe_id), userInputData);
+	    Collections.sort(referralCategories);
 
-		while (elementNotFound) {
+	    boolean elementNotFound = true;
 
-			for (int i = 0; i < referralCategories.size(); ++i) {
+	    while (elementNotFound) {
+	        for (String category : referralCategories) {
+	            Utility.scrollDownIfNotDisplayed(refCatList + "[contains(@name, '" + category + "')]");
+	            performPageLoad(driver);
 
-				Utility.scrollDownIfNotDisplayed(refCatList + "[contains(@name, '" + referralCategories.get(i) + "')]");
+	            if (caseWithInvolvement.size() > 0) {
+	                categoryName += category;
+	                Page.performPageLoad(driver);
 
-				performPageLoad(driver);
+	                List<String> caseList = Utility.retrieveAllReferrals(caseWithInvolvement, " ", 0);
 
-				if (caseWithInvolvement.size() > 0) {
+	                int caseIndex = (caseList.size() > 1) ? Utility.getRandomInt(caseList.size() - 1) : 0;
 
-					categoryName += referralCategories.get(i);
+	                caseNum += caseList.get(caseIndex);
+	                elementNotFound = false;
 
-					Page.performPageLoad(driver);
-					List<String> list = Utility.retrieveAllReferrals(caseWithInvolvement, " ", 0);
-
-					int caseN = 0;
-					if (list.size() > 1) {
-						caseN = Utility.getRandomInt(list.size() - 1);
-
-					} else {
-						caseN = 0;
-					}
-
-					caseNum += list.get(caseN);
-
-					elementNotFound = false;
-
-					break;
-
-				} else {
-					dashboard.click();
-					Utility.scroll(categories, "up");
-					elementNotFound = true;
-				}
-
-			}
-
-		}
-
+	                break;
+	            } else {
+	                dashboard.click();
+	                Utility.scroll(categories, "up");
+	                elementNotFound = true;
+	            }
+	        }
+	    }
 	}
+
 
 	public String getInvolvementCode(WebElement el) {
 		Page.sleep(1000);
@@ -100,21 +90,31 @@ public class Judge_Involvement extends AppiumPageFactory {
 	}
 
 	public void ifCorrectPanelInvolvementFound(List<UserInputData> userInputData) {
+	    try {
+	        // Get UI involvement code
+	        String uiInvCode = getInvolvementCode(
+	                Actions.findElement(By.xpath(invCodeFromRefDetailPage.replace("CaseNumber", caseNum))));
 
-		String uiInvCode = getInvolvementCode(
-				Actions.findElement(By.xpath(invCodeFromRefDetailPage.replace("CaseNumber", caseNum))));
+	        // Get case ID
+	        String cmr_cs_caseid = CommonPages.getCaseID(caseNum, userInputData);
 
-		String cmr_cs_caseid = CommonPages.getCaseID(caseNum, userInputData);
+	        
+	        String cmr_cyv_code = CommonPages.cmr_cyv_code(categoryName, cmr_cs_caseid, userInputData).trim();
 
-		String cmr_cyv_code = CommonPages.cmr_cyv_code(categoryName, cmr_cs_caseid, userInputData).trim();
+	        // Get DB involvement code
+	        String dbInvCode = DBUtilities.getAllColumns(
+	                getID(replace(Queries.JUDGE_INVOLVEMENT, "CS_CASEID", cmr_cs_caseid, "CMR_CYV_CODE", cmr_cyv_code),
+	                        cmr_ju_pe_id),
+	                userInputData).trim();
 
-		String dbInvCode = DBUtilities.getAllColumns(
-				getID(replace(Queries.JUDGE_INVOLVEMENT, "CS_CASEID", cmr_cs_caseid, "CMR_CYV_CODE", cmr_cyv_code),
-						cmr_ju_pe_id),
-				userInputData).trim();
+	        // Verify if UI involvement code matches DB involvement code
+	        assertEquals("Verify judge involvement found via chm_mobile_referral.cmr_ic_code", uiInvCode, dbInvCode);
 
-		assertEquals("Verify judge involvement found via chm_mobile_referral.cmr_ic_code", uiInvCode, dbInvCode);
-
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        fail("An error occurred while verifying judge involvement: " + e.getMessage());
+	    }
 	}
+
 
 }

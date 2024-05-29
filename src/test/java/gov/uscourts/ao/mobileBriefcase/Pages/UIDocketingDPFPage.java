@@ -3,6 +3,7 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
@@ -10,6 +11,7 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -67,6 +69,9 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Description']")
 	public static WebElement description;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Progress halted' or @name='In progress']")
+	public static List<WebElement> activityIndicator;
 
 	public String submit = "//XCUIElementTypeStaticText[@name='Submit']";
 
@@ -74,31 +79,32 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 
 	public static String uiParam = "";
 
-	public void verifyFieldsAreDisplayed(List<UserInputData> userInputData) {
-		String actionName = DPF_stepDefinitions.actionName;
+	public void verifyFieldsAreDisplayedAndEditable(List<UserInputData> userInputData) {
+	    String actionName = DPF_stepDefinitions.actionName;
+	    String elId = getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
 
-		String elId = getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
+	    try {
+	        // Verify default description is displayed
+	        getDefaulDescription("note", elId, userInputData);
 
-		try {
+	        // Verify and populate comment field
+	        if (commentField.getText().isEmpty()) {
+	            commentField.sendKeys(note);
+	        } else {
+	            throw new RuntimeException("Comment field is not empty or not editable.");
+	        }
 
-			getDefaulDescription("note", elId, userInputData);
+	        // Scroll down to submit button if not displayed
+	        scrollDownIfNotDisplayed(submit);
 
-			if (commentField.getText().length() == 0) {
+	        ifDownloaded(activityIndicator);
 
-				commentField.sendKeys(note);
-			} else {
-				throw new RuntimeException("Verify an editable comment field displays and it does not contain text.");
-			}
-
-			scrollDownIfNotDisplayed(submit);
-			Page.sleep(1000);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-
-		}
-
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        fail("An error occurred while verifying fields are displayed and editable: " + e.getMessage());
+	    }
 	}
+
 
 	/**
 	 * Verify an editable description field displays. The default description is
@@ -135,9 +141,14 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 	}
 
 	public void verifyElementIsDisplayed(String text) {
-		assertTrue(isDisplayed(Locator.XPATH, containsElement(text)));
-
+	    try {
+	        assertTrue("Verify " + text + " is displayed", isDisplayed(Locator.XPATH, containsElement(text)));
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        fail("An error occurred while verifying if " + text + " is displayed: " + e.getMessage());
+	    }
 	}
+
 
 	public static String replaceWithEmptyString(String text, String charac) {
 		if (text.contains(charac))
@@ -180,11 +191,16 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 	}
 
 	public void isNoteTextTPFSupported() {
+	    String elementXpath = containsElement(uiParam);
+	    String docketTextXpath = containText("Docket Text");
+	    String noteXpath = containText(note);
 
-		assertTrue("Verify the docket entry page in Briefcase displays the Docket Text & Note",
-				isDisplayed(Locator.XPATH, containsElement(uiParam) + containText("Docket Text") + containText(note)));
+	    String combinedXpath = elementXpath + docketTextXpath + noteXpath;
 
+	    assertTrue("Verify the docket entry page in Briefcase displays the Docket Text & Note",
+	               isDisplayed(Locator.XPATH, combinedXpath));
 	}
+
 
 	public String containText(String txt) {
 		return "/following::XCUIElementTypeStaticText[contains(@name, '" + txt + "')]";

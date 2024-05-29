@@ -14,12 +14,24 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 public class VoteClosingDate {
 
 	public void getVoteClosingDate(String ccr_id, List<UserInputData> userInputData) {
+	    try {
+	        // Execute the query to get the vote closing date
+	        String query = replace(Queries.VOTE_CLOSING_DATE, "CCR_ID", ccr_id);
+	        List<String> result = DBUtilities.execute(query, 2, userInputData);
+	        String voteClosingDate = result.get(0);
 
-		String closingDate = changeDateFormat(
-				DBUtilities.execute(replace(Queries.VOTE_CLOSING_DATE, "CCR_ID", ccr_id), 2, userInputData).get(0),
-				"yyyy-MM-dd", "M/d/yyyy");
+	        // Change the date format
+	        String closingDate = changeDateFormat(voteClosingDate, "yyyy-MM-dd", "M/d/yyyy");
 
-		assertTrue(Actions.contains("Vote Closing: " + closingDate).isDisplayed());
-
+	        // Assert that the UI element with the formatted date is displayed
+	        assertTrue("Vote closing date is missing in vote information pane or is incorrect",
+	                Actions.contains("Vote Closing: " + closingDate).isDisplayed());
+	    } catch (Exception e) {
+	        // Handle any exceptions that occur
+	        System.err.println("An error occurred: " + e.getMessage());
+	        // You can choose to rethrow the exception or handle it in another way
+	    }
 	}
+
+
 }

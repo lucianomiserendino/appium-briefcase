@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,33 +56,28 @@ public class ToolsPage extends AppiumPageFactory {
 	public static WebElement submit;
 
 	public void getToolsCategory() {
+	    scrollUp();
 
-		scrollUp();
+	    int toolSize = tools.size();
+	    int redBulletCount = redBullet.size();
 
-		int toolSize = tools.size();
-		int redBulletCount = redBullet.size();
-
-		if (CommonPages.siVal.equalsIgnoreCase("n")) {
-			assertTrue("The left nav displays the Tools category, even when briefcaseDisplayTools is set to 'n'. ",
-					toolSize == 0);
-		} else {
-
-			assertTrue(
-					"The left nav doesn't display the Tools category, even when briefcaseDisplayTools is set to 'y'. ",
-					toolSize >= 1);
-			assertTrue("the Tools icon displays a red badge with a count in it ", redBulletCount == 0);
-		}
+	    if (CommonPages.siVal.equalsIgnoreCase("n")) {
+	        assertTrue("The left nav displays the Tools category, even when briefcaseDisplayTools is set to 'n'.", toolSize == 0);
+	    } else {
+	        assertTrue("The left nav doesn't display the Tools category, even when briefcaseDisplayTools is set to 'y'.", toolSize >= 1);
+	        assertTrue("The Tools icon displays a red badge with a count in it.", redBulletCount == 0);
+	    }
 	}
 
 	public void applyWithoutExistingClerk() {
-		tools.get(0).click();
-		if (Actions.isDisplayed(applyAll) == true) {
-			applyAll.click();
+	    tools.get(0).click();
+	    
+	    if (Actions.isDisplayed(applyAll)) {
+	        applyAll.click();
 
-			boolean progressBar = driver.getPageSource().contains("Please select an existing clerk");
-			assertTrue("Tapping 'Apply All' without existing clerk is not generating a message", progressBar);
-
-		}
+	        boolean progressBar = driver.getPageSource().contains("Please select an existing clerk");
+	        assertTrue("Tapping 'Apply All' without existing clerk is not generating a message.", progressBar);
+	    }
 	}
 
 	public void scrollUp() {
@@ -90,147 +86,166 @@ public class ToolsPage extends AppiumPageFactory {
 	}
 
 	public void isSortedInDescending(List<UserInputData> userInputData) {
-		int index;
-		List<String> pr_first_name = getListOfLwks(2, userInputData);
-		List<String> pr_last_name = getListOfLwks(3, userInputData);
+	    // Retrieve first and last names
+	    List<String> firstNames = getListOfLwks(2, userInputData);
+	    List<String> lastNames = getListOfLwks(3, userInputData);
 
-		if (pr_first_name.size() > 1) {
-			index = Utility.getRandomNumberInRange(0, pr_first_name.size() - 1);
-		} else {
-			index = 0;
-		}
-      
-		selectExistingClerk(pr_first_name.get(index).trim() + " " + pr_last_name.get(index).trim());
+	    // Get a random index within the bounds of the firstNames list
+	    int index = (firstNames.size() > 1) ? Utility.getRandomNumberInRange(0, firstNames.size() - 1) : 0;
 
-		ReferralSortOrderPage page2 = new ReferralSortOrderPage();
+	    // Select an existing clerk by combining first and last names
+	    selectExistingClerk(firstNames.get(index).trim() + " " + lastNames.get(index).trim());
 
-		List<String> referralsSortedByDescOrd = page2.assignmentsSortedByCase();
+	    // Create an instance of ReferralSortOrderPage
+	    ReferralSortOrderPage sortOrderPage = new ReferralSortOrderPage();
 
-		List<String> beforeReversing = referralsSortedByDescOrd;
-		Collections.reverse(referralsSortedByDescOrd);
-		assertTrue("REFERRALS ARE NOT SORTED BY CASE NUMBER IN DESCENDING ORDER ------> " + beforeReversing,
-				Utility.checkIfSorted(referralsSortedByDescOrd));
+	    // Retrieve the list of assignments sorted by case number in descending order
+	    List<String> assignments = sortOrderPage.assignmentsSortedByCase();
+	    Collections.reverse(assignments);
+	    // Check if the assignments list is already sorted in descending order
+	    boolean isSortedDesc = Utility.checkIfSorted(assignments);
 
+	    // Assert that the list is sorted in descending order
+	    assertTrue("REFERRALS ARE NOT SORTED BY CASE NUMBER IN DESCENDING ORDER ------> " + assignments, isSortedDesc);
 	}
+
+	public List<String> getListOfLwks(int columnIndex, List<UserInputData> userInputData) {
+	    String peId = DocumentPage.get_pe_id("jud", userInputData);
+	    return execute(getID(DUPLICATED_LWK, peId), columnIndex, userInputData);
+	}
+
 
 	public void scrollThroughTheList(String existingClerk) {
+	    // Pause to ensure the dropdown is fully loaded
+	    Page.sleep(1000);
+	    JavascriptExecutor js = (JavascriptExecutor) driver;
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("order", "next");
+	    params.put("offset", 0.1);
+	    params.put("element", ((RemoteWebElement) dropDown).getId());
 
-		Page.sleep(1000);
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		Map<String, Object> params = new HashMap<>();
-		params.put("order", "next");
-		params.put("offset", 0.1);
-		params.put("element", ((RemoteWebElement) dropDown).getId());
-
-		if (existingClerk.equals("")) {
-			js.executeScript("mobile: selectPickerWheelValue", params);
-		} else {
-			Boolean elementNotFound = true;
-			while (elementNotFound) {
-
-				js.executeScript("mobile: selectPickerWheelValue", params);
-				if (dropDown.getText().trim().equals(existingClerk)) {
-					elementNotFound = false;
-
-					break;
-
-				} else {
-					elementNotFound = true;
-
-				}
-			}
-		}
-		done.click();
+	    if (existingClerk.isEmpty()) {
+	        // Scroll through the list without looking for a specific clerk
+	        js.executeScript("mobile: selectPickerWheelValue", params);
+	    } else {
+	        boolean elementNotFound = true;
+	        while (elementNotFound) {
+	            js.executeScript("mobile: selectPickerWheelValue", params);
+	            // Check if the current dropdown text matches the existingClerk
+	            if (dropDown.getText().trim().equals(existingClerk)) {
+	                elementNotFound = false;
+	            }
+	        }
+	    }
+	    // Click the done button after finding the desired clerk or finishing the scroll
+	    done.click();
 	}
+
 
 	public void selectExistingClerk(String existingClerk) {
-		dashboard.click();
-		scrollUp();
+	    // Click on the dashboard button
+	    dashboard.click();
 
-		int toolSize = tools.size();
-		if (CommonPages.siVal.equalsIgnoreCase("n")) {
-			assertTrue("The left nav displays the Tools category, even when briefcaseDisplayTools is set to 'n'. ",
-					toolSize == 0);
-		} else {
-			tools.get(0).click();
-			exsitingClerkBtn.click();
-			scrollThroughTheList(existingClerk);
-		}
+	    // Scroll up to refresh the view or access the tools
+	    scrollUp();
 
+	    // Get the size of the tools list
+	    int toolSize = tools.size();
+
+	    // Check if tools should be displayed based on siVal
+	    if (CommonPages.siVal.equalsIgnoreCase("n")) {
+	        // Verify that no tools are displayed if siVal is 'n'
+	        assertTrue("The left nav displays the Tools category, even when briefcaseDisplayTools is set to 'n'.", toolSize == 0);
+	    } else {
+	        // If tools should be displayed, click on the first tool
+	        tools.get(0).click();
+	        
+	        // Click on the existing clerk button
+	        exsitingClerkBtn.click();
+	        
+	        // Scroll through the list to find the specified clerk
+	        scrollThroughTheList(existingClerk);
+	    }
 	}
 
-	public List<String> getListOfLwks(int i, List<UserInputData> userInputData) {
-		String pe_id = DocumentPage.get_pe_id("jud", userInputData);
-		return execute(getID(DUPLICATED_LWK, pe_id), i, userInputData);
-	}
+
 
 	public void duplicateAssignments(List<UserInputData> userInputData) {
-		try {
-			int index = 0;
+	    try {
+	        // Retrieve data from user input
+	        List<String> firstNames = getListOfLwks(2, userInputData);
+	        List<String> lastNames = getListOfLwks(3, userInputData);
+	        List<String> cavDisplay = getListOfLwks(4, userInputData);
+	        List<String> cyvDisplay = getListOfLwks(5, userInputData);
+	        List<String> caseNumbers = getListOfLwks(6, userInputData);
 
-			List<String> list = new ArrayList<>();
+	        // Combine relevant data into a single list for duplicate checking
+	        List<String> combinedList = new ArrayList<>();
+	        for (int i = 0; i < firstNames.size(); i++) {
+	            combinedList.add(cavDisplay.get(i).trim() + ", " + cyvDisplay.get(i).trim() + ", " + caseNumbers.get(i).trim());
+	        }
 
-			List<String> pr_first_name = getListOfLwks(2, userInputData);
-			List<String> pr_last_name = getListOfLwks(3, userInputData);
-			List<String> cav_display = getListOfLwks(4, userInputData);
-			List<String> cyv_display = getListOfLwks(5, userInputData);
-			List<String> casenum = getListOfLwks(6, userInputData);
+	        // Find duplicates in the combined list
+	        List<String> duplicates = findDuplicates(combinedList);
 
-			for (int i = 0; i < pr_first_name.size(); i++) {
-				list.add(cav_display.get(i).trim() + ", " + cyv_display.get(i).trim() + ", " + casenum.get(i).trim());
+	        if (!duplicates.isEmpty()) {
+	            // Select a random duplicate entry
+	            int randomIndex = Utility.getRandomNumberInRange(0, duplicates.size() - 1);
+	            String[] duplicateIndices = duplicates.get(randomIndex).split(" ");
 
-			}
+	            int index1 = Integer.parseInt(duplicateIndices[0]);
+	            int index2 = Integer.parseInt(duplicateIndices[1]);
 
-			List<String> duplicates = findDuplicates(list);
+	            String clerkName1 = firstNames.get(index1).trim() + " " + lastNames.get(index1).trim();
+	            String clerkName2 = firstNames.get(index2).trim() + " " + lastNames.get(index2).trim();
 
-			int dupSize = duplicates.size();
+	            selectExistingClerk(clerkName1);
+	            tapIndividualClerk(caseNumbers.get(index1).trim(), cyvDisplay.get(index1).trim(), cavDisplay.get(index1).trim());
+	            scrollThroughTheList(clerkName2);
 
-			if (dupSize >=1) {
-				index = Utility.getRandomNumberInRange(0, dupSize - 1);
-				int lwk1 = Integer.parseInt(duplicates.get(index).split(" ")[0]);
-				int lwk2 = Integer.parseInt(duplicates.get(index).split(" ")[1]);
-
-				String lwkName1 = pr_first_name.get(lwk1).trim() + " " + pr_last_name.get(lwk1).trim();
-				String lwkName2 = pr_first_name.get(lwk2).trim() + " " + pr_last_name.get(lwk2).trim();
-
-				selectExistingClerk(lwkName1);
-				tapIndividualClerk(casenum.get(lwk1).trim(), cyv_display.get(lwk1).trim(),
-						cav_display.get(lwk1).trim());
-				scrollThroughTheList(lwkName2);
-
-				submit.click();
-
-				boolean duplicatedAssignmentMsg = driver.getPageSource()
-						.contains("Duplicated Assignment found for " + lwkName2);
-
-				assertTrue("Verify that user is prevented from creating duplicate assignments" + lwkName1 + " : "
-						+ lwkName2, duplicatedAssignmentMsg);
-
-			} else {
-				throw new RuntimeException(
-						"Ensure there is law clerk assignments of a specific type in a specific referral, but assigned to two different law clerks, lwk list: "
-								+ pr_first_name + " " + pr_last_name);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	            // Submit and verify duplication message
+	            submit.click();
+	            boolean duplicatedAssignmentMsg = driver.getPageSource().contains("Duplicated Assignment found for " + clerkName2);
+	            assertTrue("Verify that user is prevented from creating duplicate assignments: " + clerkName1 + " : " + clerkName2, duplicatedAssignmentMsg);
+	        } else {
+	            throw new RuntimeException("Ensure there are law clerk assignments of a specific type in a specific referral, but assigned to two different law clerks. Law clerk list: " + firstNames + " " + lastNames);
+	        }
+	    } catch (RuntimeException e) {
+	        System.err.println(e.getMessage());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
+
 
 	public List<String> findDuplicates(List<String> list) {
-		List<String> duplicates = new ArrayList<>();
-		for (int i = 0; i < list.size(); i++) {
-			for (int j = i + 1; j < list.size(); j++) {
+	    Map<String, List<Integer>> indexMap = new HashMap<>();
+	    List<String> duplicates = new ArrayList<>();
 
-				if (list.get(i).equals(list.get(j))) {
+	    // Populate the map with list entries and their indices
+	    for (int i = 0; i < list.size(); i++) {
+	        String item = list.get(i);
+	        if (!indexMap.containsKey(item)) {
+	            indexMap.put(item, new ArrayList<>());
+	        }
+	        indexMap.get(item).add(i);
+	    }
 
-					duplicates.add(i + " " + j);
+	    // Find duplicates by checking the map
+	    for (Map.Entry<String, List<Integer>> entry : indexMap.entrySet()) {
+	        List<Integer> indices = entry.getValue();
+	        if (indices.size() > 1) {
+	            for (int i = 0; i < indices.size(); i++) {
+	                for (int j = i + 1; j < indices.size(); j++) {
+	                    duplicates.add(indices.get(i) + " " + indices.get(j));
+	                }
+	            }
+	        }
+	    }
 
-				}
-			}
-
-		}
-		return duplicates;
+	    return duplicates;
 	}
+
 
 	public void tapIndividualClerk(String caseNum, String cyv_display, String cav_display) {
 

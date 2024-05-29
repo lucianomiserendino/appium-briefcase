@@ -59,9 +59,6 @@ public class EnBancPage extends AppiumPageFactory {
 
 	String select = "Please Select";
 
-	public void getViewVotes() {
-
-	}
 
 	public String getReffCategories(String pe_id, List<UserInputData> userInputData) {
 		List<String> referralCategories = executeQuery(

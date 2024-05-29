@@ -11,12 +11,12 @@ Scenario:
 4.  Each judge's vote and the date they voted
 
 		#Given I am logged into Briefcase 
-		#|environment|userName| password |courtId|
-		#|test       |test    | test     |test   |
-		
-	Then I select a user 
-		|userType   |personrole        |jud     |
-		|judge      |Appellate Judges  |test    |
+		#|environment|user    |
+		#|test       |sysadmin|
+			
+		Then I select a user 
+		|userType   |personrole        |jud      |user     |
+		|judge      |Appellate Judges  |test     |sysadmin |
 			
 	Then User selects random judge category
 		|courtId|
@@ -26,21 +26,13 @@ Scenario:
 		|courtId|
 		|test   |		
 	
-	Given User observes the "Vote_Information" panel displays.   This should only display if the referral requires voting 
+	Given User observes the Vote Information panel displays.   This should only display if the referral requires voting 
 	
-	Then   for each referral, observes the filer's name  first initial of pr_middle_name gn_display  party type and date filed displays in a light blue heading.
+	Then  For each referral, observe the filer's name (pr_last_name, pr_first_name, first initial of pr_middle_name, gn_display) party type (pt_description) and date filed (de_date_filed) displays in a light blue heading
+	 
 	
-	
-	
-	#Use  "<cmr_ju_pe_id>" , "<cmr_cs_caseid>" ,"<cmr_cyv_code>" , "<ccr_id>" 
-
-	#Then  User checks each judge's vote  and the date  displays under their initials, using  "<ccr_id>" 
-	#	|courtId|
-	#	|test   |
+	Then  User checks each judge's vote  and the date  displays under their initials, using  ccr_id
+		|courtId|
+		|test   |
 		
-	#Examples: 
-	#	|server         |refCategory  | caseNum |dbType| cmr_cs_caseid |cmr_ju_pe_id|cmr_cyv_code|ccr_id|
-	#	|CMKA           |PETITION     | 15-3314  |CMKA  | 82226         |32          |prhr       |34870 |
-		
-	
 	

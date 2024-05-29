@@ -1,6 +1,5 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
@@ -9,14 +8,12 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.Category;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
@@ -104,18 +101,11 @@ public class SyncPage extends AppiumPageFactory {
 
 		case Case_Detail:
 
-			docPage.selectRandomJudgeCategory(userInputData);
-			docPage.getRandomCase(Category.judgeRegularCase);
-
+			// docPage.selectRandomJudgeCategory(userInputData);
+			// docPage.getRandomCase(Category.judgeRegularCase);
+			Page.waitForVisibilityOfElement(caseSyncBtn, driver);
 			Utility.doubleTap(page1.caseSyncBtn);
 			ifDownloaded(page1.activityIndicator);
-
-			List<String> categories = getDocumentCategories();
-
-			int randomDoc = Utility.getRandomNumberInRange(1, categories.size() - 1);
-			 categories.get(randomDoc).trim();
-
-			ifViewed();
 
 			break;
 
@@ -123,18 +113,6 @@ public class SyncPage extends AppiumPageFactory {
 			break;
 		}
 
-	}
-
-	public static List<String> getDocumentCategories() {
-
-		getGroupIcons(GroupIcons.Expand);
-		Page.performPageLoad(driver);
-		List<String> categories = new ArrayList<>();
-
-		for (int i = 0; i < docCategories.size(); i++) {
-			categories.add(docCategories.get(i).getText());
-		}
-		return categories;
 	}
 
 	public static String viewSyncResults() {

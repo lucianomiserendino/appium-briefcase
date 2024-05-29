@@ -8,14 +8,14 @@ Verify Case document sync decreases the total count in the device Sync button co
 
 
 		#Given I am logged into Briefcase 
-		#|environment|userName| password |courtId|
-		#|test       |test    | test     |test   |
-		
-	Then I select a user 
-		|userType   |personrole        |jud     |
-		|judge      |Appellate Judges  |test    |
+		#|environment|user    |
+		#|test       |sysadmin|
+			
+		Then I select a user 
+		|userType   |personrole        |jud      |user     |
+		|judge      |Appellate Judges  |test     |sysadmin |
       
-     And note the total documents available for download count in the Sync button on the Dashboard
+     And note the total documents available for download in the Sync button on the Dashboard
 		
 		Then User selects random judge category
 		|courtId|
@@ -25,7 +25,7 @@ Verify Case document sync decreases the total count in the device Sync button co
 		|courtId|
 		|test   |
 	
-	Then User expands/collapse panel
+	#Then User expands/collapse panel
 		
 	Then Verify that tapping the link in the Case Info panel downloads all original documents, decreases the total count in the device Sync button correctly
 		

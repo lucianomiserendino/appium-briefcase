@@ -49,6 +49,7 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.DPFs;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.stepDefinitions.DPF_stepDefinitions;
@@ -72,8 +73,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	static String cha_id = "";
 
 	String dpfName = "chmAssign";
-	String createSTF = "New Staff Assignment";
-	String actionName = "Auto Test";
+
 	static String elId = "";
 	static String name = "";
 	static String cha_ju_pe_id = "";
@@ -131,7 +131,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		return getChmAssign(assign, "act");
 	}
 
-	public void getCaseDetails(String caseNumber, String category, List<UserInputData> userInputData) {
+	public void getCaseDetails(String caseNumber, String category,String actionName, List<UserInputData> userInputData) {
 
 		elId += getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
 		cha_ju_pe_id += DocumentPage.get_pe_id("jud", userInputData);
@@ -242,6 +242,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 			sort(uiStaffMembers);
 		}
+
+		System.out.println(existing + "**********************************stfMember");
 		
 		if (existing == false) {
 			assertEquals("********STAFF MEMBERS VALIDATION ERROR!!!********", dbStaffMembers, uiStaffMembers);
@@ -285,6 +287,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 						uiAssignmenType, cha_ju_pe_id, caseNumber, cmr_cyv_code, pr_first_name, pr_last_name,
 						userInputData);
 			}
+			System.out.println(existing + "******************type");
 			if (existing == false) {
 				exitsingAssignmentType = clickOnNumberInRange(allAssignmenTypes);
 			} else {
@@ -338,11 +341,12 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		} catch (WebDriverException e) {
 			e.getMessage();
 		}
+		Page.waitForVisibilityOfElement(contains("Case Information"), driver);
 	}
 
 	public static void terminateStaffAssignment(List<UserInputData> userInputData) {
-		assignmentCompleted = selectADate(chmAssign.ASSIGNMENT_COMPLETED);
-		// assignmentCompleted = getChmAssign(chmAssign.ASSIGNMENT_COMPLETED, "text");
+		//assignmentCompleted = selectADate(chmAssign.ASSIGNMENT_COMPLETED);
+		 assignmentCompleted = getChmAssign(chmAssign.ASSIGNMENT_COMPLETED, "text");
 		contains(apply).click();
 		submiTransaction();
 
@@ -474,7 +478,6 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		ifDownloaded(sending);
 		// tap(Locator.XPATH, containsElement(yes));
 		tap(Locator.XPATH, containsElement(ok));
-
 	}
 
 	public static String getChmAssign(chmAssign asmnt, String action) {
@@ -652,7 +655,6 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 				selectBriefcaseAction("Actions", actionName);
 				scrollDownIfNotDisplayed("(" + containsElement("NewStaffButton") + ")[1]");
-
 			}
 
 			break;

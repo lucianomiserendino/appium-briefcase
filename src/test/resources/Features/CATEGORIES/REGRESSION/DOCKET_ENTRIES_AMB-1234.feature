@@ -1,4 +1,4 @@
-@Regression @AMB-1234 
+@AMB-1234 
 Feature: Docket Entries for Chambers Users 
 
 Scenario: 

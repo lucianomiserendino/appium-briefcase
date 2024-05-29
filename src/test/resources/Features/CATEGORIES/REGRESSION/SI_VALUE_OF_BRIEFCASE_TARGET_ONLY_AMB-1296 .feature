@@ -1,4 +1,4 @@
-@AMB @Regression @AMB-1399
+@AMB-1399
 Feature: Display referrals when site var briefcaseTargetOnly = n 
 
 

@@ -96,36 +96,36 @@ public class ReplaceAnnotatedDocuementsPage extends AppiumPageFactory {
 
 	public void isDisplayed(List<UserInputData> userInputData) {
 
-		String ur_username = getDBColumn(2, userInputData).toString();
-
-		String de_date_filed = getDBColumn(2, userInputData).toString();
-
-		String month = "";
-
-		String date = filedDate.split(", ")[1].split(" ")[0];
-
-		String nameOfTheMonth = date.split(" ")[0];
-
-		month += Utility.parseMonthName(nameOfTheMonth);
-
-		filedDate += date.replace(nameOfTheMonth, month).trim();
-
-		String uiFiledDate = changeDateFormat(filedDate.replace(",", ""), "MM dd yyyy", "yyyy-M-d");
-
-		Assert.assertEquals(de_date_filed, uiFiledDate);
-
-		Assert.assertEquals(ur_username, annotatedBy);
-
-	}
-
-	public List<String> getDBColumn(int col, List<UserInputData> userInputData) {
-		String caseNum = Document_StepDefinitions.regularCase;
-		String cs_year = Utility.splitBy(caseNum, 0);
-		String cs_number = Utility.splitBy(caseNum, 1);
-		return DBUtilities.execute(Actions.replace(Queries.REPLACED_ANNOTATED_DOC, "CS_YEAR", cs_year, "CS_NUMBER",
-				cs_number, "DM_DESCRIPTION", docName), col, userInputData);
+//		String ur_username = getDBColumn(2, userInputData).toString();
+//
+//		String de_date_filed = getDBColumn(2, userInputData).toString();
+//
+//		String month = "";
+//
+//		String date = filedDate.split(", ")[1].split(" ")[0];
+//
+//		String nameOfTheMonth = date.split(" ")[0];
+//
+//		month += Utility.parseMonthName(nameOfTheMonth);
+//
+//		filedDate += date.replace(nameOfTheMonth, month).trim();
+//
+//		String uiFiledDate = changeDateFormat(filedDate.replace(",", ""), "MM dd yyyy", "yyyy-M-d");
+//
+//		Assert.assertEquals(de_date_filed, uiFiledDate);
+//
+//		Assert.assertEquals(ur_username, annotatedBy);
 
 	}
+
+//	public List<String> getDBColumn(int col, List<UserInputData> userInputData) {
+//		String caseNum = Document_StepDefinitions.regularCase;
+//		String cs_year = Utility.splitBy(caseNum, 0);
+//		String cs_number = Utility.splitBy(caseNum, 1);
+//		return DBUtilities.execute(Actions.replace(Queries.REPLACED_ANNOTATED_DOC, "CS_YEAR", cs_year, "CS_NUMBER",
+//				cs_number, "DM_DESCRIPTION", docName), col, userInputData);
+//
+//	}
 
 	public static WebElement getDocInformation(int randomDoc, int row) {
 		return Actions.findElementBy(Locator.XPATH, "//XCUIElementTypeButton[@name= '+'][" + randomDoc

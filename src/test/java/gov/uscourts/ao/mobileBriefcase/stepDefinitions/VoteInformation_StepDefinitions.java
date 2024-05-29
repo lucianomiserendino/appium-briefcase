@@ -21,33 +21,35 @@ public class VoteInformation_StepDefinitions {
 	String cmr_cyv_code;
 	String caseNum = Document_StepDefinitions.regularCase;
 	String categroy = Document_StepDefinitions.judCategory;
+	String ccr_id = "";
 
-	@Given("^User observes the Vote_Information panel displays\\. This should only display if the referral requires voting$")
+	@Given("^User observes the Vote Information panel displays\\.   This should only display if the referral requires voting$")
 	public void user_observes_the_Vote_Information_panel_displays_This_should_only_display_if_the_referral_requires_voting() {
 		page1 = new CommonPages();
 		page1.getPanel(Panel.Vote_Information);
 	}
 
-	@Then("^for each referral, observes the filer's name  first initial of pr_middle_name gn_display  party type and date filed displays in a light blue heading\\.$")
-	public void for_each_referral_observes_the_filer_s_name_first_initial_of_pr_middle_name_gn_display_party_type_and_date_filed_displays_in_a_light_blue_heading() {
-		page = new VoteInformationPage();
+	@Then("^For each referral, observe the filer's name \\(pr_last_name, pr_first_name, first initial of pr_middle_name, gn_display\\) party type \\(pt_description\\) and date filed \\(de_date_filed\\) displays in a light blue heading$")
+	public void for_each_referral_observe_the_filer_s_name_pr_last_name_pr_first_name_first_initial_of_pr_middle_name_gn_display_party_type_pt_description_and_date_filed_de_date_filed_displays_in_a_light_blue_heading()
+			throws Throwable {
 		String caseNum = Document_StepDefinitions.regularCase;
 		List<UserInputData> userInputData = null;
 
-		String ccr_id = CommonPages.getCCRID(caseNum, userInputData);
+		ccr_id += CommonPages.getCCRID(caseNum, userInputData);
 		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
 		String cmr_cs_caseid = CommonPages.getCaseID(caseNum, userInputData);
 
 		cmr_cyv_code = CommonPages.cmr_cyv_code(Document_StepDefinitions.judCategory, cmr_cs_caseid, userInputData)
 				.trim();
-
+		page = new VoteInformationPage();
 		assertTrue(page.filersInfo(FILERs_INFO.VOTE_INFO_FILLRES_INFORMATION, cmr_ju_pe_id, cmr_cs_caseid, cmr_cyv_code,
 				ccr_id, userInputData));
 	}
 
-	@Then("^User checks each judge's vote  and the date  displays under their initials, using  \"([^\"]*)\"$")
-	public void user_checks_each_judge_s_vote_and_the_date_displays_under_their_initials_using(String ccr_id,
+	@Then("^User checks each judge's vote  and the date  displays under their initials, using  ccr_id$")
+	public void user_checks_each_judge_s_vote_and_the_date_displays_under_their_initials_using_ccr_id(
 			List<UserInputData> userInputData) {
+		page = new VoteInformationPage();
 		page.getJudesVote(FILERs_INFO.VOTE_INFO_FILLRES_INFORMATION, ccr_id, userInputData);
 	}
 
@@ -67,14 +69,18 @@ public class VoteInformation_StepDefinitions {
 
 	}
 
-	@Then("^User verifies that the judges' initials in the Vote_Information are sorted based on panel_to_judge\\.pj_judge_order or by judge\\.ju_seniority_sort$")
+	
+	@Then("^User verifies that the judges' initials in the Vote Information are sorted based on panel_to_judge\\.pj_judge_order or by judge\\.ju_seniority_sort$")
 	public void user_verifies_that_the_judges_initials_in_the_Vote_Information_are_sorted_based_on_panel_to_judge_pj_judge_order_or_by_judge_ju_seniority_sort(
 			List<UserInputData> userInputData) {
+		String caseNum = Document_StepDefinitions.regularCase;
+
+		ccr_id += CommonPages.getCCRID(caseNum, userInputData);
 		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
 		String cmr_cs_caseid = CommonPages.getCaseID(caseNum, userInputData);
 
-		cmr_cyv_code = CommonPages.cmr_cyv_code(categroy, cmr_cs_caseid, userInputData).trim();
-
+		String cmr_cyv_code = CommonPages.cmr_cyv_code(Document_StepDefinitions.judCategory, cmr_cs_caseid, userInputData)
+				.trim();
 		page = new VoteInformationPage();
 		page.getJudgeInitials("Vote_Information", caseNum, cmr_ju_pe_id, cmr_cyv_code, userInputData);
 	}

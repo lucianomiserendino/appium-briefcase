@@ -8,6 +8,7 @@ import gov.uscourts.ao.mobileBriefcase.Pages.DashboardPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.PendingTasksPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
+
 public class PendingTasks_StepDefinitions {
 
 	PendingTasksPage pending;
@@ -30,13 +31,13 @@ public class PendingTasks_StepDefinitions {
 	@Then("^Verify the Pending Tasks category \\(if available\\) will always display at the top of the Dashboard$")
 	public void verify_the_Pending_Tasks_category_if_available_will_always_display_at_the_top_of_the_Dashboard() {
 		page = new DashboardPage();
-		page.pendingTaskPosition("Dashboard");
+		page.verifyPendingTasksPosition("Dashboard");
 	}
 
 	@Then("^Verify the Pending Tasks category \\(if available\\) will always display at the top of the left navigation$")
 	public void verify_the_Pending_Tasks_category_if_available_will_always_display_at_the_top_of_the_left_navigation() {
 		page = new DashboardPage();
-		page.pendingTaskPosition("Navigation");
+		page.verifyPendingTasksPosition("Navigation");
 	}
 
 	@When("^User select a sub folder$")

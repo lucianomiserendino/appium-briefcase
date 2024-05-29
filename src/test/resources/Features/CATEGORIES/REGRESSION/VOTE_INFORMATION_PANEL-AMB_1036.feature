@@ -1,44 +1,6 @@
 Feature: Display Vote Information Panel, filer info and judge's initials 
-	Display Actions Panel and actions
-
-
-	
-@AMB-2534 
-Scenario Outline: 
-		#Given I am logged into Briefcase 
-		#|environment|userName| password |courtId|
-		#|test       |test    | test     |test   |
-		
-	Then I select a user 
-		|userType   |personrole        |jud     |
-		|judge      |Appellate Judges  |test    |
-						
-					Then User selects random judge category
-		|courtId|
-		|test   |
 			
-	Then User selects random case number
-		|courtId|
-		|test   |
 	
-	Given User observes ( "<dbType>" ) the "Vote_Information" panel displays.   This should only display if the referral requires voting 
-	Then User verifies that the judges' initials in the "<panel>" are sorted based on panel_to_judge.pj_judge_order or by judge.ju_seniority_sort, "<caseNum>", "<cmr_ju_pe_id>", "<cmr_cyv_code>", 
-	|courtId|
-	|test   |
-						
-						
-    Examples: 
-	|server         |refCategory  | caseNum |dbType| cmr_cs_caseid |cmr_ju_pe_id|cmr_cyv_code|panel    |
-	|CMKA           |PETITION     | 20-42410|CMKA  | 83429         |32          |prhr        |VoteInfo |
-						
-						
-	
-	
-	
-	
-	
-		
-		
 		@Smoke @AMB-1097 
 		Scenario Outline: 
 			Given I am logged into Briefcase 

@@ -5,17 +5,22 @@ Scenario: If the user selects a file to upload in the docWP DPF the name of the 
 and they are able to add a new document name in the "Enter Description" field.  Verify that user is able to enter a name/description
  and submits the transaction and the name is saved to the DB. 
        
-	Given I am logged into Briefcase 
-		|environment|userName| password |courtId|
-		|test       |test    | test     |test   |
-		
-	Then I select a user 
-		|userType   |personrole        |jud     |
-		|judge      |Appellate Judges  |test    |
+		Given I am logged into Briefcase 
+		|environment|user    |
+		|test       |sysadmin|
 			
-	Then User selects
-	|refCategory|caseNumber|
-	|test       |test      |
+		Then I select a user 
+		|userType   |personrole        |jud      |user     |
+		|judge      |Appellate Judges  |test     |sysadmin |
+		
+		
+		Then User selects random judge category
+		|courtId|
+		|test   |
+			
+	    Then User selects random case number
+		|courtId|
+		|test   |
 	
 	And Verify the individual case referrals have a Sync link in the Case Information panel that downloads the documents in that particular case.
 	

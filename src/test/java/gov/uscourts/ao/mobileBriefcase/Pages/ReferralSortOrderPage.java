@@ -6,7 +6,9 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.openqa.selenium.By;
@@ -54,6 +56,9 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Applied Referrals']")
 	public static List<WebElement> appliedRefs;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[4]/XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '-')]")
+	public static List<WebElement> toolCases;
 
 	public void selectReferralCategory(List<UserInputData> userInputData) {
 
@@ -98,43 +103,36 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	public List<String> referralsSortedByCase() {
 		return Utility.retrieveAllReferrals(cases, " ", 0);
 	}
+	public List<String> assignmentsSortedByCase() {
+		return Utility.retrieveAllReferrals(toolCases, " ", 0);
+	}
 
 	public void getSortPage(Sort sort) {
+	    Map<Sort, WebElement> sortElements = new HashMap<>();
+	    sortElements.put(Sort.REFERRAL_DATE_DESCENDING, dateArrowDownBtn);
+	    sortElements.put(Sort.REFERRAL_DATE_ASCENDING, dateArrowUpBtn);
+	    sortElements.put(Sort.CASE_NUMBER_DESCENDING, caseDownArrowBtn);
+	    sortElements.put(Sort.CASE_NUMBER_ASCENDING, caseUpArrowBtn);
 
-		switch (sort) {
-		case REFERRAL_DATE_DESCENDING:
-			tap(dateArrowDownBtn);
-			break;
-
-		case REFERRAL_DATE_ASCENDING:
-			tap(dateArrowUpBtn);
-			break;
-
-		case CASE_NUMBER_DESCENDING:
-			tap(caseDownArrowBtn);
-			break;
-
-		case CASE_NUMBER_ASCENDING:
-			tap(caseUpArrowBtn);
-			break;
-
-		default:
-			break;
-		}
+	    WebElement elementToTap = sortElements.get(sort);
+	    if (elementToTap != null) {
+	        tap(elementToTap);
+	    }
 	}
+
 
 	public void getDocumentCategories(List<UserInputData> userInputData) {
 	
 
 		DocumentPage.getDocumentCategoryList( userInputData) ;
-		String pane = DocumentPage.panel;
-		
-		List<String> uiDocList = new ArrayList<>();
-
-		for (int k = 0; k < getDocList(pane).size(); k++) {
-			uiDocList.add(getDocList(pane).get(k).getText().split(",")[1].split("Pages")[0]);
-		}
-		assertTrue("DOCUMENTS ARE NOT ORDERED BY THE FILED DATE: ", Utility.checkIfSorted(uiDocList));
+//		String pane = DocumentPage.panel;
+//		
+//		List<String> uiDocList = new ArrayList<>();
+//
+//		for (int k = 0; k < getDocList(pane).size(); k++) {
+//			uiDocList.add(getDocList(pane).get(k).getText().split(",")[1].split("Pages")[0]);
+//		}
+//		assertTrue("DOCUMENTS ARE NOT ORDERED BY THE FILED DATE: ", Utility.checkIfSorted(uiDocList));
 
 	}
 

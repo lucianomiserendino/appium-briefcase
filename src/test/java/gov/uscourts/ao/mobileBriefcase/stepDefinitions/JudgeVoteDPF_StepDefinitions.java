@@ -7,6 +7,7 @@ import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CaseQueryPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.JudgeVoteDPFPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.VoteInformationPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.CaseQueryPage.Search;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class JudgeVoteDPF_StepDefinitions {
@@ -61,7 +62,7 @@ public class JudgeVoteDPF_StepDefinitions {
 		List<UserInputData> userInputData = null;
 		page.getReferralWithDoc(userInputData);
 		casequerypage = new CaseQueryPage();
-		casequerypage.searchForACase(page.cyv_category, page.caseid);
+		casequerypage.searchForACase("target",page.cyv_category, page.caseid,Search.caseNumber);
 
 	}
 	

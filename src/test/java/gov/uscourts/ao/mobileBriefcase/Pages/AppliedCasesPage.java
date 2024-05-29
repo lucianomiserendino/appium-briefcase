@@ -6,12 +6,10 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASE_NUMBER;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.NON_ORALLY_ARGUED_CASES;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.TARGET_AND_APPLIED_CASES;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.TARGET_CASES;
-import static gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage.dashboard;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
@@ -23,14 +21,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
+import gov.uscourts.ao.mobileBriefcase.Pages.CaseQueryPage.Search;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
-import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.Category;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
@@ -76,7 +74,7 @@ public class AppliedCasesPage extends Base {
 
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Total')]")
 	public static WebElement total;
-	
+
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Dashboard']")
 	public static WebElement dashboard;
@@ -181,7 +179,7 @@ public class AppliedCasesPage extends Base {
 
 	public static void searchForAppliedCase(List<UserInputData> userInputData) {
 
-		String pe_id = DocumentPage.get_pe_id("jud",userInputData);
+		String pe_id = DocumentPage.get_pe_id("jud", userInputData);
 
 		Boolean elementNotFound = true;
 
@@ -233,35 +231,24 @@ public class AppliedCasesPage extends Base {
 
 	public void navigateToAppliedReferral(List<UserInputData> userInputData) {
 
-		scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
+
 
 		if (getSiVal(userInputData).equals("y")) {
+			
+			CaseQueryPage casequerypage = new CaseQueryPage();
+			casequerypage.searchForACase("applied", category, dbAppliedCase, Search.caseNumber);
+			
+			CommonPages page=new CommonPages();
+			page.getGroupIcons(GroupIcons.Expand);
+			scrollDownIfNotDisplayed(containsElement("Applied"));
 
-			DocumentPage page = new DocumentPage();
 
-			targetReferral = page.getRandomCase(Category.targetCase);
-			uiAppliedCase = page.getRandomCase(Category.appliedCase);
-
-			AppliedCasesPage appCasePage = new AppliedCasesPage();
-
-			appCasePage.searchIcon.click();
-			sendKeys(appCasePage.searchTextField, uiAppliedCase);
-			appCasePage.searchBTN.click();
-			performPageLoad(appCasePage.driver);
-			appCasePage.on_device.click();
-
-			performPageLoad(driver);
-
-			Actions.findElement(By.xpath("(//*[contains(@name, '" + category
-					+ "')]/preceding:: XCUIElementTypeStaticText[contains(@name, '" + uiAppliedCase + "')][1])"))
-					.click();
-
-			assertTrue(
+			Assert.assertTrue(
 					"THE USER IS DIRECTED TO THE APPLIED CASE DETAIL PAGE, SHOULD BE DIRECTED TO THE TARGET CASE DETAIL PAGE",
-					targetReferral);
+					isDisplayed(Actions.contains(dbAppliedCase)));
 
 		} else {
-
+			scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
 			scrollDownIfNotDisplayed(Actions.containsElement(dbAppliedCase));
 
 			assertTrue("THE USER IS NOT DIRECTED TO THE CASE DETAIL PAGE, " + category + " CASE: " + dbAppliedCase,

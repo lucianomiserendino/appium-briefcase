@@ -85,11 +85,10 @@ public class Document_StepDefinitions {
 	}
 	
 	@Then("^User navigates to View Case Info, then taps Docket Entries$")
-	public void user_navigates_to_View_Case_Info_then_taps_Docket_Entries(DataTable table)  {
-		List<List<String>> data = table.raw();
-		 dpfName = data.get(0).get(0);
+	public void user_navigates_to_View_Case_Info_then_taps_Docket_Entries()  {
+		String actionName = DPF_stepDefinitions.actionName;
 		page = new DocumentPage();
-		page.navigateToViewCaseInfo(dpfName);
+		page.navigateToViewCaseInfo();
 	}
 
 }

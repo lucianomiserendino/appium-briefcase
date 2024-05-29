@@ -14,5 +14,13 @@ public class DocketEntryPage extends AppiumPageFactory {
 		performPageLoad(driver);
 		return contains("Docket Entries - ").getText().split("-")[1].trim();
 	}
+	
+	public void viewDocketEntries(String actioName) {
+		contains("View Case Info").click();
+		contains("Docket Entries").click();
+		contains(actioName).click();
+		
+	}
+	
 
 }

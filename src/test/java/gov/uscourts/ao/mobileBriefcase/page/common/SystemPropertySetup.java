@@ -25,11 +25,14 @@ public class SystemPropertySetup {
 	public static final String userType = "userType";
 	public static final String jud = "jud";
 	public static final String stf = "stf";
-	public static final String userName = "userName";
-	public static final String password = "password";
+	public static final String sysadminUserName = "sysadminUserName";
+	public static final String sysadminPassword = "sysadminPassword";
 	public static final String judFirstName = "judFirstName";
 	public static final String stfFirstName = "stfFirstName";
-
+	public static final String user = "user";
+	public static final String judgeUserName = "judgeUserName";
+	public static final String judgePassword = "judgePassword";
+	
 	public static final String getVariable(Variables variable, List<UserInputData> pacerInputData) {
 		String var = "";
 
@@ -43,12 +46,12 @@ public class SystemPropertySetup {
 			var = environment;
 			break;
 
-		case USERNAME:
-			var = userName;
+		case SYSADMIN_USERNAME:
+			var = sysadminUserName;
 			break;
 
-		case PASSWORD:
-			var = password;
+		case SYSADMIN_PASSWORD:
+			var = sysadminPassword;
 			break;
 
 		case PERSONROLE:
@@ -107,6 +110,17 @@ public class SystemPropertySetup {
 			var = stfFirstName;
 			break;
 
+		case USER:
+			var = user;
+			break;
+			
+		case JUDGE_USERNAME:
+			var = judgeUserName;
+			break;
+			
+		case JUDGE_PASSWORD:
+			var = judgePassword;
+			break;
 		default:
 			break;
 		}
@@ -232,22 +246,22 @@ public class SystemPropertySetup {
 		return null;
 	}
 
-	public static final String getUserName(List<UserInputData> userInputData) {
+	public static final String getSysadminUserName(List<UserInputData> userInputData) {
 
-		if (System.getProperty(userName) != null)
-			return System.getProperty(userName);
-		log.info("Username from Property File " + System.getProperty(userName));
-		log.info("Username from Input File " + userInputData.get(0).getUserName());
-		return userInputData.get(0).getUserName();
+		if (System.getProperty(sysadminUserName) != null)
+			return System.getProperty(sysadminUserName);
+		log.info("Username from Property File " + System.getProperty(sysadminUserName));
+		log.info("Username from Input File " + userInputData.get(0).getSysadminUserName());
+		return userInputData.get(0).getSysadminUserName();
 	}
 
-	public static final String getPassword(List<UserInputData> userInputData) {
+	public static final String getSysadminPassword(List<UserInputData> userInputData) {
 
-		if (System.getProperty(password) != null)
-			return System.getProperty(password);
-		log.info("Password from Property File " + System.getProperty(password));
-		log.info("Password from Input File " + userInputData.get(0).getPassword());
-		return userInputData.get(0).getPassword();
+		if (System.getProperty(sysadminPassword) != null)
+			return System.getProperty(sysadminPassword);
+		log.info("Password from Property File " + System.getProperty(sysadminPassword));
+		log.info("Password from Input File " + userInputData.get(0).getSysadminPassword());
+		return userInputData.get(0).getSysadminPassword();
 	}
 
 	public static final String getCaseNumber(List<UserInputData> userInputData) {
@@ -267,10 +281,38 @@ public class SystemPropertySetup {
 		log.info("Court Id from Input File " + userInputData.get(0).getReferral_Category());
 		return userInputData.get(0).getReferral_Category();
 	}
+	
+	public static final String getUser(List<UserInputData> userInputData) {
+
+		if (System.getProperty(user) != null)
+			return System.getProperty(user);
+		log.info("Role type from Property File " + System.getProperty(user));
+		log.info("Role type from Input File " + userInputData.get(0).getUser());
+		return userInputData.get(0).getUser();
+	}
+	
+	public static final String getJudgeUserName(List<UserInputData> userInputData) {
+
+		if (System.getProperty(sysadminUserName) != null)
+			return System.getProperty(sysadminUserName);
+		log.info("Username from Property File " + System.getProperty(judgeUserName));
+		log.info("Username from Input File " + userInputData.get(0).getJudgeUserName());
+		return userInputData.get(0).getJudgeUserName();
+	}
+
+	public static final String getJudgePassword(List<UserInputData> userInputData) {
+
+		if (System.getProperty(sysadminPassword) != null)
+			return System.getProperty(sysadminPassword);
+		log.info("Password from Property File " + System.getProperty(judgePassword));
+		log.info("Password from Input File " + userInputData.get(0).getJudgePassword());
+		return userInputData.get(0).getJudgePassword();
+	}
+	
 
 	public enum Variables {
 		ENVIRONMENT, JUD, STF, CASE_NUMBER, REF_CATEGORY, COURTID, PERSONROLE, HOSTNAME, DB_USERNAME, DB_PASSWORD,
-		DB_SERVERNAME, DB_PORT, DB_SCHEMA, USERNAME, PASSWORD, USER_TYPE, JUD_FIRST_NAME, STF_FIRST_NAME
+		DB_SERVERNAME, DB_PORT, DB_SCHEMA, SYSADMIN_USERNAME, SYSADMIN_PASSWORD, USER_TYPE, JUD_FIRST_NAME, STF_FIRST_NAME,USER,JUDGE_USERNAME, JUDGE_PASSWORD
 	}
 
 }

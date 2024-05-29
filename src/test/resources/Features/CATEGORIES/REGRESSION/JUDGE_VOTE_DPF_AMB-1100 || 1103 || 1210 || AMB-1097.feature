@@ -3,13 +3,13 @@ Feature: JudgeVote DPF UI
 #related to AMB-1097 as well
 Background: 
 
-		#Given I am logged into Briefcase 
-		#|environment|userName| password |courtId|
-		#|test       |test    | test     |test   |
-		
-	Then I select a user 
-		|userType   |personrole        |jud     |
-		|judge      |Appellate Judges  |test    |
+		Given I am logged into Briefcase 
+		|environment|user    |
+		|test       |sysadmin|
+			
+		Then I select a user 
+		|userType   |personrole        |jud      |user     |
+		|judge      |Appellate Judges  |test     |sysadmin |
 			
 		
 @AMB-1100		

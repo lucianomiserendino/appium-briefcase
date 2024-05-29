@@ -7,14 +7,15 @@ Scenario:
 	 This task is to verify that staff assignments are displaying on the referral list page
 
 
-	#Given I am logged into Briefcase 
-	#	|environment|userName| password |courtId|
-	#	|test       |test    | test     |test   |
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
+			
+		Then I select a user 
+		|userType   |personrole        |jud      |user     |
+		|judge      |Appellate Judges  |test     |sysadmin |
 		
-	Then I select a user 
-		|userType   |personrole        |jud     |
-		|judge      |Appellate Judges  |test    |
-	
+		
 		Then User selects random judge category
 		|courtId|
 		|test   |

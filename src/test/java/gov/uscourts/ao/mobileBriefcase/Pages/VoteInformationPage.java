@@ -26,7 +26,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
-import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
@@ -65,7 +64,7 @@ public class VoteInformationPage extends AppiumPageFactory {
 							"//*[contains(@name, 'Vote Information')]/following:: XCUIElementTypeStaticText[contains(@name, '"
 									+ filerInfo + "')]/following::XCUIElementTypeStaticText[contains(@name, '"
 									+ judgesInitials.get(i) + "')]");
-									
+
 				}
 			case JUDGE_VOTE_DPF_FILLRES_INFORMATION:
 
@@ -211,7 +210,6 @@ public class VoteInformationPage extends AppiumPageFactory {
 
 	public static void getJudgeInitials(String panel, String caseNum, String peId, String cmr_cyv_code,
 			List<UserInputData> userInputData) {
-		CommonPages.getPanel(Panel.Vote_Information);
 		String cmr_ccr_id = getCMRID("cmr_ccr_id", caseNum, peId, cmr_cyv_code, userInputData);
 		WebElement uiInits = null;
 
@@ -223,7 +221,7 @@ public class VoteInformationPage extends AppiumPageFactory {
 
 		ArrayList<String> uiJudgeInitials = new ArrayList<>();
 
-		if (panel.equals("VoteInfo")) {
+		if (panel.equals("Vote_Information")) {
 			k += 2;
 		} else {
 			k += 1;
@@ -245,6 +243,9 @@ public class VoteInformationPage extends AppiumPageFactory {
 			uiJudgeInitials.add(uiInits.getText().trim());
 
 		}
+		System.out.println(dbInitials + "***************************");
+		System.out.println(dbInitials + "***************************");
+
 		assertEquals("JUDGES NOT LISTED IN SENIORITY ORDER", dbInitials, uiJudgeInitials);
 		if (panel.equals("viewVotes")) {
 			tap(close);
@@ -263,7 +264,7 @@ public class VoteInformationPage extends AppiumPageFactory {
 	}
 
 	public static String initials(String panel, int index, int row) {
-		if (panel.equals("VoteInfo")) {
+		if (panel.equals("Vote_Information")) {
 			return "(//XCUIElementTypeOther[@name=\"DocumentList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]"
 					+ "/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[" + index
 					+ "]/XCUIElementTypeStaticText)[" + row + "]";
@@ -292,6 +293,7 @@ public class VoteInformationPage extends AppiumPageFactory {
 	public static String getCMR_PANEL_MEMBERS(String field, String cmr_ccr_id, List<UserInputData> userInputData) {
 		return getAllColumns(Actions.replace(field, "CMR_CCR_ID", cmr_ccr_id), userInputData);
 	}
+
 
 	public enum FILERs_INFO {
 		VOTE_INFO_FILLRES_INFORMATION, JUDGE_VOTE_DPF_FILLRES_INFORMATION, FILED_DATE, UI_FILER_INFORMATION,

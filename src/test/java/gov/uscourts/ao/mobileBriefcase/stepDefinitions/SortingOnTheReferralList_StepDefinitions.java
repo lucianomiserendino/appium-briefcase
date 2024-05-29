@@ -49,7 +49,7 @@ public class SortingOnTheReferralList_StepDefinitions {
 
 	}
 
-	@Then("^User clicks on the Case Down Arrow button and verifies the referrals are sorted by case number in ascending order\\.$")
+	@Then("^User clicks on the Case Up Arrow button and verifies the referrals are sorted by case number in ascending order\\.$")
 	public void user_clicks_on_the_Case_Down_Arrow_button_and_verifies_the_referrals_are_sorted_by_case_number_in_ascending_order() {
 
 		page.getSortPage(Sort.CASE_NUMBER_ASCENDING);

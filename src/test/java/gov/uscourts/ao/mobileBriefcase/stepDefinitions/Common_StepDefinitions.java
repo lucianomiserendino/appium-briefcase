@@ -64,8 +64,8 @@ public class Common_StepDefinitions {
 		// page.setValue(si_value, si_code, userInputData);
 		String environment = SystemPropertySetup.getEnvironment(userInputData);
 		String court = SystemPropertySetup.getCourtId(userInputData);
-		String user = SystemPropertySetup.getUserName(userInputData);
-		String pwd = SystemPropertySetup.getPassword(userInputData);
+		String user = SystemPropertySetup.getSysadminUserName(userInputData);
+		String pwd = SystemPropertySetup.getSysadminPassword(userInputData);
 		Base.safariInstance();
 		String env = "";
 
