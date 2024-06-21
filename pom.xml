@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ao.uscourts</groupId>
 	<artifactId>com.MobileBriefcaseTests</artifactId>
@@ -10,11 +12,11 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
-<dependency>
-    <groupId>io.appium</groupId>
-    <artifactId>java-client</artifactId>
-    <version>9.2.2</version>
-</dependency>
+		<dependency>
+			<groupId>io.appium</groupId>
+			<artifactId>java-client</artifactId>
+			<version>9.2.2</version>
+		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
@@ -37,7 +39,7 @@
 		<dependency>
 			<groupId>net.masterthought</groupId>
 			<artifactId>cucumber-sandwich</artifactId>
-			<version>3.15.0</version>
+			<version>5.7.8</version>
 		</dependency>
 
 		<dependency>
@@ -115,7 +117,8 @@
 							<mainClass>com.mycompany.mainPackage.mainClass</mainClass>
 						</manifest>
 						<manifestEntries>
-							<Class-Path>.</Class-Path> <!-- need to add current directory to classpath properties files can be found -->
+							<Class-Path>.</Class-Path> <!-- need to add current
+							directory to classpath properties files can be found -->
 						</manifestEntries>
 					</archive>
 					<descriptorRefs>
@@ -135,7 +138,7 @@
 			<plugin>
 				<groupId>net.masterthought</groupId>
 				<artifactId>maven-cucumber-reporting</artifactId>
-				<version>3.15.0</version>
+				<version>5.8.1</version>
 				<executions>
 					<execution>
 						<id>execution</id>
@@ -146,8 +149,10 @@
 						<configuration>
 							<projectname>TestProject</projectname>
 							<!-- path to the report that will be generated -->
-							<outputdirectory>${project.build.directory}/cucumber-html-reports</outputdirectory>
-							<!-- path to the json file that will be used to genetrate report -->
+							<outputdirectory>
+								${project.build.directory}/cucumber-html-reports</outputdirectory>
+							<!-- path to the json file that will be used to
+							genetrate report -->
 							<!-- it has to match the one on the cukesrunner -->
 							<cucumberoutput>${project.build.directory}/h</cucumberoutput>
 							<enableflashcharts></enableflashcharts>

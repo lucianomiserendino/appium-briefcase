@@ -3,41 +3,41 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.AD_CHD_DATE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_INFO;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CDV_DESCRIPTION;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHA_ID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_LAST_NAME;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCMRID;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.trim;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getProperty;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForVisibilityOfElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.changeDateFormat;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getRandomNumberInRange;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
-import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
-import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Filter;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -46,6 +46,12 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Assignments']/following::XCUIElementTypeStaticText[contains(@name, '')]/preceding::XCUIElementTypeStaticText[2]")
 	public static List<WebElement> assignments;
+
+	private static String firstName = "";
+	private static String lastName = "";
+	private static String assignDateType = "";
+	private static String assignType = "";
+	private static String assignDate = "";
 
 	public boolean isAssignmentsExist() {
 		CommonPages page = new CommonPages();
@@ -69,64 +75,118 @@ public class AssignmentsPage extends AppiumPageFactory {
 			String cmr_cyv_code) {
 
 		List<String> staffAssignments = new ArrayList<>();
-		List<String> dbStaffLName = new ArrayList<>();
-		 List<String> dbAssignments = new ArrayList<>();
+		List<String> dbAssignments = new ArrayList<>();
+		Map<String, List<String>> xpathToDetailsMap = new HashMap<>();
 
-		List<String> dbStaffFName = getAssignmentsFirstName(userInputData, caseId, peID, cmr_cyv_code);
-		for (int i = 0; i < dbStaffFName.size(); i++) {
+		String staffAssignmentsQuery = Queries.STAFF_ASSIGNMENTS.replace("CMR_CS_CASEID", caseId).replace("?", peID)
+				.replace("CMR_CYV_CODE", cmr_cyv_code);
 
-			dbStaffLName = getAssignmentsLastName(userInputData, STAFF_ASSIGNMENTS_LINKED_TO_THE_REFERRAL_LAST_NAME,
-					dbStaffFName.get(i), caseId, peID, cmr_cyv_code);
+		List<String[]> firstQueryResult = DBUtilities.executeDBQuery(staffAssignmentsQuery, userInputData);
 
-			for (int j = 0; j < dbStaffLName.size(); j++) {
+		if (firstQueryResult != null) {
+			for (String[] record : firstQueryResult) {
+				String chaId = record[0];
+				String prFirstName = record[1];
+				String prLastName = record[2];
+				String cavDescription = record[3];
 
-				List<String> dbassignmentType = getAssignmentsLastName(userInputData, ASSIGNMENT_TYPE,
-						dbStaffFName.get(i), caseId, peID, cmr_cyv_code);
+				String assigneesNameAndLastDateQuery = Queries.ASSIGNEES_NAME_AND_LASTED_DATE_TYPE.replace("?", chaId);
 
-				for (int l = 0; l < dbassignmentType.size(); l++) {
+				List<String[]> secondQueryResult = DBUtilities.executeDBQuery(assigneesNameAndLastDateQuery,
+						userInputData);
 
-					List<String> code = getAssignmentsLastName(userInputData, CHA_ID, dbStaffFName.get(i), caseId, peID,
-							cmr_cyv_code);
+				if (secondQueryResult != null) {
+					for (String[] secondRecord : secondQueryResult) {
+						String cdvDescription = secondRecord[0];
+						String chdDate = secondRecord[1];
 
-					for (int k = 0; k < code.size(); k++) {
+						String xpath = "//*[contains(@name, '" + prFirstName.trim() + " " + prLastName.trim() + ", "
+								+ cavDescription.trim() + "')]/following::XCUIElementTypeStaticText[contains(@name, '"
+								+ cdvDescription.replaceAll("Date", "").trim() + " " + changeFormat(chdDate).trim()
+								+ "')]";
 
-						List<String> dbAssignment = getAssignmentTypeAndDate(userInputData, CDV_DESCRIPTION,
-								code.get(k));
-						for (int m = 0; m < dbAssignment.size(); m++) {
+						staffAssignments.add(xpath);
 
-							List<String> assignmentDate = getAssignmentTypeAndDate(userInputData, AD_CHD_DATE,
-									code.get(k));
-
-							for (int n = 0; n < assignmentDate.size(); n++) {
-
-								String a = "";
-								if (dbAssignment.get(m).contains("Date")) {
-									a = dbAssignment.get(m).replaceAll("Date", "");
-								} else {
-									a = dbAssignment.get(m) + " ";
-								}
-
-								staffAssignments.add(("//*[contains(@name, '" + dbStaffLName.get(j) + " "
-										+ dbStaffFName.get(i) + ", " + dbassignmentType.get(l)
-										+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + a
-										+ changeFormat(assignmentDate.get(n)) + "')]").replaceAll("Date", ""));
-								dbAssignments.add(dbStaffFName.get(i));
-//								staffAssignment.add(dbStaffLName.get(j) + " " + dbStaffFName.get(i) + ", "
-//										+ dbassignmentType.get(l));
-
-							}
-						}
+						// Store details in the map
+						List<String> details = new ArrayList<>();
+						details.add(prFirstName);
+						details.add(prLastName);
+						details.add(cavDescription);
+						details.add(cdvDescription);
+						details.add(chdDate);
+						xpathToDetailsMap.put(xpath, details);
 					}
 				}
 			}
 		}
 
-		for (int i = 0; i < staffAssignments.size(); i++) {
+		checkStaffAssignments(staffAssignments);
 
-			assertTrue(Actions.isDisplayed(Locator.XPATH, staffAssignments.get(i)));
+		if (!staffAssignments.isEmpty()) {
+			Random random = new Random();
+			int randomIndex = random.nextInt(staffAssignments.size());
+			String randomXpath = staffAssignments.get(randomIndex);
+			WebElement element = driver.findElement(By.xpath(randomXpath));
+			element.click();
+
+			// Get details of the clicked element
+			List<String> clickedElementDetails = xpathToDetailsMap.get(randomXpath);
+			if (clickedElementDetails != null) {
+				String prFirstName = clickedElementDetails.get(0);
+				String prLastName = clickedElementDetails.get(1);
+				String cavDescription = clickedElementDetails.get(2);
+				String cdvDescription = clickedElementDetails.get(3);
+				String chdDate = clickedElementDetails.get(4);
+
+				// Use the extracted values as needed
+
+				firstName += prFirstName;
+				lastName += prLastName;
+				assignType += cavDescription;
+				assignDateType += cdvDescription;
+				assignDate += chdDate;
+
+			}
 		}
-		return dbAssignments;
 
+		return dbAssignments;
+	}
+
+	public void checkStaffAssignments(List<String> staffAssignments) {
+		for (String xpath : staffAssignments) {
+			boolean isDisplayed = false;
+
+			for (int attempt = 0; attempt < 5; attempt++) {
+				try {
+					WebElement element = waitForVisibilityOfElement(findElementBy(Locator.XPATH, xpath), driver);
+					isDisplayed = element.isDisplayed();
+					if (isDisplayed) {
+						break;
+					}
+				} catch (Exception e) {
+					// Element not found, swipe and try again
+					Utility.swipe(1, "up");
+				}
+			}
+
+			assertTrue("VERIFY THAT CORRECT STAFF ASSIGNMENTS ARE DISPLAYING ON THE REFERRAL LIST PAGE", isDisplayed);
+		}
+	}
+
+	public void verifyAssignmentInfoAndNoteDatesDisplayed() {
+		String fullName = firstName.trim() + " " + lastName.trim();
+		String formattedAssignDateType = assignDateType.replaceAll("Date", "").trim();
+		String formattedAssignDate = changeFormat(assignDate).trim();
+
+		assertTrue("Assignee's name is missing or incorrect on the assignment detail screen.",
+				Actions.isDisplayed(Locator.XPATH, Actions.containsElement(fullName)));
+
+		assertTrue("Assignment type is missing or incorrect on the assignment detail screen.",
+				Actions.isDisplayed(Locator.XPATH, Actions.containsElement(assignType.trim())));
+
+		assertTrue("Assignment date type or date is missing or incorrect on the assignment detail screen.",
+				Actions.isDisplayed(Locator.XPATH, Actions.containsElement(formattedAssignDateType)
+						+ "/following::XCUIElementTypeStaticText[@name='" + formattedAssignDate + "']"));
 	}
 
 	public void ifAssignmentsSorted(List<String> dbAssignmentList, List<UserInputData> userInputData) {
@@ -139,17 +199,15 @@ public class AssignmentsPage extends AppiumPageFactory {
 			allAssignments.add(assignments.get(i).getText().split(",")[0].split(" ")[1].trim());
 		}
 		String env = SystemPropertySetup.getCourtId(userInputData) + ".";
-		
+
 		String fName = getProperty(env + "jud");
 
 		if (dbAssignmentList.contains(fName))
 			dbAssignmentList.remove(fName);
-		
 
 		judgeAssignments = Utility.filterArraylistItems(Filter.UNIQUE_VALUES, allAssignments, dbAssignmentList);
 
 		staffAssignments = Utility.filterArraylistItems(Filter.DUPLICATE_VALUES, allAssignments, dbAssignmentList);
-		
 
 		Utility.ifSortedInAlphabeticalOrder(judgeAssignments);
 		Utility.ifSortedInAlphabeticalOrder(staffAssignments);
@@ -405,41 +463,50 @@ public class AssignmentsPage extends AppiumPageFactory {
 		return getCMRID("cmr_id", caseId, peId, cmr_cyv_code, userInputData);
 	}
 
-	public String getAssignmentDateType(DBType dbType, String cmrId, String pr_last_name, String pr_first_name,
-			int column) {
-		return execute(dbType, Actions.replace(Queries.ASSIGNMENT_DATE_TYPE, "CMR_ID", cmrId, "PR_LAST_NAME",
-				pr_last_name, "PR_FIRST_NAME", pr_first_name), column).get(0);
-	}
-
-	public void getRecentAssignmentDate(DBType dbType, String caseNumber, String peId, String cmr_cyv_code,
-			String pr_last_name, String pr_first_name) {
-
-		String cmrId = getCMR_ID(dbType, caseNumber, peId, cmr_cyv_code);
-
-		String value = null;
-
+	public String getAssignmentDateType(String cmrId, String prLastName, String prFirstName, int column,
+			List<UserInputData> userInputData, String assignType) {
 		try {
-			value = getAssignmentDateType(dbType, cmrId, pr_last_name, pr_first_name, 2);
-			CommonPages.getGroupIcons(GroupIcons.Expand);
-			if (!(value.length() == 0)) {
-				tap(Locator.XPATH, "//XCUIElementTypeStaticText[contains(@name, '" + value + "')]");
+			String query = Actions.replace(Queries.ASSIGNMENT_DATE_TYPE, "CMR_ID", cmrId, "PR_LAST_NAME", prLastName,
+					"PR_FIRST_NAME", prFirstName);
+			query = Actions.replace(query, "CAV_DISPLAY", assignType);
 
-				assertTrue(Actions.isDisplayed(Locator.XPATH,
-						getassignmentDate(getAssignmentDateType(dbType, cmrId, pr_last_name, pr_first_name, 3),
-								getAssignmentDateType(dbType, cmrId, pr_last_name, pr_first_name, 4), caseNumber,
-								getAssignmentDateType(dbType, cmrId, pr_last_name, pr_first_name, 2))));
+			List<String> result = execute(query, column, userInputData);
+			if (result.isEmpty()) {
+				throw new RuntimeException("No data returned for query: " + query);
 			}
-		} catch (NullPointerException e) {
-			e.getMessage();
+
+			return result.get(0);
+		} catch (Exception e) {
+			throw new RuntimeException("Error getting assignment date type", e);
 		}
 	}
 
-	public static String getassignmentDate(String cdv_display, String chd_date, String caseNumber, String cav_display) {
-		return "//XCUIElementTypeStaticText[contains(@name, '" + cdv_display + ": "
-				+ changeDateFormat(chd_date, "yyyy-MM-dd", "M/d/yyyy") + "')]"
-				+ "/preceding::XCUIElementTypeStaticText[1][contains(@name, '" + caseNumber + "')]"
-				+ "/preceding::XCUIElementTypeStaticText[contains(@name, '" + cav_display + "')]";
+	public void getRecentAssignmentDate(List<UserInputData> userInputData, String caseNumber, String peId,
+			String cmrCyvCode, String assignType) {
+		try {
+			String env = SystemPropertySetup.getCourtId(userInputData) + ".";
+			String prLastName = getProperty(env + "jud");
+			String prFirstName = getProperty(env + "judFirstName");
+			String cmrId = getCMR_ID(caseNumber, peId, cmrCyvCode, userInputData);
 
+			String cdvDisplay = getAssignmentDateType(cmrId, prLastName, prFirstName, 2, userInputData, assignType);
+			String chdDate = getAssignmentDateType(cmrId, prLastName, prFirstName, 3, userInputData, assignType);
+
+			String xpath = buildAssignmentDateXpath(cdvDisplay, chdDate, caseNumber, assignType);
+			assertTrue("Pending Tasks folder: Verify each assignment displays the most recent date type",
+					Actions.isDisplayed(Locator.XPATH, xpath));
+
+		} catch (Exception e) {
+			throw new RuntimeException("Error verifying recent assignment date", e);
+		}
+	}
+
+	public static String buildAssignmentDateXpath(String cdvDisplay, String chdDate, String caseNumber,
+			String cavDisplay) {
+		String formattedDate = changeDateFormat(chdDate, "yyyy-MM-dd", "M/dd/yyyy").trim();
+		return "//XCUIElementTypeStaticText[contains(@name, '" + cdvDisplay.trim() + ": " + formattedDate + "')]"
+				+ "/preceding::XCUIElementTypeStaticText[1][contains(@name, '" + caseNumber.trim() + "')]"
+				+ "/preceding::XCUIElementTypeStaticText[contains(@name, '" + cavDisplay.trim() + "')]";
 	}
 
 	public enum AssignmentInfo {

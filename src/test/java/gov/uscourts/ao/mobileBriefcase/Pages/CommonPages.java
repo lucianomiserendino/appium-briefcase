@@ -92,10 +92,13 @@ public class CommonPages extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public List<WebElement> Categories;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Progress halted' or @name='In progress']")
+	public static List<WebElement> activityIndicator;
+
 	static String okButton = "OK";
-	
-	static String siVal ="";
-	
+
+	static String siVal = "";
+
 	public void getCategory(Category category, String caseNumber) {
 
 		String categories = "";
@@ -183,41 +186,41 @@ public class CommonPages extends AppiumPageFactory {
 	}
 
 	public static void getPanel(Panel panel) {
-	    try {
-	        String panelName;
-	        switch (panel) {
-	            case Assignments:
-	                panelName = "Assignments";
-	                break;
-	            case Actions:
-	                panelName = "Actions";
-	                break;
-	            case Vote_Information:
-	                panelName = "Vote Information";
-	                break;
-	            case Applied_Referrals:
-	                panelName = "Applied Referrals";
-	                break;
-	            case Briefs:
-	                panelName = "Briefs";
-	                break;
-	            case Proposed_Orders:
-	                panelName = "Proposed Orders";
-	                break;
-	            default:
-	                panelName = "";
-	                break;
-	        }
+		try {
+			String panelName;
+			switch (panel) {
+			case Assignments:
+				panelName = "Assignments";
+				break;
+			case Actions:
+				panelName = "Actions";
+				break;
+			case Vote_Information:
+				panelName = "Vote Information";
+				break;
+			case Applied_Referrals:
+				panelName = "Applied Referrals";
+				break;
+			case Briefs:
+				panelName = "Briefs";
+				break;
+			case Proposed_Orders:
+				panelName = "Proposed Orders";
+				break;
+			default:
+				panelName = "";
+				break;
+			}
 
-	        if (!panelName.isEmpty()) {
-	            getGroupIcons(GroupIcons.Expand);
-	            scrollDownIfNotDisplayed(containsElement(panelName));
-	        }
-	    } catch (Exception e) {
-	        System.err.println("An error occurred: " + e.getMessage());
-	    }
+			if (!panelName.isEmpty()) {
+				getGroupIcons(GroupIcons.Expand);
+				performPageLoad(driver);
+				scrollDownIfNotDisplayed(containsElement(panelName));
+			}
+		} catch (Exception e) {
+			System.err.println("An error occurred: " + e.getMessage());
+		}
 	}
-
 
 	public static void selectAction(String panel, String el_id, List<UserInputData> userInputData) {
 		getGroupIcons(GroupIcons.Expand);
@@ -235,7 +238,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	public static void selectAction(String panel, List<UserInputData> userInputData) {
 		// getGroupIcons();
-		//getGroupIcons(GroupIcons.Expand);
+		// getGroupIcons(GroupIcons.Expand);
 		getPanel(Panel.valueOf(panel));
 		// getActionName("mbr multiple DMI");
 		getActionName("Auto Test");
@@ -243,7 +246,7 @@ public class CommonPages extends AppiumPageFactory {
 	}
 
 	public static void selectBriefcaseAction(String panel, String actionName) {
-		//getGroupIcons(GroupIcons.Expand);
+		// getGroupIcons(GroupIcons.Expand);
 		getPanel(Panel.valueOf(panel));
 
 		String actionName1 = "";
@@ -258,7 +261,7 @@ public class CommonPages extends AppiumPageFactory {
 	}
 
 	public static void getActionName(String element) {
-		
+
 		scrollDownIfNotDisplayed(
 				"//XCUIElementTypeOther[@name='DocumentList']//XCUIElementTypeStaticText[contains(@name, '" + element
 						+ "')]");
@@ -307,13 +310,14 @@ public class CommonPages extends AppiumPageFactory {
 				userInputData);
 	}
 
-	public static String getCCRID(String caseNum, List<UserInputData> userInputData) {
-
+	public static String getCCRID(String caseNum, String category, List<UserInputData> userInputData) {
 		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
 
 		String caseId = CommonPages.getCaseID(caseNum, userInputData);
-		return getAllColumns(replace(Queries.CCR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id),
-				userInputData);
+		String cmr_cyv_code = CommonPages.cmr_cyv_code(category, caseId, userInputData);
+
+		return getAllColumns(replace(Queries.CCR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id,
+				"CMR_CYV_CODE", cmr_cyv_code), userInputData);
 	}
 
 	public static void verifyElementIsDisplayed(String element) {
@@ -369,17 +373,21 @@ public class CommonPages extends AppiumPageFactory {
 			value = "UseCourtSession";
 			break;
 		case ctAdminDkt:
-			value ="CtAdminDkt";
+			value = "CtAdminDkt";
 			break;
 		case displayTools:
-			value ="DisplayTools";
+			value = "DisplayTools";
+			break;
+		case AppLinkRoot:
+			value = "AppLinkRoot";
 			break;
 		default:
 			break;
 		}
 
-		 siVal+=getAllColumns(getID(SITE_TABLE_VARIABLE_VALUE, br + value), pacerInputData);
-		 return siVal;
+		// siVal=getAllColumns(getID(SITE_TABLE_VARIABLE_VALUE, br + value),
+		// pacerInputData);
+		return siVal = getAllColumns(getID(SITE_TABLE_VARIABLE_VALUE, br + value), pacerInputData);
 	}
 
 	public static String getSiValue(String dbType, String value) {
@@ -413,49 +421,49 @@ public class CommonPages extends AppiumPageFactory {
 		return getCaseNumber(uiCaseNumber, index);
 
 	}
-	public static int getGroupIcons( GroupIcons icon) {
-        String grIcon;
-        switch (icon) {
-            case Collapse:
-                grIcon = "▷";
-                break;
-            case Expand:
-                grIcon = "▽";
-                break;
-            default:
-                return 0;
-        }
 
-        int clickCount = 0;
+	public static int getGroupIcons(GroupIcons icon) {
+		ifDownloaded(activityIndicator);
+		String grIcon;
+		switch (icon) {
+		case Collapse:
+			grIcon = "▷";
+			break;
+		case Expand:
+			grIcon = "▽";
+			break;
+		default:
+			return 0;
+		}
 
-        while (true) {
-            List<WebElement> icons = GroupIcon;
-            boolean iconFound = false;
-            for (WebElement element : icons) {
-                String attributeValue = element.getAttribute("value");
-                if (attributeValue.equals(grIcon)) {
-                    element.click();
-                    iconFound = true;
-                    clickCount++;
-                    break; // Exit the for loop to refresh the icon list
-                }
-            }
+		int clickCount = 0;
 
-            if (!iconFound) {
-                break; // Exit the while loop if no matching icon is found
-            }
+		while (true) {
+			List<WebElement> icons = GroupIcon;
+			boolean iconFound = false;
+			for (WebElement element : icons) {
+				String attributeValue = element.getAttribute("value");
+				if (attributeValue.equals(grIcon)) {
+					element.click();
+					iconFound = true;
+					clickCount++;
+					break; // Exit the for loop to refresh the icon list
+				}
+			}
 
-            try {
-                Thread.sleep(500); // 0.5 second pause
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+			if (!iconFound) {
+				break; // Exit the while loop if no matching icon is found
+			}
 
-        return clickCount;
-    }
+			try {
+				Thread.sleep(500); // 0.5 second pause
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 
-
+		return clickCount;
+	}
 
 	public static void sendCredentials(String Username, String Password) {
 		Page.sleep(10000);
@@ -538,7 +546,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	public enum SiteTableVariable {
 
-		targetOnly, internalNote, oralArgsView, useCourtSession,ctAdminDkt,displayTools
+		targetOnly, internalNote, oralArgsView, useCourtSession, ctAdminDkt, displayTools, AppLinkRoot
 	}
 
 	public enum GroupIcons {

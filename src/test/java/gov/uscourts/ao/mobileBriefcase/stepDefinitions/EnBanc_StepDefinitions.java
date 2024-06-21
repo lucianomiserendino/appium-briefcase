@@ -28,13 +28,13 @@ public class EnBanc_StepDefinitions {
 	public void user_verifies_that_a_button_is_displayed_next_to_the_logged_in_judge_s_vote() {
 
 		page2 = new JudgeVoteDPFPage();
-		page2.selectViewVotes(userInputData, caseNum);
+		page2.selectViewVotes(page.category,userInputData, caseNum);
 	}
 
 	@When("^it's tapped, it shows all the judges’ vote in a popup\\.$")
 	public void it_s_tapped_it_shows_all_the_judges_vote_in_a_popup() {
 		page2 = new JudgeVoteDPFPage();
-		page2.verifyJudgesVote(userInputData, caseNum);
+		page2.verifyJudgesVote(page.category,userInputData, caseNum);
 
 	}
 

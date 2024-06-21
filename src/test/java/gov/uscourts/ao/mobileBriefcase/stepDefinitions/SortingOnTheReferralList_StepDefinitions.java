@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import cucumber.api.java.en.Then;
+import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage.Sort;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -15,8 +16,8 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 public class SortingOnTheReferralList_StepDefinitions {
 
 	ReferralSortOrderPage page;
-
-	@Then("^User verify the Date Down Arrow is selected by default and that the referrals are sorted by referred date in descending order \\(newest first\\)\\.$")
+DocumentPage docPage;
+	@Then("^User verifies that the Date Down Arrow is selected by default and the referrals are sorted by referred date in descending order \\(newest first\\)\\.$")
 	public void user_verify_the_Date_Down_Arrow_is_selected_by_default_and_that_the_referrals_are_sorted_by_referred_date_in_descending_order_newest_first() {
 		page = new ReferralSortOrderPage();
 		Page.sleep(20000);
@@ -27,14 +28,14 @@ public class SortingOnTheReferralList_StepDefinitions {
 
 		page.getSortPage(Sort.REFERRAL_DATE_DESCENDING);
 		List<String> descOrder = page.referralsSortedByDate();
-		assertTrue(Utility.checkDatesForDescOrder(descOrder, "M/d/yyyy"));
+		assertTrue("REFERRALS ARE NOT SORTED BY REFERRED DATE IN DESCENDING ORDER",Utility.checkDatesForDescOrder(descOrder, "M/d/yyyy"));
 	}
 
 	@Then("^User clicks on the Date Up Arrow button and verifies the referrals are sorted by referred date in ascending order \\(oldest first\\)\\.$")
 	public void user_clicks_on_the_Date_Up_Arrow_button_and_verifies_the_referrals_are_sorted_by_referred_date_in_ascending_order_oldest_first() {
 		page.getSortPage(Sort.REFERRAL_DATE_ASCENDING);
 		List<String> ascendingOrder = page.referralsSortedByDate();
-		assertTrue(Utility.checkDatesForAscOrder(ascendingOrder, "M/d/yyyy"));
+		assertTrue("REFERRALS ARE NOT SORTED BY REFERRED DATE IN ASCENDING ORDER",Utility.checkDatesForAscOrder(ascendingOrder, "M/d/yyyy"));
 
 	}
 
@@ -63,7 +64,7 @@ public class SortingOnTheReferralList_StepDefinitions {
 	@Then("^User verifies  Document Categories are sorted on the referral detail page and each document for a specific category is listed and ordered by the filed date\\.$")
 	public void user_verifies_Document_Categories_are_sorted_on_the_referral_detail_page_and_each_document_for_a_specific_category_is_listed_and_ordered_by_the_filed_date() {
 		List<UserInputData> userInputData = null;
-		page = new ReferralSortOrderPage();
-		page.getDocumentCategories(userInputData);
+		docPage = new DocumentPage();
+		docPage.getDocumentCategoryList(userInputData);
 	}
 }

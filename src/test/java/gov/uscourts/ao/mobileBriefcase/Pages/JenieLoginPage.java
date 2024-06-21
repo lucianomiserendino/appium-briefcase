@@ -77,7 +77,7 @@ public class JenieLoginPage extends Base {
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'User')]")
 	public WebElement selectUser;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[2]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar[@name=\"Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView\"]/XCUIElementTypeButton")
 	public static List<WebElement> settingsIcon;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Logout of Briefcase']")
@@ -121,6 +121,9 @@ public class JenieLoginPage extends Base {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JenieSelection\"]")
 	public static List<WebElement> jenieSelectionPage;
+
+//	@iOSXCUITFindBy(xpath ="//XCUIElementTypeStaticText[@name=\"Dashboard\" and @label=\"\"]")
+//	public static List<WebElement> dashboard;
 
 	public final String environment = "environment";
 	public final String userType = "userType";
@@ -186,8 +189,6 @@ public class JenieLoginPage extends Base {
 
 		ifDownloaded(retrievePendingRefs);
 
-		// Page.waitForVisibilityOfElement(selectUser, driver);
-
 		if (user.equals("sysadmin")) {
 			contains(User).click();
 
@@ -244,25 +245,46 @@ public class JenieLoginPage extends Base {
 
 	}
 
+	public static void checkLoginScreen() {
+		Page.sleep(1000);
+		ifDownloaded(inProgress);
+		if (!(jenieSelectionPage.size() > 0)) {
+			logout();
+		}
+	}
+
 	public static void logout() {
+		try {
+			if (CMECFSevers != null && CMECFSevers.size() > 0) {
+				tap(back);
+			}
 
-		if (contains("Dashboard").isDisplayed()) {
-			contains("Dashboard").click();
-			Page.sleep(5000);
-
-			if (settingsIcon.size() > 0) {
-				settingsIcon.get(0).click();
-				Page.sleep(5000);
-
+			if (dashboard != null && dashboard.size() > 0) {
+				Utility.doubleTap(dashboard.get(0));
 				ifDownloaded(inProgress);
 
-				logout.click();
-				performPageLoad(driver);
-				if (Actions.findElements(By.xpath(containsElement("Press OK to logout"))).size() > 0) {
-					contains(okButton).click();
+				if (settingsIcon != null && settingsIcon.size() > 0) {
+					settingsIcon.get(settingsIcon.size()-1).click();
+
+					if (logout != null) {
+						logout.click();
+					}
+
+					performPageLoad(driver);
+
+					List<WebElement> elements = Actions.findElements(By.xpath(containsElement("Press OK to logout")));
+					if (elements != null && elements.size() > 0) {
+						if (okButton != null) {
+							contains(okButton).click();
+						}
+					}
 				}
 			}
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+
 		}
+
 	}
 
 	public void login(List<UserInputData> userInputData) {
@@ -293,12 +315,12 @@ public class JenieLoginPage extends Base {
 			throw new IllegalArgumentException("Invalid user type: " + user);
 		}
 
-		if (!(jenieSelectionPage.size() > 0)) {
-			if (CMECFSevers.size() > 0) {
-				tap(back);
-			}
-			logout();
-		}
+//		if (!(jenieSelectionPage.size() > 0)) {
+//			if (CMECFSevers.size() > 0) {
+//				tap(back);
+//			}
+//			logout();
+//		}
 		Page.waitToBeClickable(contains(env), driver);
 
 		// Change to WEBVIEW context

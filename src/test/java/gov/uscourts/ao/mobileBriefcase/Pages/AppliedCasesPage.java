@@ -6,6 +6,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASE_NUMBER;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.NON_ORALLY_ARGUED_CASES;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.TARGET_AND_APPLIED_CASES;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.TARGET_CASES;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
@@ -14,7 +15,6 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static java.util.Collections.sort;
-import static org.openqa.selenium.support.PageFactory.initElements;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,23 +27,21 @@ import org.openqa.selenium.WebElement;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.Pages.CaseQueryPage.Search;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
-import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.page.common.Base;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Filter;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
-public class AppliedCasesPage extends Base {
+public class AppliedCasesPage extends AppiumPageFactory {
 
-	public AppliedCasesPage() {
-		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
-
-	}
+//	public AppliedCasesPage() {
+//		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
+//
+//	}
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[2]")
 	public WebElement bookmarkBTN;
@@ -81,6 +79,9 @@ public class AppliedCasesPage extends Base {
 
 	@iOSXCUITFindBy(id = "Categories")
 	public static WebElement categories;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
+	public static List<WebElement> inProgress;
 
 	static String dbAppliedCase = "";
 	public static String category = "";
@@ -128,14 +129,14 @@ public class AppliedCasesPage extends Base {
 
 	}
 
-	public void getAdditionalCaseInfoScreen(String caseNum) {
-		performPageLoad(driver);
-		CommonPages.getPanel(Panel.valueOf("Applied_Referrals"));
-		CommonPages.selectReferral(containsElement(caseNum));
-		performPageLoad(driver);
-		Actions.isDisplayed(Locator.XPATH, containsElement("Case Caption"));
-		Actions.isDisplayed(Locator.XPATH, containsElement("Docket Entries"));
-		Actions.isDisplayed(Locator.XPATH, containsElement("Associated Cases"));
+	public void getAdditionalCaseInfoScreen(List<UserInputData> userInputData) {
+
+		Assert.assertTrue(
+				"Additional case information screen is not displayed when selecting an applied case: " + dbAppliedCase,
+				Actions.isDisplayed(Locator.XPATH, containsElement("Case Caption")));
+		Assert.assertTrue(Actions.isDisplayed(Locator.XPATH, containsElement("Docket Entries")));
+		Assert.assertTrue(Actions.isDisplayed(Locator.XPATH, containsElement("Associated Cases")));
+
 	}
 
 	public static List<String> caseList(List<WebElement> element) {
@@ -231,36 +232,28 @@ public class AppliedCasesPage extends Base {
 
 	public void navigateToAppliedReferral(List<UserInputData> userInputData) {
 
-
-
 		if (getSiVal(userInputData).equals("y")) {
-			
 			CaseQueryPage casequerypage = new CaseQueryPage();
-			casequerypage.searchForACase("applied", category, dbAppliedCase, Search.caseNumber);
-			
-			CommonPages page=new CommonPages();
+			casequerypage.searchForACase(category, dbAppliedCase, Search.caseNumber);
+
+			CommonPages page = new CommonPages();
 			page.getGroupIcons(GroupIcons.Expand);
 			scrollDownIfNotDisplayed(containsElement("Applied"));
 
-
 			Assert.assertTrue(
 					"THE USER IS DIRECTED TO THE APPLIED CASE DETAIL PAGE, SHOULD BE DIRECTED TO THE TARGET CASE DETAIL PAGE",
-					isDisplayed(Actions.contains(dbAppliedCase)));
+					scrollDownIfNotDisplayed(containsElement(dbAppliedCase)));
+			ifDownloaded(inProgress);
+			getAdditionalCaseInfoScreen(userInputData);
 
 		} else {
 			scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
-			scrollDownIfNotDisplayed(Actions.containsElement(dbAppliedCase));
 
-			assertTrue("THE USER IS NOT DIRECTED TO THE CASE DETAIL PAGE, " + category + " CASE: " + dbAppliedCase,
-					dbAppliedCase);
+			Assert.assertTrue("Failed to verify that the applied case '" + dbAppliedCase
+					+ "' is listed on the referral list page when 'briefcaseTargetOnly' is set to 'n', category: "
+					+ category, Utility.isDisplayed(Actions.containsElement(dbAppliedCase)));
 
 		}
-	}
-
-	public static void assertTrue(String msg, String caseNum) {
-		Assert.assertTrue("------------------> " + msg,
-
-				Actions.isDisplayed(Locator.XPATH, Actions.containsElement("Sync all documents for case #" + caseNum)));
 	}
 
 }

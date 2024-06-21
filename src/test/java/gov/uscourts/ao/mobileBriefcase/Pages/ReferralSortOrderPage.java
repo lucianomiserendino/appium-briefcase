@@ -3,7 +3,6 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +55,7 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Applied Referrals']")
 	public static List<WebElement> appliedRefs;
-	
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[4]/XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<WebElement> toolCases;
 
@@ -103,46 +102,24 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	public List<String> referralsSortedByCase() {
 		return Utility.retrieveAllReferrals(cases, " ", 0);
 	}
+
 	public List<String> assignmentsSortedByCase() {
 		return Utility.retrieveAllReferrals(toolCases, " ", 0);
 	}
 
 	public void getSortPage(Sort sort) {
-	    Map<Sort, WebElement> sortElements = new HashMap<>();
-	    sortElements.put(Sort.REFERRAL_DATE_DESCENDING, dateArrowDownBtn);
-	    sortElements.put(Sort.REFERRAL_DATE_ASCENDING, dateArrowUpBtn);
-	    sortElements.put(Sort.CASE_NUMBER_DESCENDING, caseDownArrowBtn);
-	    sortElements.put(Sort.CASE_NUMBER_ASCENDING, caseUpArrowBtn);
+		Map<Sort, WebElement> sortElements = new HashMap<>();
+		sortElements.put(Sort.REFERRAL_DATE_DESCENDING, dateArrowDownBtn);
+		sortElements.put(Sort.REFERRAL_DATE_ASCENDING, dateArrowUpBtn);
+		sortElements.put(Sort.CASE_NUMBER_DESCENDING, caseDownArrowBtn);
+		sortElements.put(Sort.CASE_NUMBER_ASCENDING, caseUpArrowBtn);
 
-	    WebElement elementToTap = sortElements.get(sort);
-	    if (elementToTap != null) {
-	        tap(elementToTap);
-	    }
+		WebElement elementToTap = sortElements.get(sort);
+		if (elementToTap != null) {
+			tap(elementToTap);
+		}
 	}
 
-
-	public void getDocumentCategories(List<UserInputData> userInputData) {
-	
-
-		DocumentPage.getDocumentCategoryList( userInputData) ;
-//		String pane = DocumentPage.panel;
-//		
-//		List<String> uiDocList = new ArrayList<>();
-//
-//		for (int k = 0; k < getDocList(pane).size(); k++) {
-//			uiDocList.add(getDocList(pane).get(k).getText().split(",")[1].split("Pages")[0]);
-//		}
-//		assertTrue("DOCUMENTS ARE NOT ORDERED BY THE FILED DATE: ", Utility.checkIfSorted(uiDocList));
-
-	}
-
-
-	public List<WebElement> getDocList(String panel) {
-
-		return Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + panel
-				+ "']/following::XCUIElementTypeStaticText[contains(@name, ',')]"));
-
-	}
 
 	public List<Integer> getCellCount(int time, int navCellSize) {
 		List<Integer> cellSize = new ArrayList<>();

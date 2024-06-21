@@ -228,7 +228,9 @@ public class StaffAttorneyReferralPage extends Base {
 
 		scrollDownIfNotDisplayed(Actions.containsElement(randomDoc));
 		
-		close.click();
+		if (close != null) {
+			close.click();
+		}
 	}
 
 	public List<String> getDocuments(List<UserInputData> table, int col) {

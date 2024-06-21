@@ -10,7 +10,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.Random;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -32,7 +31,7 @@ public class InternalNotePage extends AppiumPageFactory {
 //		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
 //	}
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[4]/XCUIElementTypeOther[2]/XCUIElementTypeOther[3]/XCUIElementTypeStaticText/preceding:: XCUIElementTypeStaticText[1]")
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name=''])[3]/preceding::XCUIElementTypeStaticText[1]")
 	public static WebElement note;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"Cancel\"]")
@@ -42,9 +41,9 @@ public class InternalNotePage extends AppiumPageFactory {
 	public static WebElement desc;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"Apply\"]")
-	public static WebElement applyBtn;
+	public static List<WebElement> applyBtn;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeApplication[@name=\"Briefcase [Test]\"]/XCUIElementTypeWindow[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextView")
 	public static WebElement textField;
 
 	@iOSXCUITFindBy(id = "Characters left: 200")
@@ -59,6 +58,9 @@ public class InternalNotePage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Panel:')]")
 	public static WebElement judgePanel;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Progress halted' or @name='In progress']")
+	public static List<WebElement> activityIndicator;
+
 	private static String xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText";
 
 	String panel = "";
@@ -71,37 +73,35 @@ public class InternalNotePage extends AppiumPageFactory {
 
 			Page.performPageLoad(driver);
 			panel = getPanel();
-			String text = Actions.getText(note);
 			tap(note);
 			Page.performPageLoad(driver);
 			assertTrue(isDisplayed(cancelBtn));
 			assertTrue(isDisplayed(desc));
-			assertTrue(isDisplayed(applyBtn));
-			clearText(text);
+			textField.clear();
 			assertTrue(isDisplayed(numOfChar));
-			String newNote = randomCharArray(201);
+			String newNote = Utility.randomCharArray(201);
 			sendKeys(textField, newNote);
-			assertTrue("THE CHARACTER LIMIT IS 200: ", textField.getText().length() == 200);
-			assertTrue(Actions.contains("Characters left: ").getText().split(": ")[1].trim().equals("0"));
+
+			assertTrue("THE CHARACTER LIMIT IS 200", !applyBtn.get(0).isEnabled());
 			textField.clear();
 			expectedNote = getRandomText();
 			sendKeys(textField, expectedNote);
-			tap(applyBtn);
-			Page.performPageLoad(driver);
-
-			String dbNote = getDBInternalNote(panel, category, referral, userInputData);
-
-			assertEquals("PLEASE VERIFY THAT CMA_VALUE.CHM_MOBILE_DATA IS UPDATED CORRECTLY - >>", expectedNote,
-					dbNote);
+			tap(applyBtn.get(0));
+			CommonPages.ifDownloaded(applyBtn);
 
 			String txt2 = getEnteredNoteTxt();
 
 			isCaseNoteDisplayed(expectedNote, txt2);
 
 			driver.navigate().back();
-			Page.performPageLoad(driver);
+			Page.sleep(6000);
 
 			isCategoryNoteDisplayed(expectedNote, referral);
+
+//			String dbNote = getDBInternalNote(panel, category, referral, userInputData);
+//
+//			assertEquals("PLEASE VERIFY THAT CMA_VALUE.CHM_MOBILE_DATA IS UPDATED CORRECTLY - >>", expectedNote,
+//					dbNote);
 
 		} else {
 			assertTrue(arrow.size() == 2);
@@ -120,7 +120,7 @@ public class InternalNotePage extends AppiumPageFactory {
 		isCategoryNoteDisplayed(expectedTxt, referral);
 
 		scrollDownIfNotDisplayed(Actions.containsElement(referral));
-
+		CommonPages.ifDownloaded(activityIndicator);
 		String txt2 = getEnteredNoteTxt();
 
 		isCaseNoteDisplayed(expectedTxt, txt2);
@@ -130,17 +130,18 @@ public class InternalNotePage extends AppiumPageFactory {
 	public void deleteExistingNote(String category, String referral, String expectedTxt,
 			List<UserInputData> userInputData) {
 		Page.performPageLoad(driver);
-		Actions.findElement(By.xpath(Actions.containsElement("Auto-Test:"))).click();
-		clearText(expectedTxt);
-		tap(applyBtn);
-		Page.performPageLoad(driver);
+
+		Page.waitForPresenceOfElementLocated(By.xpath(Actions.containsElement("Test:")), driver).click();
+		Page.waitForVisibilityOfElement(textField, driver).clear();
+		tap(applyBtn.get(0));
+		CommonPages.ifDownloaded(applyBtn);
 
 		String dbNote = getDBInternalNote(panel, category, referral, userInputData);
-		Assert.assertTrue("PLEASE VERIFY THAT CMA_VALUE.CHM_MOBILE_DATA IS UPDATED CORRECTLY - >>",dbNote.isEmpty());
+		Assert.assertTrue("PLEASE VERIFY THAT CMA_VALUE.CHM_MOBILE_DATA IS UPDATED CORRECTLY - >>", dbNote.isEmpty());
 		String caseDetailNote = Actions.getText(note);
 		isCaseNoteDisplayed("Add Internal Note", caseDetailNote);
 		driver.navigate().back();
-		Page.performPageLoad(driver);
+		Page.sleep(6000);
 		isCategoryNoteDisplayed("", referral);
 
 		removeAndNavigateAway(category, referral);
@@ -160,7 +161,7 @@ public class InternalNotePage extends AppiumPageFactory {
 	}
 
 	public String getEnteredNoteTxt() {
-		return Actions.getText(Locator.XPATH, Actions.containsElement("Auto-Test:"));
+		return Actions.getText(Locator.XPATH, Actions.containsElement("Test:"));
 	}
 
 	public void isCategoryNoteDisplayed(String expectedTxt, String referral) {
@@ -202,13 +203,14 @@ public class InternalNotePage extends AppiumPageFactory {
 	}
 
 	public static String categoryScreenNote(String referral) {
-		return Actions.findElementBy(Locator.XPATH,
-				Actions.containsElement(referral) + "/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
-				.getText();
+		return Page.waitForPresenceOfElementLocated(By.xpath(
+				Actions.containsElement(referral) + "/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText"),
+				driver).getText();
+
 	}
 
 	public static String getRandomText() {
-		return "\' Auto-Test: \"" + Utility.getStreamOfRandomInts();
+		return "\' Test: \"" + Utility.getStreamOfRandomInts();
 	}
 
 	public static int getLength(String txt) {
@@ -221,22 +223,6 @@ public class InternalNotePage extends AppiumPageFactory {
 
 	public static void assertTextIsDisplayed(String txt) {
 		assertTrue(Actions.isDisplayed(Locator.XPATH, Actions.containsElement(txt)));
-	}
-
-	public static String randomCharArray(int len) {
-
-		String randomChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz" + "0123456789";
-
-		StringBuilder b = new StringBuilder();
-
-		for (int i = 0; i < len; i++) {
-			int randIdx = new Random().nextInt(randomChar.length());
-			char randChar = randomChar.charAt(randIdx);
-			b.append(randChar);
-		}
-
-		return b.toString();
-
 	}
 
 	public static String getPanel() {

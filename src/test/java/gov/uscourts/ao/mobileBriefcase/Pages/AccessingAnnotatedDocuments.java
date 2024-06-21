@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+//import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,60 +158,60 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 	@iOSXCUITFindBy(accessibility = "PDF View")
 	public static WebElement pdfView;
 
-	public void getAnnotatedDoc() {
-		openPDFDoc(originalDoc);
-		openPDFDoc(annotatedDoc);
-		tap(dashboard);
-	}
-
-	public void openPDFDoc(WebElement el) {
-		CommonPages.getPanel(Panel.Briefs);
-		tap(plusIcon);
-		tap(el);
-		Page.performPageLoad(driver);
-		try {
-			verifyTextPresentInPDF(PDFPageView);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		Actions.tap(close);
-
-		tap(minIcon);
-
-	}
-
-	public static String viewAnnotateDoc(String url) throws IOException {
-		URL pdfUrl = new URL(url);
-		InputStream in = pdfUrl.openStream();
-		BufferedInputStream bf = new BufferedInputStream(in);
-		PDDocument doc = PDDocument.load(bf);
-		PDFTextStripper pdfStrip = new PDFTextStripper();
-		pdfStrip.setStartPage(2);
-		String content = pdfStrip.getText(doc);
-		doc.close();
-		return content;
-	}
+//	public void getAnnotatedDoc() {
+//		openPDFDoc(originalDoc);
+//		openPDFDoc(annotatedDoc);
+//		tap(dashboard);
+//	}
+//
+//	public void openPDFDoc(WebElement el) {
+//		CommonPages.getPanel(Panel.Briefs);
+//		tap(plusIcon);
+//		tap(el);
+//		Page.performPageLoad(driver);
+//		try {
+//			verifyTextPresentInPDF(PDFPageView);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//		Actions.tap(close);
+//
+//		tap(minIcon);
+//
+//	}
+//
+//	public static String viewAnnotateDoc(String url) throws IOException {
+//		URL pdfUrl = new URL(url);
+//		InputStream in = pdfUrl.openStream();
+//		BufferedInputStream bf = new BufferedInputStream(in);
+//		PDDocument doc = PDDocument.load(bf);
+//		PDFTextStripper pdfStrip = new PDFTextStripper();
+//		pdfStrip.setStartPage(2);
+//		String content = pdfStrip.getText(doc);
+//		doc.close();
+//		return content;
+//	}
 
 	public static int getPageCount(PDDocument doc) {
 		int pageCount = doc.getNumberOfPages();
 		return pageCount;
 	}
 
-	public void verifyTextPresentInPDF(String textToVerify) throws IOException {
-		try {
-			String pdfOutput = null;
-			URL pdfURL = new URL(driver.getCurrentUrl());
-			BufferedInputStream pdfToParse = new BufferedInputStream(pdfURL.openStream());
-			PDDocument document = PDDocument.load(pdfToParse);
-			pdfOutput = new PDFTextStripper().getText(document);
-			Assert.assertEquals(textToVerify, pdfOutput);
-		}
-
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	public void verifyTextPresentInPDF(String textToVerify) throws IOException {
+//		try {
+//			String pdfOutput = null;
+//			URL pdfURL = new URL(driver.getCurrentUrl());
+//			BufferedInputStream pdfToParse = new BufferedInputStream(pdfURL.openStream());
+//			PDDocument document = PDDocument.load(pdfToParse);
+//			pdfOutput = new PDFTextStripper().getText(document);
+//			Assert.assertEquals(textToVerify, pdfOutput);
+//		}
+//
+//		catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	public void getToggle() {
 		if (contains("Dashboard").isDisplayed())
@@ -376,7 +376,6 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 
 	public List<String> getDocumentCategories() {
 
-		getGroupIcons(GroupIcons.Expand);
 		Page.performPageLoad(driver);
 		List<String> categories = new ArrayList<>();
 

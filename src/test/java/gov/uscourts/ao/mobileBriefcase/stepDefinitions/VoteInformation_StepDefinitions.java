@@ -35,7 +35,7 @@ public class VoteInformation_StepDefinitions {
 		String caseNum = Document_StepDefinitions.regularCase;
 		List<UserInputData> userInputData = null;
 
-		ccr_id += CommonPages.getCCRID(caseNum, userInputData);
+		ccr_id += CommonPages.getCCRID(caseNum,Document_StepDefinitions.judCategory, userInputData);
 		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
 		String cmr_cs_caseid = CommonPages.getCaseID(caseNum, userInputData);
 
@@ -75,7 +75,7 @@ public class VoteInformation_StepDefinitions {
 			List<UserInputData> userInputData) {
 		String caseNum = Document_StepDefinitions.regularCase;
 
-		ccr_id += CommonPages.getCCRID(caseNum, userInputData);
+		ccr_id += CommonPages.getCCRID(caseNum, Document_StepDefinitions.judCategory,userInputData);
 		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
 		String cmr_cs_caseid = CommonPages.getCaseID(caseNum, userInputData);
 

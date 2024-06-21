@@ -1,71 +1,35 @@
 [
   {
-    "line": 3,
+    "line": 1,
     "elements": [
       {
-        "before": [
-          {
-            "result": {
-              "duration": 18953488417,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.setUp()"
-            }
-          }
-        ],
-        "line": 5,
+        "line": 4,
         "name": "",
-        "description": "Referral categories display on the dashboard for the judge",
-        "id": "referral-categories-display-on-the-dashboard-for-the-judge;",
-        "after": [
-          {
-            "result": {
-              "duration": 49665150417,
-              "status": "passed"
-            },
-            "match": {
-              "location": "Hook.tearDown()"
-            }
-          }
-        ],
+        "description": "The user is modifying a chambers assignment in the chmAssign DPF, ultimately to complete the assignment.  \nIf they edit any of the previously existing dates during this transaction those changes should be saved, not only the completed date.",
+        "id": "chmassign;",
         "type": "scenario",
         "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "duration": 78969957916,
+              "duration": 61131085417,
               "status": "passed"
             },
-            "line": 8,
-            "name": "I am logged into Briefcase",
-            "match": {
-              "location": "JenieLogin_StepDefinitions.i_am_logged_into_Briefcase(UserInputData\u003e)"
-            },
-            "rows": [
+            "comments": [
               {
-                "cells": [
-                  "environment",
-                  "user"
-                ],
-                "line": 9
+                "line": 9,
+                "value": "#Given I am logged into Briefcase"
               },
               {
-                "cells": [
-                  "test",
-                  "sysadmin"
-                ],
-                "line": 10
+                "line": 10,
+                "value": "#|environment|user    |"
+              },
+              {
+                "line": 11,
+                "value": "#|test       |sysadmin|"
               }
             ],
-            "keyword": "Given "
-          },
-          {
-            "result": {
-              "duration": 16530913542,
-              "status": "passed"
-            },
-            "line": 12,
+            "line": 13,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -78,7 +42,7 @@
                   "jud",
                   "user"
                 ],
-                "line": 13
+                "line": 14
               },
               {
                 "cells": [
@@ -87,60 +51,65 @@
                   "test",
                   "sysadmin"
                 ],
-                "line": 14
+                "line": 15
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 37100402500,
+              "duration": 19024225667,
               "status": "passed"
             },
-            "line": 16,
-            "name": "User observes the referral categories that display on the dashboard. Query the chm_mobile_referral, and chm_reftype_val table to get valid categories for the logged in user.",
+            "line": 17,
+            "name": "User selects a random category and target case",
             "match": {
-              "location": "DashboardPage_StepDefinitions.user_observes_the_referral_categories_that_display_on_the_dashboard_Query_the_chm_mobile_referral_and_chm_reftype_val_table_to_get_valid_categories_for_the_logged_in_user(UserInputData\u003e)"
+              "location": "Document_StepDefinitions.user_selects_a_random_category_and_target_case()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 403346084,
+              "error_message": "java.lang.NullPointerException\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCaseNumber(CommonPages.java:355)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCase(CommonPages.java:421)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCaseID(CommonPages.java:342)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCMRID(CommonPages.java:307)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.DPFs.getListOfBriefcaseDPFs(DPFs.java:99)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.DPFs.getChmAssign(DPFs.java:110)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.DPF_stepDefinitions.user_selects_action(DPF_stepDefinitions.java:31)\n\tat ✽.Then User selects action(CATEGORIES/Update/chmAssign_MODIFY_COMPLETE_assignment.feature:19)\n",
+              "status": "failed"
+            },
+            "line": 19,
+            "name": "User selects action",
+            "match": {
+              "location": "DPF_stepDefinitions.user_selects_action(DataTable)"
             },
             "rows": [
               {
                 "cells": [
-                  "jud",
+                  "dpf",
                   "courtId"
                 ],
-                "line": 17
+                "line": 20
               },
               {
                 "cells": [
-                  "test",
+                  "chmAssign",
                   "test"
                 ],
-                "line": 18
+                "line": 21
               }
             ],
-            "keyword": "And "
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 3,
+            "name": "@AMB-3966"
           }
         ]
       }
     ],
-    "name": "Referral Categories display on the dashboard for the judge",
+    "name": "chmAssign",
     "description": "",
-    "id": "referral-categories-display-on-the-dashboard-for-the-judge",
+    "id": "chmassign",
     "keyword": "Feature",
-    "uri": "CATEGORIES/SMOKE/REFERRAL_CATEGORIES_AMB-956   || AMB-1302 .feature",
-    "tags": [
-      {
-        "line": 1,
-        "name": "@smoke"
-      },
-      {
-        "line": 1,
-        "name": "@AMB-956"
-      },
-      {
-        "line": 1,
-        "name": "@Regression"
-      }
-    ]
+    "uri": "CATEGORIES/Update/chmAssign_MODIFY_COMPLETE_assignment.feature"
   }
 ]

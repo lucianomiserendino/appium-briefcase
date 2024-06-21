@@ -15,7 +15,7 @@ public class VoteClosingDate_StepDefinitions {
 			List<UserInputData> userInputData) {
 
 		String caseNum = Document_StepDefinitions.regularCase;
-		String ccr_id = CommonPages.getCCRID(caseNum, userInputData);
+		String ccr_id = CommonPages.getCCRID(caseNum,Document_StepDefinitions.judCategory, userInputData);
 		
 		page = new VoteClosingDate();
 		page.getVoteClosingDate(ccr_id, userInputData);

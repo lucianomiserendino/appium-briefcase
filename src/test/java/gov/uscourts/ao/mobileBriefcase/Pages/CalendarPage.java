@@ -4,12 +4,12 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CASES_ON_CALENDAR_
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCaseID;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.changeDateFormat;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.checkDatesForAscOrder;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.checkDatesForDescOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -22,10 +22,15 @@ import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.Category;
 import gov.uscourts.ao.mobileBriefcase.Pages.ReferralSortOrderPage.Sort;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CalendarPage extends AppiumPageFactory {
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"SessionGroups\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/following:: XCUIElementTypeStaticText[contains(@name, '(')]")
+	public static List<WebElement> categoryCount;
 
 	static String CLU_DATE_HEARING = "clu_date_hearing";
 	static String CTS_TERM = "cts_term";
@@ -42,40 +47,50 @@ public class CalendarPage extends AppiumPageFactory {
 	 * selected by the user
 	 */
 	public void isSortedByMonthAndYear() {
+	    int randomSortOrder = Utility.getRandomNumberInRange(1, 2);
+	    String dateFormat = "M yyyy";
 
-		int random = Utility.getRandomNumberInRange(1, 2);
+	    ReferralSortOrderPage sortOrderPage = new ReferralSortOrderPage();
+	    sortOrderPage.selectSortBtn();
 
-		String format = "M yyyy";
-
-		ReferralSortOrderPage page = new ReferralSortOrderPage();
-		page.selectSortBtn();
-
-		if (random == 1) {
-			page.getSortPage(Sort.REFERRAL_DATE_DESCENDING);
-			getGroupIcons(GroupIcons.Expand);
-
-			assertTrue("THE MAIN HEADERS ARE NOT SORTED BY \"MONTH YEAR\" IN DESCENDING ORDER: ",
-					checkDatesForDescOrder(getMonthlySessions(), format));
-
-		} else if (random == 2) {
-			page.getSortPage(Sort.REFERRAL_DATE_ASCENDING);
-			getGroupIcons(GroupIcons.Expand);
-			assertTrue("THE MAIN HEADERS ARE NOT SORTED BY \"MONTH YEAR\" IN ASCENDING ORDER: ",
-					checkDatesForAscOrder(getMonthlySessions(), format));
-
-		}
+	    try {
+	        if (randomSortOrder == 1) {
+	            sortOrderPage.getSortPage(Sort.REFERRAL_DATE_DESCENDING);
+	            getGroupIcons(GroupIcons.Expand);
+	            assertTrue("The main headers are not sorted by \"MONTH YEAR\" in descending order: ",
+	                    Utility.checkDatesForDescOrder(getMonthlySessions(), dateFormat));
+	        } else if (randomSortOrder == 2) {
+	            sortOrderPage.getSortPage(Sort.REFERRAL_DATE_ASCENDING);
+	            getGroupIcons(GroupIcons.Expand);
+	            assertTrue("The main headers are not sorted by \"MONTH YEAR\" in ascending order: ",
+	                    Utility.checkDatesForAscOrder(getMonthlySessions(), dateFormat));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        fail("An exception occurred during the sorting check: " + e.getMessage());
+	    }
 	}
+
 
 	public String getSubHeader(String oralArgView, String courtSession) {
 
-		List<WebElement> groups = getSessionGroups(3);
+		List<Integer> count = new ArrayList<>();
 
-		int mainHeader = Utility.getRandomNumberInRange(1, 4);/**
-																 * expands one of the random main header
-																 */
-		int numOfCases = totalNumOfCases(groups, mainHeader);
+		int s = categoryCount.size();
 
-		String month = getSession(mainHeader);
+		for (int i = 0; i < s; i++) {
+
+			count.add(Integer.parseInt(Actions.replace(categoryCount.get(i).getText(), "\\(", "", "\\)", "")));
+		}
+
+		Integer max = Collections.max(count);
+
+		String categoryName = Actions.containsElement("(" + max.toString() + ")")
+				+ "/preceding:: XCUIElementTypeStaticText[1]";
+
+		String month = Actions.findElementBy(Locator.XPATH, categoryName).getText().trim();
+
+		Actions.tap(Locator.XPATH, categoryName);
 
 		/**
 		 * If briefcaseOralArgsView = n or doesn't exist, subheaders display "Day, Month
@@ -83,11 +98,13 @@ public class CalendarPage extends AppiumPageFactory {
 		 */
 		if (oralArgView.equals("n") || oralArgView.isEmpty()) {
 
-			return newUI(numOfCases, month);
+			return newUI(max, month);
 		} else {
 
-			/** If briefcaseOralArgsView = y, cases are organized based on weekly sessions */
-			return oldUI(courtSession, numOfCases, month);
+			/**
+			 * If briefcaseOralArgsView = y, cases are organized based on weekly sessions
+			 */
+			return oldUI(courtSession, max, month);
 		}
 
 	}
@@ -132,63 +149,57 @@ public class CalendarPage extends AppiumPageFactory {
 
 	public static String newUI(int numOfCases, String month) {
 		String hearing = "";
-		int subHeader = 0;
-		int caseCount = 1;
-		int total = 0;
 
-		Boolean elementNotFound = true;
+		boolean found = true;
 
-		while (elementNotFound) {
-
+		while (found) {
 			List<WebElement> icons = Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + month
 					+ "']/following::XCUIElementTypeStaticText[@name=\"GroupIcon\"]"));
 
-			for (int i = 0; i < icons.size(); i++) {
+			found = false;
 
-				if (icons.get(i).getAttribute("value").equals("▽")) {
-
-					icons.get(i).click();
-
+			for (WebElement icon : icons) {
+				if (icon.getAttribute("value").equals("▽")) {
+					icon.click();
+					found = true; // Found and clicked an icon, need to recheck the list
+					break; // Break the loop to recheck the list from the start
 				}
-
-				List<WebElement> groups = Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + month
-						+ "']/following::XCUIElementTypeStaticText[contains(@name, '(')]"));
-
-				int left = totalNumOfCases(groups, i);
-
-				total += left;
-
-				if (total == numOfCases) {
-
-					if (caseCount > 1) {
-						subHeader = Utility.getRandomNumberInRange(0, caseCount - 1);
-					} else {
-						subHeader = 0;
-					}
-
-					int n1 = subHeader, n2 = 1, sum;
-					sum = n1 + n2;
-
-					hearing = Actions.findElement(By.xpath("(//XCUIElementTypeStaticText[@name='" + month
-							+ "']/following::XCUIElementTypeStaticText[@name='GroupIcon']/following::XCUIElementTypeOther[1]/XCUIElementTypeStaticText[1])["
-							+ sum + "]")).getText();
-
-					icons.get(subHeader).click();
-					elementNotFound = false;
-
-					break;
-
-				} else {
-					caseCount++;
-					elementNotFound = true;
-
-				}
-
 			}
 		}
+
+		List<Integer> c = new ArrayList<>();
+
+		List<WebElement> assignmentCount = Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + month
+				+ "']/following::XCUIElementTypeStaticText[contains(@name, '(')]"));
+
+		int i1 = 0;
+		for (WebElement element : assignmentCount) {
+			String value = Actions.replace(element.getText(), "\\(", "", "\\)", "").trim();
+			int intValue = Integer.parseInt(value);
+			c.add(intValue);
+			i1 += intValue;
+			if (i1 >= numOfCases) {
+				break;
+			}
+		}
+
+		Integer m = Collections.max(c);
+
+		hearing = Actions.findElement(By.xpath(assinmentType(month, m) + "/preceding::XCUIElementTypeStaticText[1]"))
+				.getText().trim();
+
+		assignmentCount.get(c.indexOf(m)).click();
+
 		caseN += getCaseNumber();
+
 		return getHearingDate(hearing);
 
+	}
+
+	public static String assinmentType(String month, Integer m) {
+		return "//XCUIElementTypeOther[@name='SessionGroups']/XCUIElementTypeScrollView/XCUIElementTypeOther//following::XCUIElementTypeStaticText[@name='"
+				+ month + "']/following::XCUIElementTypeStaticText[contains(@name, '" + "(" + m.toString() + ")"
+				+ "')][1]";
 	}
 
 	public static String getCaseNumber() {
@@ -200,44 +211,38 @@ public class CalendarPage extends AppiumPageFactory {
 
 	}
 
-	public boolean selectRandomCase(String caseN, String hearing, List<UserInputData> userInputData) {
+	public boolean selectRandomCase(String caseNumber, String hearing, List<UserInputData> userInputData) {
+		try {
+			String uiPanelText = Actions
+					.findElement(By.xpath("(//XCUIElementTypeStaticText[contains(@name, '" + caseNumber
+							+ "')]/following::XCUIElementTypeStaticText[contains(@name, 'Panel:')])[1]"))
+					.getText().trim();
 
-		String uiPanel = Actions.findElement(By.xpath("(//XCUIElementTypeStaticText[contains(@name, '" + caseN
-				+ "')]/following::XCUIElementTypeStaticText[contains(@name, 'Panel:')])[1]")).getText().trim();
+			String panelId = DocumentPage.get_pe_id("jud", userInputData);
 
-		String peId = DocumentPage.get_pe_id("jud",userInputData);
+			// Fetching necessary fields from the court session
+			String sessionTime = getCourtSessionFields(CourtSession.ARG_DISPLAY, panelId, hearing, userInputData,
+					caseNumber);
+			String panelMembers = getCourtSessionFields(CourtSession.CMR_PANEL_MEMBERS, panelId, hearing, userInputData,
+					caseNumber);
+			String hearingOrder = getCourtSessionFields(CourtSession.HEARING_ORDER, panelId, hearing, userInputData,
+					caseNumber);
 
-		/**
-		 * In the chm_mobile_referral table, there is a field for the panel_case.ph_id
-		 * (cmr_ph_id), in the panel_case table there is a field for the
-		 * panel_sitting.pns_id (ph_pns_id). In the panel_sitting table, there is a
-		 * field for the cluster.clu_id. The cluster table stores the hearing date
-		 * (clu_date_hearing), this is the date that is displayed when you tap on the
-		 * weekly session.To find the dates (cts_date_to, cts_date_from) for the weekly
-		 * session, query the court_session table where cts_id = clu_cts_id.
-		 * 
-		 */
+			// Construct the expected panel string
+			String expectedPanelText = trimIfNotNull("Panel:", panelMembers) + trimIfNotNull("Order:", hearingOrder)
+					+ trimIfNotNull("Time:", sessionTime);
 
-		String time = getCourtSessionFields(CourtSession.ARG_DISPLAY, peId, hearing, userInputData, caseN);
-		String panelMembers = getCourtSessionFields(CourtSession.CMR_PANEL_MEMBERS, peId, hearing, userInputData,
-				caseN);
-		String hearing_order = getCourtSessionFields(CourtSession.HEARING_ORDER, peId, hearing, userInputData, caseN);
+			// Remove spaces and compare
 
-		String dbPanel = trimIffNull("Panel:", panelMembers) + trimIffNull("Order:", hearing_order)
-				+ trimIffNull("Time:", time);
-
-		String a1 = dbPanel;
-		String b = uiPanel;
-		a1 = a1.replace(" ", "");
-		b = b.replace(" ", "");
-
-		if (a1.equalsIgnoreCase(b)) {
-
-			return true;
-		} else {
+			return expectedPanelText.replace(" ", "").equalsIgnoreCase(uiPanelText.replace(" ", ""));
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
+	}
 
+	private String trimIfNotNull(String prefix, String value) {
+		return value != null ? prefix + value.trim() : "";
 	}
 
 	public static String getCourtSessionFields(CourtSession session, String peId, String hearing,
@@ -315,8 +320,6 @@ public class CalendarPage extends AppiumPageFactory {
 		} else {
 			randomGroup = 1;
 		}
-
-		//String panel = getXpathOfSession(randomGroup, mainHeader, 1).getText();
 
 		monthName = getXpathOfSession(randomGroup, mainHeader, 2);
 

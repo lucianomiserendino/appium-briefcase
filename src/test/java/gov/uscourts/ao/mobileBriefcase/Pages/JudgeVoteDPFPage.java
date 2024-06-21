@@ -1,14 +1,10 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_INITIAL;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_INITIALS;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_VOTE;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_VOTE_DATE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGE_VOTE_DPF_RELIEF;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
@@ -129,10 +125,13 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(accessibility = "Annotations")
 	public static WebElement annotations;
-	
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
 	public static List<WebElement> progress;
 	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Case Information']")
+	public static WebElement caseInfo;
+
 	public static String cyv_category = "";
 	public static String caseid = "";
 	public static String cyv_code = "";
@@ -143,9 +142,9 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	public static String chv_date_created = "";
 
 	/** verify relief is displayed on the popup page */
-	public String selectViewVotes(List<UserInputData> userInputData, String caseNum) {
+	public String selectViewVotes(String category, List<UserInputData> userInputData, String caseNum) {
 
-		String ccr_id = CommonPages.getCCRID(caseNum, userInputData);
+		String ccr_id = CommonPages.getCCRID(caseNum, category, userInputData);
 		String dbRelief = getRelief(ccr_id, userInputData);
 		String relief = "";
 		if (dbRelief.equals(null)) {
@@ -153,95 +152,72 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 		} else {
 			relief = dbRelief;
 		}
-		tap(Locator.XPATH, "(//XCUIElementTypeStaticText[@name='" + relief
+		tap(Locator.XPATH, "(//XCUIElementTypeStaticText[@name='" + relief.trim()
 				+ "']/following::XCUIElementTypeOther/XCUIElementTypeButton[@name='View Votes'])[1]");
-		return relief;
+		return relief.trim();
 
 	}
 
 	/** verify each judge's vote and the day they voted on the popup page */
-	public void verifyJudgesVote(List<UserInputData> userInputData, String caseNum) {
+	public void verifyJudgesVote(String category, List<UserInputData> userInputData, String caseNum) {
 		performPageLoad(driver);
-		getJudgesInitials(JUDGES_INITIALS, JUDGES_INITIAL, JUDGES_VOTE, JUDGES_VOTE_DATE, userInputData, caseNum);
+		getJudgesInitials(category, JUDGES_INITIALS, userInputData, caseNum);
 
 	}
 
-	public static void getJudgesInitials(String initials, String initial, String votes, String voteDates,
-			List<UserInputData> userInputData, String caseNum) {
+	public static void getJudgesInitials(String category, String initials, List<UserInputData> userInputData,
+			String caseNum) {
 
-		String ccr_id = CommonPages.getCCRID(caseNum, userInputData);
+		String ccr_id = CommonPages.getCCRID(caseNum, category, userInputData);
 
-		String reliefText = getRelief(ccr_id, userInputData);
+		List<String> dbInitials = execute(getID(initials, ccr_id), 2, userInputData);
+		
+		List<String> voteType = execute(getID(initials, ccr_id), 4, userInputData);
 
-		List<String> dbInitials = executeQuery(replace(getID(initials, ccr_id), "RL_LIST_TEXT", reliefText),
-				userInputData);
-		sort(dbInitials);
+		
+		List<String> voteDate = execute(getID(initials, ccr_id), 5, userInputData);
+
+		
+		  
 
 		/** get judge's initials */
 
-		List<String> dbInitial = executeQuery(replace(getID(initial, ccr_id), "RL_LIST_TEXT", reliefText),
-				userInputData);
-		sort(dbInitial);
-
 		/** verify all initials are displayed */
+        List<String> resultList = new ArrayList<>();
+		for (int i = 0; i < dbInitials.size(); i++) {
+			
+           assertTrue("Verify correct judges' intials are listed in the View Votes popup: "+dbInitials+ "",scrollDownIfNotDisplayed(Actions.containsElement(dbInitials.get(i).trim())));
 
-		for (int inits = 0; inits < dbInitials.size(); ++inits) {
+            
+            String currentVote = voteType.get(i);
+            String currentVoteDate = voteDate.get(i);
+            
+            if (currentVote != null && currentVoteDate != null) {
+                String xpath = String.format(
+                        "//XCUIElementTypeOther[@name='JudgesVotesList']/child::*//*[contains(@name, '%s')]" +
+                        "/following::XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '%s')]" +
+                        "/following::XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '%s')]",
+                        dbInitials.get(i).trim(), currentVote.trim(), changeDateFormat(currentVoteDate.substring(0, 10),"yyyy-MM-dd",
+    							"M/d/yyyy"));
+                
+                resultList.add(xpath);
+            }
+        }
 
-			WebElement uiJudgeInits = waitForVisibilityOfElement(findElementBy(Locator.XPATH,
-					"//XCUIElementTypeOther[@name='JudgesVotesList']/child::*//*[contains(@name, '"
-							+ dbInitials.get(inits) + "')]"),
-					driver);
+        for (String result : resultList) {
+        	 assertTrue( "Judges’ votes are missing from the View Votes popup",scrollDownIfNotDisplayed(result));
+        }
+  
+    	tap(close);
+    	
+}
+	
+	
+	public String getVoteSelection(String actioName,String category, String dpfName, List<UserInputData> userInputData, String caseNum) {
 
-			assertTrue(uiJudgeInits.isDisplayed());
-		}
+		String elId = getAllColumns(getID(Queries.EL_ID, actioName), userInputData);
 
-		for (int init = 0; init < dbInitial.size(); ++init) {
-
-			/** get judge's current vote */
-
-			List<String> dbVote = executeQuery(
-
-					replace(getID(votes, ccr_id), "RL_LIST_TEXT", reliefText, "JU_INITIALS", dbInitial.get(init)),
-					userInputData);
-			sort(dbVote);
-
-			for (int vote = 0; vote < dbVote.size(); ++vote) {
-
-				/** get vote date */
-
-				List<String> dbVoteDate = executeQuery(replace(getID(voteDates, ccr_id), "RL_LIST_TEXT", reliefText,
-						"JU_INITIALS", dbInitial.get(init)), userInputData);
-
-				sort(dbVoteDate);
-
-				for (int uiVoteDate = 0; uiVoteDate < dbVoteDate.size(); ++uiVoteDate) {
-
-					String votedDate = changeDateFormat(dbVoteDate.get(uiVoteDate).split(" ")[0], "yyyy-MM-dd",
-							"M/d/yyyy");
-
-					WebElement uiResult = waitForVisibilityOfElement(findElementBy(Locator.XPATH,
-							"//XCUIElementTypeOther[@name='JudgesVotesList']/child::*//*[contains(@name, '"
-									+ dbInitial.get(init) + "')]"
-									+ "/following::XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '"
-									+ dbVote.get(vote)
-									+ "')]/following::XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '"
-									+ votedDate + "')]"),
-							driver);
-
-					assertTrue(uiResult.isDisplayed());
-				}
-			}
-		}
-
-		tap(close);
-	}
-
-	@SuppressWarnings("unlikely-arg-type")
-	public String getVoteSelection(String dpfName, List<UserInputData> userInputData, String caseNum) {
-
-		String elId = getAllColumns(getID(Queries.EL_ID, "Auto Test"), userInputData);
-
-		String ccr_id = CommonPages.getCCRID(caseNum, userInputData);
+		String ccr_id = CommonPages.getCCRID(caseNum, category, userInputData);
 
 		String voteText = "";
 		String text = "";
@@ -302,8 +278,9 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	 * After adding vote to a note, this will verify judge's vote is updated in Vote
 	 * Information Panel
 	 */
-	public void verifyNoteText(String voteText, String noteText, List<UserInputData> userInputData, String caseNum) {
-		String ccr_id = CommonPages.getCCRID(caseNum, userInputData);
+	public void verifyNoteText(String category,  List<UserInputData> userInputData,
+			String caseNum) {
+		String ccr_id = CommonPages.getCCRID(caseNum, category, userInputData);
 
 		CommonPages.getPanel(Panel.valueOf("Vote_Information"));
 		String relief = getRelief(ccr_id, userInputData);
@@ -312,7 +289,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 		assertTrue(isDisplayed(Locator.XPATH, containsElement("$$")));
 		String title = getAllColumns(Queries.DM_DESCRIPTION, userInputData);
 		assertTrue(isDisplayed(Locator.XPATH, containsElement(title)));
-		// ifDocumentAccessbile();
+		
 		tap(close);
 
 	}
@@ -325,16 +302,17 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 			if (Actions.isDisplayed(configError) == true) {
 				dismiss.click();
 			}
-			assertTrue(isDisplayed(pdf));
+			assertTrue("Verify doc popup is accessible from judgeVote note and document description is correct",
+					isDisplayed(pdf));
 			assertTrue(isDisplayed(pageLabel));
-			Page.waitToBeClickable(close, driver);
 
 		} else if (docName.equalsIgnoreCase("jpg")) {
 
 			assertTrue(driver.getPageSource()
 					.contains("The requested document cannot be displayed at this time. Invalid Document: dls"));
-			Page.waitToBeClickable(close, driver);
+
 		}
+		Page.waitToBeClickable(close, driver);
 	}
 
 	public void addVote(String dpfName, String query, String relief, String el_id, List<UserInputData> userInputData) {
@@ -352,17 +330,16 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 			tap(applyBtn);
 
 			scrollDownIfNotDisplayed("//XCUIElementTypeButton[@name='Submit']");
-
-			performPageLoad(driver);
-			Utility.scroll(documentList, "up");
+             CommonPages.ifDownloaded(progress);
+            Page.waitForVisibilityOfElement(caseInfo, driver);
 			getGroupIcons(GroupIcons.Expand);
 			selectAction("Actions", el_id, userInputData);
 			performPageLoad(driver);
 			tap(Locator.XPATH, getIndexOfNoteIcon(relief));
-			performPageLoad(driver);
+			Page.sleep(2000);
 			assertEquals(
 					" THE \"NOTE HISTORY PARAMETER\" IS SET TO \"Y\", HOWEVER THE TEXT OF THE PREVIOUS VOTE NOTE IS NOT DISPLYED CORRECTLY! ",
-					text, getText(commentField));
+					text, getText(Page.waitForVisibilityOfElement(commentField, driver)));
 			tap(cancel);
 
 		}
@@ -388,7 +365,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	}
 
 	public static String getRelief(String ccr_id, List<UserInputData> userInputData) {
-		return getAllColumns(getID(JUDGE_VOTE_DPF_RELIEF, ccr_id), userInputData);
+		return execute(getID(JUDGES_INITIALS, ccr_id), 3, userInputData).get(0);//getAllColumns(getID(JUDGE_VOTE_DPF_RELIEF, ccr_id), userInputData);
 
 	}
 
@@ -444,7 +421,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	}
 
 	public void verifyDocumentIsDisplayed() {
-
+		Page.performPageLoad(driver);
 		String el = null;
 
 		getVote(rl_list_text).click();

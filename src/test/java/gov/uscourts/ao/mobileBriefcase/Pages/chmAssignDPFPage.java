@@ -213,7 +213,6 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	 */
 	public static void getListOfAvailableStaffMembers(String staffMember, String peID, String screenTypeParam,
 			int index, List<UserInputData> userInputData) {
-
 		List<String> dbStaffMembers = new ArrayList<>();
 		String fName = "";
 		String lName = "";
@@ -243,7 +242,6 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			sort(uiStaffMembers);
 		}
 
-		System.out.println(existing + "**********************************stfMember");
 		
 		if (existing == false) {
 			assertEquals("********STAFF MEMBERS VALIDATION ERROR!!!********", dbStaffMembers, uiStaffMembers);
@@ -287,7 +285,6 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 						uiAssignmenType, cha_ju_pe_id, caseNumber, cmr_cyv_code, pr_first_name, pr_last_name,
 						userInputData);
 			}
-			System.out.println(existing + "******************type");
 			if (existing == false) {
 				exitsingAssignmentType = clickOnNumberInRange(allAssignmenTypes);
 			} else {

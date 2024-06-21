@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCasePage.findWebElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
@@ -68,12 +69,15 @@ public class AutoSyncPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, 'Actions')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
 	public static List<WebElement> docCategories;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Progress halted' or @name='In progress']")
+	public static List<WebElement> activityIndicator;
 	/**
 	 * Get number of new documents from the counter on the sync button
 	 * 
 	 * @return
 	 */
 	public static String getCounter() {
+		ifDownloaded(activityIndicator);
 		WebElement el = Actions.findElement(By.xpath(containsElement("Available for download")));
 		return getText(el).split(",")[1].trim().split(" ")[0];
 
@@ -179,6 +183,7 @@ public class AutoSyncPage extends AppiumPageFactory {
 	}
 
 	public static void getSyncCount(int syncCount) {
+		
 		AccessingAnnotatedDocuments a = new AccessingAnnotatedDocuments();
 		List<String> categories = a.getDocumentCategories();
 

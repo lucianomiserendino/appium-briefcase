@@ -324,7 +324,7 @@ public class DashboardPage extends Base {
 
 				} else {
 
-					assertEquals(dashNewReferralCount, navNewReferralCount.getText().trim());
+					assertEquals("Verify that the red badge count in the navigation matches the new items on the Dashboard",dashNewReferralCount, navNewReferralCount.getText().trim());
 
 				}
 			} catch (org.openqa.selenium.TimeoutException e) {

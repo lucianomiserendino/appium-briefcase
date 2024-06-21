@@ -10,6 +10,7 @@ import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.Category;
 import gov.uscourts.ao.mobileBriefcase.Pages.StaffAttorneyReferralSortPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 
 public class Document_StepDefinitions {
 	DocumentPage page;
@@ -39,6 +40,7 @@ public class Document_StepDefinitions {
 	public void user_selects_random_case_number(List<UserInputData> userInputData) {
 		page = new DocumentPage();
 		regularCase = page.getRandomCase(Category.judgeRegularCase);
+		
 	}
 
 	@Then("^User selects random document$")
@@ -88,7 +90,13 @@ public class Document_StepDefinitions {
 	public void user_navigates_to_View_Case_Info_then_taps_Docket_Entries()  {
 		String actionName = DPF_stepDefinitions.actionName;
 		page = new DocumentPage();
-		page.navigateToViewCaseInfo();
+		page.navigateToViewCaseInfo(actionName);
+	}
+	@Then("^User selects a random category and target case$")
+	public void user_selects_a_random_category_and_target_case() {
+		List<UserInputData> userInputData = null;
+		page = new DocumentPage();
+		page.selectRandomCategoryAndCase(userInputData);
 	}
 
 }

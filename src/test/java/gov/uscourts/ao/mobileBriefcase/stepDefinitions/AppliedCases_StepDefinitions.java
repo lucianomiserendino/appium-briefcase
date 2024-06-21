@@ -47,12 +47,7 @@ public class AppliedCases_StepDefinitions {
 		page.verifyAppliedCaseLinkIsDisplayed(caseN);
 	}
 
-	@When("^User selects an applied case \"([^\"]*)\" in the Applied cases panel, the additional case information screen displays$")
-	public void user_selects_an_applied_case_in_the_Applied_cases_panel_the_additional_case_information_screen_displays(
-			String caseNum) {
-		page = new AppliedCasesPage();
-		page.getAdditionalCaseInfoScreen(caseNum);
-	}
+
 
 	@Then("^User taps on magnifying glass icon and searches for applied case, selects On Device option & verifies that the user is directed to the target case referral detail page$")
 	public void user_taps_on_magnifying_glass_icon_and_searches_for_applied_case_selects_On_Device_option_verifies_that_the_user_is_directed_to_the_target_case_referral_detail_page(
@@ -62,7 +57,6 @@ public class AppliedCases_StepDefinitions {
 		String userType = SystemPropertySetup.getVariable(Variables.USER_TYPE, table);
 		page.searchForAppliedCase(userInputData);
 		page.navigateToAppliedReferral(userInputData);
-
 	}
 
 

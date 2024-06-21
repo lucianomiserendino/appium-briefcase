@@ -46,18 +46,22 @@ public class EnBancPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Total')]")
 	public static WebElement total;
 
-	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[contains(@name, 'EN BANC ')]/preceding::XCUIElementTypeStaticText[contains(@name, '-')][1])")
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[contains(@name, 'EN BANC')]/preceding::XCUIElementTypeStaticText[contains(@name, '-')][1])")
 	public static List<WebElement> enBanc;
 
 	private static String xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText";
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='VoteOptions']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static List<WebElement> judgeVotes;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
+	public static List<WebElement> inProgress;
 
 	@iOSXCUITFindBy(id = "Back")
 	public static WebElement back;
 
 	String select = "Please Select";
+	public  String category;
 
 
 	public String getReffCategories(String pe_id, List<UserInputData> userInputData) {
@@ -78,9 +82,9 @@ public class EnBancPage extends AppiumPageFactory {
 				performPageLoad(driver);
 
 				if (enBanc.size() > 0) {
-
+					category=referralCategories.get(i);
 					caseNum = DocumentPage.selectRandomCaseNumber(enBanc);
-
+					
 					elementNotFound = false;
 
 					break;
@@ -94,12 +98,13 @@ public class EnBancPage extends AppiumPageFactory {
 			}
 
 		}
+		CommonPages.ifDownloaded(inProgress);
 		return caseNum;
 
 	}
 
-	public void selectRandomVote(List<UserInputData> userInputData, String caseNum) {
-		String ccr_id = CommonPages.getCCRID(caseNum, userInputData);
+	public void selectRandomVote(List<UserInputData> userInputData,String category, String caseNum) {
+		String ccr_id = CommonPages.getCCRID(caseNum,category, userInputData);
 
 		String voteText = "";
 		String text = "";

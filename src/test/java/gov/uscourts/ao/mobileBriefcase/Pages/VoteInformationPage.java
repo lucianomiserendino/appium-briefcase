@@ -30,7 +30,6 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class VoteInformationPage extends AppiumPageFactory {
@@ -38,12 +37,15 @@ public class VoteInformationPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(id = "Close")
 	public static WebElement close;
 
+	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Vote Information')]/following::XCUIElementTypeStaticText[1]")
+	public static WebElement filler;
+
 	/**
 	 * For each referral, observe the filer's name (pr_last_name + , + pr_first_name
 	 * + first initial of pr_middle_name + , + gn_display) party type
 	 * (pt_description) and date filed (de_date_filed) displays in a light blue
 	 * heading. The SQL below returns the filer information for the referral in case
-	 * 15-3314:
+	 * :
 	 */
 
 	public boolean filersInfo(FILERs_INFO info, String peId, String caseId, String cyvCode, String ccr_id,
@@ -54,26 +56,38 @@ public class VoteInformationPage extends AppiumPageFactory {
 
 		WebElement uiResult = null;
 		String filerInfo = getFilerInfo(peId, caseId, cyvCode, userInputData);
+		
+		String xpath = "";
+		if (!filler.getText().contains(",")) {
+			xpath = filerInfo.replace(",", "");
+
+		}else {
+			xpath = filerInfo;
+		}
 
 		try {
 			switch (info) {
 			case VOTE_INFO_FILLRES_INFORMATION:
 				for (int i = 0; i < judgesInitials.size(); ++i) {
 
+		
 					uiResult = findElementBy(Locator.XPATH,
-							"//*[contains(@name, 'Vote Information')]/following:: XCUIElementTypeStaticText[contains(@name, '"
-									+ filerInfo + "')]/following::XCUIElementTypeStaticText[contains(@name, '"
-									+ judgesInitials.get(i) + "')]");
+							"//*[contains(@name, 'Vote Information')]/following::XCUIElementTypeStaticText[contains(@name, '"
+									+ xpath + "')]/following::XCUIElementTypeStaticText[contains(@name, '"+judgesInitials.get(i)+"')]");
+
 
 				}
+				break;
 			case JUDGE_VOTE_DPF_FILLRES_INFORMATION:
 
 				uiResult = findElementBy(Locator.XPATH,
-						"//XCUIElementTypeStaticText[contains(@name, '" + filerInfo + "')]");
+						"//XCUIElementTypeStaticText[contains(@name, '" + xpath + "')]");
+				break;
 			default:
 				break;
 			}
-			if (uiResult.isDisplayed())
+
+			if (uiResult != null && uiResult.isDisplayed())
 				isDisplayed = true;
 
 		} catch (Exception e) {
@@ -114,6 +128,7 @@ public class VoteInformationPage extends AppiumPageFactory {
 
 		case "de_date_filed":
 			string = "de_date_filed";
+
 			break;
 
 		default:
@@ -157,7 +172,7 @@ public class VoteInformationPage extends AppiumPageFactory {
 	public void getJudesVote(FILERs_INFO info, String ccr_id, List<UserInputData> userInputData) {
 		List<String> cvv_display = new ArrayList<>();
 		String noVote = "";
-		String uiJudesVote = "";
+		List<String> uiJudesVote = null;
 		// String chv_date_created = "";
 		String relief = getAllColumns(getID(RELIEF, ccr_id), userInputData);
 
@@ -179,19 +194,23 @@ public class VoteInformationPage extends AppiumPageFactory {
 
 				String chv_date_created = changeDateFormat(date.split(" ")[0], "yyyy-MM-dd", "M/d/yyyy");
 
-				uiJudesVote +=
+				uiJudesVote.add(
 
 						"//XCUIElementTypeStaticText[contains(@name, '" + chv_date_created + "')]/"
 								+ "preceding::XCUIElementTypeStaticText[contains(@name, '" + vote
-								+ "')]/preceding::XCUIElementTypeStaticText" + "[contains(@name, '" + relief + "')]";
+								+ "')]/preceding::XCUIElementTypeStaticText" + "[contains(@name, '" + relief + "')]");
 			}
 		}
 
 		switch (info) {
 		case VOTE_INFO_FILLRES_INFORMATION:
 
-			assertTrue("VERIFY THE VOTE DATE (CHV_DATE_CREATED) IS CORRECT",
-					findElementBy(Locator.XPATH, uiJudesVote).isDisplayed());
+			for (int i = 0; i < uiJudesVote.size(); i++) {
+				System.out.println(uiJudesVote.get(i) + "**********************************");
+
+				assertTrue("VERIFY THE VOTE DATE (CHV_DATE_CREATED) IS CORRECT",
+						findElementBy(Locator.XPATH, uiJudesVote.get(i)).isDisplayed());
+			}
 
 			assertTrue(
 					"CVV_DISPLAY IS NULL FOR A JUDGE, BUT THE TEXT 'NO VOTE' DOEN'T DISPLAY UNDER THE JUDGE'S INITIALS",
@@ -200,8 +219,12 @@ public class VoteInformationPage extends AppiumPageFactory {
 			break;
 
 		case JUDGE_VOTE_DPF_FILLRES_INFORMATION:
-			assertTrue("VERIFY THE VOTE DATE (CHV_DATE_CREATED) IS CORRECT",
-					findElementBy(Locator.XPATH, uiJudesVote).isDisplayed());
+			for (int i = 0; i < uiJudesVote.size(); i++) {
+				System.out.println(uiJudesVote.get(i) + "**********************************");
+
+				assertTrue("VERIFY THE VOTE DATE (CHV_DATE_CREATED) IS CORRECT",
+						findElementBy(Locator.XPATH, uiJudesVote.get(i)).isDisplayed());
+			}
 			break;
 		default:
 			break;
@@ -214,7 +237,6 @@ public class VoteInformationPage extends AppiumPageFactory {
 		WebElement uiInits = null;
 
 		String judgeInitials = getPANEL_MEMBERS(cmr_ccr_id, userInputData);
-
 		ArrayList<String> dbInitials = new ArrayList<>(Arrays.asList(judgeInitials.split(", ")));
 
 		int k = 0;
@@ -227,24 +249,12 @@ public class VoteInformationPage extends AppiumPageFactory {
 			k += 1;
 		}
 
-		int rowCount = getVoteInfoTable().size();
-		int randomRow = 0;
-
-		if (rowCount > 1) {
-			randomRow = Utility.getRandomNumberInRange(1, rowCount);
-
-		} else {
-			randomRow = 1;
-		}
-
 		for (int i = k; i < dbInitials.size() + k; ++i) {
 
-			uiInits = findElementBy(Locator.XPATH, initials(panel, i, randomRow));
+			uiInits = findElementBy(Locator.XPATH, initials(panel, i));
 			uiJudgeInitials.add(uiInits.getText().trim());
 
 		}
-		System.out.println(dbInitials + "***************************");
-		System.out.println(dbInitials + "***************************");
 
 		assertEquals("JUDGES NOT LISTED IN SENIORITY ORDER", dbInitials, uiJudgeInitials);
 		if (panel.equals("viewVotes")) {
@@ -263,11 +273,10 @@ public class VoteInformationPage extends AppiumPageFactory {
 				+ "/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther";
 	}
 
-	public static String initials(String panel, int index, int row) {
+	public static String initials(String panel, int index) {
 		if (panel.equals("Vote_Information")) {
-			return "(//XCUIElementTypeOther[@name=\"DocumentList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]"
-					+ "/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[" + index
-					+ "]/XCUIElementTypeStaticText)[" + row + "]";
+			return "//XCUIElementTypeStaticText[@name=\"Vote Information\"]/following:: XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther["
+					+ index + "]/XCUIElementTypeStaticText";
 		} else {
 			return "//XCUIElementTypeOther[@name='JudgesVotesList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]"
 					+ "/XCUIElementTypeOther[" + index
@@ -293,7 +302,6 @@ public class VoteInformationPage extends AppiumPageFactory {
 	public static String getCMR_PANEL_MEMBERS(String field, String cmr_ccr_id, List<UserInputData> userInputData) {
 		return getAllColumns(Actions.replace(field, "CMR_CCR_ID", cmr_ccr_id), userInputData);
 	}
-
 
 	public enum FILERs_INFO {
 		VOTE_INFO_FILLRES_INFORMATION, JUDGE_VOTE_DPF_FILLRES_INFORMATION, FILED_DATE, UI_FILER_INFORMATION,

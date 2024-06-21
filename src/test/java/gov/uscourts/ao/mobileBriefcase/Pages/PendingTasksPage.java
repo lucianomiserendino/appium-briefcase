@@ -65,11 +65,10 @@ public class PendingTasksPage extends AppiumPageFactory {
 	public static List<WebElement> pendingSubFolders;
 
 	public static String category;
-	String assinmentType;
-	String referral = "";
+	public static String assignmentType;
+	public static String referral = "";
 	String elId = "";
 	String dpfName = "chmSilentAssign";
-	
 
 	public String getRandomSubFolder() {
 
@@ -103,7 +102,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 		assertTrue(
 				"VERIFY THE ASSIGNMENT TYPE, PANEL MEMBER INITIALS, DATE LABEL OF THE LATEST ASSIGNMENT DATE TYPE AND DATE ARE DISPLAYED CORRCETLY ON THE PENDING TASKS PAGE",
-				getReferralAssignmentInfo(userInputData, folder, assinmentType));
+				getReferralAssignmentInfo(userInputData, folder, assignmentType));
 
 	}
 
@@ -200,19 +199,24 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 		if (folder.equals("My Assignments") | folder.contains("Referrals Awaiting")) {
 
-			int i;
-			for (i = 0; i < max; i++) {
+			boolean found = true;
 
-				List<WebElement> icons = Actions.findElements(By.xpath(
-						"//XCUIElementTypeOther[@name=\"PendingTasksList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther//following::XCUIElementTypeStaticText[@name='"
-								+ category + "']/following::XCUIElementTypeStaticText[@name=\"GroupIcon\"]"));
+	        while (found) {
+	            List<WebElement> icons = Actions.findElements(By.xpath(
+	                "//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther" +
+	                "//following::XCUIElementTypeStaticText[@name='" + category + "']" +
+	                "/following::XCUIElementTypeStaticText[@name='GroupIcon']"));
 
-				if (icons.get(i).getAttribute("value").equals("▽")) {
-					icons.get(i).click();
-				} else {
-					break;
-				}
-			}
+	            found = false; 
+
+	            for (WebElement icon : icons) {
+	                if (icon.getAttribute("value").equals("▽")) {
+	                    icon.click();
+	                    found = true; // Found and clicked an icon, need to recheck the list
+	                    break; // Break the loop to recheck the list from the start
+	                }
+	            }
+	        }
 
 			List<Integer> c = new ArrayList<>();
 
@@ -231,8 +235,8 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 			Integer m = Collections.max(c);
 
-			assinmentType = Actions.findElement(By.xpath(assinmentType(m) + "/preceding::XCUIElementTypeStaticText[1]"))
-					.getText();
+			assignmentType = Actions.findElement(By.xpath(assinmentType(m) + "/preceding::XCUIElementTypeStaticText[1]"))
+					.getText().trim();
 
 			assignmentCount.get(c.indexOf(m)).click();
 
@@ -255,9 +259,10 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 		Page.performPageLoad(driver);
 
-		List<String> list = Utility
-				.retrieveAllReferrals(Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + category
-						+ "']/following::XCUIElementTypeStaticText[contains(@name, '-')]")), " ", 0);
+		List<String> list = Utility.retrieveAllReferrals(
+				Actions.findElements(By.xpath("(//XCUIElementTypeStaticText[@name='" + category
+						+ "'])[2]/following::XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[contains(@name, '-')]")),
+				" ", 0);
 
 		/** This might change in 1.8 - AMB-3399 */
 		assertFalse(
@@ -327,17 +332,15 @@ public class PendingTasksPage extends AppiumPageFactory {
 				.addAll(listOne.stream().filter(str -> listTwo.contains(str)).collect(Collectors.toList()));
 
 		assertEquals(
-				"The referral categories displayed in --->" + folder + " folder are not sorted "
+				"The referral categories displayed in " + folder + " folder are not sorted "
 						+ "in the same way as they are in the left-hand navigation",
 				commonElementsFromBothList, listTwo);
 
 	}
-	
-	
-	public void findAssingmenType(String actionName,List<UserInputData> userInputData ) {
+
+	public void findAssingmenType(String actionName, List<UserInputData> userInputData) {
 		elId += getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
 		String el_functions = getParameter(getAllColumns(getID(MBR_NOTE, elId), userInputData), dpfName, 1);
-
 
 	}
 

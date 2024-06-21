@@ -466,6 +466,40 @@ public class DBUtilities {
 
 	    return allColumns.toString();
 	}
+	
+	   // DB utility method for running queries
+    public static List<String[]> executeDBQuery(String query, List<UserInputData> userInputData) {
+        DBUtilities dbConnectionPool = new DBUtilities();
+        List<String[]> result = new ArrayList<>();
+        Connection connection = null;
+
+        try {
+            connection = dbConnectionPool.createDbConnection(userInputData);
+            if (connection == null) {
+                throw new AssertionError("Connection Not Established...");
+            }
+            List<String[]> queryResult = runSQLQuery(query);
+
+            if (queryResult != null) {
+                queryResult.forEach(record -> {
+                    String[] trimmedRecord = new String[record.length];
+                    for (int i = 0; i < record.length; i++) {
+                        trimmedRecord[i] = record[i].trim();
+                    }
+                    result.add(trimmedRecord);
+                });
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeConnections();
+        }
+
+        return result;
+    }
+
 
 
 	public static String getID(String query, String id) {

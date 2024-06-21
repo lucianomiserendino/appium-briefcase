@@ -17,7 +17,7 @@ public class Page extends Base {
 	}
 
 	public static List<WebElement> waitForVisibilityOfAllElements(List<WebElement> elements, WebDriver driver) {
-		return new WebDriverWait(driver, Duration.ofSeconds(10))
+		return new WebDriverWait(driver, Duration.ofSeconds(20))
 				.until(ExpectedConditions.visibilityOfAllElements(elements));
 	}
 

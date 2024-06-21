@@ -51,11 +51,16 @@ public class CaseQueryPage extends AppiumPageFactory {
 
 	public void getCaseSearch(String category) {
 	    String fullCaseNumber = selectRandomCaseNumber(0).split(" ")[0];
-	    searchForACase("target",category, fullCaseNumber, Search.wildcard);
+	    searchForACase(category, fullCaseNumber, Search.wildcard);
+	    
+
+	    assertTrue("APP IS NOT RETURNING CASE LIST FOR SOME WILDCARD SEARCHES",
+	        isDisplayed(Locator.XPATH, containsElement("Case #" + fullCaseNumber)));
+	    
 	}
 
 
-	public void searchByCase(String targetOrApplied,String category, String fullCaseNumber, Search searchType) {
+	public void searchByCase(String category, String fullCaseNumber, Search searchType) {
 	    String searchValue = searchBy(searchType, fullCaseNumber);
 	    sendKeys(searchTextField, searchValue);
 	    clicksOn(searchBTN);
@@ -66,18 +71,13 @@ public class CaseQueryPage extends AppiumPageFactory {
 	        containsElement(category) + "/preceding::XCUIElementTypeStaticText[contains(@name, '" + fullCaseNumber + "')]");
 	    CommonPages.ifDownloaded(inProgress);
 	    
-	    if (targetOrApplied.equals("target")) {
-
-	    assertTrue("APP IS NOT RETURNING CASE LIST FOR SOME WILDCARD SEARCHES",
-	        isDisplayed(Locator.XPATH, containsElement("Case #" + fullCaseNumber)));
-	    }
 	}
 	
 	
 
 
 
-	public void searchForACase(String targetOrApplied,String category, String fullCaseNumber, Search searchType) {
+	public void searchForACase(String category, String fullCaseNumber, Search searchType) {
 	    performPageLoad(driver);
 
 	    if (contains("Dashboard").isDisplayed()) {
@@ -85,7 +85,7 @@ public class CaseQueryPage extends AppiumPageFactory {
 	        Page.sleep(5000);
 	    }
 	    clicksOn(searchIcon);
-	    searchByCase(targetOrApplied,category, fullCaseNumber, searchType);
+	    searchByCase(category, fullCaseNumber, searchType);
 	}
 
 

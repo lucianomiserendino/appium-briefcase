@@ -84,7 +84,7 @@ public class Queries {
 	public static final String CMD_DM_DLS_ID = " SELECT first 1 cmd_dm_dls_id FROM chm_mobile_docs, chm_mobile_referral\n"
 			+ "		 WHERE cmd_cmr_id = cmr_id  and cmr_cs_caseid =?";
 
-	public static final String DM_DLS_ID = "SELECT dm_dls_id FROM document, case_dktentry where cd_caseid = ? and "
+	public static final String DM_DLS_ID = "SELECT first 1 dm_dls_id FROM document, case_dktentry where cd_caseid = ? and "
 			+ "dm_dktentryid = cd_dktentryid and dm_internal_type = 'noteTrans'";
 
 	public static final String MBR_EVENT = "select * from mbr_event";
@@ -111,23 +111,14 @@ public class Queries {
 			+ "on chv_crj_id = crj_id and chv_date_end is null left join chm_vote_val on chv_cvv_code = cvv_code where a.ccr_id = ? and b.ccr_date_end is null and "
 			+ "NVL(cpr_vote_complete,'') <> 'y' and NVL(cpr_vote_req,'') <> 'n' order by  rl_list_text asc";
 
-	public static final String JUDGES_INITIALS = "select  distinct ju_initials   from chambers_case_to_referral b join chambers_case_to_referral a on"
-			+ " b.ccr_cpr_id = a.ccr_cpr_id join dktpart on dp_dktpartid = b.ccr_dp_dktpartid join relief_list on rl_id = dp_rlid "
-			+ " join chambers_caseref_to_judge on b.ccr_id = crj_ccr_id join judge on crj_ju_pe_id = ju_pe_id join chambers_referral on b.ccr_cpr_id = cpr_id "
-			+ " join chambers_case on b.ccr_ccs_id = ccs_id join chm_reftype_val on cpr_cyv_code = cyv_code join case_dktentry on cd_id = dp_cd_id "
-			+ " join dktentry on cd_dktentryid = de_dktentryid left join doctype_val on dp_doc_type = dty_code join event_list on el_id = de_elid"
-			+ " left join chambers_vote left join (chm_vote_to_note inner join document on cvn_dm_dls_id = dm_dls_id and dm_internal_type = 'notevote'  ) on chv_id = cvn_chv_id"
-			+ " on chv_crj_id = crj_id and chv_date_end is null left join chm_vote_val on chv_cvv_code = cvv_code where a.ccr_id = ? and b.ccr_date_end is null and "
-			+ "NVL(cpr_vote_complete,'') <> 'y' and NVL(cpr_vote_req,'') <> 'n' and rl_list_text='RL_LIST_TEXT'  order by  ju_initials desc";
-
-	public static final String JUDGES_INITIAL = "select ju_initials    from chambers_case_to_referral b join chambers_case_to_referral a on"
-			+ " b.ccr_cpr_id = a.ccr_cpr_id join dktpart on dp_dktpartid = b.ccr_dp_dktpartid join relief_list on rl_id = dp_rlid "
-			+ " join chambers_caseref_to_judge on b.ccr_id = crj_ccr_id join judge on crj_ju_pe_id = ju_pe_id join chambers_referral on b.ccr_cpr_id = cpr_id "
-			+ " join chambers_case on b.ccr_ccs_id = ccs_id join chm_reftype_val on cpr_cyv_code = cyv_code join case_dktentry on cd_id = dp_cd_id "
-			+ " join dktentry on cd_dktentryid = de_dktentryid left join doctype_val on dp_doc_type = dty_code join event_list on el_id = de_elid"
-			+ " left join chambers_vote left join (chm_vote_to_note inner join document on cvn_dm_dls_id = dm_dls_id and dm_internal_type = 'notevote'  ) on chv_id = cvn_chv_id"
-			+ " on chv_crj_id = crj_id and chv_date_end is null left join chm_vote_val on chv_cvv_code = cvv_code where a.ccr_id = ? and b.ccr_date_end is null and "
-			+ "NVL(cpr_vote_complete,'') <> 'y' and NVL(cpr_vote_req,'') <> 'n' and   rl_list_text='RL_LIST_TEXT' and cvv_display is not null  order by  chv_last_updated desc";
+	public static final String JUDGES_INITIALS = "select distinct ju_initials,  rl_list_text, cvv_display, chv_date_created from chambers_case_to_referral b join chambers_case_to_referral a on\n"
+			+ "			  b.ccr_cpr_id = a.ccr_cpr_id join dktpart on dp_dktpartid = b.ccr_dp_dktpartid join relief_list on rl_id = dp_rlid \n"
+			+ "			 join chambers_caseref_to_judge on b.ccr_id = crj_ccr_id join judge on crj_ju_pe_id = ju_pe_id join chambers_referral on b.ccr_cpr_id = cpr_id \n"
+			+ "			 join chambers_case on b.ccr_ccs_id = ccs_id join chm_reftype_val on cpr_cyv_code = cyv_code join case_dktentry on cd_id = dp_cd_id \n"
+			+ "			 join dktentry on cd_dktentryid = de_dktentryid left join doctype_val on dp_doc_type = dty_code join event_list on el_id = de_elid\n"
+			+ "			  left join chambers_vote left join (chm_vote_to_note inner join document on cvn_dm_dls_id = dm_dls_id and dm_internal_type = 'notevote'  ) on chv_id = cvn_chv_id \n"
+			+ "			 on chv_crj_id = crj_id and chv_date_end is null left join chm_vote_val on chv_cvv_code = cvv_code where a.ccr_id = ? and b.ccr_date_end is null and \n"
+			+ "			 NVL(cpr_vote_complete,'') <> 'y' and NVL(cpr_vote_req,'') <> 'n' order by  chv_date_created desc";
 
 	public static final String JUDGES_VOTE = "select cvv_display  from chambers_case_to_referral b join chambers_case_to_referral a on"
 			+ " b.ccr_cpr_id = a.ccr_cpr_id join dktpart on dp_dktpartid = b.ccr_dp_dktpartid join relief_list on rl_id = dp_rlid "
@@ -442,7 +433,7 @@ public class Queries {
 			+ "and cmr_cyv_code='CMR_CYV_CODE' and cmr_ju_pe_id ='CMR_JU_PE_ID'";
 
 	public static final String CCR_ID = "SELECT  first 1 ccr_id  FROM chm_mobile_referral, chambers_case_to_referral, chambers_referral WHERE cpr_vote_req = 'y'"
-			+ " and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = 'CMR_CS_CASEID' and cmr_ju_pe_id = 'CMR_JU_PE_ID'";
+			+ " and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = 'CMR_CS_CASEID' and cmr_ju_pe_id = 'CMR_JU_PE_ID' and cmr_cyv_code='CMR_CYV_CODE'";
 
 	public static final String CMR_ID = "SELECT  first 1 cmr_id  FROM chm_mobile_referral, chambers_case_to_referral, chambers_referral WHERE cpr_vote_req = 'y'"
 			+ " and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = 'CMR_CS_CASEID' and cmr_ju_pe_id = 'CMR_JU_PE_ID'";
@@ -568,7 +559,7 @@ public class Queries {
 
 			+ "and cha_ju_pe_id in (select cmr_ju_pe_id from chm_mobile_referral where cmr_id = CMR_ID)  and pr_last_name='PR_LAST_NAME' and  pr_first_name='PR_FIRST_NAME' and    chc_date_end is null";
 
-	public static final String ASSIGNMENT_DATE_TYPE = "select   cav_display,cdv_display,chd_date from chm_assign_to_case join chambers_assignment on cha_id = chc_cha_id join chm_assign_type_val on cha_cav_code = cav_code "
+	public static final String ASSIGNMENT_DATE_TYPE = "select   cdv_display,chd_date from chm_assign_to_case join chambers_assignment on cha_id = chc_cha_id join chm_assign_type_val on cha_cav_code = cav_code "
 
 			+ "	 join chambers_assign_date on chd_cha_id = cha_id join chm_assign_datetype_val on cdv_code = chd_cdv_code "
 
@@ -582,7 +573,7 @@ public class Queries {
 
 			+ "	 (select cmr_ccr_id from chm_mobile_referral where cmr_id = 'CMR_ID')) and (cha_chm_pe_id in (select cmr_ju_pe_id from chm_mobile_referral "
 
-			+ "  where cmr_id = 'CMR_ID') or cha_chm_pe_id = cha_ju_pe_id) and pr_last_name='PR_LAST_NAME' and pr_first_name='PR_FIRST_NAME' and chc_date_end is null";
+			+ "  where cmr_id = 'CMR_ID') or cha_chm_pe_id = cha_ju_pe_id) and pr_last_name='PR_LAST_NAME' and pr_first_name='PR_FIRST_NAME' and chc_date_end is null and cav_display='CAV_DISPLAY'";
 
 	public static final String by_PJ_JUDGE_ORDER = "SELECT first 1  cmr_panel_members FROM chm_mobile_referral, judge, panel_to_judge "
 			+ "WHERE cmr_ccr_id ='CMR_CCR_ID' and cmr_ju_pe_id = ju_pe_id order by pj_judge_order";
@@ -687,7 +678,7 @@ public class Queries {
 			+ "join chm_reftype_val on cmr_cyv_code = cyv_code where pn_enbanc ='n' and ic_code in (select cmr_ic_code from chm_mobile_referral) and "
 			+ " pe_id=? and cs_caseid='CS_CASEID' and cmr_cyv_code='CMR_CYV_CODE' order by cyv_category asc";
 
-	public static final String DPF = "select  el_functions FROM event_list where  el_functions LIKE '%EL_FUNCTIONS%' and el_list_text LIKE \"%EL_LIST_TEXT%\"";
+	public static final String SINGLE_DPF = "select  el_functions FROM event_list where  el_functions LIKE '%EL_FUNCTIONS%' and el_list_text LIKE \"%EL_LIST_TEXT%\"";
 
 	// and ((ic_chm_judge_panrole = \ l\ and pj_presiding = \ n\ ) or
 	// (ic_chm_judge_panrole <> \ l\ and pj_presiding = \ y\ )) --and pr_last_name =
@@ -701,7 +692,7 @@ public class Queries {
 			+ "	left join chambers_vote left join (chm_vote_to_note inner join document on cvn_dm_dls_id = dm_dls_id ) on chv_id = cvn_chv_id "
 			+ "	on chv_crj_id = crj_id and chv_date_end is null left join chm_vote_val on chv_cvv_code = cvv_code where  b.ccr_date_end is null and "
 			+ "	NVL(cpr_vote_complete,'') <> 'y' and NVL(cpr_vote_req,'') <> 'n' and crj_ju_pe_id='CRJ_JU_PE_ID' and  dm_dktentryid is not null and "
-			+ "dm_internal_type='wordproc' order by  chv_date_created desc";
+			+ "dm_internal_type='wordproc' and dm_file_name like '%.pdf%' or dm_file_name like '%.word%' or dm_description  like '%.pdf%' or dm_description  like '%.word%' order by  chv_date_created desc";
 
 	public static final String DUPLICATED_LWK = "SELECT   pr_first_name, pr_last_name, cav_display,  cyv_display,"
 			+ " cs_year || '-' || cs_number AS casenum FROM     chm_mobile_referral,     case ,     chm_reftype_val, "
@@ -711,4 +702,29 @@ public class Queries {
 			+ "AND chc_date_end IS NULL     AND cha_chm_pe_id = pe_id     AND pe_pr_prid = pr_prid     AND cha_cav_code = cav_code  "
 			+ "AND pe_rt_code = 'lwclk'  GROUP BY   pr_first_name,pr_last_name,  cav_display, cyv_display, casenum HAVING   COUNT(  pr_first_name) =1";
 
+	public static final String STAFF_ASSIGNMENTS = " select distinct cha_id,pr_first_name, pr_last_name, cav_description from chm_mobile_referral, "
+			+ "chambers_case_to_referral, chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val "
+			+ "where  cmr_cs_caseid = 'CMR_CS_CASEID'  and cmr_ccr_id = ccr_id and ccr_cpr_id = chc_cpr_id and chc_cs_caseid = "
+			+ "cmr_cs_caseid and chc_cha_id = cha_id and cha_ju_pe_id ='?' "
+			+ "and chc_date_end is null and cha_chm_pe_id = pe_id and pe_pr_prid = pr_prid and cmr_cyv_code='CMR_CYV_CODE'  and cha_cav_code = cav_code ";
+
+	public static final String ASSIGNEES_NAME_AND_LASTED_DATE_TYPE = "SELECT cdv_description, ad.chd_date FROM "
+			+ "chambers_assign_date ad, chm_assign_datetype_val, " + "    (Select max(chd_date) as maxnum, chd_cha_id "
+			+ "    from chambers_assign_date " + "    group by chd_cha_id) maxresults "
+			+ "WHERE ad.chd_cha_id in ('?') and " + "chd_cdv_code = cdv_code and "
+			+ "ad.chd_cha_id=  maxresults.chd_cha_id and " + "ad.chd_date = maxresults.maxnum";
+
+	public static final String MULIPLE_DPFs = "select  el_functions FROM event_list where el_list_text LIKE \"%EL_LIST_TEXT%\"";
+
+	public static final String FIND_ALL_NON_ORALLY_ARGUED_CASES = "select first 15 cs_caseid, cs_year||\"-\"||cs_number case_num, cyv_category,cmr_cyv_code  from chm_mobile_referral, \n"
+			+ "			 chm_reftype_val, case_dktentry, case where cmr_ju_pe_id = ? and cmr_cyv_code = cyv_code  and cyv_category in (  select distinct (cyv_category) from chm_mobile_referral, chm_reftype_val\n"
+			+ "			 where   cmr_ju_pe_id = ? and  cmr_date_end is null and  cmr_cyv_code = cyv_code and\n"
+			+ "			 cyv_is_briefcase = 'y' and  cyv_is_oral_arg = 'n' and  cmr_cyv_code != 'lbrrpt') and cmr_cs_caseid = cs_caseid and cmr_date_end is null and \n"
+			+ "			 cd_caseid = cmr_cs_caseid and cmr_dktentryid = cd_dktentryid and cd_case_ext  = 1 order by cs_last_update desc";
+
+	public static final String FIND_ALL_ORALLY_ARGUED_CASES = "select first 15 cs_caseid,cs_year||\"-\"||cs_number case_num, cyv_category,cmr_cyv_code   from chm_mobile_referral, \n"
+			+ "			 chm_reftype_val, case_dktentry, case where cmr_ju_pe_id = ? and cmr_cyv_code = cyv_code  and cyv_category in (select distinct (cyv_category) from chm_mobile_referral, chm_reftype_val\n"
+			+ "			 where   cmr_ju_pe_id = ? and  cmr_date_end is null and  cmr_cyv_code = cyv_code and\n"
+			+ "			 cyv_is_briefcase = 'y' and  cyv_is_oral_arg = 'n' and  cmr_cyv_code != 'lbrrpt') and cmr_cs_caseid = cs_caseid and cmr_date_end is null and \n"
+			+ "			 cd_caseid = cmr_cs_caseid and cmr_dktentryid = cd_dktentryid order by cs_last_update desc";
 }

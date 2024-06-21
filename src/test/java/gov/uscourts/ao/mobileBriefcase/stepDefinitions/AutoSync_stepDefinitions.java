@@ -29,5 +29,8 @@ public class AutoSync_stepDefinitions {
 		page = new AutoSyncPage();
 		page.getSyncCount(Integer.parseInt(syncCount));
 	}
+	
+
+
 
 }

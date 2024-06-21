@@ -7,7 +7,6 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getPrope
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForVisibilityOfElement;
 import static java.lang.Integer.parseInt;
-import static java.util.Collections.sort;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,7 +24,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -61,53 +59,47 @@ public class Utility extends Base {
 	}
 
 	public static boolean isDisplayed(String element) {
-	    int maxRetries = 12;
-	    int attempts = 0;
+		int maxRetries = 15;
+		int attempts = 0;
 
-	    while (attempts < maxRetries) {
-	        try {
-	            WebElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, element), driver);
-	            if (elem.isDisplayed()) {
-	                return true;
-	            } else {
-	                tapAndSwipe(Direction.UP);
-	                performPageLoad(driver);
-	            }
-	        } catch (TimeoutException e) {
-	            tapAndSwipe(Direction.UP);
-	        }
-	        attempts++;
-	    }
-	    return false;
+		while (attempts < maxRetries) {
+			try {
+				WebElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, element), driver);
+				if (elem.isDisplayed()) {
+					return true;
+				} else {
+					tapAndSwipe(Direction.UP);
+					performPageLoad(driver);
+				}
+			} catch (TimeoutException e) {
+				tapAndSwipe(Direction.UP);
+			}
+			attempts++;
+		}
+		return false;
 	}
-
 
 	public static boolean scrollDownIfNotDisplayed(String elementXPath) {
-	    int scrollCount = 0;
-	    boolean elementFound = false;
-	    while (scrollCount < 12) {
-	        List<WebElement> elements = findElements(By.xpath(elementXPath));
-	        if (!elements.isEmpty()) {
-	            try {
-	                elements.get(elements.size() - 1).click();
-	                elementFound = true; // Set flag to true if element is found and clicked
-	                break; // Exit the loop if element is found without scrolling 12 times
-	            } catch (WebDriverException e) {
-	                System.err.println("Error clicking element: " + e.getMessage());
-	            }
-	        } else {
-	            tapAndSwipe(Direction.UP);
-	            performPageLoad(driver);
-	            scrollCount++;
-	        }
-	    }
-	    return elementFound;
+		int scrollCount = 0;
+		boolean elementFound = false;
+		while (scrollCount < 18) {
+			List<WebElement> elements = findElements(By.xpath(elementXPath));
+			if (!elements.isEmpty()) {
+				try {
+					elements.get(elements.size() - 1).click();
+					elementFound = true; // Set flag to true if element is found and clicked
+					break; // Exit the loop if element is found without scrolling 12 times
+				} catch (WebDriverException e) {
+					System.err.println("Error clicking element: " + e.getMessage());
+				}
+			} else {
+				tapAndSwipe(Direction.UP);
+				performPageLoad(driver);
+				scrollCount++;
+			}
+		}
+		return elementFound;
 	}
-
-
-
-
-
 
 	public static void scroll(WebElement element, String direction) {
 
@@ -115,22 +107,6 @@ public class Utility extends Base {
 				((RemoteWebElement) element).getId(), "direction", direction, "speed", 500));
 
 	}
-
-//	public static synchronized void scrolldown() {
-//
-//		try {
-//			int pressX = getWindowSize().width / 2;
-//			/** 4/5 of the screen as the bottom finger-press point */
-//			int bottomY = getWindowSize().height * 4 / 8;
-//			/** just non zero point, as it didn't scroll to zero normally */
-//			int topY = getWindowSize().height / 8;
-//
-//			new TouchAction(driver).longPress(PointOption.point(pressX, bottomY))
-//					.moveTo(PointOption.point(pressX, topY)).release().perform();
-//		} catch (WebDriverException e) {
-//			e.getMessage();
-//		}
-//	}
 
 	public static Dimension getWindowSize() {
 		return driver.manage().window().getSize();
@@ -215,23 +191,23 @@ public class Utility extends Base {
 	}
 
 	public static boolean elementIsDisplayed(List<String> categories, String xpath, List<UserInputData> userInputData) {
-	    List<String> sortedCategories = new ArrayList<>(categories);
-	    Collections.sort(sortedCategories);
+		List<String> sortedCategories = new ArrayList<>(categories);
+		Collections.sort(sortedCategories);
 
-	    for (String category : sortedCategories) {
-	        try {
-	            WebElement uiResult = findElementBy(Locator.XPATH, xpath + "[contains(@name, '" + category.trim() + "')]");
-	            if (uiResult.isDisplayed()) {
-	                return true;
-	            }
-	        } catch (Exception e) {
-	            // Log the exception if needed
-	        }
-	    }
+		for (String category : sortedCategories) {
+			try {
+				WebElement uiResult = findElementBy(Locator.XPATH,
+						xpath + "[contains(@name, '" + category.trim() + "')]");
+				if (uiResult.isDisplayed()) {
+					return true;
+				}
+			} catch (Exception e) {
+				e.getMessage();
+			}
+		}
 
-	    return false;
+		return false;
 	}
-
 
 	public static void expandPanel(String element) {
 		try {
@@ -330,43 +306,42 @@ public class Utility extends Base {
 	}
 
 	public static boolean checkDatesOrder(List<String> dates, String format, Comparator<Long> comparator) {
-	    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-	    boolean isOrdered = true;
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+		boolean isOrdered = true;
 
-	    for (int i = 0; i < dates.size() - 1; i++) {
-	        try {
-	            long d1 = simpleDateFormat.parse(dates.get(i)).getTime();
-	            long d2 = simpleDateFormat.parse(dates.get(i + 1)).getTime();
+		for (int i = 0; i < dates.size() - 1; i++) {
+			try {
+				long d1 = simpleDateFormat.parse(dates.get(i)).getTime();
+				long d2 = simpleDateFormat.parse(dates.get(i + 1)).getTime();
 
-	            if (comparator.compare(d1, d2) > 0) {
-	                isOrdered = false;
-	                break;
-	            }
-	        } catch (ParseException e) {
-	            e.printStackTrace();
-	        }
-	    }
+				if (comparator.compare(d1, d2) > 0) {
+					isOrdered = false;
+					break;
+				}
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
 
-	    if (!isOrdered) {
-	        if (comparator.equals(Comparator.naturalOrder())) {
-	            System.out.println("The dates are not sorted in ascending order: " + dates);
-	        } else {
-	            System.out.println("The dates are not sorted in descending order: " + dates);
-	        }
-	    }
+		if (!isOrdered) {
+			if (comparator.equals(Comparator.naturalOrder())) {
+				System.out.println("The dates are not sorted in ascending order: " + dates);
+			} else {
+				System.out.println("The dates are not sorted in descending order: " + dates);
+			}
+		}
 
-	    return isOrdered;
+		return isOrdered;
 	}
 
 	// Usage
 	public static boolean checkDatesForDescOrder(List<String> dates, String format) {
-	    return checkDatesOrder(dates, format, Comparator.reverseOrder());
+		return checkDatesOrder(dates, format, Comparator.reverseOrder());
 	}
 
 	public static boolean checkDatesForAscOrder(List<String> dates, String format) {
-	    return checkDatesOrder(dates, format, Comparator.naturalOrder());
+		return checkDatesOrder(dates, format, Comparator.naturalOrder());
 	}
-
 
 	public static boolean checkIfSorted(List<String> list) {
 
@@ -381,7 +356,6 @@ public class Utility extends Base {
 		return isSorted;
 
 	}
-
 
 	public static List<Integer> getCellCount(int time, int navCellSize) {
 		List<Integer> cellSize = new ArrayList<>();
@@ -445,50 +419,46 @@ public class Utility extends Base {
 //	}
 
 	public static void tapAndSwipe(Direction dir) {
-	    System.out.println("swipeScreenSmall(): dir: '" + dir + "'");
+		System.out.println("swipeScreenSmall(): dir: '" + dir + "'");
 
-	    final int ANIMATION_TIME = 50; // ms
-	    final int PRESS_TIME = 50; // ms
+		final int ANIMATION_TIME = 50; // ms
+		final int PRESS_TIME = 50; // ms
 
-	    Dimension dims = driver.manage().window().getSize();
-	    PointOption start = PointOption.point(dims.width / 2, dims.height / 2);
-	    PointOption end;
+		Dimension dims = driver.manage().window().getSize();
+		PointOption start = PointOption.point(dims.width / 2, dims.height / 2);
+		PointOption end;
 
-	    int multiplier = 2;
+		int multiplier = 2;
 
-	    switch (dir) {
-	        case DOWN:
-	            end = PointOption.point(dims.width / 2, (dims.height / 2) + (dims.height / 2) / multiplier);
-	            break;
-	        case UP:
-	            end = PointOption.point(dims.width / 2, (dims.height / 2) - (dims.height / 2) / multiplier);
-	            break;
-	        case LEFT:
-	            end = PointOption.point((dims.width / 2) - (dims.width / 2) / multiplier, dims.height / 2);
-	            break;
-	        case RIGHT:
-	            end = PointOption.point((dims.width / 2) + (dims.width / 2) / multiplier, dims.height / 2);
-	            break;
-	        default:
-	            throw new IllegalArgumentException("swipeScreenSmall(): dir: '" + dir + "' NOT supported");
-	    }
+		switch (dir) {
+		case DOWN:
+			end = PointOption.point(dims.width / 2, (dims.height / 2) + (dims.height / 2) / multiplier);
+			break;
+		case UP:
+			end = PointOption.point(dims.width / 2, (dims.height / 2) - (dims.height / 2) / multiplier);
+			break;
+		case LEFT:
+			end = PointOption.point((dims.width / 2) - (dims.width / 2) / multiplier, dims.height / 2);
+			break;
+		case RIGHT:
+			end = PointOption.point((dims.width / 2) + (dims.width / 2) / multiplier, dims.height / 2);
+			break;
+		default:
+			throw new IllegalArgumentException("swipeScreenSmall(): dir: '" + dir + "' NOT supported");
+		}
 
-	    try {
-	        new TouchAction(driver)
-	                .tap(start)
-	                .waitAction(WaitOptions.waitOptions(Duration.ofMillis(PRESS_TIME)))
-	                .moveTo(end)
-	                .release()
-	                .perform();
-	    } catch (Exception e) {
-	        System.err.println("swipeScreenSmall(): TouchAction FAILED\n" + e.getMessage());
-	    }
+		try {
+			new TouchAction(driver).tap(start).waitAction(WaitOptions.waitOptions(Duration.ofMillis(PRESS_TIME)))
+					.moveTo(end).release().perform();
+		} catch (Exception e) {
+			System.err.println("swipeScreenSmall(): TouchAction FAILED\n" + e.getMessage());
+		}
 
-	    try {
-	        Thread.sleep(ANIMATION_TIME);
-	    } catch (InterruptedException e) {
-	        Thread.currentThread().interrupt();
-	    }
+		try {
+			Thread.sleep(ANIMATION_TIME);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 	}
 
 	public enum Direction {
@@ -540,26 +510,25 @@ public class Utility extends Base {
 	}
 
 	public static List<String> filterArraylistItems(Filter filter, List<String> listOne, List<String> listTwo) {
-	    if (listOne == null || listOne.isEmpty() || listTwo == null || listTwo.isEmpty()) {
-	        throw new IllegalArgumentException("Input lists must not be null or empty");
-	    }
+		if (listOne == null || listOne.isEmpty() || listTwo == null || listTwo.isEmpty()) {
+			throw new IllegalArgumentException("Input lists must not be null or empty");
+		}
 
-	    Set<String> containsAll = new HashSet<>();
-	    containsAll.addAll(listOne);
-	    containsAll.addAll(listTwo);
+		Set<String> containsAll = new HashSet<>();
+		containsAll.addAll(listOne);
+		containsAll.addAll(listTwo);
 
-	    switch (filter) {
-	        case UNIQUE_VALUES:
-	            return containsAll.stream().filter(str -> listOne.contains(str) ^ listTwo.contains(str))
-	                    .collect(Collectors.toList());
-	        case DUPLICATE_VALUES:
-	            return containsAll.stream().filter(str -> listOne.contains(str) && listTwo.contains(str))
-	                    .collect(Collectors.toList());
-	        default:
-	            throw new RuntimeException("Invalid filter type");
-	    }
+		switch (filter) {
+		case UNIQUE_VALUES:
+			return containsAll.stream().filter(str -> listOne.contains(str) ^ listTwo.contains(str))
+					.collect(Collectors.toList());
+		case DUPLICATE_VALUES:
+			return containsAll.stream().filter(str -> listOne.contains(str) && listTwo.contains(str))
+					.collect(Collectors.toList());
+		default:
+			throw new RuntimeException("Invalid filter type");
+		}
 	}
-
 
 	public static boolean ifSortedInAlphabeticalOrder(List<String> list) {
 		boolean isSorted = true;
@@ -575,14 +544,14 @@ public class Utility extends Base {
 	}
 
 	public static boolean hasDuplicates(List<String> list) {
-        Set<String> set = new HashSet<>();
-        for (String name : list) {
-            if (!set.add(name)) {
-                return true;  // Duplicate found, return true immediately
-            }
-        }
-        return false;  // No duplicates found
-    }
+		Set<String> set = new HashSet<>();
+		for (String name : list) {
+			if (!set.add(name)) {
+				return true; // Duplicate found, return true immediately
+			}
+		}
+		return false; // No duplicates found
+	}
 
 	public static List<String> getWebElementList(List<WebElement> list) {
 
@@ -592,6 +561,22 @@ public class Utility extends Base {
 
 		}
 		return elems;
+	}
+
+	public static String randomCharArray(int len) {
+
+		String randomChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz" + "0123456789";
+
+		StringBuilder b = new StringBuilder();
+
+		for (int i = 0; i < len; i++) {
+			int randIdx = new Random().nextInt(randomChar.length());
+			char randChar = randomChar.charAt(randIdx);
+			b.append(randChar);
+		}
+
+		return b.toString();
+
 	}
 
 	public enum Filter {

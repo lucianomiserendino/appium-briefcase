@@ -88,44 +88,37 @@ public class ProposedOrdersPage extends AppiumPageFactory {
 	}
 
 	public static String getReffCategories(String pe_id, List<UserInputData> userInputData) {
+	    List<String> referralCategories = executeQuery(
+	            getID(replace(NON_ORALLY_ARGUED_CASES, "CMR_CYV_CODE", "lbrrpt"), pe_id), userInputData);
 
-		List<String> referralCategories = executeQuery(
-				getID(replace(NON_ORALLY_ARGUED_CASES, "CMR_CYV_CODE", "lbrrpt"), pe_id), userInputData);
-		// sort(referralCategories);
+	    String caseNum = "";
 
-		String caseNum = "";
+	    boolean elementFound = false;
+	    int maxScrollAttempts = 18;
+	    int scrollAttempts = 0;
 
-		Boolean elementNotFound = true;
+	    while (!elementFound && scrollAttempts < maxScrollAttempts) {
+	        for (String category : referralCategories) {
+	            Utility.scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
+	            performPageLoad(driver);
 
-		while (elementNotFound) {
+	            String caseN = findReferralWithProposedOrders(category, pe_id, userInputData);
 
-			for (int i = 0; i < referralCategories.size(); ++i) {
+	            if (!caseN.isEmpty()) {
+	                caseNum = caseN;
+	                elementFound = true;
+	                break;
+	            }
+	        }
 
-				Utility.scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + referralCategories.get(i) + "')]");
+	        if (!elementFound) {
+	            dashboard.click();
+	            Utility.scroll(categories, "up");
+	            scrollAttempts++;
+	        }
+	    }
 
-				performPageLoad(driver);
-
-				String caseN = findReferralWithProposedOrders(referralCategories.get(i), pe_id, userInputData);
-
-				if (caseN.length() > 0) {
-
-					caseNum = caseN;
-
-					elementNotFound = false;
-
-					break;
-
-				} else {
-					dashboard.click();
-					Utility.scroll(categories, "up");
-					elementNotFound = true;
-				}
-
-			}
-
-		}
-		return caseNum;
-
+	    return caseNum;
 	}
 
 	public static String findReferralWithProposedOrders(String categoryName, String pe_id,
@@ -167,42 +160,41 @@ public class ProposedOrdersPage extends AppiumPageFactory {
 	}
 
 	public static String verifyDocumentIsDownloaded() {
+	    String docName = "";
+	    CommonPages page = new CommonPages();
+	    page.getPanel(Panel.Proposed_Orders);
+	    Page.performPageLoad(driver);
 
-		String docName = "";
-		CommonPages page = new CommonPages();
-		page.getPanel(Panel.Proposed_Orders);
-		Page.performPageLoad(driver);
+	    List<WebElement> docList = getDocList("Proposed Orders");
 
-		List<WebElement> docList = getDocList("Proposed Orders");
+	    boolean elementNotFound = true;
 
-		Boolean elementNotFound = true;
+	    while (elementNotFound && !docList.isEmpty()) {
+	        for (WebElement doc : docList) {
+	            String name = doc.getText();
+	            doc.click();
 
-		while (elementNotFound) {
+	            // Wait for the page to load and check if the document is downloaded
+	            Page.performPageLoad(driver);
+	            ifDownloaded(inProgress);
 
-			for (int i = 0; i < docList.size(); ++i) {
-				String name = docList.get(i).getText();
-				docList.get(i).click();
+	            if (!pdf.isEmpty()) {
+	                close.click();
+	                docName = name;
+	                elementNotFound = false;
+	                break;
+	            }
+	        }
 
-				//performPageLoad(driver);
-				 ifDownloaded(inProgress);
-				if (pdf.size() > 0) {
-					close.click();
-					docName = name;
-					elementNotFound = false;
+	        // Refresh the document list if the element was not found in the current iteration
+	        if (elementNotFound) {
+	            docList = getDocList("Proposed Orders");
+	        }
+	    }
 
-					break;
-
-				} else {
-
-					elementNotFound = true;
-				}
-
-			}
-
-		}
-		return docName;
-
+	    return docName;
 	}
+
 
 	public static List<WebElement> getDocList(String panel) {
 
@@ -212,26 +204,28 @@ public class ProposedOrdersPage extends AppiumPageFactory {
 	}
 
 	public String submitDocWPDPF() {
-		CommonPages page = new CommonPages();
-		//page.getGroupIcons(GroupIcons.Expand);
-		page.getPanel(Panel.valueOf("Actions"));
-		/** me_preselect_order=y */
-		page.getActionName("mbr docWP DMI ");
-		Assert.assertTrue("Verify the order is preselected in the Upload Documents interface ",
-				Actions.isDisplayed(preSelctedPDF));
+	    Assert.assertTrue("Verify the order is preselected in the Upload Documents interface",
+	            Actions.isDisplayed(preSelctedPDF));
 
-		String preSelectedPdf = preSelctedPDF.getText();
+	    String preSelectedPdf = preSelctedPDF.getText().trim();
+	    String description = Utility.getStreamOfRandomInts();
 
-		try {
-			scrollDownIfNotDisplayed(containsElement(submit));
-			ifDownloaded(inProgress);
-			tap(Locator.XPATH, containsElement(ok));
-		} catch (WebDriverException e) {
-			e.getMessage();
-		}
-		return preSelectedPdf;
+	    // Send keys to the text field matching the pre-selected PDF's value
+	    Actions.sendKeys(Locator.XPATH, "//XCUIElementTypeTextField[@value='" + preSelectedPdf + "']", description);
 
+	    try {
+	        // Scroll down if the submit button is not displayed and then click submit
+	        scrollDownIfNotDisplayed(containsElement(submit));
+	        
+	        // Tap the OK button
+	        tap(Locator.XPATH, containsElement(ok));
+	    } catch (WebDriverException e) {
+	        System.err.println("WebDriverException caught: " + e.getMessage());
+	    }
+	    ifDownloaded(inProgress);
+	    return description;
 	}
+
 
 	public void verifyDocWPIsSupported(String pdfName) {
 		Assert.assertTrue("Verify Briefcase supports the docWPText TPF ",

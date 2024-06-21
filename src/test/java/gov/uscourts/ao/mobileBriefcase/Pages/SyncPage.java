@@ -70,39 +70,44 @@ public class SyncPage extends AppiumPageFactory {
 	public static List<WebElement> docCategories;
 
 	public static void getSync(SyncType page, List<UserInputData> userInputData) {
-		DocumentPage docPage = new DocumentPage();
-
+		String dashboardPage ="";
+		String syncPage ="";
 		SyncPage page1 = new SyncPage();
 
 		switch (page) {
 
 		case Dashboard:
-			// deleteAllDocuments();
+			ifDownloaded(activityIndicator);
+			 deleteAllDocuments();
 			dashboardSyncBtn.click();
 			ifDownloaded(retrievePendingRefs);
 			ifDownloaded(activityIndicator);
 
-			String dashboardPage = getSyncCount();
-			String syncPage = viewSyncResults();
+			 dashboardPage = getSyncCount();
+			 syncPage = viewSyncResults();
 			assertEquals("SYNC COUNT MISMATCH: ", dashboardPage, syncPage);
 
 			break;
 
 		case Referral_Category:
 
-			docPage.selectRandomJudgeCategory(userInputData);
 
 			page1.categroySyncBtn.click();
 			ifDownloaded(page1.activityIndicator);
 
-			docPage.getRandomCase(Category.judgeRegularCase);
+			if (contains("Dashboard").isDisplayed()) {
+				contains("Dashboard").click();
+			}
+			 dashboardPage = getSyncCount();
+			 syncPage = viewSyncResults();
+
+			assertEquals("SYNC COUNT MISMATCH: ", dashboardPage, syncPage);
 
 			break;
 
 		case Case_Detail:
 
-			// docPage.selectRandomJudgeCategory(userInputData);
-			// docPage.getRandomCase(Category.judgeRegularCase);
+
 			Page.waitForVisibilityOfElement(caseSyncBtn, driver);
 			Utility.doubleTap(page1.caseSyncBtn);
 			ifDownloaded(page1.activityIndicator);

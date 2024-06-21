@@ -13,6 +13,9 @@ import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.AssignmentsPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.AssignmentsPage.AssignmentInfo;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
+import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.PendingTasksPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class Assignment_StepDefinitions {
@@ -76,13 +79,21 @@ public class Assignment_StepDefinitions {
 
 	}
 
-	@Then("^User verifies each assignment display the most recent date type by using following info: dbType \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
-	public void user_verifies_each_assignment_display_the_most_recent_date_type_by_using_following_info_dbType(
-			String dbType, String caseNumber, String peId, String cmr_cyv_code, String pr_last_name,
-			String pr_first_name) {
+	@Then("^User verifies each assignment display the most recent date type$")
+	public void user_verifies_each_assignment_display_the_most_recent_date_type_by_using_following_info_dbType() {
+		List<UserInputData> userInputData = null;
+		PendingTasksPage pending = new PendingTasksPage();
+		pending.selectRandomCase();
+		
+		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
+		String cmr_cs_caseid = CommonPages.getCaseID(PendingTasksPage.referral, userInputData);
+
+		String cmr_cyv_code = CommonPages.cmr_cyv_code(PendingTasksPage.category, cmr_cs_caseid, userInputData)
+				.trim();
+
 		assig = new AssignmentsPage();
-		assig.getRecentAssignmentDate(DBType.valueOf(dbType), caseNumber, peId, cmr_cyv_code, pr_last_name,
-				pr_first_name);
+
+		assig.getRecentAssignmentDate(userInputData, PendingTasksPage.referral, cmr_ju_pe_id, cmr_cyv_code,PendingTasksPage.assignmentType);
 	}
 
 }
