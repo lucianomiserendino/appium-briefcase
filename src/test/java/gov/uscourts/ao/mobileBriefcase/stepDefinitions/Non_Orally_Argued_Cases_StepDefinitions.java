@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import cucumber.api.java.en.Then;
+import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.Non_Orally_Argued_Cases;
 import gov.uscourts.ao.mobileBriefcase.Pages.Non_Orally_Argued_Cases.ReferralDate;
 
@@ -13,7 +14,7 @@ public class Non_Orally_Argued_Cases_StepDefinitions {
 
 		page = new Non_Orally_Argued_Cases();
 
-		page.ifReferralDateDisplayed(ReferralDate.Banner, Document_StepDefinitions.regularCase);
+		page.ifReferralDateDisplayed(ReferralDate.Banner, DocumentPage.caseNum);
 	}
 
 }

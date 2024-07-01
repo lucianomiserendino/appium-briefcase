@@ -24,7 +24,7 @@ public class AccessingAnnotatedDocuments_StepDefinitions {
 	public void user_verifies_both_the_top_banner_editing_icons_and_the_editing_tool_palette_are_easily_visible_in_the_PSPDFKit() {
 		List<UserInputData> userInputData = null;
 		page = new AccessingAnnotatedDocuments();
-		page.annotateDocument(DocumentPage.randomDocument, Document_StepDefinitions.regularCase, userInputData);
+		page.annotateDocument(DocumentPage.randomDocument, DocumentPage.caseNum, userInputData);
 	
 		
 	}

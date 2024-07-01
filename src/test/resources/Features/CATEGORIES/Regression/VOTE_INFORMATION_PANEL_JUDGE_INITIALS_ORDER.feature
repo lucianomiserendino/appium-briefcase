@@ -12,13 +12,9 @@ Scenario: the judges' initials in the Vote Information panel are supposed to be 
 		|userType   |personrole        |jud      |user     |
 		|judge      |Appellate Judges  |test     |sysadmin |
 		
-		Then User selects random judge category
-		|courtId|
-		|test   |
+   Then User selects a random category
 			
-	   Then User selects random case number
-		|courtId|
-		|test   |
+   Then User selects a random case
 		
      Given User observes the Vote Information panel displays.   This should only display if the referral requires voting 
 	 Then User verifies that the judges' initials in the Vote Information are sorted based on panel_to_judge.pj_judge_order or by judge.ju_seniority_sort

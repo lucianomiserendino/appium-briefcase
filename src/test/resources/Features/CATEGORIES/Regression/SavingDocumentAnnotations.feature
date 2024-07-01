@@ -12,14 +12,9 @@ Background:
 		|userType   |personrole        |jud      |user     |
 		|judge      |Appellate Judges  |test     |judge    |
 			
-	Then User selects random judge category
-		|courtId|
-		|test   |
+   Then User selects a random category
 			
-	Then User selects random case number
-		|courtId|
-		|test   |
-		
+   Then User selects a random case
 	
 		
 

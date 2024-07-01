@@ -1,24 +1,18 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeDBQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 //import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.mobile.NetworkConnection;
@@ -27,7 +21,6 @@ import org.openqa.selenium.mobile.NetworkConnection.ConnectionType;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
-import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
@@ -158,6 +151,12 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 	@iOSXCUITFindBy(accessibility = "PDF View")
 	public static WebElement pdfView;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
+	public static List<WebElement> inProgress;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeMenuItem[@name='Delete']")
+	public static List<WebElement> delete;
+
 //	public void getAnnotatedDoc() {
 //		openPDFDoc(originalDoc);
 //		openPDFDoc(annotatedDoc);
@@ -246,6 +245,10 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 
 	public void annotateDocument(String docName, String caseNum, List<UserInputData> userInputData) {
 
+		System.out.println("------------------------------------------------------");
+		System.out.println("Selected document name: " + docName);
+		System.out.println("------------------------------------------------------");
+
 		Actions.tap(annotations);
 		if (Actions.isDisplayed(author) == true) {
 			if (done.isEnabled() == false) {
@@ -260,9 +263,10 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 		Actions.tap(annotations);
 		performPageLoad(driver);
 		Actions.tap(close);
-
-		contains(docName).click();
-		assertTrue(driver.getPageSource().contains(annotation));
+		Page.waitForVisibilityOfElement(contains(docName), driver).click();
+		CommonPages.ifDownloaded(inProgress);
+		performPageLoad(driver);
+		assertTrue("Verify annotation is saved, document name: " + docName,driver.getPageSource().contains(annotation));
 
 		getBackEndUpdates(caseNum, docName, userInputData);
 
@@ -348,30 +352,36 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 				expected);
 	}
 
-	public static void getBackEndUpdates(String caseNum, String docName, List<UserInputData> userInputData) {
-	    for (int i = 2; i <= 4; i++) {
-	        try {
-	            List<String> assignInfo = execute(DBUtilities.getText(Queries.annotatedDoc, docName), i, userInputData);
+	public static void getBackEndUpdates(String uiCaseNum, String uiDocName, List<UserInputData> userInputData) {
+		// Fetching data from the database
+		List<String[]> dbAnnotatedDocDetails = executeDBQuery(DBUtilities.getText(Queries.annotatedDoc, uiDocName),
+				userInputData);
 
-	            switch (i) {
-	                case 2:
-	                    assertTrue("Case number not found in backend", assignInfo.contains(caseNum));
-	                    break;
-	                case 3:
-	                    assertTrue("Document name not found in backend", assignInfo.contains(docName));
-	                    break;
-	                case 4:
-	                    String pe_id = DocumentPage.get_pe_id("jud", userInputData);
-	                    assertTrue("Incorrect pe_id saved in the mbr_annot_to_doc table after annotation, document: "+docName+", case Number:"+caseNum,
-	                             assignInfo.get(0).equals(pe_id));
-	                    break;
-	            }
-	        } catch (Exception e) {
-	            System.err.println("An error occurred while verifying backend updates: " + e.getMessage());
-	            // You may choose to fail the test here or continue with the next iteration
-	        }
-	    }
-	    close.click();
+		// Handling case when no data is returned from the database
+		if (dbAnnotatedDocDetails == null || dbAnnotatedDocDetails.isEmpty()) {
+			throw new AssertionError("No document categories returned from the database.");
+		}
+
+		// Extracting data from the database result
+		String dbCaseNum = "";
+		String dbDocName = "";
+		String dbPeId = "";
+		for (String[] record : dbAnnotatedDocDetails) {
+			dbCaseNum = record[0].trim();
+			dbDocName = record[1].trim();
+			dbPeId = record[2].trim();
+		}
+
+		// Finding pe_id of the logged in judge
+		String uiPeId = DocumentPage.get_pe_id("jud", userInputData);
+
+		// Assertions to verify data consistency between UI and database
+		Assert.assertEquals("Verify correct pe_id is saved in the mbr_annot_to_doc table", dbPeId, uiPeId);
+		Assert.assertEquals("Verify the case number is correct for the annotated document", dbCaseNum, uiCaseNum);
+		Assert.assertEquals("Verify correct document is saved in the mbr_annot_to_doc table", dbDocName, uiDocName);
+
+		// Closing the document page
+		close.click();
 	}
 
 	public List<String> getDocumentCategories() {

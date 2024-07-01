@@ -13,9 +13,7 @@ Scenario:
 		|userType   |personrole        |jud      |user     |
 		|judge      |Appellate Judges  |test     |sysadmin |
 		
-	Then User selects random judge category
-		|courtId|
-		|test   |
+   Then User selects a random category
 
 	Then User taps on magnifying glass icon and searches for a case and  verifies the result is not empty
 	|caseNumber|

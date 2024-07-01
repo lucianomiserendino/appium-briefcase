@@ -46,13 +46,6 @@ public class Common_StepDefinitions {
 		page.selectAction("Actions", elID, userInputData);
 	}
 
-	@Then("^User  selects an action and verifies the name of the action displays in the dark blue banner$")
-	public void user_selects_an_action_and_verifies_the_name_of_the_action_displays_in_the_dark_blue_banner(
-			List<UserInputData> userInputData) {
-		page = new CommonPages();
-		page.selectAction("Actions", userInputData);
-	}
-
 	@When("^User selects a  \"([^\"]*)\"$")
 	public void user_selects_a(String category) {
 		page = new CommonPages();

@@ -64,47 +64,10 @@ public class EnBancPage extends AppiumPageFactory {
 	public  String category;
 
 
-	public String getReffCategories(String pe_id, List<UserInputData> userInputData) {
-		List<String> referralCategories = executeQuery(
-				getID(replace(NON_ORALLY_ARGUED_CASES, "CMR_CYV_CODE", "lbrrpt"), pe_id), userInputData);
-		sort(referralCategories);
 
-		String caseNum = "";
 
-		Boolean elementNotFound = true;
-
-		while (elementNotFound) {
-
-			for (int i = 0; i < referralCategories.size(); ++i) {
-
-				Utility.scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + referralCategories.get(i) + "')]");
-
-				performPageLoad(driver);
-
-				if (enBanc.size() > 0) {
-					category=referralCategories.get(i);
-					caseNum = DocumentPage.selectRandomCaseNumber(enBanc);
-					
-					elementNotFound = false;
-
-					break;
-
-				} else {
-					dashboard.click();
-					Utility.scroll(categories, "up");
-					elementNotFound = true;
-				}
-
-			}
-
-		}
-		CommonPages.ifDownloaded(inProgress);
-		return caseNum;
-
-	}
-
-	public void selectRandomVote(List<UserInputData> userInputData,String category, String caseNum) {
-		String ccr_id = CommonPages.getCCRID(caseNum,category, userInputData);
+	public void selectRandomVote(List<UserInputData> userInputData,String category) {
+		String ccr_id = CommonPages.getCCRID( userInputData);
 
 		String voteText = "";
 		String text = "";

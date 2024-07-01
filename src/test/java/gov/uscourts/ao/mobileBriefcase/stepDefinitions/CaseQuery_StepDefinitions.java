@@ -4,6 +4,7 @@ import java.util.List;
 
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CaseQueryPage;
+import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class CaseQuery_StepDefinitions {
@@ -14,7 +15,7 @@ public class CaseQuery_StepDefinitions {
 	public void user_taps_on_magnifying_glass_icon_and_searches_for_a_case_and_verifies_the_result_if_not_empty(
 			List<UserInputData> userInputData) {
 		page = new CaseQueryPage();
-		String category = Document_StepDefinitions.judCategory;
+		String category = DocumentPage.category;
 		page.getCaseSearch(category);
 	}
 

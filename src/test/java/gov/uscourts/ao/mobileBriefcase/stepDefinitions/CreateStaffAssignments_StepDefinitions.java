@@ -9,6 +9,7 @@ import java.util.List;
 
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
+import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
@@ -19,8 +20,8 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 	static CommonPages page;
 	static chmAssignDPFPage page1;
 	String staffMember = "";
-	String caseNum = Document_StepDefinitions.regularCase;
-	String category =Document_StepDefinitions.judCategory;
+	String caseNum = DocumentPage.caseNum;
+	String category =DocumentPage.category;
      String action=DPF_stepDefinitions.actionName;
 	@Then("^user  verifies that briefcase events include the chmAssign DPF$")
 	public void user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(List<UserInputData> userInputData) {

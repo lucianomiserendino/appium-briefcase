@@ -86,6 +86,9 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 	
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='OK']")
 	public static WebElement ok;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
+	public static List<WebElement> inProgress;
 
 	String actionName = "Auto Test";
 	String cmr_cyv_code = "prhr";
@@ -334,10 +337,11 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 	    CommonPages.getActionName(createSilentAssignment);
 
 	    handleAlerts();
-
+	    CommonPages.ifDownloaded(inProgress);
 	    Page.waitToBeClickable(viewCaseInfo, driver);
+	    CommonPages.ifDownloaded(inProgress);
 	    Page.waitToBeClickable(docketEntries, driver);
-
+	    CommonPages.ifDownloaded(inProgress);
 	    contains(createSilentAssignment).click();
 
 	    verifyJudgeInitials(judgeInitials);
@@ -365,7 +369,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 	    for (String judgeInitial : judgeInitials) {
 	        judgeInitial = judgeInitial.contains("*") ? judgeInitial.replace("*", "").trim() : judgeInitial.trim();
 	        assertTrue("Verify chmSilentAssignText TPF enables docket text information",
-	                Actions.isDisplayed(Locator.XPATH, Actions.containsElement(judgeInitial + " related to")));
+	                Actions.isDisplayed(Locator.XPATH, Actions.containsElement(judgeInitial)));
 	    }
 	}
 

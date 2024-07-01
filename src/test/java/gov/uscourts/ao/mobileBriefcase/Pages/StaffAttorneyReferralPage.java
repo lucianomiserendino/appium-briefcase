@@ -13,11 +13,11 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.elementIsDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.toArray;
-import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
@@ -31,13 +31,14 @@ import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Filter;
 import gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
-public class StaffAttorneyReferralPage extends Base {
+public class StaffAttorneyReferralPage extends AppiumPageFactory {
 
 	CommonPages page = new CommonPages();
 	// @WithTimeout(time = 15, unit = TimeUnit.SECONDS)
@@ -65,9 +66,12 @@ public class StaffAttorneyReferralPage extends Base {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='GroupIcon']")
 	public static List<WebElement> GroupIcon;
-	
+
 	@iOSXCUITFindBy(accessibility = "Close")
 	public static WebElement close;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Default']")
+	public static List<WebElement> Default;
 
 	private static String xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText";
 
@@ -78,13 +82,12 @@ public class StaffAttorneyReferralPage extends Base {
 	/** Observe the assignment categories that display on the dashboard for SAs */
 
 	public void verifyDataOnTheDashboard(List<UserInputData> userInputData) {
-	    List<String> assignmentCategories = DocumentPage.getAssignmentCategories(2, userInputData);
-	    String xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText";
-	    boolean areElementsDisplayed = elementIsDisplayed(assignmentCategories, xpath, userInputData);
+		List<String> assignmentCategories = DocumentPage.getAssignmentCategories(2, userInputData);
+		String xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText";
+		boolean areElementsDisplayed = elementIsDisplayed(assignmentCategories, xpath, userInputData);
 
-	    assertTrue("Not all assignment categories are displayed on the dashboard", areElementsDisplayed);
+		assertTrue("Not all assignment categories are displayed on the dashboard", areElementsDisplayed);
 	}
-
 
 	public void selectAssignmentType(String assignmenType) {
 		performPageLoad(driver);
@@ -99,54 +102,55 @@ public class StaffAttorneyReferralPage extends Base {
 	 * referrals in each categories, matches the number of referrals in the DB
 	 */
 	public void observeReferralCategories(List<UserInputData> table) {
-	    page.getGroupIcons(GroupIcons.Expand);
-	    verifyReferralCategories(table);
+		if (Default.size() > 0) {
+			Default.get(0).click();
+		}
+		page.getGroupIcons(GroupIcons.Expand);
+		verifyReferralCategories(table);
 	}
 
 	public static void verifyReferralCategories(List<UserInputData> table) {
-	    String smr_sfa_code = Document_StepDefinitions.stfCategory;
-	    String smr_assign_pe_id = DocumentPage.get_pe_id("stf", table);
+		String smr_sfa_code = Document_StepDefinitions.stfCategory;
+		String smr_assign_pe_id = DocumentPage.get_pe_id("stf", table);
 
-	    List<String> uiRefCategories = new ArrayList<>();
-	    List<String> dbRefCategories = new ArrayList<>();
+		List<String> uiRefCategories = new ArrayList<>();
+		List<String> dbRefCategories = new ArrayList<>();
 
-	    List<String> categoryNames = executeQuery(replace(Queries.SAs_REFERRAL_CATEGORIES, "SMR_ASSIGN_PE_ID",
-	            smr_assign_pe_id, "SMR_SFA_CODE", smr_sfa_code), table);
+		List<String> categoryNames = executeQuery(replace(Queries.SAs_REFERRAL_CATEGORIES, "SMR_ASSIGN_PE_ID",
+				smr_assign_pe_id, "SMR_SFA_CODE", smr_sfa_code), table);
 
-	    for (int i = 1; i < categoryNames.size() + 1; ++i) {
-	        WebElement categoryNameElement = getRefCategory(i, 2);
-	        WebElement numOfRefCatElement = getRefCategory(i, 3);
+		for (int i = 1; i < categoryNames.size() + 1; ++i) {
+			WebElement categoryNameElement = getRefCategory(i, 2);
+			WebElement numOfRefCatElement = getRefCategory(i, 3);
 
-	        uiRefCategories.add(categoryNameElement.getText().trim() + " " + numOfRefCatElement.getText().trim());
-	    }
+			uiRefCategories.add(categoryNameElement.getText().trim() + " " + numOfRefCatElement.getText().trim());
+		}
 
-	    for (String categoryName : categoryNames) {
-	        List<String> refCatIds = executeQuery(replace(ID_OF_THE_REFERRAL_CATEGORY, "SMR_ASSIGN_PE_ID",
-	                smr_assign_pe_id, "MRC_NAME", categoryName, "SMR_SFA_CODE", smr_sfa_code), table);
+		for (String categoryName : categoryNames) {
+			List<String> refCatIds = executeQuery(replace(ID_OF_THE_REFERRAL_CATEGORY, "SMR_ASSIGN_PE_ID",
+					smr_assign_pe_id, "MRC_NAME", categoryName, "SMR_SFA_CODE", smr_sfa_code), table);
 
-	        for (String refCatId : refCatIds) {
-	            List<String> refNumbers = executeQuery(replace(Queries.REFERRAL_NUMBERS, "SMR_ASSIGN_PE_ID",
-	                    smr_assign_pe_id, "SMR_MRC_ID", refCatId, "SMR_SFA_CODE", smr_sfa_code), table);
+			for (String refCatId : refCatIds) {
+				List<String> refNumbers = executeQuery(replace(Queries.REFERRAL_NUMBERS, "SMR_ASSIGN_PE_ID",
+						smr_assign_pe_id, "SMR_MRC_ID", refCatId, "SMR_SFA_CODE", smr_sfa_code), table);
 
-	            for (String refNum : refNumbers) {
-	                dbRefCategories.add(categoryName + " (" + refNum + ")");
-	            }
-	        }
-	    }
-
-	    assertEquals("NUMBER OF REFERRALS IN EACH CATEGORY DOESN'T MATCH THE NUMBER OF REFERRALS IN THE DB",
-	            dbRefCategories, uiRefCategories);
+				for (String refNum : refNumbers) {
+					dbRefCategories.add(categoryName + " (" + refNum + ")");
+				}
+			}
+		}
+        Collections.sort(uiRefCategories);
+        Collections.sort(dbRefCategories);
+		assertEquals("NUMBER OF REFERRALS IN EACH CATEGORY DOESN'T MATCH THE NUMBER OF REFERRALS IN THE DB",
+				dbRefCategories, uiRefCategories);
 	}
 
 	public static WebElement getRefCategory(int categoryName, int numOfRef) {
-	    return findElementBy(Locator.XPATH,
-	            "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther["
-	                    + categoryName + "]/XCUIElementTypeOther[2]/XCUIElementTypeOther[" + numOfRef
-	                    + "]/XCUIElementTypeStaticText");
+		return findElementBy(Locator.XPATH,
+				"//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther["
+						+ categoryName + "]/XCUIElementTypeOther[2]/XCUIElementTypeOther[" + numOfRef
+						+ "]/XCUIElementTypeStaticText");
 	}
-
-
-
 
 	public void tapOnReferralCategory(List<UserInputData> table) {
 		List<String> caseList = new ArrayList<>();
@@ -191,7 +195,7 @@ public class StaffAttorneyReferralPage extends Base {
 	}
 
 	public List<String> getCaseList(String smr_assign_pe_id, String smr_sfa_code, List<UserInputData> table, int col) {
-	return DBUtilities.execute(
+		return DBUtilities.execute(
 				replace(Queries.SMR_SFA_CODE, "SMR_ASSIGN_PE_ID", smr_assign_pe_id, "SMR_SFA_CODE", smr_sfa_code), col,
 				table);
 	}
@@ -227,7 +231,7 @@ public class StaffAttorneyReferralPage extends Base {
 		}
 
 		scrollDownIfNotDisplayed(Actions.containsElement(randomDoc));
-		
+
 		if (close != null) {
 			close.click();
 		}
@@ -263,19 +267,17 @@ public class StaffAttorneyReferralPage extends Base {
 	}
 
 	public void verifyIconsMatchSfaBriefcaseCatIcon(List<UserInputData> userInputData) {
-	    String peId = DocumentPage.get_pe_id("stf", userInputData);
-	    String query = Actions.replace(Queries.SAs_ASSIGNMENT_CATEGORIES, "RA_PE_ID", peId);
+		String peId = DocumentPage.get_pe_id("stf", userInputData);
+		String query = Actions.replace(Queries.SAs_ASSIGNMENT_CATEGORIES, "RA_PE_ID", peId);
 
-	    List<String> dashboardIcons = executeQuery(query, userInputData);
-	    List<String> dbIcons = executeQuery(Queries.STAFF_ATTORNEY_DASHBOARD_ICONS, userInputData);
+		List<String> dashboardIcons = executeQuery(query, userInputData);
+		List<String> dbIcons = executeQuery(Queries.STAFF_ATTORNEY_DASHBOARD_ICONS, userInputData);
 
-	    int matchingIconsCount = Utility.filterArraylistItems(Filter.DUPLICATE_VALUES, dashboardIcons, dbIcons).size();
+		int matchingIconsCount = Utility.filterArraylistItems(Filter.DUPLICATE_VALUES, dashboardIcons, dbIcons).size();
 
-	    assertEquals(
-	        "The icons displayed on the dashboard/navigation don't match the icons stored in the sfa_briefcase_cat_icon field",
-	        dashboardIcons.size(), 
-	        matchingIconsCount
-	    );
+		assertEquals(
+				"The icons displayed on the dashboard/navigation don't match the icons stored in the sfa_briefcase_cat_icon field",
+				dashboardIcons.size(), matchingIconsCount);
 	}
 
 }

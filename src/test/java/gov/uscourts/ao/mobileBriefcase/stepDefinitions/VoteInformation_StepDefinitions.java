@@ -19,8 +19,8 @@ public class VoteInformation_StepDefinitions {
 	Judge_Involvement judInvPage;
 	CommonPages page1;
 	String cmr_cyv_code;
-	String caseNum = Document_StepDefinitions.regularCase;
-	String categroy = Document_StepDefinitions.judCategory;
+	String caseNum = DocumentPage.caseNum;
+	String category = DocumentPage.category;
 	String ccr_id = "";
 
 	@Given("^User observes the Vote Information panel displays\\.   This should only display if the referral requires voting$")
@@ -32,15 +32,14 @@ public class VoteInformation_StepDefinitions {
 	@Then("^For each referral, observe the filer's name \\(pr_last_name, pr_first_name, first initial of pr_middle_name, gn_display\\) party type \\(pt_description\\) and date filed \\(de_date_filed\\) displays in a light blue heading$")
 	public void for_each_referral_observe_the_filer_s_name_pr_last_name_pr_first_name_first_initial_of_pr_middle_name_gn_display_party_type_pt_description_and_date_filed_de_date_filed_displays_in_a_light_blue_heading()
 			throws Throwable {
-		String caseNum = Document_StepDefinitions.regularCase;
 		List<UserInputData> userInputData = null;
 
-		ccr_id += CommonPages.getCCRID(caseNum,Document_StepDefinitions.judCategory, userInputData);
+		ccr_id += CommonPages.getCCRID(userInputData);
 		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
-		String cmr_cs_caseid = CommonPages.getCaseID(caseNum, userInputData);
+		String cmr_cs_caseid = DocumentPage.cs_caseid;
 
-		cmr_cyv_code = CommonPages.cmr_cyv_code(Document_StepDefinitions.judCategory, cmr_cs_caseid, userInputData)
-				.trim();
+		cmr_cyv_code = DocumentPage.cmr_cyv_code;
+
 		page = new VoteInformationPage();
 		assertTrue(page.filersInfo(FILERs_INFO.VOTE_INFO_FILLRES_INFORMATION, cmr_ju_pe_id, cmr_cs_caseid, cmr_cyv_code,
 				ccr_id, userInputData));
@@ -69,18 +68,14 @@ public class VoteInformation_StepDefinitions {
 
 	}
 
-	
 	@Then("^User verifies that the judges' initials in the Vote Information are sorted based on panel_to_judge\\.pj_judge_order or by judge\\.ju_seniority_sort$")
 	public void user_verifies_that_the_judges_initials_in_the_Vote_Information_are_sorted_based_on_panel_to_judge_pj_judge_order_or_by_judge_ju_seniority_sort(
 			List<UserInputData> userInputData) {
-		String caseNum = Document_StepDefinitions.regularCase;
 
-		ccr_id += CommonPages.getCCRID(caseNum, Document_StepDefinitions.judCategory,userInputData);
+		ccr_id += CommonPages.getCCRID( userInputData);
 		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
-		String cmr_cs_caseid = CommonPages.getCaseID(caseNum, userInputData);
 
-		String cmr_cyv_code = CommonPages.cmr_cyv_code(Document_StepDefinitions.judCategory, cmr_cs_caseid, userInputData)
-				.trim();
+		String cmr_cyv_code = DocumentPage.cmr_cyv_code;
 		page = new VoteInformationPage();
 		page.getJudgeInitials("Vote_Information", caseNum, cmr_ju_pe_id, cmr_cyv_code, userInputData);
 	}

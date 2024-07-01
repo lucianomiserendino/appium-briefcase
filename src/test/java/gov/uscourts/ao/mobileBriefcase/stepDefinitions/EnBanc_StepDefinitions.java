@@ -12,15 +12,18 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 public class EnBanc_StepDefinitions {
 
 	EnBancPage page;
+	DocumentPage docPage;
 	JudgeVoteDPFPage page2;
 	List<UserInputData> userInputData = null;
-	String caseNum;
+	String ccrId = "";
 
 	@Then("^user selects a category and case with en banc panel$")
 	public void user_selects_a_category_and_case_with_en_banc_panel() {
+		List<UserInputData> userInputData = null;
 
-		page = new EnBancPage();
-		caseNum = page.getReffCategories(DocumentPage.get_pe_id("jud", userInputData), userInputData);
+		docPage = new DocumentPage();
+		docPage.selectRandomCategory("y", userInputData);
+		docPage.selectRandomReferral();
 
 	}
 
@@ -28,13 +31,13 @@ public class EnBanc_StepDefinitions {
 	public void user_verifies_that_a_button_is_displayed_next_to_the_logged_in_judge_s_vote() {
 
 		page2 = new JudgeVoteDPFPage();
-		page2.selectViewVotes(page.category,userInputData, caseNum);
+		ccrId += page2.selectViewVotes(userInputData);
 	}
 
 	@When("^it's tapped, it shows all the judges’ vote in a popup\\.$")
 	public void it_s_tapped_it_shows_all_the_judges_vote_in_a_popup() {
 		page2 = new JudgeVoteDPFPage();
-		page2.verifyJudgesVote(page.category,userInputData, caseNum);
+		page2.verifyJudgesVote(ccrId, userInputData);
 
 	}
 

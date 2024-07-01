@@ -432,7 +432,7 @@ public class Queries {
 	public static final String CMR_CCR_ID = "SELECT first 1 ID FROM case, chm_mobile_referral WHERE cs_year = 'CS_YEAR' and cs_number = 'CS_NUMBER' and cs_caseid = cmr_cs_caseid "
 			+ "and cmr_cyv_code='CMR_CYV_CODE' and cmr_ju_pe_id ='CMR_JU_PE_ID'";
 
-	public static final String CCR_ID = "SELECT  first 1 ccr_id  FROM chm_mobile_referral, chambers_case_to_referral, chambers_referral WHERE cpr_vote_req = 'y'"
+	public static final String CCR_ID = "SELECT  ccr_id  FROM chm_mobile_referral, chambers_case_to_referral, chambers_referral WHERE cpr_vote_req = 'y'"
 			+ " and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = 'CMR_CS_CASEID' and cmr_ju_pe_id = 'CMR_JU_PE_ID' and cmr_cyv_code='CMR_CYV_CODE'";
 
 	public static final String CMR_ID = "SELECT  first 1 cmr_id  FROM chm_mobile_referral, chambers_case_to_referral, chambers_referral WHERE cpr_vote_req = 'y'"
@@ -716,15 +716,15 @@ public class Queries {
 
 	public static final String MULIPLE_DPFs = "select  el_functions FROM event_list where el_list_text LIKE \"%EL_LIST_TEXT%\"";
 
-	public static final String FIND_ALL_NON_ORALLY_ARGUED_CASES = "select first 15 cs_caseid, cs_year||\"-\"||cs_number case_num, cyv_category,cmr_cyv_code  from chm_mobile_referral, \n"
+	public static final String FIND_ALL_NON_ORALLY_ARGUED_CASES = "select first 3 cs_caseid, cs_year||\"-\"||cs_number case_num, cyv_category,cmr_cyv_code  from chm_mobile_referral, \n"
 			+ "			 chm_reftype_val, case_dktentry, case where cmr_ju_pe_id = ? and cmr_cyv_code = cyv_code  and cyv_category in (  select distinct (cyv_category) from chm_mobile_referral, chm_reftype_val\n"
 			+ "			 where   cmr_ju_pe_id = ? and  cmr_date_end is null and  cmr_cyv_code = cyv_code and\n"
 			+ "			 cyv_is_briefcase = 'y' and  cyv_is_oral_arg = 'n' and  cmr_cyv_code != 'lbrrpt') and cmr_cs_caseid = cs_caseid and cmr_date_end is null and \n"
-			+ "			 cd_caseid = cmr_cs_caseid and cmr_dktentryid = cd_dktentryid and cd_case_ext  = 1 order by cs_last_update desc";
+			+ "			 cd_caseid = cmr_cs_caseid and cmr_dktentryid = cd_dktentryid and cd_case_ext  = 1 and cmr_panel_members TEXT order by cs_last_update desc";
 
-	public static final String FIND_ALL_ORALLY_ARGUED_CASES = "select first 15 cs_caseid,cs_year||\"-\"||cs_number case_num, cyv_category,cmr_cyv_code   from chm_mobile_referral, \n"
+	public static final String FIND_ALL_ORALLY_ARGUED_CASES = "select first 3 cs_caseid,cs_year||\"-\"||cs_number case_num, cyv_category,cmr_cyv_code   from chm_mobile_referral, \n"
 			+ "			 chm_reftype_val, case_dktentry, case where cmr_ju_pe_id = ? and cmr_cyv_code = cyv_code  and cyv_category in (select distinct (cyv_category) from chm_mobile_referral, chm_reftype_val\n"
 			+ "			 where   cmr_ju_pe_id = ? and  cmr_date_end is null and  cmr_cyv_code = cyv_code and\n"
 			+ "			 cyv_is_briefcase = 'y' and  cyv_is_oral_arg = 'n' and  cmr_cyv_code != 'lbrrpt') and cmr_cs_caseid = cs_caseid and cmr_date_end is null and \n"
-			+ "			 cd_caseid = cmr_cs_caseid and cmr_dktentryid = cd_dktentryid order by cs_last_update desc";
+			+ "			 cd_caseid = cmr_cs_caseid and cmr_dktentryid = cd_dktentryid and cmr_panel_members TEXT order by cs_last_update desc";
 }

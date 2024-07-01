@@ -127,7 +127,10 @@ Scenario: Selecting si_value from site table
 	|si_value  |courtId    |
 	|val       |test       |
 	
-	 @selectRandomCategoryAndReferral  
-      Scenario: Random category and target case selection    
-        Then User selects a random category and target case
+	 @selectRandomCategory  
+      Scenario: Random category selection    
+        Then User selects a random category
         
+        	 @selectRandomReferral  
+      Scenario: Random case selection    
+        Then User selects a random case

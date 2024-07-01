@@ -1,35 +1,71 @@
 [
   {
-    "line": 1,
+    "line": 2,
     "elements": [
       {
-        "line": 4,
+        "before": [
+          {
+            "result": {
+              "duration": 34659128791,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.setUp()"
+            }
+          }
+        ],
+        "line": 5,
         "name": "",
-        "description": "The user is modifying a chambers assignment in the chmAssign DPF, ultimately to complete the assignment.  \nIf they edit any of the previously existing dates during this transaction those changes should be saved, not only the completed date.",
-        "id": "chmassign;",
+        "description": "Verify the chmSilentAssignText TPF enables the dictionary designer to contribute information in docket text from the chmSilentAssign DPF.\nNote:  To view docket entries, go to a case referral, tap View Case Info, then tap Docket Entries. (line 1266)",
+        "id": "chmsilentassigntext-tpf---docket-text;",
+        "after": [
+          {
+            "result": {
+              "duration": 43750399000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "Hook.tearDown()"
+            }
+          }
+        ],
         "type": "scenario",
         "keyword": "Scenario",
         "steps": [
           {
             "result": {
-              "duration": 61131085417,
+              "duration": 77973054500,
               "status": "passed"
             },
-            "comments": [
+            "line": 9,
+            "name": "I am logged into Briefcase",
+            "match": {
+              "location": "JenieLogin_StepDefinitions.i_am_logged_into_Briefcase(UserInputData\u003e)"
+            },
+            "rows": [
               {
-                "line": 9,
-                "value": "#Given I am logged into Briefcase"
+                "cells": [
+                  "environment",
+                  "user"
+                ],
+                "line": 10
               },
               {
-                "line": 10,
-                "value": "#|environment|user    |"
-              },
-              {
-                "line": 11,
-                "value": "#|test       |sysadmin|"
+                "cells": [
+                  "test",
+                  "sysadmin"
+                ],
+                "line": 11
               }
             ],
-            "line": 13,
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 16891582417,
+              "status": "passed"
+            },
+            "line": 14,
             "name": "I select a user",
             "match": {
               "location": "JenieLogin_StepDefinitions.i_select_a_user(UserInputData\u003e)"
@@ -42,7 +78,7 @@
                   "jud",
                   "user"
                 ],
-                "line": 14
+                "line": 15
               },
               {
                 "cells": [
@@ -51,18 +87,18 @@
                   "test",
                   "sysadmin"
                 ],
-                "line": 15
+                "line": 16
               }
             ],
             "keyword": "Then "
           },
           {
             "result": {
-              "duration": 19024225667,
+              "duration": 13323917084,
               "status": "passed"
             },
-            "line": 17,
-            "name": "User selects a random category and target case",
+            "line": 18,
+            "name": "User selects a random category",
             "match": {
               "location": "Document_StepDefinitions.user_selects_a_random_category_and_target_case()"
             },
@@ -70,46 +106,63 @@
           },
           {
             "result": {
-              "duration": 403346084,
-              "error_message": "java.lang.NullPointerException\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCaseNumber(CommonPages.java:355)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCase(CommonPages.java:421)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCaseID(CommonPages.java:342)\n\tat gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getCMRID(CommonPages.java:307)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.DPFs.getListOfBriefcaseDPFs(DPFs.java:99)\n\tat gov.uscourts.ao.mobileBriefcase.page.common.DPFs.getChmAssign(DPFs.java:110)\n\tat gov.uscourts.ao.mobileBriefcase.stepDefinitions.DPF_stepDefinitions.user_selects_action(DPF_stepDefinitions.java:31)\n\tat ✽.Then User selects action(CATEGORIES/Update/chmAssign_MODIFY_COMPLETE_assignment.feature:19)\n",
-              "status": "failed"
+              "duration": 10971561917,
+              "status": "passed"
             },
-            "line": 19,
-            "name": "User selects action",
+            "line": 20,
+            "name": "User selects a random case",
             "match": {
-              "location": "DPF_stepDefinitions.user_selects_action(DataTable)"
+              "location": "Document_StepDefinitions.user_selects_a_random_case()"
             },
-            "rows": [
-              {
-                "cells": [
-                  "dpf",
-                  "courtId"
-                ],
-                "line": 20
-              },
-              {
-                "cells": [
-                  "chmAssign",
-                  "test"
-                ],
-                "line": 21
-              }
-            ],
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 39224185500,
+              "status": "passed"
+            },
+            "line": 22,
+            "name": "User expands/collapse panel",
+            "match": {
+              "location": "Common_StepDefinitions.user_expands_collapse_panel()"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 114541680334,
+              "status": "passed"
+            },
+            "line": 23,
+            "name": "view docket entries",
+            "match": {
+              "location": "DocketEntry_StepDefinitions.view_docket_entries()"
+            },
             "keyword": "Then "
           }
         ],
         "tags": [
           {
-            "line": 3,
-            "name": "@AMB-3966"
+            "line": 4,
+            "name": "@Smoke"
           }
         ]
       }
     ],
-    "name": "chmAssign",
+    "name": "chmSilentAssignText TPF - Docket Text",
     "description": "",
-    "id": "chmassign",
+    "id": "chmsilentassigntext-tpf---docket-text",
     "keyword": "Feature",
-    "uri": "CATEGORIES/Update/chmAssign_MODIFY_COMPLETE_assignment.feature"
+    "uri": "CATEGORIES/Regression/chmSilentAssignText_TPF_Docket_Text.feature",
+    "tags": [
+      {
+        "line": 1,
+        "name": "@Regression"
+      },
+      {
+        "line": 1,
+        "name": "@AMB-3654"
+      }
+    ]
   }
 ]

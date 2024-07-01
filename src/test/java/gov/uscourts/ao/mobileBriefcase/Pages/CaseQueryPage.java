@@ -61,17 +61,31 @@ public class CaseQueryPage extends AppiumPageFactory {
 
 
 	public void searchByCase(String category, String fullCaseNumber, Search searchType) {
+	    // Generate the search value based on the search type and full case number
 	    String searchValue = searchBy(searchType, fullCaseNumber);
-	    sendKeys(searchTextField, searchValue);
-	    clicksOn(searchBTN);
-	    performPageLoad(driver);
-	    clicksOn(on_device);
-
-	    scrollDownIfNotDisplayed(
-	        containsElement(category) + "/preceding::XCUIElementTypeStaticText[contains(@name, '" + fullCaseNumber + "')]");
-	    CommonPages.ifDownloaded(inProgress);
 	    
+	    // Print the category and case number being searched
+	    System.out.println("Searching for category: " + category + ", case number: " + fullCaseNumber);
+	    
+	    // Enter the search value in the search text field
+	    sendKeys(searchTextField, searchValue);
+	    
+	    // Click on the search button
+	    clicksOn(searchBTN);
+	    
+	    // Wait for the page to load
+	    performPageLoad(driver);
+	    
+	    // Click on the device element
+	    clicksOn(on_device);
+	    
+	    // Scroll down to the element if not displayed
+	    scrollDownIfNotDisplayed(containsElement(category) + "/preceding::XCUIElementTypeStaticText[contains(@name, '" + fullCaseNumber + "')]");
+	    
+	    // Check if the element is downloaded
+	    CommonPages.ifDownloaded(inProgress);
 	}
+
 	
 	
 

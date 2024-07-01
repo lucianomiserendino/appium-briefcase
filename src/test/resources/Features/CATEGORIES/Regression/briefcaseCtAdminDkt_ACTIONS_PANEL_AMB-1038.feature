@@ -11,13 +11,9 @@ Background:
 		|userType   |personrole        |jud      |user     |
 		|judge      |Appellate Judges  |test     |sysadmin |
 		
-		Then User selects random judge category
-		|courtId|
-		|test   |
+   Then User selects a random category
 			
-	Then User selects random case number
-		|courtId|
-		|test   |
+   Then User selects a random case
 	
 	Then User gets the si_value from the site table
 	|si_value    |courtId    |

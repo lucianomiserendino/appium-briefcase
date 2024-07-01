@@ -26,14 +26,14 @@ public class ActionsListViewPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='GroupIcon']/following:: XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
 	public static List<WebElement> documentListAccordionText;
 
-	public void getApplicableActions(String caseNumber, String panel, List<UserInputData> userInputData) {
+	public void getApplicableActions(String panel, List<UserInputData> userInputData) {
 		if (CommonPages.siVal.equalsIgnoreCase("n")) {
 			assertSiteTableVariable();
 		} else {
 			String panelXPath = containsElement(panel);
 			scrollDownIfNotDisplayed(panelXPath);
 
-			String cmrId = CommonPages.getCMRID(caseNumber, userInputData);
+			String cmrId = CommonPages.getCMRID( userInputData);
 			displayActions(cmrId, userInputData);
 		}
 	}

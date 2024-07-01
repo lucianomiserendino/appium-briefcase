@@ -92,11 +92,17 @@ public class Document_StepDefinitions {
 		page = new DocumentPage();
 		page.navigateToViewCaseInfo(actionName);
 	}
-	@Then("^User selects a random category and target case$")
+	@Then("^User selects a random category$")
 	public void user_selects_a_random_category_and_target_case() {
 		List<UserInputData> userInputData = null;
 		page = new DocumentPage();
-		page.selectRandomCategoryAndCase(userInputData);
+		page.selectRandomCategory("n",userInputData);
 	}
+	@Then("^User selects a random case$")
+	public void user_selects_a_random_case()  {
+		page = new DocumentPage();
+		page.selectRandomReferral();
+	}
+
 
 }

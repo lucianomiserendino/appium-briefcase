@@ -6,22 +6,18 @@ Scenario:
 Verify the chmSilentAssignText TPF enables the dictionary designer to contribute information in docket text from the chmSilentAssign DPF.
 Note:  To view docket entries, go to a case referral, tap View Case Info, then tap Docket Entries. (line 1266)
        
-		#Given I am logged into Briefcase 
-		#|environment|user    |
-		#|test       |sysadmin|
+		Given I am logged into Briefcase 
+		|environment|user    |
+		|test       |sysadmin|
 		
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |
 		|judge      |Appellate Judges  |test     |sysadmin |
 		
-		Then User selects random judge category
-		|courtId|
-		|test   |
+   Then User selects a random category
 			
-	Then User selects random case number
-		|courtId|
-		|test   |
+   Then User selects a random case
 		
 	Then User expands/collapse panel
 	Then view docket entries

@@ -3,6 +3,7 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import java.util.List;
 
 import cucumber.api.java.en.Then;
+import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.ToolsPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -10,8 +11,8 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 public class Tools_StepDefinitions {
 	ToolsPage page;
 	static chmAssignDPFPage page1;
-	String caseNum = Document_StepDefinitions.regularCase;
-	String category = Document_StepDefinitions.judCategory;
+	String caseNum = DocumentPage.caseNum;
+	String category = DocumentPage.category;
 
 	@Then("^Verify the site table variable 'briefcaseDisplayTools' is being honored$")
 	public void verify_the_site_table_variable_briefcaseDisplayTools_is_being_honored() {

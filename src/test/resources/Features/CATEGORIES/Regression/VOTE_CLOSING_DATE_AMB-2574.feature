@@ -14,13 +14,9 @@ Scenario:
 		|userType   |personrole        |jud      |user     |
 		|judge      |Appellate Judges  |test     |sysadmin |
 		
-		Then User selects random judge category
-		|courtId|
-		|test   |
+   Then User selects a random category
 			
-	   Then User selects random case number
-		|courtId|
-		|test   |
+   Then User selects a random case
 		
      Given User observes the Vote Information panel displays.   This should only display if the referral requires voting 
 	Then If there is a vote closing date for a referral, user verifies that Briefcase displays Vote Closing: and the vote closing date in bold font under the filed date 

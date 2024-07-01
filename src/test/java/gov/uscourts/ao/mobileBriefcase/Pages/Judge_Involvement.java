@@ -98,8 +98,7 @@ public class Judge_Involvement extends AppiumPageFactory {
 	        // Get case ID
 	        String cmr_cs_caseid = CommonPages.getCaseID(caseNum, userInputData);
 
-	        
-	        String cmr_cyv_code = CommonPages.cmr_cyv_code(categoryName, cmr_cs_caseid, userInputData).trim();
+			String cmr_cyv_code = CommonPages.cmr_cyv_code(categoryName, cmr_cs_caseid, userInputData);
 
 	        // Get DB involvement code
 	        String dbInvCode = DBUtilities.getAllColumns(

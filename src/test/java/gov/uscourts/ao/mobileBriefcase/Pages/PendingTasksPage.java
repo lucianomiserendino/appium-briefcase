@@ -92,7 +92,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 		ArrayList<String> filedDates = new ArrayList<String>();
 		List<WebElement> date = Actions.findElements(By.xpath(Actions.containsElement(": ")));
-
+				
 		for (int i = 0; i < date.size(); i++) {
 			String text = date.get(i).getText().split(": ")[1];
 			filedDates.add(text);
@@ -179,6 +179,8 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 	public void selectAssignmentType(String folder) {
 
+		CommonPages.getGroupIcons(GroupIcons.Expand);
+
 		List<Integer> count = new ArrayList<>();
 
 		int s = categoryCount.size();
@@ -201,22 +203,22 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 			boolean found = true;
 
-	        while (found) {
-	            List<WebElement> icons = Actions.findElements(By.xpath(
-	                "//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther" +
-	                "//following::XCUIElementTypeStaticText[@name='" + category + "']" +
-	                "/following::XCUIElementTypeStaticText[@name='GroupIcon']"));
+			while (found) {
+				List<WebElement> icons = Actions.findElements(By.xpath(
+						"//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther"
+								+ "//following::XCUIElementTypeStaticText[@name='" + category + "']"
+								+ "/following::XCUIElementTypeStaticText[@name='GroupIcon']"));
 
-	            found = false; 
+				found = false;
 
-	            for (WebElement icon : icons) {
-	                if (icon.getAttribute("value").equals("▽")) {
-	                    icon.click();
-	                    found = true; // Found and clicked an icon, need to recheck the list
-	                    break; // Break the loop to recheck the list from the start
-	                }
-	            }
-	        }
+				for (WebElement icon : icons) {
+					if (icon.getAttribute("value").equals("▽")) {
+						icon.click();
+						found = true; // Found and clicked an icon, need to recheck the list
+						break; // Break the loop to recheck the list from the start
+					}
+				}
+			}
 
 			List<Integer> c = new ArrayList<>();
 
@@ -235,8 +237,9 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 			Integer m = Collections.max(c);
 
-			assignmentType = Actions.findElement(By.xpath(assinmentType(m) + "/preceding::XCUIElementTypeStaticText[1]"))
-					.getText().trim();
+			assignmentType = Actions
+					.findElement(By.xpath(assinmentType(m) + "/preceding::XCUIElementTypeStaticText[1]")).getText()
+					.trim();
 
 			assignmentCount.get(c.indexOf(m)).click();
 

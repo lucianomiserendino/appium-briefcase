@@ -17,7 +17,7 @@ public class ActionsPanel_StepDefinitions {
 
 		List<UserInputData> userInputData = null;
 
-		page.getApplicableActions(Document_StepDefinitions.regularCase, actions, userInputData);
+		page.getApplicableActions(actions, userInputData);
 	}
 
 	@Then("^User verifies that Action displays if the assignment type specified in mbr_event record is = judge only$")

@@ -16,13 +16,9 @@ Scenario:
 		|judge      |Appellate Judges  |test     |sysadmin |
 		
 		
-		Then User selects random judge category
-		|courtId|
-		|test   |
+   Then User selects a random category
 			
-	Then User selects random case number
-		|courtId|
-		|test   |
+   Then User selects a random case
 	
 	Then User observes a collapsible panel entitled "Assignments" displays 
 	

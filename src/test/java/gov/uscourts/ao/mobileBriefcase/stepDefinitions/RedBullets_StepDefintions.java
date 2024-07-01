@@ -2,6 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
+import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.RedBulletsPage;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
@@ -21,7 +22,7 @@ public class RedBullets_StepDefintions extends Base {
 
 	@Then("^User closes the app, reopens and goes back to the category that contains the referral that was just viewed$")
 	public void user_closes_the_app_reopens_and_goes_back_to_the_category_that_contains_the_referral_that_was_just_viewed() {
-		refCategory = Document_StepDefinitions.judCategory;
+		refCategory = DocumentPage.category;
 		page = new RedBulletsPage();
 
 		page.getCountAfterReopeningTheApp(refCategory, afterViewingReferral);

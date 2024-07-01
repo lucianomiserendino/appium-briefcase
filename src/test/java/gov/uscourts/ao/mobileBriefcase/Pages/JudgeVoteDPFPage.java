@@ -3,35 +3,29 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ACTION_NAME;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGES_INITIALS;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGE_VOTE_DPF_RELIEF;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.selectAction;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElement;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForVisibilityOfElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.changeDateFormat;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.clickOnNumberInRange;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getParameter;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getStreamOfRandomInts;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
-import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -48,6 +42,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class JudgeVoteDPFPage extends AppiumPageFactory {
@@ -128,7 +123,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
 	public static List<WebElement> progress;
-	
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Case Information']")
 	public static WebElement caseInfo;
 
@@ -140,130 +135,164 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	public static String rl_list_text = "";
 	public static String cvv_display = "";
 	public static String chv_date_created = "";
+	public static String foundCcrId = "";
+	public static String relief = "";
 
 	/** verify relief is displayed on the popup page */
-	public String selectViewVotes(String category, List<UserInputData> userInputData, String caseNum) {
-
-		String ccr_id = CommonPages.getCCRID(caseNum, category, userInputData);
-		String dbRelief = getRelief(ccr_id, userInputData);
+	public String selectViewVotes(List<UserInputData> userInputData) {
 		String relief = "";
-		if (dbRelief.equals(null)) {
-			relief = "-";
-		} else {
-			relief = dbRelief;
-		}
-		tap(Locator.XPATH, "(//XCUIElementTypeStaticText[@name='" + relief.trim()
-				+ "']/following::XCUIElementTypeOther/XCUIElementTypeButton[@name='View Votes'])[1]");
-		return relief.trim();
+		String foundCcrId = "";
 
+		List<String> ccrIdList = CommonPages.findCCRID(userInputData);
+
+		if (ccrIdList == null) {
+			throw new IllegalArgumentException("Error: CCR ID list is null.");
+		} else {
+			for (int i = 0; i < ccrIdList.size(); i++) {
+				String ccrId = ccrIdList.get(i);
+				String dbRelief = getRelief(ccrId, userInputData);
+
+				if (dbRelief == null) {
+					relief = "-";
+				} else {
+					relief = dbRelief;
+				}
+
+				boolean isTapped = tapIfExists(Locator.XPATH, "(//XCUIElementTypeStaticText[@name='" + relief.trim()
+						+ "']/following::XCUIElementTypeOther/XCUIElementTypeButton[@name='View Votes'])[1]");
+
+				if (isTapped) {
+					foundCcrId = ccrId;
+					break;
+				}
+			}
+		}
+
+		if (foundCcrId.isEmpty()) {
+			System.out.println("No CCR ID found, failed to tap on 'View Votes' button.");
+		}
+
+		return foundCcrId;
+	}
+
+	private boolean tapIfExists(Locator locator, String xpath) {
+		try {
+			List<WebElement> elements = driver.findElements(By.xpath(xpath));
+			if (!elements.isEmpty()) {
+				elements.get(0).click();
+				return true;
+			} else {
+				return false;
+			}
+		} catch (NoSuchElementException e) {
+			return false;
+		}
 	}
 
 	/** verify each judge's vote and the day they voted on the popup page */
-	public void verifyJudgesVote(String category, List<UserInputData> userInputData, String caseNum) {
+	public void verifyJudgesVote(String ccr_id, List<UserInputData> userInputData) {
 		performPageLoad(driver);
-		getJudgesInitials(category, JUDGES_INITIALS, userInputData, caseNum);
+		getJudgesInitials(ccr_id, JUDGES_INITIALS, userInputData);
 
 	}
 
-	public static void getJudgesInitials(String category, String initials, List<UserInputData> userInputData,
-			String caseNum) {
-
-		String ccr_id = CommonPages.getCCRID(caseNum, category, userInputData);
+	public static void getJudgesInitials(String ccr_id, String initials, List<UserInputData> userInputData) {
 
 		List<String> dbInitials = execute(getID(initials, ccr_id), 2, userInputData);
-		
+
 		List<String> voteType = execute(getID(initials, ccr_id), 4, userInputData);
 
-		
 		List<String> voteDate = execute(getID(initials, ccr_id), 5, userInputData);
-
-		
-		  
 
 		/** get judge's initials */
 
 		/** verify all initials are displayed */
-        List<String> resultList = new ArrayList<>();
+		List<String> resultList = new ArrayList<>();
 		for (int i = 0; i < dbInitials.size(); i++) {
-			
-           assertTrue("Verify correct judges' intials are listed in the View Votes popup: "+dbInitials+ "",scrollDownIfNotDisplayed(Actions.containsElement(dbInitials.get(i).trim())));
 
-            
-            String currentVote = voteType.get(i);
-            String currentVoteDate = voteDate.get(i);
-            
-            if (currentVote != null && currentVoteDate != null) {
-                String xpath = String.format(
-                        "//XCUIElementTypeOther[@name='JudgesVotesList']/child::*//*[contains(@name, '%s')]" +
-                        "/following::XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '%s')]" +
-                        "/following::XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '%s')]",
-                        dbInitials.get(i).trim(), currentVote.trim(), changeDateFormat(currentVoteDate.substring(0, 10),"yyyy-MM-dd",
-    							"M/d/yyyy"));
-                
-                resultList.add(xpath);
-            }
-        }
+			assertTrue("Verify correct judges' intials are listed in the View Votes popup: " + dbInitials + "",
+					scrollDownIfNotDisplayed(Actions.containsElement(dbInitials.get(i).trim())));
 
-        for (String result : resultList) {
-        	 assertTrue( "Judges’ votes are missing from the View Votes popup",scrollDownIfNotDisplayed(result));
-        }
-  
-    	tap(close);
-    	
-}
-	
-	
-	public String getVoteSelection(String actioName,String category, String dpfName, List<UserInputData> userInputData, String caseNum) {
+			String currentVote = voteType.get(i);
+			String currentVoteDate = voteDate.get(i);
 
-		String elId = getAllColumns(getID(Queries.EL_ID, actioName), userInputData);
+			if (currentVote != null && currentVoteDate != null) {
+				String xpath = String.format(
+						"//XCUIElementTypeOther[@name='JudgesVotesList']/child::*//*[contains(@name, '%s')]"
+								+ "/following::XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '%s')]"
+								+ "/following::XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '%s')]",
+						dbInitials.get(i).trim(), currentVote.trim(),
+						changeDateFormat(currentVoteDate.substring(0, 10), "yyyy-MM-dd", "M/d/yyyy"));
 
-		String ccr_id = CommonPages.getCCRID(caseNum, category, userInputData);
+				resultList.add(xpath);
+			}
+		}
 
+		for (String result : resultList) {
+
+			assertTrue("Judges’ votes are missing from the View Votes popup", scrollDownIfNotDisplayed(result));
+		}
+
+		tap(close);
+
+	}
+
+	public String getVoteSelection(String actionName, String category, String dpfName,
+			List<UserInputData> userInputData, String caseNum) {
+
+		String elementId = getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
 		String voteText = "";
-		String text = "";
-		String reliefText = getRelief(ccr_id, userInputData);
+		String resultText = "";
 
-		if (isDisplayed(Locator.XPATH, getIndexOfVoteButton(reliefText, 1)) == true) {
-			tap(Locator.XPATH, getIndexOfVoteButton(reliefText, 1));
-		} else {
-			tap(back);
-			CommonPages.getActionName(getAllColumns(getID(ACTION_NAME, elId), userInputData));
-			tap(Locator.XPATH, getIndexOfVoteButton(reliefText, 1));
+		List<String> ccrIdList = CommonPages.findCCRID(userInputData);
+		if (ccrIdList == null) {
+			throw new IllegalArgumentException("Error: CCR ID list is null.");
 		}
+
+		for (String ccrId : ccrIdList) {
+			relief = getRelief(ccrId, userInputData);
+			if (relief == null) {
+				relief = "-";
+			} else {
+				relief = relief.trim();
+			}
+
+			if (tapIfExists(Locator.XPATH, getIndexOfVoteButton(relief, 1))) {
+				foundCcrId = ccrId;
+				break;
+			}
+		}
+
+		if (foundCcrId == null) {
+			throw new IllegalArgumentException("Error: No CCR ID found.");
+		}
+
 		Page.sleep(4000);
-		List<WebElement> votes = judgeVotes;
 
-		String voteList = "";
-		Iterator<WebElement> i = votes.iterator();
-		while (i.hasNext()) {
-			WebElement row = i.next();
-			voteList += row.getText();
+		List<WebElement> votes = judgeVotes;
+		StringBuilder voteListBuilder = new StringBuilder();
+		for (WebElement row : votes) {
+			voteListBuilder.append(row.getText());
 		}
 
+		String voteList = voteListBuilder.toString();
 		if (voteList.contains(select)) {
 			try {
 				votes.remove(select);
-
 			} catch (NoSuchElementException e) {
-				e.getMessage();
+				System.err.println("Element not found: " + e.getMessage());
 			}
-
-			voteText += clickOnNumberInRange(votes);
-			text += getVoteName(voteText, reliefText);
-
-		} else {
-			voteText += clickOnNumberInRange(votes);
-			text += getVoteName(voteText, reliefText);
 		}
 
-		tap(Locator.XPATH, getIndexOfNoteIcon(reliefText));
+		voteText = clickOnNumberInRange(votes);
+		resultText = getVoteName(voteText, relief.trim());
 
-		addVote(dpfName, getID(MBR_NOTE, elId), reliefText, elId, userInputData);
-
+		tap(Locator.XPATH, getIndexOfNoteIcon(relief.trim()));
+		addVote(dpfName, getID(MBR_NOTE, elementId), relief.trim(), elementId.trim(), userInputData);
 		tap(back);
-		Utility.scroll(documentList, "up");
+		Utility.tapAndSwipe(Direction.UP);
 
-		return text;
+		return resultText;
 	}
 
 	public String getVoteName(String voteText, String reliefText) {
@@ -278,20 +307,27 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	 * After adding vote to a note, this will verify judge's vote is updated in Vote
 	 * Information Panel
 	 */
-	public void verifyNoteText(String category,  List<UserInputData> userInputData,
+	public void verifyNoteText(String relief, String ccrId, String category, List<UserInputData> userInputData,
 			String caseNum) {
-		String ccr_id = CommonPages.getCCRID(caseNum, category, userInputData);
-
+		Utility.tapAndSwipe(Direction.UP);
+		// Open the Vote Information panel
 		CommonPages.getPanel(Panel.valueOf("Vote_Information"));
-		String relief = getRelief(ccr_id, userInputData);
-		getVote(relief).click();
-		performPageLoad(driver);
-		assertTrue(isDisplayed(Locator.XPATH, containsElement("$$")));
-		String title = getAllColumns(Queries.DM_DESCRIPTION, userInputData);
-		assertTrue(isDisplayed(Locator.XPATH, containsElement(title)));
-		
-		tap(close);
 
+		// Click on the NoteIcon
+		getVote(relief.trim()).click();
+		performPageLoad(driver);
+
+		// Verify that the note text is displayed
+		assertTrue(isDisplayed(Locator.XPATH, containsElement("$$")));
+
+		// Retrieve the description from the database
+		String description = getAllColumns(Queries.DM_DESCRIPTION, userInputData);
+
+		// Verify that the description is displayed
+		assertTrue(isDisplayed(Locator.XPATH, containsElement(description)));
+
+		// Close the panel
+		tap(close);
 	}
 
 	public static void ifDocumentAccessbile(String docName) {
@@ -315,35 +351,43 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 		Page.waitToBeClickable(close, driver);
 	}
 
-	public void addVote(String dpfName, String query, String relief, String el_id, List<UserInputData> userInputData) {
-		String text = "";
-		if (getParameter(getAllColumns(query, userInputData), dpfName, 4).equals("SKIP")) {
-			assertNull(" THE \"NOTE HISTORY PARAMETER\" IS NOT SET TO \"SKIP\" ", commentField.getText());
+	public void addVote(String dpfName, String query, String relief, String elementId,
+			List<UserInputData> userInputData) {
+		String noteText = "";
+
+		// Check if the parameter is set to "SKIP"
+		if ("SKIP".equals(getParameter(getAllColumns(query, userInputData), dpfName, 4))) {
+			assertNull("THE \"NOTE HISTORY PARAMETER\" IS NOT SET TO \"SKIP\"", commentField.getText());
 			tap(cancel);
 		} else {
 			Page.sleep(3000);
 
+			// Clear and enter a new comment
 			commentField.click();
 			commentField.clear();
-
-			text = sendANote();
+			noteText = sendANote();
 			tap(applyBtn);
 
+			// Scroll down if the Submit button is not displayed
 			scrollDownIfNotDisplayed("//XCUIElementTypeButton[@name='Submit']");
-             CommonPages.ifDownloaded(progress);
-            Page.waitForVisibilityOfElement(caseInfo, driver);
-			getGroupIcons(GroupIcons.Expand);
-			selectAction("Actions", el_id, userInputData);
+			CommonPages.ifDownloaded(progress);
+			Page.sleep(2000);
+			Utility.tapAndSwipe(Direction.UP);
+
+			// Wait for the page to load and select the action
+			Page.waitForVisibilityOfElement(caseInfo, driver);
+			selectAction("Actions", elementId, userInputData);
 			performPageLoad(driver);
+
+			// Tap the note icon and verify the note text
 			tap(Locator.XPATH, getIndexOfNoteIcon(relief));
 			Page.sleep(2000);
 			assertEquals(
-					" THE \"NOTE HISTORY PARAMETER\" IS SET TO \"Y\", HOWEVER THE TEXT OF THE PREVIOUS VOTE NOTE IS NOT DISPLYED CORRECTLY! ",
-					text, getText(Page.waitForVisibilityOfElement(commentField, driver)));
+					"THE \"NOTE HISTORY PARAMETER\" IS SET TO \"Y\", HOWEVER THE TEXT OF THE PREVIOUS VOTE NOTE IS NOT DISPLAYED CORRECTLY!",
+					noteText, getText(Page.waitForVisibilityOfElement(commentField, driver)));
+
 			tap(cancel);
-
 		}
-
 	}
 
 	public static WebElement getVote(String relief) {
@@ -365,7 +409,8 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	}
 
 	public static String getRelief(String ccr_id, List<UserInputData> userInputData) {
-		return execute(getID(JUDGES_INITIALS, ccr_id), 3, userInputData).get(0);//getAllColumns(getID(JUDGE_VOTE_DPF_RELIEF, ccr_id), userInputData);
+		return execute(getID(JUDGES_INITIALS, ccr_id), 3, userInputData).get(0);// getAllColumns(getID(JUDGE_VOTE_DPF_RELIEF,
+																				// ccr_id), userInputData);
 
 	}
 

@@ -27,6 +27,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import cucumber.api.DataTable;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
@@ -216,6 +217,9 @@ public class CommonPages extends AppiumPageFactory {
 				getGroupIcons(GroupIcons.Expand);
 				performPageLoad(driver);
 				scrollDownIfNotDisplayed(containsElement(panelName));
+				System.out.println("------------------------------------------------------");
+				System.out.println("Selected panel: " + panelName);
+				System.out.println("------------------------------------------------------");
 			}
 		} catch (Exception e) {
 			System.err.println("An error occurred: " + e.getMessage());
@@ -236,17 +240,9 @@ public class CommonPages extends AppiumPageFactory {
 		}
 	}
 
-	public static void selectAction(String panel, List<UserInputData> userInputData) {
-		// getGroupIcons();
-		// getGroupIcons(GroupIcons.Expand);
-		getPanel(Panel.valueOf(panel));
-		// getActionName("mbr multiple DMI");
-		getActionName("Auto Test");
-
-	}
 
 	public static void selectBriefcaseAction(String panel, String actionName) {
-		// getGroupIcons(GroupIcons.Expand);
+
 		getPanel(Panel.valueOf(panel));
 
 		String actionName1 = "";
@@ -261,10 +257,12 @@ public class CommonPages extends AppiumPageFactory {
 	}
 
 	public static void getActionName(String element) {
+		System.out.println("Searching for action name: " + element);
 
 		scrollDownIfNotDisplayed(
 				"//XCUIElementTypeOther[@name='DocumentList']//XCUIElementTypeStaticText[contains(@name, '" + element
 						+ "')]");
+		
 		performPageLoad(driver);
 		assertTrue("VERIFY THE NAME OF THE ACTION DISPLAYS IN THE DARK BLUE BANNER: ",
 				Actions.isDisplayed(Locator.XPATH, containsElement(element)));
@@ -294,7 +292,7 @@ public class CommonPages extends AppiumPageFactory {
 
 		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
 
-		String caseId = CommonPages.getCaseID(userInputData);
+		String caseId = DocumentPage.cs_caseid;
 
 		return getAllColumns(replace(Queries.CMR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id),
 				userInputData);
@@ -310,31 +308,27 @@ public class CommonPages extends AppiumPageFactory {
 				userInputData);
 	}
 
-	public static String getCCRID(String caseNum, String category, List<UserInputData> userInputData) {
+	public static String getCCRID(List<UserInputData> userInputData) {
 		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
-
-		String caseId = CommonPages.getCaseID(caseNum, userInputData);
-		String cmr_cyv_code = CommonPages.cmr_cyv_code(category, caseId, userInputData);
+		String caseId = DocumentPage.cs_caseid;
+		String cmr_cyv_code = DocumentPage.cmr_cyv_code;
 
 		return getAllColumns(replace(Queries.CCR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id,
+				"CMR_CYV_CODE", cmr_cyv_code), userInputData);
+	}
+
+	public static List<String> findCCRID(List<UserInputData> userInputData) {
+		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
+		String caseId = DocumentPage.cs_caseid;
+		String cmr_cyv_code = DocumentPage.cmr_cyv_code;
+
+		return DBUtilities.executeQuery(replace(Queries.CCR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id,
 				"CMR_CYV_CODE", cmr_cyv_code), userInputData);
 	}
 
 	public static void verifyElementIsDisplayed(String element) {
 		assertTrue(" PLEASE ENSURE THAT " + element.toUpperCase() + " IS DISPLAYED ",
 				isDisplayed(containsElement(element)) == true);
-	}
-
-	public static String getCaseID(WebElement uiCaseNumber, List<UserInputData> table) {
-		return getAllColumns(replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, uiCaseNumber.getText()), "CS_NUMBER",
-				getCase(Case.CASE_NUMBER, uiCaseNumber.getText())), table);
-	}
-
-	public static String getCaseID(List<UserInputData> table) {
-		String caseNumber = SystemPropertySetup.getVariable(Variables.CASE_NUMBER, table);
-
-		return getAllColumns(replace(CASE_ID, "CS_YEAR", getCase(Case.CASE_YEAR, caseNumber), "CS_NUMBER",
-				getCase(Case.CASE_NUMBER, caseNumber)), table);
 	}
 
 	public static String getCaseID(String caseNumber, List<UserInputData> table) {
@@ -385,8 +379,6 @@ public class CommonPages extends AppiumPageFactory {
 			break;
 		}
 
-		// siVal=getAllColumns(getID(SITE_TABLE_VARIABLE_VALUE, br + value),
-		// pacerInputData);
 		return siVal = getAllColumns(getID(SITE_TABLE_VARIABLE_VALUE, br + value), pacerInputData);
 	}
 

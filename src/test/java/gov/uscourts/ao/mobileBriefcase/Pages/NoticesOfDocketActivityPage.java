@@ -80,41 +80,34 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 	}
 
 	private void handleDocketEntry(String peId, List<UserInputData> userInputData) throws Exception {
-		String ndaLink = getNDALink(ID.DOCKETENTRY_ID, peId, userInputData);
-		loadNDALinksInBriefcase(ndaLink);
-		if (!driver.getPageSource().contains("Docket Text")) {
-			throw new AssertionError("Docket Text not found. NDA Link: " + ndaLink);
-		}
+		handleCommon(peId, userInputData, ID.DOCKETENTRY_ID, "Docket Text", "Docket Text not found");
 	}
 
 	private void handleDocument(String peId, List<UserInputData> userInputData) throws Exception {
-		String ndaLink = getNDALink(ID.DOCUMNET_ID, peId, userInputData);
-		loadNDALinksInBriefcase(ndaLink);
-		if (arrow.size() > 0) {
-			Utility.clickOnNumberInRange(arrow);
-			ifDownloaded(inProgress);
-		}
-		if (!driver.getPageSource().contains("PDF View")) {
-			throw new AssertionError("Document not found. NDA Link: " + ndaLink);
-		}
+		handleCommon(peId, userInputData, ID.DOCUMNET_ID, "PDF View", "Document not found");
 		close.click();
 	}
 
 	private void handleNote(String peId, List<UserInputData> userInputData) throws Exception {
-		String ndaLink = getNDALink(ID.NOTE_ID, peId, userInputData);
+		handleCommon(peId, userInputData, ID.NOTE_ID, "Note", "Note not found");
+	}
+
+	private void handleCommon(String peId, List<UserInputData> userInputData, ID idType, String pageSourceText,
+			String errorMessage) throws Exception {
+		String ndaLink = getNDALink(idType, peId, userInputData);
 		loadNDALinksInBriefcase(ndaLink);
 		if (arrow.size() > 0) {
 			Utility.clickOnNumberInRange(arrow);
 			ifDownloaded(inProgress);
 		}
-		if (!driver.getPageSource().contains("Note")) {
-			throw new AssertionError("Note not found. NDA Link: " + ndaLink);
+		if (!driver.getPageSource().contains(pageSourceText)) {
+			throw new AssertionError(errorMessage + ". NDA Link: " + ndaLink);
 		}
 	}
 
 	private void navigateBackToDashboard() {
-		if (back.size() > 0) {
-			back.get(0).click();
+		while (back.size() > 0) {
+		    back.get(0).click();
 		}
 		dashboard.click();
 		Page.performPageLoad(driver);
@@ -130,7 +123,8 @@ public class NoticesOfDocketActivityPage extends AppiumPageFactory {
 			query = Queries.FIND_ALL_ORALLY_ARGUED_CASES;
 		}
 
-		List<String[]> findCase = executeDBQuery(getID(query, pe_id), userInputData);
+		List<String[]> findCase = executeDBQuery(getID(query, pe_id).replace("TEXT", "not in ('EN BANC')"),
+				userInputData);
 
 		String cs_caseid = "";
 		String caseNum = "";

@@ -131,13 +131,13 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		return getChmAssign(assign, "act");
 	}
 
-	public void getCaseDetails(String caseNumber, String category,String actionName, List<UserInputData> userInputData) {
+	public void getCaseDetails(String caseNum,String category,String actionName, List<UserInputData> userInputData) {
 
 		elId += getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
 		cha_ju_pe_id += DocumentPage.get_pe_id("jud", userInputData);
-		cmr_cs_caseid += CommonPages.getCaseID(caseNumber, userInputData);
+		cmr_cs_caseid += DocumentPage.cs_caseid;
 
-		cmr_cyv_code += CommonPages.cmr_cyv_code(category, cmr_cs_caseid, userInputData).trim();
+		cmr_cyv_code += DocumentPage.cmr_cyv_code;
 
 	}
 

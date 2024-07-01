@@ -65,6 +65,6 @@ DocumentPage docPage;
 	public void user_verifies_Document_Categories_are_sorted_on_the_referral_detail_page_and_each_document_for_a_specific_category_is_listed_and_ordered_by_the_filed_date() {
 		List<UserInputData> userInputData = null;
 		docPage = new DocumentPage();
-		docPage.getDocumentCategoryList(userInputData);
+		docPage.verifyDocumentCategorySorting(userInputData);
 	}
 }
