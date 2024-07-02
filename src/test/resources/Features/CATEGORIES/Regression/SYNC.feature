@@ -1,7 +1,7 @@
 @Regression
 Feature: Sync with CMECF
 
-@AMB-3444 @AMB-1046
+@AMB-3444 @AMB-1046 @smoke
 Scenario: 
 	The Sync button is used to download any pending referrals and documents.  
 	This task is just to verify that when tapping/clicking the Sync button for a judge, that the sync completes.

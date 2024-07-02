@@ -74,7 +74,7 @@ public class DocumentPage extends AppiumPageFactory {
 	public static WebElement downloaded;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PDF Page View']")
-	public static List<WebElement> activityIndicator;
+	public static List<WebElement> pdfPageView;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
 	public static List<WebElement> inProgress;
@@ -156,7 +156,7 @@ public class DocumentPage extends AppiumPageFactory {
 		}
 
 		scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
-		
+
 		System.out.println("------------------------------------------------------");
 		System.out.println("Selected category name: " + category);
 		System.out.println("------------------------------------------------------");
@@ -429,30 +429,31 @@ public class DocumentPage extends AppiumPageFactory {
 	}
 
 	public void getDocumentList(List<UserInputData> userInputData) {
-
 		if (verifyDocumentCategorySorting(userInputData).size() > 0) {
 
 			randomCategory = Utility.clickOnNumberInRange(getDocCategoryLocator(panel));
-
 			randomDocument = Utility.clickOnNumberInRange(getDocListLocator(randomCategory));
 
 			performPageLoad(driver);
 			Boolean elementNotFound = true;
-			while (elementNotFound) {
-				if (!(activityIndicator.size() == 1)) {
+			int attemptCount = 0;
 
+			while (elementNotFound && attemptCount < 7) {
+				if (!(pdfPageView.size() == 1)) {
 					elementNotFound = true;
 					Utility.tapAndSwipe(Direction.UP);
-
+					attemptCount++;
 				} else {
 					elementNotFound = false;
 					break;
 				}
-
 			}
 
+			if (elementNotFound) {
+				throw new RuntimeException("The PDF document was not found: document category: " + randomCategory
+						+ ", document name: " + randomDocument);
+			}
 		}
-
 	}
 
 	public List<WebElement> getDocListLocator(String categoryName) {

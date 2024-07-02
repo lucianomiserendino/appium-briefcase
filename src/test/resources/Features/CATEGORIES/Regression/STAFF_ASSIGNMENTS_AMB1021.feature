@@ -1,4 +1,4 @@
-@Smoke @AMB-1021 @Regression
+@smoke @AMB-1021 @Regression
 Feature: Staff Assignments 
 
 

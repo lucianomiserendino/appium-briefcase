@@ -1,4 +1,4 @@
-@AMB-2534 @Regression
+@AMB-2534 @Regression @smoke
 Feature:  Judge initials order in Vote Information panel	
 Scenario: the judges' initials in the Vote Information panel are supposed to be displayed based on panel_to_judge.pj_judge_order,
  and in the event those values don't exist then the judges' initials are displayed by judge.ju_seniority_sort. 

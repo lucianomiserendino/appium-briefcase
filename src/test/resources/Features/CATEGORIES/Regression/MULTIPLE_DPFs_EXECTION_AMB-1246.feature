@@ -1,4 +1,4 @@
-@Regression
+@Regression @smoke
 Feature: Execute multiple DPFs in the same action 
 
 

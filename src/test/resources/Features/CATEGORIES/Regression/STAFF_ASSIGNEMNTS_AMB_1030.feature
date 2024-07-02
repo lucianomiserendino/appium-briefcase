@@ -1,4 +1,4 @@
-@AMB-1033 @AMB-1030 @Regression
+@AMB-1033 @AMB-1030 @Regression @smoke
 Feature: Display of Staff Assignments 
 
 

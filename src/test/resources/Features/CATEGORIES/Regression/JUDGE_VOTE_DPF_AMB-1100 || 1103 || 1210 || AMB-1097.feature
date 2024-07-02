@@ -1,4 +1,4 @@
-@Regression @Smoke
+@Regression @smoke
 Feature: JudgeVote DPF UI 
 #related to AMB-1097 as well
 Background: 

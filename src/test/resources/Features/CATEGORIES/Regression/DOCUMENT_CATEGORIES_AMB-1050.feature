@@ -11,7 +11,7 @@ Background:
 		|userType   |personrole       |stf      |user     |
 		|stf        |Staff Attorneys  |test     |sysadmin | 
 	
-@AMB-1050 @Smoke @Regression
+@AMB-1050 @smoke @Regression
 Scenario: 
 	If selecting a referral, the documents display on the referral detail page.  They are grouped by document category.
 	   Each document category is a collapsible panel.  This task is to verify the correct document categories and number of docs in each

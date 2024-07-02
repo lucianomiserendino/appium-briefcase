@@ -1,4 +1,4 @@
-@Smoke @AMB-3510 @Regression
+@smoke @AMB-3510 @Regression
 Feature: Staff Attorney Dashboard - Icons
 
 

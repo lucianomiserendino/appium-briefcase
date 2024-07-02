@@ -1,4 +1,4 @@
-@Regression
+@Regression @smoke
 Feature: Red bullet displays for new referrals and does not display for viewed referrals 
 
 

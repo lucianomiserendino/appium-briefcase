@@ -1,4 +1,4 @@
-@Regression @AMB-1189 
+@Regression @AMB-1189 @smoke
 Feature: Links in NDA open in Briefcase 
 
 

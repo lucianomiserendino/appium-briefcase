@@ -1,6 +1,6 @@
-Feature: Note TPF 
+Feature: Note TPF
 
-@AMB-3647 @Regression
+@AMB-3647 @Regression @smoke
 Scenario: 
 Verify the noteText TPF is supported by Briefcase, where the dictionary designer is able to contribute information
  about the note to docket text that appears in docket entries in Briefcase.
