@@ -380,14 +380,37 @@ public class JenieLoginPage extends Base {
 
 			// Perform a page load
 			performPageLoad(driver);
+			 String clickedServerText = null;
 			if (CMECFSevers.size() > 0) {
-				contains(server).click();
+				
+				    boolean foundElement = false;
+
+				    List<WebElement> serverElements = Actions.findElements(By.xpath(Actions.containsElement(server)));
+
+				    for (WebElement serverElement : serverElements) {
+				        String serverText = serverElement.getText().trim();
+
+				        if (serverText.contains(server) && serverText.endsWith(server)) {
+				            clickedServerText = serverText; 
+				            serverElement.click();
+				            foundElement = true;
+				            break; 
+				        }
+				    }
+
+				    if (!foundElement) {
+				        throw new RuntimeException("No suitable server element found.");
+				    }
+
+				} else {
+				    throw new RuntimeException("CMECFServers list is empty.");
+				
 			}
 
 			performPageLoad(driver);
 
 			// Retrieve the court list value
-			String courtListValue = contains(server).getAttribute("value");
+			String courtListValue = contains(clickedServerText).getAttribute("value");
 
 			String lastPart = courtListValue.substring(courtListValue.lastIndexOf('-'));
 			String court1 = courtListValue.split(lastPart)[0].trim();

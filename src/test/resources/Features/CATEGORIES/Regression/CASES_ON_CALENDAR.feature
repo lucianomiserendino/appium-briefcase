@@ -1,4 +1,4 @@
-@Regression @smoke
+@Regression
 Feature:  Collapsible Panels in the Cases on Calendar Category
 @AMB-1249 @AMB-3196 @AMB-3275 @AMB-3284
 
