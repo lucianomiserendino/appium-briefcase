@@ -6,9 +6,9 @@ Scenario:
 	Verify if the matter was referred to an en banc panel, instead of listing all the judges on the page, a button is displayed next 
 	to the logged in judge’s vote that when tapped, shows all the judges’ vote in a popup. (v1.2.x) (line 243)
 	
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

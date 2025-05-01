@@ -1,6 +1,8 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeDBQuery;
+
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DOCUMENT_CATEGORIES;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
@@ -15,8 +17,8 @@ import java.util.List;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.mobile.NetworkConnection;
-import org.openqa.selenium.mobile.NetworkConnection.ConnectionType;
+//import org.openqa.selenium.mobile.NetworkConnection;
+//import org.openqa.selenium.mobile.NetworkConnection.ConnectionType;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
@@ -395,14 +397,14 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 		return categories;
 	}
 
-	public static void wifiOff() throws InterruptedException {
-
-		NetworkConnection mobileDriver = (NetworkConnection) driver;
-		if (mobileDriver.getNetworkConnection() != ConnectionType.AIRPLANE_MODE) {
-			// enabling Airplane mode
-			mobileDriver.setNetworkConnection(ConnectionType.AIRPLANE_MODE);
-		}
-	}
+//	public static void wifiOff() throws InterruptedException {
+//
+//		NetworkConnection mobileDriver = (NetworkConnection) driver;
+//		if (mobileDriver.getNetworkConnection() != ConnectionType.AIRPLANE_MODE) {
+//			// enabling Airplane mode
+//			mobileDriver.setNetworkConnection(ConnectionType.AIRPLANE_MODE);
+//		}
+//	}
 
 	public static void togglewiFi() {
 		driver.activateApp("com.apple.Preferences");

@@ -6,9 +6,9 @@ Scenario:
 	The following scenarios need to be automated:
 	
 
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 		
 			
 		Then I select a user 

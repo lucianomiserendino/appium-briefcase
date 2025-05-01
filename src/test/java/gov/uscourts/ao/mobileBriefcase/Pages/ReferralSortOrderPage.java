@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -41,7 +43,7 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	public static WebElement caseDownArrowBtn;
 
 	// @WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeScrollView//XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<WebElement> cases;
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeButton[contains(@name, 'Case')])[2]")
@@ -56,7 +58,7 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Applied Referrals']")
 	public static List<WebElement> appliedRefs;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[4]/XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '-')]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeScrollView//XCUIElementTypeButton[contains(@name, '-')]")
 	public static List<WebElement> toolCases;
 
 	public void selectReferralCategory(List<UserInputData> userInputData) {
@@ -90,7 +92,7 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	 */
 	public void selectSortBtn() {
 
-		if (Actions.isDisplayed(Locator.XPATH, "//*[contains(@name, 'Sort ↓')]") == true) {
+		if (Actions.isDisplayed(Locator.XPATH, "//*[contains(@name, 'Sort ↓')]")) {
 			tap(sortArrowBtn);
 		}
 	}
@@ -100,12 +102,23 @@ public class ReferralSortOrderPage extends AppiumPageFactory {
 	}
 
 	public List<String> referralsSortedByCase() {
-		return Utility.retrieveAllReferrals(cases, " ", 0);
+	    return extractSortedByCase(cases);
 	}
 
 	public List<String> assignmentsSortedByCase() {
-		return Utility.retrieveAllReferrals(toolCases, " ", 0);
+	    return extractSortedByCase(toolCases);
 	}
+
+	private List<String> extractSortedByCase(List<WebElement> elements) {
+	    Pattern pattern = Pattern.compile("^\\d{2}-\\d{3,5} .+");
+
+	    List<WebElement> filtered = elements.stream()
+	        .filter(el -> pattern.matcher(el.getAttribute("name")).matches())
+	        .collect(Collectors.toList());
+
+	    return Utility.retrieveAllReferrals(filtered, " ", 0);
+	}
+
 
 	public void getSortPage(Sort sort) {
 		Map<Sort, WebElement> sortElements = new HashMap<>();

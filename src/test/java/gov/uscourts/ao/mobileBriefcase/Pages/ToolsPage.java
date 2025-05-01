@@ -3,6 +3,7 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DUPLICATED_LWK;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -11,7 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
 
@@ -27,13 +30,10 @@ public class ToolsPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Tools']")
 	public static List<WebElement> tools;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Tools']/following::XCUIElementTypeStaticText[@name='']")
-	public static List<WebElement> redBullet;
-
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"nav\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='MasterNavPage']/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell")
 	public static WebElement leftNav;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"Categories\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther")
 	public static WebElement dash;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Apply All']")
@@ -54,61 +54,69 @@ public class ToolsPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Submit']")
 	public static WebElement submit;
 
-	public void getToolsCategory() {
-		scrollUp();
+	public void verifyToolsCategoryVisibility() {
+	    scrollUp(3);
 
-		int toolSize = tools.size();
-		int redBulletCount = redBullet.size();
+	    int toolSize = tools.size();
 
-		if (CommonPages.siVal.equalsIgnoreCase("n")) {
-			assertTrue("The left nav displays the Tools category, even when briefcaseDisplayTools is set to 'n'.",
-					toolSize == 0);
-		} else {
-			assertTrue(
-					"The left nav doesn't display the Tools category, even when briefcaseDisplayTools is set to 'y'.",
-					toolSize >= 1);
-			assertTrue("The Tools icon displays a red badge with a count in it.", redBulletCount == 0);
-		}
+	    if ("n".equalsIgnoreCase(CommonPages.siVal)) {
+	        assertTrue("Tools should not be visible when briefcaseDisplayTools = 'n'", toolSize == 0);
+	    } else {
+	        assertTrue("Tools should be visible when briefcaseDisplayTools = 'y'", toolSize >= 1);
+
+	        // Locate the 'Tools' element
+	        WebElement toolsLabel = tools.stream()
+	            .filter(el -> el.getText().equalsIgnoreCase("Tools"))
+	            .findFirst()
+	            .orElseThrow(() -> new AssertionError("'Tools' label not found"));
+
+	        // Look for numeric badges after the Tools label
+	        List<WebElement> followingTextElements = toolsLabel.findElements(By.xpath("following-sibling::XCUIElementTypeStaticText"));
+
+	        boolean hasNumericBadge = followingTextElements.stream()
+	            .anyMatch(el -> el.getText().matches("\\d+"));
+
+	        assertFalse("'Tools' should not have a numeric badge, but one was found.", hasNumericBadge);
+	    }
 	}
 
-	public void applyWithoutExistingClerk() {
-		tools.get(0).click();
 
-		if (Actions.isDisplayed(applyAll)) {
-			applyAll.click();
 
-			boolean progressBar = driver.getPageSource().contains("Please select an existing clerk");
-			assertTrue("Tapping 'Apply All' without existing clerk is not generating a message.", progressBar);
-		}
+	public void tapApplyAllWithoutClerkAndVerifyMessage() {
+	    tools.get(0).click();
+
+	    if (Actions.isDisplayed(applyAll)) {
+	        applyAll.click();
+	        boolean errorMessageShown = driver.getPageSource().contains("Please select an existing clerk");
+	        assertTrue("Expected message not shown when applying without clerk.", errorMessageShown);
+	    }
 	}
 
-	public void scrollUp() {
-		Utility.scroll(dash, "up");
-		Utility.scroll(leftNav, "up");
+	public void scrollUp(int maxTries) {
+	    for (int i = 0; i < maxTries; i++) {
+	        Utility.scroll(dash, "up");
+	        Utility.scroll(leftNav, "up");
+	    }
 	}
 
 	public void isSortedInDescending(List<UserInputData> userInputData) {
-		// Retrieve first and last names
+		
 		List<String> firstNames = getListOfLwks(2, userInputData);
 		List<String> lastNames = getListOfLwks(3, userInputData);
 
-		// Get a random index within the bounds of the firstNames list
 		int index = (firstNames.size() > 1) ? Utility.getRandomNumberInRange(0, firstNames.size() - 1) : 0;
 
 		// Select an existing clerk by combining first and last names
 		selectExistingClerk(firstNames.get(index).trim() + " " + lastNames.get(index).trim());
 
-		// Create an instance of ReferralSortOrderPage
 		ReferralSortOrderPage sortOrderPage = new ReferralSortOrderPage();
 
 		// Retrieve the list of assignments sorted by case number in descending order
 		List<String> assignments = sortOrderPage.assignmentsSortedByCase();
-		Collections.reverse(assignments);
-		// Check if the assignments list is already sorted in descending order
-		boolean isSortedDesc = Utility.checkIfSorted(assignments);
-
-		// Assert that the list is sorted in descending order
-		assertTrue("REFERRALS ARE NOT SORTED BY CASE NUMBER IN DESCENDING ORDER ------> " + assignments, isSortedDesc);
+		
+		   assertTrue("REFERRALS ARE NOT SORTED BY CASE NUMBER IN DESCENDING ORDER ------> " + assignments,
+	               Utility.checkCaseNumberOrder(assignments, false));
+		   
 	}
 
 	public List<String> getListOfLwks(int columnIndex, List<UserInputData> userInputData) {
@@ -117,37 +125,63 @@ public class ToolsPage extends AppiumPageFactory {
 	}
 
 	public void scrollThroughTheList(String existingClerk) {
-		// Pause to ensure the dropdown is fully loaded
-		Page.sleep(2000);
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		Map<String, Object> params = new HashMap<>();
-		params.put("order", "next");
-		params.put("offset", 0.1);
-		params.put("element", ((RemoteWebElement) dropDown).getId());
+	    Page.sleep(2000);
+	    JavascriptExecutor js = (JavascriptExecutor) driver;
 
-		if (existingClerk.isEmpty()) {
-			// Scroll through the list without looking for a specific clerk
-			js.executeScript("mobile: selectPickerWheelValue", params);
-		} else {
-			boolean elementNotFound = true;
-			while (elementNotFound) {
-				js.executeScript("mobile: selectPickerWheelValue", params);
-				// Check if the current dropdown text matches the existingClerk
-				if (dropDown.getText().trim().equals(existingClerk)) {
-					elementNotFound = false;
-				}
-			}
-		}
-		// Click the done button after finding the desired clerk or finishing the scroll
-		done.click();
+	    if (existingClerk.isEmpty()) {
+	        WebElement dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
+	        Map<String, Object> params = new HashMap<>();
+	        params.put("order", "next");
+	        params.put("offset", 0.1);
+	        params.put("element", ((RemoteWebElement) dropDown).getId());
+
+	        js.executeScript("mobile: selectPickerWheelValue", params);
+	    } else {
+	        boolean elementNotFound = true;
+	        boolean firstScroll = true;
+
+	        while (elementNotFound) {
+	            WebElement dropDown;
+	            try {
+	                dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
+	            } catch (NoSuchElementException e) {
+	                Page.sleep(500);
+	                dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
+	            }
+
+	            Map<String, Object> params = new HashMap<>();
+	            params.put("order", "next");
+	            params.put("offset", 0.1);
+	            params.put("element", ((RemoteWebElement) dropDown).getId());
+
+	            js.executeScript("mobile: selectPickerWheelValue", params);
+
+	            if (firstScroll) {
+	                Page.sleep(500); 
+	                firstScroll = false;
+	            }
+
+	            Page.sleep(300); 
+	            try {
+	                dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
+	                if (dropDown.getText().trim().equals(existingClerk)) {
+	                    elementNotFound = false;
+	                }
+	            } catch (NoSuchElementException e) {
+	               
+	            }
+	        }
+	    }
+
+	    done.click();
 	}
 
+
 	public void selectExistingClerk(String existingClerk) {
-		// Click on the dashboard button
 		dashboard.click();
 
 		// Scroll up to refresh the view or access the tools
-		scrollUp();
+		scrollUp(3);
 
 		// Get the size of the tools list
 		int toolSize = tools.size();
@@ -199,7 +233,6 @@ public class ToolsPage extends AppiumPageFactory {
 
 					String clerkName1 = firstNames.get(index1).trim() + " " + lastNames.get(index1).trim();
 					String clerkName2 = firstNames.get(index2).trim() + " " + lastNames.get(index2).trim();
-
 					selectExistingClerk(clerkName1);
 					tapIndividualClerk(caseNumbers.get(index1).trim(), cyvDisplay.get(index1).trim(),
 							cavDisplay.get(index1).trim());

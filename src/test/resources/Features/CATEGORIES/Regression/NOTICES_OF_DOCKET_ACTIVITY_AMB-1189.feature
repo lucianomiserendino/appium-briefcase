@@ -25,7 +25,7 @@ Scenario:
        Then user verifies that following items open in Briefcase from the NDA link
 		|Docket_Entry|
 		|Document    |
-	  |Note        |
+	    |Note        |
 
 		
 		

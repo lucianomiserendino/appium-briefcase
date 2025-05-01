@@ -7,22 +7,26 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.time.Duration;
 import java.util.List;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class BookmarkedListPage extends AppiumPageFactory {
-	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[2]")
 	public static WebElement dashboard;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Bookmarked']")
 	public static List<WebElement> bookOnDashboard;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Bookmark']")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"Bookmark\"]")
 	public static List<WebElement> BookmarkedReferrals;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
@@ -33,11 +37,17 @@ public class BookmarkedListPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[contains(@name, 'linked')]/preceding::XCUIElementTypeStaticText[contains(@name, '-')]/following::XCUIElementTypeStaticText[@name='Bookmark'][1])")
 	public static WebElement bookmarkIcon;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
+	public static WebElement collapseBtn;
+	
 
 	public void getBookmarkedReferrals() {
+		collapseBtn.click();
+		
 		if (bookOnDashboard.size() > 0) {
 			tap(bookOnDashboard.get(bookOnDashboard.size() - 1));
-
+			collapseBtn.click();
 			getBookmarkIcons();
 		} else {
 			assertEquals(0, bookOnDashboard.size());
@@ -55,6 +65,7 @@ public class BookmarkedListPage extends AppiumPageFactory {
 
 	public String getReferrals() {
 		String bookmark = getText(cases.get(0)).split(" ")[0];
+		Page.waitForVisibilityOfElement(collapseBtn, driver).click();
 		bookmarkReferral(bookmark, 1);
 		return bookmark;
 
@@ -62,16 +73,21 @@ public class BookmarkedListPage extends AppiumPageFactory {
 
 	public void removeBookmarkedReferral(String referral) {
 		tap(bookOnDashboard.get(0));
+		collapseBtn.click();
 		assertTrue(contains(referral).isDisplayed());
 		bookmarkReferral(referral, 0);
 	}
 
-	public void bookmarkReferral(String referral, int bookmarkedReferral) {
-		tap(Locator.XPATH,
-				"(" + containsElement(referral) + "/following::XCUIElementTypeStaticText[@name='Bookmark'])[1]");
-		tap(dashboard);
-		assertEquals(bookmarkedReferral, bookOnDashboard.size());
+	public void bookmarkReferral(String referral, int expectedCount) {
+	    tap(Locator.XPATH,
+	            "(" + containsElement(referral) + "/following::XCUIElementTypeButton[@name='Bookmark'])[1]");
+	    collapseBtn.click();
+
+	    new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver -> bookOnDashboard.size() == expectedCount);
+
+	    assertEquals(expectedCount, bookOnDashboard.size());
 	}
+
 
 	public void bookmarkAcase() {
 

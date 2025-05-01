@@ -11,8 +11,10 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNo
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebElement;
 
@@ -24,7 +26,7 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CaseQueryPage extends AppiumPageFactory {
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Search']")
 	public static WebElement searchIcon;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextField")
@@ -42,15 +44,19 @@ public class CaseQueryPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='On Device']")
 	public static WebElement on_device;
 
-	// @WithTimeout(time = 2500, unit = TimeUnit.SECONDS)
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
-	public static List<WebElement> caseNum;
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeScrollView//XCUIElementTypeStaticText[contains(@name, '-')]")
+	public static List<WebElement> cases;
 	
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
 	public static List<WebElement> inProgress;
+	
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTable/XCUIElementTypeCell[2]")
+	public static WebElement dashboardIcon;
+	
 
 	public void getCaseSearch(String category) {
-	    String fullCaseNumber = selectRandomCaseNumber(0).split(" ")[0];
+	    String fullCaseNumber = selectRandomCaseNumber(0);
 	    searchForACase(category, fullCaseNumber, Search.wildcard);
 	    
 
@@ -94,8 +100,8 @@ public class CaseQueryPage extends AppiumPageFactory {
 	public void searchForACase(String category, String fullCaseNumber, Search searchType) {
 	    performPageLoad(driver);
 
-	    if (contains("Dashboard").isDisplayed()) {
-	        contains("Dashboard").click();
+	    if (dashboardIcon.isDisplayed()) {
+	    	 clicksOn(dashboardIcon);
 	        Page.sleep(5000);
 	    }
 	    clicksOn(searchIcon);
@@ -130,7 +136,7 @@ public class CaseQueryPage extends AppiumPageFactory {
 
 	    switch (search) {
 	        case partyName:
-	            String partyN = selectRandomCaseNumber(1).split(" ")[1];
+	            String partyN = selectRandomCaseNumber(1);
 	            String specialChar = checkForSpecialChar(partyN);
 	            searchType = (specialChar != null && !specialChar.isEmpty()) ? partyN.split(specialChar).toString() : partyN;
 	            break;
@@ -151,14 +157,20 @@ public class CaseQueryPage extends AppiumPageFactory {
 
 
 	public static String selectRandomCaseNumber(int index) {
-		String referral = "";
 		Page.sleep(20000);
-		List<String> list = Utility.retrieveAllReferrals(caseNum, " ", index);
-		WebElement uiResult = findElementBy(Locator.XPATH, "//XCUIElementTypeStaticText[contains(@name, '"
-				+ list.get(Utility.getRandomInt(list.size() - 1)) + "')]");
-		referral = uiResult.getText();
-		return referral;
+		
 
+	    Pattern pattern = Pattern.compile("^\\d{2}-\\d{3,5} .+");
+
+	    List<WebElement> filtered = cases.stream()
+	        .filter(el -> pattern.matcher(el.getAttribute("name")).matches())
+	        .collect(Collectors.toList());
+		
+		List<String> list = Utility.retrieveAllReferrals(filtered, " ", index);
+		
+		   Random random = new Random();
+	        return list.get(random.nextInt(list.size()));
+	       
 	}
 
 	public static String checkForSpecialChar(String inputString) {

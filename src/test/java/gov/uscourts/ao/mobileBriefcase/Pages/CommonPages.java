@@ -416,41 +416,47 @@ public class CommonPages extends AppiumPageFactory {
 
 	public static int getGroupIcons(GroupIcons icon) {
 		ifDownloaded(activityIndicator);
+
 		String grIcon;
 		switch (icon) {
-		case Collapse:
-			grIcon = "▷";
-			break;
-		case Expand:
-			grIcon = "▽";
-			break;
-		default:
-			return 0;
+			case Collapse:
+				grIcon = "▷";
+				break;
+			case Expand:
+				grIcon = "▽";
+				break;
+			default:
+				return 0;
 		}
 
 		int clickCount = 0;
+		int noChangeCounter = 0;
 
-		while (true) {
-			List<WebElement> icons = GroupIcon;
+		while (noChangeCounter < 3) {
 			boolean iconFound = false;
+
+			// Directly filter elements that are displayed with matching value
+			List<WebElement> icons = Actions.findElements(By.xpath("//*[contains(@value, '" + grIcon + "')]"));
+
 			for (WebElement element : icons) {
-				String attributeValue = element.getAttribute("value");
-				if (attributeValue.equals(grIcon)) {
-					element.click();
-					iconFound = true;
-					clickCount++;
-					break; // Exit the for loop to refresh the icon list
+				if (element.isDisplayed()) {
+					try {
+						element.click();
+						clickCount++;
+						iconFound = true;
+						System.out.println("Clicked icon. Total clicks: " + clickCount);
+						Thread.sleep(500); // Allow UI to update
+						break;
+					} catch (Exception e) {
+						System.err.println("Click failed: " + e.getMessage());
+					}
 				}
 			}
 
 			if (!iconFound) {
-				break; // Exit the while loop if no matching icon is found
-			}
-
-			try {
-				Thread.sleep(500); // 0.5 second pause
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+				noChangeCounter++;
+			} else {
+				noChangeCounter = 0;
 			}
 		}
 

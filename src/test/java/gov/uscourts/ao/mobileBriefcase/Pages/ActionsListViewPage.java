@@ -27,42 +27,58 @@ public class ActionsListViewPage extends AppiumPageFactory {
 	public static List<WebElement> documentListAccordionText;
 
 	public void getApplicableActions(String panel, List<UserInputData> userInputData) {
-		if (CommonPages.siVal.equalsIgnoreCase("n")) {
-			assertSiteTableVariable();
-		} else {
-			String panelXPath = containsElement(panel);
-			scrollDownIfNotDisplayed(panelXPath);
+	    if (CommonPages.siVal.equalsIgnoreCase("n")) {
+	        assertSiteTableVariable();
+	        return;
+	    }
 
-			String cmrId = CommonPages.getCMRID( userInputData);
-			displayActions(cmrId, userInputData);
-		}
+	    String panelXPath = containsElement(panel);
+	    
+	    Utility.scrollPage("up");
+	    
+	    scrollDownIfNotDisplayed(panelXPath);
+	    
+
+	    String cmrId = CommonPages.getCMRID(userInputData);
+	    displayApplicableActions(cmrId, userInputData);
 	}
 
 	private void assertSiteTableVariable() {
-		boolean containsActions = Utility.getWebElementList(documentListAccordionText).contains("Actions");
-		assertTrue("Site table variable briefcaseCtAdmDkt not being honored", !containsActions);
+	    boolean hasActions = Utility.getWebElementList(documentListAccordionText).contains("Actions");
+	    assertTrue("Site table variable briefcaseCtAdmDkt not being honored", !hasActions);
 	}
 
-	public static void displayActions(String cmrId, List<UserInputData> userInputData) {
-		List<String> dbResults = executeQuery(getID(APPLICABLE_ACTIONS, cmrId), userInputData);
-		dbResults.sort(String::compareTo);
+	private void displayApplicableActions(String cmrId, List<UserInputData> userInputData) {
+	    List<String> dbResults = executeQuery(getID(APPLICABLE_ACTIONS, cmrId), userInputData);
+	    if (dbResults.isEmpty()) {
+	        System.out.println("No actions found in the database results.");
+	        return;
+	    }
 
-		if (!dbResults.isEmpty()) {
-			Random random = new Random();
-			String randomAction = dbResults.get(random.nextInt(dbResults.size()));
-			String actionName = randomAction.contains("'") ? randomAction.split("'")[0] : randomAction.trim();
-			scrollToAction(actionName);
-		} else {
-			System.out.println("No actions found in the database results.");
-		}
+	    dbResults.stream()
+	            .map(action -> action.contains("'") ? action.split("'")[0] : action.trim())
+	            .sorted()
+	            .forEach(this::verifyActionDisplayed); 
 	}
+
+	private void verifyActionDisplayed(String actionName) {
+	    String xpath = String.format(
+	            "//XCUIElementTypeOther[@name='DocumentList']//XCUIElementTypeStaticText[contains(@name, '%s')]",
+	            actionName
+	    );
+                 
+	    assertTrue("Action '"+actionName+"' not found :",isDisplayed(xpath));
+
+	}
+
 
 	public static void scrollToAction(String actionName) {
 		String xpath = String.format(
 				"//XCUIElementTypeOther[@name='DocumentList']//XCUIElementTypeStaticText[contains(@name, '%s')]",
 				actionName);
 		assertTrue(isDisplayed(xpath));
-		Utility.tapAndSwipe(Direction.DOWN);
+    	Utility.scrollPage("up");
+
 	}
 
 	/**

@@ -18,7 +18,7 @@ Tapping an item in the sort pop-up will sort the referrals in ascending/descendi
    will go back to their original state (grouped in accordion panels by referral category and sorted by case number). The Default option will 
    also be listed in the list of sort options.
 	
-		Given I am logged into Briefcase 
+		zGiven I am logged into Briefcase 
 		|environment|user    |
 		|test       |sysadmin|
 			

@@ -59,36 +59,46 @@ public class Utility extends Base {
 	}
 
 	public static boolean isDisplayed(String element) {
-		int maxRetries = 15;
-		int attempts = 0;
+	    int maxRetries = 5;
+	    int attempts = 0;
+	    int scrollsDown = 0;
 
-		while (attempts < maxRetries) {
-			try {
-				WebElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, element), driver);
-				if (elem.isDisplayed()) {
-					return true;
-				} else {
-					tapAndSwipe(Direction.UP);
-					performPageLoad(driver);
-				}
-			} catch (TimeoutException e) {
-				tapAndSwipe(Direction.UP);
-			}
-			attempts++;
-		}
-		return false;
+	    while (attempts < maxRetries) {
+	        try {
+	            WebElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, element), driver);
+	            System.out.println(elem.getText()+"&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+	            if (elem.isDisplayed()) {
+	                for (int i = 0; i < scrollsDown; i++) {
+	                    Utility.scrollPage("down");
+	                }
+	                return true;
+	            } else {
+	                Utility.scrollPage("up");
+	                performPageLoad(driver);
+	                scrollsDown++;
+	            }
+	        } catch (TimeoutException e) {
+	            Utility.scrollPage("up");
+	            performPageLoad(driver);
+	            scrollsDown++;
+	        }
+	        attempts++;
+	    }
+	    return false;  
 	}
+
+
 
 	public static boolean scrollDownIfNotDisplayed(String elementXPath) {
 		int scrollCount = 0;
 		boolean elementFound = false;
-		while (scrollCount < 18) {
+		while (scrollCount < 3) {
 			List<WebElement> elements = findElements(By.xpath(elementXPath));
 			if (!elements.isEmpty()) {
 				try {
 					elements.get(elements.size() - 1).click();
-					elementFound = true; // Set flag to true if element is found and clicked
-					break; // Exit the loop if element is found without scrolling 12 times
+					elementFound = true; 
+					break; 
 				} catch (WebDriverException e) {
 					System.err.println("Error clicking element: " + e.getMessage());
 				}
@@ -288,22 +298,7 @@ public class Utility extends Base {
 		return id;
 	}
 
-	public static boolean isSorted(List<String> listOfStrings) {
-		return isSortedinDescOrder(listOfStrings, listOfStrings.size());
 
-	}
-
-	public static boolean isSortedinDescOrder(List<String> listOfStrings, int index) {
-		if (index < 2) {
-			return true;
-		} else if (listOfStrings.get(index - 1).compareTo(listOfStrings.get(index - 2)) > 0) {
-			// asc oredr } else if (listOfStrings.get(index -
-			// 2).compareTo(listOfStrings.get(index - 1)) > 0) {
-			return false;
-		} else {
-			return isSortedinDescOrder(listOfStrings, index - 1);
-		}
-	}
 
 	public static boolean checkDatesOrder(List<String> dates, String format, Comparator<Long> comparator) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
@@ -334,7 +329,6 @@ public class Utility extends Base {
 		return isOrdered;
 	}
 
-	// Usage
 	public static boolean checkDatesForDescOrder(List<String> dates, String format) {
 		return checkDatesOrder(dates, format, Comparator.reverseOrder());
 	}
@@ -356,6 +350,28 @@ public class Utility extends Base {
 		return isSorted;
 
 	}
+	public static boolean checkCaseNumberOrder(List<String> caseNumbers, boolean ascending) {
+	    for (int i = 0; i < caseNumbers.size() - 1; i++) {
+	        int[] first = parseCaseNumber(caseNumbers.get(i));
+	        int[] second = parseCaseNumber(caseNumbers.get(i + 1));
+
+	        int cmp = Integer.compare(first[0], second[0]);
+	        if (cmp == 0) {
+	            cmp = Integer.compare(first[1], second[1]);
+	        }
+
+	        if ((ascending && cmp > 0) || (!ascending && cmp < 0)) {
+	            return false;
+	        }
+	    }
+	    return true;
+	}
+
+	private static int[] parseCaseNumber(String caseNumber) {
+	    String[] parts = caseNumber.split("-");
+	    return new int[] { Integer.parseInt(parts[0]), Integer.parseInt(parts[1]) };
+	}
+
 
 	public static List<Integer> getCellCount(int time, int navCellSize) {
 		List<Integer> cellSize = new ArrayList<>();
@@ -578,6 +594,30 @@ public class Utility extends Base {
 		return b.toString();
 
 	}
+	public static void scrollSlow(WebElement element, String direction) {
+	    JavascriptExecutor js = (JavascriptExecutor) driver;
+	    HashMap<String, Object> params = new HashMap<>();
+	    params.put("element", ((RemoteWebElement) element).getId());
+	    params.put("direction", direction);
+	    params.put("percent", 0.01); // very small scroll step (5%)
+	    js.executeScript("mobile: scroll", params);
+	}
+	public static void scrollPage(String direction) {
+	    try {
+	        WebElement scrollView = driver.findElement(By.className("XCUIElementTypeScrollView"));
+	        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+	        Map<String, Object> swipeObject = new HashMap<>();
+	        swipeObject.put("element", ((RemoteWebElement) scrollView).getId());
+	        swipeObject.put("direction", direction); 
+
+	        js.executeScript("mobile: swipe", swipeObject);
+	        System.out.println("Swiped the page once.");
+	    } catch (Exception e) {
+	        System.out.println("Scroll/Swipe failed: " + e.getMessage());
+	    }
+	}
+
 
 	public enum Filter {
 		UNIQUE_VALUES, DUPLICATE_VALUES

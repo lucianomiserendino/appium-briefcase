@@ -16,6 +16,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
@@ -46,10 +48,10 @@ public class PendingTasksPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(accessibility = "Pending Clerk's Office")
 	public static WebElement PendingClerkOffice;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText/following:: XCUIElementTypeStaticText[contains(@name, '(')]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"PendingTasksList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@value, '▷')]/following::XCUIElementTypeOther[1]/XCUIElementTypeStaticText[1]")
 	public static List<WebElement> categoryCount;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='MasterNavPage']/XCUIElementTypeOther[1]/XCUIElementTypeTable[1]/XCUIElementTypeCell")
 	public static List<WebElement> navIcons;
 
 	@iOSXCUITFindBy(accessibility = "GroupIcon")
@@ -61,50 +63,62 @@ public class PendingTasksPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<WebElement> caseNum;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[contains(@name, 'NEW OUT OF')][1]/preceding:: XCUIElementTypeStaticText[1]")
 	public static List<WebElement> pendingSubFolders;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Progress halted' or @name='In progress']")
+	public static List<WebElement> activityIndicator;
+	
+	// @WithTimeout(time = 30, unit = TimeUnit.SECONDS)
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
+	public static WebElement collapseBtn;
 
 	public static String category;
 	public static String assignmentType;
 	public static String referral = "";
+	public static int subFolder;
 	String elId = "";
 	String dpfName = "chmSilentAssign";
 
-	public String getRandomSubFolder() {
+	public String processSubFolder(int index) {
+	    WebElement folderElement = pendingSubFolders.get(index);
+	    String folder = folderElement.getText();
+	    folderElement.click();
 
-		// WebElement randomFolder = pendingSubFolders.get(0);
+	    getGroupIcons(GroupIcons.Expand);
 
-		int random = Utility.getRandomNumberInRange(1, pendingSubFolders.size());
-		WebElement randomFolder = pendingSubFolders.get(random - 1);
-
-		String folder = randomFolder.getText();
-		randomFolder.click();
-
-		getGroupIcons(GroupIcons.Expand);
-
-		return folder.trim();
+	    return folder.trim();
 	}
 
-	public void sortedInDescendingOrder(List<UserInputData> userInputData) {
-		String folder = getRandomSubFolder();
 
-		selectAssignmentType(folder);
+	public void verifyFolderSortedDescending(List<UserInputData> userInputData, String folder) {
+	    selectAssignmentType(folder);
 
-		ArrayList<String> filedDates = new ArrayList<String>();
-		List<WebElement> date = Actions.findElements(By.xpath(Actions.containsElement(": ")));
-				
-		for (int i = 0; i < date.size(); i++) {
-			String text = date.get(i).getText().split(": ")[1];
-			filedDates.add(text);
-		}
-		assertTrue("VERIFY " + folder + " CASES ARE SORTED BY DATE DESCENDING ORDER",
-				Utility.checkDatesForDescOrder(filedDates, "M/d/yyyy"));
+	    List<String> filedDates = Actions.findElements(By.xpath(Actions.containsElement(": ")))
+	            .stream()
+	            .map(el -> el.getText().split(": ")[1])
+	            .collect(Collectors.toList());
 
-		assertTrue(
-				"VERIFY THE ASSIGNMENT TYPE, PANEL MEMBER INITIALS, DATE LABEL OF THE LATEST ASSIGNMENT DATE TYPE AND DATE ARE DISPLAYED CORRCETLY ON THE PENDING TASKS PAGE",
-				getReferralAssignmentInfo(userInputData, folder, assignmentType));
+	    assertTrue("VERIFY " + folder + " CASES ARE SORTED BY DATE DESCENDING ORDER",
+	            Utility.checkDatesForDescOrder(filedDates, "M/d/yyyy"));
 
+	    assertTrue("VERIFY INFO IS DISPLAYED CORRECTLY ON PENDING TASKS PAGE",
+	            getReferralAssignmentInfo(userInputData, folder, assignmentType));
 	}
+	
+	
+	
+	public void verifyAllFoldersSortedDescending(List<UserInputData> userInputData) {
+	    for (int i = 0; i < pendingSubFolders.size(); i++) {
+	        String folder = processSubFolder(i);
+	        verifyFolderSortedDescending(userInputData, folder);
+
+	        Actions.navigateBack(); 
+
+	    }
+	}
+
+
 
 	public boolean getReferralAssignmentInfo(List<UserInputData> userInputData, String folder, String assignmenType) {
 		selectRandomCase();
@@ -136,6 +150,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 		a1 = a1.replace(" ", "");
 		b = b.replace(" ", "");
+
 
 		if (a1.equalsIgnoreCase(b)) {
 
@@ -179,8 +194,6 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 	public void selectAssignmentType(String folder) {
 
-		CommonPages.getGroupIcons(GroupIcons.Expand);
-
 		List<Integer> count = new ArrayList<>();
 
 		int s = categoryCount.size();
@@ -214,8 +227,8 @@ public class PendingTasksPage extends AppiumPageFactory {
 				for (WebElement icon : icons) {
 					if (icon.getAttribute("value").equals("▽")) {
 						icon.click();
-						found = true; // Found and clicked an icon, need to recheck the list
-						break; // Break the loop to recheck the list from the start
+						found = true; 
+						break; 
 					}
 				}
 			}
@@ -262,10 +275,10 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 		Page.performPageLoad(driver);
 
-		List<String> list = Utility.retrieveAllReferrals(
-				Actions.findElements(By.xpath("(//XCUIElementTypeStaticText[@name='" + category
-						+ "'])[2]/following::XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[contains(@name, '-')]")),
-				" ", 0);
+		
+		  List<WebElement> cases=Actions.findElements(By.xpath("//XCUIElementTypeStaticText[contains(@name, '-')]"));
+
+		  List<String>  list=extractSortedByCase(cases);
 
 		/** This might change in 1.8 - AMB-3399 */
 		assertFalse(
@@ -288,6 +301,16 @@ public class PendingTasksPage extends AppiumPageFactory {
 		Page.performPageLoad(driver);
 		return uiResult;
 	}
+	private List<String> extractSortedByCase(List<WebElement> elements) {
+	    Pattern pattern = Pattern.compile("^\\d{2}-\\d{3,5} .+");
+
+	    List<WebElement> filtered = elements.stream()
+	        .filter(el -> pattern.matcher(el.getAttribute("name")).matches())
+	        .collect(Collectors.toList());
+
+	    return Utility.retrieveAllReferrals(filtered, " ", 0);
+	}
+
 
 	public void getAssignmentCategories() {
 		List<Integer> categories = new ArrayList<>();
@@ -300,45 +323,60 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 	}
 
-	public void leftNavAndPendingTasksCategoriesAreSorted() {
-
-		String folder = getRandomSubFolder();
-		getGroupIcons(GroupIcons.Expand);
-		ArrayList<String> listTwo = new ArrayList<String>();
-		for (int y = 1; y < categoryCount.size() + 1; y++) {
-			String pendingCategory = pendingCatigories(y).getText();
-			listTwo.add(pendingCategory);
+	public void leftNavAndPendingTasksCategoriesAreSorted() {		
+		
+		
+	    for (int i = 0; i < pendingSubFolders.size(); i++) {
+	        String folder = processSubFolder(i);
+		
+		 List<WebElement> categoryName=categoryCount;
+		 
+		ArrayList<String> dashList = new ArrayList<String>();
+		for (int y = 0; y < categoryName.size() ; y++) {
+			String pendingCategory = categoryName.get(y).getText().trim();
+			dashList.add(pendingCategory);
 		}
 
-		tap(contains("Expand"));
-		ArrayList<String> listOne = new ArrayList<String>();
+		tap(collapseBtn);
+		
+		
+		ArrayList<String> navList = new ArrayList<String>();
 
-		int navCellSize = navIcons.size();
+	    List<WebElement> navCells = navIcons;
+	    List<WebElement> navCategoryCells = navCells.subList(2, navCells.size());
 
-		List<Integer> nav = getCellCount(3, navCellSize + 1);
-		String leftNavCategory = "";
-		for (int i = 0; i < navCellSize - 2; i++) {
-			try {
-				leftNavCategory = navNewRefCount(nav.get(i)).getText().trim();
-			} catch (TimeoutException e) {
 
-				leftNavCategory = ifNewCountIsZero(nav.get(i)).getText().trim();
-			} finally {
-				listOne.add(leftNavCategory);
-			}
+	    for (WebElement navCell : navCategoryCells) {
+	        List<WebElement> navTexts = navCell.findElements(By.xpath(".//XCUIElementTypeStaticText"));
+	        if (navTexts.isEmpty()) continue;
 
+	        String navCategoryName = navTexts.get(0).getText().trim();
+
+	        // Skip "Tools" and "Bookmarked"
+	        if (navCategoryName.equals("Tools") || navCategoryName.equals("Bookmarked")) {
+	            continue;
+	        }
+				navList.add(navCategoryName);
 		}
 
-		List<String> commonElementsFromBothList = new ArrayList<>();
 
-		commonElementsFromBothList
-				.addAll(listOne.stream().filter(str -> listTwo.contains(str)).collect(Collectors.toList()));
+	    List<String> commonFromDashInOrder = dashList.stream()
+	            .filter(navList::contains)
+	            .collect(Collectors.toList());
 
-		assertEquals(
-				"The referral categories displayed in " + folder + " folder are not sorted "
-						+ "in the same way as they are in the left-hand navigation",
-				commonElementsFromBothList, listTwo);
+	    List<String> commonFromNavInOrder = navList.stream()
+	            .filter(dashList::contains)
+	            .collect(Collectors.toList());
 
+	    assertEquals(
+	        "The referral categories displayed in " + folder + " folder are not sorted "
+	            + "in the same way as they are in the left-hand navigation",
+	        commonFromNavInOrder, commonFromDashInOrder);
+
+         tap(collapseBtn);
+        Actions.navigateBack(); 
+
+	    }
 	}
 
 	public void findAssingmenType(String actionName, List<UserInputData> userInputData) {

@@ -28,18 +28,27 @@ import static org.openqa.selenium.support.PageFactory.initElements;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.Dialect;
+import org.openqa.selenium.remote.RemoteWebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -63,53 +72,63 @@ public class DashboardPage extends Base {
 	@iOSXCUITFindBy(id = "Categories")
 	public static WebElement categories;
 
-	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
-	public static List<WebElement> navIcons;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Dashboard']")
 	public static WebElement dashboard;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"Categories\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[1]")
+	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='MasterNavPage']/XCUIElementTypeOther[1]/XCUIElementTypeTable[1]/XCUIElementTypeCell")
+	public static List<WebElement> navIcons;
+
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[contains(@name, 'NEW OUT OF')]/preceding::XCUIElementTypeStaticText[1]")
 	public static List<WebElement> dashCategories;
 
 	// @WithTimeout(time = 30, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"nav\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther")
 	public static List<WebElement> navCategories;
-
+	
+	// @WithTimeout(time = 30, unit = TimeUnit.SECONDS)
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
+	public static WebElement collapseBtn;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"Categories\"]/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
+	public static List<WebElement> dashCategoryCell;
+	
+	
+	
 	public void verifyPendingTasksPosition(String page) {
 	    performPageLoad(driver);
+
 	    List<String> categoryList = new ArrayList<>();
 
 	    if (page.equals("Dashboard")) {
-	        // Get the categories from the dashboard
 	        for (WebElement dashCategory : dashCategories) {
 	            categoryList.add(dashCategory.getAttribute("value").trim());
 	        }
-
 	    } else if (page.equals("Navigation")) {
-	        // Get the categories from the navigation page
-	        int size = navCategories.size();
+	        List<WebElement> navCategoryCells = navIcons.subList(2, navIcons.size());
 
-	        for (int i = 3; i < size; i++) {
-	            WebElement navRefCategories = driver.findElement(By.xpath(
-	                    "(//XCUIElementTypeOther[@name=\"nav\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther["
-	                            + i
-	                            + "]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText)[last()]"));
+	        for (WebElement navCell : navCategoryCells) {
+	            List<WebElement> navTexts = navCell.findElements(By.xpath(".//XCUIElementTypeStaticText"));
+	            if (navTexts.isEmpty()) continue;
 
-	            categoryList.add(navRefCategories.getText().trim());
+	            String navCategoryName = navTexts.get(0).getText().trim();
+
+	            if (!navCategoryName.equals("Tools") && !navCategoryName.equals("Bookmarked")) {
+	                categoryList.add(navCategoryName);
+	            }
 	        }
-
 	    }
 
-	    // Verify the position of "Pending Tasks" in the category list
-	    int pendingTasksIndex = categoryList.indexOf("Pending Tasks");
-	    if (pendingTasksIndex != -1) {
-	        assertTrue("Pending Tasks should be the first category", pendingTasksIndex == 0);
+	    // Verify the first category is "Pending Tasks"
+	    if (!categoryList.isEmpty()) {
+	        assertEquals("Pending Tasks should be the first category on " + page, "Pending Tasks", categoryList.get(0));
 	    } else {
-	        fail("Pending Tasks are not available at the top of the list");
+	        fail("Category list is empty for page: " + page);
 	    }
 	}
+
 
 
 	public String verifyIfPendingTasksAreDisplayed() {
@@ -141,50 +160,58 @@ public class DashboardPage extends Base {
 	 * chm_reftype_val table (cmr_cyv_code). This is how the category is obtained.
 	 */
 
-	public void getRefCategories(List<UserInputData> userInputData) {
-		String peId = DocumentPage.get_pe_id("jud", userInputData);
-		List<String> dbReferralCategories = executeQuery(getID(Queries.REFERRAL_CATEGORIES, peId), userInputData);
+	public void verifyReferralCategoriesAreDisplayed(List<UserInputData> userInputData) {
+	    String peId = DocumentPage.get_pe_id("jud", userInputData);
+	    List<String> dbReferralCategories = executeQuery(getID(Queries.REFERRAL_CATEGORIES, peId), userInputData);
 
-		dbReferralCategories.sort(String::compareTo);
+	    dbReferralCategories.sort(String::compareTo);
 
-		if (!dbReferralCategories.isEmpty()) {
-			Random rand = new Random();
-			String randomCategory = dbReferralCategories.get(rand.nextInt(dbReferralCategories.size()));
+	    if (!dbReferralCategories.isEmpty()) {
+	        performPageLoad(driver);
 
-			performPageLoad(driver);
-			scrollToAction(randomCategory);
-			Utility.scroll(categories, "down");
-		}
+	        for (String category : dbReferralCategories) {
+	            verifyCategoryIsDisplayedAndScrollDown(category);
+	        }
+	    }
 	}
 
-	public static void scrollToAction(String element) {
-		String elemXpath = "//XCUIElementTypeStaticText[@name='" + element + "']";
-		String elemAlternativeXpath = "(" + elemXpath + ")[2]";
-		assertTrue(isElementDisplayed(elemXpath, elemAlternativeXpath));
-	}
+	private void verifyCategoryIsDisplayedAndScrollDown(String category) {
+	    boolean found = false;
 
-	public static boolean isElementDisplayed(String primaryXpath, String alternativeXpath) {
-		while (true) {
-			List<WebElement> elems = findElements(By.xpath(primaryXpath));
+	    for (int attempt = 0; attempt < 3; attempt++) { 
+	        if (isCategoryVisible(category)) {
+	            found = true;
+	            break;
+	        }
+	        Utility.scroll(categories, "up"); 
+	        performPageLoad(driver);
+	    }
 
-			if (elems.size() > 1) {
-				try {
-					WebElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, alternativeXpath),
-							driver);
-					if (elem.isDisplayed()) {
-						return true;
-					}
-				} catch (WebDriverException e) {
-					System.err.println("Error finding element: " + e.getMessage());
-				}
-				break;
-			} else {
-				Utility.scroll(categories, "up");
-				performPageLoad(driver);
-			}
-		}
-		return false;
+	    assertTrue("Category not found on screen: " + category, found);
+
+	    Utility.scroll(categories, "down"); 
+	    performPageLoad(driver);
+	
+}
+	
+	private boolean isCategoryVisible(String categoryName) {
+	    String xpath = String.format(
+	        "//XCUIElementTypeOther[@name='Categories']//XCUIElementTypeStaticText[contains(@name, \"%s\")][1]",
+	        categoryName
+	    );
+	    try {
+	        List<WebElement> elements = findElements(By.xpath(xpath));
+	        return !elements.isEmpty() && elements.get(0).isDisplayed();
+	    } catch (WebDriverException e) {
+	        System.err.println("Error checking category visibility: " + e.getMessage());
+	        return false;
+	    }
 	}
+	
+	
+	
+	
+	
 
 	/**
 	 * Tapping on a referral category that is not orally argued
@@ -247,24 +274,46 @@ public class DashboardPage extends Base {
 	 * If the chm_mobile_referral.cmr_cyv_code = 'lbrrpt', verify  cyv_category 
 	 * displays on the Dashboard page. 
 	 */
-	public void verifyDocumentsForCategory(String category, String peRtCode, String judgeName,
-			List<UserInputData> userData) {
-		performPageLoad(driver);
-		String peID = DocumentPage.get_pe_id(peRtCode, userData);
+	public void verifyDocumentsForCategory(String category, String peRtCode, String judgeName, List<UserInputData> userData) {
+	    performPageLoad(driver);
 
-		List<String> cmrCyvCode = executeQuery(getID(lbrrpt_CATEGORY, peID), userData);
-		if (!cmrCyvCode.contains(category)) {
-			return;
-		}
+	    String peID = DocumentPage.get_pe_id(peRtCode, userData);
+	    List<String> categories = executeQuery(getID(lbrrpt_CATEGORY, peID), userData);
 
-		String cyvCategory = getAllColumns(getID(replace(lbrrpt_CYV_CATEGORY, "CMR_CYV_CODE", category), peID),
-				userData);
+	    if (!categories.contains(category)) {
+	        return; 
+	    }
 
-		Utility.scrollDownIfNotDisplayed(
-				"//*[contains(@name, 'Categories')]/child::*//*[contains(@name, '" + cyvCategory.trim() + "')]");
-		assertTrue("*****PLEASE VERIFY ONLY DOCUMENTS DISPLAY ON THE REFERRAL DETAIL PAGE*****",
-				getDocuments(peID, userData));
+	    String cyvCategory = getAllColumns(getID(replace(lbrrpt_CYV_CATEGORY, "CMR_CYV_CODE", category), peID), userData).trim();
+
+	    verifyAndClickCategory(cyvCategory);
+
+	    assertTrue("*****PLEASE VERIFY ONLY DOCUMENTS DISPLAY ON THE REFERRAL DETAIL PAGE*****", 
+	               getDocuments(peID, userData));
 	}
+
+	private void verifyAndClickCategory(String categoryName) {
+	    for (int attempt = 1; attempt <= 3; attempt++) {
+	        if (isCategoryVisible(categoryName)) {
+	            clickCategory(categoryName);
+	            return;
+	        }
+	        Utility.scroll(categories, "up");
+	        performPageLoad(driver);
+	    }
+	    fail("Category not found after 3 scroll attempts: " + categoryName);
+	}
+
+
+	private void clickCategory(String categoryName) {
+	    String xpath = String.format(
+	        "//XCUIElementTypeOther[@name='Categories']//XCUIElementTypeStaticText[contains(@name, \"%s\")][1]",
+	        categoryName
+	    );
+	    WebElement element = Actions.findElement(By.xpath(xpath));
+	    element.click();
+	}
+
 
 	public boolean getDocuments(String peID, List<UserInputData> userData) {
 		CommonPages.getGroupIcons(GroupIcons.Expand);
@@ -307,43 +356,56 @@ public class DashboardPage extends Base {
 	 * navigation match the number of new items listed on the Dashboard page.
 	 */
 
-	public void getNewReferralsCount() {
+	public void verifyNavBadgeCountsAgainstDashboard() {
+	    collapseBtn.click();
 
-		int navCellSize = navIcons.size();
+	    List<WebElement> navCells = navIcons;
+	    List<WebElement> navCategoryCells = navCells.subList(2, navCells.size());
 
-		List<Integer> dash = getCellCount(1, navCellSize - 1);
-		List<Integer> nav = getCellCount(3, navCellSize + 1);
+	    int categoriesVerified = 0;
 
-		for (int i = 0; i < navCellSize - 2; i++) {
-			try {
-				WebElement navNewReferralCount = navNewRefCount(nav.get(i));
-				String dashNewReferralCount = dashNewRefCount(dash.get(i)).getText().split("W")[0].split(" ")[0].trim();
+	    for (WebElement navCell : navCategoryCells) {
+	        List<WebElement> navTexts = navCell.findElements(By.xpath(".//XCUIElementTypeStaticText"));
+	        if (navTexts.isEmpty()) continue;
 
-				if (dashNewReferralCount.equals("0")) {
-					assertTrue(!(navNewReferralCount.isDisplayed()));
+	        String navCategoryName = navTexts.get(0).getText();
 
-				} else {
+	        // Skip "Tools" and "Bookmarked"
+	        if (navCategoryName.equals("Tools") || navCategoryName.equals("Bookmarked")) {
+	            continue;
+	        }
+	        String navBadgeCount = navTexts.size() > 1 ? navTexts.get(1).getText().trim() : "0";
+	        String dashBadgeCount = "0";
 
-					assertEquals("Verify that the red badge count in the navigation matches the new items on the Dashboard",dashNewReferralCount, navNewReferralCount.getText().trim());
+	        String xpathForDashboardBadge = String.format(
+	            "//XCUIElementTypeOther[@name='Categories']//XCUIElementTypeStaticText[contains(@name, \"%s\")]/following::XCUIElementTypeStaticText[contains(@name, 'NEW OUT OF')][1]",
+	            navCategoryName
+	        );
 
-				}
-			} catch (org.openqa.selenium.TimeoutException e) {
-				e.getMessage();
-			}
-		}
+	        WebElement dashBadge = null;
+
+	        try {
+	            dashBadge = driver.findElement(By.xpath(xpathForDashboardBadge));
+	        } catch (NoSuchElementException e) {
+	            System.out.println("Badge not found for: " + navCategoryName);
+	        }
+	        if (dashBadge != null) {
+	            dashBadgeCount = dashBadge.getText().split(" ")[0].trim();
+	        }
+	        System.out.println("Comparing [" + navCategoryName + "] - Left Nav Badge: " + navBadgeCount + ", Dashboard Badge: " + dashBadgeCount);
+
+	        if (dashBadgeCount.equals("0")) {
+	            assertEquals("Expected no red badge for: " + navCategoryName, "0", navBadgeCount);
+	        } else {
+	            assertEquals("Mismatch in badge count for: " + navCategoryName, dashBadgeCount, navBadgeCount);
+	        }
+	        categoriesVerified++;
+
+	        if (categoriesVerified % 10 == 0) {
+	        	Utility.scrollPage("up");
+	        }
+	    }
 	}
 
-	public WebElement dashNewRefCount(int index) {
-		return findElementBy(Locator.XPATH,
-				"(//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText)["
-						+ index + "]");
-	}
-
-	public WebElement navNewRefCount(int index) {
-		return findElementBy(Locator.XPATH,
-				"//XCUIElementTypeOther[@name='nav']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther["
-						+ index
-						+ "]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[3]/XCUIElementTypeStaticText");
-	}
 
 }

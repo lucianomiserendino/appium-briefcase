@@ -22,13 +22,6 @@ public class DashboardPage_StepDefinitions {
 		tap(contains(expand_collapse));
 	}
 
-	@Then("^User observes the referral categories that display on the dashboard\\. Query the chm_mobile_referral, and chm_reftype_val table to get valid categories for the logged in user\\.$")
-	public void user_observes_the_referral_categories_that_display_on_the_dashboard_Query_the_chm_mobile_referral_and_chm_reftype_val_table_to_get_valid_categories_for_the_logged_in_user(
-			List<UserInputData> table) {
-		page = new DashboardPage();
-		page.getRefCategories(table);
-
-	}
 
 	@Given("^If The judge has any pending assignments it will validate the total num of pending task on UI with DB\\.$")
 	public void if_The_judge_has_any_pending_assignments_it_will_validate_the_total_num_of_pending_task_on_UI_with_DB_Use_judge_s_and_to_retrieve_pending_tasks_from_db(
@@ -44,19 +37,5 @@ public class DashboardPage_StepDefinitions {
 		page.verifyNonOrallyArgCases("lbrrpt", DocumentPage.get_pe_id("jud",userInputData), userInputData);
 	}
 
-	@Then("^I verify that the referral detail page only displays documents if chm_mobile_referral\\.cmr_cyv_code = lbrrpt$")
-	public void i_verify_that_the_referral_detail_page_only_displays_documents_if_chm_mobile_referral_cmr_cyv_code_lbrrpt(
-			List<UserInputData> userInputData) {
-		page = new DashboardPage();
-		String judge = SystemPropertySetup.getJudge(userInputData);
-		page.verifyDocumentsForCategory("lbrrpt", "jud", judge, userInputData);
-	}
-
-	@Given("^Verify the number of new items that displays in the red badge in the navigation match the number of new items listed on the Dashboard page\\.$")
-	public void verify_the_number_of_new_items_that_displays_in_the_red_badge_in_the_navigation_match_the_number_of_new_items_listed_on_the_Dashboard_page() {
-		page = new DashboardPage();
-		page.getNewReferralsCount();
-
-	}
 
 }

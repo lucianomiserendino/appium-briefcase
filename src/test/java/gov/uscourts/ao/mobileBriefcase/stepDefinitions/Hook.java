@@ -10,13 +10,13 @@ public class Hook extends Base {
 	@Before
 	public void setUp() {
 		safariInstance();
-		JenieLoginPage page=new JenieLoginPage();
-		page.checkLoginScreen();
+//		JenieLoginPage page=new JenieLoginPage();
+//		page.checkLoginScreen();
 	}
 
 	@After
 	public void tearDown() {
-		JenieLoginPage.logout();
+		//JenieLoginPage.logout();
 		closeIOSDriver();
 	}
 
