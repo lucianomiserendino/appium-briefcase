@@ -66,7 +66,6 @@ public class Utility extends Base {
 	    while (attempts < maxRetries) {
 	        try {
 	            WebElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, element), driver);
-	            System.out.println(elem.getText()+"&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 	            if (elem.isDisplayed()) {
 	                for (int i = 0; i < scrollsDown; i++) {
 	                    Utility.scrollPage("down");
