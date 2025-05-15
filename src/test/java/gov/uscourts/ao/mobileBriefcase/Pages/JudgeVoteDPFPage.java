@@ -25,8 +25,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
@@ -197,44 +202,54 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	}
 
 	public static void getJudgesInitials(String ccr_id, String initials, List<UserInputData> userInputData) {
+	    List<String> dbInitials = execute(getID(initials, ccr_id), 2, userInputData);
+	    List<String> voteType = execute(getID(initials, ccr_id), 4, userInputData);
+	    List<String> voteDate = execute(getID(initials, ccr_id), 5, userInputData);
 
-		List<String> dbInitials = execute(getID(initials, ccr_id), 2, userInputData);
+	    Map<String, String> latestVoteXPaths = new HashMap<>();
+	    Map<String, LocalDate> latestVoteDates = new HashMap<>();
 
-		List<String> voteType = execute(getID(initials, ccr_id), 4, userInputData);
+	    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	    DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
 
-		List<String> voteDate = execute(getID(initials, ccr_id), 5, userInputData);
+	    for (int i = 0; i < dbInitials.size(); i++) {
+	        String judge = dbInitials.get(i).trim();
+	        String currentVote = voteType.get(i);
+	        String currentVoteDateStr = voteDate.get(i);
 
-		/** get judge's initials */
+	        if (currentVote != null && currentVoteDateStr != null) {
+	            LocalDate currentDate = LocalDate.parse(currentVoteDateStr.substring(0, 10), inputFormatter);
+	            String formattedDate = currentDate.format(outputFormatter);
 
-		/** verify all initials are displayed */
-		List<String> resultList = new ArrayList<>();
-		for (int i = 0; i < dbInitials.size(); i++) {
+	            String xpath = String.format(
+	                "//XCUIElementTypeOther[@name='JudgesVotesList']/child::*//*[contains(@name, '%s')]"
+	                        + "/following::XCUIElementTypeStaticText[contains(@name, '%s')]"
+	                        + "/following::XCUIElementTypeStaticText[contains(@name, '%s')]",
+	                judge, currentVote.trim(), formattedDate);
 
-			assertTrue("Verify correct judges' intials are listed in the View Votes popup: " + dbInitials + "",
-					scrollDownIfNotDisplayed(Actions.containsElement(dbInitials.get(i).trim())));
+	            // Store only the latest vote per judge
+	            if (!latestVoteDates.containsKey(judge) || currentDate.isAfter(latestVoteDates.get(judge))) {
+	                latestVoteDates.put(judge, currentDate);
+	                latestVoteXPaths.put(judge, xpath);
+	            }
+	        }
+	    }
 
-			String currentVote = voteType.get(i);
-			String currentVoteDate = voteDate.get(i);
+	    // Iterate through unique judges only
+	    for (String judge : latestVoteXPaths.keySet()) {
+	        assertTrue("Verify judge initials: " + judge,
+	            scrollDownIfNotDisplayed(Actions.containsElement(judge)));
 
-			if (currentVote != null && currentVoteDate != null) {
-				String xpath = String.format(
-						"//XCUIElementTypeOther[@name='JudgesVotesList']/child::*//*[contains(@name, '%s')]"
-								+ "/following::XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '%s')]"
-								+ "/following::XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@name, '%s')]",
-						dbInitials.get(i).trim(), currentVote.trim(),
-						changeDateFormat(currentVoteDate.substring(0, 10), "yyyy-MM-dd", "M/d/yyyy"));
+	        for (int j = 0; j < 8; j++) {
+	            Utility.scrollPage("down");
+	        }
+	    }
 
-				resultList.add(xpath);
-			}
-		}
+	    for (String xpath : latestVoteXPaths.values()) {
+	        assertTrue("Latest judge vote not displayed in View Votes popup", scrollDownIfNotDisplayed(xpath));
+	    }
 
-		for (String result : resultList) {
-
-			assertTrue("Judges’ votes are missing from the View Votes popup", scrollDownIfNotDisplayed(result));
-		}
-
-		tap(close);
-
+	    tap(close);
 	}
 
 	public String getVoteSelection(String actionName, String category, String dpfName,

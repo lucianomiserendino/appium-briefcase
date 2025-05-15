@@ -5,7 +5,6 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.NON_ORALLY_ARGUED_CASES;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
-import static java.util.Collections.sort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -49,7 +48,6 @@ public class Judge_Involvement extends AppiumPageFactory {
 
 	    cmr_ju_pe_id += DocumentPage.get_pe_id("jud", userInputData);
 
-	    // Retrieve and sort the referral categories
 	    List<String> referralCategories = executeQuery(
 	        getID(replace(NON_ORALLY_ARGUED_CASES, "CMR_CYV_CODE", "lbrrpt"), cmr_ju_pe_id), userInputData);
 	    Collections.sort(referralCategories);
@@ -59,6 +57,9 @@ public class Judge_Involvement extends AppiumPageFactory {
 	    while (elementNotFound) {
 	        for (String category : referralCategories) {
 	            Utility.scrollDownIfNotDisplayed(refCatList + "[contains(@name, '" + category + "')]");
+	    		System.out.println("------------------------------------------------------");
+	    		System.out.println("Selected category name: " + category);
+	    		System.out.println("------------------------------------------------------");
 	            performPageLoad(driver);
 
 	            if (caseWithInvolvement.size() > 0) {
@@ -71,8 +72,11 @@ public class Judge_Involvement extends AppiumPageFactory {
 
 	                caseNum += caseList.get(caseIndex);
 	                elementNotFound = false;
-
+	        		System.out.println("------------------------------------------------------");
+	        		System.out.println("Selected case number: " + caseNum);
+	        		System.out.println("------------------------------------------------------");
 	                break;
+	                
 	            } else {
 	                dashboard.click();
 	                Utility.scroll(categories, "up");
@@ -91,7 +95,7 @@ public class Judge_Involvement extends AppiumPageFactory {
 
 	public void ifCorrectPanelInvolvementFound(List<UserInputData> userInputData) {
 	    try {
-	        // Get UI involvement code
+			// Get UI involvement code
 	        String uiInvCode = getInvolvementCode(
 	                Actions.findElement(By.xpath(invCodeFromRefDetailPage.replace("CaseNumber", caseNum))));
 
@@ -107,6 +111,9 @@ public class Judge_Involvement extends AppiumPageFactory {
 	                userInputData).trim();
 
 	        // Verify if UI involvement code matches DB involvement code
+	        
+    		System.out.println("Judge involvement for selected referral: "+dbInvCode);
+    		
 	        assertEquals("Verify judge involvement found via chm_mobile_referral.cmr_ic_code", uiInvCode, dbInvCode);
 
 	    } catch (Exception e) {

@@ -232,8 +232,6 @@ public class CalendarPage extends AppiumPageFactory {
 			String expectedPanelText = trimIfNotNull("Panel:", panelMembers) + trimIfNotNull("Order:", hearingOrder)
 					+ trimIfNotNull("Time:", sessionTime);
 
-			// Remove spaces and compare
-
 			return expectedPanelText.replace(" ", "").equalsIgnoreCase(uiPanelText.replace(" ", ""));
 		} catch (Exception e) {
 			e.printStackTrace();

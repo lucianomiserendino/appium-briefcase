@@ -12,6 +12,8 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -48,17 +50,14 @@ public class ProposedOrdersPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[contains(@name, 'Applied Referrals')]")
 	public static List<WebElement> appliedRefs;
 
-	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[contains(@name, 'EN BANC ')]/preceding::XCUIElementTypeStaticText[contains(@name, '-')][1])")
-	public static List<WebElement> enBanc;
-
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Dashboard']")
 	public static WebElement dashboard;
 
 	@iOSXCUITFindBy(id = "Categories")
 	public static WebElement categories;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
-	public static List<WebElement> regCaseNum;
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeScrollView//XCUIElementTypeStaticText[contains(@name, '-')]")
+	public static List<WebElement> caseNum;
 
 	@iOSXCUITFindBy(accessibility = "PDF View")
 	public static List<WebElement> pdf;
@@ -81,6 +80,9 @@ public class ProposedOrdersPage extends AppiumPageFactory {
 		WebElement uiResult = Actions.findElementBy(Locator.XPATH,
 				"//XCUIElementTypeStaticText[contains(@name, '" + caseN + "')]");
 
+		System.out.println("------------------------------------------------------");
+		System.out.println("Selected category name: " + caseN);
+		System.out.println("------------------------------------------------------");
 		uiResult.click();
 		Page.performPageLoad(driver);
 		return caseN;
@@ -100,6 +102,9 @@ public class ProposedOrdersPage extends AppiumPageFactory {
 	    while (!elementFound && scrollAttempts < maxScrollAttempts) {
 	        for (String category : referralCategories) {
 	            Utility.scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
+	    		System.out.println("------------------------------------------------------");
+	    		System.out.println("Selected case number: " + category);
+	    		System.out.println("------------------------------------------------------");
 	            performPageLoad(driver);
 
 	            String caseN = findReferralWithProposedOrders(category, pe_id, userInputData);
@@ -123,7 +128,14 @@ public class ProposedOrdersPage extends AppiumPageFactory {
 
 	public static String findReferralWithProposedOrders(String categoryName, String pe_id,
 			List<UserInputData> userInputData) {
-		List<String> list = Utility.retrieveAllReferrals(regCaseNum, " ", 0);
+		
+	    Pattern pattern = Pattern.compile("^\\d{2}-\\d{3,5} .+");
+
+	    List<WebElement> filtered = caseNum.stream()
+	        .filter(el -> pattern.matcher(el.getAttribute("name")).matches())
+	        .collect(Collectors.toList());
+
+		List<String> list = Utility.retrieveAllReferrals(filtered, " ", 0);
 
 		String caseNum = "";
 

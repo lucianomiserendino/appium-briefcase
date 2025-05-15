@@ -79,21 +79,5 @@ public class Assignment_StepDefinitions {
 
 	}
 
-	@Then("^User verifies each assignment display the most recent date type$")
-	public void user_verifies_each_assignment_display_the_most_recent_date_type_by_using_following_info_dbType() {
-		List<UserInputData> userInputData = null;
-		PendingTasksPage pending = new PendingTasksPage();
-		pending.selectRandomCase();
-		
-		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
-		String cmr_cs_caseid = CommonPages.getCaseID(PendingTasksPage.referral, userInputData);
-
-		String cmr_cyv_code = CommonPages.cmr_cyv_code(PendingTasksPage.category, cmr_cs_caseid, userInputData)
-				.trim();
-
-		assig = new AssignmentsPage();
-
-		assig.getRecentAssignmentDate(userInputData, PendingTasksPage.referral, cmr_ju_pe_id, cmr_cyv_code,PendingTasksPage.assignmentType);
-	}
 
 }

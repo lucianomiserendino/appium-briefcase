@@ -17,11 +17,14 @@ Scenario:
 		|userType   |personrole        |jud      |user     |
 		|judge      |Appellate Judges  |test     |sysadmin |
 		
- Then User selects a random category
+   Then User selects a random category
 			
-Then User selects a category that has unviewed referrals and verifies that the red bullet icon displays next to any unviewed referrals, taps on a referral and then gets back to the referral list page 
+  Then User selects a category that has unviewed referrals and verifies that the red bullet icon displays next to any unviewed referrals, taps on a referral and then gets back to the referral list page 
+ 
   Then User closes and reopens the app
+  
   Then User closes the app, reopens and goes back to the category that contains the referral that was just viewed 
+	
 	And User logs out from the Briefcase
 	
 		Given I am logged into Briefcase 

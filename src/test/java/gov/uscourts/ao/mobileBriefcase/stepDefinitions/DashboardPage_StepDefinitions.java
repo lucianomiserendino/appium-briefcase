@@ -19,7 +19,10 @@ public class DashboardPage_StepDefinitions {
 
 	@Then("^user taps on left-hand navigation \"([^\"]*)\" arrows$")
 	public void user_taps_on_left_hand_navigation_arrows(String expand_collapse) {
-		tap(contains(expand_collapse));
+		//tap(contains(expand_collapse));
+		page = new DashboardPage();
+		tap(page.collapseBtn);
+
 	}
 
 

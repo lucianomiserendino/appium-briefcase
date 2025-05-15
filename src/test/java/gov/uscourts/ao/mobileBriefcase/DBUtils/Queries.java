@@ -89,7 +89,7 @@ public class Queries {
 
 	public static final String MBR_EVENT = "select * from mbr_event";
 
-	public static final String APPLICABLE_ACTIONS = "select el_list_text from mbr_event join event_list on el_id = me_el_id where "
+	public static final String APPLICABLE_ACTIONS = "select distinct el_list_text from mbr_event join event_list on el_id = me_el_id where "
 			+ "(me_cyv_code IN (select cmr_cyv_code from chm_mobile_referral where cmr_id = ?) or me_cyv_code = \"-\" "
 			+ " or me_cyv_code is null) and (me_ic_code = (select cmr_ic_code from chm_mobile_referral where cmr_id = ?) "
 			+ "or me_ic_code is null or me_ic_code = \"-\") and (me_cav_code = (select distinct(cav_code) FROM chm_mobile_referral JOIN chambers_case_to_referral "
@@ -727,4 +727,7 @@ public class Queries {
 			+ "			 where   cmr_ju_pe_id = ? and  cmr_date_end is null and  cmr_cyv_code = cyv_code and\n"
 			+ "			 cyv_is_briefcase = 'y' and  cyv_is_oral_arg = 'n' and  cmr_cyv_code != 'lbrrpt') and cmr_cs_caseid = cs_caseid and cmr_date_end is null and \n"
 			+ "			 cd_caseid = cmr_cs_caseid and cmr_dktentryid = cd_dktentryid and cmr_panel_members TEXT order by cs_last_update desc";
+	
+	public static final String ORAL_ARG_CMR_CYV_CODE = "select distinct cmr_cyv_code from chm_mobile_referral, chm_reftype_val where cmr_ju_pe_id = 'CMR_JU_PE_ID' and cmr_date_end is null and "
+			+ "cmr_cyv_code = cyv_code AND cyv_is_briefcase = 'y' and cyv_is_oral_arg = 'y' and cyv_category='CYV_CATEGORY' and cmr_cs_caseid='CMR_CS_CASEID'";
 }

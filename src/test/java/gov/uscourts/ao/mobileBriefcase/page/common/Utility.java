@@ -67,17 +67,19 @@ public class Utility extends Base {
 	        try {
 	            WebElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, element), driver);
 	            if (elem.isDisplayed()) {
+
 	                for (int i = 0; i < scrollsDown; i++) {
 	                    Utility.scrollPage("down");
 	                }
+
 	                return true;
 	            } else {
-	                Utility.scrollPage("up");
+	                scrollPage("up");
 	                performPageLoad(driver);
 	                scrollsDown++;
 	            }
 	        } catch (TimeoutException e) {
-	            Utility.scrollPage("up");
+	            scrollPage("up");
 	            performPageLoad(driver);
 	            scrollsDown++;
 	        }
@@ -91,7 +93,7 @@ public class Utility extends Base {
 	public static boolean scrollDownIfNotDisplayed(String elementXPath) {
 		int scrollCount = 0;
 		boolean elementFound = false;
-		while (scrollCount < 3) {
+		while (scrollCount < 8) {
 			List<WebElement> elements = findElements(By.xpath(elementXPath));
 			if (!elements.isEmpty()) {
 				try {
@@ -102,7 +104,7 @@ public class Utility extends Base {
 					System.err.println("Error clicking element: " + e.getMessage());
 				}
 			} else {
-				tapAndSwipe(Direction.UP);
+				scrollPage("up");
 				performPageLoad(driver);
 				scrollCount++;
 			}
@@ -122,24 +124,33 @@ public class Utility extends Base {
 	}
 
 	public static List<String> retrieveAllReferrals(List<WebElement> elements, String split, int index) {
-		String[] dest;
-		List<String> referrals = new ArrayList<>();
-		List<WebElement> el = elements;
-		if (el.size() > 0) {
-			performPageLoad(driver);
-			Iterator<WebElement> itr = el.iterator();
-			while (itr.hasNext()) {
-				dest = itr.next().getText().split(split);
-				referrals.add(dest[index].trim());
+	    List<String> referrals = new ArrayList<>();
 
-			}
-		} else {
-			throw new RuntimeException("---------------------> CHECK ONE OF THE FOLLOWING ITEMS:"
-					+ "1. REFERRAL DATES ARE MISSING FROM THE CASE ROW."
-					+ "2. THE SELECTED CATEGORY DOESN'T HAVE ANY APPLIED REFERRALS");
-		}
-		return referrals;
+	    if (elements == null || elements.isEmpty()) {
+	        throw new RuntimeException("---------------------> CHECK ONE OF THE FOLLOWING ITEMS:"
+	            + "1. REFERRAL DATES ARE MISSING FROM THE CASE ROW."
+	            + "2. THE SELECTED CATEGORY DOESN'T HAVE ANY APPLIED REFERRALS");
+	    }
 
+	    performPageLoad(driver);
+
+	    for (WebElement el : elements) {
+	        String text = el.getText();
+	        if (text != null) {
+	            String[] parts = text.split(split);
+	            if (parts.length > index) {
+	                referrals.add(parts[index].trim());
+	            } else {
+	                System.err.println("Skipping element with unexpected format: '" + text + "'");
+	            }
+	        }
+	    }
+
+	    if (referrals.isEmpty()) {
+	        throw new RuntimeException("No valid referrals could be extracted. Check the element text format.");
+	    }
+
+	    return referrals;
 	}
 
 	public static String changeDateFormat(String element, String actualFormat, String modiffiedFormat) {
@@ -598,7 +609,7 @@ public class Utility extends Base {
 	    HashMap<String, Object> params = new HashMap<>();
 	    params.put("element", ((RemoteWebElement) element).getId());
 	    params.put("direction", direction);
-	    params.put("percent", 0.01); // very small scroll step (5%)
+	    params.put("percent", 0.01); 
 	    js.executeScript("mobile: scroll", params);
 	}
 	public static void scrollPage(String direction) {
@@ -611,7 +622,6 @@ public class Utility extends Base {
 	        swipeObject.put("direction", direction); 
 
 	        js.executeScript("mobile: swipe", swipeObject);
-	        System.out.println("Swiped the page once.");
 	    } catch (Exception e) {
 	        System.out.println("Scroll/Swipe failed: " + e.getMessage());
 	    }

@@ -16,19 +16,6 @@ public class PendingTasks_StepDefinitions {
 	String folder;
 
 
-
-	@Then("^Verify the Pending Tasks category \\(if available\\) will always display at the top of the Dashboard$")
-	public void verify_the_Pending_Tasks_category_if_available_will_always_display_at_the_top_of_the_Dashboard() {
-		page = new DashboardPage();
-		page.verifyPendingTasksPosition("Dashboard");
-	}
-
-	@Then("^Verify the Pending Tasks category \\(if available\\) will always display at the top of the left navigation$")
-	public void verify_the_Pending_Tasks_category_if_available_will_always_display_at_the_top_of_the_left_navigation() {
-		page = new DashboardPage();
-		page.verifyPendingTasksPosition("Navigation");
-	}
-
 	@When("^User select a sub folder$")
 	public void user_select_a_sub_folder() {
 		pending = new PendingTasksPage();

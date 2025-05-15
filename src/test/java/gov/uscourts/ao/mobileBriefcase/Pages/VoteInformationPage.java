@@ -206,7 +206,6 @@ public class VoteInformationPage extends AppiumPageFactory {
 		case VOTE_INFO_FILLRES_INFORMATION:
 
 			for (int i = 0; i < uiJudesVote.size(); i++) {
-				System.out.println(uiJudesVote.get(i) + "**********************************");
 
 				assertTrue("VERIFY THE VOTE DATE (CHV_DATE_CREATED) IS CORRECT",
 						findElementBy(Locator.XPATH, uiJudesVote.get(i)).isDisplayed());
@@ -220,7 +219,6 @@ public class VoteInformationPage extends AppiumPageFactory {
 
 		case JUDGE_VOTE_DPF_FILLRES_INFORMATION:
 			for (int i = 0; i < uiJudesVote.size(); i++) {
-				System.out.println(uiJudesVote.get(i) + "**********************************");
 
 				assertTrue("VERIFY THE VOTE DATE (CHV_DATE_CREATED) IS CORRECT",
 						findElementBy(Locator.XPATH, uiJudesVote.get(i)).isDisplayed());
@@ -236,20 +234,14 @@ public class VoteInformationPage extends AppiumPageFactory {
 		String cmr_ccr_id = getCMRID("cmr_ccr_id", caseNum, peId, cmr_cyv_code, userInputData);
 		WebElement uiInits = null;
 
-		String judgeInitials = getPANEL_MEMBERS(cmr_ccr_id, userInputData);
+		String judgeInitials = getPanelMembers(cmr_ccr_id, userInputData);
 		ArrayList<String> dbInitials = new ArrayList<>(Arrays.asList(judgeInitials.split(", ")));
-
-		int k = 0;
 
 		ArrayList<String> uiJudgeInitials = new ArrayList<>();
 
-		if (panel.equals("Vote_Information")) {
-			k += 2;
-		} else {
-			k += 1;
-		}
 
-		for (int i = k; i < dbInitials.size() + k; ++i) {
+
+		for (int i = 1; i <= dbInitials.size() ; ++i) {
 
 			uiInits = findElementBy(Locator.XPATH, initials(panel, i));
 			uiJudgeInitials.add(uiInits.getText().trim());
@@ -275,8 +267,8 @@ public class VoteInformationPage extends AppiumPageFactory {
 
 	public static String initials(String panel, int index) {
 		if (panel.equals("Vote_Information")) {
-			return "//XCUIElementTypeStaticText[@name=\"Vote Information\"]/following:: XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther["
-					+ index + "]/XCUIElementTypeStaticText";
+			return "//XCUIElementTypeStaticText[@name=\"Vote Information\"]/following::XCUIElementTypeOther[1]/XCUIElementTypeOther"
+					+ "/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeStaticText["+index+"]";
 		} else {
 			return "//XCUIElementTypeOther[@name='JudgesVotesList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]"
 					+ "/XCUIElementTypeOther[" + index
@@ -284,20 +276,16 @@ public class VoteInformationPage extends AppiumPageFactory {
 		}
 	}
 
-	public static String getPANEL_MEMBERS(String cmr_ccr_id, List<UserInputData> userInputData) {
-		String pj_judge_order = Queries.by_PJ_JUDGE_ORDER;
-		String ju_seniority_sort = Queries.by_JU_SENIORITY_SORT;
+	public static String getPanelMembers(String cmrCcrId, List<UserInputData> userInputData) {
+	    String panelMembers = getCMR_PANEL_MEMBERS(Queries.by_PJ_JUDGE_ORDER, cmrCcrId, userInputData);
 
-		String cmr_panel_members = getCMR_PANEL_MEMBERS(pj_judge_order, cmr_ccr_id, userInputData);
-		if (!cmr_panel_members.equals("null")) {
+	    if (panelMembers != null && !"null".equalsIgnoreCase(panelMembers.trim())) {
+	        return panelMembers;
+	    }
 
-			return cmr_panel_members;
-
-		} else {
-
-			return getCMR_PANEL_MEMBERS(ju_seniority_sort, cmr_ccr_id, userInputData);
-		}
+	    return getCMR_PANEL_MEMBERS(Queries.by_JU_SENIORITY_SORT, cmrCcrId, userInputData);
 	}
+
 
 	public static String getCMR_PANEL_MEMBERS(String field, String cmr_ccr_id, List<UserInputData> userInputData) {
 		return getAllColumns(Actions.replace(field, "CMR_CCR_ID", cmr_ccr_id), userInputData);

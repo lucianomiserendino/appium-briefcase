@@ -127,6 +127,7 @@ public class DashboardPage extends Base {
 	    } else {
 	        fail("Category list is empty for page: " + page);
 	    }
+	    Actions.tap(collapseBtn);
 	}
 
 

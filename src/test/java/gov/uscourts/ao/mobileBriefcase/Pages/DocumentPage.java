@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
@@ -64,7 +65,7 @@ public class DocumentPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//*[@name='Applied Referrals' or @name='Associated Cases']/following::XCUIElementTypeStaticText[contains(@name, '-')]")
 	public static List<WebElement> appliedCase;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Bookmark_Container']/preceding:: XCUIElementTypeStaticText[contains(@name, 'Panel:')]/preceding:: XCUIElementTypeStaticText[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Bookmark']/preceding:: XCUIElementTypeStaticText[contains(@name, 'Panel:')]/preceding:: XCUIElementTypeStaticText[1]")
 	public static List<WebElement> caseOncalender;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[contains(@name, 'EN BANC ')]")
@@ -291,31 +292,39 @@ public class DocumentPage extends AppiumPageFactory {
 						+ "/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText"));
 	}
 
-	public static String selectRandomCaseNumber(List<WebElement> element) {
-		String referral = "";
-		Page.performPageLoad(driver);
+	public static String selectRandomCaseNumber(List<WebElement> elements) {
+	    String referral = "";
+	    Page.performPageLoad(driver);
 
-		// Filter out en banc cases
-		List<WebElement> filteredElements = element.stream()
-				.filter(e -> enBancCases.stream().noneMatch(enBanc -> enBanc.getText().equals(e.getText())))
-				.collect(Collectors.toList());
+	    // Filter out en banc cases (if applicable)
+	    List<WebElement> filteredElements = elements.stream()
+	        .filter(e -> e.getText() != null && !e.getText().toLowerCase().contains("en banc"))
+	        .collect(Collectors.toList());
 
-		List<String> list = Utility.retrieveAllReferrals(filteredElements, " ", 0);
+	    // Filter based on name pattern
+	    Pattern pattern = Pattern.compile("^\\d{2}-\\d{3,5} .+");
+	    List<WebElement> filtered = filteredElements.stream()
+	        .filter(el -> {
+	            String nameAttr = el.getAttribute("name");
+	            return nameAttr != null && pattern.matcher(nameAttr).matches();
+	        })
+	        .collect(Collectors.toList());
 
-		int caseN = 0;
-		if (list.size() > 1) {
-			caseN = Utility.getRandomInt(list.size() - 1);
-		} else {
-			caseN = 0;
-		}
+	    List<String> list = Utility.retrieveAllReferrals(filtered, " ", 0);
 
-		WebElement uiResult = findElementBy(Locator.XPATH,
-				"//XCUIElementTypeStaticText[contains(@name, '" + list.get(caseN) + "')]");
+	    int caseN = 0;
+	    if (list.size() > 1) {
+	        caseN = Utility.getRandomInt(list.size() - 1);
+	    }
 
-		referral = list.get(caseN);
-		uiResult.click();
-		return referral;
+	    WebElement uiResult = findElementBy(Locator.XPATH,
+	        "//XCUIElementTypeStaticText[contains(@name, '" + list.get(caseN) + "')]");
+
+	    referral = list.get(caseN);
+	    uiResult.click();
+	    return referral;
 	}
+
 
 	public static void getAppliedCase() {
 		scrollDownIfNotDisplayed("//*[@name='Applied Referrals' or @name='Associated Cases']");

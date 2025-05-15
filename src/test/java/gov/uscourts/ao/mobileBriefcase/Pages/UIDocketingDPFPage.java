@@ -31,7 +31,7 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 public class UIDocketingDPFPage extends AppiumPageFactory {
 
 	// @WithTimeout(time = 10, unit = TimeUnit.SECONDS)
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextView[1]")
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Description']/following::XCUIElementTypeTextView)[1]")
 	public static WebElement descriptionField;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Select']/preceding::XCUIElementTypeTextField")
@@ -61,7 +61,7 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']")
 	public static WebElement documentListPage;
 
-	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Comment')]/following::XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeTextView")
+	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Comment')]/following::XCUIElementTypeTextView[1]")
 	public static WebElement commentField;
 
 	@iOSXCUITFindBy(accessibility = "(//XCUIElementTypeStaticText[@name='Downloaded'])[1]/preceding:: XCUIElementTypeOther[2]/XCUIElementTypeStaticText")

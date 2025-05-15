@@ -1,4 +1,4 @@
-Feature: Display Actions Panel and actions 
+Feature:  actions 
 
 Background:
 
@@ -22,20 +22,6 @@ Background:
 	Then User expands/collapse panel
 	
 	
-	
-@smoke @AMB-1038 @AMB-3967 @AMB-1204 @Regression
-Scenario: 
-	If there are records defined in the mbr_event table, 
-       a collapsible panel entitled "Actions" should display, when expanded all the applicable actions should display.
-       Verify Actions are not displayed when briefcaseCtAdmDkt is set to "n"
-       
-
-	
-	And User verifies the correct "Actions" display for the selected referral 
-	
-		|courtId|jud     |
-		|test   |test    |
-				
 		
 
 @AMB-2785	

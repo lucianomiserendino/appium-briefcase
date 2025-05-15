@@ -48,8 +48,11 @@ public class PendingTasksPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(accessibility = "Pending Clerk's Office")
 	public static WebElement PendingClerkOffice;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"PendingTasksList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[contains(@value, '▷')]/following::XCUIElementTypeOther[1]/XCUIElementTypeStaticText[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"PendingTasksList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[contains(@value, '▷')]/following::XCUIElementTypeStaticText[2]")
 	public static List<WebElement> categoryCount;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"PendingTasksList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[contains(@value, '▷')]/following::XCUIElementTypeOther[1]/XCUIElementTypeStaticText[1]")
+	public static List<WebElement> pendingCategories;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='MasterNavPage']/XCUIElementTypeOther[1]/XCUIElementTypeTable[1]/XCUIElementTypeCell")
 	public static List<WebElement> navIcons;
@@ -256,6 +259,8 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 			assignmentCount.get(c.indexOf(m)).click();
 
+		}else {
+			assignmentType="Pending Clerk''s Filing";
 		}
 
 	}
@@ -329,7 +334,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 	    for (int i = 0; i < pendingSubFolders.size(); i++) {
 	        String folder = processSubFolder(i);
 		
-		 List<WebElement> categoryName=categoryCount;
+		 List<WebElement> categoryName=pendingCategories;
 		 
 		ArrayList<String> dashList = new ArrayList<String>();
 		for (int y = 0; y < categoryName.size() ; y++) {
@@ -416,6 +421,31 @@ public class PendingTasksPage extends AppiumPageFactory {
 	public String assinmentCount() {
 		return "//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther//following::XCUIElementTypeStaticText[@name='"
 				+ category + "']/following::XCUIElementTypeStaticText[contains(@name, '(')]";
+	}
+	
+	public void verifyAssignmentDateType () {
+	    for (int i = 0; i < pendingSubFolders.size(); i++) {
+	        String folder = processSubFolder(i);
+	        
+	       selectAssignmentType(folder);
+
+		List<UserInputData> userInputData = null;
+	
+		selectRandomCase();
+		
+		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
+		String cmr_cs_caseid = CommonPages.getCaseID(referral, userInputData);
+
+		String cmr_cyv_code = CommonPages.cmr_cyv_code(category, cmr_cs_caseid, userInputData)
+				.trim();
+
+		AssignmentsPage assig = new AssignmentsPage();
+
+		assig.getRecentAssignmentDate(userInputData, referral, cmr_ju_pe_id, cmr_cyv_code,assignmentType);
+
+        Actions.navigateBack(); 
+
+    }
 	}
 
 }

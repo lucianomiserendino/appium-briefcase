@@ -9,9 +9,9 @@ and they are able to add a new document name in the "Enter Description" field.  
 	Verify Briefcase supports the docWPText TPF, which allows the dictionary designer to add information about the documents filed into the docket text.
 	
 	
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

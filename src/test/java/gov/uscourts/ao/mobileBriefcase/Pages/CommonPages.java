@@ -338,10 +338,16 @@ public class CommonPages extends AppiumPageFactory {
 	}
 
 	public static String cmr_cyv_code(String category, String caseID, List<UserInputData> userInputData) {
-
+      String query="";
 		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
+		
+		if (category.equals("Cases on Calendar")||category.equals("Oral Argument")){
+			query=Queries.ORAL_ARG_CMR_CYV_CODE;
+		}else {
+			query=Queries.CMR_CYV_CODE;
+		}
 
-		return getAllColumns(replace(Queries.CMR_CYV_CODE, "CMR_JU_PE_ID", cha_ju_pe_id, "CYV_CATEGORY",
+		return getAllColumns(replace(query, "CMR_JU_PE_ID", cha_ju_pe_id, "CYV_CATEGORY",
 				category.trim(), "CMR_CS_CASEID", caseID), userInputData);
 	}
 
@@ -435,7 +441,6 @@ public class CommonPages extends AppiumPageFactory {
 		while (noChangeCounter < 3) {
 			boolean iconFound = false;
 
-			// Directly filter elements that are displayed with matching value
 			List<WebElement> icons = Actions.findElements(By.xpath("//*[contains(@value, '" + grIcon + "')]"));
 
 			for (WebElement element : icons) {
@@ -444,8 +449,7 @@ public class CommonPages extends AppiumPageFactory {
 						element.click();
 						clickCount++;
 						iconFound = true;
-						System.out.println("Clicked icon. Total clicks: " + clickCount);
-						Thread.sleep(500); // Allow UI to update
+						Thread.sleep(500);
 						break;
 					} catch (Exception e) {
 						System.err.println("Click failed: " + e.getMessage());

@@ -16,7 +16,6 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 
 public class VoteInformation_StepDefinitions {
 	VoteInformationPage page;
-	Judge_Involvement judInvPage;
 	CommonPages page1;
 	String cmr_cyv_code;
 	String caseNum = DocumentPage.caseNum;
@@ -80,18 +79,5 @@ public class VoteInformation_StepDefinitions {
 		page.getJudgeInitials("Vote_Information", caseNum, cmr_ju_pe_id, cmr_cyv_code, userInputData);
 	}
 
-	@Then("^select a case that has involvement code$")
-	public void select_a_case_that_has_involvement_code() {
-		List<UserInputData> userInputData = null;
-		judInvPage = new Judge_Involvement();
-		judInvPage.selectCaseWithInvolvement(userInputData);
-	}
-
-	@Then("^Verify judge Involvement is displayed correctly$")
-	public void verify_judge_Involvement_is_displayed_correctly() {
-		List<UserInputData> userInputData = null;
-		judInvPage = new Judge_Involvement();
-		judInvPage.ifCorrectPanelInvolvementFound(userInputData);
-	}
 
 }

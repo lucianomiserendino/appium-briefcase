@@ -126,6 +126,9 @@ public class JenieLoginPage extends Base {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
 	public static WebElement collapseBtn;
 	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"AvailableJudges\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther")
+	public static WebElement availableJudgesListView;
+	
 //	@iOSXCUITFindBy(xpath ="//XCUIElementTypeStaticText[@name=\"Dashboard\" and @label=\"\"]")
 //	public static List<WebElement> dashboard;
 
@@ -234,7 +237,7 @@ public class JenieLoginPage extends Base {
 				elems.get(0).click();
 				return;
 			} else {
-				Utility.tapAndSwipe(Direction.UP);
+				 Utility.scroll(availableJudgesListView, "up"); 
 			}
 		}
 

@@ -483,16 +483,21 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 	public void getRecentAssignmentDate(List<UserInputData> userInputData, String caseNumber, String peId,
 			String cmrCyvCode, String assignType) {
+
 		try {
 			String env = SystemPropertySetup.getCourtId(userInputData) + ".";
 			String prLastName = getProperty(env + "jud");
 			String prFirstName = getProperty(env + "judFirstName");
+
 			String cmrId = getCMR_ID(caseNumber, peId, cmrCyvCode, userInputData);
 
 			String cdvDisplay = getAssignmentDateType(cmrId, prLastName, prFirstName, 2, userInputData, assignType);
+
 			String chdDate = getAssignmentDateType(cmrId, prLastName, prFirstName, 3, userInputData, assignType);
 
 			String xpath = buildAssignmentDateXpath(cdvDisplay, chdDate, caseNumber, assignType);
+
+			
 			assertTrue("Pending Tasks folder: Verify each assignment displays the most recent date type",
 					Actions.isDisplayed(Locator.XPATH, xpath));
 
@@ -504,9 +509,12 @@ public class AssignmentsPage extends AppiumPageFactory {
 	public static String buildAssignmentDateXpath(String cdvDisplay, String chdDate, String caseNumber,
 			String cavDisplay) {
 		String formattedDate = changeDateFormat(chdDate, "yyyy-MM-dd", "M/dd/yyyy").trim();
+//		return "//XCUIElementTypeStaticText[contains(@name, '" + cdvDisplay.trim() + ": " + formattedDate + "')]"
+//				+ "/preceding::XCUIElementTypeStaticText[1][contains(@name, '" + caseNumber.trim() + "')]"
+//				+ "/preceding::XCUIElementTypeStaticText[contains(@name, '" + cavDisplay.trim() + "')]";
+		
 		return "//XCUIElementTypeStaticText[contains(@name, '" + cdvDisplay.trim() + ": " + formattedDate + "')]"
-				+ "/preceding::XCUIElementTypeStaticText[1][contains(@name, '" + caseNumber.trim() + "')]"
-				+ "/preceding::XCUIElementTypeStaticText[contains(@name, '" + cavDisplay.trim() + "')]";
+		+ "/preceding::XCUIElementTypeStaticText[1][contains(@name, '" + caseNumber.trim() + "')]";
 	}
 
 	public enum AssignmentInfo {

@@ -9,9 +9,9 @@ In the scenario where a description hasn't been provided the judgeVote note/doc 
 Reference # AMB-3245	
 
 
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |
