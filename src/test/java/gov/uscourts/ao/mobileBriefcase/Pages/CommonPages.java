@@ -187,6 +187,11 @@ public class CommonPages extends AppiumPageFactory {
 	}
 
 	public static void getPanel(Panel panel) {
+		int maxScrollAttempts = 4;
+
+		for (int attempt = 0; attempt < maxScrollAttempts; attempt++) {
+		    Utility.scrollPage("down");
+		}
 		try {
 			String panelName;
 			switch (panel) {
@@ -523,7 +528,7 @@ public class CommonPages extends AppiumPageFactory {
 			if (!(el.size() == 0)) {
 
 				elementNotFound = true;
-				Utility.tapAndSwipe(Direction.UP);
+				Utility.scrollPage("down");
 
 			} else {
 				elementNotFound = false;

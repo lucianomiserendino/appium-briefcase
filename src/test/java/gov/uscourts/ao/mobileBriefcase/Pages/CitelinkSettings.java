@@ -19,7 +19,7 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CitelinkSettings extends AppiumPageFactory {
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[2]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Settings']")
 	public static WebElement gearIcon;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Use My CM/ECF Settings']/following:: XCUIElementTypeSwitch[1]")
@@ -34,16 +34,16 @@ public class CitelinkSettings extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Downloaded'])[1]")
 	public static WebElement Downloaded;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='CiteLinkEngine']/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='CiteLinkEngine']/XCUIElementTypeButton/XCUIElementTypeStaticText[1]")
 	public static List<WebElement> citeLinkEngineList;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='CiteLinkHighlightStyle']/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
 	public static List<WebElement> citeLinkHighlightStyle;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PDF Page View']/XCUIElementTypeLink")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeLink")
 	public static List<WebElement> links;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Page Label']/XCUIElementTypeStaticText")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Page Label']/XCUIElementTypeOther/following::XCUIElementTypeStaticText[1]")
 	public static WebElement pageSize;
 
 	@iOSXCUITFindBy(accessibility = "Done")
@@ -63,7 +63,11 @@ public class CitelinkSettings extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'FindAppendix?')]")
 	public static List<WebElement> appxLink;
+	
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name=''])[1]/preceding::XCUIElementTypeStaticText[1]")
+	public static WebElement selectedciteLinkEngine;
 
+	
 	public static int getCurrentPageNumber;
 
 	public static String changesCitelinkSettings() {
@@ -78,12 +82,17 @@ public class CitelinkSettings extends AppiumPageFactory {
 			int checkLink = linkSearch.size();
 			assertTrue("USER IS NOT PRESENTED WITH THE MESSAGE IF THE CITELINKS PREFERENCES CHANGE IN CM/ECF",
 					checkLink > 0);
-
+			okBTN.click();
 		}
 
 		int index = Utility.getRandomNumberInRange(3, citeLinkEngineList.size() - 1);
 		engine += citeLinkEngineList.get(index).getText().trim();
 		citeLinkEngineList.get(index).click();
+		if ( message.size()>0) {
+			if (okBTN.isDisplayed()) {
+			okBTN.click();
+		}}
+		assertTrue("Verify the check mark is on the right of the selected citelink engine",selectedciteLinkEngine.getText().trim().equals(engine));
 		driver.navigate().back();
 
 		return engine;
@@ -144,56 +153,45 @@ public class CitelinkSettings extends AppiumPageFactory {
 	}
 
 	public void getCiteLink() {
+		 
+	    String[] size = pageSize.getText().split("of");
+	    int totalPageSize = Integer.parseInt(size[1].trim());
+	    int lastViewedPage = Integer.parseInt(size[0].trim());
 
-		String[] size = pageSize.getText().split("of");
-		int totalPageSize = Integer.parseInt(size[1].trim());
-		int lastViewedPage = Integer.parseInt(size[0].trim());
+	    if (lastViewedPage != 1) {
+	        for (int i = 0; i < lastViewedPage - 1; i++) {
+	        	Utility.swipe(1, "right");
+	        }
+	    }
 
-		// Check for hyperlink on page 11
-		if (checkForHyperlink()) {
-			System.out.println("Hyperlink found on page ----->>>>>>>>>>" + lastViewedPage + "!");
+	    boolean hyperlinkFound = false;
+	    for (int i = 1; i < 10; i++) {
+	        if (checkForHyperlink()) {
+	            hyperlinkFound = true;
+	            System.out.println("Hyperlink found on page " + i + "!");
+	            clickFirstHyperlink(); 
+	            return;
+	        }
+	        Utility.swipe(1, "left");
+	    }
 
-		} else {
-			boolean hyperlinkFound = false;
-			// Swipe left to find hyperlink
-			while (!hyperlinkFound) {
-				//Utility.swipe(1, "left");
-				
-				Utility.tapAndSwipe(Direction.LEFT) ;
-				hyperlinkFound = checkForHyperlink();
-				if (driver.getPageSource().contains(totalPageSize + " of " + totalPageSize)) {
-					break; // reached end of document
-				}
-			}
-			// If no hyperlink found, swipe right and search from page 11
-			if (!hyperlinkFound) {
-				for (int i = 1; i < lastViewedPage; i++) {
-					//Utility.swipe(1, "right");
-					Utility.tapAndSwipe(Direction.RIGHT) ;
+	    throw new AssertionError("No hyperlinks found after swiping left 10 times.");
+	}
 
-				}
-				while (!hyperlinkFound) {
-					//Utility.swipe(1, "right");
-					Utility.tapAndSwipe(Direction.RIGHT) ;
-
-					hyperlinkFound = checkForHyperlink();
-					if (driver.getPageSource().contains(1 + " of " + totalPageSize)) {
-						break; // searched all pages, no hyperlink found
-					}
-				}
-			}
-			if (hyperlinkFound) {
-				System.out.println("Hyperlink found on page ------------------");
-			} else {
-				System.out.println("No hyperlink found. Closing the PDF...");
-			}
-		}
-
+	private int getCurrentPage() {
+	    String[] size = pageSize.getText().split("of");
+	    return Integer.parseInt(size[0].trim());
 	}
 
 	public static boolean checkForHyperlink() {
-		List<WebElement> link = links;
-		return !link.isEmpty();
+	    return links != null && !links.isEmpty();
 	}
+
+	private void clickFirstHyperlink() {
+	    if (!links.isEmpty()) {
+	        links.get(0).click();
+	    }
+	}
+
 
 }

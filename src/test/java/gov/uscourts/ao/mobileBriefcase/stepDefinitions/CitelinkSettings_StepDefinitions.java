@@ -19,9 +19,7 @@ public class CitelinkSettings_StepDefinitions {
 
 	@When("^User switches the Use My CM/ECF Settings toggle off, select a random Briefcase citelink preferences$")
 	public void user_switches_the_Use_My_CM_ECF_Settings_toggle_off_select_a_random_Briefcase_citelink_preferences() {
-		
-		JenieLoginPage logPage = new JenieLoginPage();
-		page = new CitelinkSettings();
+				page = new CitelinkSettings();
 		searchEngine=page.changesCitelinkSettings();
 	}
 	

@@ -18,7 +18,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -32,6 +31,10 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.PointerInput.MouseButton;
+import org.openqa.selenium.interactions.PointerInput.Origin;
+import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.remote.RemoteWebElement;
 
 import com.google.common.collect.ImmutableMap;
@@ -48,9 +51,17 @@ public class Utility extends Base {
 	static SimpleDateFormat format2;
 
 	public static void tapByCoordinate(String xCoordinates, String yCoordinates) {
-		new TouchAction(driver)
-				.tap(new PointOption().withCoordinates(getCoordinates(xCoordinates), getCoordinates(yCoordinates)))
-				.perform();
+		int x = getCoordinates(xCoordinates);
+		int y = getCoordinates(yCoordinates);
+
+		PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+		Sequence tap = new Sequence(finger, 1);
+
+		tap.addAction(finger.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), x, y));
+		tap.addAction(finger.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+		tap.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+		driver.perform(Collections.singletonList(tap));
 	}
 
 	public static int getCoordinates(String coordinates) {
@@ -59,36 +70,34 @@ public class Utility extends Base {
 	}
 
 	public static boolean isDisplayed(String element) {
-	    int maxRetries = 5;
-	    int attempts = 0;
-	    int scrollsDown = 0;
+		int maxRetries = 5;
+		int attempts = 0;
+		int scrollsDown = 0;
 
-	    while (attempts < maxRetries) {
-	        try {
-	            WebElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, element), driver);
-	            if (elem.isDisplayed()) {
+		while (attempts < maxRetries) {
+			try {
+				WebElement elem = waitForVisibilityOfElement(findElementBy(Locator.XPATH, element), driver);
+				if (elem.isDisplayed()) {
 
-	                for (int i = 0; i < scrollsDown; i++) {
-	                    Utility.scrollPage("down");
-	                }
+					for (int i = 0; i < scrollsDown; i++) {
+						Utility.scrollPage("down");
+					}
 
-	                return true;
-	            } else {
-	                scrollPage("up");
-	                performPageLoad(driver);
-	                scrollsDown++;
-	            }
-	        } catch (TimeoutException e) {
-	            scrollPage("up");
-	            performPageLoad(driver);
-	            scrollsDown++;
-	        }
-	        attempts++;
-	    }
-	    return false;  
+					return true;
+				} else {
+					scrollPage("up");
+					performPageLoad(driver);
+					scrollsDown++;
+				}
+			} catch (TimeoutException e) {
+				scrollPage("up");
+				performPageLoad(driver);
+				scrollsDown++;
+			}
+			attempts++;
+		}
+		return false;
 	}
-
-
 
 	public static boolean scrollDownIfNotDisplayed(String elementXPath) {
 		int scrollCount = 0;
@@ -98,8 +107,8 @@ public class Utility extends Base {
 			if (!elements.isEmpty()) {
 				try {
 					elements.get(elements.size() - 1).click();
-					elementFound = true; 
-					break; 
+					elementFound = true;
+					break;
 				} catch (WebDriverException e) {
 					System.err.println("Error clicking element: " + e.getMessage());
 				}
@@ -124,33 +133,33 @@ public class Utility extends Base {
 	}
 
 	public static List<String> retrieveAllReferrals(List<WebElement> elements, String split, int index) {
-	    List<String> referrals = new ArrayList<>();
+		List<String> referrals = new ArrayList<>();
 
-	    if (elements == null || elements.isEmpty()) {
-	        throw new RuntimeException("---------------------> CHECK ONE OF THE FOLLOWING ITEMS:"
-	            + "1. REFERRAL DATES ARE MISSING FROM THE CASE ROW."
-	            + "2. THE SELECTED CATEGORY DOESN'T HAVE ANY APPLIED REFERRALS");
-	    }
+		if (elements == null || elements.isEmpty()) {
+			throw new RuntimeException("---------------------> CHECK ONE OF THE FOLLOWING ITEMS:"
+					+ "1. REFERRAL DATES ARE MISSING FROM THE CASE ROW."
+					+ "2. THE SELECTED CATEGORY DOESN'T HAVE ANY APPLIED REFERRALS");
+		}
 
-	    performPageLoad(driver);
+		performPageLoad(driver);
 
-	    for (WebElement el : elements) {
-	        String text = el.getText();
-	        if (text != null) {
-	            String[] parts = text.split(split);
-	            if (parts.length > index) {
-	                referrals.add(parts[index].trim());
-	            } else {
-	                System.err.println("Skipping element with unexpected format: '" + text + "'");
-	            }
-	        }
-	    }
+		for (WebElement el : elements) {
+			String text = el.getText();
+			if (text != null) {
+				String[] parts = text.split(split);
+				if (parts.length > index) {
+					referrals.add(parts[index].trim());
+				} else {
+					System.err.println("Skipping element with unexpected format: '" + text + "'");
+				}
+			}
+		}
 
-	    if (referrals.isEmpty()) {
-	        throw new RuntimeException("No valid referrals could be extracted. Check the element text format.");
-	    }
+		if (referrals.isEmpty()) {
+			throw new RuntimeException("No valid referrals could be extracted. Check the element text format.");
+		}
 
-	    return referrals;
+		return referrals;
 	}
 
 	public static String changeDateFormat(String element, String actualFormat, String modiffiedFormat) {
@@ -308,8 +317,6 @@ public class Utility extends Base {
 		return id;
 	}
 
-
-
 	public static boolean checkDatesOrder(List<String> dates, String format, Comparator<Long> comparator) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
 		boolean isOrdered = true;
@@ -360,28 +367,28 @@ public class Utility extends Base {
 		return isSorted;
 
 	}
+
 	public static boolean checkCaseNumberOrder(List<String> caseNumbers, boolean ascending) {
-	    for (int i = 0; i < caseNumbers.size() - 1; i++) {
-	        int[] first = parseCaseNumber(caseNumbers.get(i));
-	        int[] second = parseCaseNumber(caseNumbers.get(i + 1));
+		for (int i = 0; i < caseNumbers.size() - 1; i++) {
+			int[] first = parseCaseNumber(caseNumbers.get(i));
+			int[] second = parseCaseNumber(caseNumbers.get(i + 1));
 
-	        int cmp = Integer.compare(first[0], second[0]);
-	        if (cmp == 0) {
-	            cmp = Integer.compare(first[1], second[1]);
-	        }
+			int cmp = Integer.compare(first[0], second[0]);
+			if (cmp == 0) {
+				cmp = Integer.compare(first[1], second[1]);
+			}
 
-	        if ((ascending && cmp > 0) || (!ascending && cmp < 0)) {
-	            return false;
-	        }
-	    }
-	    return true;
+			if ((ascending && cmp > 0) || (!ascending && cmp < 0)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private static int[] parseCaseNumber(String caseNumber) {
-	    String[] parts = caseNumber.split("-");
-	    return new int[] { Integer.parseInt(parts[0]), Integer.parseInt(parts[1]) };
+		String[] parts = caseNumber.split("-");
+		return new int[] { Integer.parseInt(parts[0]), Integer.parseInt(parts[1]) };
 	}
-
 
 	public static List<Integer> getCellCount(int time, int navCellSize) {
 		List<Integer> cellSize = new ArrayList<>();
@@ -604,30 +611,68 @@ public class Utility extends Base {
 		return b.toString();
 
 	}
+
 	public static void scrollSlow(WebElement element, String direction) {
-	    JavascriptExecutor js = (JavascriptExecutor) driver;
-	    HashMap<String, Object> params = new HashMap<>();
-	    params.put("element", ((RemoteWebElement) element).getId());
-	    params.put("direction", direction);
-	    params.put("percent", 0.01); 
-	    js.executeScript("mobile: scroll", params);
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		HashMap<String, Object> params = new HashMap<>();
+		params.put("element", ((RemoteWebElement) element).getId());
+		params.put("direction", direction);
+		params.put("percent", 0.01);
+		js.executeScript("mobile: scroll", params);
 	}
+
 	public static void scrollPage(String direction) {
-	    try {
-	        WebElement scrollView = driver.findElement(By.className("XCUIElementTypeScrollView"));
-	        JavascriptExecutor js = (JavascriptExecutor) driver;
+		try {
+			WebElement scrollView = driver.findElement(By.className("XCUIElementTypeScrollView"));
+			JavascriptExecutor js = (JavascriptExecutor) driver;
 
-	        Map<String, Object> swipeObject = new HashMap<>();
-	        swipeObject.put("element", ((RemoteWebElement) scrollView).getId());
-	        swipeObject.put("direction", direction); 
+			Map<String, Object> swipeObject = new HashMap<>();
+			swipeObject.put("element", ((RemoteWebElement) scrollView).getId());
+			swipeObject.put("direction", direction);
 
-	        js.executeScript("mobile: swipe", swipeObject);
-	    } catch (Exception e) {
-	        System.out.println("Scroll/Swipe failed: " + e.getMessage());
-	    }
+			js.executeScript("mobile: swipe", swipeObject);
+		} catch (Exception e) {
+			System.out.println("Scroll/Swipe failed: " + e.getMessage());
+		}
 	}
 
+	public static void ifLoaded(List<WebElement> value) {
+		performPageLoad(driver);
+		long startTime = System.currentTimeMillis();
+		long maxDuration = 3 * 60 * 1000; 
 
+		while (true) {
+			List<WebElement> el = value;
+
+			if (el.isEmpty()) {
+				break;
+			}
+
+			Utility.scrollPage("down");
+
+			if (System.currentTimeMillis() - startTime > maxDuration) {
+				throw new RuntimeException("The page is slow to respond");
+			}
+		}
+	}
+
+	public static void swipeElement(String xpath) {
+	    WebElement element = driver.findElement(By.xpath(xpath));
+
+	    int startX = element.getLocation().getX() + 10;
+	    int endX = startX + element.getSize().getWidth() - 20;
+	    int y = element.getLocation().getY() + (element.getSize().getHeight() / 2);
+
+	    PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+	    Sequence swipe = new Sequence(finger, 1);
+
+	    swipe.addAction(finger.createPointerMove(Duration.ofMillis(0), Origin.viewport(), startX, y));
+	    swipe.addAction(finger.createPointerDown(MouseButton.LEFT.asArg()));
+	    swipe.addAction(finger.createPointerMove(Duration.ofMillis(300), Origin.viewport(), endX, y));
+	    swipe.addAction(finger.createPointerUp(MouseButton.LEFT.asArg()));
+
+	    driver.perform(List.of(swipe));
+	}
 	public enum Filter {
 		UNIQUE_VALUES, DUPLICATE_VALUES
 	}

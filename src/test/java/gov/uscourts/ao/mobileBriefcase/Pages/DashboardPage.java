@@ -210,9 +210,6 @@ public class DashboardPage extends Base {
 	}
 	
 	
-	
-	
-	
 
 	/**
 	 * Tapping on a referral category that is not orally argued

@@ -16,13 +16,17 @@ import static java.util.Collections.sort;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -91,6 +95,12 @@ public class DocumentPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[contains(@name, 'EN BANC ')]/preceding::XCUIElementTypeStaticText[contains(@name, '-')][1])")
 	public static List<WebElement> enBancCases;
+	
+	@iOSXCUITFindBy(accessibility = "Close")
+	public static WebElement close;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='OK']")
+	public static WebElement okBtn;
 
 	static String panel = "";
 	String randomCategory = "";
@@ -128,40 +138,58 @@ public class DocumentPage extends AppiumPageFactory {
 	}
 
 	public void selectRandomCategory(String enBanc, List<UserInputData> userInputData) {
-		StringBuilder set = new StringBuilder();
-		String peId = DocumentPage.get_pe_id("jud", userInputData);
-		String query;
-		String siValue = CommonPages.getSiValue(SiteTableVariable.targetOnly, userInputData);
+	    StringBuilder set = new StringBuilder();
+	    String peId = DocumentPage.get_pe_id("jud", userInputData);
+	    String query;
+	    String siValue = CommonPages.getSiValue(SiteTableVariable.targetOnly, userInputData);
 
-		if ("y".equals(enBanc)) {
-			set.append("in ('EN BANC')");
-		} else {
-			set.append("not in ('EN BANC')");
-		}
+	    if ("y".equals(enBanc)) {
+	        set.append("in ('EN BANC')");
+	    } else {
+	        set.append("not in ('EN BANC')");
+	    }
 
-		if ("y".equals(siValue)) {
-			query = Queries.FIND_ALL_NON_ORALLY_ARGUED_CASES.replace("TEXT", set.toString());
-		} else {
-			query = Queries.FIND_ALL_ORALLY_ARGUED_CASES.replace("TEXT", set.toString());
-		}
+	    if ("y".equals(siValue)) {
+	        query = Queries.FIND_ALL_NON_ORALLY_ARGUED_CASES.replace("TEXT", set.toString());
+	    } else {
+	        query = Queries.FIND_ALL_ORALLY_ARGUED_CASES.replace("TEXT", set.toString());
+	    }
 
-		List<String[]> foundCases = executeDBQuery(getID(query, peId), userInputData);
+	    List<String[]> foundCases = executeDBQuery(getID(query, peId), userInputData);
 
-		if (foundCases != null && !foundCases.isEmpty()) {
-			int randomIndex = new Random().nextInt(foundCases.size());
-			String[] randomRecord = foundCases.get(randomIndex);
-			cs_caseid = randomRecord[0].trim();
-			caseNum = randomRecord[1].trim();
-			category = randomRecord[2].trim();
-			cmr_cyv_code = randomRecord[3].trim();
-		}
+	    // Categories to exclude
+	    Set<String> excludedCategories = new HashSet<>(Arrays.asList(
+	        "Reference Documents",
+	        "Pending Tasks",
+	        "Cases on Calendar",
+	        "No Argument Case",
+	        "Oral Argument"
+	    ));
 
-		scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
+	    if (foundCases != null && !foundCases.isEmpty()) {
+	        List<String[]> filteredCases = foundCases.stream()
+	            .filter(record -> !excludedCategories.contains(record[2].trim()))
+	            .collect(Collectors.toList());
 
-		System.out.println("------------------------------------------------------");
-		System.out.println("Selected category name: " + category);
-		System.out.println("------------------------------------------------------");
+	        if (filteredCases.isEmpty()) {
+	            throw new RuntimeException("No valid categories found after filtering.");
+	        }
+
+	        int randomIndex = new Random().nextInt(filteredCases.size());
+	        String[] randomRecord = filteredCases.get(randomIndex);
+
+	        cs_caseid = randomRecord[0].trim();
+	        caseNum = randomRecord[1].trim();
+	        category = randomRecord[2].trim();
+	        cmr_cyv_code = randomRecord[3].trim();
+
+	        scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
+	        System.out.println("------------------------------------------------------");
+	        System.out.println("Selected category name: " + category);
+	        System.out.println("------------------------------------------------------");
+	    }
 	}
+
 
 	public void selectRandomReferral() {
 
@@ -389,68 +417,90 @@ public class DocumentPage extends AppiumPageFactory {
 	}
 
 	public static List<String> verifyDocumentCategorySorting(List<UserInputData> userInputData) {
-		String cmr_cs_caseid = DocumentPage.cs_caseid;
-		String cmr_cyv_code = DocumentPage.cmr_cyv_code;
-		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
+	    String cmr_cs_caseid = DocumentPage.cs_caseid;
+	    String cmr_cyv_code = DocumentPage.cmr_cyv_code;
+	    String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
 
-		List<String> uiDocCategories = new ArrayList<>();
-		panel = (appliedRefs.size() > 0) ? "Applied" : "Actions";
+	    List<String> uiDocCategories = new ArrayList<>();
+	     panel = (appliedRefs.size() > 0) ? "Applied" : "Actions";
 
-		for (WebElement element : getDocCategoryLocator(panel)) {
-			uiDocCategories.add(element.getText());
-		}
+	    for (WebElement element : getDocCategoryLocator(panel)) {
+	        uiDocCategories.add(element.getText().trim());
+	    }
 
-		// Fetch database document categories with cmd_sort
-		Map<String, Integer> dbCategoryMap = new HashMap<>();
-		String cmd_doc_category = "";
-		int cmd_sort = 0;
-		List<String[]> dbDocCategoriesRaw = executeDBQuery(Actions.replace(DOCUMENT_CATEGORIES, "CMR_CYV_CODE",
-				cmr_cyv_code, "CMR_JU_PE_ID", cmr_ju_pe_id, "CMR_CS_CASEID", cmr_cs_caseid), userInputData);
+	    // Fetch database document categories with cmd_sort
+	    Map<String, Integer> dbCategoryMap = new HashMap<>();
+	    List<String[]> dbDocCategoriesRaw = executeDBQuery(
+	        Actions.replace(DOCUMENT_CATEGORIES, "CMR_CYV_CODE", cmr_cyv_code, "CMR_JU_PE_ID", cmr_ju_pe_id, "CMR_CS_CASEID", cmr_cs_caseid),
+	        userInputData
+	    );
 
-		if (dbDocCategoriesRaw == null || dbDocCategoriesRaw.isEmpty()) {
-			throw new AssertionError("No document categories returned from database.");
-		}
-		for (String[] record : dbDocCategoriesRaw) {
-			cmd_doc_category = record[0].trim();
-			cmd_sort = Integer.parseInt(record[1].trim());
-			dbCategoryMap.put(cmd_doc_category, cmd_sort);
-		}
 
-		// Verify that dbCategoryMap contains all uiDocCategories
-		if (!dbCategoryMap.keySet().containsAll(uiDocCategories)) {
-			throw new AssertionError("uiDocCategories contains categories not found in the database.");
-		}
+	    if (dbDocCategoriesRaw == null || dbDocCategoriesRaw.isEmpty()) {
+	        throw new AssertionError("No document categories returned from database.");
+	    }
 
-		// Verify sorting
-		for (int i = 0; i < uiDocCategories.size() - 1; i++) {
-			String currentCategory = uiDocCategories.get(i);
-			String nextCategory = uiDocCategories.get(i + 1);
-			int currentSort = dbCategoryMap.get(currentCategory);
-			int nextSort = dbCategoryMap.get(nextCategory);
-			if (currentSort > nextSort && !(currentSort == nextSort && currentCategory.compareTo(nextCategory) <= 0)) {
-				// The test should fail if categories are not sorted in ascending order, except
-				// when they have the same cmd_sort
-				throw new AssertionError("Document categories are not sorted correctly.");
-			}
-		}
-		// All categories are sorted correctly
-		return uiDocCategories;
+	    for (String[] record : dbDocCategoriesRaw) {
+	        String cmd_doc_category = record[0].trim();
+	        int cmd_sort = Integer.parseInt(record[1].trim());
+	        dbCategoryMap.put(cmd_doc_category, cmd_sort);
+	    }
+
+	    // Verify that all UI categories exist in DB results
+	    if (!dbCategoryMap.keySet().containsAll(uiDocCategories)) {
+
+	        throw new AssertionError("UI document categories contain categories not found in the database.");
+	    }
+
+	    // Verify sorting
+	    for (int i = 0; i < uiDocCategories.size() - 1; i++) {
+	        String currentCategory = uiDocCategories.get(i);
+	        String nextCategory = uiDocCategories.get(i + 1);
+
+	        int currentSort = dbCategoryMap.get(currentCategory);
+	        int nextSort = dbCategoryMap.get(nextCategory);
+
+	        if (currentSort > nextSort) {
+	            throw new AssertionError("Document categories are not sorted by cmd_sort ascending.");
+	        } else if (currentSort == nextSort) {
+	            // If cmd_sort is the same, check lexicographical order of categories
+	            if (currentCategory.compareTo(nextCategory) > 0) {
+	                throw new AssertionError("Document categories with same cmd_sort are not sorted lexicographically.");
+	            }
+	        }
+	    }
+
+	    System.out.println("Document categories sorted correctly: " + uiDocCategories);
+	    return uiDocCategories;
 	}
+
 
 	public void getDocumentList(List<UserInputData> userInputData) {
 		if (verifyDocumentCategorySorting(userInputData).size() > 0) {
 
 			randomCategory = Utility.clickOnNumberInRange(getDocCategoryLocator(panel));
-			randomDocument = Utility.clickOnNumberInRange(getDocListLocator(randomCategory));
-
 			performPageLoad(driver);
+			
+	        System.out.println("------------------------------------------------------");
+	        System.out.println("Selected document category name: " + randomCategory);
+	        System.out.println("------------------------------------------------------");
+	        
+			randomDocument = Utility.clickOnNumberInRange(getDocListLocator(randomCategory));
+			
+	        System.out.println("------------------------------------------------------");
+	        System.out.println("Selected document name: " + randomDocument);
+	        System.out.println("------------------------------------------------------");
+			performPageLoad(driver);
+			
+			Utility.ifLoaded(inProgress);
+			
 			Boolean elementNotFound = true;
 			int attemptCount = 0;
 
-			while (elementNotFound && attemptCount < 7) {
+			while (elementNotFound && attemptCount < 3) {
 				if (!(pdfPageView.size() == 1)) {
 					elementNotFound = true;
-					Utility.tapAndSwipe(Direction.UP);
+					Utility.scrollPage("down");
 					attemptCount++;
 				} else {
 					elementNotFound = false;
@@ -467,22 +517,20 @@ public class DocumentPage extends AppiumPageFactory {
 
 	public List<WebElement> getDocListLocator(String categoryName) {
 		return Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + categoryName + "']/following::"
-				+ "XCUIElementTypeOther[@name='Downloaded_Container']/preceding::XCUIElementTypeStaticText[2]"));
+				+ "XCUIElementTypeStaticText[@name='Downloaded']/preceding::XCUIElementTypeStaticText[2]"));
 	}
 
 	public static List<WebElement> getDocCategoryLocator(String panel) {
-
 		return Actions.findElements(By.xpath(
-				"//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, '"
-						+ panel
-						+ "')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText"));
+				"//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, '"+panel+"')]"
+				+ "/following:: XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[1]"));
 
 	}
 
 	public void navigateToViewCaseInfo(String actionName) {
 		// Scroll until viewCaseInfo is visible
 		while (viewCaseInfo.size() != 1) {
-			Utility.tapAndSwipe(Direction.DOWN);
+			Utility.scrollPage("down");
 		}
 
 		// Click on the first viewCaseInfo element
@@ -503,6 +551,78 @@ public class DocumentPage extends AppiumPageFactory {
 		// Page.waitToBeClickable(contains(actionName), driver);
 	}
 
+	
+	public void deleteDocument(String docName) {
+
+
+		Assert.assertTrue("Verify the viewed document: "+docName+" shows a green checkmark",verifyGreenCheckmark( docName,"y"))
+		 ;
+		
+          Utility.swipeElement("//XCUIElementTypeStaticText[@name='"+docName+"']");
+          
+		if (Utility.isDisplayed("//XCUIElementTypeAlert[@name='Delete Document?']"))
+			;
+		Actions.tap(okBtn);
+		
+		performPageLoad(driver);
+		
+		WebElement checkMark2 = driver.findElement(By.xpath("//XCUIElementTypeStaticText[@name='"+docName+"']/following::XCUIElementTypeStaticText[2]"));
+
+
+		WebElement downloaded = driver.findElement(By.xpath("//XCUIElementTypeStaticText[@name='Downloaded' and not(@label='')]"));
+
+		boolean downloadArrow = checkMark2.equals(downloaded);
+
+		Assert.assertTrue("The icon didn't switch back to a download arrow after deleting the "+docName+" via swipe", downloadArrow);
+
+	}
+	
+	
+	public boolean verifyGreenCheckmark(String docName,String isDocumentOpen) {
+        if (isDocumentOpen.equals("y")) {
+		Actions.tap(close);
+		performPageLoad(driver);
+	
+        }
+        WebElement checkMark = Page.waitForPresenceOfElementLocated(By.xpath("//XCUIElementTypeStaticText[@name='"+docName+"']/following::XCUIElementTypeStaticText[2]"), driver);
+
+        WebElement downloadedElement = Page.waitForPresenceOfElementLocated(By.xpath("//XCUIElementTypeStaticText[@name='Downloaded' and @label='']"), driver);
+
+      
+		boolean isSameElement = checkMark.equals(downloadedElement);
+
+
+		return  isSameElement;
+	}
+	
+	
+	
+	public void getReplacedDocument(List<UserInputData> userInputData) {
+	    String peId = DocumentPage.get_pe_id("jud", userInputData);
+
+
+	
+	    String query = Queries.REPLACED_DOCUMENTS.replace("?", peId);
+
+
+	    List<String[]> foundCases = executeDBQuery(getID(query, peId), userInputData);
+
+	  
+	    for (String[] row : foundCases) {
+	        String caseNum = row[0].trim();
+	        String dm_description = row[1].trim();
+	        String cs_caseid = row[2].trim();
+	        String dm_last_updated = row[3].trim();
+
+	        System.out.println(caseNum + " | " + dm_description + " | " + cs_caseid + " | " + dm_last_updated);
+	    }
+
+
+	    
+	}
+
+
+	
 	public enum Category {
 		Referral_Category, Referral, Panel, judgeRegularCase, targetCase, appliedCase, CaseOnCalendar, EnBanc
 	}

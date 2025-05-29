@@ -154,22 +154,8 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 	public void checkStaffAssignments(List<String> staffAssignments) {
 		for (String xpath : staffAssignments) {
-			boolean isDisplayed = false;
 
-			for (int attempt = 0; attempt < 5; attempt++) {
-				try {
-					WebElement element = waitForVisibilityOfElement(findElementBy(Locator.XPATH, xpath), driver);
-					isDisplayed = element.isDisplayed();
-					if (isDisplayed) {
-						break;
-					}
-				} catch (Exception e) {
-					// Element not found, swipe and try again
-					Utility.swipe(1, "up");
-				}
-			}
-
-			assertTrue("VERIFY THAT CORRECT STAFF ASSIGNMENTS ARE DISPLAYING ON THE REFERRAL LIST PAGE", isDisplayed);
+			assertTrue("VERIFY THAT CORRECT STAFF ASSIGNMENTS ARE DISPLAYING ON THE REFERRAL LIST PAGE: "+xpath, Utility.isDisplayed(xpath));
 		}
 	}
 

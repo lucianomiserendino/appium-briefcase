@@ -1,12 +1,12 @@
-@smoke
-Feature: note DPF UI 
+Feature: Note TPF
 
-@AMB-1055 @Regression
+@AMB-3647 @Regression
 Scenario: 
-	Verify when an action is selected that contains the note DPF, the note DPF UI displays.
+Verify the noteText TPF is supported by Briefcase, where the dictionary designer is able to contribute information
+ about the note to docket text that appears in docket entries in Briefcase.
+Note:  To view docket entries, go to a case referral, tap View Case Info, then tap Docket Entries
 
-
-	
+       
 		Given I am logged into Briefcase 
 		|environment|user    |
 		|test       |sysadmin|
@@ -28,7 +28,7 @@ Scenario:
 	And user verifies an editable Description , Comment , Submit fields are  displayed.  The default description is defined in the Default description parameter of the note DPF 
 		|courtId|
 		|test   |
-    
-    
-
-    
+		
+	Then User navigates to View Case Info, then taps Docket Entries
+	
+	 And user verifies Briefcase supports the noteText TPF

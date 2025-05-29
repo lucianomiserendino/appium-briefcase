@@ -61,6 +61,11 @@ public class InternalNotePage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Progress halted' or @name='In progress']")
 	public static List<WebElement> activityIndicator;
 
+	// @WithTimeout(time = 30, unit = TimeUnit.SECONDS)
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[2]")
+	public static WebElement collapseBtn;
+	
+	
 	private static String xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText";
 
 	String panel = "";
@@ -77,8 +82,12 @@ public class InternalNotePage extends AppiumPageFactory {
 			Page.performPageLoad(driver);
 			assertTrue(isDisplayed(cancelBtn));
 			assertTrue(isDisplayed(desc));
+			if(textField.isDisplayed()) {
+			textField.clear();
 			textField.clear();
 			assertTrue(isDisplayed(numOfChar));
+			}
+			
 			String newNote = Utility.randomCharArray(201);
 			sendKeys(textField, newNote);
 
@@ -94,9 +103,9 @@ public class InternalNotePage extends AppiumPageFactory {
 			isCaseNoteDisplayed(expectedNote, txt2);
 
 			driver.navigate().back();
-			Page.sleep(6000);
+			
 
-			isCategoryNoteDisplayed(expectedNote, referral);
+			isCategoryNoteDisplayed(expectedNote, referral,"y");
 
 //			String dbNote = getDBInternalNote(panel, category, referral, userInputData);
 //
@@ -113,11 +122,11 @@ public class InternalNotePage extends AppiumPageFactory {
 
 	public void navigateAway(String category, String referral, String expectedTxt) {
 
-		contains("Dashboard").click();
+		collapseBtn.click();
 
 		scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
 
-		isCategoryNoteDisplayed(expectedTxt, referral);
+		isCategoryNoteDisplayed(expectedTxt, referral,"y");
 
 		scrollDownIfNotDisplayed(Actions.containsElement(referral));
 		CommonPages.ifDownloaded(activityIndicator);
@@ -138,38 +147,78 @@ public class InternalNotePage extends AppiumPageFactory {
 
 		String dbNote = getDBInternalNote(panel, category, referral, userInputData);
 		Assert.assertTrue("PLEASE VERIFY THAT CMA_VALUE.CHM_MOBILE_DATA IS UPDATED CORRECTLY - >>", dbNote.isEmpty());
-		String caseDetailNote = Actions.getText(note);
-		isCaseNoteDisplayed("Add Internal Note", caseDetailNote);
+		
+        assertTrue("Verify 'Add Internal Note' is displayed",addNote.isDisplayed());
 		driver.navigate().back();
 		Page.sleep(6000);
-		isCategoryNoteDisplayed("", referral);
+		isCategoryNoteDisplayed("No elements displayed", referral,"n");
 
 		removeAndNavigateAway(category, referral);
 
 	}
 
 	public void removeAndNavigateAway(String category, String referral) {
-		contains("Dashboard").click();
+		collapseBtn.click();
 
 		scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
-		isCategoryNoteDisplayed("", referral);
+		isCategoryNoteDisplayed("No elements displayed", referral,"n");
 
 		scrollDownIfNotDisplayed(Actions.containsElement(referral));
 		Page.performPageLoad(driver);
-		String caseDetailN = Actions.getText(note);
-		isCaseNoteDisplayed("Add Internal Note", caseDetailN);
+        assertTrue("Verify 'Add Internal Note' is displayed",addNote.isDisplayed());
+	
 	}
 
 	public String getEnteredNoteTxt() {
 		return Actions.getText(Locator.XPATH, Actions.containsElement("Test:"));
 	}
 
-	public void isCategoryNoteDisplayed(String expectedTxt, String referral) {
+	public void isCategoryNoteDisplayed(String expectedTxt, String referral,String isDisplayed) {
 		assertTrue(
 				"NOTE MISMATCH, PLEASE CHECK THE INTERNAL NOTE ON THE REFERRAL CATEGORY PAGE, CASE# "
 						+ referral.toUpperCase() + " AND NOTE INTERFACE ->>",
-				categoryScreenNote(referral).equals(expectedTxt));
+				categoryScreenNote(referral,isDisplayed).equals(expectedTxt));
 	}
+	
+	public static String ifLoaded(By locator, String isDisplayed) {
+	    String result = "";
+	    Page.performPageLoad(driver);
+	    long startTime = System.currentTimeMillis();
+	    long maxDuration = 2 * 60 * 1000; 
+
+	    while (true) {
+	        List<WebElement> elements = driver.findElements(locator);
+
+	        if ("y".equalsIgnoreCase(isDisplayed)) {
+	            if (!elements.isEmpty()) {
+	                result = elements.get(0).getText();
+	                break;
+	            }
+	        } else if ("n".equalsIgnoreCase(isDisplayed)) {
+	            if (elements.isEmpty()) {
+	                result = "No elements displayed";
+	                break;
+	            }
+	        } else {
+	            throw new IllegalArgumentException("Invalid value for isDisplayed: " + isDisplayed);
+	        }
+
+	        try {
+	            Thread.sleep(10000); 
+	        } catch (InterruptedException e) {
+	            Thread.currentThread().interrupt();
+	            throw new RuntimeException("Thread was interrupted", e);
+	        }
+
+	        if (System.currentTimeMillis() - startTime > maxDuration) {
+	            throw new RuntimeException("Timed out after 3 minutes while checking for elements");
+	        }
+	    }
+
+	    return result;
+	}
+
+
 
 	public void isCaseNoteDisplayed(String expectedTxt, String actualTxt) {
 		assertEquals(
@@ -202,11 +251,10 @@ public class InternalNotePage extends AppiumPageFactory {
 
 	}
 
-	public static String categoryScreenNote(String referral) {
-		return Page.waitForPresenceOfElementLocated(By.xpath(
-				Actions.containsElement(referral) + "/following::XCUIElementTypeOther[2]/XCUIElementTypeStaticText"),
-				driver).getText();
-
+	public static String categoryScreenNote(String referral,String isDisplayed) {
+		return	ifLoaded(By.xpath(Actions.containsElement(referral) + "/XCUIElementTypeOther[1]/XCUIElementTypeOther [1]/XCUIElementTypeStaticText[3]"),isDisplayed);
+		
+		 
 	}
 
 	public static String getRandomText() {

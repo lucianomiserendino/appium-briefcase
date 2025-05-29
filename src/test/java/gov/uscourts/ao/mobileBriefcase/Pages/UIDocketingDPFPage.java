@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.openqa.selenium.WebElement;
@@ -182,7 +183,10 @@ public class UIDocketingDPFPage extends AppiumPageFactory {
 		} else {
 			throw new RuntimeException("Failed to select proposed order");
 		}
-		Utility.scroll(categories, "up");
+		for (int i = 0; i < 3; i++) {
+		
+		Utility.scrollPage("down");
+		}
 		tap(viewCaseInfo);
 		tap(docketEntries);
 		assertTrue(isDisplayed(Locator.XPATH, containsElement("Auto Test")));

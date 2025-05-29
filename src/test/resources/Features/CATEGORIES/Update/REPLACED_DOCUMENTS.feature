@@ -3,23 +3,22 @@ Feature: Document Annotations - Annotated document is replaced
 
 Background:
 
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |judge   |
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |
-		|judge      |Appellate Judges  |test     |sysadmin |
-			
-	Then User selects random judge category
-		|courtId|
-		|test   |
-			
-	Then User selects random case number
-		|courtId|
-		|test   |
+		|judge      |Appellate Judges  |test     |judge    |
 		
-	 Then User expands/collapse panel
+		
+		Then the user selects a category and a case that contains a replaced document
+			
+   #Then User selects a random category
+			
+   #Then User selects a random case
+		
+	# Then User expands/collapse panel
 	 
 	 
 	@AMB-3483
@@ -29,4 +28,4 @@ Scenario:
 Verify when the plus icon is selected the annotated document displays under the replaced document. (line 311)
 
 
-Then User verifies that the annotated/replaced documents are displayed as expected
+#Then User verifies that the annotated/replaced documents are displayed as expected

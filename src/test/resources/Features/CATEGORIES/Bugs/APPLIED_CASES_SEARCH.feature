@@ -2,12 +2,12 @@
 Feature:  Prevent the user from navigating to an applied case referral detail page from Search.   
   when a user selects an applied case in the Applied cases panel, the additional case information screen displays 
 
-
+#BUG AMB-4965
 
 Background:
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

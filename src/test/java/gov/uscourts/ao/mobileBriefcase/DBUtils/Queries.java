@@ -615,7 +615,7 @@ public class Queries {
 			+ "and annot_doc.dm_dktentryid = dcg_dktentryid and annot_doc.dm_seq = dcg_seq\n"
 			+ "--and orig_doc.dm_dls_id = #####  -- these three optional if you want to narrow results.\n "
 			+ "and annot_doc.dm_last_updated > TODAY \n" + "and orig_doc.dm_description matches \"*TEXT*\" \n"
-			+ "order by annot_doc.dm_last_updated desc, mad_orig_dm_dls_id desc;";
+			+ "order by annot_doc.dm_last_updated desc, mad_orig_dm_dls_id desc, case_num asc;";
 
 	public static final String CMR_CYV_CODE = "select distinct cmr_cyv_code from chm_mobile_referral, chm_reftype_val where cmr_ju_pe_id = 'CMR_JU_PE_ID' and cmr_date_end is null and "
 			+ "cmr_cyv_code = cyv_code AND cyv_is_briefcase = 'y' and cyv_is_oral_arg = 'n' and cyv_category='CYV_CATEGORY' and cmr_cs_caseid='CMR_CS_CASEID'";
@@ -730,4 +730,15 @@ public class Queries {
 	
 	public static final String ORAL_ARG_CMR_CYV_CODE = "select distinct cmr_cyv_code from chm_mobile_referral, chm_reftype_val where cmr_ju_pe_id = 'CMR_JU_PE_ID' and cmr_date_end is null and "
 			+ "cmr_cyv_code = cyv_code AND cyv_is_briefcase = 'y' and cyv_is_oral_arg = 'y' and cyv_category='CYV_CATEGORY' and cmr_cs_caseid='CMR_CS_CASEID'";
+
+
+
+	public static final String REPLACED_DOCUMENTS="select distinct  cs_year||\"-\"||cs_number case_num, orig_doc.dm_description, cs_caseid, annot_doc.dm_last_updated,mad_orig_dm_dls_id "
+ + "from mbr_annot_to_doc, user, document orig_doc, document annot_doc, personrole, dktentry, case_dktentry, case, outer doc_user, outer doc_group "
+ + "where mad_orig_dm_dls_id = orig_doc.dm_dls_id and mad_annot_dm_dls_id = annot_doc.dm_dls_id and mad_pe_id = pe_id and pe_pr_prid = ur_pr_prid "
+ + " and orig_doc.dm_dktentryid = de_dktentryid and orig_doc.dm_dktentryid = cd_dktentryid and cd_caseid = cs_caseid and "
+ + "annot_doc.dm_dktentryid = du_dktentryid and annot_doc.dm_seq = du_seq and annot_doc.dm_dktentryid = dcg_dktentryid and"
+ + " annot_doc.dm_seq = dcg_seq and orig_doc.dm_description like '%Replaced%' "
+ + "order by annot_doc.dm_last_updated,  mad_orig_dm_dls_id  desc";
+	
 }

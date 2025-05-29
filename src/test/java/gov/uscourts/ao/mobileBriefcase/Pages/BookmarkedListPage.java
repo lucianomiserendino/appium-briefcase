@@ -35,7 +35,7 @@ public class BookmarkedListPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[contains(@name, 'linked')]/preceding::XCUIElementTypeStaticText[contains(@name, '-')][1])")
 	public static WebElement targetCase;
 
-	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[contains(@name, 'linked')]/preceding::XCUIElementTypeStaticText[contains(@name, '-')]/following::XCUIElementTypeStaticText[@name='Bookmark'][1])")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[contains(@name, 'linked')]/following::XCUIElementTypeButton[@name='Bookmark'][1]")
 	public static WebElement bookmarkIcon;
 	
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
@@ -49,6 +49,8 @@ public class BookmarkedListPage extends AppiumPageFactory {
 			tap(bookOnDashboard.get(bookOnDashboard.size() - 1));
 			collapseBtn.click();
 			getBookmarkIcons();
+			collapseBtn.click();
+			collapseBtn.click();
 		} else {
 			assertEquals(0, bookOnDashboard.size());
 		}
@@ -61,6 +63,7 @@ public class BookmarkedListPage extends AppiumPageFactory {
 			tap(BookmarkedReferrals.get(0));
 		}
 		assertEquals(0, BookmarkedReferrals.size());
+		
 	}
 
 	public String getReferrals() {
@@ -82,7 +85,9 @@ public class BookmarkedListPage extends AppiumPageFactory {
 	    tap(Locator.XPATH,
 	            "(" + containsElement(referral) + "/following::XCUIElementTypeButton[@name='Bookmark'])[1]");
 	    collapseBtn.click();
-
+       if (expectedCount==0) {
+    	 collapseBtn.click();
+       }
 	    new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver -> bookOnDashboard.size() == expectedCount);
 
 	    assertEquals(expectedCount, bookOnDashboard.size());
@@ -95,6 +100,7 @@ public class BookmarkedListPage extends AppiumPageFactory {
 		bookmarkIcon.click();
 		dashboard.click();
 		bookOnDashboard.get(0).click();
+		collapseBtn.click();
 		String bookmarkDeatilPage = getReferral();
 
 		assertEquals(

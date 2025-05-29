@@ -10,22 +10,19 @@ Scenario:
 3.  The relief on which the judge is ruling
 4.  Each judge's vote and the date they voted
 
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |
 		|judge      |Appellate Judges  |test     |sysadmin |
-		
-		Then User selects random judge category
-		|courtId|
-		|test   |
 			
-	   Then User selects random case number
-		|courtId|
-		|test   |
-		
+   Then User selects a random category
+			
+   Then User selects a random case
+				
+
      Given User observes the Vote Information panel displays.   This should only display if the referral requires voting 
 	Then  For each referral, observe the filer's name (pr_last_name, pr_first_name, first initial of pr_middle_name, gn_display) party type (pt_description) and date filed (de_date_filed) displays in a light blue heading
 	

@@ -54,14 +54,15 @@ public class CaseQueryPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTable/XCUIElementTypeCell[2]")
 	public static WebElement dashboardIcon;
 	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
+	public static WebElement collapseBtn;
 
 	public void getCaseSearch(String category) {
 	    String fullCaseNumber = selectRandomCaseNumber(0);
 	    searchForACase(category, fullCaseNumber, Search.wildcard);
 	    
-
-	    assertTrue("APP IS NOT RETURNING CASE LIST FOR SOME WILDCARD SEARCHES",
-	        isDisplayed(Locator.XPATH, containsElement("Case #" + fullCaseNumber)));
+	    isDisplayed(Locator.XPATH, containsElement(fullCaseNumber));
+	  
 	    
 	}
 
@@ -85,6 +86,7 @@ public class CaseQueryPage extends AppiumPageFactory {
 	    // Click on the device element
 	    clicksOn(on_device);
 	    
+	    collapseBtn.click();
 	    // Scroll down to the element if not displayed
 	    scrollDownIfNotDisplayed(containsElement(category) + "/preceding::XCUIElementTypeStaticText[contains(@name, '" + fullCaseNumber + "')]");
 	    

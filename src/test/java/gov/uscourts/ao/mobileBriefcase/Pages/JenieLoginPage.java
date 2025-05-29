@@ -196,22 +196,22 @@ public class JenieLoginPage extends Base {
 
 		ifDownloaded(retrievePendingRefs);
 
-		if (user.equals("sysadmin")) {
-			contains(User).click();
-
-			String name = "";
-
-			if (userType.equals("judge")) {
-				name = getProperty(env + jud);
-			} else if (userType.equals("stf")) {
-
-				name = getProperty(env + stf);
-			}
-
-			selectUser(personrole, name);
+//		if (user.equals("sysadmin")) {
+//			contains(User).click();
+//
+//			String name = "";
+//
+//			if (userType.equals("judge")) {
+//				name = getProperty(env + jud);
+//			} else if (userType.equals("stf")) {
+//
+//				name = getProperty(env + stf);
+//			}
+//
+//			selectUser(personrole, name);
 			ifDownloaded(inProgress);
 
-		}
+		//}
 	}
 
 	public static void selectUser(String availableJudges, String user) {

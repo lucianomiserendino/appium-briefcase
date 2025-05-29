@@ -147,7 +147,7 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeSwitch")
 	public static WebElement switchBtn;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Page Label']/XCUIElementTypeOther/following:: XCUIElementTypeStaticText")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Page Label']/XCUIElementTypeOther/following::XCUIElementTypeStaticText[1]")
 	public static WebElement pageNumber;
 
 	@iOSXCUITFindBy(accessibility = "PDF View")
@@ -246,10 +246,6 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 	}
 
 	public void annotateDocument(String docName, String caseNum, List<UserInputData> userInputData) {
-
-		System.out.println("------------------------------------------------------");
-		System.out.println("Selected document name: " + docName);
-		System.out.println("------------------------------------------------------");
 
 		Actions.tap(annotations);
 		if (Actions.isDisplayed(author) == true) {
@@ -355,36 +351,38 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 	}
 
 	public static void getBackEndUpdates(String uiCaseNum, String uiDocName, List<UserInputData> userInputData) {
-		// Fetching data from the database
-		List<String[]> dbAnnotatedDocDetails = executeDBQuery(DBUtilities.getText(Queries.annotatedDoc, uiDocName),
-				userInputData);
+	    List<String[]> dbAnnotatedDocDetails = executeDBQuery(DBUtilities.getText(Queries.annotatedDoc, uiDocName), userInputData);
 
-		// Handling case when no data is returned from the database
-		if (dbAnnotatedDocDetails == null || dbAnnotatedDocDetails.isEmpty()) {
-			throw new AssertionError("No document categories returned from the database.");
-		}
+	    if (dbAnnotatedDocDetails == null || dbAnnotatedDocDetails.isEmpty()) {
+	        throw new AssertionError("No annotated documents returned from the database.");
+	    }
 
-		// Extracting data from the database result
-		String dbCaseNum = "";
-		String dbDocName = "";
-		String dbPeId = "";
-		for (String[] record : dbAnnotatedDocDetails) {
-			dbCaseNum = record[0].trim();
-			dbDocName = record[1].trim();
-			dbPeId = record[2].trim();
-		}
+	    String uiPeId = DocumentPage.get_pe_id("jud", userInputData);
 
-		// Finding pe_id of the logged in judge
-		String uiPeId = DocumentPage.get_pe_id("jud", userInputData);
+	    boolean isMatch = false;
+	    int maxRowsToCheck = Math.min(1, dbAnnotatedDocDetails.size());
 
-		// Assertions to verify data consistency between UI and database
-		Assert.assertEquals("Verify correct pe_id is saved in the mbr_annot_to_doc table", dbPeId, uiPeId);
-		Assert.assertEquals("Verify the case number is correct for the annotated document", dbCaseNum, uiCaseNum);
-		Assert.assertEquals("Verify correct document is saved in the mbr_annot_to_doc table", dbDocName, uiDocName);
+	    for (int i = 0; i < maxRowsToCheck; i++) {
+	        String[] record = dbAnnotatedDocDetails.get(i);
+	        String dbCaseNum = record[0].trim();     // cs_number
+	        String dbDocName = record[1].trim();     // dm_description
+	        String dbPeId = record[2].trim();        // pe_id
 
-		// Closing the document page
-		close.click();
+	        if (dbCaseNum.equals(uiCaseNum) && dbDocName.equals(uiDocName) && dbPeId.equals(uiPeId)) {
+
+	            isMatch = true;
+	            break;
+	        }
+	    }
+
+	    if (!isMatch) {
+	        throw new AssertionError("Verify the Annotations are saved in DB" +
+	                "CaseNum = " + uiCaseNum + ", Doc = " + uiDocName + ", PeId = " + uiPeId);
+	    }
+
+	    close.click();
 	}
+
 
 	public List<String> getDocumentCategories() {
 

@@ -68,6 +68,12 @@ public class SyncPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='DocumentList']/XCUIElementTypeScrollView//child::*//*[contains(@name, 'Actions')]/following:: XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText")
 	public static List<WebElement> docCategories;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[2]")
+	public static WebElement dashBoard;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Settings']")
+	public static WebElement gearIcon;
 
 	public static void getSync(SyncType page, List<UserInputData> userInputData) {
 		String dashboardPage ="";
@@ -90,13 +96,23 @@ public class SyncPage extends AppiumPageFactory {
 			break;
 
 		case Referral_Category:
-
-
+			
+			Page.sleep(5000);
+			settingsIcon.click();
+			performPageLoad(driver);
+			deleteAllDocuments.click();
+			Actions.isDisplayed(deleteMessage);
+			performPageLoad(driver);
+			ifDownloaded(deletingDoc);
+		
+		Actions.navigateBack();
+		performPageLoad(driver);
+		
 			page1.categroySyncBtn.click();
 			ifDownloaded(page1.activityIndicator);
 
-			if (contains("Dashboard").isDisplayed()) {
-				contains("Dashboard").click();
+			if (dashBoard.isDisplayed()) {
+				dashBoard.click();
 			}
 			 dashboardPage = getSyncCount();
 			 syncPage = viewSyncResults();
@@ -121,7 +137,7 @@ public class SyncPage extends AppiumPageFactory {
 	}
 
 	public static String viewSyncResults() {
-		settingsIcon.click();
+		gearIcon.click();
 		viewSyncResults.click();
 		performPageLoad(driver);
 		WebElement syncResults = Actions.findElement(By.xpath(containsElement("Sync Results")));
@@ -131,8 +147,9 @@ public class SyncPage extends AppiumPageFactory {
 	/** deletes all the documents from the device */
 	public static String deleteAllDocuments() {
 
-		if (contains("Dashboard").isDisplayed()) {
-			contains("Dashboard").click();
+		if (dashBoard.isDisplayed()) {
+			dashBoard.click();
+		}
 			Page.sleep(5000);
 			settingsIcon.click();
 			performPageLoad(driver);
@@ -140,7 +157,7 @@ public class SyncPage extends AppiumPageFactory {
 			Actions.isDisplayed(deleteMessage);
 			performPageLoad(driver);
 			ifDownloaded(deletingDoc);
-		}
+		
 		Actions.navigateBack();
 		performPageLoad(driver);
 		return getSyncCount();

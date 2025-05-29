@@ -28,6 +28,7 @@ import static org.junit.Assert.assertTrue;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -35,6 +36,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
@@ -52,12 +54,11 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class JudgeVoteDPFPage extends AppiumPageFactory {
 
-	String select = "Please Select";
 
 	@iOSXCUITFindBy(accessibility = "Close")
 	public static WebElement close;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='NoteList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Comment']/following:: XCUIElementTypeOther[1]/XCUIElementTypeTextView")
 	public static WebElement commentField;
 
 	@iOSXCUITFindBy(id = "Apply")
@@ -90,7 +91,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
 	public static WebElement dashboard;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='VoteOptions']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"VoteOptions\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
 	public static List<WebElement> judgeVotes;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeButton")
@@ -131,6 +132,9 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Case Information']")
 	public static WebElement caseInfo;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
+	public static WebElement collapseBtn;
 
 	public static String cyv_category = "";
 	public static String caseid = "";
@@ -291,12 +295,15 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 		}
 
 		String voteList = voteListBuilder.toString();
-		if (voteList.contains(select)) {
-			try {
-				votes.remove(select);
-			} catch (NoSuchElementException e) {
-				System.err.println("Element not found: " + e.getMessage());
-			}
+		List<String> itemsToRemove = Arrays.asList("Please Select", "No Change");
+		for (String item : itemsToRemove) {
+		    if (voteList.contains(item)) {
+		        try {
+		            votes.remove(item);
+		        } catch (NoSuchElementException e) {
+		            System.err.println("Element not found: " + e.getMessage());
+		        }
+		    }
 		}
 
 		voteText = clickOnNumberInRange(votes);
@@ -305,7 +312,6 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 		tap(Locator.XPATH, getIndexOfNoteIcon(relief.trim()));
 		addVote(dpfName, getID(MBR_NOTE, elementId), relief.trim(), elementId.trim(), userInputData);
 		tap(back);
-		Utility.tapAndSwipe(Direction.UP);
 
 		return resultText;
 	}
@@ -324,7 +330,8 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	 */
 	public void verifyNoteText(String relief, String ccrId, String category, List<UserInputData> userInputData,
 			String caseNum) {
-		Utility.tapAndSwipe(Direction.UP);
+		
+		//Utility.tapAndSwipe(Direction.UP);
 		// Open the Vote Information panel
 		CommonPages.getPanel(Panel.valueOf("Vote_Information"));
 
@@ -387,10 +394,25 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 			scrollDownIfNotDisplayed("//XCUIElementTypeButton[@name='Submit']");
 			CommonPages.ifDownloaded(progress);
 			Page.sleep(2000);
-			Utility.tapAndSwipe(Direction.UP);
+			int maxScrollAttempts = 4;
+			boolean isCaseInfoVisible = false;
 
-			// Wait for the page to load and select the action
-			Page.waitForVisibilityOfElement(caseInfo, driver);
+			for (int attempt = 0; attempt < maxScrollAttempts; attempt++) {
+			    Utility.scrollPage("down");
+			    
+			    try {
+			        Page.waitForVisibilityOfElement(caseInfo, driver);
+			        isCaseInfoVisible = true;
+			        break; 
+			    } catch (TimeoutException e) {
+			        
+			    }
+			}
+
+			if (!isCaseInfoVisible) {
+			    throw new AssertionError("caseInfo is not visible after scrolling down 4 times.");
+			}
+
 			selectAction("Actions", elementId, userInputData);
 			performPageLoad(driver);
 
@@ -407,8 +429,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 	public static WebElement getVote(String relief) {
 
-		return findElement(By.xpath("(//XCUIElementTypeStaticText[@name='" + relief
-				+ "']/following::XCUIElementTypeOther[contains(@name, 'NoteIcon')])[1]"));
+		return findElement(By.xpath("//XCUIElementTypeStaticText[@name='"+relief+"']/following::XCUIElementTypeButton[@name='NoteIcon'][1]"));
 
 	}
 
@@ -481,6 +502,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	}
 
 	public void verifyDocumentIsDisplayed() {
+		collapseBtn.click();
 		Page.performPageLoad(driver);
 		String el = null;
 
@@ -500,6 +522,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 		}
 		assertTrue(isDisplayed(Locator.XPATH, containsElement(el)));
 		Actions.contains(el).click();
+		//Utility.ifDocumentOpened(progress);
 		CommonPages.ifDownloaded(progress);
 		ifDocumentAccessbile(el);
 

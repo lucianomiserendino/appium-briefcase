@@ -2,6 +2,8 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import java.util.List;
 
+import org.junit.Assert;
+
 import cucumber.api.DataTable;
 import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
@@ -71,6 +73,20 @@ public class Document_StepDefinitions {
 		common.getGroupIcons(GroupIcons.Expand);
 		page = new DocumentPage();
 		page.getDocumentList(userInputData);
+	}
+	
+	@Then("^User verifies the document shows a green checkmark, swipe to delete it, and confirm the icon reverts to a download arrow\\.$")
+	public void user_verifies_the_document_shows_a_green_checkmark_swipe_to_delete_it_and_confirm_the_icon_reverts_to_a_download_arrow()  {
+		page = new DocumentPage();
+		page.deleteDocument(DocumentPage.randomDocument);
+		
+	}
+	@Then("^User verifies downloaded \\(\"([^\"]*)\"\\) document has a green checkmark next to it$")
+	public void user_verifies_downloaded_document_has_a_green_checkmark_next_to_it(String open) {
+		page = new DocumentPage();
+	    Assert.assertTrue(
+		        "Verify the viewed document: " + DocumentPage.randomDocument + " shows a green checkmark",
+		        page.verifyGreenCheckmark(DocumentPage.randomDocument, open));		 
 	}
 
 	@Then("^User selects sub Category$")

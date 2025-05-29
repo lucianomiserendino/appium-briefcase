@@ -8,9 +8,9 @@ Scenario:
  
 
        
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |
@@ -45,18 +45,19 @@ Scenario:
 Verify tapping the Sync in the Referral list page downloads the documents for the selected judge category
 
 
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |
 		|judge      |Appellate Judges  |test     |sysadmin |
 		
-		Then User selects random judge category
-		|courtId|
-		|test   |
-		
+   Then User selects a random category
+			
+   Then User selects a random case
+	
+
 	Then User taps Sync button in the Referral List Page and verifies that all original documents are downloaded
 	
 	
