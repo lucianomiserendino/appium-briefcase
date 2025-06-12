@@ -1,7 +1,7 @@
 Feature: Display Vote Information Panel, filer info and judge's initials 
 			
 	
-		@Smoke @AMB-1097 
+		@AMB-1097 
 		Scenario Outline: 
 			Given I am logged into Briefcase 
 				|environment    |userName| password |courtId|

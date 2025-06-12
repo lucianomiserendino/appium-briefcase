@@ -2,13 +2,15 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static org.junit.Assert.assertTrue;
 
+
 import java.util.List;
 
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+
 import gov.uscourts.ao.mobileBriefcase.Pages.CalendarPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class CalendaredCases_StepDefinitions {
 	CalendarPage page;

@@ -21,6 +21,7 @@ import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.verifyElementIsD
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElement;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
@@ -85,7 +86,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	public static String exitsingAssignmentType = "";
 	public static List<String> staffMembers=new ArrayList<>();
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='OptionList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='OptionList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
 	public static List<WebElement> optionList;
 
 //	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[contains(@name, 'Comments')]/following:: XCUIElementTypeTextView[1]")
@@ -120,6 +121,9 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"DocketingDPFList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther[9]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeSwitch")
 	public static WebElement toggle;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
+	public static WebElement collapseBtn;
 
 	public static String selectADate(chmAssign assign) {
 
@@ -149,7 +153,8 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 	public String get_cha_id(String caseNumber, String category, List<UserInputData> userInputData) {
 
-		return cha_id = getCreatedAssignment(Queries.ASSIGNEES_CHA_ID, cha_ju_pe_id, cmr_cs_caseid, userInputData);
+		 cha_id = getCreatedAssignment(Queries.ASSIGNEES_CHA_ID, cha_ju_pe_id, cmr_cs_caseid, userInputData);
+		 return cha_id;
 	}
 
 	public void modifySTF(String caseNumber, String category, List<UserInputData> userInputData) {
@@ -332,21 +337,51 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		}
 	}
 
-	public static void submiTransaction() {
-		try {
-			clickOn(submit, yes, ok);
-		} catch (WebDriverException e) {
-			e.getMessage();
-		}
-		Page.waitForVisibilityOfElement(contains("Case Information"), driver);
+	public static void submitTransaction() {
+	    try {
+	        clickOn(submit, yes, ok);
+	    } catch (WebDriverException e) {
+	        System.err.println("Error during submission click: " + e.getMessage());
+	        return; 
+	    }
+
+	    Utility.scrollPage("down");
+
+	    final int maxScrollAttempts = 5;
+	    int scrollCount = 0;
+	    boolean elementFound = false;
+
+	    while (scrollCount < maxScrollAttempts && !elementFound) {
+	        List<WebElement> elements = findElements(By.xpath("//*[contains(@name, 'Case Information')]"));
+
+	        if (!elements.isEmpty()) {
+	            WebElement lastElement = elements.get(elements.size() - 1);
+	            try {
+	                lastElement.click();
+	                elementFound = true;
+	                System.out.println("Clicked on 'Case Information' element.");
+	            } catch (WebDriverException e) {
+	                System.err.println("Error clicking on 'Case Information' element: " + e.getMessage());
+	            }
+	        } else {
+	            Utility.scrollPage("down");
+	            performPageLoad(driver);
+	            scrollCount++;
+	            System.out.println("Scroll attempt #" + scrollCount + " - 'Case Information' not found.");
+	        }
+	    }
+
+	    if (!elementFound) {
+	        System.err.println("Failed to find and click on 'Case Information' element after " + maxScrollAttempts + " scrolls.");
+	    }
 	}
 
-	public static void terminateStaffAssignment(List<UserInputData> userInputData) {
-		//assignmentCompleted = selectADate(chmAssign.ASSIGNMENT_COMPLETED);
-		 assignmentCompleted = getChmAssign(chmAssign.ASSIGNMENT_COMPLETED, "text");
-		contains(apply).click();
-		submiTransaction();
 
+	public static void terminateStaffAssignment(List<UserInputData> userInputData) {
+		assignmentCompleted = selectADate(chmAssign.ASSIGNMENT_COMPLETED);
+		contains(apply).click();
+		submitTransaction();
+     
 		getCreatedRecords(changeFormat(assignmentCompleted), getID(CHC_DATE_END, cha_id), userInputData);
 
 	}
@@ -356,6 +391,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	}
 
 	public static String getANewStaffAssignment(String assignment, String assignedDate, String assignmentDue) {
+		performPageLoad(driver);
 		try {
 			WebElement modifiedAssignedDate = getExistingAssignment(staffMember + ", " + assignment,
 					"Assigned " + assignedDate);
@@ -450,8 +486,12 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	}
 
 	public static WebElement getExistingAssignment(String assineeName, String AssignmentTypeAndDate) {
-		return findElement(By.xpath("//*[contains(@name, '" + assineeName
-				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + AssignmentTypeAndDate + "')]"));
+		
+		return Page.waitForPresenceOfElementLocated(By.xpath("//*[contains(@name, '" + assineeName
+		+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + AssignmentTypeAndDate.trim() + "')]"), driver)	;
+
+//return findElement(By.xpath("//*[contains(@name, '" + assineeName
+	//			+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + AssignmentTypeAndDate + "')]"));
 	}
 
 	public static void clickOnExistingAssignment(String staffMember) {
@@ -474,7 +514,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		scrollDownIfNotDisplayed(containsElement(submit));
 		ifDownloaded(sending);
 		// tap(Locator.XPATH, containsElement(yes));
-		tap(Locator.XPATH, containsElement(ok));
+		//tap(Locator.XPATH, containsElement(ok));
 	}
 
 	public static String getChmAssign(chmAssign asmnt, String action) {
@@ -521,20 +561,17 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	}
 
 	public static WebElement getButton(String button, String text) {
+	    String baseXPath = "//*[contains(@name, '" + button + "')]";
+	    String xpathVisible = baseXPath + "/following::XCUIElementTypeOther[1]/" + text;
+	    String xpathFallback = baseXPath + "/following::XCUIElementTypeOther[1]/XCUIElementTypeOther/" + text;
 
-		if (Actions.isDisplayed(Locator.XPATH,
-				"//*[contains(@name, '" + button + "')]/following::XCUIElementTypeOther[1]/" + text) == true) {
-
-			return Page.waitForVisibilityOfElement(
-					findElement(By.xpath(
-							"//*[contains(@name, '" + button + "')]/following::XCUIElementTypeOther[1]/" + text)),
-					driver);
-		} else {
-
-			return findElement(By.xpath("//*[contains(@name, '" + button
-					+ "')]/following::XCUIElementTypeOther[1]/XCUIElementTypeOther/" + text));
-		}
+	    if (Actions.isDisplayed(Locator.XPATH, xpathVisible)) {
+	        return Page.waitForVisibilityOfElement(findElement(By.xpath(xpathVisible)), driver);
+	    } else {
+	        return findElement(By.xpath(xpathFallback));
+	    }
 	}
+
 
 	public enum chmAssign {
 		STAFF_MEMBER, ASSIGNMENT, ASSIGNED_DATE, ASSIGNMENT_DUE, DRAFT_PREPARED, ASSIGNMENT_COMPLETED, CREATE, MODIFY,
@@ -627,9 +664,13 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		switch (assign) {
 		case CREATE:
 			contains(apply).click();
+			
+			collapseBtn.click();
+			
 			getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
-
-			submiTransaction();
+			collapseBtn.click();
+			submitTransaction();
+			
 			ifDownloaded(assignments);
 
 			if (existing = false) {
@@ -659,8 +700,10 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		case MODIFY:
 			contains(apply).click();
 			/** After the new assignment is created it clicks on it */
+			collapseBtn.click();
 			getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
-			submiTransaction();
+			collapseBtn.click();
+			submitTransaction();
 			clickOnExistingAssignment(staffMember + ", " + assignment);
 
 			/*****

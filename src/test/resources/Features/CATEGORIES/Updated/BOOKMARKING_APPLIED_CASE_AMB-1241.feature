@@ -1,4 +1,4 @@
-@Regression @AMB-1241
+@Regression @AMB-1241 @smoke
 Feature: Applied Cases link 
 
 

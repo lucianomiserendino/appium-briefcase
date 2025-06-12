@@ -1,7 +1,7 @@
 @Regression
 Feature: Vote Information - En banc panel
 
-@AMB-3474
+@AMB-3474 @smoke
 Scenario: 
 	Verify if the matter was referred to an en banc panel, instead of listing all the judges on the page, a button is displayed next 
 	to the logged in judge’s vote that when tapped, shows all the judges’ vote in a popup

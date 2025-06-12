@@ -2,11 +2,12 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import java.util.List;
 
-import cucumber.api.java.en.Then;
+
 import gov.uscourts.ao.mobileBriefcase.Pages.AutoSyncPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.SyncPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.SyncPage.SyncType;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import io.cucumber.java.en.Then;
 
 public class Sync_StepDefinitions {
 
@@ -39,4 +40,10 @@ public class Sync_StepDefinitions {
 		List<UserInputData> userInputData = null;
 		page.getSync(SyncType.Case_Detail, userInputData);
 	}
+	@Then("^User records the number of available documents for download$")
+	public void user_records_the_number_of_available_documents_for_download() {
+		page = new SyncPage();	
+		page.getSyncCountOnDashboard() ;
+	}
+
 }

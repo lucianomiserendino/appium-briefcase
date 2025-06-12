@@ -8,19 +8,15 @@ If they edit any of the previously existing dates during this transaction those 
        
 		#Given I am logged into Briefcase 
 		#|environment|user    |
-		#|test       |sysadmin|
+		#|test       |judge   |
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |
-		|judge      |Appellate Judges  |test     |sysadmin |
+		|judge      |Appellate Judges  |test     |judge    |
 			
-	Then User selects random judge category
-		|courtId|
-		|test   |
+   Then User selects a random category
 			
-	Then User selects random case number
-		|courtId|
-		|test   |
+   Then User selects a random case
 				
 	Then User selects action
 	|dpf       |courtId    |

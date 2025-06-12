@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_INFO;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getRandomNumberInRange;
@@ -8,8 +9,6 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getRandomNumbe
 import java.util.Arrays;
 import java.util.List;
 
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.AssignmentsPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.AssignmentsPage.AssignmentInfo;
@@ -17,6 +16,8 @@ import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.PendingTasksPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 
 public class Assignment_StepDefinitions {
 	AssignmentsPage assig;

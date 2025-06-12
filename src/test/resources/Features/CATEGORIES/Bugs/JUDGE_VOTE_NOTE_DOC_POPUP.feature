@@ -1,4 +1,4 @@
-@Regression @AMB-3245 @smoke
+@Regression @AMB-3245
 Feature: JudgeVote note/doc popup
 
 #dependent on AMB-4971

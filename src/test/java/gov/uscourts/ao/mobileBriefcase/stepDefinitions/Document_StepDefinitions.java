@@ -2,10 +2,10 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import java.util.List;
 
+
 import org.junit.Assert;
 
-import cucumber.api.DataTable;
-import cucumber.api.java.en.Then;
+
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
@@ -13,6 +13,8 @@ import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.Category;
 import gov.uscourts.ao.mobileBriefcase.Pages.StaffAttorneyReferralSortPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
+import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.Then;
 
 public class Document_StepDefinitions {
 	DocumentPage page;
@@ -101,6 +103,7 @@ public class Document_StepDefinitions {
 		stfPage = new StaffAttorneyReferralSortPage();
 		stfPage.selectRandomCase(stfSubCategory);
 	}
+
 	
 	@Then("^User navigates to View Case Info, then taps Docket Entries$")
 	public void user_navigates_to_View_Case_Info_then_taps_Docket_Entries()  {

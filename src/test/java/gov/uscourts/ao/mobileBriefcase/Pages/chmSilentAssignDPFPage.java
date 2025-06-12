@@ -95,7 +95,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 
 	public void createChmSilentAssign(List<UserInputData> userInputData) {
 
-		chmAssignDPFPage.submiTransaction();
+		chmAssignDPFPage.submitTransaction();
 		if (contains("Dashboard").isDisplayed())
 			contains("Dashboard").click();
 

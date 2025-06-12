@@ -1,4 +1,4 @@
-@AMB-3104 @AMB-3286 @AMB-3384 @AMB-3386
+@AMB-3104 @AMB-3286 @AMB-3384 @AMB-3386 @smoke
 Feature: Display an internal note option for judges
 
 
@@ -6,9 +6,9 @@ Feature: Display an internal note option for judges
 Scenario: Add an Internal Note for Judges
        
 		
-		#Given I am logged into Briefcase 
-		#|environment|user    |
-		#|test       |sysadmin|
+		Given I am logged into Briefcase 
+		|environment|user    |
+		|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

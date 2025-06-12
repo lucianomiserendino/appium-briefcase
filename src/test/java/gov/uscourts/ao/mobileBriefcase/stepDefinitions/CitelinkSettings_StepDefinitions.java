@@ -1,10 +1,10 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.AccessingAnnotatedDocuments;
 import gov.uscourts.ao.mobileBriefcase.Pages.CitelinkSettings;
 import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class CitelinkSettings_StepDefinitions {
 	CitelinkSettings page;

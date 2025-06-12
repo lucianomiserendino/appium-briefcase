@@ -1,14 +1,17 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import cucumber.api.DataTable;
-import cucumber.api.java.en.Then;
+
+
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.DPFs;
 import gov.uscourts.ao.mobileBriefcase.page.common.DPFs.DPF;
+import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.Then;
 
 public class DPF_stepDefinitions {
 
@@ -22,17 +25,22 @@ public class DPF_stepDefinitions {
 
 	@Then("^User selects action$")
 	public void user_selects_action(DataTable table) {
-		page = new DPFs();
-		List<UserInputData> userInputData = null;
-		List<List<String>> data = table.raw();
-		String dpf = data.get(1).get(0);
+	    page = new DPFs();
 
-		actionName = page.getChmAssign(DPF.valueOf(dpf), caseNum,userInputData);
+	    // Ideally initialize userInputData properly, not null
+	    List<UserInputData> userInputData = new ArrayList<>();
 
-		page2 = new CommonPages();
-		page2.selectBriefcaseAction("Actions", actionName);
+	    // Replace raw() with asLists()
+	    List<List<String>> data = table.asLists();
 
+	    String dpf = data.get(1).get(0);
+
+	    actionName = page.getChmAssign(DPF.valueOf(dpf), caseNum, userInputData);
+
+	    page2 = new CommonPages();
+	    page2.selectBriefcaseAction("Actions", actionName);
 	}
+
 
 	@Then("^Submit action that has multiple dpfs$")
 	public void submit_action_that_has_multiple_dpfs_and_verify_data_is_saved() {

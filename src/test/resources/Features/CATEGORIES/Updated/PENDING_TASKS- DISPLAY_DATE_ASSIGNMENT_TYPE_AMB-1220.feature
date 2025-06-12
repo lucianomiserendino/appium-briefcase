@@ -2,7 +2,7 @@
 Feature: Pending Tasks --Display date assignment type 
 
 
-@AMB-1220 
+@AMB-1220 @smoke
 Scenario: 
 
 

@@ -2,10 +2,9 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static org.junit.Assert.assertTrue;
 
+
 import java.util.List;
 
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
@@ -13,6 +12,8 @@ import gov.uscourts.ao.mobileBriefcase.Pages.Judge_Involvement;
 import gov.uscourts.ao.mobileBriefcase.Pages.VoteInformationPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.VoteInformationPage.FILERs_INFO;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 
 public class VoteInformation_StepDefinitions {
 	VoteInformationPage page;

@@ -1,4 +1,4 @@
-@Regression @AMB-1247
+@Regression @AMB-1247 @smoke
 Feature: Case Query -- return case list for wildcard searches 
  
 Scenario: 

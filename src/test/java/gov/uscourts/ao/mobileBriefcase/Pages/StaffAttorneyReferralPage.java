@@ -33,6 +33,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Filter;
 import gov.uscourts.ao.mobileBriefcase.stepDefinitions.Document_StepDefinitions;
@@ -72,6 +73,9 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Default']")
 	public static List<WebElement> Default;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeStaticText")
+	public static WebElement collapseBtn;
 
 	private static String xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText";
 
@@ -82,6 +86,9 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 	/** Observe the assignment categories that display on the dashboard for SAs */
 
 	public void verifyDataOnTheDashboard(List<UserInputData> userInputData) {
+		
+		collapseBtn.click();
+		
 		List<String> assignmentCategories = DocumentPage.getAssignmentCategories(2, userInputData);
 		String xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText";
 		boolean areElementsDisplayed = elementIsDisplayed(assignmentCategories, xpath, userInputData);
@@ -153,6 +160,7 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 	}
 
 	public void tapOnReferralCategory(List<UserInputData> table) {
+		Page.performPageLoad(driver);
 		List<String> caseList = new ArrayList<>();
 		List<String> categoryName = new ArrayList<>();
 
@@ -184,13 +192,13 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 			sar_cs_caseid = caseList.get(0).trim();
 			category = categoryName.get(0).trim();
 		}
-
-		scrollDownIfNotDisplayed(Actions.containsElement(category.trim()));
+		Actions.contains(category.trim()).click();
+		//scrollDownIfNotDisplayed(Actions.containsElement(category.trim()));
 
 		String caseNum = DBUtilities.getAllColumns(replace(CASE_NUMBER, "CS_CASEID", sar_cs_caseid), table);
 
-		Actions.findElement(By.xpath("//XCUIElementTypeStaticText[contains(@name, '" + category
-				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + caseNum + "')]")).click();
+		Actions.findElement(By.xpath("//XCUIElementTypeStaticText[contains(@name, '" + caseNum
+				+ "')]/following::XCUIElementTypeStaticText[contains(@name, '" + category + "')]")).click();
 
 	}
 

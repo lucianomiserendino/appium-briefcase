@@ -1,13 +1,13 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
+
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage;
@@ -15,6 +15,7 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.DPFs;
 import gov.uscourts.ao.mobileBriefcase.page.common.DPFs.DPF;
+import io.cucumber.java.en.Then;
 
 public class CreateStaffAssignments_StepDefinitions extends Base {
 	static CommonPages page;
@@ -38,19 +39,19 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 
 	@Then("^User creates a new staff assignment$")
 	public void user_creates_a_new_staff_assignment(List<UserInputData> userInputData) {
-
-		page1 = new chmAssignDPFPage();
-		page1.existing = false;
-		page1.createNewSTF(caseNum, category, userInputData);
-		page1.get_cha_id(caseNum, category, userInputData);
-
+	    page1 = new chmAssignDPFPage();
+	    page1.existing = false;
+	    page1.createNewSTF(caseNum, category, userInputData);
+	    String chaId = page1.get_cha_id(caseNum, category, userInputData);
 	}
 
 	@Then("^User edits existing staff assignment$")
 	public void user_edits_existing_staff_assignment(List<UserInputData> userInputData) {
-		page1 = new chmAssignDPFPage();
-		page1.modifySTF(caseNum, category, userInputData);
+	    page1 = new chmAssignDPFPage();
+	    page1.modifySTF(caseNum, category, userInputData);
+	    String chaId = page1.get_cha_id(caseNum, category, userInputData);
 	}
+
 
 	@Then("^User terminates the assignment$")
 	public void user_terminates_the_assignment(List<UserInputData> userInputData) {

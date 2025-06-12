@@ -101,6 +101,9 @@ public class DocumentPage extends AppiumPageFactory {
 	
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='OK']")
 	public static WebElement okBtn;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeStaticText")
+	public static WebElement collapseBtn;
 
 	static String panel = "";
 	String randomCategory = "";
@@ -201,7 +204,9 @@ public class DocumentPage extends AppiumPageFactory {
 	}
 
 	public String selectRandomSTFCategory(List<UserInputData> userInputData) {
-
+		
+        collapseBtn.click(); 
+        
 		String category = "";
 		String category_code = "";
 
@@ -217,6 +222,7 @@ public class DocumentPage extends AppiumPageFactory {
 
 		scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category.trim() + "')]");
 
+		// collapseBtn.click(); 
 		return category_code.trim();
 
 	}
@@ -558,7 +564,7 @@ public class DocumentPage extends AppiumPageFactory {
 		Assert.assertTrue("Verify the viewed document: "+docName+" shows a green checkmark",verifyGreenCheckmark( docName,"y"))
 		 ;
 		
-          Utility.swipeElement("//XCUIElementTypeStaticText[@name='"+docName+"']");
+         // Utility.swipeElement("//XCUIElementTypeStaticText[@name='"+docName+"']");
           
 		if (Utility.isDisplayed("//XCUIElementTypeAlert[@name='Delete Document?']"))
 			;

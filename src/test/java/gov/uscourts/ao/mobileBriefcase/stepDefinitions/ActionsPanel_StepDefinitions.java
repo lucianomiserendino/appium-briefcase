@@ -2,10 +2,10 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import java.util.List;
 
-import cucumber.api.DataTable;
-import cucumber.api.java.en.Then;
+
 import gov.uscourts.ao.mobileBriefcase.Pages.ActionsListViewPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import io.cucumber.java.en.Then;
 
 public class ActionsPanel_StepDefinitions {
 	ActionsListViewPage page;

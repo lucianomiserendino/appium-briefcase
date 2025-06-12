@@ -188,31 +188,30 @@ public class JenieLoginPage extends Base {
 		tap(Locator.XPATH, "(//XCUIElementTypeStaticText[@name=\"Open\"])[1]");
 	}
 
-	public void selectUser(List<UserInputData> userInputData) {
-		String env = SystemPropertySetup.getCourtId(userInputData) + ".";
-		String user = SystemPropertySetup.getVariable(Variables.USER, userInputData);
-		String userType = SystemPropertySetup.getVariable(Variables.USER_TYPE, userInputData);
-		String personrole = SystemPropertySetup.getVariable(Variables.PERSONROLE, userInputData);
+	public void selectUser(UserInputData userInputData) {
+	    String env = SystemPropertySetup.getCourtId(List.of(userInputData)) + ".";  
+	    String user = SystemPropertySetup.getVariable(Variables.USER, List.of(userInputData));
+	    String userType = SystemPropertySetup.getVariable(Variables.USER_TYPE, List.of(userInputData));
+	    String personrole = SystemPropertySetup.getVariable(Variables.PERSONROLE, List.of(userInputData));
 
-		ifDownloaded(retrievePendingRefs);
+	    ifDownloaded(retrievePendingRefs);
 
-//		if (user.equals("sysadmin")) {
-//			contains(User).click();
-//
-//			String name = "";
-//
-//			if (userType.equals("judge")) {
-//				name = getProperty(env + jud);
-//			} else if (userType.equals("stf")) {
-//
-//				name = getProperty(env + stf);
-//			}
-//
-//			selectUser(personrole, name);
-			ifDownloaded(inProgress);
+	    if ("sysadmin".equals(user)) {
+	        contains(User).click();
 
-		//}
+	        String name = "";
+
+	        if ("judge".equals(userType)) {
+	            name = getProperty(env + userInputData.getJud());
+	        } else if ("stf".equals(userType)) {
+	            name = getProperty(env + userInputData.getStf());
+	        }
+
+	        selectUser(personrole, name);
+	        ifDownloaded(inProgress);
+	    }
 	}
+
 
 	public static void selectUser(String availableJudges, String user) {
 		// Click all 'GroupIcon' elements with label '▽' until none are left

@@ -1,11 +1,12 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import cucumber.api.java.en.Then;
+
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.RedBulletsPage;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
+import io.cucumber.java.en.Then;
 
 public class RedBullets_StepDefintions extends Base {
 	RedBulletsPage page;

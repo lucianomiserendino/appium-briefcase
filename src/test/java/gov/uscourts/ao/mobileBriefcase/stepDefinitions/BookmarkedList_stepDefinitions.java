@@ -2,12 +2,13 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 
+
 import java.util.List;
 
-import cucumber.api.java.en.Then;
 import gov.uscourts.ao.mobileBriefcase.Pages.AppliedCasesPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.BookmarkedListPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import io.cucumber.java.en.Then;
 
 public class BookmarkedList_stepDefinitions {
 	String caseNumber = "";

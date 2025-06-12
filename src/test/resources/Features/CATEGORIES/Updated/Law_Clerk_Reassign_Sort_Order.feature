@@ -1,4 +1,4 @@
-@Regression @updated
+@Regression @updated @smoke
 Feature: Sorting law clerk assignment
 
 

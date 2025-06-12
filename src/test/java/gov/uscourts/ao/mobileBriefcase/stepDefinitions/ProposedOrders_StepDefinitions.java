@@ -1,16 +1,18 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import cucumber.api.DataTable;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.ProposedOrdersPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.DPFs;
 import gov.uscourts.ao.mobileBriefcase.page.common.DPFs.DPF;
+import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class ProposedOrders_StepDefinitions {
 
@@ -34,16 +36,18 @@ public class ProposedOrders_StepDefinitions {
 	}
 	
 	@Then("^User selects action that contains docWP$")
-	public void user_selects_action_that_contains_docWP(DataTable table){
-		
-		List<UserInputData> userInputData = null;
-		List<List<String>> data = table.raw();
-		String dpf = data.get(1).get(0);
-		
-		 actionName = dpfPage.getChmAssign(DPF.valueOf(dpf), caseNum, userInputData);
-		 
-		page2 = new CommonPages();
-		page2.selectBriefcaseAction("Actions", actionName);
+	public void user_selects_action_that_contains_docWP(DataTable table) {
+	    List<UserInputData> userInputData = new ArrayList<>();
+
+	    // Replace raw() with asLists()
+	    List<List<String>> data = table.asLists();
+
+	    String dpf = data.get(1).get(0);
+
+	    actionName = dpfPage.getChmAssign(DPF.valueOf(dpf), caseNum, userInputData);
+
+	    page2 = new CommonPages();
+	    page2.selectBriefcaseAction("Actions", actionName);
 	}
 
 

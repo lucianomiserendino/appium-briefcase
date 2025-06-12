@@ -2,12 +2,13 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import java.util.List;
 
-import cucumber.api.PendingException;
-import cucumber.api.java.en.Then;
+
+
 import gov.uscourts.ao.mobileBriefcase.Pages.AssignmentsPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import io.cucumber.java.en.Then;
 
 public class StaffAssignments_StepDefinitions {
 	AssignmentsPage assig;

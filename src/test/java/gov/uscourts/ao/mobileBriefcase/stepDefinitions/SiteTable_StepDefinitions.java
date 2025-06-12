@@ -1,8 +1,9 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import cucumber.api.java.en.Then;
+
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.Pages.Site_TablePage;
+import io.cucumber.java.en.Then;
 
 public class SiteTable_StepDefinitions {
 	Site_TablePage page;

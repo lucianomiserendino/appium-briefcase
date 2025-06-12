@@ -1,11 +1,11 @@
-@smoke @AMB-1049 @Regression
+@AMB-1049 @Regression
 Feature: Referral categories display on the dashboard for Staff Attorneys
 
   Background: 
   
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole       |stf      |user     |

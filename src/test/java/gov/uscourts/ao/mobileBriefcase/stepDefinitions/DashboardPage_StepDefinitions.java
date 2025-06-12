@@ -1,18 +1,20 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.PENDING_TASK_ASSIGNMENTS;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 
 import java.util.List;
 
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
+
 import gov.uscourts.ao.mobileBriefcase.Pages.DashboardPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 
 public class DashboardPage_StepDefinitions {
 	static DashboardPage page;

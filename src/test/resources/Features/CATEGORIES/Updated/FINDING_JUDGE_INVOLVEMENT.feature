@@ -1,4 +1,4 @@
-@Regression
+@Regression @smoke
 Feature: judge involvement
 
 	

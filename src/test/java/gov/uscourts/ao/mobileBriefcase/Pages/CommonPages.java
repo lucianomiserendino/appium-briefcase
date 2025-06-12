@@ -1,6 +1,7 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
+
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.insertData;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.valueOf;
@@ -26,7 +27,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
-import cucumber.api.DataTable;
+import io.cucumber.datatable.DataTable;
+
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.DBType;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
@@ -166,10 +168,9 @@ public class CommonPages extends AppiumPageFactory {
 	public static void selectReferralCategory(String category) {
 		selectReferral("//XCUIElementTypeOther[@name='Categories']" + containsElement(category));
 	}
-
 	public static String getDataTable(DataTable data, int index1, int index2) {
-		List<List<String>> table = data.raw();
-		return table.get(index1).get(index2);
+	    List<List<String>> table = data.asLists(); 
+	    return table.get(index1).get(index2);
 	}
 
 	public void getCategoryWithCase(List<UserInputData> userInputData) {

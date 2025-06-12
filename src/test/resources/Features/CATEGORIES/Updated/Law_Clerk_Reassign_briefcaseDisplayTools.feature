@@ -1,4 +1,4 @@
-@Regression @updated
+@Regression @updated @smoke
 Feature: Site table variable 'briefcaseDisplayTools'
 @AMB-4002 @AMB-4003 @AMB-4004
 

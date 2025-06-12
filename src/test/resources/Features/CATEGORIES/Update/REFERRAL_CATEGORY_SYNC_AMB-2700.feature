@@ -1,4 +1,3 @@
-@Smoke 
 Feature: Sync documents for a specific Referral
 
 

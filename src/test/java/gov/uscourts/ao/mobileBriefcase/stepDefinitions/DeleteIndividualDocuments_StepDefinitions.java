@@ -1,7 +1,8 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
-import cucumber.api.java.en.Then;
+
 import gov.uscourts.ao.mobileBriefcase.Pages.DeleteIndividualDocuments;
+import io.cucumber.java.en.Then;
 
 public class DeleteIndividualDocuments_StepDefinitions {
 

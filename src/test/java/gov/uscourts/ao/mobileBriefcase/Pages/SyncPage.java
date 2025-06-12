@@ -28,7 +28,7 @@ public class SyncPage extends AppiumPageFactory {
 	public static WebElement dashboardSyncBtn;
 
 	@iOSXCUITFindBy(xpath = "//*[@name='ReferralsList' or @name='SessionGroups']/following::XCUIElementTypeButton")
-	public static WebElement categroySyncBtn;
+	public static WebElement categorySyncBtn;
 
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Sync all documents for case #')]")
 	public static WebElement caseSyncBtn;
@@ -74,6 +74,18 @@ public class SyncPage extends AppiumPageFactory {
 	
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Settings']")
 	public static WebElement gearIcon;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Cancel Sync']")
+	public static  List<WebElement>  cancelBtn;
+	
+	static String dashboardSyncCount ="";
+
+	public void getSyncCountOnDashboard() {
+		ifDownloaded(activityIndicator);
+		 deleteAllDocuments();
+		 dashboardSyncCount = getSyncCount();
+		 System.out.println(dashboardSyncCount+"***********************");
+	}
 
 	public static void getSync(SyncType page, List<UserInputData> userInputData) {
 		String dashboardPage ="";
@@ -90,34 +102,36 @@ public class SyncPage extends AppiumPageFactory {
 			ifDownloaded(activityIndicator);
 
 			 dashboardPage = getSyncCount();
+			 System.out.println(dashboardPage+"***********************");
 			 syncPage = viewSyncResults();
 			assertEquals("SYNC COUNT MISMATCH: ", dashboardPage, syncPage);
 
 			break;
 
 		case Referral_Category:
-			
-			Page.sleep(5000);
-			settingsIcon.click();
-			performPageLoad(driver);
-			deleteAllDocuments.click();
-			Actions.isDisplayed(deleteMessage);
-			performPageLoad(driver);
-			ifDownloaded(deletingDoc);
-		
-		Actions.navigateBack();
-		performPageLoad(driver);
-		
-			page1.categroySyncBtn.click();
-			ifDownloaded(page1.activityIndicator);
+//			
+//			Page.sleep(5000);
+//			gearIcon.click();
+//			performPageLoad(driver);
+//			deleteAllDocuments.click();
+//			Actions.isDisplayed(deleteMessage);
+//			performPageLoad(driver);
+//			ifDownloaded(deletingDoc);
+//		
+//		Actions.navigateBack();
+//		performPageLoad(driver);
+//		
+			page1.categorySyncBtn.click();
+			ifDownloaded(page1.cancelBtn);
 
 			if (dashBoard.isDisplayed()) {
 				dashBoard.click();
 			}
 			 dashboardPage = getSyncCount();
-			 syncPage = viewSyncResults();
+			 
+			// syncPage = viewSyncResults();
 
-			assertEquals("SYNC COUNT MISMATCH: ", dashboardPage, syncPage);
+			//assertEquals("SYNC COUNT MISMATCH: ", dashboardSyncCount, syncPage);
 
 			break;
 

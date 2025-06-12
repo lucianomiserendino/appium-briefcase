@@ -1,4 +1,4 @@
-@Regression @AMB-1394
+@Regression @AMB-1394 @smoke
 Feature: Sorting on the Referral Detail Page 
 
  

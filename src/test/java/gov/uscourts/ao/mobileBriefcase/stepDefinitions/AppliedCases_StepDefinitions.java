@@ -1,17 +1,18 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
+
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 
 import java.util.List;
 
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.AppliedCasesPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class AppliedCases_StepDefinitions {
 	CommonPages page1;

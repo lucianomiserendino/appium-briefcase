@@ -2,9 +2,11 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import java.util.List;
 
-import cucumber.api.java.en.Then;
+
+
 import gov.uscourts.ao.mobileBriefcase.Pages.OtherSubmissions;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
+import io.cucumber.java.en.Then;
 
 public class OtherSubmissions_StepDefinitions {
 	OtherSubmissions page;

@@ -622,19 +622,25 @@ public class Utility extends Base {
 	}
 
 	public static void scrollPage(String direction) {
-		try {
-			WebElement scrollView = driver.findElement(By.className("XCUIElementTypeScrollView"));
-			JavascriptExecutor js = (JavascriptExecutor) driver;
+	    try {
+	        if (!direction.equalsIgnoreCase("up") && !direction.equalsIgnoreCase("down") &&
+	            !direction.equalsIgnoreCase("left") && !direction.equalsIgnoreCase("right")) {
+	            throw new IllegalArgumentException("Invalid scroll direction: " + direction);
+	        }
 
-			Map<String, Object> swipeObject = new HashMap<>();
-			swipeObject.put("element", ((RemoteWebElement) scrollView).getId());
-			swipeObject.put("direction", direction);
+	        JavascriptExecutor js = (JavascriptExecutor) driver;
+	        Map<String, Object> swipeObject = new HashMap<>();
+	        swipeObject.put("direction", direction.toLowerCase());
 
-			js.executeScript("mobile: swipe", swipeObject);
-		} catch (Exception e) {
-			System.out.println("Scroll/Swipe failed: " + e.getMessage());
-		}
+	        js.executeScript("mobile: swipe", swipeObject);
+
+	        System.out.println("Scrolled " + direction);
+	    } catch (Exception e) {
+	        System.err.println("Scroll failed: " + e.getMessage());
+	        e.printStackTrace();
+	    }
 	}
+
 
 	public static void ifLoaded(List<WebElement> value) {
 		performPageLoad(driver);
@@ -656,23 +662,23 @@ public class Utility extends Base {
 		}
 	}
 
-	public static void swipeElement(String xpath) {
-	    WebElement element = driver.findElement(By.xpath(xpath));
-
-	    int startX = element.getLocation().getX() + 10;
-	    int endX = startX + element.getSize().getWidth() - 20;
-	    int y = element.getLocation().getY() + (element.getSize().getHeight() / 2);
-
-	    PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
-	    Sequence swipe = new Sequence(finger, 1);
-
-	    swipe.addAction(finger.createPointerMove(Duration.ofMillis(0), Origin.viewport(), startX, y));
-	    swipe.addAction(finger.createPointerDown(MouseButton.LEFT.asArg()));
-	    swipe.addAction(finger.createPointerMove(Duration.ofMillis(300), Origin.viewport(), endX, y));
-	    swipe.addAction(finger.createPointerUp(MouseButton.LEFT.asArg()));
-
-	    driver.perform(List.of(swipe));
-	}
+//	public static void swipeElement(String xpath) {
+//	    WebElement element = driver.findElement(By.xpath(xpath));
+//
+//	    int startX = element.getLocation().getX() + 10;
+//	    int endX = startX + element.getSize().getWidth() - 20;
+//	    int y = element.getLocation().getY() + (element.getSize().getHeight() / 2);
+//
+//	    PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+//	    Sequence swipe = new Sequence(finger, 1);
+//
+//	    swipe.addAction(finger.createPointerMove(Duration.ofMillis(0), Origin.viewport(), startX, y));
+//	    swipe.addAction(finger.createPointerDown(MouseButton.LEFT.asArg()));
+//	    swipe.addAction(finger.createPointerMove(Duration.ofMillis(300), Origin.viewport(), endX, y));
+//	    swipe.addAction(finger.createPointerUp(MouseButton.LEFT.asArg()));
+//
+//	    driver.perform(List.of(swipe));
+//	}
 	public enum Filter {
 		UNIQUE_VALUES, DUPLICATE_VALUES
 	}

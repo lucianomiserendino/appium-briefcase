@@ -1,6 +1,6 @@
 Feature: citelink settings
 
-@Smoke @AMB-2761
+@AMB-2761
 Scenario: 
 
 Verify the cached documents are not deleted and the user is presented with the message "If you change any Citelink settings, documents cached

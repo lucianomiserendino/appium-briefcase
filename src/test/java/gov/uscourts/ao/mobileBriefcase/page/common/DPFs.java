@@ -47,25 +47,25 @@ public class DPFs extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Remove']/preceding::XCUIElementTypeStaticText[@name='Select']")
 	public static List<WebElement> selectBtn;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
 	public static List<WebElement> proposedOrders;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
 	public static List<WebElement> inProgress;
 
-	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Comment')]/following::XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeTextView")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"Add New Note\"]/following::XCUIElementTypeStaticText[@name=\"Comment\"][1]/following::XCUIElementTypeTextView")
 	public static WebElement noteCommentField;
 
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Comment')]/preceding::XCUIElementTypeTextView")
 	public static WebElement chmAssignCommentField;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='NoteList']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"NoteList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeTextView")
 	public static WebElement judgeVoteCommentField;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='View Votes']/preceding:: XCUIElementTypeButton[1]")
 	public static List<WebElement> selectVoteBtn;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='VoteOptions']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"VoteOptions\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static List<WebElement> judgeVotes;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"View Votes\"]/preceding:: XCUIElementTypeButton[1]/preceding:: XCUIElementTypeStaticText[1]")
@@ -93,6 +93,7 @@ public class DPFs extends AppiumPageFactory {
 	static String apply = "Apply";
 	static String cancel = "Cancel";
 	static String close = "Close";
+	static String randomProposedOrder="";
 
 	public List<String> getListOfBriefcaseDPFs(String caseNumber, List<UserInputData> userInputData) {
 
@@ -217,7 +218,7 @@ public class DPFs extends AppiumPageFactory {
 	private void executeDocWP() {
 		if (selectBtn.size() > 0) {
 			selectBtn.get(0).click();
-			String randomProposedOrder = Utility.clickOnNumberInRange(proposedOrders);
+			 randomProposedOrder += Utility.clickOnNumberInRange(proposedOrders);
 			CommonPages.ifDownloaded(inProgress);
 			Actions.isDisplayed(Actions.contains(randomProposedOrder.trim()));
 		}
@@ -318,20 +319,18 @@ public class DPFs extends AppiumPageFactory {
 	}
 
 	public void dataIsSaved(String actionName) {
-	    List<String> docketEntryTypes = Arrays.asList(".pdf", "Judge Vote Note", "Assignment Note");
+		Page.performPageLoad(driver);
+	   // List<String> docketEntryTypes = Arrays.asList(".pdf", "Judge Vote Note", "Assignment Note");
 
 	    // Wait until the action element is clickable
 	    Page.waitToBeClickable(contains(actionName), driver);
+System.out.println(randomProposedOrder+"88888888888888888888888888888888");
+	    boolean pdfFound = isDocketEntryDisplayed(randomProposedOrder.trim());
+	    boolean assignmentNoteFound = isDocketEntryDisplayed("Assignment Note");
+	    boolean voteOrTransactionFound = isDocketEntryDisplayed("Judge Vote Note") || isDocketEntryDisplayed("Transaction Note");
 
-	    boolean isDataSaved = false;
+	    boolean isDataSaved = pdfFound && assignmentNoteFound && voteOrTransactionFound;
 
-	    // Check each docket entry type
-	    for (String docketEntry : docketEntryTypes) {
-	        if (isDocketEntryDisplayed(docketEntry)) {
-	            isDataSaved = true;
-	            break;  // Exit the loop if any docket entry is displayed
-	        }
-	    }
 
 	    // Assert that at least one docket entry is displayed
 	    assertTrue(

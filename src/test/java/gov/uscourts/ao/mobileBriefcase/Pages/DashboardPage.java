@@ -73,7 +73,7 @@ public class DashboardPage extends Base {
 	public static WebElement categories;
 
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Dashboard']")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[2]")
 	public static WebElement dashboard;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)

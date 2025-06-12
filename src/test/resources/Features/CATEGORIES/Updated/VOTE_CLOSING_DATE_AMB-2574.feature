@@ -1,4 +1,4 @@
-@AMB-2574 @Regression
+@AMB-2574 @Regression @smoke
 Feature: Vote closing date 
 
  
