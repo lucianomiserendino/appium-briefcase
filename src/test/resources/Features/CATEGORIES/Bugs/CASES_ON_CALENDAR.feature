@@ -13,9 +13,9 @@ Scenario: As a user when viewing the 'Cases on Calendar' referral category the f
 #Current sorting of cases for each day will remain (time and case)
 #The user is able to click on the case directly from the expanded accordion to access the case.
 
-		#Given I am logged into Briefcase 
-		#|environment|user    |
-		#|test       |sysadmin|
+		Given I am logged into Briefcase 
+		|environment|user    |
+		|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

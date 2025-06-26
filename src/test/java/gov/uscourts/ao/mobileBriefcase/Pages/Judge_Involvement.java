@@ -40,11 +40,16 @@ public class Judge_Involvement extends AppiumPageFactory {
 	private static String refCatList = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText";
 	private static String invCodeFromRefDetailPage = "//XCUIElementTypeStaticText[contains(@name, 'CaseNumber')]/following::XCUIElementTypeStaticText[contains(@name, 'Involvement')][1]";
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
+	public static WebElement collapseBtn;
+	
 	static String categoryName = "";
 	static String caseNum = "";
 	static String cmr_ju_pe_id = "";
 
 	public void selectCaseWithInvolvement(List<UserInputData> userInputData) {
+		
+		collapseBtn.click();
 
 	    cmr_ju_pe_id += DocumentPage.get_pe_id("jud", userInputData);
 
@@ -84,6 +89,7 @@ public class Judge_Involvement extends AppiumPageFactory {
 	            }
 	        }
 	    }
+	    collapseBtn.click();
 	}
 
 
@@ -111,10 +117,14 @@ public class Judge_Involvement extends AppiumPageFactory {
 	                userInputData).trim();
 
 	        // Verify if UI involvement code matches DB involvement code
-	        
+	        String dbInvolvementCode="";
     		System.out.println("Judge involvement for selected referral: "+dbInvCode);
-    		
-	        assertEquals("Verify judge involvement found via chm_mobile_referral.cmr_ic_code", uiInvCode, dbInvCode);
+    		if (dbInvCode.isEmpty()) {
+    			dbInvolvementCode="-";
+    		}else {
+    			dbInvolvementCode=dbInvCode;
+    		}
+	        assertEquals("Verify judge involvement found via chm_mobile_referral.cmr_ic_code", uiInvCode, dbInvolvementCode);
 
 	    } catch (Exception e) {
 	        e.printStackTrace();

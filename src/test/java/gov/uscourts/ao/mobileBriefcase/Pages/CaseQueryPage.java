@@ -16,8 +16,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
@@ -49,19 +51,20 @@ public class CaseQueryPage extends AppiumPageFactory {
 	
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
 	public static List<WebElement> inProgress;
-	
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTable/XCUIElementTypeCell[2]")
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='MasterNavPage']/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[2]")
 	public static WebElement dashboardIcon;
 	
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
 	public static WebElement collapseBtn;
 
-	public void getCaseSearch(String category) {
+	public String getCaseSearch(String category) {
 	    String fullCaseNumber = selectRandomCaseNumber(0);
 	    searchForACase(category, fullCaseNumber, Search.wildcard);
 	    
 	    isDisplayed(Locator.XPATH, containsElement(fullCaseNumber));
+		return fullCaseNumber;
 	  
 	    
 	}
@@ -100,8 +103,8 @@ public class CaseQueryPage extends AppiumPageFactory {
 
 
 	public void searchForACase(String category, String fullCaseNumber, Search searchType) {
-	    performPageLoad(driver);
-
+		Page.waitToBeClickable(collapseBtn, driver);
+		//collapseBtn.click();
 	    if (dashboardIcon.isDisplayed()) {
 	    	 clicksOn(dashboardIcon);
 	        Page.sleep(5000);

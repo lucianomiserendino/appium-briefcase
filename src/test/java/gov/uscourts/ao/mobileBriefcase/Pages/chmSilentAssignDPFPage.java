@@ -150,7 +150,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		String elId = getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
 		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData) ;
 
-		chmAssignDPFPage.getStaffAssignment(Assignment.NEW, chmAssign.CREATE, dpfName, elId, cha_ju_pe_id, caseNumber,
+		chmAssignDPFPage.getStaffAssignment(Assignment.NEW, chmAssign.CREATE_SINGLE_ASSIGNMENT, dpfName, elId, cha_ju_pe_id, caseNumber,
 				cmr_cyv_code, userInputData);
 
 		assertTrue(getDuplicateAssignments(chmAssignDPFPage.optionList));

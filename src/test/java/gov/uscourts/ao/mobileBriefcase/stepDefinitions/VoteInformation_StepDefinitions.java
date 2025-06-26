@@ -22,6 +22,7 @@ public class VoteInformation_StepDefinitions {
 	String caseNum = DocumentPage.caseNum;
 	String category = DocumentPage.category;
 	String ccr_id = "";
+	List<String> voteInfoData=null;
 
 	@Given("^User observes the Vote Information panel displays\\.   This should only display if the referral requires voting$")
 	public void user_observes_the_Vote_Information_panel_displays_This_should_only_display_if_the_referral_requires_voting() {
@@ -32,17 +33,24 @@ public class VoteInformation_StepDefinitions {
 	@Then("^For each referral, observe the filer's name \\(pr_last_name, pr_first_name, first initial of pr_middle_name, gn_display\\) party type \\(pt_description\\) and date filed \\(de_date_filed\\) displays in a light blue heading$")
 	public void for_each_referral_observe_the_filer_s_name_pr_last_name_pr_first_name_first_initial_of_pr_middle_name_gn_display_party_type_pt_description_and_date_filed_de_date_filed_displays_in_a_light_blue_heading()
 			throws Throwable {
-		List<UserInputData> userInputData = null;
-
-		ccr_id += CommonPages.getCCRID(userInputData);
-		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
-		String cmr_cs_caseid = DocumentPage.cs_caseid;
-
-		cmr_cyv_code = DocumentPage.cmr_cyv_code;
-
+//		List<UserInputData> userInputData = null;
+//
+//		ccr_id += CommonPages.getCCRID(userInputData);
+//		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
+//		String cmr_cs_caseid = DocumentPage.cs_caseid;
+//
+//		cmr_cyv_code = DocumentPage.cmr_cyv_code;
+//
+//		System.out.println(ccr_id+"**********************************");
+//		System.out.println(cmr_ju_pe_id+"**********************************");
+//		System.out.println(cmr_cs_caseid+"**********************************");
+//		System.out.println(cmr_cyv_code+"**********************************");
+//
+//		page = new VoteInformationPage();
+//		assertTrue(page.filersInfo(FILERs_INFO.VOTE_INFO_FILLRES_INFORMATION, cmr_ju_pe_id, cmr_cs_caseid, cmr_cyv_code,
+//				ccr_id, userInputData));
 		page = new VoteInformationPage();
-		assertTrue(page.filersInfo(FILERs_INFO.VOTE_INFO_FILLRES_INFORMATION, cmr_ju_pe_id, cmr_cs_caseid, cmr_cyv_code,
-				ccr_id, userInputData));
+		page.printFormattedVoteInfoDynamic() ;
 	}
 
 	@Then("^User checks each judge's vote  and the date  displays under their initials, using  ccr_id$")
@@ -79,6 +87,19 @@ public class VoteInformation_StepDefinitions {
 		page = new VoteInformationPage();
 		page.getJudgeInitials("Vote_Information", caseNum, cmr_ju_pe_id, cmr_cyv_code, userInputData);
 	}
+
+@Then("get the filler's info, party type, date filed, relief, closing date, votes, judge initials")
+	public void get_the_filler_s_info_party_type_date_filed_relief_closing_date_votes_judge_initials() {
+	page = new VoteInformationPage();
+	voteInfoData=page.printFormattedVoteInfoDynamic() ;
+	}
+	@Then("verify the Vote Information panel data remains the same with `briefcaseTargetOnly` set to `n` or `y`.")
+	public void verify_the_vote_information_panel_data_remains_the_same_with_briefcase_target_only_set_to_n_or_y() {
+		page = new VoteInformationPage();
+		
+		assertTrue(voteInfoData.equals(page.printFormattedVoteInfoDynamic()));
+	}
+
 
 
 }

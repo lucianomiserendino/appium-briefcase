@@ -10,6 +10,7 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.REFERRAL_DOCUMENTS
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.lbrrpt_CATEGORY;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.lbrrpt_CYV_CATEGORY;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.lbrrpt_DOCUMENT_CATEGORY;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
@@ -26,6 +27,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.openqa.selenium.support.PageFactory.initElements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -48,8 +50,11 @@ import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.page.common.Base.Driver;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
+import gov.uscourts.ao.mobileBriefcase.page.common.NetworkManager;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -95,7 +100,11 @@ public class DashboardPage extends Base {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"Categories\"]/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther")
 	public static List<WebElement> dashCategoryCell;
 	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='You are working Offline']")
+	public static WebElement offline_Indicator;
 	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
+	public static List<WebElement> inProgress;
 	
 	public void verifyPendingTasksPosition(String page) {
 	    performPageLoad(driver);
@@ -161,18 +170,46 @@ public class DashboardPage extends Base {
 	 * chm_reftype_val table (cmr_cyv_code). This is how the category is obtained.
 	 */
 
-	public void verifyReferralCategoriesAreDisplayed(List<UserInputData> userInputData) {
+	public void verifyReferralCategoriesWhenOnlineAndOffline(List<UserInputData> userInputData) {
+	    // Fetch referral categories from DB
 	    String peId = DocumentPage.get_pe_id("jud", userInputData);
 	    List<String> dbReferralCategories = executeQuery(getID(Queries.REFERRAL_CATEGORIES, peId), userInputData);
-
 	    dbReferralCategories.sort(String::compareTo);
 
-	    if (!dbReferralCategories.isEmpty()) {
-	        performPageLoad(driver);
+	    if (dbReferralCategories.isEmpty()) {
+	        System.out.println("No referral categories found in DB.");
+	        return;
+	    }
 
-	        for (String category : dbReferralCategories) {
-	            verifyCategoryIsDisplayedAndScrollDown(category);
-	        }
+	    // Verify categories online
+	    performPageLoad(driver);
+	    for (String category : dbReferralCategories) {
+	        verifyCategoryIsDisplayedAndScrollDown(category);
+	    }
+
+	    // Switch to offline mode
+	    try {
+	        NetworkManager.makeScriptsExecutable();
+	        NetworkManager.disableInternet();
+	    } catch (IOException | RuntimeException e) {
+	        System.err.println("Failed to disable internet: " + e.getMessage());
+	    }
+
+	    // Verify categories offline
+	    Base.getInstance(Driver.IOS);
+	    DashboardPage page = new DashboardPage();
+	    waitForVisibilityOfElement(page.offline_Indicator, driver);
+
+	    for (String category : dbReferralCategories) {
+	        page.verifyCategoryIsDisplayedAndScrollDown(category);
+	    }
+
+	    // Re-enable internet
+	    try {
+	        NetworkManager.makeScriptsExecutable();
+	        NetworkManager.enableInternet();
+	    } catch (IOException | RuntimeException e) {
+	        System.err.println("Failed to re-enable internet: " + e.getMessage());
 	    }
 	}
 
@@ -405,5 +442,7 @@ public class DashboardPage extends Base {
 	    }
 	}
 
+	
+	
 
 }

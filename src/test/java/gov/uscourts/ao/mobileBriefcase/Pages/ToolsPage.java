@@ -54,12 +54,15 @@ public class ToolsPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Submit']")
 	public static WebElement submit;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
+	public static WebElement collapseBtn;
+	
 	public void verifyToolsCategoryVisibility() {
 	    scrollUp(3);
 
 	    int toolSize = tools.size();
 
-	    if ("n".equalsIgnoreCase(CommonPages.siVal)) {
+	    if ("n".equalsIgnoreCase(CommonPages.siCode)) {
 	        assertTrue("Tools should not be visible when briefcaseDisplayTools = 'n'", toolSize == 0);
 	    } else {
 	        assertTrue("Tools should be visible when briefcaseDisplayTools = 'y'", toolSize >= 1);
@@ -178,7 +181,7 @@ public class ToolsPage extends AppiumPageFactory {
 
 
 	public void selectExistingClerk(String existingClerk) {
-		dashboard.click();
+		
 
 		// Scroll up to refresh the view or access the tools
 		scrollUp(3);
@@ -187,7 +190,7 @@ public class ToolsPage extends AppiumPageFactory {
 		int toolSize = tools.size();
 
 		// Check if tools should be displayed based on siVal
-		if (CommonPages.siVal.equalsIgnoreCase("n")) {
+		if (CommonPages.siCode.equalsIgnoreCase("n")) {
 			// Verify that no tools are displayed if siVal is 'n'
 			assertTrue("The left nav displays the Tools category, even when briefcaseDisplayTools is set to 'n'.",
 					toolSize == 0);
@@ -242,8 +245,44 @@ public class ToolsPage extends AppiumPageFactory {
 					submit.click();
 					boolean duplicatedAssignmentMsg = driver.getPageSource()
 							.contains("Duplicated Assignment found for " + clerkName2);
+					
 					assertTrue("Verify that user is prevented from creating duplicate assignments: " + clerkName1
 							+ " : " + clerkName2, duplicatedAssignmentMsg);
+					
+					// Re-fetch list from DB after the attempt
+					List<String> updatedFirstNames = getListOfLwks(2, userInputData);
+					List<String> updatedLastNames = getListOfLwks(3, userInputData);
+					List<String> updatedCavDisplay = getListOfLwks(4, userInputData);
+					List<String> updatedCyvDisplay = getListOfLwks(5, userInputData);
+					List<String> updatedCaseNumbers = getListOfLwks(6, userInputData);
+
+					// Build expected key and clerk name
+					String expectedKey = cavDisplay.get(index1).trim() + ", "
+					                   + cyvDisplay.get(index1).trim() + ", "
+					                   + caseNumbers.get(index1).trim();
+					String expectedClerk = firstNames.get(index1).trim() + " " + lastNames.get(index1).trim();
+
+					System.out.println("Expected entry key: " + expectedKey);
+					System.out.println("Expected clerk: " + expectedClerk);
+
+					boolean recordStillExists = false;
+
+					for (int i = 0; i < updatedCaseNumbers.size(); i++) {
+					    String currentKey = updatedCavDisplay.get(i).trim() + ", "
+					                      + updatedCyvDisplay.get(i).trim() + ", "
+					                      + updatedCaseNumbers.get(i).trim();
+					    String currentClerk = updatedFirstNames.get(i).trim() + " " + updatedLastNames.get(i).trim();
+
+					    if (currentKey.equals(expectedKey) && currentClerk.equals(expectedClerk)) {
+					        recordStillExists = true;
+					        System.out.println("✔ Match found: " + currentKey + " -> " + currentClerk);
+					        break;
+					    }
+					}
+
+					assertTrue("Verify that the original assignment with the same clerk still exists in the DB after failed duplicate attempt: "
+					        + expectedKey + " -> " + expectedClerk, recordStillExists);
+
 				} else {
 					throw new RuntimeException(
 							"Ensure there are law clerk assignments of a specific type in a specific referral, but assigned to two different law clerks. Law clerk list: "
@@ -281,7 +320,7 @@ public class ToolsPage extends AppiumPageFactory {
 
 	public void tapIndividualClerk(String caseNum, String cyv_display, String cav_display) {
 
-		Utility.scrollDownIfNotDisplayed("//XCUIElementTypeStaticText[contains(@name, '" + caseNum + "')]/preceding::"
+		Utility.scrollDownIfNotDisplayed("//XCUIElementTypeButton[contains(@name, '" + caseNum + "')]/preceding::"
 				+ "XCUIElementTypeStaticText[contains(@name, '" + cyv_display + "')]/preceding::"
 				+ "XCUIElementTypeStaticText[contains(@name, '" + cav_display
 				+ "')]/preceding::XCUIElementTypeButton[1]");

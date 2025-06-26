@@ -1,33 +1,43 @@
 @AMB-1399
 Feature: Display referrals when site var briefcaseTargetOnly = n 
 
+#this script needs to get updated
+#AMB-4112 #briefcaseMultipleReferral = n/N, briefcaseTargetOnly = n > Case Referral Detail -- referrals are not consolidated
 
 
-
-Scenario Outline: 
+Scenario: 
 	Verify when an action is selected that contains the note DPF, the note DPF UI displays.
+		
+	Then User gets the si_value from the site table
+	|si_value      |courtId    |
+	|targetOnly    |test       |
 	
-	Given User sets the "<si_code>" site var to "<si_val>" on "<server>" 
+		Given I set the site table variable "briefcaseTargetOnly" to "y"
+				
+		Given I am logged into Briefcase 
+		|environment|user    |
+		|test       |judge   |
+			
+		Then I select a user 
+		|userType   |personrole        |jud      |user     |
+		|judge      |Appellate Judges  |test     |judge    |
 		
-			Given I am logged into Briefcase 
-		|environment|userName| password |courtId|
-		|test       |test    | test     |test   |
 		
-	Then I select a user 
-		|userType   |personrole        |jud     |
-		|judge      |Appellate Judges  |Benton  |
+     Then User selects a random category
+			
+     Then User selects a random case
+
+     Given User observes the Vote Information panel displays.   This should only display if the referral requires voting 
+     
+     Then get the filler's info, party type, date filed, relief, closing date, votes, judge initials
 		
-	Then User selects "<category>" and "<caseNum>" 
-	#Then User verifies "<panel>" panel is displayed and expands the  panel 
-	Then User observes a collapsible panel entitled "<panel>" displays 
+		
+		Given I set the site table variable "briefcaseTargetOnly" to "n"
+				
+	    Then User closes and reopens the app
+		
+		Then User taps on magnifying glass icon and searches for the same case 
+		
+        Then verify the Vote Information panel data remains the same with `briefcaseTargetOnly` set to `n` or `y`.
 	
-	Then user observes all reliefs display under Vote Information, use DBType "<server>" , "<coulumName>" , "<caseNum>" , "<pe_id>" , "<cmr_cyv_code>" 
-	
-	Examples: 
-	
-		|server      | si_code            |si_val   | category |caseNum   |panel            |coulumName|pe_id|cmr_cyv_code|
-		|CMKA        |briefcaseTargetOnly | y       |MOTION    | 19-11519 |Vote_Information |cmr_ccr_id|34   |motpet      |
-		|CMKA        |briefcaseTargetOnly | n       |MOTION    | 19-11519 |Vote_Information |cmr_ccr_id|34   |motpet      |
-		
-		
-		
+	    Given I set the site table variable "briefcaseTargetOnly" to "y"

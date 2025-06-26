@@ -2,6 +2,7 @@ package gov.uscourts.ao.mobileBriefcase.page.common;
 
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.waitForPresenceOfElementLocated;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -9,8 +10,15 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
+import gov.uscourts.ao.mobileBriefcase.page.common.Base.Driver;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
+
 public class Actions extends AppiumPageFactory {
 
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='You are working Offline']")
+	public static WebElement offline_Indicator;
+	
 	public static WebElement findElementBy(Locator identifier, String element) {
 
 		By by = null;
@@ -185,4 +193,5 @@ public class Actions extends AppiumPageFactory {
 	public enum Locator {
 		ID, XPATH, NAME, LINK_TEXT, PARTIAL_LINK_TEXT, CLASS_NAME, CSS_SELECTOR, TAG_NAME
 	}
+	
 }

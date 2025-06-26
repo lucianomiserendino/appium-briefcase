@@ -42,6 +42,9 @@ public class PendingTasksPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(accessibility = "My Assignments")
 	public static WebElement MyAssignments;
 
+	@iOSXCUITFindBy(accessibility = "Submit")
+	public static WebElement submit;
+	
 	@iOSXCUITFindBy(accessibility = "Pending Clerk's Filing")
 	public static WebElement PendingClerk;
 

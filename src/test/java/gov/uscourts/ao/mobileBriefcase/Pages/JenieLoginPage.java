@@ -1,5 +1,8 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.SITE_TABLE_VARIABLE_VALUE;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
@@ -8,19 +11,27 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getProperty;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.support.PageFactory.initElements;
 
+import java.time.Duration;
 import java.util.List;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
+import gov.uscourts.ao.mobileBriefcase.page.common.Configuration;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
@@ -89,7 +100,7 @@ public class JenieLoginPage extends Base {
 	@iOSXCUITFindBy(accessibility = "AvailableJudges")
 	public static WebElement AvailableJudges_Container;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Search']")
 	public static WebElement searchIcon;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='SEARCH']")
@@ -101,7 +112,7 @@ public class JenieLoginPage extends Base {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Court not set']")
 	public static List<WebElement> setCourt;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='✓']/following::XCUIElementTypeStaticText[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='✓']/preceding::XCUIElementTypeStaticText[2]")
 	public static WebElement checkmark;
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name=''])[1]")
@@ -129,6 +140,21 @@ public class JenieLoginPage extends Base {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"AvailableJudges\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther")
 	public static WebElement availableJudgesListView;
 	
+	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'Calculating')]")
+	public static List<WebElement>  calculating;
+	
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeTextField[@value=\"( e.g. JohnSmith )\"]")
+	public static WebElement siteTableUserName;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeSecureTextField")
+	public static WebElement siteTablePassword;
+	
+	@iOSXCUITFindBy(xpath ="//strong[contains(text(),'Single Table Editor')]")
+	public static WebElement singleTableEditorTitle;
+
+	
+	
 //	@iOSXCUITFindBy(xpath ="//XCUIElementTypeStaticText[@name=\"Dashboard\" and @label=\"\"]")
 //	public static List<WebElement> dashboard;
 
@@ -143,6 +169,8 @@ public class JenieLoginPage extends Base {
 	public final String user = "user";
 	public final String judgeUserName = "judgeUserName";
 	public final String judgePassword = "judgePassword";
+	public final String jaUserName = "jaUserName";
+	public final String jaPassword = "jaPassword";
 
 	public void getEnvironment(Environment environment) {
 		switch (environment) {
@@ -196,20 +224,23 @@ public class JenieLoginPage extends Base {
 
 	    ifDownloaded(retrievePendingRefs);
 
-	    if ("sysadmin".equals(user)) {
-	        contains(User).click();
+	    if (user.equals("sysadmin")) {
+			contains(User).click();
 
-	        String name = "";
+			String name = "";
 
-	        if ("judge".equals(userType)) {
-	            name = getProperty(env + userInputData.getJud());
-	        } else if ("stf".equals(userType)) {
-	            name = getProperty(env + userInputData.getStf());
-	        }
+			if (userType.equals("judge")) {
+				name = getProperty(env + jud);
+			} else if (userType.equals("stf")) {
 
-	        selectUser(personrole, name);
-	        ifDownloaded(inProgress);
-	    }
+				name = getProperty(env + stf);
+			}
+
+			selectUser(personrole, name);
+			ifDownloaded(inProgress);
+
+		}
+	    ifDownloaded(calculating);
 	}
 
 
@@ -224,7 +255,7 @@ public class JenieLoginPage extends Base {
 				break;
 			}
 		}
-
+     
 		// Tap on the specified available judge
 		tap(Locator.XPATH, "//*[contains(@name, '" + availableJudges + "')]");
 
@@ -236,7 +267,8 @@ public class JenieLoginPage extends Base {
 				elems.get(0).click();
 				return;
 			} else {
-				 Utility.scroll(availableJudgesListView, "up"); 
+				// Utility.scroll(availableJudgesListView, "up"); 
+				Utility.scrollPage("up") ;
 			}
 		}
 
@@ -317,6 +349,12 @@ public class JenieLoginPage extends Base {
 			userName = getProperty(courtId + this.sysadminUserName);
 			password = getProperty(courtId + this.sysadminPassword);
 			break;
+			
+		case "ja":
+			userName = getProperty(courtId + this.jaUserName);
+			password = getProperty(courtId + this.jaPassword);
+			break;
+			
 		default:
 			throw new IllegalArgumentException("Invalid user type: " + user);
 		}
@@ -350,7 +388,8 @@ public class JenieLoginPage extends Base {
 	}
 
 	public void reopenTheApp() {
-		// Ensure the page is fully loaded
+		 ifDownloaded(calculating);
+		 
 		Page.performPageLoad(driver);
 
 		// Check if the dashboard elements list is not null and not empty
@@ -427,8 +466,8 @@ public class JenieLoginPage extends Base {
 			checkmark.click();
 
 			// Verify that the selected court has a green checkmark
-//			assertEquals("VERIFY A GREEN CHECKMARK DISPLAYS TO THE LEFT OF THE COURT THAT IS CURRENTLY SELECTED: ",
-//					court1, court2);
+			assertEquals("VERIFY A GREEN CHECKMARK DISPLAYS TO THE LEFT OF THE COURT THAT IS CURRENTLY SELECTED: ",
+					court1, court2);
 
 		} catch (Exception e) {
 			// Log and rethrow the exception to ensure it's not silently ignored
@@ -437,5 +476,117 @@ public class JenieLoginPage extends Base {
 			throw e;
 		}
 	}
+	
+	public void changeSiteVariableValue(String existingSiCode,String existingSiVal,List<UserInputData> userInputData) {
+		
+		
+		
+		if (!CommonPages.siCode.equals(existingSiVal)) {
+		
+		Base.safariInstance();
+		
+		changeWindow("WEBVIEW");
+		
+		
+		driver.navigate().to("https://cms-ecf-cmka.tsso.dcn/cmecf/servlet/STEditor");
+		
+		changeWindow("WEBVIEW");  
+			
+	
+		driver.findElement(By.name("usernameEntered")).sendKeys(Configuration.getProperty( "cmka."+ this.jaUserName));
+		driver.findElement(By.name("password")).sendKeys(Configuration.getProperty( "cmka."+ this.jaPassword));
+
+		driver.findElement(By.id("SUBMIT2")).click();
+
+		
+		Page.sleep(1000);
+		
+		if (
+		driver.findElement(By.xpath("//strong[contains(text(),'Single Table Editor')]")).isDisplayed()==true) {
+		
+		
+		
+		WebElement selectElement = driver.findElement(By.name("table"));
+
+		Select dropdown = new Select(selectElement);
+
+		WebElement siteOption = dropdown.getOptions()
+		                                .stream()
+		                                .filter(option -> option.getAttribute("value").equals("site"))
+		                                .findFirst()
+		                                .orElse(null);
+
+		if (siteOption != null) {
+		    System.out.println("Option found: " + siteOption.getText());
+		    dropdown.selectByValue("site"); 
+		} else {
+		    System.out.println("Option 'site' not found.");
+		}
+
+		WebElement selectButton = driver.findElement(By.name("submitButton"));
+		selectButton.click();
+		
+		Page.sleep(1000);
+		
+		if (!CommonPages.siCode.isEmpty()) {
+		
+		
+		WebElement siCodeInput = driver.findElement(By.name("si_code"));
+		siCodeInput.clear();  
+		siCodeInput.sendKeys(existingSiCode);  
+
+		
+		
+		WebElement searchButton = driver.findElements(By.name("searchButton")).get(0); // use get(1) for the second button
+		searchButton.click();
+		
+		Page.sleep(1000);
+		
+	
+		
+		WebElement siValueTextArea = driver.findElement(By.name("si_value__________1"));
+
+		siValueTextArea.clear();
+
+		siValueTextArea.sendKeys(existingSiVal);
+
+		WebElement updateButton = driver.findElement(By.name("update1"));
+		updateButton.click();
+
+		}else {
+			
+			
+			WebElement siCodeInput = driver.findElement(By.name("si_code"));
+			siCodeInput.clear();  
+			siCodeInput.sendKeys(existingSiCode);  
+			
+			
+			WebElement siVal = driver.findElement(By.name("si_value"));
+			siVal.clear();  
+			siVal.sendKeys(existingSiVal);  
+			
+			
+			WebElement searchButton = driver.findElements(By.name("addButton")).get(0); // use get(1) for the second button
+			searchButton.click();
+			
+			
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+			Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+
+			System.out.println("Alert text: " + alert.getText());
+
+			alert.accept();
+		
+		}
+		String upDatedSiVal=  getAllColumns(getID(SITE_TABLE_VARIABLE_VALUE, existingSiCode), userInputData);
+		
+		assertEquals(existingSiVal, upDatedSiVal);
+
+		}
+		
+		}
+	}
+
+
 
 }

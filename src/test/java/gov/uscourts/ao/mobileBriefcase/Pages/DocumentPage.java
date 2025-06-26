@@ -37,6 +37,8 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Base;
+import gov.uscourts.ao.mobileBriefcase.page.common.Configuration;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
@@ -104,6 +106,10 @@ public class DocumentPage extends AppiumPageFactory {
 	
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeStaticText")
 	public static WebElement collapseBtn;
+	
+
+	public final String sysadminUserName = "sysadminUserName";
+	public final String sysadminPassword = "sysadminPassword";
 
 	static String panel = "";
 	String randomCategory = "";
@@ -119,6 +125,7 @@ public class DocumentPage extends AppiumPageFactory {
 	public static String cmr_cyv_code = "";
 
 	public static String selectRandomItem(String query, String xpath, List<UserInputData> userInputData) {
+
 		String category = "";
 		List<String> list = null;
 
@@ -142,7 +149,7 @@ public class DocumentPage extends AppiumPageFactory {
 
 	public void selectRandomCategory(String enBanc, List<UserInputData> userInputData) {
 	    StringBuilder set = new StringBuilder();
-	    String peId = DocumentPage.get_pe_id("jud", userInputData);
+	    String peId = get_pe_id("jud", userInputData);
 	    String query;
 	    String siValue = CommonPages.getSiValue(SiteTableVariable.targetOnly, userInputData);
 
@@ -185,8 +192,9 @@ public class DocumentPage extends AppiumPageFactory {
 	        caseNum = randomRecord[1].trim();
 	        category = randomRecord[2].trim();
 	        cmr_cyv_code = randomRecord[3].trim();
-
+            collapseBtn.click();
 	        scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
+	        collapseBtn.click();
 	        System.out.println("------------------------------------------------------");
 	        System.out.println("Selected category name: " + category);
 	        System.out.println("------------------------------------------------------");
@@ -490,7 +498,7 @@ public class DocumentPage extends AppiumPageFactory {
 	        System.out.println("------------------------------------------------------");
 	        System.out.println("Selected document category name: " + randomCategory);
 	        System.out.println("------------------------------------------------------");
-	        
+	        collapseBtn.click();
 			randomDocument = Utility.clickOnNumberInRange(getDocListLocator(randomCategory));
 			
 	        System.out.println("------------------------------------------------------");
@@ -522,8 +530,8 @@ public class DocumentPage extends AppiumPageFactory {
 	}
 
 	public List<WebElement> getDocListLocator(String categoryName) {
-		return Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + categoryName + "']/following::"
-				+ "XCUIElementTypeStaticText[@name='Downloaded']/preceding::XCUIElementTypeStaticText[2]"));
+		return Page.waitForVisibilityOfAllElements(Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + categoryName + "']/following::"
+				+ "XCUIElementTypeStaticText[@name='Downloaded']/preceding::XCUIElementTypeStaticText[2]")),driver);
 	}
 
 	public static List<WebElement> getDocCategoryLocator(String panel) {

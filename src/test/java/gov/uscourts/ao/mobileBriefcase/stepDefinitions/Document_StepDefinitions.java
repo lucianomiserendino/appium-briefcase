@@ -1,5 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -7,17 +8,21 @@ import org.junit.Assert;
 
 
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
+import gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCasePage;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.Category;
+import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.StaffAttorneyReferralSortPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
 public class Document_StepDefinitions {
 	DocumentPage page;
+	CopyDeleteCasePage copyDeleteCasePage=new CopyDeleteCasePage();
 	StaffAttorneyReferralSortPage stfPage;
 	public static String judCategory;
 	public static String regularCase;
@@ -122,6 +127,10 @@ public class Document_StepDefinitions {
 		page = new DocumentPage();
 		page.selectRandomReferral();
 	}
-
-
+    @Given("I set the site table variable {string} to {string}")
+	public void i_set_the_site_table_variable_to(String siteCode, String siVal) {
+    	List<UserInputData> userInputData = new ArrayList<>();
+    	JenieLoginPage page = new JenieLoginPage();
+		page.changeSiteVariableValue(siteCode,siVal,userInputData);
+	}
 }

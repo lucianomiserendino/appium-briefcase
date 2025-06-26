@@ -109,6 +109,7 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 	 * referrals in each categories, matches the number of referrals in the DB
 	 */
 	public void observeReferralCategories(List<UserInputData> table) {
+		collapseBtn.click();
 		if (Default.size() > 0) {
 			Default.get(0).click();
 		}

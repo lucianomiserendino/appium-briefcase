@@ -1,5 +1,6 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getProperty;
 
 import java.text.SimpleDateFormat;
@@ -7,11 +8,19 @@ import java.util.Date;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver.SystemProperty;
 
+import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
+import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
+import gov.uscourts.ao.mobileBriefcase.page.common.Configuration;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
-public class CopyDeleteCasePage extends Base {
+public class CopyDeleteCasePage extends AppiumPageFactory {
 
 	public static String CASE_NUMBER_OF_THE_CASE_TO_BE_COPIED = "fromCase";
 
@@ -46,6 +55,10 @@ public class CopyDeleteCasePage extends Base {
 	public static String CONFIRM_DELETE_BTN = "Delete Case";
 
 	public static String DELETE_CASE_INFO_REPORT_PAGE = "*//b[contains(.,'Delete Case Information Report')]";
+
+	
+	
+
 
 	public static String createARandomCase() {
 		return new SimpleDateFormat("yy-Hm").format(new Date());
@@ -85,8 +98,6 @@ public class CopyDeleteCasePage extends Base {
 		findElementAndsendKeys(By.name("password"), getProperty(password));
 		findElementAndclick(By.name("SUBMIT2"));
 	}
-
-
 
 	public static void confirm(String title, String expected, String action) {
 		String actual = findWebElement(By.xpath(title)).getText();
@@ -151,5 +162,6 @@ public class CopyDeleteCasePage extends Base {
 		}
 
 	}
+	
 
 }

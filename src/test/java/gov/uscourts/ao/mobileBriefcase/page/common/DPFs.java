@@ -97,10 +97,9 @@ public class DPFs extends AppiumPageFactory {
 
 	public List<String> getListOfBriefcaseDPFs(String caseNumber, List<UserInputData> userInputData) {
 
-		String cmr_id = CommonPages.getCMRID(caseNumber, userInputData);
+		String cmr_id = CommonPages.getCMRID( userInputData);
 
 		List<String> dbResult = executeQuery(getID(APPLICABLE_ACTIONS, cmr_id), userInputData);
-
 		sort(dbResult);
 
 		return dbResult;
@@ -320,11 +319,8 @@ public class DPFs extends AppiumPageFactory {
 
 	public void dataIsSaved(String actionName) {
 		Page.performPageLoad(driver);
-	   // List<String> docketEntryTypes = Arrays.asList(".pdf", "Judge Vote Note", "Assignment Note");
 
-	    // Wait until the action element is clickable
 	    Page.waitToBeClickable(contains(actionName), driver);
-System.out.println(randomProposedOrder+"88888888888888888888888888888888");
 	    boolean pdfFound = isDocketEntryDisplayed(randomProposedOrder.trim());
 	    boolean assignmentNoteFound = isDocketEntryDisplayed("Assignment Note");
 	    boolean voteOrTransactionFound = isDocketEntryDisplayed("Judge Vote Note") || isDocketEntryDisplayed("Transaction Note");
@@ -332,7 +328,6 @@ System.out.println(randomProposedOrder+"88888888888888888888888888888888");
 	    boolean isDataSaved = pdfFound && assignmentNoteFound && voteOrTransactionFound;
 
 
-	    // Assert that at least one docket entry is displayed
 	    assertTrue(
 	        "Check if the " + actionName + " transaction was submitted successfully or if data is saved when executing multiple DPFs in a single action.",
 	        isDataSaved);

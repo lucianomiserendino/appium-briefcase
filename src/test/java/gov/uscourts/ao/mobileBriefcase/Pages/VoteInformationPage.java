@@ -56,12 +56,12 @@ public class VoteInformationPage extends AppiumPageFactory {
 
 		WebElement uiResult = null;
 		String filerInfo = getFilerInfo(peId, caseId, cyvCode, userInputData);
-		
+
 		String xpath = "";
 		if (!filler.getText().contains(",")) {
 			xpath = filerInfo.replace(",", "");
 
-		}else {
+		} else {
 			xpath = filerInfo;
 		}
 
@@ -70,11 +70,10 @@ public class VoteInformationPage extends AppiumPageFactory {
 			case VOTE_INFO_FILLRES_INFORMATION:
 				for (int i = 0; i < judgesInitials.size(); ++i) {
 
-		
 					uiResult = findElementBy(Locator.XPATH,
 							"//*[contains(@name, 'Vote Information')]/following::XCUIElementTypeStaticText[contains(@name, '"
-									+ xpath + "')]/following::XCUIElementTypeStaticText[contains(@name, '"+judgesInitials.get(i)+"')]");
-
+									+ xpath + "')]/following::XCUIElementTypeStaticText[contains(@name, '"
+									+ judgesInitials.get(i) + "')]");
 
 				}
 				break;
@@ -239,9 +238,7 @@ public class VoteInformationPage extends AppiumPageFactory {
 
 		ArrayList<String> uiJudgeInitials = new ArrayList<>();
 
-
-
-		for (int i = 1; i <= dbInitials.size() ; ++i) {
+		for (int i = 1; i <= dbInitials.size(); ++i) {
 
 			uiInits = findElementBy(Locator.XPATH, initials(panel, i));
 			uiJudgeInitials.add(uiInits.getText().trim());
@@ -268,7 +265,8 @@ public class VoteInformationPage extends AppiumPageFactory {
 	public static String initials(String panel, int index) {
 		if (panel.equals("Vote_Information")) {
 			return "//XCUIElementTypeStaticText[@name=\"Vote Information\"]/following::XCUIElementTypeOther[1]/XCUIElementTypeOther"
-					+ "/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeStaticText["+index+"]";
+					+ "/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeStaticText["
+					+ index + "]";
 		} else {
 			return "//XCUIElementTypeOther[@name='JudgesVotesList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]"
 					+ "/XCUIElementTypeOther[" + index
@@ -277,18 +275,82 @@ public class VoteInformationPage extends AppiumPageFactory {
 	}
 
 	public static String getPanelMembers(String cmrCcrId, List<UserInputData> userInputData) {
-	    String panelMembers = getCMR_PANEL_MEMBERS(Queries.by_PJ_JUDGE_ORDER, cmrCcrId, userInputData);
+		String panelMembers = getCMR_PANEL_MEMBERS(Queries.by_PJ_JUDGE_ORDER, cmrCcrId, userInputData);
 
-	    if (panelMembers != null && !"null".equalsIgnoreCase(panelMembers.trim())) {
-	        return panelMembers;
-	    }
+		if (panelMembers != null && !"null".equalsIgnoreCase(panelMembers.trim())) {
+			return panelMembers;
+		}
 
-	    return getCMR_PANEL_MEMBERS(Queries.by_JU_SENIORITY_SORT, cmrCcrId, userInputData);
+		return getCMR_PANEL_MEMBERS(Queries.by_JU_SENIORITY_SORT, cmrCcrId, userInputData);
 	}
-
 
 	public static String getCMR_PANEL_MEMBERS(String field, String cmr_ccr_id, List<UserInputData> userInputData) {
 		return getAllColumns(Actions.replace(field, "CMR_CCR_ID", cmr_ccr_id), userInputData);
+	}
+
+	public List<String> printFormattedVoteInfoDynamic() {
+		List<String> voteInfo = new ArrayList<String>();
+		String xpath = "(//XCUIElementTypeStaticText["
+				+ "preceding::XCUIElementTypeStaticText[@value='Vote Information'] and "
+				+ "following::XCUIElementTypeStaticText[@value='Actions']" + "])[position() < last()]";
+
+		List<WebElement> elements = driver.findElements(By.xpath(xpath));
+		System.out.println("Found elements count: " + elements.size());
+
+		String currentHeader = null;
+		List<String> voteTypes = new ArrayList<>();
+		List<String> voteValues = new ArrayList<>();
+		boolean inBlock = false;
+
+		for (WebElement el : elements) {
+			// 1) Grab only the 'label' (where the newline lives)
+			String raw = el.getAttribute("label");
+			if (raw == null || raw.isBlank())
+				continue;
+
+			// 2) Collapse newlines and trim
+			String text = raw.replace("\n", " ").trim();
+
+			// 3) Header detection
+			if (text.contains("Filed:")) {
+				// print previous block if any
+				if (currentHeader != null && !voteTypes.isEmpty() && !voteValues.isEmpty()) {
+					printCase(currentHeader, voteTypes, voteValues);
+				}
+				// start new block
+				currentHeader = text.replace(" Filed:", "Filed:");
+				voteTypes.clear();
+				voteValues.clear();
+				inBlock = true;
+			}
+			// 4) once in a block, collect types (no colon) and values (No Vote or date)
+			else if (inBlock) {
+				if (text.equalsIgnoreCase("No Vote") || text.matches("\\d{1,2}/\\d{1,2}/\\d{4}")) {
+					voteValues.add(text);
+				} else if (!text.contains(":")) {
+					voteTypes.add(text);
+				}
+			}
+			voteInfo.add(text);
+
+		}
+		return voteInfo;
+
+		// print last
+//	    if (currentHeader != null && !voteTypes.isEmpty() && !voteValues.isEmpty()) {
+//	        printCase(currentHeader, voteTypes, voteValues);
+//	    }
+	}
+
+	private void printCase(String header, List<String> types, List<String> values) {
+		System.out.println(header);
+		int n = Math.min(types.size(), values.size());
+		List<String> pairs = new ArrayList<>(n);
+		for (int i = 0; i < n; i++) {
+			pairs.add(types.get(i) + "-" + values.get(i));
+		}
+		System.out.println(String.join(", ", pairs));
+		System.out.println("------------------------");
 	}
 
 	public enum FILERs_INFO {

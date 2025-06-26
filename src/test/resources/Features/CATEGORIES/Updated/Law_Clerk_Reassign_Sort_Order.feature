@@ -1,4 +1,4 @@
-@Regression @updated @smoke
+@Regression @updated
 Feature: Sorting law clerk assignment
 
 
@@ -10,9 +10,9 @@ Assignments are sorted by case number descending
 	|si_value      |courtId    |
 	|displayTools  |test       |
   
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

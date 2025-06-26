@@ -19,4 +19,9 @@ the "term" selections as the mode.
 	And User select a sub folder
 	Then selects a random pending tasks case
 	Then User expands/collapse panel
+	
+	  Then User selects action
+	  |dpf                 |courtId    |
+	  |chmSilentAssignTerm |test       |
+	    
 	#Then User verifies assignments are removed from the Pending Tasks folder when a chmSilentAssign action is ran with any of the "term" selections as the mode. 

@@ -5,9 +5,9 @@ Scenario:
 
 	This task is to verify  the app returns a result after performing a valid wildcard case search
 
-		#Given I am logged into Briefcase 
-		#|environment|user    |
-		#|test       |sysadmin|
+		Given I am logged into Briefcase 
+		|environment|user    |
+		|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

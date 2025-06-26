@@ -103,7 +103,7 @@ public class Utility extends Base {
 		int scrollCount = 0;
 		boolean elementFound = false;
 		while (scrollCount < 8) {
-			List<WebElement> elements = findElements(By.xpath(elementXPath));
+			List<WebElement> elements = findElements(By.xpath(elementXPath));//Page.waitForVisibilityOfAllElements(findElements(By.xpath(elementXPath)), driver);
 			if (!elements.isEmpty()) {
 				try {
 					elements.get(elements.size() - 1).click();

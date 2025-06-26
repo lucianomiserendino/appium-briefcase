@@ -34,11 +34,12 @@ public class DPF_stepDefinitions {
 	    List<List<String>> data = table.asLists();
 
 	    String dpf = data.get(1).get(0);
-
+       
 	    actionName = page.getChmAssign(DPF.valueOf(dpf), caseNum, userInputData);
 
 	    page2 = new CommonPages();
 	    page2.selectBriefcaseAction("Actions", actionName);
+	    
 	}
 
 

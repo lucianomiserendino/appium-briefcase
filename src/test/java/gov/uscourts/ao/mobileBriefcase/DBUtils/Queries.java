@@ -265,27 +265,17 @@ public class Queries {
 	public static final String LATEST_CREATED_CASE = "select first 1 cs_caseid  from case order by cs_last_update desc ";
 
 	// cmr_cyv_code ='prhr'
-	public static final String ASSIGNEEs_FIRST_NAME = "select first 1  pr_first_name FROM chm_mobile_referral, "
-			+ "chambers_case_to_referral, chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val WHERE cmr_cs_caseid = 'CMR_CS_CASEID'  and"
-			+ " cmr_ccr_id = ccr_id and chc_cs_caseid = cmr_cs_caseid and chc_cha_id = cha_id and cha_ju_pe_id = '?'  and chc_date_end is null and"
-			+ " cha_chm_pe_id = pe_id and pe_pr_prid = pr_prid  and cmr_cyv_code ='prhr' and cha_cav_code = cav_code order by  chc_last_updated desc";
-
-	public static final String ASSIGNEEs_LAST_NAME = "select first 1  pr_last_name FROM chm_mobile_referral, "
-			+ "chambers_case_to_referral, chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val WHERE cmr_cs_caseid = 'CMR_CS_CASEID'  and"
-			+ " cmr_ccr_id = ccr_id and chc_cs_caseid = cmr_cs_caseid and chc_cha_id = cha_id and cha_ju_pe_id = '?'  and chc_date_end is null and"
-			+ " cha_chm_pe_id = pe_id and pe_pr_prid = pr_prid  and cmr_cyv_code ='prhr' and cha_cav_code = cav_code order by  chc_last_updated desc";
-
-	public static final String ASSIGNEES_CAV_DESCRIPTION = "select first 1  cav_description FROM chm_mobile_referral, "
-			+ "chambers_case_to_referral, chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val WHERE cmr_cs_caseid = 'CMR_CS_CASEID'  and"
-			+ " cmr_ccr_id = ccr_id and chc_cs_caseid = cmr_cs_caseid and chc_cha_id = cha_id and cha_ju_pe_id = '?'  and chc_date_end is null and"
-			+ " cha_chm_pe_id = pe_id and pe_pr_prid = pr_prid  and cmr_cyv_code ='prhr' and cha_cav_code = cav_code order by  chc_last_updated desc";
-
-	// cmr_cyv_code ='prhr'
 	public static final String ASSIGNEES_CHA_ID = "select first 1 cha_id FROM chm_mobile_referral, "
 			+ "chambers_case_to_referral, chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val WHERE cmr_cs_caseid = 'CMR_CS_CASEID'  and"
 			+ " cmr_ccr_id = ccr_id and chc_cs_caseid = cmr_cs_caseid and chc_cha_id = cha_id and cha_ju_pe_id = '?'  and chc_date_end is null and"
 			+ " cha_chm_pe_id = pe_id and pe_pr_prid = pr_prid and cha_cav_code = cav_code order by cha_id desc";
-
+	
+	public static final String ASSIGNEES_CHA_IDs = "select first 1 distinct (cha_id),chc_last_updated FROM chm_mobile_referral, "
+			+ "chambers_case_to_referral, chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val WHERE cmr_cs_caseid = 'CMR_CS_CASEID'  and"
+			+ " cmr_ccr_id = ccr_id and chc_cs_caseid = cmr_cs_caseid and chc_cha_id = cha_id and cha_ju_pe_id = '?'  and chc_date_end is null and"
+			+ " cha_chm_pe_id = pe_id and pe_pr_prid = pr_prid and cha_cav_code = cav_code order by cha_id desc";	
+	
+	
 	public static final String ASSIGNMENT_DUE_DATE = "SELECT chd_date FROM\n"
 			+ "chambers_assign_date ad, chm_assign_datetype_val,\n"
 			+ "    (Select max(chd_date) as maxnum, chd_cha_id\n" + "    from chambers_assign_date\n"
@@ -300,6 +290,8 @@ public class Queries {
 	public static final String CHD_DATE = "select first 1 chd_date from chambers_assignment \n"
 			+ "join chambers_assign_date on cha_id = chd_cha_id \n"
 			+ "join chm_assign_to_case on chc_cha_id = ? order by cha_last_updated desc";
+	
+	public static final String ASSIGNMENT_TYPE_AND_ASSIGNED_DATE = "select  first  2 chd_date, cha_cav_code,cha_last_updated from chambers_assignment, chambers_assign_date,chm_assign_to_case where  cha_id = chd_cha_id and cha_id=chc_cha_id order by cha_last_updated desc";
 
 	public static final String CHD_CDV_CODE = "select first 1 chd_cdv_code from chambers_assignment \n"
 			+ "join chambers_assign_date on cha_id = chd_cha_id \n"
@@ -436,7 +428,7 @@ public class Queries {
 			+ " and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = 'CMR_CS_CASEID' and cmr_ju_pe_id = 'CMR_JU_PE_ID' and cmr_cyv_code='CMR_CYV_CODE'";
 
 	public static final String CMR_ID = "SELECT  first 1 cmr_id  FROM chm_mobile_referral, chambers_case_to_referral, chambers_referral WHERE cpr_vote_req = 'y'"
-			+ " and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = 'CMR_CS_CASEID' and cmr_ju_pe_id = 'CMR_JU_PE_ID'";
+			+ " and cmr_ccr_id = ccr_id and ccr_cpr_id = cpr_id and cmr_cs_caseid = 'CMR_CS_CASEID' and cmr_ju_pe_id = 'CMR_JU_PE_ID' and cmr_cyv_code='CMR_CYV_CODE'";
 
 	public static final String FILLERs_INFORMATION = "select  FIELD " + "from chm_mobile_referral\n"
 			+ "join chambers_case_to_referral on cmr_ccr_id = ccr_id\n"
@@ -694,13 +686,60 @@ public class Queries {
 			+ "	NVL(cpr_vote_complete,'') <> 'y' and NVL(cpr_vote_req,'') <> 'n' and crj_ju_pe_id='CRJ_JU_PE_ID' and  dm_dktentryid is not null and "
 			+ "dm_internal_type='wordproc' and dm_file_name like '%.pdf%' or dm_file_name like '%.word%' or dm_description  like '%.pdf%' or dm_description  like '%.word%' order by  chv_date_created desc";
 
-	public static final String DUPLICATED_LWK = "SELECT   pr_first_name, pr_last_name, cav_display,  cyv_display,"
-			+ " cs_year || '-' || cs_number AS casenum FROM     chm_mobile_referral,     case ,     chm_reftype_val, "
-			+ "chambers_case_to_referral,     chm_assign_to_case,     chambers_assignment,     person,     personrole, "
-			+ "chm_assign_type_val WHERE     cmr_ccr_id = ccr_id     AND ccr_cpr_id = chc_cpr_id     AND chc_cs_caseid = cmr_cs_caseid "
-			+ "AND chc_cha_id = cha_id     AND cha_ju_pe_id = '?'     AND cs_caseid = cmr_cs_caseid     AND cmr_cyv_code = cyv_code "
-			+ "AND chc_date_end IS NULL     AND cha_chm_pe_id = pe_id     AND pe_pr_prid = pr_prid     AND cha_cav_code = cav_code  "
-			+ "AND pe_rt_code = 'lwclk'  GROUP BY   pr_first_name,pr_last_name,  cav_display, cyv_display, casenum HAVING   COUNT(  pr_first_name) =1";
+	public static final String DUPLICATED_LWK = "WITH base_data AS (\n"
+			+ "    SELECT\n"
+			+ "        pr_first_name,\n"
+			+ "        pr_last_name,\n"
+			+ "        cav_display,\n"
+			+ "        cyv_display,\n"
+			+ "        cs_year || '-' || cs_number AS casenum\n"
+			+ "    FROM\n"
+			+ "        chm_mobile_referral,\n"
+			+ "        case,\n"
+			+ "        chm_reftype_val,\n"
+			+ "        chambers_case_to_referral,\n"
+			+ "        chm_assign_to_case,\n"
+			+ "        chambers_assignment,\n"
+			+ "        person,\n"
+			+ "        personrole,\n"
+			+ "        chm_assign_type_val\n"
+			+ "    WHERE\n"
+			+ "        cmr_ccr_id = ccr_id\n"
+			+ "        AND ccr_cpr_id = chc_cpr_id\n"
+			+ "        AND chc_cs_caseid = cmr_cs_caseid\n"
+			+ "        AND chc_cha_id = cha_id\n"
+			+ "        AND cha_ju_pe_id = '34'\n"
+			+ "        AND cs_caseid = cmr_cs_caseid\n"
+			+ "        AND cmr_cyv_code = cyv_code\n"
+			+ "        AND chc_date_end IS NULL\n"
+			+ "        AND cha_chm_pe_id = pe_id\n"
+			+ "        AND pe_pr_prid = pr_prid\n"
+			+ "        AND cha_cav_code = cav_code\n"
+			+ "        AND pe_rt_code = 'lwclk'\n"
+			+ "),\n"
+			+ "grouped_data AS (\n"
+			+ "    SELECT\n"
+			+ "        cav_display,\n"
+			+ "        cyv_display,\n"
+			+ "        casenum\n"
+			+ "    FROM base_data\n"
+			+ "    GROUP BY cav_display, cyv_display, casenum\n"
+			+ "    HAVING COUNT(DISTINCT pr_first_name || ' ' || pr_last_name) > 1\n"
+			+ ")\n"
+			+ "SELECT DISTINCT\n"
+			+ "    b.pr_first_name,\n"
+			+ "    b.pr_last_name,\n"
+			+ "    b.cav_display,\n"
+			+ "    b.cyv_display,\n"
+			+ "    b.casenum\n"
+			+ "FROM\n"
+			+ "    base_data b\n"
+			+ "JOIN grouped_data g\n"
+			+ "    ON b.cav_display = g.cav_display\n"
+			+ "    AND b.cyv_display = g.cyv_display\n"
+			+ "    AND b.casenum = g.casenum\n"
+			+ "ORDER BY\n"
+			+ "    b.casenum, b.cav_display, b.cyv_display";
 
 	public static final String STAFF_ASSIGNMENTS = " select distinct cha_id,pr_first_name, pr_last_name, cav_description from chm_mobile_referral, "
 			+ "chambers_case_to_referral, chm_assign_to_case, chambers_assignment, person, personrole, chm_assign_type_val "

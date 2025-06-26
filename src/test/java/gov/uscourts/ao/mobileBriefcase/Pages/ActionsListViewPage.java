@@ -31,7 +31,7 @@ public class ActionsListViewPage extends AppiumPageFactory {
 	public static List<WebElement> documentListAccordionText;
 
 	public void getApplicableActions(String panel, List<UserInputData> userInputData) {
-		if (CommonPages.siVal.equalsIgnoreCase("n")) {
+		if (CommonPages.siCode.equalsIgnoreCase("n")) {
 			assertSiteTableVariable();
 			return;
 		}
@@ -116,7 +116,7 @@ public class ActionsListViewPage extends AppiumPageFactory {
 	 * set to 'judgement'.
 	 */
 	public void verifyMbrdocWPisDisplayed(List<UserInputData> userInputData) {
-		if (CommonPages.siVal.equalsIgnoreCase("n")) {
+		if (CommonPages.siCode.equalsIgnoreCase("n")) {
 			assertSiteTableVariable();
 		} else {
 			scrollDownIfNotDisplayed(containsElement("Actions"));

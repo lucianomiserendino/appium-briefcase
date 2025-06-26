@@ -18,11 +18,21 @@ public interface iOSCapabilities {
 	
 	public static final String START_IWDP="startIWDP";
 	
+	public static final String AUTO_WEBVIEW= "autoWebview";
+	
+	public static final String AUTO_GRANT_PERMISSIONS= "autoGrantPermissions";
+
+	public static final String NATIVE_WEBSCREENSHOT= "nativeWebScreenshot";
+
+	public static final String USE_PREBUILT_WDA= "usePrebuiltWDA";
+
 	public static final String AUTOMATION_NAME = "automationName";
 
 	public static final String BUNDLE_ID = "bundleId";
 
 	public static final String BROWSER_NAME = "browserName";
+	
+	public static final String SAFARI_IGNORE_FRAUD_WARNING =  "safariIgnoreFraudWarning";
 
 	public static final String XCODE_ORG_ID = "xcodeOrgId";
 

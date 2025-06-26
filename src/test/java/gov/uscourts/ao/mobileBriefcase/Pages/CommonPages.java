@@ -100,7 +100,7 @@ public class CommonPages extends AppiumPageFactory {
 
 	static String okButton = "OK";
 
-	static String siVal = "";
+	static String siCode = "";
 
 	public void getCategory(Category category, String caseNumber) {
 
@@ -299,20 +299,22 @@ public class CommonPages extends AppiumPageFactory {
 		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
 
 		String caseId = DocumentPage.cs_caseid;
-
-		return getAllColumns(replace(Queries.CMR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id),
+		String cmr_cyv_code = DocumentPage.cmr_cyv_code;
+		return getAllColumns(replace(Queries.CMR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id,"CMR_CYV_CODE",cmr_cyv_code),
 				userInputData);
 	}
 
-	public static String getCMRID(String caseNum, List<UserInputData> userInputData) {
-
-		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
-
-		String caseId = CommonPages.getCaseID(caseNum, userInputData);
-
-		return getAllColumns(replace(Queries.CMR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id),
-				userInputData);
-	}
+//	public static String getCMRID(String caseNum, List<UserInputData> userInputData) {
+//
+//		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
+//
+//		String caseId = CommonPages.getCaseID(caseNum, userInputData);
+//
+//		String cmr_cyv_code = DocumentPage.cmr_cyv_code;
+//		
+//		return getAllColumns(replace(Queries.CMR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id),
+//				userInputData);
+//	}
 
 	public static String getCCRID(List<UserInputData> userInputData) {
 		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
@@ -391,7 +393,7 @@ public class CommonPages extends AppiumPageFactory {
 			break;
 		}
 
-		return siVal = getAllColumns(getID(SITE_TABLE_VARIABLE_VALUE, br + value), pacerInputData);
+		return siCode = getAllColumns(getID(SITE_TABLE_VARIABLE_VALUE, br + value), pacerInputData);
 	}
 
 	public static String getSiValue(String dbType, String value) {

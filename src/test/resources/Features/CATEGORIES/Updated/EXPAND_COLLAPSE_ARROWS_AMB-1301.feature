@@ -1,4 +1,4 @@
-@Regression @AMB-1301 @smoke
+@Regression @AMB-1301
 Feature: Verify data is displayed on the Dashboard after tapping the left-hand navigation expand/collapse arrows 
 
 

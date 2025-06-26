@@ -13,6 +13,7 @@ import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
+import gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCasePage;
 import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
@@ -27,7 +28,8 @@ public class Common_StepDefinitions {
 	CommonPages page;
 	static Boolean pane;
 	public static String siVal;
-
+	public static String siCode;
+	
 	@Then("^User selects \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_selects_and(String category, String caseNumber) {
 		JenieLoginPage logPage = new JenieLoginPage();
@@ -128,12 +130,12 @@ public class Common_StepDefinitions {
 	    String siVal = data.get(1).get(0);
 	    page = new CommonPages();
 
-	    // Initialize userInputData properly if needed
 	    List<UserInputData> userInputData = new ArrayList<>();
 
-	    String result = page.getSiValue(SiteTableVariable.valueOf(siVal), userInputData).trim();
-	    // Optionally store or assert result
+	    siCode= page.getSiValue(SiteTableVariable.valueOf(siVal), userInputData).trim();
 	}
+
+
 
 
 }

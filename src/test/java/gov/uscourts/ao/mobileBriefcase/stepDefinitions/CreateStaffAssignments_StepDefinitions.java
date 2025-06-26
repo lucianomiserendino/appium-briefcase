@@ -24,6 +24,8 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 	String caseNum = DocumentPage.caseNum;
 	String category =DocumentPage.category;
      String action=DPF_stepDefinitions.actionName;
+     
+     
 	@Then("^user  verifies that briefcase events include the chmAssign DPF$")
 	public void user_verifies_that_briefcase_events_include_the_chmSilentAssign_DPF(List<UserInputData> userInputData) {
 		
@@ -41,15 +43,15 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 	public void user_creates_a_new_staff_assignment(List<UserInputData> userInputData) {
 	    page1 = new chmAssignDPFPage();
 	    page1.existing = false;
-	    page1.createNewSTF(caseNum, category, userInputData);
-	    String chaId = page1.get_cha_id(caseNum, category, userInputData);
+	    page1.createSingleSTF(caseNum, category, userInputData);
+	   
 	}
 
 	@Then("^User edits existing staff assignment$")
 	public void user_edits_existing_staff_assignment(List<UserInputData> userInputData) {
 	    page1 = new chmAssignDPFPage();
 	    page1.modifySTF(caseNum, category, userInputData);
-	    String chaId = page1.get_cha_id(caseNum, category, userInputData);
+	   page1.getCha_id(userInputData).get(0);
 	}
 
 
@@ -70,11 +72,18 @@ public class CreateStaffAssignments_StepDefinitions extends Base {
 	public void user_modifies_the_existing_dates_and_completes_the_assignment_in_the_same_transaction() {
 		List<UserInputData> userInputData = null;
 		 page1 = new chmAssignDPFPage();
-		 page1.modify_terminate_STF(caseNum, category, userInputData);
+		 page1.modify_and_terminate_STF(caseNum, category, userInputData);
 		 
 
 	}
 	
+    @Then("User creates multiple assignments in a single transaction")
+	public void user_creates_multiple_assignments() {
+	    page1 = new chmAssignDPFPage();
+	    page1.createMultipleSTFs(caseNum, category, null);
+	}
+
+
 
 
 }
