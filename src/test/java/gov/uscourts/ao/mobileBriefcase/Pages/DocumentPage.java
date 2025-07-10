@@ -13,6 +13,7 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Configuration.getPrope
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static java.util.Collections.sort;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -572,22 +573,29 @@ public class DocumentPage extends AppiumPageFactory {
 		Assert.assertTrue("Verify the viewed document: "+docName+" shows a green checkmark",verifyGreenCheckmark( docName,"y"))
 		 ;
 		
-         // Utility.swipeElement("//XCUIElementTypeStaticText[@name='"+docName+"']");
+		List <WebElement> downloaded1 = driver.findElements(By.xpath("//XCUIElementTypeStaticText[@name='Downloaded' and not(@label='')]"));
+
+		   
+		   
+		   
+          Utility.swipeElement("//XCUIElementTypeStaticText[@name='"+docName+"']");
           
-		if (Utility.isDisplayed("//XCUIElementTypeAlert[@name='Delete Document?']"))
-			;
-		Actions.tap(okBtn);
-		
+          try {
+      		if (Utility.isDisplayed("//XCUIElementTypeAlert[@name='Delete Document?']"));
+    		Actions.tap(okBtn);
+		} catch (Exception e) {
+		e.getMessage();
+		}
+
 		performPageLoad(driver);
 		
-		WebElement checkMark2 = driver.findElement(By.xpath("//XCUIElementTypeStaticText[@name='"+docName+"']/following::XCUIElementTypeStaticText[2]"));
+		
+		List <WebElement> downloaded2 = driver.findElements(By.xpath("//XCUIElementTypeStaticText[@name='Downloaded' and not(@label='')]"));
 
+		   downloaded1.size();
+		   
+		   assertEquals(downloaded1.size()+1,downloaded2.size());
 
-		WebElement downloaded = driver.findElement(By.xpath("//XCUIElementTypeStaticText[@name='Downloaded' and not(@label='')]"));
-
-		boolean downloadArrow = checkMark2.equals(downloaded);
-
-		Assert.assertTrue("The icon didn't switch back to a download arrow after deleting the "+docName+" via swipe", downloadArrow);
 
 	}
 	

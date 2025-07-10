@@ -198,6 +198,7 @@ public class JenieLoginPage extends Base {
 
 	public void sendCredentials(String username, String password) {
 		try {
+			performPageLoad(driver);
 			// Send the username and password to their respective input fields
 			sendKeys(this.userName, username, this.password, password);
 

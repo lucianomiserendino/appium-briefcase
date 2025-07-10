@@ -37,6 +37,7 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Filter;
@@ -47,6 +48,10 @@ public class AssignmentsPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Assignments']/following::XCUIElementTypeStaticText[contains(@name, '')]/preceding::XCUIElementTypeStaticText[2]")
 	public static List<WebElement> assignments;
 
+	// @WithTimeout(time = 30, unit = TimeUnit.SECONDS)
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
+	public static WebElement collapseBtn;
+	
 	private static String firstName = "";
 	private static String lastName = "";
 	private static String assignDateType = "";
@@ -73,7 +78,7 @@ public class AssignmentsPage extends AppiumPageFactory {
 	/** Find staff assignments associated with the referral */
 	public List<String> getAssignmentsLinkedToReferral(List<UserInputData> userInputData, String caseId, String peID,
 			String cmr_cyv_code) {
-
+        collapseBtn.click();
 		List<String> staffAssignments = new ArrayList<>();
 		List<String> dbAssignments = new ArrayList<>();
 		Map<String, List<String>> xpathToDetailsMap = new HashMap<>();
@@ -128,7 +133,8 @@ public class AssignmentsPage extends AppiumPageFactory {
 			String randomXpath = staffAssignments.get(randomIndex);
 			WebElement element = driver.findElement(By.xpath(randomXpath));
 			element.click();
-
+			collapseBtn.click();
+			Page.performPageLoad(driver);
 			// Get details of the clicked element
 			List<String> clickedElementDetails = xpathToDetailsMap.get(randomXpath);
 			if (clickedElementDetails != null) {
@@ -148,7 +154,7 @@ public class AssignmentsPage extends AppiumPageFactory {
 
 			}
 		}
-
+		   
 		return dbAssignments;
 	}
 

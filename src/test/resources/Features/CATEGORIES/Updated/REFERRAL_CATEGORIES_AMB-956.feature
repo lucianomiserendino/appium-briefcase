@@ -5,9 +5,9 @@ Feature: Referral Categories display on the dashboard for the judge (online and 
 Scenario: 
 	Referral categories display on the dashboard for the judge 
 
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

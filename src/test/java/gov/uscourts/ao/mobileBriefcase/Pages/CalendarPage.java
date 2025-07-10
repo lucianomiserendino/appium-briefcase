@@ -24,6 +24,7 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
@@ -213,14 +214,15 @@ public class CalendarPage extends AppiumPageFactory {
 
 	public boolean selectRandomCase(String caseNumber, String hearing, List<UserInputData> userInputData) {
 		try {
+			
+			driver.navigate().back();
 			String uiPanelText = Actions
 					.findElement(By.xpath("(//XCUIElementTypeStaticText[contains(@name, '" + caseNumber
 							+ "')]/following::XCUIElementTypeStaticText[contains(@name, 'Panel:')])[1]"))
 					.getText().trim();
 
 			String panelId = DocumentPage.get_pe_id("jud", userInputData);
-
-			// Fetching necessary fields from the court session
+			
 			String sessionTime = getCourtSessionFields(CourtSession.ARG_DISPLAY, panelId, hearing, userInputData,
 					caseNumber);
 			String panelMembers = getCourtSessionFields(CourtSession.CMR_PANEL_MEMBERS, panelId, hearing, userInputData,
@@ -228,10 +230,12 @@ public class CalendarPage extends AppiumPageFactory {
 			String hearingOrder = getCourtSessionFields(CourtSession.HEARING_ORDER, panelId, hearing, userInputData,
 					caseNumber);
 
-			// Construct the expected panel string
 			String expectedPanelText = trimIfNotNull("Panel:", panelMembers) + trimIfNotNull("Order:", hearingOrder)
 					+ trimIfNotNull("Time:", sessionTime);
-
+			
+			
+			
+			
 			return expectedPanelText.replace(" ", "").equalsIgnoreCase(uiPanelText.replace(" ", ""));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -240,8 +244,11 @@ public class CalendarPage extends AppiumPageFactory {
 	}
 
 	private String trimIfNotNull(String prefix, String value) {
-		return value != null ? prefix + value.trim() : "";
+	    return value != null && !"null".equalsIgnoreCase(value.trim()) 
+	           ? prefix + value.trim() 
+	           : "";
 	}
+
 
 	public static String getCourtSessionFields(CourtSession session, String peId, String hearing,
 			List<UserInputData> table, String caseNum) {

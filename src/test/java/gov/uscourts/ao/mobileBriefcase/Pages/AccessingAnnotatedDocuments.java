@@ -395,22 +395,6 @@ public class AccessingAnnotatedDocuments extends AppiumPageFactory {
 		return categories;
 	}
 
-//	public static void wifiOff() throws InterruptedException {
-//
-//		NetworkConnection mobileDriver = (NetworkConnection) driver;
-//		if (mobileDriver.getNetworkConnection() != ConnectionType.AIRPLANE_MODE) {
-//			// enabling Airplane mode
-//			mobileDriver.setNetworkConnection(ConnectionType.AIRPLANE_MODE);
-//		}
-//	}
-
-	public static void togglewiFi() {
-		driver.activateApp("com.apple.Preferences");
-		wifi.click();
-		switchBtn.click();
-		driver.activateApp(Configuration.getProperty(BUNDLE_ID));
-
-	}
 
 	public static void getRandomDoc(String categoryName) {
 

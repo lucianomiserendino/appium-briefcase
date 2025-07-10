@@ -17,7 +17,9 @@ public class Sync_StepDefinitions {
 	public void sync_all_the_documents_for_the_selected_case() {
 		page = new SyncPage();
 		List<UserInputData> userInputData = null;
+		page.collapseGroupIcons(userInputData);
 		page.getSync(SyncType.Case_Detail, userInputData);
+		
 	}
 	
 	@Then("^User taps Sync with CM/ECF button on the Dashboard page and verify the Sync completes\\.$")

@@ -7,9 +7,9 @@ Verify the noteText TPF is supported by Briefcase, where the dictionary designer
 Note:  To view docket entries, go to a case referral, tap View Case Info, then tap Docket Entries
 
        
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

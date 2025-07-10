@@ -708,7 +708,7 @@ public class Queries {
 			+ "        AND ccr_cpr_id = chc_cpr_id\n"
 			+ "        AND chc_cs_caseid = cmr_cs_caseid\n"
 			+ "        AND chc_cha_id = cha_id\n"
-			+ "        AND cha_ju_pe_id = '34'\n"
+			+ "        AND cha_ju_pe_id = '?'\n"
 			+ "        AND cs_caseid = cmr_cs_caseid\n"
 			+ "        AND cmr_cyv_code = cyv_code\n"
 			+ "        AND chc_date_end IS NULL\n"
@@ -759,13 +759,13 @@ public class Queries {
 			+ "			 chm_reftype_val, case_dktentry, case where cmr_ju_pe_id = ? and cmr_cyv_code = cyv_code  and cyv_category in (  select distinct (cyv_category) from chm_mobile_referral, chm_reftype_val\n"
 			+ "			 where   cmr_ju_pe_id = ? and  cmr_date_end is null and  cmr_cyv_code = cyv_code and\n"
 			+ "			 cyv_is_briefcase = 'y' and  cyv_is_oral_arg = 'n' and  cmr_cyv_code != 'lbrrpt') and cmr_cs_caseid = cs_caseid and cmr_date_end is null and \n"
-			+ "			 cd_caseid = cmr_cs_caseid and cmr_dktentryid = cd_dktentryid and cd_case_ext  = 1 and cmr_panel_members TEXT order by cs_last_update desc";
+			+ "			 cd_caseid = cmr_cs_caseid and cmr_dktentryid = cd_dktentryid and cd_case_ext  = 1 and cmr_panel_members TEXT order by cd_last_updated desc";
 
 	public static final String FIND_ALL_ORALLY_ARGUED_CASES = "select first 3 cs_caseid,cs_year||\"-\"||cs_number case_num, cyv_category,cmr_cyv_code   from chm_mobile_referral, \n"
 			+ "			 chm_reftype_val, case_dktentry, case where cmr_ju_pe_id = ? and cmr_cyv_code = cyv_code  and cyv_category in (select distinct (cyv_category) from chm_mobile_referral, chm_reftype_val\n"
 			+ "			 where   cmr_ju_pe_id = ? and  cmr_date_end is null and  cmr_cyv_code = cyv_code and\n"
 			+ "			 cyv_is_briefcase = 'y' and  cyv_is_oral_arg = 'n' and  cmr_cyv_code != 'lbrrpt') and cmr_cs_caseid = cs_caseid and cmr_date_end is null and \n"
-			+ "			 cd_caseid = cmr_cs_caseid and cmr_dktentryid = cd_dktentryid and cmr_panel_members TEXT order by cs_last_update desc";
+			+ "			 cd_caseid = cmr_cs_caseid and cmr_dktentryid = cd_dktentryid and cmr_panel_members TEXT order by cd_last_updated desc";
 	
 	public static final String ORAL_ARG_CMR_CYV_CODE = "select distinct cmr_cyv_code from chm_mobile_referral, chm_reftype_val where cmr_ju_pe_id = 'CMR_JU_PE_ID' and cmr_date_end is null and "
 			+ "cmr_cyv_code = cyv_code AND cyv_is_briefcase = 'y' and cyv_is_oral_arg = 'y' and cyv_category='CYV_CATEGORY' and cmr_cs_caseid='CMR_CS_CASEID'";
@@ -780,4 +780,10 @@ public class Queries {
  + " annot_doc.dm_seq = dcg_seq and orig_doc.dm_description like '%Replaced%' "
  + "order by annot_doc.dm_last_updated,  mad_orig_dm_dls_id  desc";
 	
+	public static final String DOCUMENTS_WITH_CITATION_LINKS="select distinct (cmd_doc_category),cmd_description, cs_year||'-'||cs_number case_num, cyv_category,cmr_dktentryid from chm_mobile_docs,case, chm_mobile_referral,roa_page_map ,chm_reftype_val where cmr_id = cmd_cmr_id "
+			+ "and cmr_date_end is null and cmr_ju_pe_id ='?'  and cmr_cs_caseid = roa_cs_caseid and cmr_cyv_code = cyv_code and  cmr_cs_caseid = cs_caseid and cmd_num_pages > 1 order by cmr_dktentryid desc";
+		
+	
+	public static final String UNRESTRICTED_DOCUMENTS= "select distinct (cmd_doc_category), cyv_category,cs_year||'-'||cs_number case_num, cmd_description,cmd_last_updated  from chm_mobile_docs,case,chm_reftype_val, chm_mobile_referral where cmr_id = cmd_cmr_id and "
+	+ " cmr_date_end is null and cmr_ju_pe_id ='?' and cmr_cyv_code = cyv_code and  cyv_is_oral_arg = 'n' and cmr_cs_caseid = cs_caseid  order by cmd_last_updated desc";
 }

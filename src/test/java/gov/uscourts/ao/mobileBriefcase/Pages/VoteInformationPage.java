@@ -57,44 +57,49 @@ public class VoteInformationPage extends AppiumPageFactory {
 		WebElement uiResult = null;
 		String filerInfo = getFilerInfo(peId, caseId, cyvCode, userInputData);
 
-		String xpath = "";
-		if (!filler.getText().contains(",")) {
-			xpath = filerInfo.replace(",", "");
-
-		} else {
-			xpath = filerInfo;
-		}
-
 		try {
 			switch (info) {
 			case VOTE_INFO_FILLRES_INFORMATION:
-				for (int i = 0; i < judgesInitials.size(); ++i) {
-
-					uiResult = findElementBy(Locator.XPATH,
-							"//*[contains(@name, 'Vote Information')]/following::XCUIElementTypeStaticText[contains(@name, '"
-									+ xpath + "')]/following::XCUIElementTypeStaticText[contains(@name, '"
-									+ judgesInitials.get(i) + "')]");
-
+				for (String judgeInitial : judgesInitials) {
+					String xpath = buildFlexibleVoteXPath(filerInfo, judgeInitial);
+					uiResult = findElementBy(Locator.XPATH, xpath);
+					if (uiResult != null && uiResult.isDisplayed()) {
+						isDisplayed = true;
+				System.out.println(xpath+"-----------------------------");
+					}
 				}
 				break;
-			case JUDGE_VOTE_DPF_FILLRES_INFORMATION:
 
-				uiResult = findElementBy(Locator.XPATH,
-						"//XCUIElementTypeStaticText[contains(@name, '" + xpath + "')]");
+			case JUDGE_VOTE_DPF_FILLRES_INFORMATION:
+				String normalizedFilerInfo = normalizeFilerInfo(filerInfo);
+				String xpath = "//XCUIElementTypeStaticText["
+						+ "contains(translate(normalize-space(@name), ',\n', ''), '" + normalizedFilerInfo + "')" + "]";
+				uiResult = findElementBy(Locator.XPATH, xpath);
+				if (uiResult != null && uiResult.isDisplayed()) {
+					isDisplayed = true;
+				}
 				break;
+
 			default:
 				break;
 			}
-
-			if (uiResult != null && uiResult.isDisplayed())
-				isDisplayed = true;
 
 		} catch (Exception e) {
 			isDisplayed = false;
 		}
 
 		return isDisplayed;
+	}
 
+	private String buildFlexibleVoteXPath(String filerInfo, String judgeInitial) {
+		String normalized = normalizeFilerInfo(filerInfo);
+		return "//*[contains(@name, 'Vote Information')]/following::XCUIElementTypeStaticText["
+				+ "contains(translate(normalize-space(@name), ',\n', ''), '" + normalized + "')"
+				+ "]/following::XCUIElementTypeStaticText[contains(@name, '" + judgeInitial + "')]";
+	}
+
+	private String normalizeFilerInfo(String input) {
+		return input.replace(",", "").replace("\n", " ").replaceAll("\\s+", " ").trim();
 	}
 
 	public static String getVoteInofrmation(String filersInfo, String peId, String caseId, String cyvCode,

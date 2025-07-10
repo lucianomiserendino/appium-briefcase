@@ -97,6 +97,9 @@ public class CommonPages extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Progress halted' or @name='In progress']")
 	public static List<WebElement> activityIndicator;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
+	public static WebElement collapseBtn;
 
 	static String okButton = "OK";
 
@@ -155,13 +158,16 @@ public class CommonPages extends AppiumPageFactory {
 		default:
 			break;
 		}
-
+         
 		selectReferralCategory(categories);
+		
 		selectReferral(containsElement(caseNumber));
 	}
 
 	public static void selectReferral(String category) {
+		collapseBtn.click();
 		scrollDownIfNotDisplayed(category);
+		 collapseBtn.click();
 
 	}
 

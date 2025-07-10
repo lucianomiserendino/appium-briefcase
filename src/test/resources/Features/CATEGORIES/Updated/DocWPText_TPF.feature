@@ -1,7 +1,7 @@
 @Regression
 Feature: Ability to enter a document description in docWP DPF, docWPText TPF
 
-@AMB-3648 @AMB-2960 
+@AMB-3648 @AMB-2960 @smoke
 Scenario: 
 If the user selects a file to upload in the docWP DPF the name of the file is displayed at the left, 
 and they are able to add a new document name in the "Enter Description" field.  Verify that user is able to enter a name/description

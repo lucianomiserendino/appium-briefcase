@@ -9,9 +9,9 @@ Scenario:
 	  This task is to automate the display of the red bullet icon.
 
 	
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

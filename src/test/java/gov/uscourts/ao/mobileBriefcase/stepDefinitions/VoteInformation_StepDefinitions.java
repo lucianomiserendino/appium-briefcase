@@ -33,24 +33,24 @@ public class VoteInformation_StepDefinitions {
 	@Then("^For each referral, observe the filer's name \\(pr_last_name, pr_first_name, first initial of pr_middle_name, gn_display\\) party type \\(pt_description\\) and date filed \\(de_date_filed\\) displays in a light blue heading$")
 	public void for_each_referral_observe_the_filer_s_name_pr_last_name_pr_first_name_first_initial_of_pr_middle_name_gn_display_party_type_pt_description_and_date_filed_de_date_filed_displays_in_a_light_blue_heading()
 			throws Throwable {
-//		List<UserInputData> userInputData = null;
-//
-//		ccr_id += CommonPages.getCCRID(userInputData);
-//		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
-//		String cmr_cs_caseid = DocumentPage.cs_caseid;
-//
-//		cmr_cyv_code = DocumentPage.cmr_cyv_code;
-//
-//		System.out.println(ccr_id+"**********************************");
-//		System.out.println(cmr_ju_pe_id+"**********************************");
-//		System.out.println(cmr_cs_caseid+"**********************************");
-//		System.out.println(cmr_cyv_code+"**********************************");
-//
-//		page = new VoteInformationPage();
-//		assertTrue(page.filersInfo(FILERs_INFO.VOTE_INFO_FILLRES_INFORMATION, cmr_ju_pe_id, cmr_cs_caseid, cmr_cyv_code,
-//				ccr_id, userInputData));
+		List<UserInputData> userInputData = null;
+
+		ccr_id += CommonPages.getCCRID(userInputData);
+		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
+		String cmr_cs_caseid = DocumentPage.cs_caseid;
+
+		cmr_cyv_code = DocumentPage.cmr_cyv_code;
+
+		System.out.println(ccr_id+"**********************************");
+		System.out.println(cmr_ju_pe_id+"**********************************");
+		System.out.println(cmr_cs_caseid+"**********************************");
+		System.out.println(cmr_cyv_code+"**********************************");
+
 		page = new VoteInformationPage();
-		page.printFormattedVoteInfoDynamic() ;
+		assertTrue(page.filersInfo(FILERs_INFO.VOTE_INFO_FILLRES_INFORMATION, cmr_ju_pe_id, cmr_cs_caseid, cmr_cyv_code,
+				ccr_id, userInputData));
+//		page = new VoteInformationPage();
+//		System.out.println(page.printFormattedVoteInfoDynamic() );
 	}
 
 	@Then("^User checks each judge's vote  and the date  displays under their initials, using  ccr_id$")

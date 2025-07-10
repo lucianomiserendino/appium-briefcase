@@ -39,6 +39,8 @@ public class CalendaredCases_StepDefinitions {
 	public void accordion_for_a_date_are_expanded_User_should_see_Case_number_Case_Title_Panel_also_Order() {
 		page = new CalendarPage();
 		List<UserInputData> userInputData = null;
+				
+		
 		assertTrue("CASES NOT APPEARING UNDER THE CORRECT DATE BUCKET: " + hearingDate.toUpperCase() + ", Case Number: "
 				+ page.caseN, page.selectRandomCase(page.caseN, hearingDate, userInputData));
 	}

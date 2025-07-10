@@ -1,14 +1,26 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeDBQuery;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.clicksOn;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Random;
 
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
+import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
+import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
@@ -31,6 +43,9 @@ public class CitelinkSettings extends AppiumPageFactory {
 	@iOSXCUITFindBy(accessibility = "OK")
 	public static WebElement okBTN;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='OK']")
+	public static WebElement okBtn;
+	
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Downloaded'])[1]")
 	public static WebElement Downloaded;
 
@@ -66,7 +81,32 @@ public class CitelinkSettings extends AppiumPageFactory {
 	
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name=''])[1]/preceding::XCUIElementTypeStaticText[1]")
 	public static WebElement selectedciteLinkEngine;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeStaticText")
+	public static WebElement collapseBtn;
+	
+	private static String xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText";
 
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeOther[@name='Downloaded_Container'])[1]")
+	public static WebElement downloaded;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PDF Page View']")
+	public static List<WebElement> pdfPageView;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
+	public static List<WebElement> inProgress;
+
+	@iOSXCUITFindBy(id = "Delete all Briefcase Documents")
+	public static WebElement deleteAllDocuments;
+	
+	@iOSXCUITFindBy(id = "Tap Delete to delete all documents")
+	public static WebElement deleteMessage;
+
+	@iOSXCUITFindBy(id = "Deleting all documents...")
+	public static List<WebElement> deletingDoc;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[2]")
+	public static WebElement dashBoard;
 	
 	public static int getCurrentPageNumber;
 
@@ -93,6 +133,12 @@ public class CitelinkSettings extends AppiumPageFactory {
 			okBTN.click();
 		}}
 		assertTrue("Verify the check mark is on the right of the selected citelink engine",selectedciteLinkEngine.getText().trim().equals(engine));
+		
+		deleteAllDocuments.click();
+		Actions.isDisplayed(deleteMessage);
+		performPageLoad(driver);
+		ifDownloaded(deletingDoc);
+		
 		driver.navigate().back();
 
 		return engine;
@@ -121,7 +167,6 @@ public class CitelinkSettings extends AppiumPageFactory {
 		String[] size = pageSize.getText().split("of");
 		int totalPageSize = Integer.parseInt(size[1].trim());
 		int lastViewedPage = Integer.parseInt(size[0].trim());
-		int randomNum;
 
 		do {
 			List<WebElement> icons = links;
@@ -152,36 +197,78 @@ public class CitelinkSettings extends AppiumPageFactory {
 		close.click();
 	}
 
-	public void getCiteLink() {
-		 
+	
+	public void openCiteLinkLink(List<UserInputData> userInputData, String searchEngine) {
+	    int maxAttempts = 2;
+
+	    for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+	        getRandomROADocument(userInputData);
+	        CitelinkSettings page = new CitelinkSettings();
+
+	        if (page.tryGetCiteLink()) {
+	            Page.performPageLoad(driver);
+	            System.out.println("Selected search Engine: " + searchEngine);
+
+	            boolean searchEngineVisible = Actions.isDisplayed(Locator.XPATH, Actions.containsElement(searchEngine));
+	            if (searchEngineVisible) {
+	                assertTrue(searchEngineVisible);
+	                return; 
+	            } else {
+	                System.out.println("Search engine not found. Trying another document.");
+	            }
+	        } else {
+	            System.out.println("No hyperlink found. Trying another random document.");
+	        }
+
+	        System.out.println("Retrying... (Attempt " + attempt + " of " + maxAttempts + ")");
+	        
+	        close.click();
+	        
+	        try {
+		        if (close.isDisplayed()) {
+		        	close.click();
+		        }
+			} catch (Exception e) {
+			
+			}
+
+	        dashBoard.click();
+	        
+	    }
+
+	    throw new AssertionError("Failed to find a hyperlink and matching search engine after " + maxAttempts + " attempts.");
+	}
+
+
+	public boolean tryGetCiteLink() {
 	    String[] size = pageSize.getText().split("of");
 	    int totalPageSize = Integer.parseInt(size[1].trim());
-	    int lastViewedPage = Integer.parseInt(size[0].trim());
+	    int currentPage = Integer.parseInt(size[0].trim());
 
-	    if (lastViewedPage != 1) {
-	        for (int i = 0; i < lastViewedPage - 1; i++) {
-	        	Utility.swipe(1, "right");
+	    // If not on page 1, swipe back to page 1 first
+	    if (currentPage != 1) {
+	        for (int i = 0; i < currentPage - 1; i++) {
+	            Utility.swipe(1, "right");
 	        }
 	    }
 
-	    boolean hyperlinkFound = false;
-	    for (int i = 1; i < 10; i++) {
+	    // Now swipe left through all pages until totalPageSize
+	    for (int page = 1; page <= totalPageSize; page++) {
 	        if (checkForHyperlink()) {
-	            hyperlinkFound = true;
-	            System.out.println("Hyperlink found on page " + i + "!");
-	            clickFirstHyperlink(); 
-	            return;
+	            System.out.println("Hyperlink found on page " + page + "!");
+	            clickFirstHyperlink();
+	            return true;
 	        }
-	        Utility.swipe(1, "left");
+
+	        if (page < totalPageSize) {
+	            Utility.swipe(1, "left");
+	        }
 	    }
 
-	    throw new AssertionError("No hyperlinks found after swiping left 10 times.");
+	    return false; // No hyperlink found on any page
 	}
 
-	private int getCurrentPage() {
-	    String[] size = pageSize.getText().split("of");
-	    return Integer.parseInt(size[0].trim());
-	}
+
 
 	public static boolean checkForHyperlink() {
 	    return links != null && !links.isEmpty();
@@ -193,5 +280,95 @@ public class CitelinkSettings extends AppiumPageFactory {
 	    }
 	}
 
+	
 
+	
+	public void getRandomROADocument(List<UserInputData> userInputData) {
+	    String peId = DocumentPage.get_pe_id("jud", userInputData);
+
+	    String query = Queries.DOCUMENTS_WITH_CITATION_LINKS.replace("?", peId);
+
+	    List<String[]> foundCases = executeDBQuery(getID(query, peId), userInputData);
+
+	    if (foundCases != null && !foundCases.isEmpty()) {
+	        int randomIndex = new Random().nextInt(foundCases.size());
+	        String[] randomRecord = foundCases.get(randomIndex);
+
+	        String documentCategory = randomRecord[0].trim();
+	        String document = randomRecord[1].trim();
+	        
+	        String caseNum = randomRecord[2].trim();
+
+	         if (caseNum.matches("\\d-\\d+")) {
+	         caseNum = "0" + caseNum;
+	        }
+	        String category = randomRecord[3].trim();
+
+		       
+	            collapseBtn.click();
+		        scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
+		   
+		        System.out.println("------------------------------------------------------");
+		        System.out.println("Selected category name: " + category);
+		        System.out.println("------------------------------------------------------");
+		    
+		        performPageLoad(driver);
+		        scrollDownIfNotDisplayed("//XCUIElementTypeStaticText[contains(@name, '" + caseNum + "')]");
+	
+		        System.out.println("------------------------------------------------------");
+		        System.out.println("Selected case number: " + caseNum);
+		        System.out.println("------------------------------------------------------");
+		        
+		        performPageLoad(driver);
+
+		        collapseBtn.click();
+		        
+		        CommonPages.getGroupIcons(GroupIcons.Expand);
+		        
+		        
+		        scrollDownIfNotDisplayed(Actions.containsElement(documentCategory));
+		        
+		        System.out.println("------------------------------------------------------");
+		        System.out.println("Selected document Category: " + documentCategory);
+		        System.out.println("------------------------------------------------------");
+		        performPageLoad(driver);
+
+		        
+		          //Utility.swipeElement("//XCUIElementTypeStaticText[@name='"+document+"']");
+		          
+//		          try {
+//		      		if (Utility.isDisplayed("//XCUIElementTypeAlert[@name='Delete Document?']"));
+//		    		Actions.tap(okBtn);
+//				} catch (Exception e) {
+//				e.getMessage();
+//				}
+		          
+			        scrollDownIfNotDisplayed("//*[contains(@name, '" + document + "')]");
+		        		        
+		        System.out.println("------------------------------------------------------");
+		        System.out.println("Selected document Category: " + document);
+		        System.out.println("------------------------------------------------------");
+		        
+		        
+		        Utility.ifLoaded(inProgress);
+				
+				Boolean elementNotFound = true;
+				int attemptCount = 0;
+
+				while (elementNotFound && attemptCount < 3) {
+					if (!(pdfPageView.size() == 1)) {
+						elementNotFound = true;
+						Utility.scrollPage("down");
+						attemptCount++;
+					} else {
+						elementNotFound = false;
+						break;
+					}
+				}
+	    	   
+	    
+	}
+	
+	    
+	}
 }

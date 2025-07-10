@@ -1,20 +1,16 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.JUDGE_VOTE_DPF_RELIEF;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.NON_ORALLY_ARGUED_CASES;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.replace;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.clickOnNumberInRange;
-import static java.util.Collections.sort;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -32,7 +28,6 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
-import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class EnBancPage extends AppiumPageFactory {
@@ -53,7 +48,7 @@ public class EnBancPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='VoteOptions']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static List<WebElement> judgeVotes;
-	
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
 	public static List<WebElement> inProgress;
 
@@ -61,13 +56,10 @@ public class EnBancPage extends AppiumPageFactory {
 	public static WebElement back;
 
 	String select = "Please Select";
-	public  String category;
+	public String category;
 
-
-
-
-	public void selectRandomVote(List<UserInputData> userInputData,String category) {
-		String ccr_id = CommonPages.getCCRID( userInputData);
+	public void selectRandomVote(List<UserInputData> userInputData, String category) {
+		String ccr_id = CommonPages.getCCRID(userInputData);
 
 		String voteText = "";
 		String text = "";

@@ -24,4 +24,4 @@ the "term" selections as the mode.
 	  |dpf                 |courtId    |
 	  |chmSilentAssignTerm |test       |
 	    
-	#Then User verifies assignments are removed from the Pending Tasks folder when a chmSilentAssign action is ran with any of the "term" selections as the mode. 
+	Then User verifies assignments are removed from the Pending Tasks folder when a chmSilentAssign action is ran with any of the "term" selections as the mode. 

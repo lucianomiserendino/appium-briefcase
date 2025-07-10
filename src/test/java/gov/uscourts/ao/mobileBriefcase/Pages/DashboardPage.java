@@ -183,10 +183,11 @@ public class DashboardPage extends Base {
 
 	    // Verify categories online
 	    performPageLoad(driver);
+	    collapseBtn.click();
 	    for (String category : dbReferralCategories) {
 	        verifyCategoryIsDisplayedAndScrollDown(category);
 	    }
-
+	    collapseBtn.click();
 	    // Switch to offline mode
 	    try {
 	        NetworkManager.makeScriptsExecutable();
@@ -199,11 +200,11 @@ public class DashboardPage extends Base {
 	    Base.getInstance(Driver.IOS);
 	    DashboardPage page = new DashboardPage();
 	    waitForVisibilityOfElement(page.offline_Indicator, driver);
-
+	    collapseBtn.click();
 	    for (String category : dbReferralCategories) {
 	        page.verifyCategoryIsDisplayedAndScrollDown(category);
 	    }
-
+	    collapseBtn.click();
 	    // Re-enable internet
 	    try {
 	        NetworkManager.makeScriptsExecutable();
@@ -374,12 +375,12 @@ public class DashboardPage extends Base {
 				WebElement uiResult = findElementBy(Locator.XPATH, containsElement(description));
 				if (uiResult.isDisplayed()) {
 					categoryDisplayed = true;
-					break; // Exit the loop once a displayed element is found
+					break; 
 				}
 			}
 
 			if (!categoryDisplayed) {
-				isDisplayed = false; // Update isDisplayed if no elements in the category are displayed
+				isDisplayed = false; 
 			}
 		}
 

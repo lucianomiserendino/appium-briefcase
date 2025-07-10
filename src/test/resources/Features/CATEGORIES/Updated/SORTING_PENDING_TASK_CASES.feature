@@ -1,4 +1,4 @@
-@Regression @pending
+@Regression @pending @smoke
 Feature: Sorting on the Pending Tasks Page 
 
 Background: 

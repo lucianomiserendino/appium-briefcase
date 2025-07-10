@@ -6,7 +6,6 @@ Scenario:
 	The Sync button is used to download any pending referrals and documents.  
 	This task is just to verify that when tapping/clicking the Sync button for a judge, that the sync completes.
  
-
        
 		#Given I am logged into Briefcase 
 		#|environment|user    |
@@ -61,7 +60,23 @@ Verify tapping the Sync in the Referral list page downloads the documents for th
 	
 	
 	
-	
+	@syncRef
+Scenario: 
+Verify tapping the Sync in the Referral detail page downloads the documents for the selected case
+
+
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
+			
+		Then I select a user 
+		|userType   |personrole        |jud      |user     |
+		|judge      |Appellate Judges  |test     |sysadmin |
+		
+		
+		Then User records the number of available documents for download
+		
+        Then sync all the documents for the selected case
 
 	
 

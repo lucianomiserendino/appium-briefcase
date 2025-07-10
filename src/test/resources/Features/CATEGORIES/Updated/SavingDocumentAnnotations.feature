@@ -4,9 +4,9 @@ Feature: Saving Document Annotations
 
 Background:
 
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |judge   |
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |judge   |
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

@@ -662,23 +662,23 @@ public class Utility extends Base {
 		}
 	}
 
-//	public static void swipeElement(String xpath) {
-//	    WebElement element = driver.findElement(By.xpath(xpath));
-//
-//	    int startX = element.getLocation().getX() + 10;
-//	    int endX = startX + element.getSize().getWidth() - 20;
-//	    int y = element.getLocation().getY() + (element.getSize().getHeight() / 2);
-//
-//	    PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
-//	    Sequence swipe = new Sequence(finger, 1);
-//
-//	    swipe.addAction(finger.createPointerMove(Duration.ofMillis(0), Origin.viewport(), startX, y));
-//	    swipe.addAction(finger.createPointerDown(MouseButton.LEFT.asArg()));
-//	    swipe.addAction(finger.createPointerMove(Duration.ofMillis(300), Origin.viewport(), endX, y));
-//	    swipe.addAction(finger.createPointerUp(MouseButton.LEFT.asArg()));
-//
-//	    driver.perform(List.of(swipe));
-//	}
+	public static void swipeElement(String xpath) {
+	    WebElement element = driver.findElement(By.xpath(xpath));
+
+	    int startX = element.getLocation().getX() + 10;
+	    int endX = startX + element.getSize().getWidth() - 20;
+	    int y = element.getLocation().getY() + (element.getSize().getHeight() / 2);
+
+	    PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+	    Sequence swipe = new Sequence(finger, 1);
+
+	    swipe.addAction(finger.createPointerMove(Duration.ofMillis(0), Origin.viewport(), startX, y));
+	    swipe.addAction(finger.createPointerDown(MouseButton.LEFT.asArg()));
+	    swipe.addAction(finger.createPointerMove(Duration.ofMillis(300), Origin.viewport(), endX, y));
+	    swipe.addAction(finger.createPointerUp(MouseButton.LEFT.asArg()));
+
+	    driver.perform(List.of(swipe));
+	}
 	public enum Filter {
 		UNIQUE_VALUES, DUPLICATE_VALUES
 	}

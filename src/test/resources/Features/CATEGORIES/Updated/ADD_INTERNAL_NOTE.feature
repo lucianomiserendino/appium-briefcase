@@ -1,4 +1,4 @@
-@AMB-3104 @AMB-3286 @AMB-3384 @AMB-3386 @sal
+@AMB-3104 @AMB-3286 @AMB-3384 @AMB-3386 @smoke
 Feature: Display an internal note option for judges
 
 

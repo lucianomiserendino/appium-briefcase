@@ -252,7 +252,7 @@ public class InternalNotePage extends AppiumPageFactory {
 	}
 
 	public static String categoryScreenNote(String referral,String isDisplayed) {
-		return	ifLoaded(By.xpath(Actions.containsElement(referral) + "/XCUIElementTypeOther[1]/XCUIElementTypeOther [1]/XCUIElementTypeStaticText[3]"),isDisplayed);
+		return	ifLoaded(By.xpath(Actions.containsElement(referral) + "/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[3]"),isDisplayed);
 		
 		 
 	}

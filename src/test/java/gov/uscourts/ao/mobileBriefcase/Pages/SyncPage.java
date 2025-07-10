@@ -1,19 +1,35 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeDBQuery;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.getText;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.tools.ant.types.CommandlineJava.SysProperties;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
+import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.Category;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
@@ -78,6 +94,20 @@ public class SyncPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Cancel Sync']")
 	public static  List<WebElement>  cancelBtn;
 	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeStaticText")
+	public static WebElement collapseBtn;
+	
+	private static String xpath = "//XCUIElementTypeOther[@name='Categories']/XCUIElementTypeScrollView/XCUIElementTypeOther//XCUIElementTypeStaticText";
+
+	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeOther[@name='Downloaded_Container'])[1]")
+	public static WebElement downloaded;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
+	public static List<WebElement> inProgress;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='PDF Page View']")
+	public static List<WebElement> pdfPageView;
+	
 	static String dashboardSyncCount ="";
 
 	public void getSyncCountOnDashboard() {
@@ -138,9 +168,56 @@ public class SyncPage extends AppiumPageFactory {
 		case Case_Detail:
 
 
-			Page.waitForVisibilityOfElement(caseSyncBtn, driver);
-			Utility.doubleTap(page1.caseSyncBtn);
+			
+			Page.waitToBeClickable(caseSyncBtn, driver);
+			
+			//Utility.doubleTap(page1.caseSyncBtn);
 			ifDownloaded(page1.activityIndicator);
+			
+			performPageLoad(driver);
+
+			String pageSource = driver.getPageSource();
+
+			// Step 1: Split into blocks (e.g., each block represents one document group)
+			String[] docBlocks = pageSource.split("<XCUIElementTypeOther"); // or any tag that separates items
+
+			Pattern downloadedPattern = Pattern.compile(
+			    "<XCUIElementTypeStaticText[^>]*name=\"Downloaded\"[^>]*label=\"\"[^>]*x=\"(\\d+)\"[^>]*y=\"(\\d+)\""
+			);
+
+			Pattern precedingTextPattern = Pattern.compile(
+			    "<XCUIElementTypeStaticText[^>]*name=\"([^\"]+)\"[^>]*label=\"[^\"]*\"[^>]*x=\"(\\d+)\"[^>]*y=\"(\\d+)\""
+			);
+
+			List<String> seenBlocks = new ArrayList<>();
+
+			for (String block : docBlocks) {
+			    if (seenBlocks.contains(block)) continue; // avoid reprocessing
+			    seenBlocks.add(block);
+
+			    Matcher match = downloadedPattern.matcher(block);
+			    if (match.find()) {
+			        String x = match.group(1);
+			        String y = match.group(2);
+			        System.out.println("Found Downloaded icon at x=" + x + ", y=" + y);
+
+			        // Try to find the preceding static text in the same block
+			        Matcher precedingMatch = precedingTextPattern.matcher(block);
+			        String lastPrecedingText = null;
+			        while (precedingMatch.find()) {
+			            lastPrecedingText = precedingMatch.group(1); // name attribute of the last matching preceding element
+			        }
+
+			        if (lastPrecedingText != null) {
+			            System.out.println("Preceding text: " + lastPrecedingText);
+			        }
+			    }
+			}
+
+			// Step 2: Scroll from the last downloaded icon (if needed)
+			Map<String, Object> params = new HashMap<>();
+			params.put("direction", "up"); // or "down" depending on your app
+			driver.executeScript("mobile: swipe", params);
 
 			break;
 
@@ -218,6 +295,95 @@ public class SyncPage extends AppiumPageFactory {
 		String actualPageNum = splitBy(splitBy);
 		Assert.assertEquals(expectedPageNum, actualPageNum);
 	}
+	
+	public void collapseGroupIcons(List<UserInputData> userInputData) {
+	    String peId = DocumentPage.get_pe_id("jud", userInputData);
+
+	    String query = Queries.UNRESTRICTED_DOCUMENTS.replace("?", peId);
+
+	    List<String[]> foundCases = executeDBQuery(getID(query, peId), userInputData);
+
+	    if (foundCases != null && !foundCases.isEmpty()) {
+	        int randomIndex = new Random().nextInt(foundCases.size());
+	        String[] randomRecord = foundCases.get(randomIndex);
+
+	        String documentCategory = randomRecord[0].trim();
+	        
+	        String category = randomRecord[1].trim();
+	       
+	        
+	        String caseNum = randomRecord[2].trim();
+
+	         if (caseNum.matches("\\d-\\d+")) {
+	         caseNum = "0" + caseNum;
+	        }
+	         String document = randomRecord[3].trim();
+
+		       
+	            collapseBtn.click();
+		        scrollDownIfNotDisplayed(xpath + "[contains(@name, '" + category + "')]");
+		   
+		        System.out.println("------------------------------------------------------");
+		        System.out.println("Selected category name: " + category);
+		        System.out.println("------------------------------------------------------");
+		    
+		        performPageLoad(driver);
+		        scrollDownIfNotDisplayed("//XCUIElementTypeStaticText[contains(@name, '" + caseNum + "')]");
+	
+		        System.out.println("------------------------------------------------------");
+		        System.out.println("Selected case number: " + caseNum);
+		        System.out.println("------------------------------------------------------");
+		        
+		        performPageLoad(driver);
+
+		        collapseBtn.click();
+		        CommonPages page=new CommonPages();
+		        page.getGroupIcons(GroupIcons.Expand);
+		        
+		        collapseGroupsFromBottom("Applied Referrals");
+                 Utility.scrollPage("down");
+		
+				}}
+	
+
+	
+    public static int collapseGroupsFromBottom(String anchorGroupName) {
+        ifDownloaded(activityIndicator);
+
+        List<WebElement> groupHeaders = Actions.findElements(By.xpath("//XCUIElementTypeStaticText[contains(@value, '▷')]/following::XCUIElementTypeStaticText[1]"));
+       
+        
+         int s=groupHeaders.size();
+         
+        int startIndex = -1;
+
+        for (int i = 0; i < groupHeaders.size(); i++) {
+            String text = groupHeaders.get(i).getText().trim();
+            if (text.equalsIgnoreCase(anchorGroupName)) {
+                startIndex = i;
+                break;
+            }
+        }
+
+        if (startIndex == -1 && anchorGroupName.equals("Applied Referrals")) {
+            return collapseGroupsFromBottom("Actions");
+        } else if (startIndex == -1) {
+            System.err.println("Neither 'Applied Referrals' nor 'Actions' found.");
+            return 0;
+        }
+        
+        
+        for (int i = s; i > startIndex+1; i--) {
+   
+           Actions.findElement(By.xpath("(//XCUIElementTypeStaticText[contains(@value, '▷')])["+i+"]")).click();
+
+		}
+		return startIndex;
+        
+        
+    }
+
+	
 
 	public enum SyncType {
 		Dashboard, Referral_Category, Case_Detail;

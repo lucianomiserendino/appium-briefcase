@@ -8,7 +8,7 @@ import io.cucumber.java.en.When;
 
 public class CitelinkSettings_StepDefinitions {
 	CitelinkSettings page;
-	String searchEngine;
+	public static String searchEngine;
 	AccessingAnnotatedDocuments annotPage;
 
 	@Then("^Verify the cached documents are not deleted and the user is presented with the message if the cite link settings change$")
@@ -30,8 +30,7 @@ public class CitelinkSettings_StepDefinitions {
 		annotPage=new AccessingAnnotatedDocuments();
 		annotPage.randomPage();
 		page = new CitelinkSettings();
-		page.getCiteLink();
-		//page.getCiteLink(searchEngine);
+		page.getCiteLink(searchEngine);
 		
 	}
 
