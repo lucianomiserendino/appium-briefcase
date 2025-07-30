@@ -17,6 +17,7 @@ import static org.openqa.selenium.support.PageFactory.initElements;
 import java.time.Duration;
 import java.util.List;
 
+import org.apache.tools.ant.types.CommandlineJava.SysProperties;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -68,13 +69,13 @@ public class JenieLoginPage extends Base {
 	@iOSBy(accessibility = "Testing")
 	public WebElement testing;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther/following::XCUIElementTypeTextField[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='User Name']/following-sibling::XCUIElementTypeTextField")
 	public static WebElement userName;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther/following:: XCUIElementTypeSecureTextField[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Password']/following-sibling::XCUIElementTypeSecureTextField")
 	public static WebElement password;
 
-	@iOSXCUITFindBy(id = "SIGN ON")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='SIGN ON']")
 	public static WebElement submButton;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Send Key to Device']")
@@ -204,6 +205,7 @@ public class JenieLoginPage extends Base {
 
 			// Wait for the submit button to be clickable
 			Page.waitToBeClickable(submButton, driver);
+					
 
 		} catch (WebDriverException e) {
 			// Log the exception and rethrow it to ensure it's not silently ignored
@@ -224,7 +226,7 @@ public class JenieLoginPage extends Base {
 	    String personrole = SystemPropertySetup.getVariable(Variables.PERSONROLE, List.of(userInputData));
 
 	    ifDownloaded(retrievePendingRefs);
-
+            Page.sleep(10000);
 	    if (user.equals("sysadmin")) {
 			contains(User).click();
 
@@ -489,18 +491,18 @@ public class JenieLoginPage extends Base {
 		changeWindow("WEBVIEW");
 		
 		
-		driver.navigate().to("https://cms-ecf-cmka.tsso.dcn/cmecf/servlet/STEditor");
+		driver.navigate().to("https://cms-ecf-cm3a.tsso.dcn/cmecf/servlet/STEditor");
 		
 		changeWindow("WEBVIEW");  
 			
 	
-		driver.findElement(By.name("usernameEntered")).sendKeys(Configuration.getProperty( "cmka."+ this.jaUserName));
-		driver.findElement(By.name("password")).sendKeys(Configuration.getProperty( "cmka."+ this.jaPassword));
+		driver.findElement(By.name("usernameEntered")).sendKeys(Configuration.getProperty( "cm3a."+ this.sysadminUserName));
+		driver.findElement(By.name("password")).sendKeys(Configuration.getProperty( "cm3a."+ this.sysadminPassword));
 
 		driver.findElement(By.id("SUBMIT2")).click();
 
 		
-		Page.sleep(1000);
+		Page.sleep(2000);
 		
 		if (
 		driver.findElement(By.xpath("//strong[contains(text(),'Single Table Editor')]")).isDisplayed()==true) {

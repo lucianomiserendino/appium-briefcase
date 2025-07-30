@@ -108,7 +108,7 @@ public class DashboardPage extends Base {
 	
 	public void verifyPendingTasksPosition(String page) {
 	    performPageLoad(driver);
-
+	    dashboard.click();
 	    List<String> categoryList = new ArrayList<>();
 
 	    if (page.equals("Dashboard")) {
@@ -116,6 +116,7 @@ public class DashboardPage extends Base {
 	            categoryList.add(dashCategory.getAttribute("value").trim());
 	        }
 	    } else if (page.equals("Navigation")) {
+	    	collapseBtn.click();
 	        List<WebElement> navCategoryCells = navIcons.subList(2, navIcons.size());
 
 	        for (WebElement navCell : navCategoryCells) {

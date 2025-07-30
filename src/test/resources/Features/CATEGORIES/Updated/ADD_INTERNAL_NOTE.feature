@@ -6,9 +6,9 @@ Feature: Display an internal note option for judges
 Scenario: Add an Internal Note for Judges
        
 		
-		#Given I am logged into Briefcase 
-		#|environment|user    |
-		#|test       |sysadmin|
+		Given I am logged into Briefcase 
+		|environment|user    |
+		|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

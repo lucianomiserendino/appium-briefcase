@@ -4,9 +4,9 @@ Scenario: the judges' initials in the Vote Information panel are supposed to be 
  and in the event those values don't exist then the judges' initials are displayed by judge.ju_seniority_sort. 
  
  
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

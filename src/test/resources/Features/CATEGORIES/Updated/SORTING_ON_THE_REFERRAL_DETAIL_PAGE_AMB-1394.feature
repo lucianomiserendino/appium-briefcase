@@ -8,13 +8,13 @@ Scenario:
 	  based on the chm_mobile_doc.cmd_sort field
 	
 
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |judge   |
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |
-		|judge      |Appellate Judges  |test     |sysadmin |
+		|judge      |Appellate Judges  |test     |judge    |
 	
    Then User selects a random category
 			

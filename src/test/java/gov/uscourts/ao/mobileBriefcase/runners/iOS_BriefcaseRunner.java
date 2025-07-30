@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
         "json:target/cucumber.json"
     },
     features = "./src/test/resources/Features",
-    glue = "gov.uscourts.ao.mobileBriefcase.stepDefinitions", tags = "@AMB-3104",
+    glue = "gov.uscourts.ao.mobileBriefcase.stepDefinitions", tags = "@AMB-3496",
     dryRun = false
 )
 public class iOS_BriefcaseRunner {

@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class BookmarkedListPage extends AppiumPageFactory {
@@ -45,6 +46,7 @@ public class BookmarkedListPage extends AppiumPageFactory {
 	public void getBookmarkedReferrals() {
 		collapseBtn.click();
 		
+		Utility.scrollPage("up");
 		if (bookOnDashboard.size() > 0) {
 			tap(bookOnDashboard.get(bookOnDashboard.size() - 1));
 			collapseBtn.click();
@@ -75,6 +77,7 @@ public class BookmarkedListPage extends AppiumPageFactory {
 	}
 
 	public void removeBookmarkedReferral(String referral) {
+		Utility.scrollPage("up");
 		tap(bookOnDashboard.get(0));
 		collapseBtn.click();
 		assertTrue(contains(referral).isDisplayed());
@@ -82,6 +85,7 @@ public class BookmarkedListPage extends AppiumPageFactory {
 	}
 
 	public void bookmarkReferral(String referral, int expectedCount) {
+		Utility.scrollPage("up");
 	    tap(Locator.XPATH,
 	            "(" + containsElement(referral) + "/following::XCUIElementTypeButton[@name='Bookmark'])[1]");
 	    collapseBtn.click();
@@ -95,7 +99,7 @@ public class BookmarkedListPage extends AppiumPageFactory {
 
 
 	public void bookmarkAcase() {
-
+		Utility.scrollPage("up");
 		String referralDeatilPage = getReferral();
 		bookmarkIcon.click();
 		dashboard.click();

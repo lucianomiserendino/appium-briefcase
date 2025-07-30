@@ -6,9 +6,9 @@ Feature: Staff Attorney Dashboard - Icons
 Scenario: 
 	Verify the icons displayed on the dashboard page and navigation are stored in the sfa_briefcase_cat_icon field
 	
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole       |stf      |user     |

@@ -8,9 +8,9 @@ Verify the cached documents are not deleted and the user is presented with the m
  on this device will not reflect the change unless deleted and downloaded again.", "OK"" if the cite link settings change
        
 
-		#Given I am logged into Briefcase 
-		#|environment|user    |
-		#|test       |judge   |
+		Given I am logged into Briefcase 
+		|environment|user    |
+		|test       |judge   |
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

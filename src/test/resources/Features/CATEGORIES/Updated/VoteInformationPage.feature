@@ -12,11 +12,11 @@ Scenario:
 
 		#Given I am logged into Briefcase 
 		#|environment|user    |
-		#|test       |sysadmin|
+		#|test       |judge   |
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |
-		|judge      |Appellate Judges  |test     |sysadmin |
+		|judge      |Appellate Judges  |test     |judge    |
 		
    Then User selects a random category
 			

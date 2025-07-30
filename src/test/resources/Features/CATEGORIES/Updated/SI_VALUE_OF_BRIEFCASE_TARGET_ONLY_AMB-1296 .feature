@@ -14,9 +14,9 @@ Scenario:
 	
 		Given I set the site table variable "briefcaseTargetOnly" to "y"
 				
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |judge   |
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |judge   |
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

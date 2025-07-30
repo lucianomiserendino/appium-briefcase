@@ -91,7 +91,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
 	public static WebElement dashboard;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"VoteOptions\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"VoteOptions\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static List<WebElement> judgeVotes;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeButton")
@@ -253,7 +253,8 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	        assertTrue("Latest judge vote not displayed in View Votes popup", scrollDownIfNotDisplayed(xpath));
 	    }
 
-	    tap(close);
+	   // tap(close);
+	     tap(cancel);
 	}
 
 	public String getVoteSelection(String actionName, String category, String dpfName,

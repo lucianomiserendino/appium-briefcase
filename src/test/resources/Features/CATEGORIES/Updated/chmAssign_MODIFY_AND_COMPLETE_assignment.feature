@@ -8,11 +8,11 @@ If they edit any of the previously existing dates during this transaction those 
        
 		Given I am logged into Briefcase 
 		|environment|user    |
-		|test       |judge   |
+		|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |
-		|judge      |Appellate Judges  |test     |judge    |
+		|judge      |Appellate Judges  |test     |sysadmin |
 			
    Then User selects a random category
 			

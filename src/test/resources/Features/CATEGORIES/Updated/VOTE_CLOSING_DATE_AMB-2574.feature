@@ -6,9 +6,9 @@ Scenario:
 	This task is to verify if there is a vote closing date for a referral, Briefcase displays "Vote Closing:" and the
  vote closing date in bold font under the filed date
 
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

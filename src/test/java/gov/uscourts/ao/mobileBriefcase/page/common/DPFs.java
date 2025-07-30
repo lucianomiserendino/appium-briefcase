@@ -65,7 +65,7 @@ public class DPFs extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='View Votes']/preceding:: XCUIElementTypeButton[1]")
 	public static List<WebElement> selectVoteBtn;
 
-	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"VoteOptions\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeStaticText")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='VoteOptions'/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static List<WebElement> judgeVotes;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"View Votes\"]/preceding:: XCUIElementTypeButton[1]/preceding:: XCUIElementTypeStaticText[1]")

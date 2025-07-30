@@ -11,11 +11,11 @@ and they are able to add a new document name in the "Enter Description" field.  
 	
 		Given I am logged into Briefcase 
 		|environment|user    |
-		|test       |sysadmin|
+		|test       |judge   |
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |
-		|judge      |Appellate Judges  |test     |sysadmin |
+		|judge      |Appellate Judges  |test     |judge    |
 		
         Then user selects a category and case with Proposed Orders
 		    

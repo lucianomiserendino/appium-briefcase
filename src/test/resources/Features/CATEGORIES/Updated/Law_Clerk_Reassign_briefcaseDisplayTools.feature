@@ -11,9 +11,9 @@ In order to enable the this category, set the site table variable to 'y', to dis
 	|si_value      |courtId    |
 	|displayTools  |test       |
   
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |
