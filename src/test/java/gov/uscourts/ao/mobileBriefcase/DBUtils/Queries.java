@@ -243,7 +243,7 @@ public class Queries {
 
 	public static final String ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST = "SELECT cav_display \n"
 			+ "	FROM chm_assign_type_val \n" + "	WHERE cav_chm_role in ('staff', 'all')\n"
-			+ "	and cav_date_end is null\n" + "	and cav_code in (TEXT)\n" + " and 	ORDER BY cav_display";
+			+ "	and cav_date_end is null\n" + "	and cav_code in (TEXT)\n" + " ORDER BY cav_display";
 	// " cmr_cyv_code='prhr'/
 
 	public static final String CAV_DESCRIPTION = "SELECT distinct cav_description FROM chm_mobile_referral, chambers_case_to_referral, chm_assign_to_case, chambers_assignment, "
@@ -657,7 +657,12 @@ public class Queries {
 
 	public static final String CAV_DISPLAY = "SELECT cav_display FROM chm_assign_type_val WHERE cav_code like '%TEXT%'";
 
-	public static final String CHM_SILENT_ASSIGN_DPF = "select el_id, el_list_text, el_functions FROM event_list  where el_functions LIKE \"%chmSilentAssign('?%\" and  el_list_text LIKE '%chmSilentAssign%'";
+	public static final String CHM_SILENT_ASSIGN_DPF =
+		    "SELECT el_id, el_list_text, el_functions " +
+		    "FROM event_list " +
+		    "WHERE el_functions LIKE 'chmSilentAssign(''?%' " +
+		    "AND el_list_text LIKE '%ilent%' and el_functions not LIKE '%pdclkfl%'";
+
 
 	public static final String STAFF_ATTORNEY_DASHBOARD_ICONS = "select sfa_category from stfaty_assign_val";
 

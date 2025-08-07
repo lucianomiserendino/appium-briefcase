@@ -10,28 +10,23 @@ Scenario:
 	   be used to terminate the second judge’s assignment and create one for the third judge to review the proposed order.
 Any assignments that are made to a judge will display in the “Pending Tasks” category on the Dashboard page, indicating what matters requires their attention.  
 
-	#Given I am logged into Briefcase 
-		#|environment|userName| password |courtId|
-		#|test       |test    | test     |test   |
-		
-	#Then I select a user 
-	#	|userType   |personrole        |jud     |
-	#	|judge      |Appellate Judges  |test    |
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
-	#Then User selects random judge category
-	#	|courtId|
-	#	|test   |
+		Then I select a user 
+		|userType   |personrole        |jud      |user     |
+		|judge      |Appellate Judges  |test     |sysadmin |
 			
-	#Then User selects random case number
-	#	|courtId|
-	#	|test   |
+   Then User selects a random category
+			
+   Then User selects a random case
+				
+	Then User select chmAssign action 
+	|dpf       |courtId    |
+	|create    |test       |
 		
-	#Then User  selects action using "3068"  and verifies the name of the action displays in the dark blue banner 
-	#	|courtId|
-	#	|test   |
-	Then user checks the chmSilentAssign mode
-		
-		|courtId|
-		|test   |
-					
+
+
+
 		

@@ -27,10 +27,8 @@ public class DPF_stepDefinitions {
 	public void user_selects_action(DataTable table) {
 	    page = new DPFs();
 
-	    // Ideally initialize userInputData properly, not null
 	    List<UserInputData> userInputData = new ArrayList<>();
 
-	    // Replace raw() with asLists()
 	    List<List<String>> data = table.asLists();
 
 	    String dpf = data.get(1).get(0);

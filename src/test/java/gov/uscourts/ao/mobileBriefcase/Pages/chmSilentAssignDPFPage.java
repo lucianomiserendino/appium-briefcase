@@ -1,22 +1,33 @@
 package gov.uscourts.ao.mobileBriefcase.Pages;
 
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.APPLICABLE_ACTIONS;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHM_SILENT_ASSIGN_DPF;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getPanel;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getParameter;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -31,12 +42,15 @@ import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.chmAssign;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
+import gov.uscourts.ao.mobileBriefcase.page.common.DPFs.DPF;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.DPFs;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
+import io.cucumber.datatable.DataTable;
 
 public class chmSilentAssignDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
@@ -89,10 +103,256 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 	
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
 	public static List<WebElement> inProgress;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[2]")
+	public static WebElement dashboard;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[contains(@name, 'Transaction cannot')]")
+	public static WebElement transactionMessage;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Apply ruling to all reliefs']")
+	public static List<WebElement> applyRulling;
+
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Apply ruling to all reliefs']/preceding:: XCUIElementTypeSwitch[1]")
+	public static WebElement toggle;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"Sending...\"]")
+	public static List<WebElement> sending;
+	
 	String actionName = "Auto Test";
 	String cmr_cyv_code = "prhr";
+	
+	static List<String> eventListData=null;
 
+	
+	public static List<String> findChmSilentAssignDPF(List<UserInputData> userInputData, String silentAssignType) {
+	    List<String[]> chmSilentAssignDpf = DBUtilities.executeDBQuery(
+	        DBUtilities.getID(Queries.CHM_SILENT_ASSIGN_DPF, silentAssignType), userInputData
+	    );
+
+	    if (chmSilentAssignDpf == null || chmSilentAssignDpf.isEmpty()) {
+	        throw new AssertionError("No chmSilentAssign dpf returned from the database.");
+	    }
+
+	    String cmr_id = CommonPages.getCMRID(userInputData);
+	    List<String> dbResult = executeQuery(getID(APPLICABLE_ACTIONS, cmr_id), userInputData);
+
+
+
+	    List<String[]> matchingRecords = chmSilentAssignDpf.stream()
+	        .filter(row -> dbResult.contains(row[1].trim()))
+	        .collect(Collectors.toList());
+
+	    matchingRecords.forEach(row -> System.out.println(
+	       row[1].trim() 
+	    ));
+
+	    if (matchingRecords.isEmpty()) {
+	        throw new AssertionError("No matching el_list_text found");
+	    }
+
+	    String[] randomRecord = matchingRecords.get(new Random().nextInt(matchingRecords.size()));
+
+	    String elId = randomRecord[0].trim();
+	    String el_list_text = randomRecord[1].trim();
+	    String el_functions = randomRecord[2].trim();
+
+	    CommonPages page2 = new CommonPages();
+	    page2.selectBriefcaseAction("Actions", el_list_text);
+
+	    return eventListData=List.of(elId, el_list_text, el_functions);
+	}
+
+
+	public void submitChmSilentAssign(String categoryName,String caseNum,List<UserInputData> userInputData) {
+		
+		String el_functions=eventListData.get(2);
+		
+		List<String> resultB=new ArrayList<String>(); 
+		List<String> result = extractChmSilentAssignArgs(el_functions);
+
+		for (String val : result) {
+			resultB.add(val);
+		}
+
+		   
+		   if (alert.size()>0) {
+			  String assignment= transactionMessage.getText().split(":")[1];
+
+              ok.click();
+              Page.sleep(1000);
+		   }else {
+					
+					if (applyRulling.size() == 1) {
+						if (Utility.getToggleState(toggle) == false) {
+							toggle.click();
+						}
+					}
+					scrollDownIfNotDisplayed(Actions.containsElement("Submit"));
+					ifDownloaded(sending);
+		   }
+		   
+		   
+		   dashboard.click();
+		   contains("Pending Tasks").click();
+		   
+		   PendingTasksPage pending = new PendingTasksPage();
+		   
+		   if (resultB.get(1).equals("pdclkfl")) {
+			 pending.processSubFolder(1);
+			 contains(categoryName).click();
+
+		   } else {
+			   pending.processSubFolder(0); 
+		   
+		   contains(categoryName.trim()).click();
+			
+			boolean found = true;
+
+			while (found) {
+				List<WebElement> icons = Actions.findElements(By.xpath(
+						"//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther"
+								+ "//following::XCUIElementTypeStaticText[@name='" + categoryName.trim() + "']"
+								+ "/following::XCUIElementTypeStaticText[@name='GroupIcon']"));
+
+				found = false;
+
+				for (WebElement icon : icons) {
+					if (icon.getAttribute("value").equals("▽")) {
+						icon.click();
+						found = true; 
+						break; 
+					}
+				}
+			}
+	
+		        String assignmentType=DBUtilities.getAllColumns(getText(ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST,"'"+resultB.get(1).trim()+"'"),userInputData);
+		        contains(assignmentType.trim()).click();	
+			
+			
+			assertTrue( Actions.isDisplayed(Locator.XPATH, Actions.containsElement(caseNum)));
+		   }
+	}
+	
+	public static List<String> extractChmSilentAssignArgs(String input) {
+	    List<String> args = new ArrayList<>();
+
+	    Pattern pattern = Pattern.compile("chmSilentAssign\\((.*?)\\)");
+	    Matcher matcher = pattern.matcher(input);
+
+	    if (matcher.find()) {
+	        String insideParens = matcher.group(1); 
+
+	        String[] rawArgs = insideParens.split("','");
+
+	        for (String arg : rawArgs) {
+	            args.add(arg.replace("'", "").trim());
+	        }
+	    }
+
+	    return args;
+	}
+
+	
+	
+	
+	public static void getJudgeAssignment(List<UserInputData> userInputData) {
+
+		String el_functions=eventListData.get(2);
+		
+		
+		String loggedInJudge = getLoggedInJudge(userInputData);
+
+		switch (el_functions) {
+
+		/**
+		 * term - the assignment will be terminated based on the assignment type and
+		 * involvement code parameters values for the logged in judge. 
+		 */
+
+		case "create":
+			// getPanel(Panel.Assignments);
+
+			// String judgeAssign = getRowFromTable(assignTable, mode, 4).getText();
+
+//			Assert.assertTrue(Actions.isDisplayed(Locator.XPATH,
+//					"//XCUIElementTypeStaticText[contains(@name, '" + judgeAssign + "')]"));
+			break;
+
+		case "term":
+			//uiJudgeList.remove(loggedInJudge);
+			break;
+
+		case "termPanel":
+			// uiJudgeList.remove(dbJudgeList);
+			break;
+
+		case "termAnyRelief":
+			Assert.assertTrue(getDPF(el_functions));
+			break;
+
+		case "termAnyReliefPanel":
+			Assert.assertTrue(getDPF(el_functions));
+			break;
+
+		case "termAllRelief":
+
+			Assert.assertTrue(getDPF(el_functions));
+
+			break;
+
+		case "termAllReliefsPanel":
+			Assert.assertTrue(getDPF(el_functions));
+
+			break;
+
+		default:
+			break;
+		}
+
+	}
+
+	/**
+	 * The following method checks if the parameter is set to termAnyRelief or
+	 * termAllReliefs, it is used in conjunction with the judgeVote DPF.
+	 */
+
+	public static boolean getDPF(String param) {
+		boolean isDisplayed = false;
+		String vote = "judgeVote";
+		String assign = "chmSilentAssign";
+		List<String> dpf = new ArrayList<>();
+
+		String[] items = param.split(";");
+		int itemCount = items.length;
+
+		if (itemCount > 1) {
+
+			for (int i = 0; i < itemCount; i++) {
+
+				dpf.add(items[i].split("\\('")[0].trim());
+			}
+
+			if (dpf.contains(vote) && dpf.contains(assign)) {
+
+				assertTrue(dpf.indexOf(vote) < dpf.indexOf(assign));
+				isDisplayed = true;
+
+			} else {
+				isDisplayed = false;
+			}
+		}
+
+		return isDisplayed;
+
+	}
+
+	
+	
+	
+	
+	
+	
 	public void createChmSilentAssign(List<UserInputData> userInputData) {
 
 		chmAssignDPFPage.submitTransaction();
@@ -102,7 +362,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		String assignment = Utility.splitBy(assignmentType.getText(), 0);
 		String assignmentDate = Utility.splitBy(assignmentType.getText(), 1);
 
-		getJudgeAssignment(userInputData, assignment, assignmentDate);
+		//getJudgeAssignment(userInputData, assignment, assignmentDate);
 	}
 
 	public static WebElement getExistingAssignment(String assineeName, String AssignmentTypeAndDate) {
@@ -221,7 +481,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 			uiAssignments.add(uiJudgeList.get(i).getText());
 		}
 
-		getJudgeAssignment(el_functions, userInputData, uiAssignments);
+		//getJudgeAssignment(el_functions, userInputData, uiAssignments);
 
 	}
 
@@ -236,96 +496,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		return SystemPropertySetup.getVariable(Variables.JUD, userInputData);
 
 	}
-
-	public static void getJudgeAssignment(String dpf, List<UserInputData> userInputData, List<String> uiJudgeList) {
-
-		String param = getParameter(dpf, "chmSilentAssign", 0);
-
-		String loggedInJudge = getLoggedInJudge(userInputData);
-
-		switch (param) {
-
-		/**
-		 * term - the assignment will be terminated based on the assignment type and
-		 * involvement code parameters values for the logged in judge. 
-		 */
-
-		case "create":
-			// getPanel(Panel.Assignments);
-
-			// String judgeAssign = getRowFromTable(assignTable, mode, 4).getText();
-
-//			Assert.assertTrue(Actions.isDisplayed(Locator.XPATH,
-//					"//XCUIElementTypeStaticText[contains(@name, '" + judgeAssign + "')]"));
-			break;
-
-		case "term":
-			uiJudgeList.remove(loggedInJudge);
-			break;
-
-		case "termPanel":
-			// uiJudgeList.remove(dbJudgeList);
-			break;
-
-		case "termAnyRelief":
-			Assert.assertTrue(getDPF(dpf));
-			break;
-
-		case "termAnyReliefPanel":
-			Assert.assertTrue(getDPF(dpf));
-			break;
-
-		case "termAllRelief":
-
-			Assert.assertTrue(getDPF(dpf));
-
-			break;
-
-		case "termAllReliefsPanel":
-			Assert.assertTrue(getDPF(dpf));
-
-			break;
-
-		default:
-			break;
-		}
-
-	}
-
-	/**
-	 * The following method checks if the parameter is set to termAnyRelief or
-	 * termAllReliefs, it is used in conjunction with the judgeVote DPF.
-	 */
-
-	public static boolean getDPF(String param) {
-		boolean isDisplayed = false;
-		String vote = "judgeVote";
-		String assign = "chmSilentAssign";
-		List<String> dpf = new ArrayList<>();
-
-		String[] items = param.split(";");
-		int itemCount = items.length;
-
-		if (itemCount > 1) {
-
-			for (int i = 0; i < itemCount; i++) {
-
-				dpf.add(items[i].split("\\('")[0].trim());
-			}
-
-			if (dpf.contains(vote) && dpf.contains(assign)) {
-
-				assertTrue(dpf.indexOf(vote) < dpf.indexOf(assign));
-				isDisplayed = true;
-
-			} else {
-				isDisplayed = false;
-			}
-		}
-
-		return isDisplayed;
-
-	}
+	
 
 	public void retrieveChmSilentAssignText(List<UserInputData> userInputData) {
 	    String panelJudges = extractPanelJudges();
