@@ -1,4 +1,4 @@
-@Regression @updated
+@Regression
 Feature: Sorting law clerk assignment
 
 

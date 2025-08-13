@@ -3,6 +3,9 @@ package gov.uscourts.ao.mobileBriefcase.Pages;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.execute;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.DUPLICATED_LWK;
+import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
+import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -11,13 +14,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.stream.Collectors;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
 
+import gov.uscourts.ao.mobileBriefcase.Pages.CaseQueryPage.Search;
+import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
@@ -56,6 +64,12 @@ public class ToolsPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
 	public static WebElement collapseBtn;
+	
+	@iOSXCUITFindBy(xpath ="//XCUIElementTypeScrollView//XCUIElementTypeButton[contains(@name, '-')]/preceding:: XCUIElementTypeStaticText[1]")
+	public static WebElement categoryName;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Progress halted' or @name='Loading']")
+	public static List<WebElement> activityIndicator;
 	
 	public void verifyToolsCategoryVisibility() {
 	    scrollUp(3);
@@ -201,6 +215,8 @@ public class ToolsPage extends AppiumPageFactory {
 			// Click on the existing clerk button
 			exsitingClerkBtn.click();
 
+			collapseBtn.click();
+			
 			// Scroll through the list to find the specified clerk
 			scrollThroughTheList(existingClerk);
 		}
@@ -326,5 +342,97 @@ public class ToolsPage extends AppiumPageFactory {
 				+ "')]/preceding::XCUIElementTypeButton[1]");
 
 	}
+	
+	public boolean isNavigatedToTargetCasePage() {
+
+	    scrollUp(3);
+
+	    int toolSize = tools.size();
+
+	    if (CommonPages.siCode.equalsIgnoreCase("n")) {
+	        return toolSize == 0;
+	    }
+
+	    tools.get(0).click();
+
+	    exsitingClerkBtn.click();
+
+	    // Scroll through the list to find the specified clerk
+	    findExsitingLwk();
+
+	    collapseBtn.click();
+
+	    ReferralSortOrderPage sortOrderPage = new ReferralSortOrderPage();
+	    List<String> assignments = sortOrderPage.assignmentsSortedByCase();
+
+	    List<String> categories = driver.findElements(By.xpath(
+	            "//XCUIElementTypeScrollView//XCUIElementTypeButton[contains(@name, '-')]/preceding::XCUIElementTypeStaticText[1]"))
+	            .stream()
+	            .map(e -> e.getText().trim())
+	            .collect(Collectors.toList());
+
+	    for (int i = 0; i < assignments.size(); i++) {
+	        CaseQueryPage casequerypage = new CaseQueryPage();
+	        casequerypage.searchForACase(categories.get(i), assignments.get(i), Search.caseNumber);
+
+	        CommonPages page = new CommonPages();
+	        page.getGroupIcons(GroupIcons.Expand);
+
+	        if (Utility.isDisplayed(containsElement("Applied"))) {
+	            // Collapse and go back to Tools
+	            collapseBtn.click();
+	            tools.get(0).click();
+	            collapseBtn.click();
+	            Actions.contains(assignments.get(i)).click();
+	            CommonPages.ifDownloaded(activityIndicator);
+
+	            return Actions.isDisplayed(Actions.contains("Case #" + assignments.get(i)));
+	        }
+	    }
+
+	    return false; 
+	}
+
+
+	public void findExsitingLwk() {
+		    Page.sleep(2000);
+		    JavascriptExecutor js = (JavascriptExecutor) driver;
+
+		    boolean foundNonEmpty = false;
+		    boolean firstScroll = true;
+
+		    while (!foundNonEmpty) {
+		        WebElement dropDown;
+		        try {
+		            dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
+		        } catch (NoSuchElementException e) {
+		            Page.sleep(500);
+		            dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
+		        }
+
+		        Map<String, Object> params = new HashMap<>();
+		        params.put("order", "next");
+		        params.put("offset", 0.1);
+		        params.put("element", ((RemoteWebElement) dropDown).getId());
+
+		        js.executeScript("mobile: selectPickerWheelValue", params);
+
+		        if (firstScroll) {
+		            Page.sleep(500);
+		            firstScroll = false;
+		        }
+
+		        Page.sleep(300);
+		        try {
+		            dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
+		            if (!dropDown.getText().trim().isEmpty()) {
+		                foundNonEmpty = true;
+		            }
+		        } catch (NoSuchElementException ignored) {}
+		    }
+
+		    done.click();
+		}
+
 
 }

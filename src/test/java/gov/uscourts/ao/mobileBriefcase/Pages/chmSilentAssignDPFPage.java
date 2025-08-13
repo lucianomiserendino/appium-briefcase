@@ -8,16 +8,12 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.APPLICABLE_ACTIONS;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHM_SILENT_ASSIGN_DPF;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
-import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getPanel;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.ifDownloaded;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElement;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElements;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getParameter;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
 import static org.junit.Assert.assertTrue;
 
@@ -36,21 +32,17 @@ import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
-import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.Assignment;
 import gov.uscourts.ao.mobileBriefcase.Pages.chmAssignDPFPage.chmAssign;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
-import gov.uscourts.ao.mobileBriefcase.page.common.DPFs.DPF;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
-import gov.uscourts.ao.mobileBriefcase.page.common.DPFs;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup.Variables;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
-import io.cucumber.datatable.DataTable;
 
 public class chmSilentAssignDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']//XCUIElementTypeStaticText[contains(@name, '-')]")
@@ -73,12 +65,12 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "label[id='settings-checkbox-1']")
 	public static WebElement checkBox;
-	
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='Assignments']/XCUIElementTypeScrollView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
 	public static List<WebElement> assignTable;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Alert']")
-	public static List<WebElement>  alert;
+	public static List<WebElement> alert;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Submit']")
 	public static WebElement submit;
@@ -97,16 +89,16 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//*[contains(@name, 'related to')]")
 	public static WebElement relatedTo;
-	
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='OK']")
 	public static WebElement ok;
-	
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
 	public static List<WebElement> inProgress;
-	
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[2]")
 	public static WebElement dashboard;
-	
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[contains(@name, 'Transaction cannot')]")
 	public static WebElement transactionMessage;
 
@@ -115,98 +107,88 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Apply ruling to all reliefs']/preceding:: XCUIElementTypeSwitch[1]")
 	public static WebElement toggle;
-	
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name=\"Sending...\"]")
 	public static List<WebElement> sending;
-	
+
 	String actionName = "Auto Test";
 	String cmr_cyv_code = "prhr";
-	
-	static List<String> eventListData=null;
 
-	
+	static List<String> eventListData = null;
+
 	public static List<String> findChmSilentAssignDPF(List<UserInputData> userInputData, String silentAssignType) {
-	    List<String[]> chmSilentAssignDpf = DBUtilities.executeDBQuery(
-	        DBUtilities.getID(Queries.CHM_SILENT_ASSIGN_DPF, silentAssignType), userInputData
-	    );
+		List<String[]> chmSilentAssignDpf = DBUtilities
+				.executeDBQuery(DBUtilities.getID(Queries.CHM_SILENT_ASSIGN_DPF, silentAssignType), userInputData);
 
-	    if (chmSilentAssignDpf == null || chmSilentAssignDpf.isEmpty()) {
-	        throw new AssertionError("No chmSilentAssign dpf returned from the database.");
-	    }
+		if (chmSilentAssignDpf == null || chmSilentAssignDpf.isEmpty()) {
+			throw new AssertionError("No chmSilentAssign dpf returned from the database.");
+		}
 
-	    String cmr_id = CommonPages.getCMRID(userInputData);
-	    List<String> dbResult = executeQuery(getID(APPLICABLE_ACTIONS, cmr_id), userInputData);
+		String cmr_id = CommonPages.getCMRID(userInputData);
+		List<String> dbResult = executeQuery(getID(APPLICABLE_ACTIONS, cmr_id), userInputData);
 
+		List<String[]> matchingRecords = chmSilentAssignDpf.stream().filter(row -> dbResult.contains(row[1].trim()))
+				.collect(Collectors.toList());
 
+		matchingRecords.forEach(row -> System.out.println(row[1].trim()));
 
-	    List<String[]> matchingRecords = chmSilentAssignDpf.stream()
-	        .filter(row -> dbResult.contains(row[1].trim()))
-	        .collect(Collectors.toList());
+		if (matchingRecords.isEmpty()) {
+			throw new AssertionError("No matching el_list_text found");
+		}
 
-	    matchingRecords.forEach(row -> System.out.println(
-	       row[1].trim() 
-	    ));
+		String[] randomRecord = matchingRecords.get(new Random().nextInt(matchingRecords.size()));
 
-	    if (matchingRecords.isEmpty()) {
-	        throw new AssertionError("No matching el_list_text found");
-	    }
+		String elId = randomRecord[0].trim();
+		String el_list_text = randomRecord[1].trim();
+		String el_functions = randomRecord[2].trim();
 
-	    String[] randomRecord = matchingRecords.get(new Random().nextInt(matchingRecords.size()));
+		CommonPages page2 = new CommonPages();
+		page2.selectBriefcaseAction("Actions", el_list_text);
 
-	    String elId = randomRecord[0].trim();
-	    String el_list_text = randomRecord[1].trim();
-	    String el_functions = randomRecord[2].trim();
-
-	    CommonPages page2 = new CommonPages();
-	    page2.selectBriefcaseAction("Actions", el_list_text);
-
-	    return eventListData=List.of(elId, el_list_text, el_functions);
+		return eventListData = List.of(elId, el_list_text, el_functions);
 	}
 
+	public void submitChmSilentAssign(String categoryName, String caseNum, List<UserInputData> userInputData) {
 
-	public void submitChmSilentAssign(String categoryName,String caseNum,List<UserInputData> userInputData) {
-		
-		String el_functions=eventListData.get(2);
-		
-		List<String> resultB=new ArrayList<String>(); 
+		String el_functions = eventListData.get(2);
+
+		List<String> resultB = new ArrayList<String>();
 		List<String> result = extractChmSilentAssignArgs(el_functions);
 
 		for (String val : result) {
 			resultB.add(val);
 		}
 
-		   
-		   if (alert.size()>0) {
-			  String assignment= transactionMessage.getText().split(":")[1];
+		if (alert.size() > 0) {
+			String assignment = transactionMessage.getText().split(":")[1];
 
-              ok.click();
-              Page.sleep(1000);
-		   }else {
-					
-					if (applyRulling.size() == 1) {
-						if (Utility.getToggleState(toggle) == false) {
-							toggle.click();
-						}
-					}
-					scrollDownIfNotDisplayed(Actions.containsElement("Submit"));
-					ifDownloaded(sending);
-		   }
-		   
-		   
-		   dashboard.click();
-		   contains("Pending Tasks").click();
-		   
-		   PendingTasksPage pending = new PendingTasksPage();
-		   
-		   if (resultB.get(1).equals("pdclkfl")) {
-			 pending.processSubFolder(1);
-			 contains(categoryName).click();
+			ok.click();
+			Page.sleep(1000);
+		} else {
 
-		   } else {
-			   pending.processSubFolder(0); 
-		   
-		   contains(categoryName.trim()).click();
-			
+			if (applyRulling.size() == 1) {
+				if (Utility.getToggleState(toggle) == false) {
+					toggle.click();
+				}
+			}
+			scrollDownIfNotDisplayed(Actions.containsElement("Submit"));
+			ifDownloaded(sending);
+		}
+
+		dashboard.click();
+		contains("Pending Tasks").click();
+
+		PendingTasksPage pending = new PendingTasksPage();
+
+		if (resultB.get(1).equals("pdclkfl")) {
+			pending.processSubFolder(1);
+			contains(categoryName).click();
+
+		} else {
+			pending.processSubFolder(0);
+
+			contains(categoryName.trim()).click();
+
 			boolean found = true;
 
 			while (found) {
@@ -220,47 +202,43 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 				for (WebElement icon : icons) {
 					if (icon.getAttribute("value").equals("▽")) {
 						icon.click();
-						found = true; 
-						break; 
+						found = true;
+						break;
 					}
 				}
 			}
-	
-		        String assignmentType=DBUtilities.getAllColumns(getText(ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST,"'"+resultB.get(1).trim()+"'"),userInputData);
-		        contains(assignmentType.trim()).click();	
-			
-			
-			assertTrue( Actions.isDisplayed(Locator.XPATH, Actions.containsElement(caseNum)));
-		   }
+
+			String assignmentType = DBUtilities.getAllColumns(
+					getText(ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST, "'" + resultB.get(1).trim() + "'"), userInputData);
+			contains(assignmentType.trim()).click();
+
+			assertTrue(Actions.isDisplayed(Locator.XPATH, Actions.containsElement(caseNum)));
+		}
 	}
-	
+
 	public static List<String> extractChmSilentAssignArgs(String input) {
-	    List<String> args = new ArrayList<>();
+		List<String> args = new ArrayList<>();
 
-	    Pattern pattern = Pattern.compile("chmSilentAssign\\((.*?)\\)");
-	    Matcher matcher = pattern.matcher(input);
+		Pattern pattern = Pattern.compile("chmSilentAssign\\((.*?)\\)");
+		Matcher matcher = pattern.matcher(input);
 
-	    if (matcher.find()) {
-	        String insideParens = matcher.group(1); 
+		if (matcher.find()) {
+			String insideParens = matcher.group(1);
 
-	        String[] rawArgs = insideParens.split("','");
+			String[] rawArgs = insideParens.split("','");
 
-	        for (String arg : rawArgs) {
-	            args.add(arg.replace("'", "").trim());
-	        }
-	    }
+			for (String arg : rawArgs) {
+				args.add(arg.replace("'", "").trim());
+			}
+		}
 
-	    return args;
+		return args;
 	}
 
-	
-	
-	
 	public static void getJudgeAssignment(List<UserInputData> userInputData) {
 
-		String el_functions=eventListData.get(2);
-		
-		
+		String el_functions = eventListData.get(2);
+
 		String loggedInJudge = getLoggedInJudge(userInputData);
 
 		switch (el_functions) {
@@ -280,7 +258,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 			break;
 
 		case "term":
-			//uiJudgeList.remove(loggedInJudge);
+			// uiJudgeList.remove(loggedInJudge);
 			break;
 
 		case "termPanel":
@@ -347,12 +325,6 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 
 	}
 
-	
-	
-	
-	
-	
-	
 	public void createChmSilentAssign(List<UserInputData> userInputData) {
 
 		chmAssignDPFPage.submitTransaction();
@@ -362,7 +334,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 		String assignment = Utility.splitBy(assignmentType.getText(), 0);
 		String assignmentDate = Utility.splitBy(assignmentType.getText(), 1);
 
-		//getJudgeAssignment(userInputData, assignment, assignmentDate);
+		// getJudgeAssignment(userInputData, assignment, assignmentDate);
 	}
 
 	public static WebElement getExistingAssignment(String assineeName, String AssignmentTypeAndDate) {
@@ -408,10 +380,10 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 	public void submitChmSilentAssign(String caseNumber, List<UserInputData> userInputData) {
 		String dpfName = "chmAssign";
 		String elId = getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
-		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData) ;
+		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
 
-		chmAssignDPFPage.getStaffAssignment(Assignment.NEW, chmAssign.CREATE_SINGLE_ASSIGNMENT, dpfName, elId, cha_ju_pe_id, caseNumber,
-				cmr_cyv_code, userInputData);
+		chmAssignDPFPage.getStaffAssignment(Assignment.NEW, chmAssign.CREATE_SINGLE_ASSIGNMENT, dpfName, elId,
+				cha_ju_pe_id, caseNumber, cmr_cyv_code, userInputData);
 
 		assertTrue(getDuplicateAssignments(chmAssignDPFPage.optionList));
 	}
@@ -481,78 +453,70 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 			uiAssignments.add(uiJudgeList.get(i).getText());
 		}
 
-		//getJudgeAssignment(el_functions, userInputData, uiAssignments);
+		// getJudgeAssignment(el_functions, userInputData, uiAssignments);
 
 	}
 
 	public static List<String> findchmsilentAssignDPF(List<UserInputData> userInputData, int col,
 			String silentAssignType) {
 
-		return execute(getID(CHM_SILENT_ASSIGN_DPF, silentAssignType), col,
-				userInputData);
+		return execute(getID(CHM_SILENT_ASSIGN_DPF, silentAssignType), col, userInputData);
 	}
 
 	public static String getLoggedInJudge(List<UserInputData> userInputData) {
 		return SystemPropertySetup.getVariable(Variables.JUD, userInputData);
 
 	}
-	
 
 	public void retrieveChmSilentAssignText(List<UserInputData> userInputData) {
-	    String panelJudges = extractPanelJudges();
-	    List<String> judgeInitials = findPanelJudges(panelJudges);
+		String panelJudges = extractPanelJudges();
+		List<String> judgeInitials = findPanelJudges(panelJudges);
 
-	    String createSilentAssignment = findchmsilentAssignDPF(userInputData, 3, "create").get(0).trim();
+		String createSilentAssignment = findchmsilentAssignDPF(userInputData, 3, "create").get(0).trim();
 
-	    Utility.scrollDownIfNotDisplayed(Actions.containsElement("Actions"));
-	    CommonPages.getActionName(createSilentAssignment);
+		Utility.scrollDownIfNotDisplayed(Actions.containsElement("Actions"));
+		CommonPages.getActionName(createSilentAssignment);
 
-	    handleAlerts();
-	    CommonPages.ifDownloaded(inProgress);
-	    Page.waitToBeClickable(viewCaseInfo, driver);
-	    CommonPages.ifDownloaded(inProgress);
-	    Page.waitToBeClickable(docketEntries, driver);
-	    CommonPages.ifDownloaded(inProgress);
-	    contains(createSilentAssignment).click();
+		handleAlerts();
+		CommonPages.ifDownloaded(inProgress);
+		Page.waitToBeClickable(viewCaseInfo, driver);
+		CommonPages.ifDownloaded(inProgress);
+		Page.waitToBeClickable(docketEntries, driver);
+		CommonPages.ifDownloaded(inProgress);
+		contains(createSilentAssignment).click();
 
-	    verifyJudgeInitials(judgeInitials);
+		verifyJudgeInitials(judgeInitials);
 	}
 
 	private String extractPanelJudges() {
-	    String panelText = panel.getText();
-	    String[] panelSplit = panelText.split(" Date");
-	    return panelSplit[0].split("Panel: ")[1];
+		String panelText = panel.getText();
+		String[] panelSplit = panelText.split(" Date");
+		return panelSplit[0].split("Panel: ")[1];
 	}
 
 	private void handleAlerts() {
-	    Page.sleep(1000);
-	    if (alert.size() >= 1) {
-	        ok.click();
-	    } else {
-	        submit.click();
-	        if (yes.size() >= 1) {
-	            yes.get(0).click();
-	        }
-	    }
+		Page.sleep(1000);
+		if (alert.size() >= 1) {
+			ok.click();
+		} else {
+			submit.click();
+			if (yes.size() >= 1) {
+				yes.get(0).click();
+			}
+		}
 	}
 
 	private void verifyJudgeInitials(List<String> judgeInitials) {
-	    for (String judgeInitial : judgeInitials) {
-	        judgeInitial = judgeInitial.contains("*") ? judgeInitial.replace("*", "").trim() : judgeInitial.trim();
-	        assertTrue("Verify chmSilentAssignText TPF enables docket text information",
-	                Actions.isDisplayed(Locator.XPATH, Actions.containsElement(judgeInitial)));
-	    }
+		for (String judgeInitial : judgeInitials) {
+			judgeInitial = judgeInitial.contains("*") ? judgeInitial.replace("*", "").trim() : judgeInitial.trim();
+			assertTrue("Verify chmSilentAssignText TPF enables docket text information",
+					Actions.isDisplayed(Locator.XPATH, Actions.containsElement(judgeInitial)));
+		}
 	}
 
 	public static List<String> findPanelJudges(String panelJudges) {
-	    String[] judgeNames = panelJudges.split(",");
-	    return new ArrayList<>(Arrays.asList(judgeNames));
+		String[] judgeNames = panelJudges.split(",");
+		return new ArrayList<>(Arrays.asList(judgeNames));
 	}
-
-
-
-
-	
-	
 
 }
