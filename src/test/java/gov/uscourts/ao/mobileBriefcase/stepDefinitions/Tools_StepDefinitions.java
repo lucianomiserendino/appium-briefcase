@@ -23,5 +23,15 @@ public class Tools_StepDefinitions {
 		page = new ToolsPage();
 	 assertTrue("Law Clerk Reassign - assignment link directs to applied case", page.isNavigatedToTargetCasePage());
 	}
+	
+	@Then("user selects an existing clerk, then confirms that clerk’s name does not appear in the “Select a New Clerk” menu")
+	public void user_selects_an_existing_clerk_then_confirms_that_clerk_s_name_does_not_appear_in_the_select_a_new_clerk_menu() {
+		
+		page = new ToolsPage();
+		assertTrue("Able to select the same law clerk from both existing and new lwk menus",page.isExistingClerkExcludedFromNewClerkList());
+	}
+
+
+
 
 }

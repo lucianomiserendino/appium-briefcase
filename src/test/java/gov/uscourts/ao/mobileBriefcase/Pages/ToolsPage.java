@@ -12,9 +12,11 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.junit.Assert;
@@ -50,6 +52,9 @@ public class ToolsPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Apply All']/preceding:: XCUIElementTypeButton[2]")
 	public static WebElement exsitingClerkBtn;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Apply All']/preceding:: XCUIElementTypeButton[1]")
+	public static WebElement newClerkBtn;
+	
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypePickerWheel")
 	public static WebElement dropDown;
 
@@ -392,6 +397,7 @@ public class ToolsPage extends AppiumPageFactory {
 
 	    return false; 
 	}
+	
 
 
 	public void findExsitingLwk() {
@@ -433,6 +439,95 @@ public class ToolsPage extends AppiumPageFactory {
 
 		    done.click();
 		}
+	public boolean isExistingClerkExcludedFromNewClerkList() {
+	    scrollUp(3);
+
+	    if (CommonPages.siCode.equalsIgnoreCase("n")) {
+	        return tools.isEmpty();
+	    }
+
+	    tools.get(0).click();
+	    exsitingClerkBtn.click();
+
+	    String existingClerk = pickRandomValueFromPicker(); 
+	    newClerkBtn.click();
+
+	    List<String> newClerks = collectPickerValues(false);
+
+	    boolean isExcluded = !newClerks.contains(existingClerk);
+	    System.out.println("Existing clerk: " + existingClerk);
+	    System.out.println("New clerk list: " + newClerks);
+	    System.out.println("Is existing clerk excluded? " + isExcluded);
+
+	    return isExcluded;
+	}
+
+	private String pickRandomValueFromPicker() {
+	    List<String> allValues = collectPickerValues(true);
+
+	    if (allValues.isEmpty()) return "";
+
+	    int randomIndex = new Random().nextInt(allValues.size());
+	    String randomValue = allValues.get(randomIndex);
+
+	    WebElement dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
+	    JavascriptExecutor js = (JavascriptExecutor) driver;
+	    for (int i = 0; i < randomIndex; i++) {
+	        scrollPicker(dropDown, js);
+	    }
+
+	    done.click();
+	    System.out.println("Randomly selected clerk: " + randomValue);
+	    return randomValue;
+	}
+
+	private List<String> collectPickerValues(boolean keepScrolling) {
+	    Page.sleep(2000);
+	    JavascriptExecutor js = (JavascriptExecutor) driver;
+	    Set<String> seen = new HashSet<>();
+	    List<String> values = new ArrayList<>();
+
+	    boolean reachedEnd = false;
+	    while (!reachedEnd) {
+	        WebElement dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
+	        String currentValue = dropDown.getText().trim();
+
+	        if (!currentValue.isEmpty() && seen.add(currentValue)) {
+	            values.add(currentValue);
+	        } else if (!currentValue.isEmpty()) {
+	            reachedEnd = true;
+	        }
+
+	        if (keepScrolling || !reachedEnd) {
+	            scrollPicker(dropDown, js);
+	            Page.sleep(300);
+	        }
+	    }
+
+	    done.click();
+	    return values;
+	}
+
+	private void scrollPicker(WebElement dropDown, JavascriptExecutor js) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("order", "next");
+	    params.put("offset", 0.15);
+	    params.put("element", ((RemoteWebElement) dropDown).getId());
+
+	    int attempts = 0;
+	    while (attempts < 3) {
+	        try {
+	            js.executeScript("mobile: selectPickerWheelValue", params);
+	            break;
+	        } catch (org.openqa.selenium.InvalidElementStateException e) {
+	            Page.sleep(300);
+	            attempts++;
+	        }
+	    }
+	}
+
+
+
 
 
 }
