@@ -658,10 +658,11 @@ public class Queries {
 	public static final String CAV_DISPLAY = "SELECT cav_display FROM chm_assign_type_val WHERE cav_code like '%TEXT%'";
 
 	public static final String CHM_SILENT_ASSIGN_DPF =
-		    "SELECT el_id, el_list_text, el_functions " +
-		    "FROM event_list " +
-		    "WHERE el_functions LIKE 'chmSilentAssign(''?%' " +
-		    "AND el_list_text LIKE '%ilent%' and el_functions not LIKE '%pdclkfl%'";
+			"SELECT el_id, el_list_text, el_functions " +
+		             "FROM event_list " +
+		             "WHERE el_functions LIKE '%chmSilentAssign(''?%' " +
+		             "AND el_list_text LIKE '%ilent%' " +
+		             "AND el_functions NOT LIKE '%pdclkfl%'";
 
 
 	public static final String STAFF_ATTORNEY_DASHBOARD_ICONS = "select sfa_category from stfaty_assign_val";
@@ -791,4 +792,6 @@ public class Queries {
 	
 	public static final String UNRESTRICTED_DOCUMENTS= "select distinct (cmd_doc_category), cyv_category,cs_year||'-'||cs_number case_num, cmd_description,cmd_last_updated  from chm_mobile_docs,case,chm_reftype_val, chm_mobile_referral where cmr_id = cmd_cmr_id and "
 	+ " cmr_date_end is null and cmr_ju_pe_id ='?' and cmr_cyv_code = cyv_code and  cyv_is_oral_arg = 'n' and cmr_cs_caseid = cs_caseid  order by cmd_last_updated desc";
+
+
 }

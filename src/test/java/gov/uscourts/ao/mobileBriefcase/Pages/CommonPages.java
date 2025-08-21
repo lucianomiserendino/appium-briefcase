@@ -331,10 +331,8 @@ public class CommonPages extends AppiumPageFactory {
 				"CMR_CYV_CODE", cmr_cyv_code), userInputData);
 	}
 
-	public static List<String> findCCRID(List<UserInputData> userInputData) {
+	public static List<String> findCCRID(List<UserInputData> userInputData,String caseId,String cmr_cyv_code) {
 		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
-		String caseId = DocumentPage.cs_caseid;
-		String cmr_cyv_code = DocumentPage.cmr_cyv_code;
 
 		return DBUtilities.executeQuery(replace(Queries.CCR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id,
 				"CMR_CYV_CODE", cmr_cyv_code), userInputData);

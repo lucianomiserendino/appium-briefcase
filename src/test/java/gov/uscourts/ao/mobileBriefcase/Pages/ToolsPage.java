@@ -439,93 +439,150 @@ public class ToolsPage extends AppiumPageFactory {
 
 		    done.click();
 		}
+	
 	public boolean isExistingClerkExcludedFromNewClerkList() {
 	    scrollUp(3);
 
+	    int toolSize = tools.size();
+
 	    if (CommonPages.siCode.equalsIgnoreCase("n")) {
-	        return tools.isEmpty();
+	        return toolSize == 0;
 	    }
 
 	    tools.get(0).click();
 	    exsitingClerkBtn.click();
 
-	    String existingClerk = pickRandomValueFromPicker(); 
+	    String existingLwk = findExistingLwkRandomByIndex(); 
+
 	    newClerkBtn.click();
 
-	    List<String> newClerks = collectPickerValues(false);
+	    List<String> newLwkList = getNewLwks(); 
 
-	    boolean isExcluded = !newClerks.contains(existingClerk);
-	    System.out.println("Existing clerk: " + existingClerk);
-	    System.out.println("New clerk list: " + newClerks);
+	    boolean isExcluded = !newLwkList.contains(existingLwk);
+	    System.out.println("Existing clerk: " + existingLwk);
+	    System.out.println("New clerk list: " + newLwkList);
 	    System.out.println("Is existing clerk excluded? " + isExcluded);
 
 	    return isExcluded;
 	}
 
-	private String pickRandomValueFromPicker() {
-	    List<String> allValues = collectPickerValues(true);
-
-	    if (allValues.isEmpty()) return "";
-
-	    int randomIndex = new Random().nextInt(allValues.size());
-	    String randomValue = allValues.get(randomIndex);
-
-	    WebElement dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
+	public String findExistingLwkRandomByIndex() {
+	    Page.sleep(2000);
 	    JavascriptExecutor js = (JavascriptExecutor) driver;
-	    for (int i = 0; i < randomIndex; i++) {
-	        scrollPicker(dropDown, js);
+
+	    List<String> allValues = new ArrayList<>();
+	    Set<String> seenValues = new HashSet<>();
+	    WebElement dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
+	    boolean reachedEnd = false;
+
+	    while (!reachedEnd) {
+	        dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
+	        String currentValue = dropDown.getText().trim();
+
+	        if (!currentValue.isEmpty() && !seenValues.contains(currentValue)) {
+	            allValues.add(currentValue);
+	            seenValues.add(currentValue);
+	        } else if (!currentValue.isEmpty() && seenValues.contains(currentValue)) {
+	            reachedEnd = true; 
+	            break;
+	        }
+
+	        Map<String, Object> params = new HashMap<>();
+	        params.put("order", "next");
+	        params.put("offset", 0.15);
+	        params.put("element", ((RemoteWebElement) dropDown).getId());
+
+	        int attempts = 0;
+	        while (attempts < 3) {
+	            try {
+	                js.executeScript("mobile: selectPickerWheelValue", params);
+	                break;
+	            } catch (org.openqa.selenium.InvalidElementStateException e) {
+	                Page.sleep(300);
+	                attempts++;
+	            }
+	        }
+	        Page.sleep(300);
 	    }
 
-	    done.click();
+	    int size = allValues.size();
+	    if (size == 0) return ""; 
+	    int randomIndex = new Random().nextInt(size);
+
+	    dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
+	    for (int i = 0; i <= randomIndex; i++) {
+	        Map<String, Object> params = new HashMap<>();
+	        params.put("order", "next");
+	        params.put("offset", 0.15);
+	        params.put("element", ((RemoteWebElement) dropDown).getId());
+
+	        int attempts = 0;
+	        while (attempts < 3) {
+	            try {
+	                js.executeScript("mobile: selectPickerWheelValue", params);
+	                break;
+	            } catch (org.openqa.selenium.InvalidElementStateException e) {
+	                Page.sleep(300);
+	                attempts++;
+	            }
+	        }
+	        Page.sleep(300);
+	    }
+
+	    dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
+	    String randomValue = dropDown.getText().trim();
+
+	    done.click(); 
 	    System.out.println("Randomly selected clerk: " + randomValue);
 	    return randomValue;
 	}
 
-	private List<String> collectPickerValues(boolean keepScrolling) {
+
+	
+	public List<String> getNewLwks() {
 	    Page.sleep(2000);
 	    JavascriptExecutor js = (JavascriptExecutor) driver;
-	    Set<String> seen = new HashSet<>();
-	    List<String> values = new ArrayList<>();
+	    List<String> clerkNames = new ArrayList<>();
+	    Set<String> seenValues = new HashSet<>();
 
+	    WebElement dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
 	    boolean reachedEnd = false;
+
 	    while (!reachedEnd) {
-	        WebElement dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
+	        dropDown = driver.findElement(By.className("XCUIElementTypePickerWheel"));
 	        String currentValue = dropDown.getText().trim();
 
-	        if (!currentValue.isEmpty() && seen.add(currentValue)) {
-	            values.add(currentValue);
-	        } else if (!currentValue.isEmpty()) {
+	        if (!currentValue.isEmpty() && !seenValues.contains(currentValue)) {
+	            clerkNames.add(currentValue);
+	            seenValues.add(currentValue);
+	        } else if (!currentValue.isEmpty() && seenValues.contains(currentValue)) {
 	            reachedEnd = true;
+	            break;
 	        }
 
-	        if (keepScrolling || !reachedEnd) {
-	            scrollPicker(dropDown, js);
-	            Page.sleep(300);
+	        Map<String, Object> params = new HashMap<>();
+	        params.put("order", "next");
+	        params.put("offset", 0.15); 
+	        params.put("element", ((RemoteWebElement) dropDown).getId());
+
+	        int attempts = 0;
+	        while (attempts < 3) {
+	            try {
+	                js.executeScript("mobile: selectPickerWheelValue", params);
+	                break; 
+	            } catch (org.openqa.selenium.InvalidElementStateException e) {
+	                Page.sleep(300); 
+	                attempts++;
+	            }
 	        }
+
+	        Page.sleep(300); 
 	    }
 
 	    done.click();
-	    return values;
+	    System.out.println("Collected clerk names: " + clerkNames);
+	    return clerkNames;
 	}
-
-	private void scrollPicker(WebElement dropDown, JavascriptExecutor js) {
-	    Map<String, Object> params = new HashMap<>();
-	    params.put("order", "next");
-	    params.put("offset", 0.15);
-	    params.put("element", ((RemoteWebElement) dropDown).getId());
-
-	    int attempts = 0;
-	    while (attempts < 3) {
-	        try {
-	            js.executeScript("mobile: selectPickerWheelValue", params);
-	            break;
-	        } catch (org.openqa.selenium.InvalidElementStateException e) {
-	            Page.sleep(300);
-	            attempts++;
-	        }
-	    }
-	}
-
 
 
 

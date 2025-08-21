@@ -26,7 +26,9 @@ public class JudgeVoteDPF_StepDefinitions {
 	public void user_verifies_a_popup_displays_In_the_red_banner_the_relief_they_are_voting_on_should_display() {
 		List<UserInputData> userInputData = null;
 		page = new JudgeVoteDPFPage();
-		ccr_id=page.selectViewVotes( userInputData);
+		String caseId = DocumentPage.cs_caseid;
+		String cmr_cyv_code = DocumentPage.cmr_cyv_code;
+		ccr_id=page.selectViewVotes(caseId,cmr_cyv_code, userInputData);
 	}
 
 	@Then("^User verifies each judges' initials to whom the referral was sent , as well as their vote and date they voted$")
@@ -39,9 +41,11 @@ public class JudgeVoteDPF_StepDefinitions {
 	public void user_selects_a_vote_and_adds_notes_to_a_vote() {
 		List<UserInputData> userInputData = null;
 		page = new JudgeVoteDPFPage();
-
-		vote += page.getVoteSelection(DPF_stepDefinitions.actionName, refCategory, "judgeVote",
-				userInputData, caseNum);
+		String caseId = DocumentPage.cs_caseid;
+		String cmr_cyv_code = DocumentPage.cmr_cyv_code;
+		
+		vote += page.getVoteSelection( caseId, cmr_cyv_code, DPF_stepDefinitions.actionName, refCategory, "judgeVote",
+				userInputData);
 	}
 
 	@Then("^User verifies judge's vote is updated in Vote Information Panel\\.$")

@@ -4,10 +4,8 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.MBR_NOTE;
 import static gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.getGroupIcons;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.contains;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.findElementBy;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.tap;
-import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getCellCount;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.getParameter;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -16,12 +14,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.Queries;
@@ -44,7 +40,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(accessibility = "Submit")
 	public static WebElement submit;
-	
+
 	@iOSXCUITFindBy(accessibility = "Pending Clerk's Filing")
 	public static WebElement PendingClerk;
 
@@ -53,7 +49,7 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"PendingTasksList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[contains(@value, '▷')]/following::XCUIElementTypeStaticText[2]")
 	public static List<WebElement> categoryCount;
-	
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"PendingTasksList\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[contains(@value, '▷')]/following::XCUIElementTypeOther[1]/XCUIElementTypeStaticText[1]")
 	public static List<WebElement> pendingCategories;
 
@@ -71,10 +67,10 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[contains(@name, 'NEW OUT OF')][1]/preceding:: XCUIElementTypeStaticText[1]")
 	public static List<WebElement> pendingSubFolders;
-	
+
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Progress halted' or @name='In progress']")
 	public static List<WebElement> activityIndicator;
-	
+
 	// @WithTimeout(time = 30, unit = TimeUnit.SECONDS)
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
 	public static WebElement collapseBtn;
@@ -87,44 +83,37 @@ public class PendingTasksPage extends AppiumPageFactory {
 	String dpfName = "chmSilentAssign";
 
 	public String processSubFolder(int index) {
-	    WebElement folderElement = pendingSubFolders.get(index);
-	    String folder = folderElement.getText();
-	    folderElement.click();
+		WebElement folderElement = pendingSubFolders.get(index);
+		String folder = folderElement.getText();
+		folderElement.click();
 
-	    getGroupIcons(GroupIcons.Expand);
+		getGroupIcons(GroupIcons.Expand);
 
-	    return folder.trim();
+		return folder.trim();
 	}
-
 
 	public void verifyFolderSortedDescending(List<UserInputData> userInputData, String folder) {
-	    selectAssignmentType(folder);
+		selectAssignmentType(folder);
 
-	    List<String> filedDates = Actions.findElements(By.xpath(Actions.containsElement(": ")))
-	            .stream()
-	            .map(el -> el.getText().split(": ")[1])
-	            .collect(Collectors.toList());
+		List<String> filedDates = Actions.findElements(By.xpath(Actions.containsElement(": "))).stream()
+				.map(el -> el.getText().split(": ")[1]).collect(Collectors.toList());
 
-	    assertTrue("VERIFY " + folder + " CASES ARE SORTED BY DATE DESCENDING ORDER",
-	            Utility.checkDatesForDescOrder(filedDates, "M/d/yyyy"));
+		assertTrue("VERIFY " + folder + " CASES ARE SORTED BY DATE DESCENDING ORDER",
+				Utility.checkDatesForDescOrder(filedDates, "M/d/yyyy"));
 
-	    assertTrue("VERIFY INFO IS DISPLAYED CORRECTLY ON PENDING TASKS PAGE",
-	            getReferralAssignmentInfo(userInputData, folder, assignmentType));
+		assertTrue("VERIFY INFO IS DISPLAYED CORRECTLY ON PENDING TASKS PAGE",
+				getReferralAssignmentInfo(userInputData, folder, assignmentType));
 	}
-	
-	
-	
+
 	public void verifyAllFoldersSortedDescending(List<UserInputData> userInputData) {
-	    for (int i = 0; i < pendingSubFolders.size(); i++) {
-	        String folder = processSubFolder(i);
-	        verifyFolderSortedDescending(userInputData, folder);
+		for (int i = 0; i < pendingSubFolders.size(); i++) {
+			String folder = processSubFolder(i);
+			verifyFolderSortedDescending(userInputData, folder);
 
-	        Actions.navigateBack(); 
+			Actions.navigateBack();
 
-	    }
+		}
 	}
-
-
 
 	public boolean getReferralAssignmentInfo(List<UserInputData> userInputData, String folder, String assignmenType) {
 		selectRandomCase();
@@ -156,7 +145,6 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 		a1 = a1.replace(" ", "");
 		b = b.replace(" ", "");
-
 
 		if (a1.equalsIgnoreCase(b)) {
 
@@ -233,8 +221,8 @@ public class PendingTasksPage extends AppiumPageFactory {
 				for (WebElement icon : icons) {
 					if (icon.getAttribute("value").equals("▽")) {
 						icon.click();
-						found = true; 
-						break; 
+						found = true;
+						break;
 					}
 				}
 			}
@@ -262,8 +250,8 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 			assignmentCount.get(c.indexOf(m)).click();
 
-		}else {
-			assignmentType="Pending Clerk''s Filing";
+		} else {
+			assignmentType = "Pending Clerk''s Filing";
 		}
 
 	}
@@ -283,10 +271,9 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 		Page.performPageLoad(driver);
 
-		
-		  List<WebElement> cases=Actions.findElements(By.xpath("//XCUIElementTypeStaticText[contains(@name, '-')]"));
+		List<WebElement> cases = Actions.findElements(By.xpath("//XCUIElementTypeStaticText[contains(@name, '-')]"));
 
-		  List<String>  list=extractSortedByCase(cases);
+		List<String> list = extractSortedByCase(cases);
 
 		/** This might change in 1.8 - AMB-3399 */
 		assertFalse(
@@ -309,16 +296,15 @@ public class PendingTasksPage extends AppiumPageFactory {
 		Page.performPageLoad(driver);
 		return uiResult;
 	}
+
 	private List<String> extractSortedByCase(List<WebElement> elements) {
-	    Pattern pattern = Pattern.compile("^\\d{2}-\\d{3,5} .+");
+		Pattern pattern = Pattern.compile("^\\d{2}-\\d{3,5} .+");
 
-	    List<WebElement> filtered = elements.stream()
-	        .filter(el -> pattern.matcher(el.getAttribute("name")).matches())
-	        .collect(Collectors.toList());
+		List<WebElement> filtered = elements.stream().filter(el -> pattern.matcher(el.getAttribute("name")).matches())
+				.collect(Collectors.toList());
 
-	    return Utility.retrieveAllReferrals(filtered, " ", 0);
+		return Utility.retrieveAllReferrals(filtered, " ", 0);
 	}
-
 
 	public void getAssignmentCategories() {
 		List<Integer> categories = new ArrayList<>();
@@ -331,60 +317,55 @@ public class PendingTasksPage extends AppiumPageFactory {
 
 	}
 
-	public void leftNavAndPendingTasksCategoriesAreSorted() {		
-		
-		
-	    for (int i = 0; i < pendingSubFolders.size(); i++) {
-	        String folder = processSubFolder(i);
-		
-		 List<WebElement> categoryName=pendingCategories;
-		 
-		ArrayList<String> dashList = new ArrayList<String>();
-		for (int y = 0; y < categoryName.size() ; y++) {
-			String pendingCategory = categoryName.get(y).getText().trim();
-			dashList.add(pendingCategory);
-		}
+	public void leftNavAndPendingTasksCategoriesAreSorted() {
 
-		tap(collapseBtn);
-		
-		
-		ArrayList<String> navList = new ArrayList<String>();
+		for (int i = 0; i < pendingSubFolders.size(); i++) {
+			String folder = processSubFolder(i);
 
-	    List<WebElement> navCells = navIcons;
-	    List<WebElement> navCategoryCells = navCells.subList(2, navCells.size());
+			List<WebElement> categoryName = pendingCategories;
 
+			ArrayList<String> dashList = new ArrayList<String>();
+			for (int y = 0; y < categoryName.size(); y++) {
+				String pendingCategory = categoryName.get(y).getText().trim();
+				dashList.add(pendingCategory);
+			}
 
-	    for (WebElement navCell : navCategoryCells) {
-	        List<WebElement> navTexts = navCell.findElements(By.xpath(".//XCUIElementTypeStaticText"));
-	        if (navTexts.isEmpty()) continue;
+			tap(collapseBtn);
 
-	        String navCategoryName = navTexts.get(0).getText().trim();
+			ArrayList<String> navList = new ArrayList<String>();
 
-	        // Skip "Tools" and "Bookmarked"
-	        if (navCategoryName.equals("Tools") || navCategoryName.equals("Bookmarked")) {
-	            continue;
-	        }
+			List<WebElement> navCells = navIcons;
+			List<WebElement> navCategoryCells = navCells.subList(2, navCells.size());
+
+			for (WebElement navCell : navCategoryCells) {
+				List<WebElement> navTexts = navCell.findElements(By.xpath(".//XCUIElementTypeStaticText"));
+				if (navTexts.isEmpty())
+					continue;
+
+				String navCategoryName = navTexts.get(0).getText().trim();
+
+				// Skip "Tools" and "Bookmarked"
+				if (navCategoryName.equals("Tools") || navCategoryName.equals("Bookmarked")) {
+					continue;
+				}
 				navList.add(navCategoryName);
+			}
+
+			List<String> commonFromDashInOrder = dashList.stream().filter(navList::contains)
+					.collect(Collectors.toList());
+
+			List<String> commonFromNavInOrder = navList.stream().filter(dashList::contains)
+					.collect(Collectors.toList());
+
+			assertEquals(
+					"The referral categories displayed in " + folder + " folder are not sorted "
+							+ "in the same way as they are in the left-hand navigation",
+					commonFromNavInOrder, commonFromDashInOrder);
+
+			tap(collapseBtn);
+			Actions.navigateBack();
+
 		}
-
-
-	    List<String> commonFromDashInOrder = dashList.stream()
-	            .filter(navList::contains)
-	            .collect(Collectors.toList());
-
-	    List<String> commonFromNavInOrder = navList.stream()
-	            .filter(dashList::contains)
-	            .collect(Collectors.toList());
-
-	    assertEquals(
-	        "The referral categories displayed in " + folder + " folder are not sorted "
-	            + "in the same way as they are in the left-hand navigation",
-	        commonFromNavInOrder, commonFromDashInOrder);
-
-         tap(collapseBtn);
-        Actions.navigateBack(); 
-
-	    }
 	}
 
 	public void findAssingmenType(String actionName, List<UserInputData> userInputData) {
@@ -425,30 +406,69 @@ public class PendingTasksPage extends AppiumPageFactory {
 		return "//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther//following::XCUIElementTypeStaticText[@name='"
 				+ category + "']/following::XCUIElementTypeStaticText[contains(@name, '(')]";
 	}
-	
-	public void verifyAssignmentDateType () {
-	    for (int i = 0; i < pendingSubFolders.size(); i++) {
-	        String folder = processSubFolder(i);
-	        
-	       selectAssignmentType(folder);
 
-		List<UserInputData> userInputData = null;
-	
-		selectRandomCase();
+	public void verifyAssignmentDateType() {
+		for (int i = 0; i < pendingSubFolders.size(); i++) {
+			String folder = processSubFolder(i);
+
+			selectAssignmentType(folder);
+
+			List<UserInputData> userInputData = null;
+
+			selectRandomCase();
+
+			String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
+			String cmr_cs_caseid = CommonPages.getCaseID(referral, userInputData);
+
+			String cmr_cyv_code = CommonPages.cmr_cyv_code(category, cmr_cs_caseid, userInputData).trim();
+
+			AssignmentsPage assig = new AssignmentsPage();
+
+			assig.getRecentAssignmentDate(userInputData, referral, cmr_ju_pe_id, cmr_cyv_code, assignmentType);
+
+			Actions.navigateBack();
+
+		}
+	}
+
+	public boolean validateChmSilentAssignment(String category, String assignmentType, String referral) {
 		
-		String cmr_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
-		String cmr_cs_caseid = CommonPages.getCaseID(referral, userInputData);
+      Actions.contains("Pending Tasks").click();
+		
+		MyAssignments.click();
 
-		String cmr_cyv_code = CommonPages.cmr_cyv_code(category, cmr_cs_caseid, userInputData)
-				.trim();
+		getGroupIcons(GroupIcons.Expand);
 
-		AssignmentsPage assig = new AssignmentsPage();
+		Actions.tap(Locator.XPATH,
+				"//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther//following::XCUIElementTypeStaticText[@name='"
+						+ category + "']");
 
-		assig.getRecentAssignmentDate(userInputData, referral, cmr_ju_pe_id, cmr_cyv_code,assignmentType);
+		boolean found = true;
 
-        Actions.navigateBack(); 
+		while (found) {
+			List<WebElement> icons = Actions.findElements(By.xpath(
+					"//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther"
+							+ "//following::XCUIElementTypeStaticText[@name='" + category + "']"
+							+ "/following::XCUIElementTypeStaticText[@name='GroupIcon']"));
 
-    }
+			found = false;
+
+			for (WebElement icon : icons) {
+				if (icon.getAttribute("value").equals("▽")) {
+					icon.click();
+					found = true;
+					break;
+				}
+			}
+		}
+
+		Actions.findElement(By
+				.xpath("//XCUIElementTypeOther[@name='PendingTasksList']/XCUIElementTypeScrollView/XCUIElementTypeOther"
+						+ "//following::XCUIElementTypeStaticText[@name='" + category + "']"
+						+ "/following::XCUIElementTypeStaticText[@name='" + assignmentType + "']"))
+				.click();
+
+		return Actions.isDisplayed(Locator.XPATH, "//XCUIElementTypeStaticText[contains(@name, '" + referral + "')]");
 	}
 
 }

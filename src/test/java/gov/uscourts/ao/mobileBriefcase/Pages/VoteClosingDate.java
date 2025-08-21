@@ -14,8 +14,9 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 public class VoteClosingDate {
 
 
-	public void verifyVoteClosingDate(List<UserInputData> userInputData) {
-	    List<String> ccrIds = CommonPages.findCCRID(userInputData);
+	
+	public void verifyVoteClosingDate(String caseId,String cmr_cyv_code,List<UserInputData> userInputData) {
+	    List<String> ccrIds = CommonPages.findCCRID(userInputData,caseId,cmr_cyv_code);
 	    System.out.println("Found CCR_IDs: " + ccrIds);
 
 	    boolean voteClosingDateIsValid = false;

@@ -29,4 +29,31 @@ Any assignments that are made to a judge will display in the “Pending Tasks”
 
 
 
-		
+
+@AMB-3643
+Scenario: 
+ 
+        Given user locates a random referral
+         
+        And user locates chmAssign action
+        |dpf |
+        |term|
+       
+        Then changes the values in event_list table
+        |chmSilentAssignMode |
+        |termPanel           |
+        
+		Given I am logged into Briefcase 
+		|environment|user    |
+		|test       |sysadmin|
+			
+		Then I select a user 
+		|userType   |personrole        |jud      |user     |
+		|judge      |Appellate Judges  |test     |sysadmin |
+			      
+        Then User taps on magnifying glass icon and searches for the randomly located case
+              
+   		Then User submits chmSilentAssign dpf
+   		      
+        And User selects that referral in My Assignments folder and validates chmSilentAssignment
+        

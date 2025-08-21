@@ -482,7 +482,8 @@ public class JenieLoginPage extends Base {
 	
 	public void changeSiteVariableValue(String existingSiCode,String existingSiVal,List<UserInputData> userInputData) {
 		
-		
+		   String courtId = SystemPropertySetup.getCourtId(userInputData);
+
 		
 		if (!CommonPages.siCode.equals(existingSiVal)) {
 		
@@ -491,13 +492,14 @@ public class JenieLoginPage extends Base {
 		changeWindow("WEBVIEW");
 		
 		
-		driver.navigate().to("https://cms-ecf-cm3a.tsso.dcn/cmecf/servlet/STEditor");
+		
+		driver.navigate().to("https://cms-ecf-"+courtId+".tsso.dcn/cmecf/servlet/STEditor");
 		
 		changeWindow("WEBVIEW");  
 			
 	
-		driver.findElement(By.name("usernameEntered")).sendKeys(Configuration.getProperty( "cm3a."+ this.sysadminUserName));
-		driver.findElement(By.name("password")).sendKeys(Configuration.getProperty( "cm3a."+ this.sysadminPassword));
+		driver.findElement(By.name("usernameEntered")).sendKeys(Configuration.getProperty( courtId+"."+ this.sysadminUserName));
+		driver.findElement(By.name("password")).sendKeys(Configuration.getProperty( courtId+"."+ this.sysadminPassword));
 
 		driver.findElement(By.id("SUBMIT2")).click();
 

@@ -88,7 +88,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	public static WebElement okBtn;
 
 	// @WithTimeout(time = 100, unit = TimeUnit.SECONDS)
-	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name='Dashboard'])[1]")
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[2]")
 	public static WebElement dashboard;
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"VoteOptions\"]/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText")
@@ -136,6 +136,12 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
 	public static WebElement collapseBtn;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Apply ruling to all reliefs']")
+	public static List<WebElement> applyRulling;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeStaticText[@name='Apply ruling to all reliefs']/preceding:: XCUIElementTypeSwitch[1]")
+	public static WebElement toggle;
+	
 	public static String cyv_category = "";
 	public static String caseid = "";
 	public static String cyv_code = "";
@@ -148,11 +154,11 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	public static String relief = "";
 
 	/** verify relief is displayed on the popup page */
-	public String selectViewVotes(List<UserInputData> userInputData) {
+	public String selectViewVotes(String caseId,String cmr_cyv_code,List<UserInputData> userInputData) {
 		String relief = "";
 		String foundCcrId = "";
 
-		List<String> ccrIdList = CommonPages.findCCRID(userInputData);
+		List<String> ccrIdList = CommonPages.findCCRID(userInputData, caseId, cmr_cyv_code);
 
 		if (ccrIdList == null) {
 			throw new IllegalArgumentException("Error: CCR ID list is null.");
@@ -257,14 +263,14 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	     tap(cancel);
 	}
 
-	public String getVoteSelection(String actionName, String category, String dpfName,
-			List<UserInputData> userInputData, String caseNum) {
+	public String getVoteSelection(String caseId,String cmr_cyv_code,String actionName, String category, String dpfName,
+			List<UserInputData> userInputData) {
 
 		String elementId = getAllColumns(getID(Queries.EL_ID, actionName), userInputData);
 		String voteText = "";
 		String resultText = "";
 
-		List<String> ccrIdList = CommonPages.findCCRID(userInputData);
+		List<String> ccrIdList = CommonPages.findCCRID(userInputData, caseId, cmr_cyv_code);
 		if (ccrIdList == null) {
 			throw new IllegalArgumentException("Error: CCR ID list is null.");
 		}
@@ -528,5 +534,72 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 		ifDocumentAccessbile(el);
 
 	}
+	
+	public String addVote(String caseId,String cmr_cyv_code,
+			List<UserInputData> userInputData) {
+		
+		if (applyRulling.size() == 1) {
+			if (Utility.getToggleState(toggle) == false) {
+				toggle.click();
+			}
+		}
+		String voteText = "";
+		String resultText = "";
+
+		List<String> ccrIdList = CommonPages.findCCRID(userInputData, caseId, cmr_cyv_code);
+		if (ccrIdList == null) {
+			throw new IllegalArgumentException("Error: CCR ID list is null.");
+		}
+
+		for (String ccrId : ccrIdList) {
+			relief = getRelief(ccrId, userInputData);
+			if (relief == null) {
+				relief = "-";
+			} else {
+				relief = relief.trim();
+			}
+
+			if (tapIfExists(Locator.XPATH, getIndexOfVoteButton(relief, 1))) {
+				foundCcrId = ccrId;
+				break;
+			}
+		}
+
+		if (foundCcrId == null) {
+			throw new IllegalArgumentException("Error: No CCR ID found.");
+		}
+
+		Page.sleep(4000);
+
+		List<WebElement> votes = judgeVotes;
+		StringBuilder voteListBuilder = new StringBuilder();
+		for (WebElement row : votes) {
+			voteListBuilder.append(row.getText());
+		}
+
+		String voteList = voteListBuilder.toString();
+		List<String> itemsToRemove = Arrays.asList("Please Select", "No Change");
+		for (String item : itemsToRemove) {
+		    if (voteList.contains(item)) {
+		        try {
+		            votes.remove(item);
+		        } catch (NoSuchElementException e) {
+		            System.err.println("Element not found: " + e.getMessage());
+		        }
+		    }
+		}
+
+		voteText = clickOnNumberInRange(votes);
+		resultText = getVoteName(voteText, relief.trim());
+
+
+		scrollDownIfNotDisplayed("//XCUIElementTypeButton[@name='Submit']");
+		
+		performPageLoad(driver);
+		collapseBtn.click();
+		dashboard.click();
+		return resultText;
+	}
+
 
 }
