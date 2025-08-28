@@ -4,7 +4,8 @@ import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.executeQuery;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getAllColumns;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getID;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities.getText;
-import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.*;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE_AND_ASSIGNED_DATE;
+import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE_IS_COLON_DELIMITED_LIST;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.ASSIGNMENT_TYPE_IS_SKIP;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CAV_CODE;
 import static gov.uscourts.ao.mobileBriefcase.DBUtils.Queries.CHA_CAV_CODE;
@@ -105,6 +106,9 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"MasterNavPage\"]/XCUIElementTypeOther[1]/XCUIElementTypeTable/XCUIElementTypeCell[1]")
 	public static WebElement collapseBtn;
 
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name='Assignment Notes']/following::XCUIElementTypeStaticText[2][string-length(@name) > 0] | //XCUIElementTypeTextView[string-length(@value) > 0]")
+	public static List<WebElement> marksAndSybmols;
+
 	public static String selectADate(chmAssign assign) {
 
 		// String date = "";
@@ -130,7 +134,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 		getStaffAssignment(Assignment.NEW, chmAssign.CREATE_SINGLE_ASSIGNMENT, dpfName, elId, cha_ju_pe_id, caseNumber,
 				cmr_cyv_code, userInputData);
-		cha_id=getCha_id(userInputData).get(0);
+		cha_id = getCha_id(userInputData).get(0);
 
 		getCreatedRecords(changeFormat(assignedDate), getID(CHD_DATE, cha_id), userInputData);
 		getCreatedRecords(getAllColumns(getText(CAV_CODE, assignment), userInputData), getID(CHA_CAV_CODE, cha_id),
@@ -145,7 +149,6 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		String assignDate1 = assignedDate;
 		String assignment1 = assignment;
 		String assignmentDueDate1 = assignmentDueDate;
-
 
 		scrollDownIfNotDisplayed("(" + containsElement("NewStaffButton") + ")[1]");
 		CommonPages.verifyElementIsDisplayed("Create Assignment");
@@ -162,7 +165,6 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		String assignmentDueDate2 = assignmentDueDate;
 		submitTransaction();
 
-
 		CommonPages page = new CommonPages();
 		page.getPanel(Panel.Assignments);
 
@@ -171,32 +173,32 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		getANewStaffAssignment(assignment1, assignDate1, assignmentDueDate1);
 		getANewStaffAssignment(assignment2, assignDate2, assignmentDueDate2);
 
-
 		collapseBtn.click();
-	
-		
-		
+
 		List<String[]> firstQueryResult = DBUtilities.executeDBQuery(ASSIGNMENT_TYPE_AND_ASSIGNED_DATE, userInputData);
 
 		if (firstQueryResult != null && firstQueryResult.size() > 1) {
-		    String chdDate0 = firstQueryResult.get(0)[0];
-		    String cavCode0 = firstQueryResult.get(0)[1];
+			String chdDate0 = firstQueryResult.get(0)[0];
+			String cavCode0 = firstQueryResult.get(0)[1];
 
-		    String chdDate1 = firstQueryResult.get(1)[0];
-		    String cavCode1 = firstQueryResult.get(1)[1];
-	    
-			assertEquals("********VERIFY ASSIGNED DATE IS CORRECT for FIRST SATFF ASSIGNMENT********", changeFormat(assignDate2).trim(), chdDate0.trim());
+			String chdDate1 = firstQueryResult.get(1)[0];
+			String cavCode1 = firstQueryResult.get(1)[1];
 
-			assertEquals("********VERIFY ASSIGNED DATE IS CORRECT for FIRST SATFF ASSIGNMENT********",  getAllColumns(getText(CAV_CODE, assignment2), userInputData).trim(), cavCode0.trim());
+			assertEquals("********VERIFY ASSIGNED DATE IS CORRECT for FIRST SATFF ASSIGNMENT********",
+					changeFormat(assignDate2).trim(), chdDate0.trim());
 
-		    assertEquals("********VERIFY ASSIGNED DATE IS CORRECT for SECOND SATFF ASSIGNMENT********", changeFormat(assignDate1).trim(), chdDate1.trim());
+			assertEquals("********VERIFY ASSIGNED DATE IS CORRECT for FIRST SATFF ASSIGNMENT********",
+					getAllColumns(getText(CAV_CODE, assignment2), userInputData).trim(), cavCode0.trim());
 
-			assertEquals("********VERIFY ASSIGNED DATE IS CORRECT for SECOND SATFF ASSIGNMENT********",  getAllColumns(getText(CAV_CODE, assignment1), userInputData).trim(), cavCode1.trim());
+			assertEquals("********VERIFY ASSIGNED DATE IS CORRECT for SECOND SATFF ASSIGNMENT********",
+					changeFormat(assignDate1).trim(), chdDate1.trim());
+
+			assertEquals("********VERIFY ASSIGNED DATE IS CORRECT for SECOND SATFF ASSIGNMENT********",
+					getAllColumns(getText(CAV_CODE, assignment1), userInputData).trim(), cavCode1.trim());
 
 		}
 
 	}
-
 
 	public List<String> getCha_id(List<UserInputData> userInputData) {
 		List<String> id = new ArrayList<String>();
@@ -448,6 +450,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 					"Assigned " + assignedDate);
 
 			assertTrue(modifiedAssignedDate.isDisplayed());
+			modifiedAssignedDate.click();
 
 		} catch (Exception e) {
 
@@ -455,14 +458,32 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 					"Due " + assignmentDue);
 
 			assertTrue(modifiedAssignmentDueDate.isDisplayed());
-		}
-		collapseBtn.click();
+			modifiedAssignmentDueDate.click();
 
+		}
+		assertTrue("Verify that invalid characters are discards in chmAssign note",getPunctuationMarks(marksAndSybmols)
+				.equals(". , ! ? : ; ' \\\" - ( ) [ ] { } /@ # $ % ^ & * _ + = < > | ~ `"));
+
+		Actions.navigateBack();
+		collapseBtn.click();
 
 		return assignment;
 	}
 
+	public static String getPunctuationMarks(List<WebElement> marksAndSymbols) {
+		Page.waitForVisibilityOfAllElements(marksAndSymbols, driver);
+		for (WebElement el : marksAndSymbols) {
+			String txt = el.getText();
+			if (txt != null && txt.matches(".*[.,!?:;'\"\\-()\\[\\]{}@#$%^&*_+=<>|~/`].*")) {
+				txt = txt.replaceAll("[^.,!?:;'\"\\-()\\[\\]{}@#$%^&*_+=<>|~/` ]", "").trim();
 
+				txt = txt.replace("\"", "\\\"");
+
+				return txt;
+			}
+		}
+		return "";
+	}
 
 	/** Verify the records are created in CM/ECF */
 	public static void getCreatedRecords(String expected, String actual, List<UserInputData> userInputData) {
@@ -473,7 +494,6 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 		assertEquals("********PLEASE VERIFY THAT RECORDS IN CMECF ARE CREATED CORRECTLY!!!********", exp, act);
 	}
-
 
 	public static WebElement getExistingAssignment(String assineeName, String AssignmentTypeAndDate) {
 
@@ -650,7 +670,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 		if (!commentField.getText().isEmpty()) {
 			commentField.clear();
 		}
-		commentField.sendKeys("$*!@$%^&*():;?");
+		commentField.sendKeys(". , ! ? : ; ' \\\" - ( ) [ ] { } /@ # $ % ^ & * _ + = < > | ~ `£€😀");
 		// }
 
 		switch (assign) {
@@ -674,7 +694,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 
 				getANewStaffAssignment(assignment, assignedDate, assignmentDueDate);
 
-				collapseBtn.click();
+				// collapseBtn.click();
 				/******************
 				 * @AMB-1137
 				 */
@@ -683,7 +703,6 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 				// userInputData);
 
 				clickOnExistingAssignment(staffMember + ", " + assignment);
-
 			} else {
 
 				String actionName = DPF_stepDefinitions.actionName;
@@ -695,6 +714,7 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 			break;
 
 		case MODIFY:
+
 			contains(apply).click();
 			/** After the new assignment is created it clicks on it */
 			collapseBtn.click();

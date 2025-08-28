@@ -8,8 +8,10 @@ import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.isDisplayed;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.sendKeys;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Page.performPageLoad;
 import static gov.uscourts.ao.mobileBriefcase.page.common.Utility.scrollDownIfNotDisplayed;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -22,6 +24,7 @@ import org.openqa.selenium.WebElement;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions.Locator;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
+import gov.uscourts.ao.mobileBriefcase.page.common.NetworkManager;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -193,6 +196,32 @@ public class CaseQueryPage extends AppiumPageFactory {
 		}
 		return speChar;
 
+	}
+	public void searchFunctionIsDisabled() {
+		
+		  assertTrue( "Verify the magnifying glass icon is enabled",searchIcon.isEnabled());
+
+			// Switch to offline mode
+			try {
+			NetworkManager.makeScriptsExecutable();
+			NetworkManager.disableInternet();
+		} catch (IOException | RuntimeException e) {
+			System.err.println("Failed to disable internet: " + e.getMessage());
+		}
+
+		DashboardPage page = new DashboardPage();
+		
+		Page.waitForVisibilityOfElement(page.offline_Indicator, driver);
+	        
+	    assertFalse("Verify the magnifying glass icon is disabled", searchIcon.isEnabled());
+
+		try {
+			NetworkManager.makeScriptsExecutable();
+			NetworkManager.enableInternet();
+		} catch (IOException | RuntimeException e) {
+			System.err.println("Failed to re-enable internet: " + e.getMessage());
+		
+	}
 	}
 
 	public enum Search {

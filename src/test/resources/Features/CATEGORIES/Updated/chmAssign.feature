@@ -7,9 +7,9 @@ Scenario:
 	edit existing staff assignments and verify Back-end after modifying assignment 
 
        
-		Given I am logged into Briefcase 
-		|environment|user    |
-		|test       |sysadmin|
+		#Given I am logged into Briefcase 
+		#|environment|user    |
+		#|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |
