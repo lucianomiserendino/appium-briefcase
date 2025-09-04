@@ -529,6 +529,33 @@ public class DocumentPage extends AppiumPageFactory {
 			}
 		}
 	}
+	
+	public void reopenDocument(String document) {
+		Actions.findElementBy(Locator.XPATH, Actions.containsElement(document)).click();
+		
+		performPageLoad(driver);
+		
+		Utility.ifLoaded(inProgress);
+		
+		Boolean elementNotFound = true;
+		int attemptCount = 0;
+
+		while (elementNotFound && attemptCount < 3) {
+			if (!(pdfPageView.size() == 1)) {
+				elementNotFound = true;
+				Utility.scrollPage("down");
+				attemptCount++;
+			} else {
+				elementNotFound = false;
+				break;
+			}
+		}
+
+		if (elementNotFound) {
+			throw new RuntimeException("Error after opening a deleted document, document name: " + document);
+		}
+		Actions.tap(close);
+	}
 
 	public List<WebElement> getDocListLocator(String categoryName) {
 		return Page.waitForVisibilityOfAllElements(Actions.findElements(By.xpath("//XCUIElementTypeStaticText[@name='" + categoryName + "']/following::"

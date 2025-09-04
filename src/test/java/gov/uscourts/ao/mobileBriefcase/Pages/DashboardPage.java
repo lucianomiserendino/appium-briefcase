@@ -98,6 +98,9 @@ public class DashboardPage extends Base {
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeActivityIndicator[@name='Sending...' or @name='In progress']")
 	public static List<WebElement> inProgress;
+	
+	@iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"Back\"]")
+	public static List<WebElement> backArrow;
 
 	public void verifyPendingTasksPosition(String page) {
 		performPageLoad(driver);
@@ -316,8 +319,11 @@ public class DashboardPage extends Base {
 
 		verifyAndClickCategory(cyvCategory);
 
-		assertTrue("*****PLEASE VERIFY ONLY DOCUMENTS DISPLAY ON THE REFERRAL DETAIL PAGE*****",
+		assertTrue("*****VERIFY ONLY DOCUMENTS DISPLAY ON THE REFERRAL DETAIL PAGE*****",
 				getDocuments(peID, userData));
+		
+		assertTrue("*****VERIFY THERE IS NO BACK BUTTON ON THE REFERENCE DOCUMENTS PAGE*****",
+				backArrow.size()==0);
 	}
 
 	private void verifyAndClickCategory(String categoryName) {

@@ -133,4 +133,13 @@ public class Document_StepDefinitions {
     	JenieLoginPage page = new JenieLoginPage();
 		page.changeSiteVariableValue(siteCode,siVal,userInputData);
 	}
+    
+    @Then("User opens the document again verifies the document re-loads and opens as expected")
+    public void user_opens_the_document_again_verifies_the_document_re_loads_and_opens_as_expected() {
+    	page = new DocumentPage();
+    	page.reopenDocument(DocumentPage.randomDocument);
+    }
+
+
+
 }

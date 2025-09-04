@@ -107,10 +107,10 @@ public class InternalNotePage extends AppiumPageFactory {
 
 			isCategoryNoteDisplayed(expectedNote, referral,"y");
 
-//			String dbNote = getDBInternalNote(panel, category, referral, userInputData);
-//
-//			assertEquals("PLEASE VERIFY THAT CMA_VALUE.CHM_MOBILE_DATA IS UPDATED CORRECTLY - >>", expectedNote,
-//					dbNote);
+			String dbNote = getDBInternalNote(panel, category, referral, userInputData);
+
+			assertEquals("PLEASE VERIFY THAT CMA_VALUE.CHM_MOBILE_DATA IS UPDATED CORRECTLY - >>", expectedNote,
+					dbNote);
 
 		} else {
 			assertTrue(arrow.size() == 2);
