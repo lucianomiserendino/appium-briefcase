@@ -233,7 +233,7 @@ public class Queries {
 			+ "ad.chd_date = maxresults.maxnum";
 
 	// Query to find Staff Members
-	public static final String STAFF_MEMBERS_FIRST_NAME = "SELECT distinct pr_first_name, pr_last_name FROM group inner join member on gp_id = mb_gp_id_parent "
+	public static final String STAFF_MEMBERS_FIRST_NAME = "SELECT distinct pr_first_name, pr_last_name,pe_rt_code FROM group inner join member on gp_id = mb_gp_id_parent "
 			+ " join personrole on pe_pr_prid = mb_ur_pr_prid join person on pe_pr_prid = pr_prid join user on ur_pr_prid = pr_prid where pe_rt_code TEXT and  "
 			+ " gp_id in (select gp_id from group inner join member on gp_id = mb_gp_id_parent join person on pr_prid = mb_ur_pr_prid join personrole on pe_pr_prid = pr_prid  where pe_id = '?'"
 			+ " and gp_name like '%Chambers%') and pe_date_end is null and pr_prid <> (select pr_prid from personrole join person on pe_pr_prid = pr_prid where pe_id = '?' and ur_date_disabled is null )";

@@ -410,7 +410,11 @@ public class PendingTasksPage extends AppiumPageFactory {
 	public void verifyAssignmentDateType() {
 		for (int i = 0; i < pendingSubFolders.size(); i++) {
 			String folder = processSubFolder(i);
-
+			
+		       System.out.println("------------------------------------------------------");
+		        System.out.println("Selected folder name: " + folder);
+		        System.out.println("------------------------------------------------------");
+		        
 			selectAssignmentType(folder);
 
 			List<UserInputData> userInputData = null;

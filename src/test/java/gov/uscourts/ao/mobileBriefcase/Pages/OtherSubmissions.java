@@ -23,6 +23,7 @@ import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
+import gov.uscourts.ao.mobileBriefcase.page.common.SystemPropertySetup;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -41,16 +42,15 @@ public class OtherSubmissions extends Base {
 	 * where the cmr_cs_caseid = caseid of the referral being viewed.
 	 **/
 
-	public void otherSubmissionsDisplayed() {
+	public void otherSubmissionsDisplayed( List<UserInputData> userInputData) {
 
 		String cs_caseid = "";
 		List<String> db_cyv_category = null;
 		List<String> db_cmr_panel_members = null;
 		List<String> db_cmr_ref_date = null;
 
-		// String name = SystemPropertySetup.getJudge(userInputData);
-		// String pe_id = getPE_ID("jud", name, userInputData);
-		String pe_id = "34";
+		 String name = SystemPropertySetup.getJudge(userInputData);
+	 String pe_id =DocumentPage.get_pe_id("jud", userInputData);
 
 		List<String> otherSubCase = executeQuery(DBType.CMKA, getID(Queries.CMR_CS_CASEID, pe_id));
 

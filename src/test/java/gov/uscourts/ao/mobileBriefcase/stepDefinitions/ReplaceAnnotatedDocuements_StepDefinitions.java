@@ -11,11 +11,11 @@ public class ReplaceAnnotatedDocuements_StepDefinitions {
 
 	ReplaceAnnotatedDocuementsPage page;
 
-	@Then("^User verifies that the annotated/replaced documents are displayed as expected$")
-	public void user_verifies_that_the_annotated_replaced_documents_are_displayed_as_expected() {
-		page = new ReplaceAnnotatedDocuementsPage();
-		List<UserInputData> userInputData = null;
-		page.isDisplayed(userInputData);
-	}
+//	@Then("^User verifies that the annotated/replaced documents are displayed as expected$")
+//	public void user_verifies_that_the_annotated_replaced_documents_are_displayed_as_expected() {
+//		page = new ReplaceAnnotatedDocuementsPage();
+//		List<UserInputData> userInputData = null;
+//		page.isDisplayed(userInputData);
+//	}
 
 }

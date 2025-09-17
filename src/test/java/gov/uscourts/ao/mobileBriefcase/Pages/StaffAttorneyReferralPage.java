@@ -104,10 +104,7 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 				.click();
 	}
 
-	/**
-	 * Observe there are six referral categories listed .Verify the number of
-	 * referrals in each categories, matches the number of referrals in the DB
-	 */
+
 	public void observeReferralCategories(List<UserInputData> table) {
 		collapseBtn.click();
 		if (Default.size() > 0) {
@@ -194,7 +191,6 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 			category = categoryName.get(0).trim();
 		}
 		Actions.contains(category.trim()).click();
-		//scrollDownIfNotDisplayed(Actions.containsElement(category.trim()));
 
 		String caseNum = DBUtilities.getAllColumns(replace(CASE_NUMBER, "CS_CASEID", sar_cs_caseid), table);
 
@@ -250,29 +246,6 @@ public class StaffAttorneyReferralPage extends AppiumPageFactory {
 
 		return DBUtilities.execute(replace(DOCUMENT_DESCRIPTION, "SMR_ASSIGN_PE_ID", smr_assign_pe_id, "SMR_SFA_CODE",
 				smr_sfa_code, "SAR_CS_CASEID", sar_cs_caseid), col, table);
-	}
-
-	public void gestfaty_supervisor_to_group(List<UserInputData> table) {
-		List<String> group = execute(Queries.SUPERVISOR_STF, 6, table);
-		Actions.tap(Locator.XPATH, group.get(0));
-		CommonPages.getGroupIcons(GroupIcons.Expand);
-
-		List<WebElement> categoryName = Actions
-				.findElements(By.xpath(containsElement("(") + "/preceding:: XCUIElementTypeStaticText[1]"));
-
-		String stf = categoryName.get(0).getText();
-
-		String categoryCount = Actions.replace(Actions.findElements(By.xpath(containsElement("("))).get(0).getText(),
-				"\\(", "", "\\)", "");
-
-		String lName = stf.split(",")[0];
-		String fName = stf.split(",")[1].split(" ")[0];
-
-		String peId = DBUtilities.getPE_ID("stf", lName, fName, table);
-
-		int refNumbers = executeQuery(replace(Queries.STF_REFERRAL_CATEGORIES, "RA_PE_ID", peId), table).size();
-
-		Assert.assertEquals(categoryCount, refNumbers);
 	}
 
 	public void verifyIconsMatchSfaBriefcaseCatIcon(List<UserInputData> userInputData) {

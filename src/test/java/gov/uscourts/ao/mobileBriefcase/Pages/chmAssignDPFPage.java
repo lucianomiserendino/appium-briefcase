@@ -34,7 +34,12 @@ import static org.junit.Assert.assertTrue;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
@@ -271,43 +276,60 @@ public class chmAssignDPFPage extends AppiumPageFactory {
 	 * staff members that are displayed on the ui with db and selects one
 	 */
 	public static void getListOfAvailableStaffMembers(String staffMember, String peID, String screenTypeParam,
-			int index, List<UserInputData> userInputData) {
-		List<String> dbStaffMembers = new ArrayList<>();
-		String fName = "";
-		String lName = "";
+	        int index, List<UserInputData> userInputData) {
 
-		List<String> dbStafMemberFName = executeQuery(getText(getID(staffMember, peID), screenTypeParam), userInputData,
-				0);
-		List<String> dbStafMemberLName = executeQuery(getText(getID(staffMember, peID), screenTypeParam), userInputData,
-				1);
+	    Map<String, Set<String>> nameToRolesMap = new HashMap<>();
 
-		for (int i = 0; i < dbStafMemberFName.size(); i++) {
+	    List<String[]> dbStafMember = DBUtilities.executeDBQuery(getText(getID(staffMember, peID), screenTypeParam), userInputData);
 
-			fName = dbStafMemberFName.get(i).trim();
+	    if (dbStafMember != null) {
+	        for (String[] record : dbStafMember) {
+	            String dbStafMemberFName = record[0];
+	            String dbStafMemberLName = record[1];
+	            String staffMemberRole = record[2];
 
-			lName = dbStafMemberLName.get(i).trim();
+	            String fullName = dbStafMemberFName + " " + dbStafMemberLName;
 
-			dbStaffMembers.add(fName + " " + lName);
-		}
+	            nameToRolesMap.putIfAbsent(fullName, new HashSet<>());
+	            nameToRolesMap.get(fullName).add(staffMemberRole);
+	        }
+	    }
 
-		sort(dbStaffMembers);
+	    List<String> dbStaffMembers = new ArrayList<>();
 
-		List<String> uiStaffMembers = new ArrayList<>();
-		performPageLoad(driver);
-		List<WebElement> allStaffMembers = optionList;
-		for (WebElement staffMembers : allStaffMembers) {
-			uiStaffMembers.add(staffMembers.getText().trim());
+	    if ("not in ('aty')".equals(screenTypeParam)) {
+	        for (Map.Entry<String, Set<String>> entry : nameToRolesMap.entrySet()) {
+	            String fullName = entry.getKey();
+	            Set<String> roles = entry.getValue();
+	            for (int i = 0; i < roles.size(); i++) {
+	                dbStaffMembers.add(fullName);
+	            }
+	        }
+	    } else {
+	        for (String fullName : nameToRolesMap.keySet()) {
+	            dbStaffMembers.add(fullName);
+	        }
+	    }
 
-			sort(uiStaffMembers);
-		}
+	    Collections.sort(dbStaffMembers);
 
-		if (existing == false) {
-			assertEquals("********STAFF MEMBERS VALIDATION ERROR!!!********", dbStaffMembers, uiStaffMembers);
+	    List<String> uiStaffMembers = new ArrayList<>();
+	    performPageLoad(driver);
+	    List<WebElement> allStaffMembers = optionList;
 
-		}
-		exitsingStaffMember = clickOnNumberInRange(allStaffMembers);
-		staffMembers.add(exitsingStaffMember);
+	    for (WebElement staffMemberElement : allStaffMembers) {
+	        uiStaffMembers.add(staffMemberElement.getText().trim());
+	    }
+	    Collections.sort(uiStaffMembers);
+
+	    if (!existing) {
+	        assertEquals("********STAFF MEMBERS VALIDATION ERROR!!!********", dbStaffMembers, uiStaffMembers);
+	    }
+
+	    exitsingStaffMember = clickOnNumberInRange(allStaffMembers);
+	    staffMembers.add(exitsingStaffMember);
 	}
+
 
 	/**
 	 * Verify when you tap the Please Select button next to the Assignment label, a

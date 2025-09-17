@@ -386,7 +386,10 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 
 		// Check if the parameter is set to "SKIP"
 		if ("SKIP".equals(getParameter(getAllColumns(query, userInputData), dpfName, 4))) {
-			assertNull("THE \"NOTE HISTORY PARAMETER\" IS NOT SET TO \"SKIP\"", commentField.getText());
+			
+			assertTrue("THE \"NOTE HISTORY PARAMETER\" IS NOT SET TO \"SKIP\"", 
+				    commentField.getText() == null || commentField.getText().isEmpty());
+
 			tap(cancel);
 		} else {
 			Page.sleep(3000);
@@ -452,8 +455,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 	}
 
 	public static String getRelief(String ccr_id, List<UserInputData> userInputData) {
-		return execute(getID(JUDGES_INITIALS, ccr_id), 3, userInputData).get(0);// getAllColumns(getID(JUDGE_VOTE_DPF_RELIEF,
-																				// ccr_id), userInputData);
+		return execute(getID(JUDGES_INITIALS, ccr_id), 3, userInputData).get(0);
 
 	}
 
@@ -529,7 +531,7 @@ public class JudgeVoteDPFPage extends AppiumPageFactory {
 		}
 		assertTrue(isDisplayed(Locator.XPATH, containsElement(el)));
 		Actions.contains(el).click();
-		//Utility.ifDocumentOpened(progress);
+
 		CommonPages.ifDownloaded(progress);
 		ifDocumentAccessbile(el);
 

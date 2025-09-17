@@ -474,9 +474,7 @@ public class chmSilentAssignDPFPage extends AppiumPageFactory {
 	
 	public static List<String> getRandomChmSilentAssignDPF(List<String> randomReferralAndCategory,List<UserInputData> userInputData, String silentAssignType) {
 		
-		//DashboardPage dashboardPage=new DashboardPage();
-		
-		//List<String> randomReferralAndCategory=dashboardPage.selectRandomCategory(userInputData);
+	
 		  
 		 String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
 		 

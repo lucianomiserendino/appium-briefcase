@@ -17,11 +17,9 @@ public class DocketEntryPage extends AppiumPageFactory {
 	public static WebElement collapseBtn;
 	
 	public String getDocketEntries() {
-		//searchForACase(caseNum);
-		//contains(caseNum).click();
+
 		performPageLoad(driver);
 		contains("View Case Info").click();
-		//contains("Docket Entries").click();
 		String docketEntry= contains("Docket Entries - ").getText().split("-")[1].trim();
 		collapseBtn.click();
 		return docketEntry;

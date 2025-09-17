@@ -7,9 +7,9 @@ Scenario:
 	This task is just to verify that when tapping/clicking the Sync button for a judge, that the sync completes.
  
        
-		#Given I am logged into Briefcase 
-		#|environment|user    |
-		#|test       |sysadmin|
+		Given I am logged into Briefcase 
+		|environment|user    |
+		|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |
@@ -43,9 +43,9 @@ Scenario:
 Verify tapping the Sync in the Referral list page downloads the documents for the selected judge category
 
 
-		#Given I am logged into Briefcase 
-		#|environment|user    |
-		#|test       |sysadmin|
+		Given I am logged into Briefcase 
+		|environment|user    |
+		|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |
@@ -65,9 +65,9 @@ Scenario:
 Verify tapping the Sync in the Referral detail page downloads the documents for the selected case
 
 
-		#Given I am logged into Briefcase 
-		#|environment|user    |
-		#|test       |sysadmin|
+		Given I am logged into Briefcase 
+		|environment|user    |
+		|test       |sysadmin|
 			
 		Then I select a user 
 		|userType   |personrole        |jud      |user     |

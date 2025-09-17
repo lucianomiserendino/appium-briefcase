@@ -19,7 +19,7 @@ public class StaffAssignments_StepDefinitions {
 	@Then("^User observes a collapsible panel entitled \"([^\"]*)\" displays$")
 	public void user_observes_a_collapsible_panel_entitled_displays(String assignment) {
 		assig = new AssignmentsPage();
-		displayed = assig.isAssignmentsExist();
+		displayed = assig.ifAssignmentsExist();
 	}
 
 	@Then("^User verifies that the Staff Assignments are Displayed correctly and tap on a random assignment$")
@@ -36,7 +36,6 @@ public class StaffAssignments_StepDefinitions {
 		assig = new AssignmentsPage();
 
 		assig.getAssignmentsLinkedToReferral(userInputData, cmr_cs_caseid, cmr_ju_pe_id, cmr_cyv_code);
-		// assig.ifAssignmentsSorted(list, userInputData);
 
 	}
 

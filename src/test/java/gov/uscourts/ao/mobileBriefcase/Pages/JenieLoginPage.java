@@ -380,7 +380,6 @@ public class JenieLoginPage extends Base {
 		performPageLoad(driver);
 		Page.waitToBeClickable(sendKeyButton, driver);
 
-		// Uncomment if needed to click the send key button
 		// sendKeyButton.click();
 
 		// Change back to NATIVE context
@@ -402,7 +401,7 @@ public class JenieLoginPage extends Base {
 			// Wait for 5 seconds to allow any actions triggered by the click to complete
 			Page.sleep(5000);
 		} else {
-			// Handle the case where the dashboard is not available
+
 			System.err.println("Dashboard is not available. Cannot reopen the app.");
 		}
 	}

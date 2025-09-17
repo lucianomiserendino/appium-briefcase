@@ -38,10 +38,6 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class AppliedCasesPage extends AppiumPageFactory {
 
-//	public AppliedCasesPage() {
-//		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
-//
-//	}
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeNavigationBar[@name='Xamarin_Forms_Platform_iOS_NavigationRenderer_ParentingView']/XCUIElementTypeButton[2]")
 	public WebElement bookmarkBTN;

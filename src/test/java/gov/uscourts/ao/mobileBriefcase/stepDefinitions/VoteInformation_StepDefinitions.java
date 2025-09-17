@@ -41,16 +41,11 @@ public class VoteInformation_StepDefinitions {
 
 		cmr_cyv_code = DocumentPage.cmr_cyv_code;
 
-		System.out.println(ccr_id+"**********************************");
-		System.out.println(cmr_ju_pe_id+"**********************************");
-		System.out.println(cmr_cs_caseid+"**********************************");
-		System.out.println(cmr_cyv_code+"**********************************");
 
 		page = new VoteInformationPage();
 		assertTrue(page.filersInfo(FILERs_INFO.VOTE_INFO_FILLRES_INFORMATION, cmr_ju_pe_id, cmr_cs_caseid, cmr_cyv_code,
 				ccr_id, userInputData));
-//		page = new VoteInformationPage();
-//		System.out.println(page.printFormattedVoteInfoDynamic() );
+
 	}
 
 	@Then("^User checks each judge's vote  and the date  displays under their initials, using  ccr_id$")

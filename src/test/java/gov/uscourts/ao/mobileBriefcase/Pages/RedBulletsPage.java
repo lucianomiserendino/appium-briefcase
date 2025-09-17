@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.openqa.selenium.WebElement;
 
-import gov.uscourts.ao.mobileBriefcase.page.common.Actions;
 import gov.uscourts.ao.mobileBriefcase.page.common.AppiumPageFactory;
 import gov.uscourts.ao.mobileBriefcase.page.common.Page;
 import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
@@ -37,9 +36,9 @@ public class RedBulletsPage extends AppiumPageFactory {
 		}
 		Page.performPageLoad(driver);
 		back.click();
-		//Actions.navigateBack();
+
 		Page.performPageLoad(driver);
-		
+
 		int finalNewReferralCount = getTotalNumOfNewReferrals();
 		assertEquals(initialNewReferralCount - 1, finalNewReferralCount);
 		return finalNewReferralCount;

@@ -44,13 +44,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Utility.Direction;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class CommonPages extends AppiumPageFactory {
-	// public CommonPages() {
 
-	// initElements(new AppiumFieldDecorator(driver), this);
-//
-//		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
-//
-//	}
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name=\"JENIE Single Sign On\"]/XCUIElementTypeOther[5]/XCUIElementTypeTextField")
 	public static WebElement userName;
@@ -310,17 +304,6 @@ public class CommonPages extends AppiumPageFactory {
 				userInputData);
 	}
 
-//	public static String getCMRID(String caseNum, List<UserInputData> userInputData) {
-//
-//		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);
-//
-//		String caseId = CommonPages.getCaseID(caseNum, userInputData);
-//
-//		String cmr_cyv_code = DocumentPage.cmr_cyv_code;
-//		
-//		return getAllColumns(replace(Queries.CMR_ID, "CMR_CS_CASEID", caseId, "CMR_JU_PE_ID", cha_ju_pe_id),
-//				userInputData);
-//	}
 
 	public static String getCCRID(List<UserInputData> userInputData) {
 		String cha_ju_pe_id = DocumentPage.get_pe_id("jud", userInputData);

@@ -1,0 +1,24 @@
+@Regression @AMB-1301
+Feature: Verify data is displayed on the Dashboard after tapping the left-hand navigation expand/collapse arrows 
+
+
+
+Scenario: 
+
+		Given I am logged into Briefcase 
+		|environment|user    |
+		|test       |sysadmin|
+		
+			
+		Then I select a user 
+		|userType   |personrole        |jud      |user     |
+		|judge      |Appellate Judges  |test     |sysadmin |
+		
+	Then user taps on left-hand navigation "Expand" arrows 
+	And User observes the referral categories that display on the dashboard. Query the chm_mobile_referral, and chm_reftype_val table to get valid categories for the logged in user. 
+		|jud     |courtId       |
+		|test    |test          |
+	Then user taps on left-hand navigation "Expand" arrows 
+	And User observes the referral categories that display on the dashboard. Query the chm_mobile_referral, and chm_reftype_val table to get valid categories for the logged in user. 
+		|jud    |courtId       |
+		|test   |test          |

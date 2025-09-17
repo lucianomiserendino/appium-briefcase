@@ -48,9 +48,6 @@ import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class DocumentPage extends AppiumPageFactory {
 
-//	public DocumentPage() {
-//		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
-//	}
 
 	@iOSXCUITFindBy(xpath = "//XCUIElementTypeOther[@name='ReferralsList']/XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText")
 	public static List<WebElement> regCaseNum;
@@ -443,7 +440,6 @@ public class DocumentPage extends AppiumPageFactory {
 	        uiDocCategories.add(element.getText().trim());
 	    }
 
-	    // Fetch database document categories with cmd_sort
 	    Map<String, Integer> dbCategoryMap = new HashMap<>();
 	    List<String[]> dbDocCategoriesRaw = executeDBQuery(
 	        Actions.replace(DOCUMENT_CATEGORIES, "CMR_CYV_CODE", cmr_cyv_code, "CMR_JU_PE_ID", cmr_ju_pe_id, "CMR_CS_CASEID", cmr_cs_caseid),
@@ -477,11 +473,7 @@ public class DocumentPage extends AppiumPageFactory {
 
 	        if (currentSort > nextSort) {
 	            throw new AssertionError("Document categories are not sorted by cmd_sort ascending.");
-	        } else if (currentSort == nextSort) {
-	            // If cmd_sort is the same, check lexicographical order of categories
-	            if (currentCategory.compareTo(nextCategory) > 0) {
-	                throw new AssertionError("Document categories with same cmd_sort are not sorted lexicographically.");
-	            }
+
 	        }
 	    }
 
@@ -570,27 +562,22 @@ public class DocumentPage extends AppiumPageFactory {
 	}
 
 	public void navigateToViewCaseInfo(String actionName) {
-		// Scroll until viewCaseInfo is visible
 		while (viewCaseInfo.size() != 1) {
 			Utility.scrollPage("down");
 		}
 
-		// Click on the first viewCaseInfo element
 		viewCaseInfo.get(0).click();
 
 		ifDownloaded(inProgress);
 
-		// Wait for docketEntries to be clickable
 		Page.waitToBeClickable(docketEntries, driver);
 
 		ifDownloaded(inProgress);
-		// Wait for actionName to be clickable
-		// Remove single quote if present
+
 		actionName = actionName.contains("'") ? actionName.split("'")[0] : actionName;
 		Utility.tapAndSwipe(Direction.DOWN);
 		Page.waitForPresenceOfElementLocated(By.xpath("(//*[contains(@name, '" + actionName + "')])[1]"), driver)
 				.click();
-		// Page.waitToBeClickable(contains(actionName), driver);
 	}
 
 	

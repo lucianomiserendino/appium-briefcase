@@ -3,26 +3,20 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.junit.Assert;
 
-
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
-import gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCasePage;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage.Category;
 import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.StaffAttorneyReferralSortPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
-import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
-import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
 public class Document_StepDefinitions {
 	DocumentPage page;
-	CopyDeleteCasePage copyDeleteCasePage=new CopyDeleteCasePage();
 	StaffAttorneyReferralSortPage stfPage;
 	public static String judCategory;
 	public static String regularCase;
@@ -49,7 +43,7 @@ public class Document_StepDefinitions {
 	public void user_selects_random_case_number(List<UserInputData> userInputData) {
 		page = new DocumentPage();
 		regularCase = page.getRandomCase(Category.judgeRegularCase);
-		
+
 	}
 
 	@Then("^User selects random document$")
@@ -81,25 +75,25 @@ public class Document_StepDefinitions {
 		page = new DocumentPage();
 		page.getDocumentList(userInputData);
 	}
-	
+
 	@Then("^User verifies the document shows a green checkmark, swipe to delete it, and confirm the icon reverts to a download arrow\\.$")
-	public void user_verifies_the_document_shows_a_green_checkmark_swipe_to_delete_it_and_confirm_the_icon_reverts_to_a_download_arrow()  {
+	public void user_verifies_the_document_shows_a_green_checkmark_swipe_to_delete_it_and_confirm_the_icon_reverts_to_a_download_arrow() {
 		page = new DocumentPage();
 		page.deleteDocument(DocumentPage.randomDocument);
-		
+
 	}
+
 	@Then("^User verifies downloaded \\(\"([^\"]*)\"\\) document has a green checkmark next to it$")
 	public void user_verifies_downloaded_document_has_a_green_checkmark_next_to_it(String open) {
 		page = new DocumentPage();
-	    Assert.assertTrue(
-		        "Verify the viewed document: " + DocumentPage.randomDocument + " shows a green checkmark",
-		        page.verifyGreenCheckmark(DocumentPage.randomDocument, open));		 
+		Assert.assertTrue("Verify the viewed document: " + DocumentPage.randomDocument + " shows a green checkmark",
+				page.verifyGreenCheckmark(DocumentPage.randomDocument, open));
 	}
 
 	@Then("^User selects sub Category$")
 	public void user_selects_sub_Category(List<UserInputData> userInputData) {
 		stfPage = new StaffAttorneyReferralSortPage();
-		stfSubCategory=stfPage.getRandomCategory();
+		stfSubCategory = stfPage.getRandomCategory();
 
 	}
 
@@ -109,37 +103,37 @@ public class Document_StepDefinitions {
 		stfPage.selectRandomCase(stfSubCategory);
 	}
 
-	
 	@Then("^User navigates to View Case Info, then taps Docket Entries$")
-	public void user_navigates_to_View_Case_Info_then_taps_Docket_Entries()  {
+	public void user_navigates_to_View_Case_Info_then_taps_Docket_Entries() {
 		String actionName = DPF_stepDefinitions.actionName;
 		page = new DocumentPage();
 		page.navigateToViewCaseInfo(actionName);
 	}
+
 	@Then("^User selects a random category$")
 	public void user_selects_a_random_category_and_target_case() {
 		List<UserInputData> userInputData = null;
 		page = new DocumentPage();
-		page.selectRandomCategory("n",userInputData);
+		page.selectRandomCategory("n", userInputData);
 	}
+
 	@Then("^User selects a random case$")
-	public void user_selects_a_random_case()  {
+	public void user_selects_a_random_case() {
 		page = new DocumentPage();
 		page.selectRandomReferral();
 	}
-    @Given("I set the site table variable {string} to {string}")
+
+	@Given("I set the site table variable {string} to {string}")
 	public void i_set_the_site_table_variable_to(String siteCode, String siVal) {
-    	List<UserInputData> userInputData = new ArrayList<>();
-    	JenieLoginPage page = new JenieLoginPage();
-		page.changeSiteVariableValue(siteCode,siVal,userInputData);
+		List<UserInputData> userInputData = new ArrayList<>();
+		JenieLoginPage page = new JenieLoginPage();
+		page.changeSiteVariableValue(siteCode, siVal, userInputData);
 	}
-    
-    @Then("User opens the document again verifies the document re-loads and opens as expected")
-    public void user_opens_the_document_again_verifies_the_document_re_loads_and_opens_as_expected() {
-    	page = new DocumentPage();
-    	page.reopenDocument(DocumentPage.randomDocument);
-    }
 
-
+	@Then("User opens the document again verifies the document re-loads and opens as expected")
+	public void user_opens_the_document_again_verifies_the_document_re_loads_and_opens_as_expected() {
+		page = new DocumentPage();
+		page.reopenDocument(DocumentPage.randomDocument);
+	}
 
 }

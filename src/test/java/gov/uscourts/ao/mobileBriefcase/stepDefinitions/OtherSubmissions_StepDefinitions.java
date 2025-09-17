@@ -16,7 +16,7 @@ public class OtherSubmissions_StepDefinitions {
 		page = new OtherSubmissions();
 
 		List<UserInputData> userInputData = null;
-		page.otherSubmissionsDisplayed();
+		page.otherSubmissionsDisplayed(userInputData);
 	}
 
 }

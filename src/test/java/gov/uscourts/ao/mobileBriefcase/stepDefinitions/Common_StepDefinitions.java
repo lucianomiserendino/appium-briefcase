@@ -1,19 +1,16 @@
 package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import static gov.uscourts.ao.mobileBriefcase.page.common.Actions.containsElement;
-
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 import gov.uscourts.ao.mobileBriefcase.DBUtils.DBUtilities;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.GroupIcons;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.Panel;
 import gov.uscourts.ao.mobileBriefcase.Pages.CommonPages.SiteTableVariable;
-import gov.uscourts.ao.mobileBriefcase.Pages.CopyDeleteCasePage;
 import gov.uscourts.ao.mobileBriefcase.Pages.JenieLoginPage;
 import gov.uscourts.ao.mobileBriefcase.model.UserInputData;
 import gov.uscourts.ao.mobileBriefcase.page.common.Base;
@@ -29,7 +26,7 @@ public class Common_StepDefinitions {
 	static Boolean pane;
 	public static String siVal;
 	public static String siCode;
-	
+
 	@Then("^User selects \"([^\"]*)\" and \"([^\"]*)\"$")
 	public void user_selects_and(String category, String caseNumber) {
 		JenieLoginPage logPage = new JenieLoginPage();
@@ -118,24 +115,20 @@ public class Common_StepDefinitions {
 
 	@Then("^User verifies that panel exists$")
 	public void user_verifies_that_panel_exists(DataTable table) {
-	    List<List<String>> data = table.asLists();
-	    String pane = data.get(1).get(0);
-	    this.pane = CommonPages.ifPaneExists(pane);
+		List<List<String>> data = table.asLists();
+		String pane = data.get(1).get(0);
+		this.pane = CommonPages.ifPaneExists(pane);
 	}
-
 
 	@Then("^User gets the si_value from the site table$")
 	public void user_gets_the_si_value_from_the_site_table(DataTable table) {
-	    List<List<String>> data = table.asLists();
-	    String siVal = data.get(1).get(0);
-	    page = new CommonPages();
+		List<List<String>> data = table.asLists();
+		String siVal = data.get(1).get(0);
+		page = new CommonPages();
 
-	    List<UserInputData> userInputData = new ArrayList<>();
+		List<UserInputData> userInputData = new ArrayList<>();
 
-	    siCode= page.getSiValue(SiteTableVariable.valueOf(siVal), userInputData).trim();
+		siCode = page.getSiValue(SiteTableVariable.valueOf(siVal), userInputData).trim();
 	}
-
-
-
 
 }

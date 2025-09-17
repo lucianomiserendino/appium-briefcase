@@ -177,7 +177,7 @@ public class VoteInformationPage extends AppiumPageFactory {
 		List<String> cvv_display = new ArrayList<>();
 		String noVote = "";
 		List<String> uiJudesVote = null;
-		// String chv_date_created = "";
+
 		String relief = getAllColumns(getID(RELIEF, ccr_id), userInputData);
 
 		List<String> inits = executeQuery(getID(JUDGEs_INITIALS, ccr_id), userInputData);
@@ -308,27 +308,27 @@ public class VoteInformationPage extends AppiumPageFactory {
 		boolean inBlock = false;
 
 		for (WebElement el : elements) {
-			// 1) Grab only the 'label' (where the newline lives)
+
 			String raw = el.getAttribute("label");
 			if (raw == null || raw.isBlank())
 				continue;
 
-			// 2) Collapse newlines and trim
+
 			String text = raw.replace("\n", " ").trim();
 
-			// 3) Header detection
+
 			if (text.contains("Filed:")) {
-				// print previous block if any
+
 				if (currentHeader != null && !voteTypes.isEmpty() && !voteValues.isEmpty()) {
 					printCase(currentHeader, voteTypes, voteValues);
 				}
-				// start new block
+
 				currentHeader = text.replace(" Filed:", "Filed:");
 				voteTypes.clear();
 				voteValues.clear();
 				inBlock = true;
 			}
-			// 4) once in a block, collect types (no colon) and values (No Vote or date)
+
 			else if (inBlock) {
 				if (text.equalsIgnoreCase("No Vote") || text.matches("\\d{1,2}/\\d{1,2}/\\d{4}")) {
 					voteValues.add(text);
@@ -341,10 +341,7 @@ public class VoteInformationPage extends AppiumPageFactory {
 		}
 		return voteInfo;
 
-		// print last
-//	    if (currentHeader != null && !voteTypes.isEmpty() && !voteValues.isEmpty()) {
-//	        printCase(currentHeader, voteTypes, voteValues);
-//	    }
+
 	}
 
 	private void printCase(String header, List<String> types, List<String> values) {

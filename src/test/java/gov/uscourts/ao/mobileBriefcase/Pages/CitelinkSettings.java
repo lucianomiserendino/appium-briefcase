@@ -334,15 +334,6 @@ public class CitelinkSettings extends AppiumPageFactory {
 		        performPageLoad(driver);
 
 		        
-		          //Utility.swipeElement("//XCUIElementTypeStaticText[@name='"+document+"']");
-		          
-//		          try {
-//		      		if (Utility.isDisplayed("//XCUIElementTypeAlert[@name='Delete Document?']"));
-//		    		Actions.tap(okBtn);
-//				} catch (Exception e) {
-//				e.getMessage();
-//				}
-		          
 			        scrollDownIfNotDisplayed("//*[contains(@name, '" + document + "')]");
 		        		        
 		        System.out.println("------------------------------------------------------");

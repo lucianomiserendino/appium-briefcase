@@ -178,8 +178,7 @@ public class SyncPage extends AppiumPageFactory {
 
 			String pageSource = driver.getPageSource();
 
-			// Step 1: Split into blocks (e.g., each block represents one document group)
-			String[] docBlocks = pageSource.split("<XCUIElementTypeOther"); // or any tag that separates items
+			String[] docBlocks = pageSource.split("<XCUIElementTypeOther");
 
 			Pattern downloadedPattern = Pattern.compile(
 			    "<XCUIElementTypeStaticText[^>]*name=\"Downloaded\"[^>]*label=\"\"[^>]*x=\"(\\d+)\"[^>]*y=\"(\\d+)\""
@@ -307,7 +306,6 @@ public class SyncPage extends AppiumPageFactory {
 	        int randomIndex = new Random().nextInt(foundCases.size());
 	        String[] randomRecord = foundCases.get(randomIndex);
 
-	        String documentCategory = randomRecord[0].trim();
 	        
 	        String category = randomRecord[1].trim();
 	       
@@ -317,7 +315,6 @@ public class SyncPage extends AppiumPageFactory {
 	         if (caseNum.matches("\\d-\\d+")) {
 	         caseNum = "0" + caseNum;
 	        }
-	         String document = randomRecord[3].trim();
 
 		       
 	            collapseBtn.click();

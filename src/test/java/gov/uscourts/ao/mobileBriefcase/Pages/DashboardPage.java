@@ -402,16 +402,23 @@ public class DashboardPage extends Base {
 
 			String navCategoryName = navTexts.get(0).getText();
 
-			// Skip "Tools" and "Bookmarked"
 			if (navCategoryName.equals("Tools") || navCategoryName.equals("Bookmarked")) {
 				continue;
 			}
-			String navBadgeCount = navTexts.size() > 1 ? navTexts.get(1).getText().trim() : "0";
+
+			
 			String dashBadgeCount = "0";
 
 			String xpathForDashboardBadge = String.format(
 					"//XCUIElementTypeOther[@name='Categories']//XCUIElementTypeStaticText[contains(@name, \"%s\")]/following::XCUIElementTypeStaticText[contains(@name, 'NEW OUT OF')][1]",
 					navCategoryName);
+			
+			String navBadgeCount = navTexts.size() > 1 ? navTexts.get(1).getText().trim() : "0";
+
+			if (!navBadgeCount.matches("\\d+")) {
+			    navBadgeCount = "0";
+			}
+			
 
 			WebElement dashBadge = null;
 
@@ -438,6 +445,7 @@ public class DashboardPage extends Base {
 			}
 		}
 	}
+
 
 	
 	public List<String> selectRandomCategory( List<UserInputData> userInputData) {

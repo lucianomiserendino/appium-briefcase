@@ -162,8 +162,8 @@ public class CalendarPage extends AppiumPageFactory {
 			for (WebElement icon : icons) {
 				if (icon.getAttribute("value").equals("▽")) {
 					icon.click();
-					found = true; // Found and clicked an icon, need to recheck the list
-					break; // Break the loop to recheck the list from the start
+					found = true; 
+					break; 
 				}
 			}
 		}

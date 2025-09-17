@@ -27,9 +27,7 @@ import gov.uscourts.ao.mobileBriefcase.page.common.Utility;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class InternalNotePage extends AppiumPageFactory {
-//	public InternalNotePage() {
-//		initElements(new AppiumFieldDecorator(getInstance(Driver.IOS)), this);
-//	}
+
 
 	@iOSXCUITFindBy(xpath = "(//XCUIElementTypeStaticText[@name=''])[3]/preceding::XCUIElementTypeStaticText[1]")
 	public static WebElement note;
