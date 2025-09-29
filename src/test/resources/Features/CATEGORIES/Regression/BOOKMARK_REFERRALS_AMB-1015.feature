@@ -2,9 +2,7 @@
 Feature: Bookmark functionality 
 
 Scenario: 
-	There is functionality in Briefcase that enables users to bookmark referrals.  
-	The following scenarios need to be automated:
-	
+	There is functionality in Briefcase that enables users to bookmark referrals.  	
 
 		Given I am logged into Briefcase 
 		|environment|user    |

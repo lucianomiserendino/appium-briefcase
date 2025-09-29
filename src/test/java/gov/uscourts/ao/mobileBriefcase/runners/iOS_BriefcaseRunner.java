@@ -8,13 +8,12 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
     plugin = {
         "pretty",
-        "html:target/cucumber",
+        "html:target/cucumber-html-report.html",
         "json:target/cucumber.json"
     },
     features = "./src/test/resources/Features",
-    glue = "gov.uscourts.ao.mobileBriefcase.stepDefinitions", tags = "@AMB-2977",
+    glue = "gov.uscourts.ao.mobileBriefcase.stepDefinitions", tags = "@AMB-1189",
     dryRun = false
 )
 public class iOS_BriefcaseRunner {
 }
-	
