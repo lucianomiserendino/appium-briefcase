@@ -1,1 +1,12 @@
 /target/
+
+# Secrets — kept local only, never push
+src/test/resources/test-properties/amb.properties
+src/test/resources/certs/cacerts.jks
+
+# IDE / Claude
+CLAUDE.md
+.idea/
+.settings/
+.classpath
+.project
