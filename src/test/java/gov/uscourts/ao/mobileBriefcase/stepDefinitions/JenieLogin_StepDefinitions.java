@@ -23,8 +23,12 @@ public class JenieLogin_StepDefinitions extends Base implements iOSCapabilities 
 	        data.setUserType(entry.get("userType"));
 	        data.setPersonrole(entry.get("personrole"));
 	        data.setJud(entry.get("jud"));
+	        data.setStf(entry.get("stf"));
 	        data.setUser(entry.get("user"));
-
+	        data.setCourtId(entry.get("courtId"));
+	        data.setEnvironment(entry.get("environment"));
+	        data.setJudFirstName(entry.get("judFirstName"));
+	        data.setCaseNumber(entry.get("caseNumber"));
 
 	        return data;
 	    }
