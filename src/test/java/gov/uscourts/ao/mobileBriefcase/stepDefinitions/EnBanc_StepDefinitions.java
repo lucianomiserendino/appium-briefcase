@@ -2,8 +2,8 @@ package gov.uscourts.ao.mobileBriefcase.stepDefinitions;
 
 import java.util.List;
 
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import gov.uscourts.ao.mobileBriefcase.Pages.DocumentPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.EnBancPage;
 import gov.uscourts.ao.mobileBriefcase.Pages.JudgeVoteDPFPage;
